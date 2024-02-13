@@ -1,6 +1,6 @@
 {
   "name": "poku",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "🐷 A flexible and easy-to-use Test Runner for parallel or sequential runs and high isolation level",
   "main": "./lib/index.js",
   "scripts": {
