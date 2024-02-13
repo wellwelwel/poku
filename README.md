@@ -1,34 +1,40 @@
 [npm-image]: https://img.shields.io/npm/v/poku.svg?color=f78fb3
 [npm-url]: https://npmjs.org/package/poku
 [ci-url]: https://github.com/wellwelwel/poku/actions/workflows/ci.yml?query=branch%3Amain
-[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=ci&branch=main&color=badc58
-[license-url]: https://github.com/wellwelwel/poku/blob/main/License
+[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/svps/ci.yml?event=push&style=flat&label=ci&branch=main&color=badc58
+[license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
 [license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=3dc1d3
+[node-version-image]: https://img.shields.io/node/v/poku.svg?color=ffb142
+[node-version-url]: https://nodejs.org/en/download
 
 # Poku
 
 <img align="right" width="128" height="128" alt="Logo" src=".github/assets/readme/poku.svg">
 
-🖇️ A flexible and easy-to-use **Test Runner** for parallel or concurrent runs and high isolation level.
+🖇️ A flexible and easy-to-use **Test Runner** for parallel or sequential runs and high isolation level.
 
 [![NPM Version][npm-image]][npm-url]
-[![License][license-image]][license-url]
+[![Node.js Version][node-version-image]][node-version-url]
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
+[![License][license-image]][license-url]
 
 ---
 
 ## Why Poku?
 
-> 🪄 Runs test files in an individual process, shows progress and exits.<br/>
+🪄 Runs test files in an individual process, shows progress and exits.<br/>
 
 - **Poku** is designed to be highly intuitive.<br />
-- Works with **Node.js 6** to **Latest** (_ESM_ and _CJS_), **TypeScript** (_no need to build_) and **Coverage** tools.<br />
+- Supports **Node.js 6+** (_ESM_ and _CJS_), **TypeScript** (_no need to build_) and **Coverage** tools.<br />
 - Poku dive to the deepest depths to find tests in the specified directories.
-- **Unleash creativity:** No constraints or predefined paths. Code in your own signature style.
-- **No environment restrictions:** **Poku** is strongly tested on all Node versions from **6** onwards.
-- As an example, **Poku** uses itself to test its own tests in different depths using several `process.exit` in the same node process.
+- No constraints or rules, code in your own signature style.
 - Zero configurations, except you want.
 - Use both **in-code** and **CLI** usage.
+
+---
+
+- **Poku** uses itself to test its own tests using `process.exit` at several depths on the same process node.
+- **Compatibility:** **Poku** is tested across all **Node 6+** versions.
 - Totally **dependency-free**.
 
 ---
@@ -54,17 +60,112 @@ await poku(['./a', './b']);
 ### CLI
 
 ```bash
-npx poku --include='./a,./b';
+npx poku --include='./a,./b'
 ```
 
 ---
 
-## TypeScript
+### TypeScript
 
 To run your tests without compile, just install `tsx` and it's done:
 
 ```bash
 npm install --save-dev tsx
+```
+
+---
+
+## Documentation
+
+### `poku`
+
+#### Include directories
+
+```ts
+poku('./targetDir');
+```
+
+```ts
+poku(['./targetDirA', './targetDirB']);
+```
+
+```bash
+npx poku --include='./targetDir'
+```
+
+```bash
+npx poku --include='./targetDirA,./targetDirB'
+```
+
+---
+
+#### `filter`
+
+> Filter by path using **Regex** to match only the files that should be performed.
+
+```ts
+/**
+ * @default
+ *
+ * Testing all `*.test.*` files.
+ */
+
+poku(['...'], {
+  filter: /\.test\./,
+});
+```
+
+```ts
+/**
+ * Testing all `ts`, `js`, `mts` and `mjs` files
+ */
+
+poku(['...'], {
+  filter: /\.(m)?(j|t)?s$/,
+  // filter: /\.(js|ts|mjs|mts)$/,
+});
+```
+
+By using `FILTER` from **CLI**, it will overwrite the `filter` option:
+
+```bash
+# Testing only a specific file
+
+FILTER='some-file' npx poku --include='...'
+```
+
+```bash
+# Testing only paths that contains "unit"
+
+FILTER='unit' npx poku --include='...'
+```
+
+---
+
+#### `parallel`
+
+Determines the mode of test execution across **parallelism** or **sequential** modes.
+
+```ts
+/**
+ * @default
+ *
+ * Sequential mode
+ */
+
+poku(['...'], {
+  parallel: false,
+});
+```
+
+```ts
+/**
+ * Parallel mode
+ */
+
+poku(['...'], {
+  parallel: true,
+});
 ```
 
 ---

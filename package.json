@@ -1,7 +1,7 @@
 {
   "name": "poku",
   "version": "0.2.0",
-  "description": "🐷 A flexible and easy-to-use Test Runner for parallel and concurrent runs using high isolation level",
+  "description": "🐷 A flexible and easy-to-use Test Runner for parallel or sequential runs and high isolation level",
   "main": "./lib/index.js",
   "scripts": {
     "test": "npx tsx --tsconfig ./tsconfig.test.json ./test/run.test.ts",
@@ -34,7 +34,10 @@
     "isolate",
     "isolation",
     "concurrent",
+    "concurrency",
+    "parallelism",
     "parallel",
+    "sequential",
     "unit",
     "integration",
     "typescript",
