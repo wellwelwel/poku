@@ -1,11 +1,9 @@
-[npm-image]: https://img.shields.io/npm/v/poku.svg
+[npm-image]: https://img.shields.io/npm/v/poku.svg?color=f78fb3
 [npm-url]: https://npmjs.org/package/poku
-[downloads-image]: https://img.shields.io/npm/dt/poku.svg
-[downloads-url]: https://npmjs.org/package/poku
 [ci-url]: https://github.com/wellwelwel/poku/actions/workflows/ci.yml?query=branch%3Amain
-[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=ci&branch=main
+[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/svps/ci.yml?event=push&style=flat&label=ci&branch=main&color=badc58
 [license-url]: https://github.com/wellwelwel/poku/blob/main/License
-[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000
+[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=3dc1d3
 
 # Poku
 
@@ -15,9 +13,7 @@
 
 [![NPM Version][npm-image]][npm-url]
 [![License][license-image]][license-url]
-
-<!-- [![NPM Downloads][downloads-image]][downloads-url] -->
-<!-- [![GitHub Workflow Status (with event)][ci-image]][ci-url] -->
+[![GitHub Workflow Status (with event)][ci-image]][ci-url]
 
 ---
 
