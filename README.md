@@ -26,16 +26,16 @@
 
 - **Poku** is designed to be highly intuitive.<br />
 - Supports **Node.js 6+** (_ESM_ and _CJS_), **TypeScript** (_no need to build_) and **Coverage** tools.<br />
-- Poku dive to the deepest depths to find tests in the specified directories.
+- **Poku** dive to the deepest depths to find tests in the specified directories.
 - No constraints or rules, code in your own signature style.
 - Zero configurations, except you want.
-- Use both **in-code** and **CLI** usage.
+- Allows both **in-code** and **CLI** usage.
 
 ---
 
-- **Poku** uses itself to test its own tests using `process.exit` at several depths on the same process node.
-- **Compatibility:** **Poku** is tested across all **Node 6+** versions.
 - Totally **dependency-free**.
+- **Compatibility:** **Poku** is tested across all **Node 6+** versions.
+- **Poku** uses itself to test its own tests using `process.exit` at several depths on the same process node.
 
 ---
 
@@ -103,7 +103,7 @@ npx poku --include='./targetDirA,./targetDirB'
 
 > Filter by path using **Regex** to match only the files that should be performed.
 
-- _in-code_
+- **in-code**
 
 ```ts
 /**
@@ -128,7 +128,7 @@ poku(['...'], {
 });
 ```
 
-- _CLI_
+- **CLI**
 
 ```bash
 # Testing only a specific file
@@ -142,7 +142,7 @@ npx poku --include='...' --filter='some-file'
 npx poku --include='...' --filter='unit'
 ```
 
-- _Environment Variable_
+- **Environment Variable**
 
 > By using `FILTER` from **Environment Variable**, it will overwrite the `filter` option.
 
