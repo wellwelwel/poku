@@ -1,7 +1,7 @@
 import path from 'path';
 import { EOL } from 'os';
-import { runner } from '../configs/runner.js';
-import { indentation } from '../configs/indentation.js';
+import { runner } from '../helpers/runner.js';
+import { indentation } from '../helpers/indentation.js';
 import { getFiles } from '../helpers/getFiles.js';
 import { hr } from '../helpers/hr.js';
 import { format } from '../helpers/format.js';

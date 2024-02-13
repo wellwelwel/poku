@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import path from 'path';
-import { runner } from '../configs/runner.js';
-import { indentation } from '../configs/indentation.js';
+import { runner } from '../helpers/runner.js';
+import { indentation } from '../helpers/indentation.js';
 import { format } from '../helpers/format.js';
 import { Configs } from '../@types/poku.js';
 import { isQuiet } from '../helpers/is-quiet.js';
