@@ -3,6 +3,7 @@
   "include": ["test"],
   "exclude": ["src"],
   "compilerOptions": {
-    "outDir": "ci"
+    "outDir": "ci",
+    "declaration": false
   }
 }
