@@ -4,6 +4,7 @@
   "exclude": ["src"],
   "compilerOptions": {
     "outDir": "ci",
-    "declaration": false
+    "declaration": false,
+    "declarationDir": null
   }
 }
