@@ -103,6 +103,8 @@ npx poku --include='./targetDirA,./targetDirB'
 
 > Filter by path using **Regex** to match only the files that should be performed.
 
+- _in-code_
+
 ```ts
 /**
  * @default
@@ -126,7 +128,23 @@ poku(['...'], {
 });
 ```
 
-By using `FILTER` from **CLI**, it will overwrite the `filter` option:
+- _CLI_
+
+```bash
+# Testing only a specific file
+
+npx poku --include='...' --filter='some-file'
+```
+
+```bash
+# Testing only paths that contains "unit"
+
+npx poku --include='...' --filter='unit'
+```
+
+- _Environment Variable_
+
+> By using `FILTER` from **Environment Variable**, it will overwrite the `filter` option.
 
 ```bash
 # Testing only a specific file
