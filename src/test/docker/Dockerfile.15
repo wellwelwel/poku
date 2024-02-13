@@ -1,7 +1,0 @@
-FROM node:15-alpine
-
-WORKDIR /usr/app
-
-COPY ./lib ./src
-
-CMD ["node", "src/test/run.test.js"]

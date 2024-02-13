@@ -1,2 +1,2 @@
-export { poku } from './test/services/poku.js';
-export { exit } from './test/services/exit.js';
+export { poku } from './modules/poku.js';
+export { exit } from './modules/exit.js';

@@ -1,5 +1,6 @@
 {
   "include": ["src"],
+  "exclude": ["test"],
   "compilerOptions": {
     "target": "ES2015",
     "lib": ["ES2015"],
@@ -18,7 +19,7 @@
     "sourceMap": false,
     "esModuleInterop": true,
     "noEmitOnError": true,
-    "declaration": false
-    // "declarationDir": "lib",
+    "declaration": true,
+    "declarationDir": "lib"
   }
 }

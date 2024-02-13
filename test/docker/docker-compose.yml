@@ -1,0 +1,130 @@
+version: '3.9'
+
+services:
+  node-06:
+    container_name: 'node-06'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.06
+    environment:
+      NODE_ENV: production
+
+  node-07:
+    container_name: 'node-07'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.07
+    environment:
+      NODE_ENV: production
+
+  node-08:
+    container_name: 'node-08'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.08
+    environment:
+      NODE_ENV: production
+
+  node-09:
+    container_name: 'node-09'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.09
+    environment:
+      NODE_ENV: production
+
+  node-10:
+    container_name: 'node-10'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.10
+    environment:
+      NODE_ENV: production
+
+  node-11:
+    container_name: 'node-11'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.11
+    environment:
+      NODE_ENV: production
+
+  node-12:
+    container_name: 'node-12'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.12
+    environment:
+      NODE_ENV: production
+
+  node-13:
+    container_name: 'node-13'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.13
+    environment:
+      NODE_ENV: production
+
+  node-14:
+    container_name: 'node-14'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.14
+    environment:
+      NODE_ENV: production
+
+  node-15:
+    container_name: 'node-15'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.15
+    environment:
+      NODE_ENV: production
+
+  node-16:
+    container_name: 'node-16'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.16
+    environment:
+      NODE_ENV: production
+
+  node-17:
+    container_name: 'node-17'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.17
+    environment:
+      NODE_ENV: production
+
+  node-18:
+    container_name: 'node-18'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.18
+    environment:
+      NODE_ENV: production
+
+  node-19:
+    container_name: 'node-19'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.19
+    environment:
+      NODE_ENV: production
+
+  node-20:
+    container_name: 'node-20'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.20
+    environment:
+      NODE_ENV: production
+
+  node-21:
+    container_name: 'node-21'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/Dockerfile.21
+    environment:
+      NODE_ENV: production

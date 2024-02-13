@@ -7,7 +7,7 @@ import { hr } from '../helpers/hr.js';
 import { format } from '../helpers/format.js';
 import { runTestFile } from './runTestFile.js';
 import { Configs } from '../@types/poku.js';
-import { isQuiet } from '../helpers/is-quiet.js';
+import { isQuiet } from '../helpers/logs.js';
 
 export const runTests = async (dir: string, configs?: Configs) => {
   const cwd = process.cwd();
@@ -48,4 +48,36 @@ export const runTests = async (dir: string, configs?: Configs) => {
   }
 
   return passed;
+};
+
+export const runTestsParallel = (dir: string, configs?: Configs) => {
+  const cwd = process.cwd();
+  const testDir = path.join(cwd, dir);
+  const files = getFiles(testDir, undefined, configs);
+  const showLogs = !isQuiet(configs);
+
+  let passed = true;
+
+  return new Promise((resolve) => {
+    for (let i = 0; i < files.length; i++) {
+      const filePath = files[i];
+      const fileRelative = path.relative(cwd, filePath);
+
+      runTestFile(filePath, configs).then((testPassed) => {
+        const command = `${runner(fileRelative)} ${fileRelative}`;
+        const log = command;
+
+        if (testPassed) {
+          showLogs &&
+            console.log(`${indentation.test}${format.success('✔')} ${log}`);
+        } else {
+          showLogs &&
+            console.log(`${indentation.test}${format.fail('✖')} ${log}`);
+          passed = false;
+        }
+      });
+
+      resolve(passed);
+    }
+  });
 };

@@ -32,4 +32,5 @@ export type Configs = {
    * @default /\.test\./i
    */
   filter?: RegExp;
+  parallel?: boolean;
 };

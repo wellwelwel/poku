@@ -4,16 +4,18 @@ import { runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
 import { format } from '../helpers/format.js';
 import { Configs } from '../@types/poku.js';
-import { isQuiet } from '../helpers/is-quiet.js';
+import { showFailures, showSuccesses, isQuiet } from '../helpers/logs.js';
 
-export const runTestFile = (filePath: string, configs?: Configs) =>
+export const runTestFile = (
+  filePath: string,
+  configs?: Configs
+): Promise<boolean> =>
   new Promise((resolve) => {
     let output = '';
 
     const showLogs = !isQuiet(configs);
-    const showSuccess = Boolean(configs?.log?.success);
-    const showFail =
-      typeof configs?.log?.fail === 'undefined' || Boolean(configs?.log?.fail);
+    const showSuccess = showSuccesses(configs);
+    const showFailure = showFailures(configs);
 
     const log = () => console.log(`${indentation.stdio}${output?.trim()}`);
 
@@ -35,7 +37,10 @@ export const runTestFile = (filePath: string, configs?: Configs) =>
     });
 
     child.on('close', (code) => {
-      if (showLogs && ((code === 0 && showSuccess) || (code !== 0 && showFail)))
+      if (
+        showLogs &&
+        ((code === 0 && showSuccess) || (code !== 0 && showFailure))
+      )
         log();
 
       resolve(code === 0);
