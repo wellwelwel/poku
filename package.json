@@ -1,7 +1,7 @@
 {
   "name": "poku",
   "version": "0.1.0",
-  "description": "🐷 This is Poku",
+  "description": "🐷 An intuitive Test Runner which allows parallel runs and high isolation level.",
   "main": "./lib/index.js",
   "scripts": {
     "test": "npx tsx --tsconfig ./tsconfig.test.json ./test/run.test.ts",
@@ -24,8 +24,19 @@
   },
   "keywords": [
     "test",
+    "testing",
     "runner",
-    "isolate"
+    "run",
+    "isolate",
+    "isolation",
+    "concurrent",
+    "parallel",
+    "unit",
+    "integration",
+    "typescript",
+    "filter",
+    "queue",
+    "queuing"
   ],
   "author": "https://github.com/wellwelwel",
   "bugs": {
