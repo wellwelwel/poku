@@ -9,7 +9,10 @@ import { runTestFile } from './runTestFile.js';
 import { Configs } from '../@types/poku.js';
 import { isQuiet } from '../helpers/logs.js';
 
-export const runTests = async (dir: string, configs?: Configs) => {
+export const runTests = async (
+  dir: string,
+  configs?: Configs
+): Promise<boolean> => {
   const cwd = process.cwd();
   const testDir = path.join(cwd, dir);
   const currentDir = path.relative(cwd, testDir);
@@ -50,34 +53,31 @@ export const runTests = async (dir: string, configs?: Configs) => {
   return passed;
 };
 
-export const runTestsParallel = (dir: string, configs?: Configs) => {
+export const runTestsParallel = async (
+  dir: string,
+  configs?: Configs
+): Promise<boolean> => {
   const cwd = process.cwd();
   const testDir = path.join(cwd, dir);
   const files = getFiles(testDir, undefined, configs);
   const showLogs = !isQuiet(configs);
 
-  let passed = true;
+  const promises = files.map(async (filePath) => {
+    const fileRelative = path.relative(cwd, filePath);
+    const testPassed = await runTestFile(filePath, configs);
+    const command = `${runner(fileRelative)} ${fileRelative}`;
 
-  return new Promise((resolve) => {
-    for (let i = 0; i < files.length; i++) {
-      const filePath = files[i];
-      const fileRelative = path.relative(cwd, filePath);
-
-      runTestFile(filePath, configs).then((testPassed) => {
-        const command = `${runner(fileRelative)} ${fileRelative}`;
-        const log = command;
-
-        if (testPassed) {
-          showLogs &&
-            console.log(`${indentation.test}${format.success('✔')} ${log}`);
-        } else {
-          showLogs &&
-            console.log(`${indentation.test}${format.fail('✖')} ${log}`);
-          passed = false;
-        }
-      });
-
-      resolve(passed);
+    if (testPassed) {
+      showLogs &&
+        console.log(`${indentation.test}${format.success('✔')} ${command}`);
+    } else {
+      showLogs &&
+        console.log(`${indentation.test}${format.fail('✖')} ${command}`);
+      return false;
     }
+    return true;
   });
+
+  const results = await Promise.all(promises);
+  return results.every((result) => result);
 };

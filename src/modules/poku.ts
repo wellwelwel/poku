@@ -20,17 +20,17 @@ export async function poku(
   const dirs = forceArray(targetDirs);
 
   if (configs?.parallel) {
-    for (const dir of dirs) {
-      runTestsParallel(dir, configs).then((result) => {
-        if (!result) code = 1;
-      });
+    const results = await Promise.all(
+      dirs.map((dir) => runTestsParallel(dir, configs))
+    );
+
+    if (results.some((result) => !result)) {
+      code = 1;
     }
 
-    process.on('beforeExit', () => {
-      if (configs?.noExit) return code;
+    if (configs?.noExit) return code;
 
-      exit(code, configs?.quiet);
-    });
+    exit(code, configs?.quiet);
 
     return;
   }
