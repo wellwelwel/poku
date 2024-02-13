@@ -1,7 +1,7 @@
 [npm-image]: https://img.shields.io/npm/v/poku.svg?color=f78fb3
 [npm-url]: https://npmjs.org/package/poku
 [ci-url]: https://github.com/wellwelwel/poku/actions/workflows/ci.yml?query=branch%3Amain
-[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/svps/ci.yml?event=push&style=flat&label=ci&branch=main&color=badc58
+[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=ci&branch=main&color=badc58
 [license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
 [license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=3dc1d3
 [node-version-image]: https://img.shields.io/node/v/poku.svg?color=ffb142
@@ -188,7 +188,6 @@ poku(['...'], {
 
 ---
 
-## In progress
+## Documentation in Progress
 
-> 🧑🏻‍🔧 Soon releasing version `1.x`.<br />
 > 🧑🏻‍🎓 Soon documenting all options and **Poku**'s usage variations.
