@@ -26,8 +26,7 @@
 > Runs test files in an individual process, shows progress and exits.
 
 - **Poku** is designed to be highly intuitive.<br />
-- Works with **ESM**, **CJS**, **Node.js**, **TypeScript** (_no-build_) and **Coverage** tools.<br />
-- Compatibility from **Node.js 6** to the **Latest** release.<br />
+- Works with **Node.js 6** to **Latest** (_ESM_ and _CJS_), **TypeScript** (_no need to build_) and **Coverage** tools.<br />
 - Totally dependency-free.
 
 ---
