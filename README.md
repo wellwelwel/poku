@@ -17,22 +17,19 @@
 
 ---
 
-## Why
+## Why Poku?
 
-> 🪄 Runs test files in an individual process, shows progress and exits.
+> 🪄 Runs test files in an individual process, shows progress and exits.<br/>
 
 - **Poku** is designed to be highly intuitive.<br />
 - Works with **Node.js 6** to **Latest** (_ESM_ and _CJS_), **TypeScript** (_no need to build_) and **Coverage** tools.<br />
-- **No limitations or rules:** code your own way.
-- Totally dependency-free.
-- **No environment restrictions:** **Poku** is strongly tested on all Node versions from **6** onwards.
 - Poku dive to the deepest depths to find tests in the specified directories.
-
----
-
-## In progress
-
-🧑🏻‍🔧 Soon releasing version `1.x`.
+- **Unleash creativity:** No constraints or predefined paths. Code in your own signature style.
+- **No environment restrictions:** **Poku** is strongly tested on all Node versions from **6** onwards.
+- As an example, **Poku** uses itself to test its own tests in different depths using several `process.exit` in the same node process.
+- Zero configurations, except you want.
+- Use both **in-code** and **CLI** usage.
+- Totally **dependency-free**.
 
 ---
 
@@ -45,8 +42,6 @@ npm install --save-dev poku
 ---
 
 ## Basic Usage
-
-> 🧑🏻‍🔧 Soon documenting all options and **Poku**'s usage variations.
 
 ## In-code
 
@@ -71,3 +66,10 @@ To run your tests without compile, just install `tsx` and it's done:
 ```bash
 npm install --save-dev tsx
 ```
+
+---
+
+## In progress
+
+> 🧑🏻‍🔧 Soon releasing version `1.x`.<br />
+> 🧑🏻‍🎓 Soon documenting all options and **Poku**'s usage variations.

@@ -21,16 +21,21 @@ export type Configs = {
     fail?: boolean;
   };
   /**
-   * This option overwrites all `log` settings
+   * This option overwrites all `log` settings.
    *
    * @default false
    */
   quiet?: boolean;
   /**
-   * Filter by path to match only the files that should be performed
+   * Filter by path to match only the files that should be performed.
    *
    * @default /\.test\./i
    */
   filter?: RegExp;
+  /**
+   * Determines the mode of test execution.
+   *
+   * @default false
+   */
   parallel?: boolean;
 };
