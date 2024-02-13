@@ -22,6 +22,9 @@
     "type": "git",
     "url": "git+https://github.com/wellwelwel/poku.git"
   },
+  "bin": {
+    "poku": "./lib/bin/index.js"
+  },
   "keywords": [
     "test",
     "testing",
@@ -43,7 +46,7 @@
     "url": "https://github.com/wellwelwel/poku/issues"
   },
   "engines": {
-    "node": ">=6.x"
+    "node": ">=6.0.0"
   },
   "files": [
     "lib"
