@@ -1,0 +1,54 @@
+{
+  "name": "poku",
+  "version": "0.1.0",
+  "description": "🐷 This is Poku",
+  "main": "./lib/index.js",
+  "scripts": {
+    "init": "npm i --ignore-scripts",
+    "test": "npx tsx src/test/run.test.ts",
+    "test:docker": "cd src/test/docker && docker compose down; docker compose up --build --abort-on-container-exit",
+    "test:ci": "npx tsx src/test/ci.test.ts",
+    "update": "npx npu; npm run init",
+    "prebuild": "rm -rf ./lib",
+    "build": "npx tsc",
+    "eslint:checker": "npx eslint . --ext .js,.ts",
+    "eslint:fix": "npx eslint . --fix --config ./.eslintrc.json",
+    "prettier:checker": "npx prettier --check .",
+    "prettier:fix": "npx prettier --write .github/workflows/*.yml ."
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wellwelwel/poku.git"
+  },
+  "keywords": [
+    "test",
+    "runner",
+    "isolate"
+  ],
+  "author": "https://github.com/wellwelwel",
+  "bugs": {
+    "url": "https://github.com/wellwelwel/poku/issues"
+  },
+  "engines": {
+    "node": ">=6.x"
+  },
+  "files": [
+    "lib"
+  ],
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "packages-update": "^1.2.1",
+    "prettier": "^3.2.5",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}
