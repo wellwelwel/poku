@@ -9,21 +9,18 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: '🔎 CodeQL'
+name: 'CodeQL'
 
 on:
   push:
-    branches: ['main']
+    branches:
+      - 'main'
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: ['main']
-  # schedule:
-  #   - cron: '18 18 * * 1'
   workflow_dispatch:
 
 jobs:
   analyze:
-    name: Analyze
+    name: 🔎 Analyze
     # Runner size impacts CodeQL analysis time. To learn more, please see:
     #   - https://gh.io/recommended-hardware-resources-for-running-codeql
     #   - https://gh.io/supported-runners-and-hardware-resources
