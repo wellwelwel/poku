@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/wellwelwel/poku/compare/v1.0.0...v1.1.0) (2024-02-15)
+
+
+### Features
+
+* befriend Bun and Deno ([#2](https://github.com/wellwelwel/poku/issues/2)) ([7d11888](https://github.com/wellwelwel/poku/commit/7d1188802f99a8516119764ca9d83f397132fb9c))
+
 ## 1.0.0 (2024-02-13)
 
 
