@@ -1,11 +1,11 @@
 version: '3.9'
 
 services:
-  bun-0-5-3:
-    container_name: 'bun-0-5-3'
+  bun-0.5.3:
+    container_name: 'bun.0.5.3'
     build:
       context: ../../
-      dockerfile: ./test/docker/bun/Dockerfile.0-5-3
+      dockerfile: ./test/docker/bun/Dockerfile.0.5.3
     environment:
       NODE_ENV: production
 
@@ -25,12 +25,12 @@ services:
     environment:
       NODE_ENV: production
 
-  deno-1-30-0:
-    container_name: 'deno-1-30-0'
+  deno-1.30.0:
+    container_name: 'deno-1.30.0'
     platform: linux/amd64
     build:
       context: ../../
-      dockerfile: ./test/docker/deno/Dockerfile.1-30-0
+      dockerfile: ./test/docker/deno/Dockerfile.1.30.0
     environment:
       NODE_ENV: production
 
