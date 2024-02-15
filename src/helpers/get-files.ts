@@ -4,7 +4,7 @@ import path from 'node:path';
 import type { Configs } from '../@types/poku.ts';
 
 export const escapeRegExp = (string: string) =>
-  string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  string.replace(/[.*+?^${}()[\]\\]/g, '\\$&');
 
 export const envFilter = process.env.FILTER?.trim()
   ? new RegExp(escapeRegExp(process.env.FILTER), 'i')

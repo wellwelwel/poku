@@ -1,13 +1,15 @@
-[node-version-url]: https://nodejs.org/en/download
+[node-version-url]: https://github.com/nodejs/node
 [node-version-image]: https://img.shields.io/badge/Node.js->=6.0.0-badc58
-[bun-version-url]: https://nodejs.org/en/download
+[bun-version-url]: https://github.com/oven-sh/bun
 [bun-version-image]: https://img.shields.io/badge/Bun->=0.5.3-f471b5
-[deno-version-url]: https://nodejs.org/en/download
+[deno-version-url]: https://github.com/denoland/deno
 [deno-version-image]: https://img.shields.io/badge/Deno->=1.30.0-70ffaf
 [npm-image]: https://img.shields.io/npm/v/poku.svg?color=3dc1d3
 [npm-url]: https://npmjs.org/package/poku
 [ci-url]: https://github.com/wellwelwel/poku/actions/workflows/ci.yml?query=branch%3Amain
-[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=ci&branch=main
+[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=CI&branch=main
+[ql-url]: https://github.com/wellwelwel/poku/actions/workflows/codeql.yml?query=branch%3Amain
+[ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/codeql.yml?event=push&style=flat&label=Code%20QL&branch=main
 [license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
 [license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff
 
@@ -15,7 +17,7 @@
 
 <img align="right" width="128" height="128" alt="Logo" src=".github/assets/readme/poku.svg">
 
-🖇️ A flexible and easy-to-use **Test Runner** for [**Node**](https://github.com/nodejs/node), [**Bun**](https://github.com/oven-sh/bun) and [**Deno**](https://github.com/denoland/deno), which allows parallel or sequential runs and high isolation level.
+🖇️ A flexible and easy-to-use **Test Runner** for [**Node**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url], which allows parallel or sequential runs and high isolation level.
 
 > **Poku** starts from the premise where tests come to help, not overcomplicate.
 
@@ -23,8 +25,9 @@
 [![Bun Version][bun-version-image]][bun-version-url]
 [![Deno Version][deno-version-image]][deno-version-url]
 [![NPM Version][npm-image]][npm-url]
-[![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![License][license-image]][license-url]
+[![GitHub Workflow Status (with event)][ci-image]][ci-url]
+[![GitHub Workflow Status (with event)][ql-image]][ql-url]
 
 ---
 
@@ -42,10 +45,10 @@ Runs test files in an individual process, shows progress and exits 🪄
 
 ---
 
-- Totally **dependency-free**.
+- Totally **dependency-free**
 - **Poku** dive to the deepest depths to find tests in the specified directories
-- **Compatibility:** **Poku** is tested across all **Node 6+**, **Bun 0.5.3+** and **Deno 1.30+** versions.
-- **Poku** uses itself to test its own tests using `process.exit` at several depths on the same process node.
+- **Compatibility:** **Poku** is tested across all **Node 6+**, **Bun 0.5.3+** and **Deno 1.30+** versions
+- **Poku** uses itself to test its own tests using `process.exit` at several depths on the same process node
 
 ---
 
