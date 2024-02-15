@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/wellwelwel/poku/compare/v1.1.0...v1.1.1) (2024-02-15)
+
+
+### Bug Fixes
+
+* **filter:** support multiple files on CLI ([#5](https://github.com/wellwelwel/poku/issues/5)) ([76da3d1](https://github.com/wellwelwel/poku/commit/76da3d1903c21db984489f07fb5a5de8292abeaa))
+
 ## [1.1.0](https://github.com/wellwelwel/poku/compare/v1.0.0...v1.1.0) (2024-02-15)
 
 
