@@ -1,4 +1,5 @@
-import { EOL } from 'os';
+import { EOL } from 'node:os';
+import process from 'node:process';
 
 export const hr = () => {
   const columns = process.stdout.columns;

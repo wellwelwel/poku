@@ -1,8 +1,9 @@
-import path from 'path';
-import { EOL } from 'os';
+import process from 'node:process';
+import { EOL } from 'node:os';
+import path from 'node:path';
 import { runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
-import { getFiles } from '../helpers/getFiles.js';
+import { getFiles } from '../helpers/get-files.js';
 import { hr } from '../helpers/hr.js';
 import { format } from '../helpers/format.js';
 import { runTestFile } from './runTestFile.js';
@@ -37,7 +38,7 @@ export const runTests = async (
 
     const testNumber = i + 1;
     const counter = format.counter(testNumber, totalTests);
-    const command = `${runner(fileRelative)} ${fileRelative}`;
+    const command = `${runner(fileRelative).join(' ')} ${fileRelative}`;
     const nextLine = i + 1 !== files.length ? EOL : '';
     const log = `${counter}/${totalTests} ${command}${nextLine}`;
 
@@ -65,7 +66,7 @@ export const runTestsParallel = async (
   const promises = files.map(async (filePath) => {
     const fileRelative = path.relative(cwd, filePath);
     const testPassed = await runTestFile(filePath, configs);
-    const command = `${runner(fileRelative)} ${fileRelative}`;
+    const command = `${runner(fileRelative).join(' ')} ${fileRelative}`;
 
     if (testPassed) {
       showLogs &&

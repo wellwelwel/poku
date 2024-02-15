@@ -1,5 +1,6 @@
-import { checkNode } from '../helpers/check-node.test.js';
+import process from 'node:process';
+import { executeDockerCompose } from '../helpers/check-node.test.js';
 
 (async () => {
-  process.exit(await checkNode(11));
+  process.exit(await executeDockerCompose('node-11'));
 })();

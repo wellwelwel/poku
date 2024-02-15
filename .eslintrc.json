@@ -18,7 +18,7 @@
     "no-restricted-syntax": [
       "error",
       {
-        "selector": "ImportDeclaration[source.value=/^\\./][source.value!=/\\.(js(on(c)?)?|(s)?css|svg|ico)$/]",
+        "selector": "ImportDeclaration[source.value=/^\\./][source.value!=/\\.(js(on(c)?)?|ts|(s)?css|svg|ico)$/]",
         "message": "Local imports must have the explicit extension"
       }
     ],

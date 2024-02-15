@@ -1,11 +1,53 @@
 version: '3.9'
 
 services:
+  bun-0.5.3:
+    container_name: 'bun.0.5.3'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/bun/Dockerfile.0.5.3
+    environment:
+      NODE_ENV: production
+
+  bun-01:
+    container_name: 'bun-01'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/bun/Dockerfile.01
+    environment:
+      NODE_ENV: production
+
+  bun-canary:
+    container_name: 'bun-canary'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/bun/Dockerfile.canary
+    environment:
+      NODE_ENV: production
+
+  deno-1.30.0:
+    container_name: 'deno-1.30.0'
+    platform: linux/amd64
+    build:
+      context: ../../
+      dockerfile: ./test/docker/deno/Dockerfile.1.30.0
+    environment:
+      NODE_ENV: production
+
+  deno-latest:
+    container_name: 'deno-latest'
+    platform: linux/amd64
+    build:
+      context: ../../
+      dockerfile: ./test/docker/deno/Dockerfile.latest
+    environment:
+      NODE_ENV: production
+
   node-06:
     container_name: 'node-06'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.06
+      dockerfile: ./test/docker/node/Dockerfile.06
     environment:
       NODE_ENV: production
 
@@ -13,7 +55,7 @@ services:
     container_name: 'node-07'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.07
+      dockerfile: ./test/docker/node/Dockerfile.07
     environment:
       NODE_ENV: production
 
@@ -21,7 +63,7 @@ services:
     container_name: 'node-08'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.08
+      dockerfile: ./test/docker/node/Dockerfile.08
     environment:
       NODE_ENV: production
 
@@ -29,7 +71,7 @@ services:
     container_name: 'node-09'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.09
+      dockerfile: ./test/docker/node/Dockerfile.09
     environment:
       NODE_ENV: production
 
@@ -37,7 +79,7 @@ services:
     container_name: 'node-10'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.10
+      dockerfile: ./test/docker/node/Dockerfile.10
     environment:
       NODE_ENV: production
 
@@ -45,7 +87,7 @@ services:
     container_name: 'node-11'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.11
+      dockerfile: ./test/docker/node/Dockerfile.11
     environment:
       NODE_ENV: production
 
@@ -53,7 +95,7 @@ services:
     container_name: 'node-12'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.12
+      dockerfile: ./test/docker/node/Dockerfile.12
     environment:
       NODE_ENV: production
 
@@ -61,7 +103,7 @@ services:
     container_name: 'node-13'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.13
+      dockerfile: ./test/docker/node/Dockerfile.13
     environment:
       NODE_ENV: production
 
@@ -69,7 +111,7 @@ services:
     container_name: 'node-14'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.14
+      dockerfile: ./test/docker/node/Dockerfile.14
     environment:
       NODE_ENV: production
 
@@ -77,7 +119,7 @@ services:
     container_name: 'node-15'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.15
+      dockerfile: ./test/docker/node/Dockerfile.15
     environment:
       NODE_ENV: production
 
@@ -85,7 +127,7 @@ services:
     container_name: 'node-16'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.16
+      dockerfile: ./test/docker/node/Dockerfile.16
     environment:
       NODE_ENV: production
 
@@ -93,7 +135,7 @@ services:
     container_name: 'node-17'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.17
+      dockerfile: ./test/docker/node/Dockerfile.17
     environment:
       NODE_ENV: production
 
@@ -101,7 +143,7 @@ services:
     container_name: 'node-18'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.18
+      dockerfile: ./test/docker/node/Dockerfile.18
     environment:
       NODE_ENV: production
 
@@ -109,7 +151,7 @@ services:
     container_name: 'node-19'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.19
+      dockerfile: ./test/docker/node/Dockerfile.19
     environment:
       NODE_ENV: production
 
@@ -117,14 +159,14 @@ services:
     container_name: 'node-20'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.20
+      dockerfile: ./test/docker/node/Dockerfile.20
     environment:
       NODE_ENV: production
 
-  node-21:
-    container_name: 'node-21'
+  node-latest:
+    container_name: 'node-latest'
     build:
       context: ../../
-      dockerfile: ./test/docker/Dockerfile.21
+      dockerfile: ./test/docker/node/Dockerfile.latest
     environment:
       NODE_ENV: production

@@ -1,3 +1,5 @@
+import process from 'node:process';
+
 const [, , ...args] = process.argv;
 
 export const getArg = (arg: string): string | undefined => {
