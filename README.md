@@ -43,7 +43,7 @@ Runs test files in an individual process, shows progress and exits 🪄
 ---
 
 - Totally **dependency-free**.
-- **Compatibility:** **Poku** is tested across all **Node 6+** versions.
+- **Compatibility:** **Poku** is tested across all **Node 6+**, **Bun 0.5.3+** and **Deno 1.30.0+** versions.
 - **Poku** dive to the deepest depths to find tests in the specified directories
 - **Poku** uses itself to test its own tests using `process.exit` at several depths on the same process node.
 
