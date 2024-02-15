@@ -63,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['0-5-3', '01', 'canary']
+        node-version: ['0.5.3', '01', 'canary']
     name: 🔬 Bun ${{ matrix.node-version }}
     steps:
       - name: ➕ Actions - Checkout
@@ -96,7 +96,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['1-30-0', 'latest']
+        node-version: ['1.30.0', 'latest']
     name: 🔬 Deno ${{ matrix.node-version }}
     steps:
       - name: ➕ Actions - Checkout
