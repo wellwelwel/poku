@@ -6,7 +6,7 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
-  CI - Node:
+  node:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
@@ -57,7 +57,7 @@ jobs:
       - name: 🔬 Node ${{ matrix.node-version }}
         run: FILTER=node-${{ matrix.node-version }} npm run test:ci
 
-  CI - Bun:
+  bun:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
@@ -90,7 +90,7 @@ jobs:
       - name: 🔬 Bun ${{ matrix.node-version }}
         run: FILTER=bun-${{ matrix.node-version }} npm run test:ci
 
-  CI - Deno:
+  deno:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
