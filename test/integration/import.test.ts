@@ -1,4 +1,4 @@
-import assert from 'assert';
+import assert from 'node:assert';
 import * as index from '../../src/index.js';
 
 assert.ok(index.poku);

@@ -5,8 +5,9 @@ on:
       - 'main'
   pull_request:
   workflow_dispatch:
+
 jobs:
-  CI:
+  CI - Node.js:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
@@ -29,9 +30,9 @@ jobs:
             '18',
             '19',
             '20',
-            '21',
+            'latest',
           ]
-    name: 🔬 Node ${{ matrix.node-version }}
+    name: 🔬 ${{ matrix.node-version }}
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -55,4 +56,70 @@ jobs:
         run: npm run build
 
       - name: 🔬 Node ${{ matrix.node-version }}
-        run: FILTER=${{ matrix.node-version }} npm run test:ci
+        run: FILTER=node-${{ matrix.node-version }} npm run test:ci
+
+  CI - Bun:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['0-5-3', '01', 'canary']
+    name: 🔬 ${{ matrix.node-version }}
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🤹🏻‍♀️ Building the Project
+        run: npm run build
+
+      - name: 🔬 Bun ${{ matrix.node-version }}
+        run: FILTER=bun-${{ matrix.node-version }} npm run test:ci
+
+  CI - Deno:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['1-30-0', 'latest']
+    name: 🔬 ${{ matrix.node-version }}
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🤹🏻‍♀️ Building the Project
+        run: npm run build
+
+      - name: 🔬 Deno ${{ matrix.node-version }}
+        run: FILTER=deno-${{ matrix.node-version }} npm run test:ci

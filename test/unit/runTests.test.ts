@@ -1,4 +1,4 @@
-import assert from 'assert';
+import assert from 'node:assert';
 import { runTests } from '../../src/services/runTests.js';
 
 (async () => {

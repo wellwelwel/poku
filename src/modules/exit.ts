@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { hr } from '../helpers/hr.js';
 import { Code } from '../@types/code.js';
 

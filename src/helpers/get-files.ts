@@ -1,7 +1,14 @@
-import fs from 'fs';
-import path from 'path';
-import { filter as envFilter } from './filter.js';
-import { Configs } from '../@types/poku.js';
+import process from 'node:process';
+import fs from 'node:fs';
+import path from 'node:path';
+import type { Configs } from '../@types/poku.ts';
+
+export const escapeRegExp = (string: string) =>
+  string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+export const envFilter = process.env.FILTER?.trim()
+  ? new RegExp(escapeRegExp(process.env.FILTER), 'i')
+  : null;
 
 export const getFiles = (
   dirPath: string,

@@ -1,20 +1,28 @@
-[npm-image]: https://img.shields.io/npm/v/poku.svg?color=f78fb3
+[node-version-url]: https://nodejs.org/en/download
+[node-version-image]: https://img.shields.io/badge/Node.js->=6.0.0-badc58
+[bun-version-url]: https://nodejs.org/en/download
+[bun-version-image]: https://img.shields.io/badge/Bun->=0.5.3-f471b5
+[deno-version-url]: https://nodejs.org/en/download
+[deno-version-image]: https://img.shields.io/badge/Deno->=1.30.0-70ffaf
+[npm-image]: https://img.shields.io/npm/v/poku.svg?color=3dc1d3
 [npm-url]: https://npmjs.org/package/poku
 [ci-url]: https://github.com/wellwelwel/poku/actions/workflows/ci.yml?query=branch%3Amain
-[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=ci&branch=main&color=badc58
+[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=ci&branch=main
 [license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
-[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=3dc1d3
-[node-version-image]: https://img.shields.io/node/v/poku.svg?color=ffb142
-[node-version-url]: https://nodejs.org/en/download
+[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff
 
 # Poku
 
 <img align="right" width="128" height="128" alt="Logo" src=".github/assets/readme/poku.svg">
 
-🖇️ A flexible and easy-to-use **Test Runner** for parallel or sequential runs and high isolation level.
+🖇️ A flexible and easy-to-use **Test Runner** for [**Node**](https://github.com/nodejs/node), [**Bun**](https://github.com/oven-sh/bun) and [**Deno**](https://github.com/denoland/deno), which allows parallel or sequential runs and high isolation level.
 
-[![NPM Version][npm-image]][npm-url]
+> **Poku** starts from the premise where tests come to help, not overcomplicate.
+
 [![Node.js Version][node-version-image]][node-version-url]
+[![Bun Version][bun-version-image]][bun-version-url]
+[![Deno Version][deno-version-image]][deno-version-url]
+[![NPM Version][npm-image]][npm-url]
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![License][license-image]][license-url]
 
@@ -22,34 +30,76 @@
 
 ## Why Poku?
 
-🪄 Runs test files in an individual process, shows progress and exits.<br/>
+Runs test files in an individual process, shows progress and exits 🪄
 
-- **Poku** is designed to be highly intuitive.<br />
-- Supports **Node.js 6+** (_ESM_ and _CJS_), **TypeScript** (_no need to build_) and **Coverage** tools.<br />
-- **Poku** dive to the deepest depths to find tests in the specified directories.
-- No constraints or rules, code in your own signature style.
-- Zero configurations, except you want.
-- Allows both **in-code** and **CLI** usage.
+- **Poku** is designed to be highly intuitive
+- Supports **ESM** and **CJS**
+- No need to compile **TypeScript**
+- Compatible with **Coverage** tools
+- Allows both **in-code** and **CLI** usage
+- Zero configurations, except you want
+- No constraints or rules, code in your own signature style
 
 ---
 
 - Totally **dependency-free**.
 - **Compatibility:** **Poku** is tested across all **Node 6+** versions.
+- **Poku** dive to the deepest depths to find tests in the specified directories
 - **Poku** uses itself to test its own tests using `process.exit` at several depths on the same process node.
 
 ---
 
 ## Install
 
+### **Node.js**
+
+> <img src=".github/assets/readme/node-js.svg" width="24" />
+
 ```bash
 npm install --save-dev poku
 ```
+
+### TypeScript (Node.js)
+
+> <img src=".github/assets/readme/node-js.svg" width="24" />
+> <img src=".github/assets/readme/plus.svg" width="24" />
+> <img src=".github/assets/readme/typescript.svg" width="24" />
+
+```bash
+npm install --save-dev poku tsx
+```
+
+### Bun
+
+> <img src=".github/assets/readme/bun.svg" width="24" />
+> <img src=".github/assets/readme/plus.svg" width="24" />
+> <img src=".github/assets/readme/typescript.svg" width="24" />
+
+```bash
+bun add --dev poku
+```
+
+### **Deno**
+
+> <img src=".github/assets/readme/deno.svg" width="24" />
+> <img src=".github/assets/readme/plus.svg" width="24" />
+> <img src=".github/assets/readme/typescript.svg" width="24" />
+
+```ts
+import { poku } from 'npm:poku';
+```
+
+- **Poku** requires these permissions by default: `--allow-read`, `--allow-env` and `--allow-run`.
 
 ---
 
 ## Basic Usage
 
-## In-code
+### In-code
+
+> <img src=".github/assets/readme/node-js.svg" width="24" />
+> <img src=".github/assets/readme/plus.svg" width="24" />
+> <img src=".github/assets/readme/bun.svg" width="24" />
 
 ```ts
 import { poku } from 'poku';
@@ -57,27 +107,43 @@ import { poku } from 'poku';
 await poku(['./a', './b']);
 ```
 
+> <img src=".github/assets/readme/deno.svg" width="24" />
+
+```ts
+import { poku } from 'npm:poku';
+
+await poku(['./a', './b']);
+```
+
 ### CLI
+
+> <img src=".github/assets/readme/node-js.svg" width="24" />
 
 ```bash
 npx poku --include='./a,./b'
 ```
 
----
-
-### TypeScript
-
-To run your tests without compile, just install `tsx` and it's done:
+> <img src=".github/assets/readme/bun.svg" width="24" />
 
 ```bash
-npm install --save-dev tsx
+bun poku --include='./a,./b'
+```
+
+> <img src=".github/assets/readme/deno.svg" width="24" />
+
+```bash
+deno run npm:poku --include='./a,./b'
 ```
 
 ---
 
 ## Documentation
 
-### `poku`
+> Documentation in Progress 🧑🏻‍🔧
+>
+> Initially, the documentation is based on **Node.js** usage, but you can use all the options normally for both **Bun** and **Deno**.
+
+### `poku(string | string[])`
 
 #### Include directories
 
@@ -98,6 +164,8 @@ npx poku --include='./targetDirA,./targetDirB'
 ```
 
 ---
+
+### `poku(string | string[], configs: Configs)`
 
 #### `filter`
 
@@ -188,6 +256,6 @@ poku(['...'], {
 
 ---
 
-## Documentation in Progress
+## Documentation in Progress...
 
 > 🧑🏻‍🎓 Soon documenting all options and **Poku**'s usage variations.

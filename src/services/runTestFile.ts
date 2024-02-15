@@ -1,5 +1,6 @@
-import { spawn } from 'child_process';
-import path from 'path';
+import process from 'node:process';
+import { spawn } from 'node:child_process';
+import path from 'node:path';
 import { runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
 import { format } from '../helpers/format.js';
@@ -23,7 +24,12 @@ export const runTestFile = (
     showLogs &&
       console.log(`${indentation.test}${format.info('→')} ${fileRelative}`);
 
-    const child = spawn(runner(filePath), [filePath], {
+    const runtimeOptions = runner(filePath);
+    const runtime = runtimeOptions.shift();
+    const runtimeArguments =
+      runtimeOptions.length > 1 ? [...runtimeOptions, filePath] : [filePath];
+
+    const child = spawn(runtime!, runtimeArguments, {
       stdio: ['inherit', 'pipe', 'pipe'],
       env: process.env,
     });

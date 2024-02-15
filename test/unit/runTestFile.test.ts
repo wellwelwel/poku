@@ -1,8 +1,10 @@
-import assert from 'assert';
+import process from 'node:process';
+import assert from 'node:assert';
 import { runTestFile } from '../../src/services/runTestFile.js';
+import { getRuntime } from '../../src/helpers/get-runtime.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
-const ext = isProduction ? 'js' : 'ts';
+const ext = getRuntime() === 'deno' ? 'ts' : isProduction ? 'js' : 'ts';
 
 (async () => {
   {
