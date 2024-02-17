@@ -1,7 +1,7 @@
 {
   "name": "poku",
   "version": "1.1.1",
-  "description": "🐷 A flexible and easy-to-use Test Runner for Node, Bun and Deno, which allows parallel or sequential runs and high isolation level",
+  "description": "🐷 Poku is a flexible and easy-to-use Test Runner for Node, Bun and Deno that allows you to run parallel and sequential tests, plus high isolation level per test file",
   "main": "./lib/index.js",
   "scripts": {
     "test": "npx tsx --tsconfig ./tsconfig.test.json ./test/run.test.ts",
@@ -43,7 +43,11 @@
     "typescript",
     "filter",
     "queue",
-    "queuing"
+    "queuing",
+    "nodejs",
+    "node",
+    "bun",
+    "deno"
   ],
   "author": "https://github.com/wellwelwel",
   "bugs": {
@@ -51,6 +55,7 @@
   },
   "engines": {
     "node": ">=6.0.0",
+    "bun": ">=0.5.3",
     "deno": ">=1.17.0"
   },
   "files": [
