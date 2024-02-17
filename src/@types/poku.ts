@@ -33,6 +33,12 @@ export type Configs = {
    */
   filter?: RegExp;
   /**
+   * Exclude by path to match only the files that should be performed.
+   *
+   * @default undefined
+   */
+  exclude?: RegExp;
+  /**
    * Determines the mode of test execution.
    *
    * @default false

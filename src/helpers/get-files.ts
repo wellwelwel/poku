@@ -16,17 +16,23 @@ export const getFiles = (
   configs?: Configs
 ) => {
   const currentFiles = fs.readdirSync(dirPath);
+  const defaultRegExp = /\.test\./i;
   const filter: RegExp =
-    (envFilter ? envFilter : configs?.filter) || /\.test\./i;
+    (envFilter
+      ? envFilter
+      : configs?.filter instanceof RegExp
+        ? configs.filter
+        : defaultRegExp) || defaultRegExp;
+  const exclude: RegExp | undefined =
+    configs?.exclude instanceof RegExp ? configs?.exclude : undefined;
 
   for (const file of currentFiles) {
     const fullPath = path.join(dirPath, file);
 
-    if (fs.statSync(fullPath).isDirectory()) {
-      getFiles(fullPath, files, configs);
-    } else if (filter.test(fullPath)) {
-      files.push(fullPath);
-    }
+    if (exclude && exclude.test(fullPath)) continue;
+
+    if (fs.statSync(fullPath).isDirectory()) getFiles(fullPath, files, configs);
+    else if (filter.test(fullPath)) files.push(fullPath);
   }
 
   return files;
