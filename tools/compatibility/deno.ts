@@ -12,8 +12,6 @@ const ensureDenoCompatibility = async (path: string) => {
     const raw = await fs.readFile(file, 'utf8');
     const content = raw.replace(/((import|export).+)(\.js)/g, '$1.ts');
 
-    if (/index\.ts/.test(file)) console.log(content);
-
     await fs.writeFile(file, content);
   }
 };
