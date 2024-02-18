@@ -3,10 +3,10 @@ import { EOL } from 'node:os';
 import path from 'node:path';
 import { runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
-import { getFiles } from '../helpers/get-files.js';
+import { getFiles } from '../modules/get-files.js';
 import { hr } from '../helpers/hr.js';
 import { format } from '../helpers/format.js';
-import { runTestFile } from './runTestFile.js';
+import { runTestFile } from './run-test-file.js';
 import { Configs } from '../@types/poku.js';
 import { isQuiet } from '../helpers/logs.js';
 
@@ -80,5 +80,6 @@ export const runTestsParallel = async (
   });
 
   const results = await Promise.all(promises);
+
   return results.every((result) => result);
 };

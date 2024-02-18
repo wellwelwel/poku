@@ -1,12 +1,12 @@
 import process from 'node:process';
 import fs from 'node:fs';
 import path from 'node:path';
-import type { Configs } from '../@types/poku.ts';
+import type { Configs } from '../@types/get-files.ts';
 
 export const escapeRegExp = (string: string) =>
   string.replace(/[.*+?^${}()[\]\\]/g, '\\$&');
 
-export const envFilter = process.env.FILTER?.trim()
+const envFilter = process.env.FILTER?.trim()
   ? new RegExp(escapeRegExp(process.env.FILTER), 'i')
   : null;
 
@@ -23,13 +23,17 @@ export const getFiles = (
       : configs?.filter instanceof RegExp
         ? configs.filter
         : defaultRegExp) || defaultRegExp;
-  const exclude: RegExp | undefined =
-    configs?.exclude instanceof RegExp ? configs?.exclude : undefined;
+
+  const exclude: Configs['exclude'] = configs?.exclude
+    ? Array.isArray(configs.exclude)
+      ? configs.exclude
+      : [configs.exclude]
+    : undefined;
 
   for (const file of currentFiles) {
     const fullPath = path.join(dirPath, file);
 
-    if (exclude && exclude.test(fullPath)) continue;
+    if (exclude && exclude.some((regex) => regex.test(fullPath))) continue;
 
     if (fs.statSync(fullPath).isDirectory()) getFiles(fullPath, files, configs);
     else if (filter.test(fullPath)) files.push(fullPath);

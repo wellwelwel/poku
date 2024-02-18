@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import { escapeRegExp } from '../helpers/get-files.js';
+import { escapeRegExp } from '../modules/get-files.js';
 import { getArg } from '../helpers/get-arg.js';
 import { poku } from '../index.js';
 

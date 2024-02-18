@@ -1,6 +1,6 @@
 import process from 'node:process';
 import assert from 'node:assert';
-import { runTestFile } from '../../src/services/runTestFile.js';
+import { runTestFile } from '../../src/services/run-test-file.js';
 import { getRuntime } from '../../src/helpers/get-runtime.js';
 
 const isProduction = process.env.NODE_ENV === 'production';

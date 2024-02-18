@@ -168,7 +168,9 @@ npx poku --include='./targetDirA,./targetDirB'
 
 ### `poku(string | string[], configs: Configs)`
 
-#### `filter`
+#### `filter: RexExp`
+
+By default, **Poku** searches for _`*.test.*`_ files, but you can customize it using the `filter` option.
 
 > Filter by path using **Regex** to match only the files that should be performed.
 
@@ -229,9 +231,9 @@ FILTER='unit' npx poku --include='...'
 
 ---
 
-#### `parallel`
+#### `parallel: boolean`
 
-Determines the mode of test execution across **parallelism** or **sequential** modes.
+Determines the mode of test execution across **sequential** or **parallel** modes.
 
 ```ts
 /**
@@ -252,6 +254,74 @@ poku(['...'], {
 
 poku(['...'], {
   parallel: true,
+});
+```
+
+---
+
+#### `exclude: RexExp | RexExp[]`
+
+> Exclude by path using Regex to match only the files that should be performed.
+
+- **in-code**:
+
+```ts
+/**
+ * Excluding  directories from tests
+ */
+
+poku(['...'], {
+  exclude: /\/(helpers|tools)\//,
+});
+```
+
+```ts
+/**
+ * Excluding  directories from tests
+ */
+
+poku(['...'], {
+  exclude: [/\/helpers\//, /\/tools\//],
+});
+```
+
+```ts
+/**
+ * Excluding specific files from tests
+ */
+
+poku(['...'], {
+  exclude: /(index|common).test.ts/,
+});
+```
+
+```ts
+/**
+ * Excluding specific files from tests
+ */
+
+poku(['...'], {
+  exclude: [/index.test.ts/, /common.test.ts/],
+});
+```
+
+```ts
+/**
+ * Excluding directories and files from tests
+ */
+
+poku(['...'], {
+  exclude: /\/(helpers|tools)\/|(index|common).test.ts/,
+});
+```
+
+```ts
+/**
+ * Excluding directories and files from tests
+ */
+
+poku(['...'], {
+  exclude: [/\/helpers\//, /\/tools\//, /index.test.ts/, /common.test.ts/],
 });
 ```
 

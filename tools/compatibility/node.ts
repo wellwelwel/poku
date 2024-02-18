@@ -1,5 +1,5 @@
 import { promises as fs } from 'node:fs';
-import { getFiles } from '../../src/helpers/get-files.js';
+import { getFiles } from '../../src/modules/get-files.js';
 
 const ensureNodeCompatibility = async (path: string) => {
   const files = getFiles(path, [], {

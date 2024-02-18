@@ -1,3 +1,5 @@
+import type { Configs as GetFileOptions } from './get-files.ts';
+
 export type Configs = {
   /**
    * By setting `true`, **Poku** won't exit the process and will return the exit code (`0` or `1`).
@@ -27,21 +29,9 @@ export type Configs = {
    */
   quiet?: boolean;
   /**
-   * Filter by path to match only the files that should be performed.
-   *
-   * @default /\.test\./i
-   */
-  filter?: RegExp;
-  /**
-   * Exclude by path to match only the files that should be performed.
-   *
-   * @default undefined
-   */
-  exclude?: RegExp;
-  /**
    * Determines the mode of test execution.
    *
    * @default false
    */
   parallel?: boolean;
-};
+} & GetFileOptions;
