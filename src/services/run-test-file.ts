@@ -24,7 +24,7 @@ export const runTestFile = (
     showLogs &&
       console.log(`${indentation.test}${format.info('→')} ${fileRelative}`);
 
-    const runtimeOptions = runner(filePath);
+    const runtimeOptions = runner(filePath, configs);
     const runtime = runtimeOptions.shift();
     const runtimeArguments =
       runtimeOptions.length > 1 ? [...runtimeOptions, filePath] : [filePath];

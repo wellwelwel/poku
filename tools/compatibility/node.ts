@@ -6,7 +6,7 @@ const ensureNodeCompatibility = async (path: string) => {
     filter: /\.(m)?(j|t)?s$/,
   });
 
-  // console.log('Ensuring Compatibility For:', files);
+  console.log('Ensuring Compatibility For:', files);
 
   for (const file of files) {
     const raw = await fs.readFile(file, 'utf8');

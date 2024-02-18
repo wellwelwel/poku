@@ -38,7 +38,7 @@ export const runTests = async (
 
     const testNumber = i + 1;
     const counter = format.counter(testNumber, totalTests);
-    const command = `${runner(fileRelative).join(' ')} ${fileRelative}`;
+    const command = `${runner(fileRelative, configs).join(' ')} ${fileRelative}`;
     const nextLine = i + 1 !== files.length ? EOL : '';
     const log = `${counter}/${totalTests} ${command}${nextLine}`;
 
