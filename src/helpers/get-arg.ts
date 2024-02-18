@@ -11,3 +11,7 @@ export const getArg = (arg: string): string | undefined => {
 
 export const hasArg = (arg: string): boolean =>
   args.some((a) => a.startsWith(`--${arg}`));
+
+export const getLastParam = (): string => {
+  return args[args.length - 1];
+};
