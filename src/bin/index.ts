@@ -1,11 +1,14 @@
 #! /usr/bin/env node
 
 import { escapeRegExp } from '../modules/list-files.js';
-import { getArg, hasArg } from '../helpers/get-arg.js';
+import { getArg, getLastParam, hasArg } from '../helpers/get-arg.js';
 import { poku } from '../index.js';
 import { platformIsValid } from '../helpers/get-runtime.js';
 
-const dirs = getArg('include')?.split(',') || [];
+const dirs =
+  (hasArg('include')
+    ? getArg('include')?.split(',')
+    : getLastParam()?.split(',')) || [];
 const platform = getArg('platform');
 const filter = getArg('filter');
 const parallel = hasArg('parallel');

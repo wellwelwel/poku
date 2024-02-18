@@ -38,23 +38,27 @@ A flexible and easy-to-use **Test Runner** for [Node.js][node-version-url], [Bun
 - No need to compile **TypeScript**
 - Compatible with **Coverage** tools
 - Allows both **in-code** and **CLI** usage
+- [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
 - Zero configurations, except you want
 - No constraints or rules, code in your own signature style
 
 ---
 
-- Totally **dependency-free**
+- <img src="https://img.shields.io/bundlephobia/min/poku?label=Final%20Size">
+- **Zero** external dependencies
 - **Poku** dive to the deepest depths to find tests in the specified directories
 - **Compatibility:** **Poku** is tested across all **Node 6+**, **Bun 0.5.3+** and **Deno 1.30+** versions
 - **Poku** uses itself to test its own tests using `process.exit` at several depths on the same process node
 
 ---
 
-```bash
-  npx poku --include='test/unit,test/integration'
-```
+| Sequential                                                   | Parallel                                                   |
+| ------------------------------------------------------------ | ---------------------------------------------------------- |
+| `npx poku test/unit,test/integration`                        | `npx poku --parallel test/unit,test/integration`           |
+| <img src=".github/assets/readme/sequential.png" width="360"> | <img src=".github/assets/readme/parallel.png" width="360"> |
 
-<img src="./.github/assets/readme/screen-recording-2024-02-17-at-23.38.06.gif" width="360">
+- By default, **Poku** searches for all _`.test.`_ files, but you can customize it using the option [`filter`](https://github.com/wellwelwel/poku#filter-rexexp).
+- The same idea for [**Bun**][bun-version-url] and [**Deno**][deno-version-url] (see bellow).
 
 ---
 
@@ -113,7 +117,7 @@ import { poku } from 'npm:poku';
 ```ts
 import { poku } from 'poku';
 
-await poku(['./a', './b']);
+await poku(['targetDirA', 'targetDirB']);
 ```
 
 > <img src=".github/assets/readme/deno.svg" width="24" />
@@ -121,7 +125,7 @@ await poku(['./a', './b']);
 ```ts
 import { poku } from 'npm:poku';
 
-await poku(['./a', './b']);
+await poku(['targetDirA', 'targetDirB']);
 ```
 
 ### CLI
@@ -129,19 +133,19 @@ await poku(['./a', './b']);
 > <img src=".github/assets/readme/node-js.svg" width="24" />
 
 ```bash
-npx poku --include='./a,./b'
+npx poku targetDirA,targetDirB
 ```
 
 > <img src=".github/assets/readme/bun.svg" width="24" />
 
 ```bash
-bun poku --include='./a,./b'
+bun poku targetDirA,targetDirB
 ```
 
 > <img src=".github/assets/readme/deno.svg" width="24" />
 
 ```bash
-deno run npm:poku --include='./a,./b'
+deno run npm:poku targetDirA,targetDirB
 ```
 
 ---
@@ -156,20 +160,40 @@ deno run npm:poku --include='./a,./b'
 
 #### Include directories
 
+- **in-code**
+
 ```ts
-poku('./targetDir');
+poku('targetDir');
 ```
 
 ```ts
-poku(['./targetDirA', './targetDirB']);
+poku(['targetDirA', 'targetDirB']);
+```
+
+- **CLI**
+
+By setting the directories as the last argument:
+
+> _Since **1.3.0**_
+
+```bash
+npx poku targetDir
 ```
 
 ```bash
-npx poku --include='./targetDir'
+npx poku targetDirA,targetDirB
+```
+
+By using `--include` option:
+
+> _Since **1.0.0**_
+
+```bash
+npx poku --include='targetDir'
 ```
 
 ```bash
-npx poku --include='./targetDirA,./targetDirB'
+npx poku --include='targetDirA,targetDirB'
 ```
 
 ---
@@ -211,7 +235,7 @@ poku(['...'], {
 ```bash
 # Parallel mode
 
-npx poku --include='...' --parallel
+npx poku --parallel ./test
 ```
 
 ---
@@ -261,23 +285,25 @@ poku('...', {
 ```bash
 # Normal
 
-npx poku   --include='...' --platform=node
-bun poku   --include='...' --platform=bun
-deno poku  --include='...' --platform=deno
+npx      poku      --platform=node  ./test
+bun      poku      --platform=bun   ./test
+deno run npm:poku  --platform=deno  ./test
 ```
 
 ```bash
 # Custom
+# When you're developing using a platform, but maintain compatibility with others
 
-npx poku       --include='...' --platform=bun
-bun poku       --include='...' --platform=deno
-deno run poku  --include='...' --platform=node
+npx      poku      --platform=bun   ./test
+bun      poku      --platform=deno  ./test
+deno run npm:poku  --platform=node  ./test
+
 # ...
 ```
 
 ---
 
-#### `filter: RexExp`
+#### `filter: RegExp`
 
 By default, **Poku** searches for _`.test.`_ files, but you can customize it using the `filter` option.
 
@@ -303,7 +329,7 @@ poku(['...'], {
  */
 
 poku(['...'], {
-  filter: /\.(m)?(j|t)?s$/,
+  filter: /\.(m)?(j|t)s$/,
   // filter: /\.(js|ts|mjs|mts)$/,
 });
 ```
@@ -313,19 +339,19 @@ poku(['...'], {
 ```bash
 # Testing only a specific file
 
-npx poku --include='...' --filter='some-file'
+npx poku --filter='some-file' ./test
 ```
 
 ```bash
 # Testing only a specific file
 
-npx poku --include='...' --filter='some-file|other-file'
+npx poku --filter='some-file|other-file' ./test
 ```
 
 ```bash
 # Testing only paths that contains "unit"
 
-npx poku --include='...' --filter='unit'
+npx poku --filter='unit' ./test
 ```
 
 - **Environment Variable**
@@ -335,24 +361,24 @@ npx poku --include='...' --filter='unit'
 ```bash
 # Testing only a specific file
 
-FILTER='some-file' npx poku --include='...'
+FILTER='some-file' npx poku ./test
 ```
 
 ```bash
 # Testing only a specific file
 
-FILTER='some-file|other-file' npx poku --include='...'
+FILTER='some-file|other-file' npx poku ./test
 ```
 
 ```bash
 # Testing only paths that contains "unit"
 
-FILTER='unit' npx poku --include='...'
+FILTER='unit' npx poku ./test
 ```
 
 ---
 
-#### `exclude: RexExp | RexExp[]`
+#### `exclude: RegExp | RegExp[]`
 
 > Exclude by path using Regex to match only the files that should be performed.
 >
@@ -425,13 +451,13 @@ poku(['...'], {
 ```bash
 # Excluding directories and files from tests
 
-npx poku --include='...' --exclude='some-file-or-dir'
+npx poku --exclude='some-file-or-dir' ./test
 ```
 
 ```bash
 # Excluding directories and files from tests
 
-npx poku --include='...' --exclude='some-file-or-dir|other-file-or-dir'
+npx poku --exclude='some-file-or-dir|other-file-or-dir' ./test
 ```
 
 ---
