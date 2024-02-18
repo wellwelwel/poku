@@ -17,7 +17,7 @@
 
 <img align="right" width="128" height="128" alt="Logo" src=".github/assets/readme/poku.svg">
 
-A flexible and easy-to-use **Test Runner** for [Node][node-version-url], [Bun][bun-version-url] and [Deno][deno-version-url] that allows you to run **parallel** and **sequential** tests, plus **high isolation level per test file**.
+A flexible and easy-to-use **Test Runner** for [Node.js][node-version-url], [Bun][bun-version-url] and [Deno][deno-version-url] that allows you to run **parallel** and **sequential** tests, plus **high isolation level per test file**.
 
 [![Node.js Version][node-version-image]][node-version-url]
 [![Bun Version][bun-version-image]][bun-version-url]
@@ -377,6 +377,8 @@ npx poku --include='...' --exclude='some-file-or-dir|other-file-or-dir'
 
 ### `listFiles(targetDir: string, configs?: ListFilesConfigs)`
 
+> _Since **1.2.0**_
+
 Returns all files in a directory, independent of their depth.
 
 ```ts
@@ -384,3 +386,9 @@ listFiles('some-dir');
 ```
 
 - You can use the `filter` and `exclude` options, as well as they are for **`poku`** method.
+
+---
+
+## Community
+
+I'm continuously working to improve **Poku**. If you've got something interesting to share, feel free to submit a [**Pull Request**](https://github.com/wellwelwel/poku/compare). If you notice something wrong, I'd appreciate if you'd open an [**Issue**](https://github.com/wellwelwel/poku/issues/new).
