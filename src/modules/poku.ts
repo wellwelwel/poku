@@ -1,7 +1,7 @@
 import { Code } from '../@types/code.js';
 import { Configs } from '../@types/poku.js';
 import { forceArray } from '../helpers/force-array.js';
-import { runTests, runTestsParallel } from '../services/runTests.js';
+import { runTests, runTestsParallel } from '../services/run-tests.js';
 import { exit } from './exit.js';
 
 export async function poku(

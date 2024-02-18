@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { runTests } from '../../src/services/runTests.js';
+import { runTests } from '../../src/services/run-tests.js';
 
 (async () => {
   {

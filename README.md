@@ -17,9 +17,7 @@
 
 <img align="right" width="128" height="128" alt="Logo" src=".github/assets/readme/poku.svg">
 
-🖇️ A flexible and easy-to-use **Test Runner** for [**Node**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url], which allows parallel or sequential runs and high isolation level.
-
-> **Poku** starts from the premise where tests come to help, not overcomplicate.
+A flexible and easy-to-use **Test Runner** for [Node][node-version-url], [Bun][bun-version-url] and [Deno][deno-version-url] that allows you to run **parallel** and **sequential** tests, plus **high isolation level per test file**.
 
 [![Node.js Version][node-version-image]][node-version-url]
 [![Bun Version][bun-version-image]][bun-version-url]
@@ -33,10 +31,10 @@
 
 ## Why Poku?
 
-Runs test files in an individual process, shows progress and exits 🪄
+> **Poku** starts from the premise where tests come to help, not overcomplicate: runs test files in an individual process per file, shows progress and exits 🧙🏻
 
-- **Poku** is designed to be highly intuitive
 - Supports **ESM** and **CJS**
+- Designed to be highly intuitive
 - No need to compile **TypeScript**
 - Compatible with **Coverage** tools
 - Allows both **in-code** and **CLI** usage
@@ -170,7 +168,9 @@ npx poku --include='./targetDirA,./targetDirB'
 
 ### `poku(string | string[], configs: Configs)`
 
-#### `filter`
+#### `filter: RexExp`
+
+By default, **Poku** searches for _`*.test.*`_ files, but you can customize it using the `filter` option.
 
 > Filter by path using **Regex** to match only the files that should be performed.
 
@@ -208,6 +208,12 @@ npx poku --include='...' --filter='some-file'
 ```
 
 ```bash
+# Testing only a specific file
+
+npx poku --include='...' --filter='some-file|other-file'
+```
+
+```bash
 # Testing only paths that contains "unit"
 
 npx poku --include='...' --filter='unit'
@@ -224,6 +230,12 @@ FILTER='some-file' npx poku --include='...'
 ```
 
 ```bash
+# Testing only a specific file
+
+FILTER='some-file|other-file' npx poku --include='...'
+```
+
+```bash
 # Testing only paths that contains "unit"
 
 FILTER='unit' npx poku --include='...'
@@ -231,9 +243,9 @@ FILTER='unit' npx poku --include='...'
 
 ---
 
-#### `parallel`
+#### `parallel: boolean`
 
-Determines the mode of test execution across **parallelism** or **sequential** modes.
+Determines the mode of test execution across **sequential** or **parallel** modes.
 
 ```ts
 /**
@@ -255,6 +267,88 @@ poku(['...'], {
 poku(['...'], {
   parallel: true,
 });
+```
+
+---
+
+#### `exclude: RexExp | RexExp[]`
+
+> Exclude by path using Regex to match only the files that should be performed.
+
+- **in-code**:
+
+```ts
+/**
+ * Excluding  directories from tests
+ */
+
+poku(['...'], {
+  exclude: /\/(helpers|tools)\//,
+});
+```
+
+```ts
+/**
+ * Excluding  directories from tests
+ */
+
+poku(['...'], {
+  exclude: [/\/helpers\//, /\/tools\//],
+});
+```
+
+```ts
+/**
+ * Excluding specific files from tests
+ */
+
+poku(['...'], {
+  exclude: /(index|common).test.ts/,
+});
+```
+
+```ts
+/**
+ * Excluding specific files from tests
+ */
+
+poku(['...'], {
+  exclude: [/index.test.ts/, /common.test.ts/],
+});
+```
+
+```ts
+/**
+ * Excluding directories and files from tests
+ */
+
+poku(['...'], {
+  exclude: /\/(helpers|tools)\/|(index|common).test.ts/,
+});
+```
+
+```ts
+/**
+ * Excluding directories and files from tests
+ */
+
+poku(['...'], {
+  exclude: [/\/helpers\//, /\/tools\//, /index.test.ts/, /common.test.ts/],
+});
+```
+
+- **CLI**
+
+```bash
+# Excluding directories and files from tests
+
+npx poku --include='...' --exclude='some-file-or-dir'
+```
+
+```bash
+# Excluding directories and files from tests
+
+npx poku --include='...' --exclude='some-file-or-dir|other-file-or-dir'
 ```
 
 ---
