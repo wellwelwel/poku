@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.0](https://github.com/wellwelwel/poku/compare/v1.1.1...v1.2.0) (2024-02-18)
+
+
+### Features
+
+* add listFiles method ([#10](https://github.com/wellwelwel/poku/issues/10)) ([0b78815](https://github.com/wellwelwel/poku/commit/0b78815e08722635934a9fef793dd5f11b7458d3))
+* add option exclude ([#7](https://github.com/wellwelwel/poku/issues/7)) ([74becbc](https://github.com/wellwelwel/poku/commit/74becbc36e223abc8b580ac1ef8eb86a7ea8621a))
+* set platform manually ([#11](https://github.com/wellwelwel/poku/issues/11)) ([e681281](https://github.com/wellwelwel/poku/commit/e681281ffdc08718f96e5b6b4c526d4bf8c8559f))
+
+
+### Bug Fixes
+
+* **CLI:** support parallel option ([#9](https://github.com/wellwelwel/poku/issues/9)) ([f32d20a](https://github.com/wellwelwel/poku/commit/f32d20ad25707c46044d50500c3db82d40e157b9))
+
 ## [1.1.1](https://github.com/wellwelwel/poku/compare/v1.1.0...v1.1.1) (2024-02-15)
 
 
