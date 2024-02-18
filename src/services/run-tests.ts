@@ -3,7 +3,7 @@ import { EOL } from 'node:os';
 import path from 'node:path';
 import { runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
-import { getFiles } from '../modules/get-files.js';
+import { listFiles } from '../modules/list-files.js';
 import { hr } from '../helpers/hr.js';
 import { format } from '../helpers/format.js';
 import { runTestFile } from './run-test-file.js';
@@ -17,7 +17,7 @@ export const runTests = async (
   const cwd = process.cwd();
   const testDir = path.join(cwd, dir);
   const currentDir = path.relative(cwd, testDir);
-  const files = getFiles(testDir, undefined, configs);
+  const files = listFiles(testDir, undefined, configs);
   const totalTests = files.length;
   const showLogs = !isQuiet(configs);
 
@@ -60,7 +60,7 @@ export const runTestsParallel = async (
 ): Promise<boolean> => {
   const cwd = process.cwd();
   const testDir = path.join(cwd, dir);
-  const files = getFiles(testDir, undefined, configs);
+  const files = listFiles(testDir, undefined, configs);
   const showLogs = !isQuiet(configs);
 
   const promises = files.map(async (filePath) => {

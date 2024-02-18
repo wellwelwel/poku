@@ -1,7 +1,7 @@
 import process from 'node:process';
 import fs from 'node:fs';
 import path from 'node:path';
-import type { Configs } from '../@types/get-files.ts';
+import type { Configs } from '../@types/list-files.js';
 
 export const escapeRegExp = (string: string) =>
   string.replace(/[.*+?^${}()[\]\\]/g, '\\$&');
@@ -10,7 +10,7 @@ const envFilter = process.env.FILTER?.trim()
   ? new RegExp(escapeRegExp(process.env.FILTER), 'i')
   : null;
 
-export const getFiles = (
+export const listFiles = (
   dirPath: string,
   files: string[] = [],
   configs?: Configs
@@ -35,9 +35,13 @@ export const getFiles = (
 
     if (exclude && exclude.some((regex) => regex.test(fullPath))) continue;
 
-    if (fs.statSync(fullPath).isDirectory()) getFiles(fullPath, files, configs);
+    if (fs.statSync(fullPath).isDirectory())
+      listFiles(fullPath, files, configs);
     else if (filter.test(fullPath)) files.push(fullPath);
   }
 
   return files;
 };
+
+export const publicListFiles = (targetDir: string, configs?: Configs) =>
+  listFiles(targetDir, [], configs);
