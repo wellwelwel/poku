@@ -148,11 +148,11 @@ deno run npm:poku --include='./a,./b'
 
 ## Documentation
 
-> Documentation in Progress 🧑🏻‍🔧
+> Website in Progress 🧑🏻‍🔧
 >
 > Initially, the documentation is based on **Node.js** usage, but you can use all the options normally for both **Bun** and **Deno**.
 
-### `poku(string | string[])`
+### `poku(targetDirs: string | string[])`
 
 #### Include directories
 
@@ -174,11 +174,11 @@ npx poku --include='./targetDirA,./targetDirB'
 
 ---
 
-### `poku(string | string[], configs: Configs)`
+### `poku(targetDirs: string | string[], configs?: Configs)`
 
 #### `filter: RexExp`
 
-By default, **Poku** searches for _`*.test.*`_ files, but you can customize it using the `filter` option.
+By default, **Poku** searches for _`.test.`_ files, but you can customize it using the `filter` option.
 
 > Filter by path using **Regex** to match only the files that should be performed.
 
@@ -375,6 +375,12 @@ npx poku --include='...' --exclude='some-file-or-dir|other-file-or-dir'
 
 ---
 
-## Documentation in Progress...
+### `listFiles(targetDir: string, configs?: ListFilesConfigs)`
 
-> 🧑🏻‍🎓 Soon documenting all options and **Poku**'s usage variations.
+Returns all files in a directory, independent of their depth.
+
+```ts
+listFiles('some-dir');
+```
+
+- You can use the `filter` and `exclude` options, as well as they are for **`poku`** method.

@@ -1,8 +1,8 @@
 import { promises as fs } from 'node:fs';
-import { getFiles } from '../../src/modules/get-files.ts';
+import { listFiles } from '../../src/modules/list-files.ts';
 
 const ensureDenoCompatibility = async (path: string) => {
-  const files = getFiles(path, [], {
+  const files = listFiles(path, [], {
     filter: /\.(m)?(t)?s$/,
   });
 

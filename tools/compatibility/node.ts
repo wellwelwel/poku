@@ -1,8 +1,8 @@
 import { promises as fs } from 'node:fs';
-import { getFiles } from '../../src/modules/get-files.js';
+import { listFiles } from '../../src/modules/list-files.js';
 
 const ensureNodeCompatibility = async (path: string) => {
-  const files = getFiles(path, [], {
+  const files = listFiles(path, [], {
     filter: /\.(m)?(j|t)?s$/,
   });
 

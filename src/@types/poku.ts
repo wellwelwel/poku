@@ -1,4 +1,4 @@
-import type { Configs as GetFileOptions } from './get-files.ts';
+import type { Configs as ListFilesConfigs } from './list-files.js';
 
 export type Configs = {
   /**
@@ -34,4 +34,4 @@ export type Configs = {
    * @default false
    */
   parallel?: boolean;
-} & GetFileOptions;
+} & ListFilesConfigs;
