@@ -50,6 +50,14 @@ A flexible and easy-to-use **Test Runner** for [Node][node-version-url], [Bun][b
 
 ---
 
+```bash
+  npx poku --include='test/unit,test/integration'
+```
+
+<img src="./.github/assets/readme/screen-recording-2024-02-17-at-23.38.06.gif" width="360">
+
+---
+
 ## Install
 
 ### **Node.js**
@@ -247,6 +255,8 @@ FILTER='unit' npx poku --include='...'
 
 Determines the mode of test execution across **sequential** or **parallel** modes.
 
+- **in-code**
+
 ```ts
 /**
  * @default
@@ -269,11 +279,23 @@ poku(['...'], {
 });
 ```
 
+- **CLI**
+
+> _Since **1.2.0**_
+
+```bash
+# Parallel mode
+
+npx poku --include='...' --parallel
+```
+
 ---
 
 #### `exclude: RexExp | RexExp[]`
 
 > Exclude by path using Regex to match only the files that should be performed.
+>
+> _Since **1.2.0**_
 
 - **in-code**:
 

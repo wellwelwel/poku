@@ -9,7 +9,7 @@
     "test:node": "FILTER='node-' npm run test:ci",
     "test:deno": "FILTER='deno-' npm run test:ci",
     "test:bun": "FILTER='bun-' npm run test:ci",
-    "update": "npx npu; npm run init",
+    "update": "npx npu;",
     "prebuild": "rm -rf ./lib ./ci",
     "build": "npx tsc; npx tsc -p tsconfig.test.json",
     "postbuild": "npx tsx ./tools/compatibility/node.ts; npm audit",
@@ -63,7 +63,7 @@
   ],
   "type": "commonjs",
   "devDependencies": {
-    "@types/node": "^20.11.17",
+    "@types/node": "^20.11.19",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "eslint": "^8.56.0",
