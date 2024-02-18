@@ -8,3 +8,6 @@ export const getArg = (arg: string): string | undefined => {
 
   return undefined;
 };
+
+export const hasArg = (arg: string): boolean =>
+  args.some((a) => a.startsWith(`--${arg}`));

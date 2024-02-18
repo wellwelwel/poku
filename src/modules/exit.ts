@@ -1,11 +1,12 @@
 import process from 'node:process';
+import { EOL } from 'node:os';
 import { hr } from '../helpers/hr.js';
 import { Code } from '../@types/code.js';
 
 export const exit = (code: Code, quiet?: boolean) => {
   !quiet &&
     process.on('exit', (code) => {
-      console.log(`About to exit with code`, code);
+      console.log(`Exited with code`, code, EOL);
     });
 
   !quiet && hr();
