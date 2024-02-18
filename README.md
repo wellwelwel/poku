@@ -208,6 +208,12 @@ npx poku --include='...' --filter='some-file'
 ```
 
 ```bash
+# Testing only a specific file
+
+npx poku --include='...' --filter='some-file|other-file'
+```
+
+```bash
 # Testing only paths that contains "unit"
 
 npx poku --include='...' --filter='unit'
@@ -221,6 +227,12 @@ npx poku --include='...' --filter='unit'
 # Testing only a specific file
 
 FILTER='some-file' npx poku --include='...'
+```
+
+```bash
+# Testing only a specific file
+
+FILTER='some-file|other-file' npx poku --include='...'
 ```
 
 ```bash
@@ -323,6 +335,20 @@ poku(['...'], {
 poku(['...'], {
   exclude: [/\/helpers\//, /\/tools\//, /index.test.ts/, /common.test.ts/],
 });
+```
+
+- **CLI**
+
+```bash
+# Excluding directories and files from tests
+
+npx poku --include='...' --exclude='some-file-or-dir'
+```
+
+```bash
+# Excluding directories and files from tests
+
+npx poku --include='...' --exclude='some-file-or-dir|other-file-or-dir'
 ```
 
 ---
