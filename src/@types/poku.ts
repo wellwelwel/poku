@@ -34,4 +34,10 @@ export type Configs = {
    * @default false
    */
   parallel?: boolean;
+  /**
+   * Determines the platform for test execution.
+   *
+   * @default 'node'
+   */
+  platform?: 'node' | 'bun' | 'deno';
 } & ListFilesConfigs;

@@ -176,6 +176,107 @@ npx poku --include='./targetDirA,./targetDirB'
 
 ### `poku(targetDirs: string | string[], configs?: Configs)`
 
+#### `parallel: boolean`
+
+Determines the mode of test execution across **sequential** or **parallel** modes.
+
+- **in-code**
+
+```ts
+/**
+ * @default
+ *
+ * Sequential mode
+ */
+
+poku(['...'], {
+  parallel: false,
+});
+```
+
+```ts
+/**
+ * Parallel mode
+ */
+
+poku(['...'], {
+  parallel: true,
+});
+```
+
+- **CLI**
+
+> _Since **1.2.0**_
+
+```bash
+# Parallel mode
+
+npx poku --include='...' --parallel
+```
+
+---
+
+#### `platform: "node" | "bun" | "deno"`
+
+> _Since **1.2.0**_
+
+By default, **Poku** tries to identify the platform automatically, but you can set it manually:
+
+- **in-code**
+
+```ts
+/**
+ * Force Node.js (or tsx for TypeScript)
+ *
+ * @default 'node'
+ */
+
+poku('...', {
+  platform: 'node',
+});
+```
+
+```ts
+/**
+ * Force Bun
+ */
+
+poku('...', {
+  platform: 'bun',
+});
+```
+
+```ts
+/**
+ * Force Deno
+ */
+
+poku('...', {
+  platform: 'deno',
+});
+```
+
+- **CLI**
+
+```bash
+# Normal
+
+npx poku   --include='...' --platform=node
+bun poku   --include='...' --platform=bun
+deno poku  --include='...' --platform=deno
+```
+
+```bash
+# Custom
+
+npx poku       --include='...' --platform=bun
+bun poku       --include='...' --platform=deno
+deno run poku  --include='...' --platform=node
+# ...
+```
+
+---
+
 #### `filter: RexExp`
 
 By default, **Poku** searches for _`.test.`_ files, but you can customize it using the `filter` option.
@@ -247,46 +348,6 @@ FILTER='some-file|other-file' npx poku --include='...'
 # Testing only paths that contains "unit"
 
 FILTER='unit' npx poku --include='...'
-```
-
----
-
-#### `parallel: boolean`
-
-Determines the mode of test execution across **sequential** or **parallel** modes.
-
-- **in-code**
-
-```ts
-/**
- * @default
- *
- * Sequential mode
- */
-
-poku(['...'], {
-  parallel: false,
-});
-```
-
-```ts
-/**
- * Parallel mode
- */
-
-poku(['...'], {
-  parallel: true,
-});
-```
-
-- **CLI**
-
-> _Since **1.2.0**_
-
-```bash
-# Parallel mode
-
-npx poku --include='...' --parallel
 ```
 
 ---
@@ -392,3 +453,9 @@ listFiles('some-dir');
 ## Community
 
 I'm continuously working to improve **Poku**. If you've got something interesting to share, feel free to submit a [**Pull Request**](https://github.com/wellwelwel/poku/compare). If you notice something wrong, I'd appreciate if you'd open an [**Issue**](https://github.com/wellwelwel/poku/issues/new).
+
+---
+
+## Acknowledgements
+
+- [**Contributors**](https://github.com/wellwelwel/poku/graphs/contributors)
