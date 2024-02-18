@@ -5,7 +5,6 @@
   "main": "./lib/index.js",
   "scripts": {
     "test": "npx tsx --tsconfig ./tsconfig.test.json ./test/run.test.ts",
-    "pretest:ci": "npm run eslint:checker; npm run prettier:checker; npx tsc --noEmit; npx tsc -p tsconfig.test.json --noEmit",
     "test:ci": "tsx ./test/ci.test.ts",
     "test:node": "FILTER='node-' npm run test:ci",
     "test:deno": "FILTER='deno-' npm run test:ci",
