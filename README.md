@@ -479,8 +479,10 @@ npx poku --exclude='some-file-or-dir|other-file-or-dir' ./test
 ### Assert
 
 > _Since **1.3.0**_
+>
+> [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatible.
 
-**Poku** includes the `assert` method, keeping everything as it is, but providing human readability:
+**Poku** includes the `assert` method, keeping everything as it is, but providing human readability.
 
 **Available methods:**
 
