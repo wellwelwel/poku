@@ -18,7 +18,7 @@ export const runTestFile = (
     const showSuccess = showSuccesses(configs);
     const showFailure = showFailures(configs);
 
-    const log = () => console.log(`${indentation.stdio}${output?.trim()}`);
+    const log = () => console.log(output?.trim());
 
     const fileRelative = path.relative(process.cwd(), filePath);
     showLogs &&

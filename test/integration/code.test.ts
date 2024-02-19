@@ -1,5 +1,4 @@
-import assert from 'node:assert';
-import { poku } from '../../src/index.js';
+import { poku, assert } from '../../src/index.js';
 
 (async () => {
   {

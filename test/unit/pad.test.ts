@@ -1,4 +1,4 @@
-import assert from 'node:assert';
+import { assert } from '../../src/index.js';
 import { padStart } from '../../src/helpers/pad.js';
 
 assert.deepStrictEqual(padStart('', 0, ''), '');
