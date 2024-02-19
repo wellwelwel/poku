@@ -1,6 +1,6 @@
 {
   "name": "poku",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "🐷 Poku is a flexible and easy-to-use Test Runner for Node.js, Bun and Deno that allows you to run parallel and sequential tests, plus high isolation level per test file",
   "main": "./lib/index.js",
   "scripts": {
