@@ -10,7 +10,7 @@ const ensureDenoCompatibility = async (path: string) => {
 
   for (const file of files) {
     const raw = await fs.readFile(file, 'utf8');
-    const content = raw.replace(/((import|export).+)(\.js)/g, '$1.ts');
+    const content = raw.replace(/((import|export|from).+)(\.js)/g, '$1.ts');
 
     await fs.writeFile(file, content);
   }

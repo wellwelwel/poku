@@ -1,5 +1,5 @@
 import process from 'node:process';
-import assert from 'node:assert';
+import { assert } from '../../src/index.js';
 import { runTestFile } from '../../src/services/run-test-file.js';
 import { getRuntime } from '../../src/helpers/get-runtime.js';
 

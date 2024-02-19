@@ -5,6 +5,7 @@ export const format = {
     const totalDigits = String(total).length;
     return padStart(String(current), totalDigits, pad);
   },
+  dim: (value: string) => `\x1b[2m${value}\x1b[0m`,
   bold: (value: string) => `\x1b[1m${value}\x1b[0m`,
   underline: (value: string) => `\x1b[4m${value}\x1b[0m`,
   info: (value: string) => `\x1b[36m${value}\x1b[0m`,
