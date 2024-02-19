@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/wellwelwel/poku/compare/v1.2.0...v1.3.0) (2024-02-19)
+
+
+### Features
+
+* **assert:** human readability `assert` ([#14](https://github.com/wellwelwel/poku/issues/14)) ([66e5a52](https://github.com/wellwelwel/poku/commit/66e5a52051d40b741a27c9634e73f380a99d8e0b))
+* **CLI:** flexible include ([#12](https://github.com/wellwelwel/poku/issues/12)) ([ec63f28](https://github.com/wellwelwel/poku/commit/ec63f281fe5fe3cc938537b6e167d9416c41c6cd))
+
 ## [1.2.0](https://github.com/wellwelwel/poku/compare/v1.1.1...v1.2.0) (2024-02-18)
 
 
