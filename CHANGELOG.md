@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/wellwelwel/poku/compare/v1.3.0...v1.3.1) (2024-02-20)
+
+
+### Bug Fixes
+
+* **cli:** allow no log and log success options ([#15](https://github.com/wellwelwel/poku/issues/15)) ([bff6a15](https://github.com/wellwelwel/poku/commit/bff6a1588a80823ac23ca078faad057a38e2b268))
+
 ## [1.3.0](https://github.com/wellwelwel/poku/compare/v1.2.0...v1.3.0) (2024-02-19)
 
 
