@@ -480,7 +480,7 @@ npx poku --exclude='some-file-or-dir|other-file-or-dir' ./test
 
 Perform tests with no logs.
 
-> This option overwrites all `log` settings by exiting with code and no-logs.
+> This option overwrites all `log` settings by exiting with code and no logs (see bellow).
 
 - **in-code**
 
@@ -496,6 +496,32 @@ poku(['...'], {
 
 ```bash
 npx poku --quiet ./test
+```
+
+---
+
+#### `log`
+
+##### `success`
+
+By default **Poku** doesn't shows succes logs, but you can enable it:
+
+- **in-code**
+
+```ts
+poku(['...'], {
+  log: {
+    success: true,
+  },
+});
+```
+
+- **CLI**
+
+> _Since **1.3.1**_
+
+```bash
+npx poku --log-success ./test
 ```
 
 ---

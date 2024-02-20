@@ -14,6 +14,7 @@ const filter = getArg('filter');
 const exclude = getArg('exclude');
 const parallel = hasArg('parallel');
 const quiet = hasArg('quiet');
+const logSuccess = hasArg('log-success');
 
 poku(dirs, {
   platform: platformIsValid(platform) ? platform : undefined,
@@ -21,4 +22,7 @@ poku(dirs, {
   exclude: exclude ? new RegExp(escapeRegExp(exclude)) : undefined,
   parallel,
   quiet,
+  log: {
+    success: logSuccess,
+  },
 });
