@@ -6,12 +6,12 @@ import { exit } from './exit.js';
 
 export async function poku(
   targetDirs: string | string[],
-  configs?: Configs
-): Promise<void>;
-export async function poku(
-  targetDirs: string | string[],
   configs: Configs & { noExit: true }
 ): Promise<Code>;
+export async function poku(
+  targetDirs: string | string[],
+  configs?: Configs
+): Promise<void>;
 export async function poku(
   targetDirs: string | string[],
   configs?: Configs
@@ -24,9 +24,7 @@ export async function poku(
       dirs.map((dir) => runTestsParallel(dir, configs))
     );
 
-    if (results.some((result) => !result)) {
-      code = 1;
-    }
+    if (results.some((result) => !result)) code = 1;
 
     if (configs?.noExit) return code;
 
