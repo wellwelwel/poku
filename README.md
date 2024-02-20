@@ -478,7 +478,7 @@ npx poku --exclude='some-file-or-dir|other-file-or-dir' ./test
 
 #### `quiet`
 
-Perform tests with no-logs.
+Perform tests with no logs.
 
 > This option overwrites all `log` settings by exiting with code and no-logs.
 
