@@ -11,12 +11,14 @@ const dirs =
     : getLastParam()?.split(',')) || [];
 const platform = getArg('platform');
 const filter = getArg('filter');
-const parallel = hasArg('parallel');
 const exclude = getArg('exclude');
+const parallel = hasArg('parallel');
+const quiet = hasArg('quiet');
 
 poku(dirs, {
   platform: platformIsValid(platform) ? platform : undefined,
   filter: filter ? new RegExp(escapeRegExp(filter)) : undefined,
   exclude: exclude ? new RegExp(escapeRegExp(exclude)) : undefined,
   parallel,
+  quiet,
 });
