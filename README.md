@@ -27,6 +27,8 @@ A flexible and easy-to-use **Test Runner** for [Node.js][node-version-url], [Bun
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![GitHub Workflow Status (with event)][ql-image]][ql-url]
 
+Enjoying Poku? Consider giving him a star ⭐️
+
 ---
 
 ## Why Poku?
