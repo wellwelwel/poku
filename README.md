@@ -526,6 +526,41 @@ npx poku --log-success ./test
 
 ---
 
+#### noExit
+
+> Only for **in-code**
+
+By setting `noExit` to `true`, **Poku** won't exit the process and will return the exit code (`0` or `1`).
+
+You can combine this option with **Poku**'s `exit` method or just use the result, for example: `process.exit(code)`.
+
+```ts
+import { poku, exit } from 'poku';
+
+const unit = await poku('test/unit', {
+  noExit: true,
+  parallel: true,
+  quiet: true,
+});
+
+// do something
+
+const integration = await poku('test/integration', {
+  noExit: true,
+  quiet: true,
+});
+
+// do something more
+
+const code = unit === 0 && integration === 0 ? 0 : 1;
+
+// do something more again
+
+exit(code);
+```
+
+---
+
 ### Assert
 
 > _Since **1.3.0**_
