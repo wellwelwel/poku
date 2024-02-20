@@ -482,9 +482,34 @@ npx poku --exclude='some-file-or-dir|other-file-or-dir' ./test
 >
 > [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatible.
 
-**Poku** includes the `assert` method, keeping everything as it is, but providing human readability.
+**Poku** includes the `assert` method native from [**Node.js**][node-version-url], keeping everything as it is, but providing human readability.<br/>
+It supports both [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
 
-**Available methods:**
+#### Migrating to **Poku**'s assert
+
+_But only if you want to, of course._
+
+> <img src=".github/assets/readme/node-js.svg" width="24" />
+> <img src=".github/assets/readme/plus.svg" width="24" />
+> <img src=".github/assets/readme/bun.svg" width="24" />
+
+```diff
+- import assert from 'node:assert';
++ import { assert } from 'poku';
+
+assert(true);
+```
+
+> <img src=".github/assets/readme/deno.svg" width="24" />
+
+```diff
+- import assert from 'node:assert';
++ import { assert } from 'npm:poku';
+
+assert(true);
+```
+
+#### Available methods
 
 - `assert(value[, message])`
 - `assert.deepEqual(actual, expected[, message])`
