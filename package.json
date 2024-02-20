@@ -59,6 +59,7 @@
     "tap",
     "tape",
     "karma",
+    "urun",
     "filter",
     "exclude",
     "list",
@@ -66,7 +67,8 @@
     "list-files",
     "tsx",
     "fast",
-    "easy"
+    "easy",
+    "poku"
   ],
   "author": "https://github.com/wellwelwel",
   "bugs": {
