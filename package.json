@@ -23,7 +23,7 @@
     "type": "git",
     "url": "git+https://github.com/wellwelwel/poku.git"
   },
-  "homepage": "https://wellwelwel.github.io/poku",
+  "homepage": "https://poku.dev",
   "bin": {
     "poku": "./lib/bin/index.js"
   },

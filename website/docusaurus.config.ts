@@ -5,8 +5,8 @@ import { navbarLocalePlugin } from './plugins/locale.js';
 
 const config: Config = {
   title: 'Poku',
-  url: 'https://wellwelwel.github.io/',
-  baseUrl: '/poku/',
+  url: 'https://poku.dev/',
+  baseUrl: '/',
   organizationName: 'wellwelwel',
   projectName: 'poku',
   trailingSlash: false,

@@ -32,7 +32,7 @@ Enjoying Poku? Consider giving him a star ⭐️
 
 ---
 
-🐷 [**Documentation Website**](https://wellwelwel.github.io/poku)
+🐷 [**Documentation Website**](https://poku.dev)
 
 ---
 
@@ -48,7 +48,7 @@ Enjoying Poku? Consider giving him a star ⭐️
 - [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
 - Zero configurations, except you want
 - No constraints or rules, code in your own signature style
-- [**And much more!**](https://wellwelwel.github.io/poku)
+- [**And much more!**](https://poku.dev)
 
 ---
 
@@ -59,7 +59,7 @@ Enjoying Poku? Consider giving him a star ⭐️
 
 ## Documentation
 
-- See detailed specifications and usage in [**Documentation**](https://wellwelwel.github.io/poku/docs/category/documentation) section for queries, advanced concepts and much more.
+- See detailed specifications and usage in [**Documentation**](https://poku.dev/docs/category/documentation) section for queries, advanced concepts and much more.
 
 ---
 
@@ -177,7 +177,7 @@ deno run npm:poku targetDirA,targetDirB
 
 ---
 
-To see the detailed documentation, please visit the [**Documentation**](https://wellwelwel.github.io/poku/docs/category/documentation) section in the [**Poku**'s website](https://wellwelwel.github.io/poku).
+To see the detailed documentation, please visit the [**Documentation**](https://poku.dev/docs/category/documentation) section in the [**Poku**'s website](https://poku.dev).
 
 ---
 
