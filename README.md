@@ -42,7 +42,7 @@ Enjoying Poku? Consider giving him a star ⭐️
 
 - Supports **ESM** and **CJS**
 - Designed to be highly intuitive
-- No need to compile [**TypeScript**][typescript-url]
+- No need to compile [**TypeScript**][typescript-url] \*
 - Compatible with **Coverage** tools
 - Allows both **in-code** and **CLI** usage
 - [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
