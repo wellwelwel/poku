@@ -191,7 +191,7 @@ const Home = () => {
                   <Copy />
                 </button>
               </div>
-              <Link to='/poku/docs'>
+              <Link to='/docs'>
                 Here's How to Start <Docs width={24} height={24} />
               </Link>
             </footer>
