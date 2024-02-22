@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/wellwelwel/poku/compare/v1.3.1...v1.4.0) (2024-02-22)
+
+
+### Features
+
+* **website:** introduce Poku's website ([#20](https://github.com/wellwelwel/poku/issues/20)) ([172f081](https://github.com/wellwelwel/poku/commit/172f08110aecf9c82ff2120f085334c6c6f5740f))
+
 ## [1.3.1](https://github.com/wellwelwel/poku/compare/v1.3.0...v1.3.1) (2024-02-20)
 
 
