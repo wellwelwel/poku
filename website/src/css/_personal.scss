@@ -1,0 +1,31 @@
+header {
+  @include flex(row, center, flex-start);
+  gap: 15px;
+  width: 100%;
+
+  small {
+    position: relative;
+
+    &.star-hunter {
+      p {
+        margin: 0;
+        font-weight: bold;
+      }
+
+      svg {
+        position: absolute;
+        top: -16px;
+        right: -16px;
+        fill: #ffffff;
+        stroke: var(--ifm-color-primary);
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+
+  & > svg {
+    width: 175px;
+    filter: drop-shadow(1px 1px 5px rgba(81, 129, 243, 0.15));
+  }
+}

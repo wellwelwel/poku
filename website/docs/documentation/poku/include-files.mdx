@@ -1,0 +1,41 @@
+---
+sidebar_position: 1
+---
+
+# Include Directories
+
+> `poku(targetDirs: string | string[])`
+
+## API (_in-code_)
+
+```ts
+poku('targetDir');
+```
+
+```ts
+poku(['targetDirA', 'targetDirB']);
+```
+
+## CLI
+
+By setting the directories as the last argument:
+
+> _Since **1.3.0**_
+
+```bash
+npx poku targetDir
+```
+
+```bash
+npx poku targetDirA,targetDirB
+```
+
+By using `--include` option:
+
+```bash
+npx poku --include='targetDir'
+```
+
+```bash
+npx poku --include='targetDirA,targetDirB'
+```
