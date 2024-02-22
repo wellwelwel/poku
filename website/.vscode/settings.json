@@ -1,0 +1,20 @@
+{
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "editor.indentSize": 2,
+  "editor.formatOnSave": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["ts"],
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false,
+    "editor.trimAutoWhitespace": false
+  },
+  "[mdx]": {
+    "files.trimTrailingWhitespace": false,
+    "editor.trimAutoWhitespace": false
+  }
+}

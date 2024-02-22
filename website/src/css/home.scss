@@ -1,0 +1,352 @@
+@import 'mixins';
+
+#__docusaurus {
+  & > main#home {
+    position: fixed;
+    @include flex(column, center, flex-start);
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-image: url('@site/static/img/bg-home.jpg');
+    background-size: cover;
+    background-position: right top;
+    background-size: 150% 150%;
+    animation: bg-animation 45s ease infinite;
+    overflow: hidden;
+
+    ::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    &::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -1;
+      opacity: 0.75;
+      background-image: linear-gradient(
+        to bottom right,
+        #242743,
+        #0088ff,
+        #8800ff,
+        #0088ff,
+        #8800ff,
+        #242743,
+        #0088ff
+      );
+      background-size: 400% 400%;
+      animation: bg-animation2 15s ease infinite;
+    }
+
+    & > .container {
+      @include flex(column, center, flex-start);
+      width: 100%;
+      max-height: 100vh;
+      max-height: 100dvh;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      @media (max-width: 720px) {
+        justify-content: flex-start;
+      }
+
+      #this-is-poku {
+        @include flex(column, center, center);
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 50px 25px;
+
+        @media (max-width: 720px) {
+          justify-content: flex-start;
+        }
+
+        @media (max-height: 890px) {
+          justify-content: flex-start;
+        }
+
+        & > h1 {
+          width: 100%;
+          margin-bottom: 50px;
+          font-size: 72px;
+          text-align: center;
+          font-family: 'Montserrat', sans-serif;
+          font-optical-sizing: auto;
+          font-weight: 800;
+          font-style: normal;
+          font-variation-settings: 'wdth' 100;
+          text-shadow: 2px 2px 1px #242743ab;
+          opacity: 0;
+          animation: fade-in 0.25s ease-in-out forwards;
+
+          @media (max-width: 720px) {
+            font-size: 52px;
+          }
+
+          span {
+            &.sm {
+              font-size: 56px;
+
+              @media (max-width: 720px) {
+                font-size: 36px;
+              }
+            }
+
+            &.md {
+              font-size: 62px;
+
+              @media (max-width: 720px) {
+                font-size: 42px;
+              }
+            }
+
+            &.lg {
+              font-size: 68px;
+
+              @media (max-width: 720px) {
+                font-size: 48px;
+              }
+            }
+          }
+
+          .logo {
+            width: 52px;
+            height: 52px;
+            margin-left: 5px;
+            transform: translateY(3px);
+            filter: drop-shadow(2px 2px 1px #242743ab);
+
+            @media (max-width: 720px) {
+              width: 38px;
+              height: 38px;
+            }
+
+            path {
+              fill: #fff !important;
+              stroke: #fff !important;
+            }
+          }
+        }
+
+        & > section {
+          @include flex(column, center, center);
+          gap: 75px;
+          width: 100%;
+
+          & > .content {
+            position: relative;
+            @include flex(row, center, center);
+            gap: 25px;
+            width: 100%;
+
+            @media (max-width: 720px) {
+              flex-direction: column;
+            }
+
+            & > .logo {
+              height: 100%;
+              width: 100%;
+              max-height: 256px;
+              max-width: 256px;
+              filter: drop-shadow(2px 0 20px #2e0b4d8a);
+              opacity: 0;
+              animation: fade-in 0.5s ease-in-out forwards;
+            }
+          }
+
+          & > footer {
+            @include flex(column, center, center);
+            gap: 25px;
+            width: 100%;
+            max-width: 400px;
+
+            & > small {
+              width: 100%;
+              text-align: justify;
+              hyphens: auto;
+              text-shadow: 1px 1px 1px #13152dab;
+              opacity: 0;
+              animation: fade-in 0.5s cubic-bezier(0.64, -0.14, 0.44, 1.36)
+                forwards;
+              animation-delay: 0.75s;
+
+              a {
+                color: #fff;
+                font-weight: 600;
+              }
+
+              & > svg {
+                filter: drop-shadow(1px 1px 1px #13152dab);
+
+                path {
+                  stroke: #ffd6e7 !important;
+                  fill: #ffd6e7 !important;
+                }
+              }
+            }
+
+            .custom-code-block {
+              position: relative;
+              @include flex(row, center, space-between);
+              width: 100%;
+              padding: 15px 20px;
+              border-radius: 10px;
+              box-shadow: inset 1px 1px 5px 1px #150e208d;
+              background-color: #2d105c;
+              font-family: Monaco, monospace;
+              font-size: 14px;
+              color: #c7b7ff;
+              text-shadow: 2px 2px 2px #13152dab;
+              user-select: all;
+              opacity: 0;
+              animation: fade-in 0.5s cubic-bezier(0.64, -0.14, 0.44, 1.36)
+                forwards;
+              animation-delay: 1s;
+
+              button {
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+
+                svg {
+                  stroke: #9374ff;
+                  transition: stroke 0.25s;
+                }
+
+                &:hover {
+                  svg {
+                    stroke: #fff;
+                  }
+                }
+              }
+            }
+
+            & > a {
+              @include flex(row, center, center);
+              gap: 10px;
+              width: 100%;
+              padding: 15px 25px;
+              border-radius: 20px;
+              box-shadow: 1px 1px 5px 1px #150e208d;
+              background-color: #fff;
+              text-align: center;
+              font-size: 20px;
+              font-weight: bold;
+              color: #4a2885;
+              transition:
+                background-color 0.25s,
+                box-shadow 0.15s;
+              opacity: 0;
+              animation: fade-in 0.5s cubic-bezier(0.64, -0.14, 0.44, 1.36)
+                forwards;
+              animation-delay: 1.15s;
+
+              svg {
+                min-width: 24px;
+                min-height: 24px;
+                filter: hue-rotate(25deg);
+              }
+
+              &:hover {
+                box-shadow: 2px 2px 15px #150e208d;
+                background-color: #f2f0ff;
+                text-decoration: none;
+              }
+            }
+          }
+        }
+
+        & > small {
+          @include flex(row, center, center);
+          gap: 10px;
+          margin-top: 25px;
+          opacity: 0;
+          animation: fade-in 0.15s ease-in forwards;
+          animation-delay: 1s;
+
+          @media (max-height: 890px) {
+            padding-bottom: 25px;
+          }
+
+          a {
+            @include flex(row, center, center);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            transition: background-color 0.25s;
+
+            svg {
+              stroke: #fff;
+            }
+
+            &:hover {
+              background-color: #ffffff25;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes bg-animation {
+    0% {
+      background-position: 50% 0%;
+    }
+    25% {
+      background-position: 51% 50%;
+    }
+    50% {
+      background-position: 50% 100%;
+    }
+    75% {
+      background-position: 49% 50%;
+    }
+    100% {
+      background-position: 50% 0%;
+    }
+  }
+
+  @keyframes bg-animation2 {
+    0% {
+      background-position: 0% 50%;
+    }
+    25% {
+      background-position: 50% 51%;
+    }
+    50% {
+      background-position: 100% 51%;
+    }
+    75% {
+      background-position: 50% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes run-poku {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
