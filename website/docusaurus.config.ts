@@ -31,6 +31,10 @@ const config: Config = {
         googleTagManager: {
           containerId: 'GTM-K554VSWG',
         },
+        gtag: {
+          trackingID: 'G-GKVD8FM0B0',
+          anonymizeIP: true,
+        },
       } satisfies Preset.Options,
     ],
   ],
