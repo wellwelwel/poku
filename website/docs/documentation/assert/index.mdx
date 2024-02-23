@@ -7,16 +7,16 @@ import TabItem from '@theme/TabItem';
 
 # `assert`
 
+**Poku** includes the `assert` method native from [**Node.js**][node-version-url], keeping everything as it is, but providing human readability.<br/>
+It supports both [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
+
 [node-version-url]: https://github.com/nodejs/node
 [bun-version-url]: https://github.com/oven-sh/bun
 [deno-version-url]: https://github.com/denoland/deno
 
-> _Since **1.3.0**_
->
-> [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatible.
+- [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatible.
 
-**Poku** includes the `assert` method native from [**Node.js**][node-version-url], keeping everything as it is, but providing human readability.<br/>
-It supports both [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
+> _Since **1.3.0**_
 
 ## Migrating to **Poku**'s `assert`
 
@@ -29,11 +29,6 @@ _But only if you want to, of course._
     - import assert from 'node:assert';
     + import { assert } from 'poku';
     ```
-    
-    ```ts
-    assert(true);
-    assert.deepStrictEqual(1, '1', 'My optional custom message');
-    ```
 
   </TabItem>
   <TabItem value='Deno'>
@@ -42,14 +37,15 @@ _But only if you want to, of course._
     - import assert from 'node:assert';
     + import { assert } from 'npm:poku';
     ```
-    
-    ```ts
-    assert(true);
-    assert.deepStrictEqual(1, '1', 'My optional custom message');
-    ```
 
   </TabItem>
 </Tabs>
+
+```ts
+assert(true);
+assert.deepStrictEqual(1, '1', 'My optional custom message');
+// ...
+```
 
 ## Available methods
 

@@ -28,12 +28,15 @@ const config: Config = {
           customCss: './src/css/custom.scss',
         },
         blog: false,
+        googleTagManager: {
+          containerId: 'GTM-K554VSWG',
+        },
       } satisfies Preset.Options,
     ],
   ],
 
   themeConfig: {
-    image: 'img/social.jpg',
+    image: 'img/social.png',
     navbar: {
       logo: {
         alt: 'This is Poku',

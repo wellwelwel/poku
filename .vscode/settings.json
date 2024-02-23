@@ -8,5 +8,6 @@
     "source.fixAll": "explicit",
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.validate": ["ts"]
+  "eslint.validate": ["ts"],
+  "deno.enable": false
 }

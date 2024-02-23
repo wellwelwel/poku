@@ -82,27 +82,21 @@ const Home = () => {
                   <Success />
                   <Link to='https://github.com/nodejs/node'>
                     Node.js
-                    <small>
-                      6.0.0 <strong>+</strong>
-                    </small>
+                    <small>6 +</small>
                   </Link>
                 </p>
                 <p>
                   <Success />
                   <Link to='https://github.com/oven-sh/bun'>
                     Bun
-                    <small>
-                      0.5.3 <strong>+</strong>
-                    </small>
+                    <small>0.5.3 +</small>
                   </Link>
                 </p>
                 <p>
                   <Success />
                   <Link to='https://github.com/denoland/deno'>
                     Deno
-                    <small>
-                      1.3.0 <strong>+</strong>
-                    </small>
+                    <small>1.3.0 +</small>
                   </Link>
                 </p>
                 <p>
@@ -178,10 +172,11 @@ const Home = () => {
                 <Link to='https://github.com/wellwelwel/poku'>Poku</Link> is
                 your test runner pet for{' '}
                 <Link to='https://github.com/nodejs/node'>Node.js</Link>,{' '}
-                <Link to='https://github.com/nodejs/node'>Bun</Link> and{' '}
-                <Link to='https://github.com/nodejs/node'>Deno</Link>, combining
-                flexibility, parallel and sequential runs, human-friendly
-                assertion errors and high isolation level per test file.
+                <Link to='https://github.com/oven-sh/bun'>Bun</Link> and{' '}
+                <Link to='https://github.com/denoland/deno'>Deno</Link>,
+                combining flexibility, parallel and sequential runs,
+                human-friendly assertion errors and high isolation level per
+                test file.
               </small>
               <div className='custom-code-block'>
                 npm install --save-dev poku
@@ -206,6 +201,7 @@ const Home = () => {
             <Link to='https://github.com/sponsors/wellwelwel'>
               <Heart />
             </Link>
+            <Link to='https://github.com/sponsors/wellwelwel'></Link>
           </small>
         </div>
       </div>

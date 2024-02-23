@@ -4,15 +4,12 @@
 [bun-version-image]: https://img.shields.io/badge/Bun->=0.5.3-f471b5
 [deno-version-url]: https://github.com/denoland/deno
 [deno-version-image]: https://img.shields.io/badge/Deno->=1.30.0-70ffaf
-[npm-image]: https://img.shields.io/npm/v/poku.svg?color=3dc1d3
-[npm-url]: https://npmjs.org/package/poku
 [typescript-url]: https://github.com/microsoft/TypeScript
+[typescript-version-image]: https://img.shields.io/badge/TypeScript->=5.0.2-3077c6
 [ci-url]: https://github.com/wellwelwel/poku/actions/workflows/ci.yml?query=branch%3Amain
 [ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=CI&branch=main
 [ql-url]: https://github.com/wellwelwel/poku/actions/workflows/codeql.yml?query=branch%3Amain
 [ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/codeql.yml?event=push&style=flat&label=Code%20QL&branch=main
-[license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
-[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff
 
 # Poku
 
@@ -23,8 +20,7 @@
 [![Node.js Version][node-version-image]][node-version-url]
 [![Bun Version][bun-version-image]][bun-version-url]
 [![Deno Version][deno-version-image]][deno-version-url]
-[![NPM Version][npm-image]][npm-url]
-[![License][license-image]][license-url]
+[![TypeScript Version][typescript-version-image]][typescript-url]
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![GitHub Workflow Status (with event)][ql-image]][ql-url]
 
