@@ -201,7 +201,6 @@ const Home = () => {
             <Link to='https://github.com/sponsors/wellwelwel'>
               <Heart />
             </Link>
-            <Link to='https://github.com/sponsors/wellwelwel'></Link>
           </small>
         </div>
       </div>
