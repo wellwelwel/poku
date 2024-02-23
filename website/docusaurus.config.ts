@@ -32,7 +32,7 @@ const config: Config = {
           containerId: 'GTM-K554VSWG',
         },
         gtag: {
-          trackingID: 'G-GKVD8FM0B0',
+          trackingID: 'G-3EXQWTDQSK',
           anonymizeIP: true,
         },
       } satisfies Preset.Options,

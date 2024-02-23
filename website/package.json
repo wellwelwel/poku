@@ -16,7 +16,8 @@
     "lint": "prettier --write . && eslint . --fix",
     "test:unit": "npx poku --parallel test/unit",
     "test": "npm run typecheck && npm run lintcheck && npm run test:unit && npm run clear && npm run build",
-    "update": "npx npu; npm i; npm run lint"
+    "update": "npx npu; npm i; npm run lint",
+    "deploy": "npx tsx deploy/upload.ts"
   },
   "dependencies": {
     "@docusaurus/core": "^3.1.1",
@@ -27,6 +28,7 @@
     "@mdx-js/react": "^3.0.1",
     "clsx": "^2.1.0",
     "docusaurus-plugin-sass": "^0.2.5",
+    "dotenv": "^16.4.5",
     "lucide-react": "^0.336.0",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.2.0",
@@ -39,9 +41,11 @@
     "@docusaurus/module-type-aliases": "^3.1.1",
     "@docusaurus/tsconfig": "^3.1.1",
     "@docusaurus/types": "^3.1.1",
+    "@types/bun": "^1.0.7",
     "@types/node": "^20.11.20",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
+    "bun": "^1.0.29",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
@@ -51,6 +55,7 @@
     "packages-update": "^1.2.1",
     "poku": "^1.4.0",
     "prettier": "^3.2.5",
+    "svps": "^2.2.1",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   },

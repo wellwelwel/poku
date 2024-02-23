@@ -1,4 +1,4 @@
 /build
 /.docusaurus
 /.cache-loader
-# /**/*.mdx
+/.svps

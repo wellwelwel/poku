@@ -3,6 +3,8 @@
 
 # Production
 /build
+/.svps
+.env
 
 # Generated files
 .docusaurus
