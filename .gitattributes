@@ -1,1 +1,2 @@
-website/* linguist-vendored
+website/** linguist-documentation
+test/docker/** linguist-vendored
