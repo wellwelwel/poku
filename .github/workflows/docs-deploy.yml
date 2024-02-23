@@ -1,4 +1,4 @@
-name: 'GitHub Pages'
+name: 'Docs Deploy'
 on:
   push:
     branches:
