@@ -5,7 +5,7 @@ import { runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
 import { listFiles } from '../modules/list-files.js';
 import { hr } from '../helpers/hr.js';
-import { format } from '../helpers/format.js';
+import { format, getLargestStringLength } from '../helpers/format.js';
 import { runTestFile } from './run-test-file.js';
 import { Configs } from '../@types/poku.js';
 import { isQuiet } from '../helpers/logs.js';
@@ -24,7 +24,7 @@ export const runTests = async (
   let passed = true;
 
   if (showLogs) {
-    hr();
+    hr(getLargestStringLength(files));
     console.log(
       `${format.bold('Directory:')} ${format.underline(currentDir)}${EOL}`
     );
