@@ -22,7 +22,7 @@ export const runTestFile = (
 
     const fileRelative = path.relative(process.cwd(), filePath);
     showLogs &&
-      console.log(`${indentation.test}${format.info('→')} ${fileRelative}`);
+      console.log(`${indentation.test}${format.info('›')} ${fileRelative}`);
 
     const runtimeOptions = runner(filePath, configs);
     const runtime = runtimeOptions.shift();

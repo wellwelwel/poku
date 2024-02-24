@@ -5,6 +5,16 @@ const index = `${publicDir}/index.html`;
 const docs = `${publicDir}/docs.html`;
 const port = process.env.APP_PORT;
 
+const setCache = (filePath: string): string => {
+  if (filePath.endsWith('.html')) return 'public, max-age=60';
+  return 'public, max-age=1800, immutable';
+};
+
+const defaultHeaders = {
+  'Content-Language': 'en',
+  'X-Robots-Tag': 'index, follow',
+};
+
 serve({
   port,
   fetch: async (req: Request) => {
@@ -17,14 +27,22 @@ serve({
 
       if (isAsset) {
         return new Response(asset.stream(), {
-          headers: { 'Content-Type': asset.type },
+          headers: {
+            ...defaultHeaders,
+            'Content-Type': asset.type,
+            'Cache-Control': setCache(filePath),
+          },
         });
       }
 
       const page = pathname.includes('/docs') ? docs : index;
 
       return new Response(file(page).stream(), {
-        headers: { 'Content-Type': 'text/html' },
+        headers: {
+          ...defaultHeaders,
+          'Content-Type': 'text/html',
+          'Cache-Control': setCache(page),
+        },
       });
     } catch (error) {
       return new Response('Not Found', { status: 404 });

@@ -40,12 +40,18 @@ const config: Config = {
   ],
 
   themeConfig: {
+    metadata: [
+      {
+        name: 'keywords',
+        content:
+          'Poku, Test Runner, Node.js, Bun, Deno, TypeScript, Parallel Runs, Sequential Runs, Assertion Errors, ESM, CJS, CLI Usage, API Usage, No Config, Documentation, GitHub, Compatibility, No Constraints, Individual Process, Lightweight, Mocha, Jest, Ava, Tap, Tape, Karma, Vitest',
+      },
+    ],
     image: 'img/social.png',
     navbar: {
       logo: {
         alt: 'This is Poku',
         src: 'img/silhouette-light.svg',
-        // srcDark: 'img/silhouette-dark.svg',
       },
       items: [
         {
@@ -70,10 +76,11 @@ const config: Config = {
     },
     prism: {
       theme: prismThemes.dracula,
-      additionalLanguages: ['bash', 'sql', 'diff'],
+      additionalLanguages: ['bash', 'json', 'diff'],
     },
     colorMode: {
       defaultMode: 'dark',
+      respectPrefersColorScheme: false,
     },
   } satisfies Preset.ThemeConfig,
 

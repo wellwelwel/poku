@@ -24,11 +24,11 @@
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![GitHub Workflow Status (with event)][ql-image]][ql-url]
 
-Enjoying Poku? Consider giving him a star ⭐️
+Enjoying **Poku**? Consider giving him a star ⭐️
 
 ---
 
-🐷 [**Documentation Website**](https://poku.dev)
+🐷 [**Documentation Website**](https://poku.dev) • 🔬 [**Comparing Test Runners** (**Poku**, **Jest**, **Mocha**, **Vitest** and **AVA**)](https://poku.dev/docs/comparing)
 
 ---
 

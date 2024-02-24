@@ -172,9 +172,11 @@
 
             & > small {
               width: 100%;
-              text-align: justify;
+              text-align: center;
               hyphens: auto;
               text-shadow: 1px 1px 1px #13152dab;
+              font-size: 15px;
+              font-style: italic;
               opacity: 0;
               animation: fade-in 0.5s cubic-bezier(0.64, -0.14, 0.44, 1.36)
                 forwards;

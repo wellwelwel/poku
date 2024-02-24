@@ -1,0 +1,276 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Comparing Test Runners
+
+**Comparison using **Node.js**, **TypeScript** (_no compile_) and **ESM** to show a simple error test:**
+
+- Let's starting from installation 🔬
+
+<Tabs>
+  <TabItem default value='Poku'>
+
+## [Poku](https://github.com/wellwelwel/poku)
+
+### Installation
+
+```bash
+npm i -D poku tsx
+```
+
+> ~10M
+
+<hr />
+
+### Creating the test file
+
+> _test/index.test.ts_
+
+```ts
+import { assert } from 'poku';
+
+assert.deepStrictEqual('1', 1, 'Number should not be a text');
+```
+
+<hr />
+
+### Running tests
+
+```bash
+npx poku ./test
+```
+
+<hr />
+
+That's it 🎉
+
+:::tip
+
+**Poku** doesn't use **`describe`** or **`it`**, since the message is already in the **`assert`**.
+
+- **Poku**'s **`assert`** is just an abstraction from original **`assert`** from **Node.js**. <br />
+- It means: <ins>**No new learning is needed**</ins> 🎉
+
+:::
+
+Adopt a Poku for yourself 🩵
+
+  </TabItem>
+  <TabItem value='Jest'>
+
+## [Jest](https://github.com/jestjs/jest)
+
+### Installation
+
+```bash
+npm i -D jest @types/jest ts-jest
+```
+
+> ~65M
+
+<hr />
+
+### Configuring Jest
+
+> _jest.config.js_
+
+```js
+export default {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  testMatch: ['**/test/**/*.test.ts'],
+};
+```
+
+<hr />
+
+### Creating the test file
+
+> _test/index.test.ts_
+
+```ts
+describe('Type comparison', () => {
+  test('Number should not be a text', () => {
+    expect('1').toStrictEqual(1);
+  });
+});
+```
+
+<hr />
+
+### Running tests
+
+```bash
+npx jest
+```
+
+  </TabItem>
+  <TabItem value='Mocha + Chai'>
+
+## [Mocha](https://github.com/mochajs/mocha) + [Chai](https://github.com/chaijs/chai)
+
+### Installation
+
+```bash
+npm i -D mocha @types/mocha chai @types/chai ts-node
+```
+
+> ~45M
+
+<hr />
+
+### Configuring Mocha
+
+> _.mocharc.json_
+
+```json
+{
+  "loader": "ts-node/esm",
+  "extension": ["ts"],
+  "spec": "./test/**/*.test.ts"
+}
+```
+
+<hr />
+
+### Creating the test file
+
+> _test/index.test.ts_
+
+```ts
+import { expect } from 'chai';
+
+describe('Type comparison', () => {
+  it('Number should not be a text', () => {
+    expect('1').to.deep.equal(1);
+  });
+});
+```
+
+<hr />
+
+### Running tests
+
+```bash
+npx mocha
+```
+
+  </TabItem>
+  <TabItem value='Vitest'>
+
+## [Vitest](https://github.com/vitest-dev/vitest)
+
+### Installation
+
+```bash
+npm i -D vitest ts-node
+```
+
+> ~66M
+
+<hr />
+
+### Configuring Vitest
+
+> _vitest.config.ts_
+
+```ts
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    include: ['test/**/*.test.ts'],
+    globals: true,
+    environment: 'node',
+  },
+});
+```
+
+<hr />
+
+### Creating the test file
+
+> _test/index.test.ts_
+
+```ts
+import { describe, it, expect } from 'vitest';
+
+describe('Type comparison', () => {
+  it('Number should not be a text', () => {
+    expect('1').toStrictEqual(1);
+  });
+});
+```
+
+<hr />
+
+### Running tests
+
+```bash
+npx vitest run
+```
+
+  </TabItem>
+  <TabItem value='AVA'>
+
+## [AVA](https://github.com/avajs/ava) (CJS)
+
+:::info
+
+I was unable to test **AVA** as **ESM** without compile **TypeScript**. <br />
+Please submit a _PR_ if you know how to reach this approach.
+
+- Related: [avajs/ava#3308](https://github.com/avajs/ava/discussions/3308).
+
+:::
+
+### Installation
+
+```bash
+npm i -D ava tsx
+```
+
+> ~26M
+
+<hr />
+
+### Configuring AVA
+
+> Include in the _package.json_:
+
+```json
+{
+  "ava": {
+    "files": ["test/**/*.test.ts"],
+    "extensions": {
+      "ts": "commonjs"
+    },
+    "nodeArguments": ["--import=tsx"]
+  }
+}
+```
+
+<hr />
+
+### Creating the test file
+
+> _test/index.test.ts_
+
+```ts
+import test from 'ava';
+
+test('Number should not be a text', (t) => {
+  t.deepEqual('1', 1);
+});
+```
+
+<hr />
+
+### Running tests
+
+```bash
+npx ava
+```
+
+  </TabItem>
+</Tabs>
