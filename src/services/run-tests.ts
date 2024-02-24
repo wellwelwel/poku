@@ -46,7 +46,7 @@ export const runTests = async (
       showLogs &&
         console.log(`${indentation.test}${format.success('✔')} ${log}`);
     } else {
-      showLogs && console.log(`${indentation.test}${format.fail('✖')} ${log}`);
+      showLogs && console.log(`${indentation.test}${format.fail('✘')} ${log}`);
       passed = false;
     }
   }
@@ -73,7 +73,7 @@ export const runTestsParallel = async (
         console.log(`${indentation.test}${format.success('✔')} ${command}`);
     } else {
       showLogs &&
-        console.log(`${indentation.test}${format.fail('✖')} ${command}`);
+        console.log(`${indentation.test}${format.fail('✘')} ${command}`);
       return false;
     }
     return true;
