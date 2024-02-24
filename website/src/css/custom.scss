@@ -130,6 +130,11 @@ html[data-theme='dark'] {
   background-color: #161927;
   color: #b9bfdc;
 
+  blockquote {
+    font-size: 13px;
+    color: #8188ab;
+  }
+
   .navbar__manual--title {
     color: var(--ifm-color-primary);
 
