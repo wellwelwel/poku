@@ -16,7 +16,7 @@ export const listFiles = (
   configs?: Configs
 ) => {
   const currentFiles = fs.readdirSync(dirPath);
-  const defaultRegExp = /\.test\./i;
+  const defaultRegExp = /\.(test|spec)\./i;
   const filter: RegExp =
     (envFilter
       ? envFilter

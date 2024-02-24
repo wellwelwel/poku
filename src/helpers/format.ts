@@ -12,3 +12,6 @@ export const format = {
   success: (value: string) => `\x1b[32m${value}\x1b[0m`,
   fail: (value: string) => `\x1b[31m${value}\x1b[0m`,
 };
+
+export const getLargestStringLength = (arr: string[]): number =>
+  arr.reduce((max, current) => Math.max(max, current.length), 0);
