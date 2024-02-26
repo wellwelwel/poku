@@ -81,10 +81,10 @@ Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀
 import { assert } from 'poku'; // Node and Bun
 import { assert } from 'npm:poku'; // Deno
 
-const actual = 1;
+const actual = '1';
 
 assert(actual);
-assert.deepStrictEqual(actual, 1, 'My first assert');
+assert.deepStrictEqual(actual, 1, 'My first assert error');
 ```
 
 > <img src=".github/assets/readme/assert.png" width="468" />
