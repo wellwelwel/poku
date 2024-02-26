@@ -101,19 +101,19 @@ assert.deepStrictEqual(actual, 1, 'My first assert error');
 ### **Node.js**
 
 ```bash
-npm install --save-dev poku
+npm i -D poku
 ```
 
 ### TypeScript (Node.js)
 
 ```bash
-npm install --save-dev poku tsx
+npm i -D poku tsx
 ```
 
 ### Bun
 
 ```bash
-bun add --dev poku
+bun add -d poku
 ```
 
 ### **Deno**

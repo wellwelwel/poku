@@ -179,12 +179,8 @@ const Home = () => {
                   <code>beforeEach</code> and everything else 🚀
                 </small>
                 <div className='custom-code-block'>
-                  npm install --save-dev poku
-                  <button
-                    onClick={() =>
-                      copyToClipboard('npm install --save-dev poku')
-                    }
-                  >
+                  npm i -D poku
+                  <button onClick={() => copyToClipboard('npm i -D poku')}>
                     <Copy />
                   </button>
                 </div>
