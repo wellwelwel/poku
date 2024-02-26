@@ -90,8 +90,9 @@ assert.deepStrictEqual(actual, 1, 'My first assert error');
 | ------------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src=".github/assets/readme/assert-poku.png" width="360"> | <img src=".github/assets/readme/assert-node.png" width="360"> |
 
-- The `message` param is optional, as it's in **Node.js**.
-- [**See the complete documentation**](https://poku.dev/docs/documentation/assert).
+- The `message` param is optional, as it's in **Node.js**
+- Both examples finish with `code 1`
+- [**See the complete documentation**](https://poku.dev/docs/documentation/assert)
 
 ---
 
