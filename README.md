@@ -63,12 +63,16 @@ Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀
 
 ## Overview
 
-| Sequential                                                   | Parallel                                                   |
-| ------------------------------------------------------------ | ---------------------------------------------------------- |
-| <img src=".github/assets/readme/sequential.png" width="360"> | <img src=".github/assets/readme/parallel.png" width="360"> |
+| Sequential                                         | Concurrent                                       |
+| -------------------------------------------------- | ------------------------------------------------ |
+| <img src=".github/assets/readme/sequential.png" /> | <img src=".github/assets/readme/parallel.png" /> |
 
-- By default, **Poku** searches for all _`.test.`_ and `.spec.` files, but you can customize it using the option [`filter`](https://poku.dev/docs/documentation/poku/configs/filter).
-- The same idea for [**Bun**][bun-version-url] and [**Deno**][deno-version-url] (see bellow).
+- By default, **Poku**:
+  - Searches for all _`.test.`_ and `.spec.` files, but you can customize it using the option [**`filter`**](https://poku.dev/docs/documentation/poku/configs/filter).
+  - Uses `sequential` mode.
+- You can use concurrecy by use the flag `--parallel` for **CLI** or the option `parallel` to `true` in **API** (_in-code_) usage.
+
+> Follow the same idea for [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
 
 ---
 
@@ -82,17 +86,20 @@ import { assert } from 'npm:poku'; // Deno
 
 const actual = '1';
 
-assert(actual);
+assert(actual, 'My first assert');
 assert.deepStrictEqual(actual, 1, 'My first assert error');
 ```
 
-| Using `npx poku`                                              | Using `node index.test.js`                                    |
-| ------------------------------------------------------------- | ------------------------------------------------------------- |
-| <img src=".github/assets/readme/assert-poku.png" width="360"> | <img src=".github/assets/readme/assert-node.png" width="360"> |
+| Using `poku`                                        | Using `node`                                        |
+| --------------------------------------------------- | --------------------------------------------------- |
+| <img src=".github/assets/readme/assert-poku.png" /> | <img src=".github/assets/readme/assert-node.png" /> |
 
-- The `message` param is optional, as it's in **Node.js** 🧑🏻‍🎓
-- Both examples finish with `code 1`
-- [**See the complete documentation**](https://poku.dev/docs/documentation/assert)
+- ❌ Both cases finish with `code 1`, as expected
+- 🧑🏻‍🎓 The `message` param is optional, as it's in **Node.js**
+- 💚 Yes, you can use **Poku**'s `assert` running `node ./my-file.js`
+- 🐷 Unlike most, **Poku** adapts to your test, not the other way around
+
+> [**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
 
 ---
 
