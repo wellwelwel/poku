@@ -124,7 +124,7 @@ import { poku } from 'https://esm.sh/poku';
     ```ts
     import { poku } from 'poku';
 
-    await poku(['targetDirA', 'targetDirB']);
+    await poku(['targetDir']);
     ```
 
   </TabItem>
@@ -133,7 +133,7 @@ import { poku } from 'https://esm.sh/poku';
 ```ts
 import { poku } from 'npm:poku';
 
-await poku(['targetDirA', 'targetDirB']);
+await poku(['targetDir']);
 ```
 
   </TabItem>
@@ -145,21 +145,21 @@ await poku(['targetDirA', 'targetDirB']);
   <TabItem default value='Node.js and TypeScript (Node.js)'>
 
 ```bash
-npx poku targetDirA,targetDirB
+npx poku targetDir
 ```
 
   </TabItem>
   <TabItem  value='Bun'>
 
 ```bash
-bun poku targetDirA,targetDirB
+bun poku targetDir
 ```
 
   </TabItem>
   <TabItem  value='Deno'>
 
 ```bash
-deno run npm:poku targetDirA,targetDirB
+deno run npm:poku targetDir
 ```
 
     **Poku** requires these permissions by default:

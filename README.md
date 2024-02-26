@@ -65,25 +65,32 @@ Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀
 
 | Sequential                                                   | Parallel                                                   |
 | ------------------------------------------------------------ | ---------------------------------------------------------- |
-| `npx poku test/unit,test/integration`                        | `npx poku --parallel test/unit,test/integration`           |
+| `npx poku`                                                   | `npx poku --parallel`                                      |
 | <img src=".github/assets/readme/sequential.png" width="360"> | <img src=".github/assets/readme/parallel.png" width="360"> |
 
-- By default, **Poku** searches for all _`.test.`_ files, but you can customize it using the option [`filter`](https://github.com/wellwelwel/poku#filter-rexexp).
+- By default, **Poku** searches for all _`.test.`_ and `.spec.` files, but you can customize it using the option [`filter`](https://github.com/wellwelwel/poku#filter-rexexp).
 - The same idea for [**Bun**][bun-version-url] and [**Deno**][deno-version-url] (see bellow).
 
 ---
 
-**Poku** also includes the `assert` method, keeping everything as it is, but providing human readability:
+**Poku** also includes the `assert` method, keeping everything as it is, but providing human readability and automatic `describe` and `it`:
+
+> Compatible with **Node.js**, **Bun** and **Deno**.
 
 ```ts
 import { assert } from 'poku'; // Node and Bun
 import { assert } from 'npm:poku'; // Deno
 
-assert(true);
-assert.deepStrictEqual(1, '1', 'My optional custom message');
+const actual = 1;
+
+assert(actual);
+assert.deepStrictEqual(actual, 1, 'My first assert');
 ```
 
 > <img src=".github/assets/readme/assert.png" width="468" />
+
+- The `message` param is optional, as it's in **Node.js**.
+- [**See the complete documentation**](https://poku.dev/docs/documentation/assert).
 
 ---
 
@@ -91,17 +98,11 @@ assert.deepStrictEqual(1, '1', 'My optional custom message');
 
 ### **Node.js**
 
-> <img src=".github/assets/readme/node-js.svg" width="24" />
-
 ```bash
 npm install --save-dev poku
 ```
 
 ### TypeScript (Node.js)
-
-> <img src=".github/assets/readme/node-js.svg" width="24" />
-> <img src=".github/assets/readme/plus.svg" width="24" />
-> <img src=".github/assets/readme/typescript.svg" width="24" />
 
 ```bash
 npm install --save-dev poku tsx
@@ -109,19 +110,11 @@ npm install --save-dev poku tsx
 
 ### Bun
 
-> <img src=".github/assets/readme/bun.svg" width="24" />
-> <img src=".github/assets/readme/plus.svg" width="24" />
-> <img src=".github/assets/readme/typescript.svg" width="24" />
-
 ```bash
 bun add --dev poku
 ```
 
 ### **Deno**
-
-> <img src=".github/assets/readme/deno.svg" width="24" />
-> <img src=".github/assets/readme/plus.svg" width="24" />
-> <img src=".github/assets/readme/typescript.svg" width="24" />
 
 ```ts
 import { poku } from 'npm:poku';
@@ -135,22 +128,20 @@ import { poku } from 'npm:poku';
 
 ### In-code
 
-> <img src=".github/assets/readme/node-js.svg" width="24" />
-> <img src=".github/assets/readme/plus.svg" width="24" />
-> <img src=".github/assets/readme/bun.svg" width="24" />
+#### Node.js and Bun
 
 ```ts
 import { poku } from 'poku';
 
-await poku(['targetDirA', 'targetDirB']);
+await poku(['targetDir']);
 ```
 
-> <img src=".github/assets/readme/deno.svg" width="24" />
+#### Deno
 
 ```ts
 import { poku } from 'npm:poku';
 
-await poku(['targetDirA', 'targetDirB']);
+await poku(['targetDir']);
 ```
 
 ### CLI
@@ -158,19 +149,19 @@ await poku(['targetDirA', 'targetDirB']);
 > <img src=".github/assets/readme/node-js.svg" width="24" />
 
 ```bash
-npx poku targetDirA,targetDirB
+npx poku targetDir
 ```
 
 > <img src=".github/assets/readme/bun.svg" width="24" />
 
 ```bash
-bun poku targetDirA,targetDirB
+bun poku targetDir
 ```
 
 > <img src=".github/assets/readme/deno.svg" width="24" />
 
 ```bash
-deno run npm:poku targetDirA,targetDirB
+deno run npm:poku targetDir
 ```
 
 ---

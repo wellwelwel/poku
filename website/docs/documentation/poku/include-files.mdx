@@ -5,6 +5,8 @@ sidebar_position: 1
 # Include Directories
 
 > `poku(targetDirs: string | string[])`
+>
+> By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it using the [`filter`](/docs/documentation/poku/configs/filter) option.
 
 ## API (_in-code_)
 
@@ -16,9 +18,13 @@ poku('targetDir');
 poku(['targetDirA', 'targetDirB']);
 ```
 
+```ts
+poku('./');
+```
+
 ## CLI
 
-By setting the directories as the last argument:
+By setting the directories as the **last argument**:
 
 > _Since **1.3.0**_
 
@@ -30,7 +36,12 @@ npx poku targetDir
 npx poku targetDirA,targetDirB
 ```
 
-By using `--include` option:
+```bash
+# Same as ./
+npx poku
+```
+
+By using `--include` option, you can use it in any order:
 
 ```bash
 npx poku --include='targetDir'
@@ -38,4 +49,8 @@ npx poku --include='targetDir'
 
 ```bash
 npx poku --include='targetDirA,targetDirB'
+```
+
+```bash
+npx poku --include='./'
 ```
