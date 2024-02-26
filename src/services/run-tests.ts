@@ -5,10 +5,15 @@ import { runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
 import { listFiles } from '../modules/list-files.js';
 import { hr } from '../helpers/hr.js';
-import { format, getLargestStringLength } from '../helpers/format.js';
+import { format } from '../helpers/format.js';
 import { runTestFile } from './run-test-file.js';
 import { Configs } from '../@types/poku.js';
 import { isQuiet } from '../helpers/logs.js';
+
+export const results = {
+  success: 0,
+  fail: 0,
+};
 
 export const runTests = async (
   dir: string,
@@ -24,9 +29,9 @@ export const runTests = async (
   let passed = true;
 
   if (showLogs) {
-    hr(getLargestStringLength(files));
+    hr();
     console.log(
-      `${format.bold('Directory:')} ${format.underline(currentDir)}${EOL}`
+      `${format.bold('Directory:')} ${format.underline(`./${currentDir}`)}${EOL}`
     );
   }
 
@@ -40,13 +45,21 @@ export const runTests = async (
     const counter = format.counter(testNumber, totalTests);
     const command = `${runner(fileRelative, configs).join(' ')} ${fileRelative}`;
     const nextLine = i + 1 !== files.length ? EOL : '';
-    const log = `${counter}/${totalTests} ${command}${nextLine}`;
+    const log = `${counter}/${totalTests} ${command}`;
 
     if (testPassed) {
+      ++results.success;
+
       showLogs &&
-        console.log(`${indentation.test}${format.success('✔')} ${log}`);
+        console.log(
+          `${indentation.test}${format.success('✔')} ${log}`,
+          nextLine
+        );
     } else {
-      showLogs && console.log(`${indentation.test}${format.fail('✘')} ${log}`);
+      ++results.fail;
+
+      showLogs &&
+        console.log(`${indentation.test}${format.fail('✘')} ${log}`, nextLine);
       passed = false;
     }
   }
@@ -61,25 +74,21 @@ export const runTestsParallel = async (
   const cwd = process.cwd();
   const testDir = path.join(cwd, dir);
   const files = listFiles(testDir, undefined, configs);
-  const showLogs = !isQuiet(configs);
 
   const promises = files.map(async (filePath) => {
-    const fileRelative = path.relative(cwd, filePath);
     const testPassed = await runTestFile(filePath, configs);
-    const command = `${runner(fileRelative).join(' ')} ${fileRelative}`;
 
-    if (testPassed) {
-      showLogs &&
-        console.log(`${indentation.test}${format.success('✔')} ${command}`);
-    } else {
-      showLogs &&
-        console.log(`${indentation.test}${format.fail('✘')} ${command}`);
+    if (!testPassed) {
+      ++results.fail;
       return false;
     }
+
+    ++results.success;
+
     return true;
   });
 
-  const results = await Promise.all(promises);
+  const concurrency = await Promise.all(promises);
 
-  return results.every((result) => result);
+  return concurrency.every((result) => result);
 };

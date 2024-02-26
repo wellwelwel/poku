@@ -8,16 +8,15 @@ import { runTests } from '../../src/services/run-tests.js';
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, false);
+    assert.deepStrictEqual(code, false, 'Failure test directory case');
   }
 
-  // Testing a success path as string
   {
     const code = await runTests('./test/fixtures/success', {
       noExit: true,
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, true);
+    assert.deepStrictEqual(code, true, 'Success test directory case');
   }
 })();

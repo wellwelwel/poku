@@ -2,4 +2,5 @@
 
 import { assert } from '../../src/index.js';
 
-assert.deepStrictEqual(1, 1);
+assert(true, 'Basic Assert');
+assert.deepStrictEqual(1, 1, 'Valid deepStrictEqual');

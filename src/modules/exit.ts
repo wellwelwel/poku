@@ -1,26 +1,33 @@
 import process from 'node:process';
-import { EOL } from 'node:os';
 import { hr } from '../helpers/hr.js';
 import { Code } from '../@types/code.js';
+import { results } from '../services/run-tests.js';
+import { format } from '../helpers/format.js';
 
 export const exit = (code: Code, quiet?: boolean) => {
+  const isPoku = results.success > 0 || results.fail > 0;
+
   !quiet &&
     process.on('exit', (code) => {
-      console.log(`Exited with code`, code, EOL);
+      isPoku &&
+        console.log(
+          format.bg(42, `PASS › ${results.success}`),
+          format.bg(results.fail === 0 ? 100 : 41, `FAIL › ${results.fail}`)
+        );
+
+      isPoku && hr();
+
+      console.log(
+        `${format.dim('Exited with code')} ${format.bold(format?.[code === 0 ? 'success' : 'fail'](String(code)))}`
+      );
     });
 
-  !quiet && hr();
+  isPoku && !quiet && hr();
 
-  if (code !== 0) {
-    !quiet && console.log('Some tests failed.');
-    process.exit(1);
-  }
+  if (code !== 0) process.exit(1);
 
-  !quiet && console.log('All tests passed.');
   process.exit(0);
 };
-
-process.stdout.on('resize', hr);
 
 process.on('unhandledRejection', (reason) => {
   console.log('unhandledRejection', reason);

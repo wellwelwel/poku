@@ -1,11 +1,15 @@
-# Goals
+# 🧑🏻‍🎓 Goals
 
-## `fix:`
+## 🧑🏻‍🔧 `fix`
+
+- **getFiles:** force "node_modules" removal from
+- **assert:** improve logs for regex and functions inside arrays
 
 ---
 
-## `feat:`
+## 🚀 `feat`
 
-- **feat:** show message from `assert` like in popular "describe" and "it" if `describe` option is `true`
-- **feat:** show individual test execution time
-- **feat:** allow to limit concurrency in parallel runs
+- **cli:** allow no params (look for files on target path)
+- **assert:** show logs like in popular "describe" and "it"
+- **cli:** show individual test execution time
+- **poku:** allow to limit concurrency in parallel runs

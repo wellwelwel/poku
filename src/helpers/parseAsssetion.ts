@@ -1,4 +1,5 @@
 import process from 'node:process';
+import path from 'node:path';
 import assert from 'node:assert';
 import { EOL } from 'node:os';
 import { format } from './format.js';
@@ -33,54 +34,77 @@ const findFile = (error: Error) => {
   return file;
 };
 
+const formatFail = (str: string) => format.bold(format.fail(`✘ ${str}`));
+
 export const parseAssertion = (
   cb: () => void,
   options: ParseAssertionOptions
 ) => {
+  const isPoku =
+    typeof process.env?.FILE === 'string' && process.env?.FILE.length > 0;
+  const FILE = process.env.FILE;
+
   try {
     cb();
+
+    if (typeof options.message === 'string') {
+      const message = isPoku
+        ? `${format.bold(format.success(`✔ ${options.message}`))} ${format.dim(format.success(`› ${FILE}`))}`
+        : format.bold(format.success(`✔ ${options.message}`));
+
+      console.log(message);
+    }
   } catch (error) {
     if (error instanceof assert.AssertionError) {
       const { code, actual, expected, operator } = error;
-      const file = findFile(error);
+      const absoultePath = findFile(error);
+      const file = path.relative(path.resolve(process.cwd()), absoultePath);
 
-      hr();
+      let message: string = '';
 
-      if (typeof options.message === 'string')
-        console.log(format.bold(options.message), EOL);
+      if (typeof options.message === 'string') message = options.message;
       else if (options.message instanceof Error)
-        console.log(format.bold(options.message.message), EOL);
+        message = options.message.message;
       else if (typeof options.defaultMessage === 'string')
-        console.log(options.defaultMessage, EOL);
+        message = options.defaultMessage;
 
-      console.log(format.dim('Code:    '), format.bold(format.fail(code)));
-      file && console.log(format.dim('File:    '), file);
-      console.log(format.dim('Operator:'), operator);
+      const finalMessage =
+        message?.trim().length > 0
+          ? `${formatFail(message)}`
+          : `${formatFail('No Message')}`;
 
-      hr();
+      console.log(
+        isPoku
+          ? `${finalMessage} ${format.dim(format.fail(`› ${FILE}`))}`
+          : finalMessage
+      );
+
+      file && console.log(`${format.dim('      File')} ${file}`);
+      console.log(`${format.dim('      Code')} ${code}`);
+      console.log(`${format.dim('  Operator')} ${operator}${EOL}`);
 
       if (!options?.hideDiff) {
-        console.log(format.dim(`${options?.actual || 'Actual'}:`));
+        console.log(format.dim(`  ${options?.actual || 'Actual'}:`));
         console.log(
           format.bold(
             typeof actual === 'function' || actual instanceof RegExp
-              ? String(actual)
-              : format.fail(JSON.stringify(actual))
+              ? `  ${String(actual)}`
+              : `  ${format.fail(JSON.stringify(actual))}`
           )
         );
 
         console.log(
-          `${EOL}${format.dim(`${options?.expected || 'Expected'}:`)}`
+          `${EOL}  ${format.dim(`${options?.expected || 'Expected'}:`)}`
         );
         console.log(
           format.bold(
-            typeof expected === 'function' || expected instanceof RegExp
-              ? String(expected)
-              : format.success(JSON.stringify(expected))
+            `${
+              typeof expected === 'function' || expected instanceof RegExp
+                ? `  ${String(expected)}`
+                : `  ${format.success(JSON.stringify(expected))}`
+            }`
           )
         );
-
-        hr();
       }
 
       if (options.throw) {

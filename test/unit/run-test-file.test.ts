@@ -12,15 +12,14 @@ const ext = getRuntime() === 'deno' ? 'ts' : isProduction ? 'js' : 'ts';
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, false);
+    assert.deepStrictEqual(code, false, 'Failure test file case');
   }
 
-  // Testing a success path as string
   {
     const code = await runTestFile(`./test/fixtures/success/exit.test.${ext}`, {
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, true);
+    assert.deepStrictEqual(code, true, 'Success test file case');
   }
 })();
