@@ -68,7 +68,7 @@ Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀
 | `npx poku`                                                   | `npx poku --parallel`                                      |
 | <img src=".github/assets/readme/sequential.png" width="360"> | <img src=".github/assets/readme/parallel.png" width="360"> |
 
-- By default, **Poku** searches for all _`.test.`_ and `.spec.` files, but you can customize it using the option [`filter`](https://github.com/wellwelwel/poku#filter-rexexp).
+- By default, **Poku** searches for all _`.test.`_ and `.spec.` files, but you can customize it using the option [`filter`](https://poku.dev/docs/documentation/poku/configs/filter).
 - The same idea for [**Bun**][bun-version-url] and [**Deno**][deno-version-url] (see bellow).
 
 ---
@@ -119,8 +119,6 @@ bun add --dev poku
 ```ts
 import { poku } from 'npm:poku';
 ```
-
-- **Poku** requires these permissions by default: `--allow-read`, `--allow-env` and `--allow-run`.
 
 ---
 
