@@ -4,6 +4,7 @@ const sidebars: SidebarsConfig = {
   docs: [
     'index',
     'comparing',
+    'overview',
     {
       type: 'category',
       label: 'Documentation',

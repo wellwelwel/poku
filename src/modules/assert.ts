@@ -3,7 +3,6 @@ import {
   parseAssertion,
   ParseAssertionOptions,
 } from '../helpers/parseAsssetion.js';
-import { format } from '../helpers/format.js';
 
 const ok = (value: unknown, message?: ParseAssertionOptions['message']): void =>
   parseAssertion(() => nodeAssert.ok(value), { message });
@@ -47,7 +46,7 @@ const doesNotMatch = (
     message,
     actual: 'Value',
     expected: 'RegExp',
-    defaultMessage: format.bold('Value should not match regExp'),
+    defaultMessage: 'Value should not match regExp',
   });
 
 function doesNotReject(
@@ -78,7 +77,7 @@ async function doesNotReject(
         },
         {
           message,
-          defaultMessage: format.bold('Got unwanted rejection'),
+          defaultMessage: 'Got unwanted rejection',
           hideDiff: true,
           throw: true,
         }
@@ -95,7 +94,7 @@ async function doesNotReject(
         {
           message:
             typeof errorOrMessage === 'string' ? errorOrMessage : undefined,
-          defaultMessage: format.bold('Got unwanted rejection'),
+          defaultMessage: 'Got unwanted rejection',
           hideDiff: true,
           throw: true,
         }
@@ -132,7 +131,7 @@ function doesNotThrow(
         },
         {
           message: message,
-          defaultMessage: format.bold('Expected function not to throw'),
+          defaultMessage: 'Expected function not to throw',
           hideDiff: true,
           throw: true,
         }
@@ -149,7 +148,7 @@ function doesNotThrow(
         },
         {
           message: msg,
-          defaultMessage: format.bold('Expected function not to throw'),
+          defaultMessage: 'Expected function not to throw',
           hideDiff: true,
           throw: true,
         }
@@ -188,7 +187,7 @@ function throws(
         },
         {
           message: message,
-          defaultMessage: format.bold('Expected function to throw'),
+          defaultMessage: 'Expected function to throw',
           hideDiff: true,
         }
       );
@@ -204,7 +203,7 @@ function throws(
         },
         {
           message: msg,
-          defaultMessage: format.bold('Expected function to throw'),
+          defaultMessage: 'Expected function to throw',
           hideDiff: true,
         }
       );
@@ -255,7 +254,7 @@ const match = (
     message,
     actual: 'Value',
     expected: 'RegExp',
-    defaultMessage: format.bold('Value should match regExp'),
+    defaultMessage: 'Value should match regExp',
   });
 
 const ifError = (value: unknown): void => {
@@ -267,7 +266,7 @@ const ifError = (value: unknown): void => {
         throw error;
       },
       {
-        defaultMessage: format.bold('Expected no error, but received an error'),
+        defaultMessage: 'Expected no error, but received an error',
         hideDiff: true,
         throw: true,
       }
@@ -285,7 +284,7 @@ const fail = (message?: ParseAssertionOptions['message']): void => {
       },
       {
         message,
-        defaultMessage: format.bold('Test failed intentionally'),
+        defaultMessage: 'Test failed intentionally',
         hideDiff: true,
       }
     );
@@ -320,9 +319,8 @@ async function rejects(
         },
         {
           message,
-          defaultMessage: format.bold(
-            'Expected promise to be rejected with specified error'
-          ),
+          defaultMessage:
+            'Expected promise to be rejected with specified error',
           hideDiff: true,
         }
       );
@@ -338,7 +336,7 @@ async function rejects(
         },
         {
           message: msg,
-          defaultMessage: format.bold('Expected promise to be rejected'),
+          defaultMessage: 'Expected promise to be rejected',
           hideDiff: true,
         }
       );

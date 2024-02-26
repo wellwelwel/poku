@@ -15,13 +15,22 @@ export const executeDockerCompose = (serviceName: string): Promise<number> => {
   ];
 
   return new Promise((resolve, reject) => {
-    const downProcess = spawn(command, argsDown, { cwd, stdio: 'inherit' });
+    const downProcess = spawn(command, argsDown, { cwd });
 
     downProcess.on('close', () => {
-      const upProcess = spawn(command, argsUp, { cwd, stdio: 'inherit' });
+      const upProcess = spawn(command, argsUp, { cwd });
 
       upProcess.on('close', (exitCode) => {
-        resolve(exitCode === 0 ? 0 : 1);
+        if (exitCode !== 0) {
+          const logsProcess = spawn(command, ['logs', '-f', serviceName], {
+            cwd,
+            stdio: 'inherit',
+          });
+
+          logsProcess.on('close', () => resolve(1));
+
+          logsProcess.on('error', (error) => reject(error));
+        } else resolve(exitCode === 0 ? 0 : 1);
       });
 
       upProcess.on('error', (error) => reject(error));

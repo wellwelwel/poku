@@ -1,0 +1,47 @@
+import SEQUENTIAL from '@site/static/img/sequential.png';
+import PARALLEL from '@site/static/img/parallel.png';
+import ASSERT_POKU from '@site/static/img/assert-poku.png';
+import ASSERT_NODE from '@site/static/img/assert-node.png';
+
+# Overview
+
+[bun-version-url]: https://github.com/oven-sh/bun
+[deno-version-url]: https://github.com/denoland/deno
+
+| Sequential               | Concurrent              |
+| ------------------------ | ----------------------- |
+| <img src={SEQUENTIAL} /> | <img src={PARALLEL}  /> |
+
+- By default, **Poku**:
+  - Searches for all _`.test.`_ and `.spec.` files, but you can customize it using the option [**`filter`**](/docs/documentation/poku/configs/filter).
+  - Uses `sequential` mode.
+- You can use concurrecy by use the flag `--parallel` for **CLI** or the option `parallel` to `true` in **API** (_in-code_) usage.
+
+> Follow the same idea for [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
+
+<hr />
+
+**Poku** also includes the `assert` method, keeping everything as it is, but providing human readability and automatic `describe` and `it`:
+
+> Compatible with **Node.js**, **Bun** and **Deno**.
+
+```ts
+import { assert } from 'poku'; // Node and Bun
+import { assert } from 'npm:poku'; // Deno
+
+const actual = '1';
+
+assert(actual, 'My first assert');
+assert.deepStrictEqual(actual, 1, 'My first assert error');
+```
+
+| Using `poku`               | Using `node`               |
+| -------------------------- | -------------------------- |
+| <img src={ASSERT_POKU}  /> | <img src={ASSERT_NODE}  /> |
+
+- ❌ Both cases finish with `code 1`, as expected
+- 🧑🏻‍🎓 The `message` param is optional, as it's in **Node.js**
+- 💚 Yes, you can use **Poku**'s `assert` running `node ./my-file.js`
+- 🐷 Unlike most, **Poku** adapts to your test, not the other way around
+
+> [**See the complete assert's documentation**](/docs/documentation/assert).

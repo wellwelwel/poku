@@ -51,7 +51,9 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ## Why Poku?
 
-> **Poku** starts from the premise where tests come to help, not overcomplicate: runs test files in an individual process per file, shows progress and exits 🧙🏻
+Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀
+
+> You don't need to learn what you already know ✨
 
 <div className='features black'>
   <p>
@@ -64,7 +66,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
   </p>
   <p>
     <Success />
-    <Link to='/'>And much more!</Link>
+    <Link to='/'>Compare Poku with the Most Popular Test Runners</Link>
   </p>
 </div>
 
@@ -76,21 +78,21 @@ Enjoying **Poku**? Consider giving him a star ⭐️
   <TabItem default value='Node.js'>
 
 ```bash
-npm install --save-dev poku
+npm i -D poku
 ```
 
   </TabItem>
   <TabItem  value='TypeScript (Node.js)'>
 
 ```bash
-npm install --save-dev poku tsx
+npm i -D poku tsx
 ```
 
   </TabItem>
   <TabItem  value='Bun'>
 
 ```bash
-bun add --dev poku
+bun add -d poku
 ```
 
   </TabItem>
@@ -122,7 +124,7 @@ import { poku } from 'https://esm.sh/poku';
     ```ts
     import { poku } from 'poku';
 
-    await poku(['targetDirA', 'targetDirB']);
+    await poku(['targetDir']);
     ```
 
   </TabItem>
@@ -131,7 +133,7 @@ import { poku } from 'https://esm.sh/poku';
 ```ts
 import { poku } from 'npm:poku';
 
-await poku(['targetDirA', 'targetDirB']);
+await poku(['targetDir']);
 ```
 
   </TabItem>
@@ -143,21 +145,21 @@ await poku(['targetDirA', 'targetDirB']);
   <TabItem default value='Node.js and TypeScript (Node.js)'>
 
 ```bash
-npx poku targetDirA,targetDirB
+npx poku targetDir
 ```
 
   </TabItem>
   <TabItem  value='Bun'>
 
 ```bash
-bun poku targetDirA,targetDirB
+bun poku targetDir
 ```
 
   </TabItem>
   <TabItem  value='Deno'>
 
 ```bash
-deno run npm:poku targetDirA,targetDirB
+deno run npm:poku targetDir
 ```
 
     **Poku** requires these permissions by default:

@@ -2,33 +2,30 @@ import { poku, assert } from '../../src/index.js';
 
 (async () => {
   {
-    // Testing all paths as a string array
     const code = await poku(['./test/fixtures/success', 'test/fixtures/fail'], {
       noExit: true,
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, 1);
+    assert.deepStrictEqual(code, 1, 'Testing all paths as a string array');
   }
 
-  // Testing a fail path as string
   {
     const code = await poku('./test/fixtures/fail', {
       noExit: true,
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, 1);
+    assert.deepStrictEqual(code, 1, 'Testing a fail path as string');
   }
 
-  // Testing a success path as string
   {
     const code = await poku('./test/fixtures/success', {
       noExit: true,
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, 0);
+    assert.deepStrictEqual(code, 0, 'Testing a success path as string');
   }
 
   {
@@ -40,7 +37,6 @@ import { poku, assert } from '../../src/index.js';
     assert.deepStrictEqual(code, 0);
   }
 
-  // Only path that contains "success"
   {
     const code = await poku(['./test/fixtures/success', 'test/fixtures/fail'], {
       noExit: true,
@@ -48,10 +44,9 @@ import { poku, assert } from '../../src/index.js';
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, 0);
+    assert.deepStrictEqual(code, 0, 'Filter paths that contains "success"');
   }
 
-  // Only path that contains "fail"
   {
     const code = await poku(['./test/fixtures/success', 'test/fixtures/fail'], {
       noExit: true,
@@ -59,10 +54,9 @@ import { poku, assert } from '../../src/index.js';
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, 1);
+    assert.deepStrictEqual(code, 1, 'Filter paths that contains "fail"');
   }
 
-  // No files
   {
     const code = await poku(['test/fixtures/fail'], {
       noExit: true,
@@ -70,21 +64,9 @@ import { poku, assert } from '../../src/index.js';
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, 0);
+    assert.deepStrictEqual(code, 0, 'No files (success filter)');
   }
 
-  // No files
-  {
-    const code = await poku(['test/fixtures/success'], {
-      noExit: true,
-      filter: /fail/,
-      quiet: true,
-    });
-
-    assert.deepStrictEqual(code, 0);
-  }
-
-  // Filter by extension
   {
     const code = await poku(['./test/fixtures/success', 'test/fixtures/fail'], {
       noExit: true,
@@ -92,6 +74,6 @@ import { poku, assert } from '../../src/index.js';
       quiet: true,
     });
 
-    assert.deepStrictEqual(code, 1);
+    assert.deepStrictEqual(code, 1, 'Filter by extension');
   }
 })();

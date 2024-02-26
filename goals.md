@@ -1,11 +1,12 @@
-# Goals
+# 🧑🏻‍🎓 Goals
 
-## `fix:`
+## 🧑🏻‍🔧 `fix`
+
+- **assert:** improve logs for regex and functions inside arrays
 
 ---
 
-## `feat:`
+## 🚀 `feat`
 
-- **feat:** show message from `assert` like in popular "describe" and "it" if `describe` option is `true`
-- **feat:** show individual test execution time
-- **feat:** allow to limit concurrency in parallel runs
+- **cli:** show individual test execution time
+- **poku:** allow to limit concurrency in parallel runs
