@@ -86,11 +86,11 @@ assert(actual);
 assert.deepStrictEqual(actual, 1, 'My first assert error');
 ```
 
-| By using `npx poku`                                           | By using `node index.test.js`                                 |
+| Using `npx poku`                                              | Using `node index.test.js`                                    |
 | ------------------------------------------------------------- | ------------------------------------------------------------- |
 | <img src=".github/assets/readme/assert-poku.png" width="360"> | <img src=".github/assets/readme/assert-node.png" width="360"> |
 
-- The `message` param is optional, as it's in **Node.js**
+- The `message` param is optional, as it's in **Node.js** 🧑🏻‍🎓
 - Both examples finish with `code 1`
 - [**See the complete documentation**](https://poku.dev/docs/documentation/assert)
 
