@@ -6,7 +6,7 @@ import { runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
 import { format } from '../helpers/format.js';
 import { Configs } from '../@types/poku.js';
-import { showSuccesses, isQuiet } from '../helpers/logs.js';
+import { isDebug, isQuiet } from '../helpers/logs.js';
 import { removeConsecutiveRepeats } from '../helpers/remove-repeats.js';
 
 type FileResults = {
@@ -31,7 +31,7 @@ export const runTestFile = (
 
     const fileRelative = path.relative(process.cwd(), filePath);
     const showLogs = !isQuiet(configs);
-    const showSuccess = showSuccesses(configs);
+    const showSuccess = isDebug(configs);
     const pad = configs?.parallel ? '  ' : '    ';
 
     let output = '';
