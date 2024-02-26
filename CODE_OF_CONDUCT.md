@@ -1,3 +1,3 @@
 # Code of Conduct
 
-1. Please, **be respectful** 💛
+1. Please, **be respectful** 🩵

@@ -70,7 +70,7 @@ Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀
 - By default, **Poku**:
   - Searches for all _`.test.`_ and `.spec.` files, but you can customize it using the option [**`filter`**](https://poku.dev/docs/documentation/poku/configs/filter).
   - Uses `sequential` mode.
-- You can use concurrecy by use the flag `--parallel` for **CLI** or the option `parallel` to `true` in **API** (_in-code_) usage.
+- You can use concurrecy by using the flag `--parallel` for **CLI** or setting the option `parallel` to `true` in **API** (_in-code_) usage.
 
 > Follow the same idea for [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
 
@@ -96,7 +96,9 @@ assert.deepStrictEqual(actual, 1, 'My first assert error');
 
 - ❌ Both cases finish with `code 1`, as expected
 - 🧑🏻‍🎓 The `message` param is optional, as it's in **Node.js**
-- 💚 Yes, you can use **Poku**'s `assert` running `node ./my-file.js`
+- 💚 Yes, you can use **Poku**'s `assert`
+  - `node ./test/file.test.js`
+  - `npx poku test`
 - 🐷 Unlike most, **Poku** adapts to your test, not the other way around
 
 > [**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
