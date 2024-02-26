@@ -28,13 +28,15 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ---
 
-🐷 [**Documentation Website**](https://poku.dev) • 🔬 [**Comparing Test Runners** (**Poku**, **Jest**, **Mocha**, **Vitest** and **AVA**)](https://poku.dev/docs/comparing)
+🐷 [**Documentation Website**](https://poku.dev) • 🔬 [**Compare Poku with the Most Popular Test Runners**](https://poku.dev/docs/comparing)
 
 ---
 
 ## Why Poku?
 
-> **Poku** starts from the premise where tests come to help, not overcomplicate: runs test files in an individual process per file, shows progress and exits 🧙🏻
+Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀
+
+> You don't need to learn what you already know ✨
 
 - Supports **ESM** and **CJS**
 - Designed to be highly intuitive
@@ -43,19 +45,19 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 - Allows both **in-code** and **CLI** usage
 - [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
 - Zero configurations, except you want
-- No constraints or rules, code in your own signature style
+- Poku adapts to your test, not the other way around
 - [**And much more!**](https://poku.dev)
 
 ---
 
-- <img src="https://img.shields.io/bundlephobia/min/poku?label=Final%20Size">
-- **Zero** external dependencies
+- <img src="https://img.shields.io/bundlephobia/min/poku">
+- **Zero** external dependencies 🌱
 
 ---
 
 ## Documentation
 
-- See detailed specifications and usage in [**Documentation**](https://poku.dev/docs/category/documentation) section for queries, advanced concepts and much more.
+- See detailed usage in [**Documentation**](https://poku.dev/docs/category/documentation) section for **Poku**'s **CLI**, **API (_in-code_)** and **assert**, advanced concepts and much more.
 
 ---
 

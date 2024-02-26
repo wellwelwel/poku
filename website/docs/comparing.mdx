@@ -37,7 +37,7 @@ assert.deepStrictEqual('1', 1, 'Number should not be a text');
 ### Running tests
 
 ```bash
-npx poku ./test
+npx poku
 ```
 
 <hr />
@@ -67,6 +67,20 @@ npm i -D jest @types/jest ts-jest
 ```
 
 > ~65M
+
+<hr />
+
+### Configuring TypeScript
+
+> Add in yout _tsconfig.json_
+
+```json
+{
+  "compilerOptions": {
+    "esModuleInterop": true
+  }
+}
+```
 
 <hr />
 
@@ -112,10 +126,10 @@ npx jest
 ### Installation
 
 ```bash
-npm i -D mocha @types/mocha chai @types/chai ts-node
+npm i -D mocha @types/mocha chai @types/chai tsx
 ```
 
-> ~45M
+> ~18M
 
 <hr />
 
@@ -125,7 +139,7 @@ npm i -D mocha @types/mocha chai @types/chai ts-node
 
 ```json
 {
-  "loader": "ts-node/esm",
+  "require": "tsx",
   "extension": ["ts"],
   "spec": "./test/**/*.test.ts"
 }

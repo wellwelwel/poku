@@ -174,14 +174,9 @@ const Home = () => {
               </div>
               <footer>
                 <small>
-                  <Silhouette width={13} />{' '}
-                  <Link
-                    aria-label={"Poku's GitHub"}
-                    to='https://github.com/wellwelwel/poku'
-                  >
-                    Poku
-                  </Link>{' '}
-                  adapts to your test, not the other way around ✨
+                  <Silhouette width={13} /> Don't worry about{' '}
+                  <code>describe</code>, <code>it</code>,{' '}
+                  <code>beforeEach</code> and everything else 🚀
                 </small>
                 <div className='custom-code-block'>
                   npm install --save-dev poku
