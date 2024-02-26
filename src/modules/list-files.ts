@@ -33,6 +33,7 @@ export const listFiles = (
   for (const file of currentFiles) {
     const fullPath = path.join(dirPath, file);
 
+    if (/node_modules/.test(fullPath)) continue;
     if (exclude && exclude.some((regex) => regex.test(fullPath))) continue;
 
     if (fs.statSync(fullPath).isDirectory())

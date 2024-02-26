@@ -23,7 +23,9 @@ export async function poku(
   configs?: Configs
 ): Promise<Code | void> {
   let code: Code = 0;
-  const dirs = forceArray(targetDirs);
+
+  const prepareDirs = forceArray(targetDirs);
+  const dirs = prepareDirs.length > 0 ? prepareDirs : ['./'];
   const showLogs = !isQuiet(configs);
 
   if (configs?.parallel) {
