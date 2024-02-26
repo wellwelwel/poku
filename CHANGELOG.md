@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/wellwelwel/poku/compare/v1.4.0...v1.5.0) (2024-02-26)
+
+
+### Features
+
+* **assert:** automatic describe it ([#29](https://github.com/wellwelwel/poku/issues/29)) ([77c0b54](https://github.com/wellwelwel/poku/commit/77c0b541607c69e1df7b5ded57e13f274459c130))
+
+
+### Bug Fixes
+
+* **filter:** include both .test. and .spec. as default ([#27](https://github.com/wellwelwel/poku/issues/27)) ([9172160](https://github.com/wellwelwel/poku/commit/91721608d5c102d81aa05a309743579fdf06b7ae))
+
 ## [1.4.0](https://github.com/wellwelwel/poku/compare/v1.3.1...v1.4.0) (2024-02-22)
 
 
