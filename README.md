@@ -50,7 +50,7 @@ Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀
 
 ---
 
-- <img src="https://img.shields.io/bundlephobia/min/poku">
+- [![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
 - **Zero** external dependencies 🌱
 
 ---
