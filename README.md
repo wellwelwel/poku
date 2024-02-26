@@ -65,7 +65,6 @@ Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀
 
 | Sequential                                                   | Parallel                                                   |
 | ------------------------------------------------------------ | ---------------------------------------------------------- |
-| `npx poku`                                                   | `npx poku --parallel`                                      |
 | <img src=".github/assets/readme/sequential.png" width="360"> | <img src=".github/assets/readme/parallel.png" width="360"> |
 
 - By default, **Poku** searches for all _`.test.`_ and `.spec.` files, but you can customize it using the option [`filter`](https://poku.dev/docs/documentation/poku/configs/filter).
@@ -87,7 +86,9 @@ assert(actual);
 assert.deepStrictEqual(actual, 1, 'My first assert error');
 ```
 
-> <img src=".github/assets/readme/assert.png" width="468" />
+| By using `npx poku`                                           | By using `node index.test.js`                                 |
+| ------------------------------------------------------------- | ------------------------------------------------------------- |
+| <img src=".github/assets/readme/assert-poku.png" width="360"> | <img src=".github/assets/readme/assert-node.png" width="360"> |
 
 - The `message` param is optional, as it's in **Node.js**.
 - [**See the complete documentation**](https://poku.dev/docs/documentation/assert).
