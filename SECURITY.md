@@ -11,10 +11,12 @@ Currently, security updates will be applied to the following versions of **Poku*
 
 ## Reporting a Vulnerability
 
-> **Please, give Detailed Reports.**
+> **Please, give Detailed Reports**
 
 - Include steps to reproduce the vulnerability, and if possible, a patch or workaround.
 - Include the specific version of **Poku** you are using.
+
+Please report it privately: https://github.com/wellwelwel/poku/security/advisories.
 
 ---
 
