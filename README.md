@@ -96,9 +96,6 @@ assert.deepStrictEqual(actual, 1, 'My first assert error');
 
 - ❌ Both cases finish with `code 1`, as expected
 - 🧑🏻‍🎓 The `message` param is optional, as it's in **Node.js**
-- 💚 Yes, you can use **Poku**'s `assert`
-  - `node ./test/file.test.js`
-  - `npx poku test`
 - 🐷 Unlike most, **Poku** adapts to your test, not the other way around
 
 > [**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
@@ -188,3 +185,9 @@ I'm continuously working to improve **Poku**. If you've got something interestin
 ## Acknowledgements
 
 - [**Contributors**](https://github.com/wellwelwel/poku/graphs/contributors)
+
+---
+
+## Contributing
+
+Please check the [_CONTRIBUTING.md_](./CONTRIBUTING.md) for instructions 🚀
