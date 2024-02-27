@@ -98,8 +98,10 @@ assert.strictEqual(0, failuresCode, 'Running Failures Integration Tests');
 **Finally**
 
 ```bash
-node ./test/run/test.js
+node ./test/run.test.js
 ```
+
+> Or `npx tsx ./test/run.test.ts` for **TypeScript**.
 
 :::tip
 **Poku**'s `assert` will use the message exactly as it is when using `describe` or `it`. <br />
