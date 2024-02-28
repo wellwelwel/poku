@@ -1,40 +1,64 @@
+---
+sidebar_position: 1
+---
+
 # beforeEach and afterEach
+
+:::info
+I aim to present an alternative that leverages native JavaScript, not to dissuade the use of current methods 🙋🏻‍♂️
+:::
 
 ## Basically...
 
-By creating **Poku**, my aim is to show that testing can be simpler:
+When running our code, we just keep things as we want them, right?
+
+```ts
+let step = 0;
+
+const firstStep = () => (step = 1);
+const secondStep = () => (step = 2);
+const thirdStep = () => (step = 3);
+
+firstStep();
+secondStep();
+thirdStep();
+```
+
+So, by creating **Poku**, my aim is to show that testing can be **simpler**:
 
 ```ts
 import { assert } from 'poku';
+import { prepare, clear } from './my-code.js';
 
-/**
- * Setup tasks traditionally done in beforeEach can be handled here if needed.
- *
- * (your direct "before" code here) 🧑🏻‍🔧
- */
+// Setup tasks traditionally done in "beforeEach" can be handled directly
+await prepare();
 
-assert(true, 'Running after my previous requeriments and before next ones 🚀');
+// Describing it
+assert(
+  true,
+  'Running after my previous requeriments and before the next ones 🚀'
+);
 
-/**
- * Cleanup tasks traditionally done in afterEach can be managed after assertions.
- *
- * (your direct "after" code here) 🧑🏻‍🔧
- */
+// Cleanup tasks traditionally done in "afterEach" can be managed after the tests directly
+await clear();
 ```
 
-:::info
-I aim to present a new alternative that leverages native JavaScript, not to dissuade the use of current methods 🙋🏻‍♂️
+:::tip
+**Poku**'s `assert` will use the message exactly as it is when using `describe` and `it`. <br />
+Your **Poku** is waiting for you 🐷✨
 :::
+
+<hr />
 
 ## A Complex Case
 
 **Imagine these steps to perform a test:**
 
-1. Perform **Unit Tests** Suite (_parallel_)
+1. Perform **Unit Tests** suite in parallel
 2. Clear and Populate the Database
-3. Check for **Expected Successes Integration** Suite (_sequential_)
+3. Check for **Expected Successes Integration** suite sequentially
 4. Clear and Populate the Database — again
-5. Check for **Expected Failures Integration** Suite (_sequential_)
+5. Check for **Expected Failures Integration** suite sequentially
 
 **Requirements:**
 
@@ -102,10 +126,3 @@ node ./test/run.test.js
 ```
 
 > Or `npx tsx ./test/run.test.ts` for **TypeScript**.
-
-<hr />
-
-:::tip
-**Poku**'s `assert` will use the message exactly as it is when using `describe` or `it`. <br />
-Your **Poku** is waiting for you 🐷✨
-:::

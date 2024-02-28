@@ -45,5 +45,13 @@ jobs:
       - name: Building Site
         run: cd website && npm run build
 
+      - name: Checking Docker Build
+        run: cd website && docker compose up -d --build
+
+      - name: Checking for Service Status Header
+        run: |
+          sleep 1
+          curl --fail --silent --output /dev/null http://localhost:3000
+
       - name: Deploy
         run: cd website && npm run deploy
