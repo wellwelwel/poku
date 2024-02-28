@@ -5,6 +5,9 @@ on:
       - 'website/**'
   workflow_dispatch:
 
+env:
+  APP_PORT: ${{secrets.APP_PORT}}
+
 jobs:
   build:
     runs-on: ubuntu-latest
