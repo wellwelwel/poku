@@ -16,7 +16,6 @@ import NPM from '@site/static/img/npm.svg';
 import Docs from '@site/static/img/open.svg';
 
 const Home = () => {
-  const packageName = 'poku';
   const [size, setSize] = useState<null | string>(null);
 
   const copyToClipboard = async (text: string) => {
@@ -31,10 +30,20 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetch(`https://bundlephobia.com/api/size?package=${packageName}`)
+    if (process.env.NODE_ENV !== 'production') {
+      setSize('0.0 KB');
+      return;
+    }
+
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    fetch('/assets/json/size.json', { signal })
       .then((response) => response.json())
-      .then((data) => {
-        setSize(`${(data.size / 1024).toFixed(2)} KB`);
+      .then((data: { size: number }) => {
+        if (signal.aborted) return;
+
+        setSize(`${(data.size / 1024).toFixed(1)} KB`);
         setTimeout(() => {
           toast.success('All tests passed.', {
             description: (
@@ -47,6 +56,8 @@ const Home = () => {
         }, 1250);
       })
       .catch((error) => {
+        if (signal.aborted) return;
+
         setTimeout(() => {
           toast.error('Some tests failed.', {
             description: (
@@ -61,7 +72,9 @@ const Home = () => {
         }, 1250);
       });
 
-    return () => {};
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   return (
@@ -162,11 +175,9 @@ const Home = () => {
                   {size ? (
                     <p>
                       <Success />
-                      <Link
-                        to='https://bundlephobia.com/package/poku'
-                        className='v-center'
-                      >
-                        <Package2 height={15} /> <strong>{size}</strong>
+                      <Link to='https://pkg-size.dev/poku' className='v-center'>
+                        <Package2 height={15} />{' '}
+                        <strong>Install Size: {size}</strong>
                       </Link>
                     </p>
                   ) : null}
