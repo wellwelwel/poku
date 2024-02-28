@@ -56,13 +56,17 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 <div className='features black'>
   <p>
     <Success />
-    <span>You don't need to learn what you already know ✨</span>
+    <span>
+      Let's make `describe`, `beforeEach` and everything else easier ([**see why
+      and how**](/docs/examples/beforeEach)) 🚀
+    </span>
   </p>
   <p>
     <Success />
     <span>
-      Don't worry about `describe`, `it`, `beforeEach` and everything else
-      ([**see why**](/docs/examples/beforeEach)) 🚀
+      **Poku** brings human-friendly testing and assertion to
+      [**Node.js**][node-version-url], [**Bun**][bun-version-url] &
+      [**Deno**][deno-version-url] at the same time ✨
     </span>
   </p>
 </div>
@@ -125,7 +129,7 @@ import { poku } from 'https://esm.sh/poku';
     ```ts
     import { poku } from 'poku';
 
-    await poku(['targetDir']);
+    await poku(['targetPath']);
     ```
 
   </TabItem>
@@ -134,7 +138,7 @@ import { poku } from 'https://esm.sh/poku';
 ```ts
 import { poku } from 'npm:poku';
 
-await poku(['targetDir']);
+await poku(['targetPath']);
 ```
 
   </TabItem>
@@ -146,21 +150,21 @@ await poku(['targetDir']);
   <TabItem default value='Node.js and TypeScript (Node.js)'>
 
 ```bash
-npx poku targetDir
+npx poku targetPath
 ```
 
   </TabItem>
   <TabItem  value='Bun'>
 
 ```bash
-bun poku targetDir
+bun poku targetPath
 ```
 
   </TabItem>
   <TabItem  value='Deno'>
 
 ```bash
-deno run npm:poku targetDir
+deno run npm:poku targetPath
 ```
 
     **Poku** requires these permissions by default:
