@@ -33,14 +33,13 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ---
 
-🐷 [**Documentation Website**](https://poku.dev) • 🔬 [**Compare Poku with the Most Popular Test Runners**](https://poku.dev/docs/comparing)
+🐷 [**Documentation Website**](https://poku.dev) • 🔬 [**Compare Poku with the Most Popular Test Runners**](https://poku.dev/docs/comparing) • 🧪 [**Examples**](https://poku.dev/docs/category/examples)
 
 ---
 
 ## Why Poku?
 
-Don't worry about `describe`, `it`, `beforeEach` and everything else 🚀 <br/>
-After all, you don't need to learn what you already know ([**see why**](https://poku.dev/docs/examples/beforeEach)) ✨
+Let's make `describe`, `beforeEach` and everything else easier ([**see why and how**](https://poku.dev/docs/examples/beforeEach)) 🚀 <br/>
 
 - Supports **ESM** and **CJS**
 - Designed to be highly intuitive
@@ -62,6 +61,12 @@ After all, you don't need to learn what you already know ([**see why**](https://
 ## Documentation
 
 - See detailed usage in [**Documentation**](https://poku.dev/docs/category/documentation) section for **Poku**'s **CLI**, **API (_in-code_)** and **assert**, advanced concepts and much more.
+
+---
+
+## Examples
+
+- See real example usages in [**Examples**](https://poku.dev/docs/category/examples) section for **Poku**'s + **Mock**, **Virutal DOM** and more.
 
 ---
 
@@ -117,47 +122,58 @@ import { poku } from 'npm:poku';
 
 ## Quick Start
 
-### CLI
+### `poku`
+
+#### CLI
+
+> Try to set the flag `--parallel` before the target path 🚀
 
 > <img src=".github/assets/readme/node-js.svg" width="24" />
 
 ```bash
-npx poku targetDir
+npx poku targetPath
+npx poku targetPathA,targetPathB
 ```
 
 > <img src=".github/assets/readme/bun.svg" width="24" />
 
 ```bash
-bun poku targetDir
+bun poku targetPath
+bun poku targetPathA,targetPathB
 ```
 
 > <img src=".github/assets/readme/deno.svg" width="24" />
 
 ```bash
-deno run npm:poku targetDir
+deno run npm:poku targetPath
+deno run npm:poku targetPathA,targetPathB
 ```
 
-### API (_In-code_)
+#### API (_In-code_)
 
-#### Node.js, TypeScript (Node.js) and Bun
+##### Node.js, TypeScript (Node.js) and Bun
 
 ```ts
 import { poku } from 'poku';
 
-await poku(['targetDir']);
+await poku(['targetPath']);
 ```
 
-#### Deno
+##### Deno
 
 ```ts
 import { poku } from 'npm:poku';
 
-await poku(['targetDir']);
+await poku(['targetPath']);
 ```
+
+### `assert`
+
+Use it exactly as it's for **Node.js** 💚
 
 ---
 
-To see the detailed documentation, please visit the [**Documentation**](https://poku.dev/docs/category/documentation) section in the [**Poku**'s website](https://poku.dev).
+To see the detailed documentation, please visit the [**Documentation**](https://poku.dev/docs/category/documentation) and [**Examples**](https://poku.dev/docs/category/examples) sections in the [**Poku**'s website](https://poku.dev).
 
 ---
 

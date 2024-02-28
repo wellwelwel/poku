@@ -11,20 +11,20 @@ import { fileResults } from '../services/run-test-file.js';
 import { indentation } from '../helpers/indentation.js';
 
 export async function poku(
-  targetDirs: string | string[],
+  targetPaths: string | string[],
   configs: Configs & { noExit: true }
 ): Promise<Code>;
 export async function poku(
-  targetDirs: string | string[],
+  targetPaths: string | string[],
   configs?: Configs
 ): Promise<void>;
 export async function poku(
-  targetDirs: string | string[],
+  targetPaths: string | string[],
   configs?: Configs
 ): Promise<Code | void> {
   let code: Code = 0;
 
-  const prepareDirs = forceArray(targetDirs);
+  const prepareDirs = forceArray(targetPaths);
   const dirs = prepareDirs.length > 0 ? prepareDirs : ['./'];
   const showLogs = !isQuiet(configs);
 

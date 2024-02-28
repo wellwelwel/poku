@@ -185,9 +185,8 @@ const Home = () => {
               </div>
               <footer>
                 <small>
-                  <Silhouette width={13} /> Don't worry about{' '}
-                  <code>describe</code>, <code>it</code>,{' '}
-                  <code>beforeEach</code> and everything else 🚀
+                  <Silhouette width={13} /> Let's make <code>describe</code>,{' '}
+                  <code>beforeEach</code> and everything else easier 🚀
                 </small>
                 <div className='custom-code-block'>
                   npm i -D poku

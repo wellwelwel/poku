@@ -16,6 +16,10 @@ export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
 export const escapeRegExp = (string: string) =>
   string.replace(/[.*{}[\]\\]/g, '\\$&');
 
+export const isFile = (fullPath: string) => fs.statSync(fullPath).isFile();
+
+export const isDir = (fullPath: string) => fs.statSync(fullPath).isDirectory();
+
 const envFilter = process.env.FILTER?.trim()
   ? new RegExp(escapeRegExp(process.env.FILTER), 'i')
   : null;
@@ -46,8 +50,7 @@ export const listFiles = (
     if (/node_modules/.test(fullPath)) continue;
     if (exclude && exclude.some((regex) => regex.test(fullPath))) continue;
 
-    if (fs.statSync(fullPath).isDirectory())
-      listFiles(fullPath, files, configs);
+    if (isDir(fullPath)) listFiles(fullPath, files, configs);
     else if (filter.test(fullPath)) files.push(fullPath);
   }
 
