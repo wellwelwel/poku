@@ -1,6 +1,6 @@
 {
   "name": "poku",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "🐷 Poku brings human-friendly testing and assertion to Node.js, Bun & Deno at the same time.",
   "main": "./lib/index.js",
   "scripts": {
