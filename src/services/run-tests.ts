@@ -3,7 +3,7 @@ import { EOL } from 'node:os';
 import path from 'node:path';
 import { runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
-import { listFiles } from '../modules/list-files.js';
+import { listFiles, sanitizePath } from '../modules/list-files.js';
 import { hr } from '../helpers/hr.js';
 import { format } from '../helpers/format.js';
 import { runTestFile } from './run-test-file.js';
@@ -20,7 +20,7 @@ export const runTests = async (
   configs?: Configs
 ): Promise<boolean> => {
   const cwd = process.cwd();
-  const testDir = path.join(cwd, dir);
+  const testDir = path.join(cwd, sanitizePath(dir));
   const currentDir = path.relative(cwd, testDir);
   const files = listFiles(testDir, undefined, configs);
   const totalTests = files.length;

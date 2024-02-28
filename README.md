@@ -10,6 +10,8 @@
 [ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=CI&branch=main
 [ql-url]: https://github.com/wellwelwel/poku/actions/workflows/codeql.yml?query=branch%3Amain
 [ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/codeql.yml?event=push&style=flat&label=Code%20QL&branch=main
+[license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
+[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff
 
 # Poku
 
@@ -23,6 +25,7 @@
 [![TypeScript Version][typescript-version-image]][typescript-url]
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![GitHub Workflow Status (with event)][ql-image]][ql-url]
+[![License][license-image]][license-url]
 
 Enjoying **Poku**? Consider giving him a star ⭐️
 
@@ -184,10 +187,22 @@ I'm continuously working to improve **Poku**. If you've got something interestin
 
 ## Acknowledgements
 
-- [**Contributors**](https://github.com/wellwelwel/poku/graphs/contributors)
+- [**Contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
 
 ---
 
 ## Contributing
 
-Please check the [_CONTRIBUTING.md_](./CONTRIBUTING.md) for instructions 🚀
+Please check the [**CONTRIBUTING.md**](./CONTRIBUTING.md) for instructions 🚀
+
+---
+
+## License
+
+Poku is under the [**MIT** License](./LICENSE).
+
+---
+
+## Security Policy
+
+Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Safe?**](https://poku.dev/docs/security) from Documentation.

@@ -95,6 +95,7 @@ export const runTestFile = (
 
     const child = spawn(runtime!, runtimeArguments, {
       stdio: ['inherit', 'pipe', 'pipe'],
+      shell: false,
       env: {
         ...process.env,
         FILE: configs?.parallel ? fileRelative : '',
