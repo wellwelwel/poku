@@ -34,7 +34,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.71.1",
-    "sonner": "^1.4.1"
+    "sonner": "^1.4.2"
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "^3.1.1",
