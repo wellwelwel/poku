@@ -117,24 +117,6 @@ import { poku } from 'npm:poku';
 
 ## Quick Start
 
-### In-code
-
-#### Node.js and Bun
-
-```ts
-import { poku } from 'poku';
-
-await poku(['targetDir']);
-```
-
-#### Deno
-
-```ts
-import { poku } from 'npm:poku';
-
-await poku(['targetDir']);
-```
-
 ### CLI
 
 > <img src=".github/assets/readme/node-js.svg" width="24" />
@@ -153,6 +135,24 @@ bun poku targetDir
 
 ```bash
 deno run npm:poku targetDir
+```
+
+### API (_In-code_)
+
+#### Node.js, TypeScript (Node.js) and Bun
+
+```ts
+import { poku } from 'poku';
+
+await poku(['targetDir']);
+```
+
+#### Deno
+
+```ts
+import { poku } from 'npm:poku';
+
+await poku(['targetDir']);
 ```
 
 ---
