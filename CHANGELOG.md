@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/wellwelwel/poku/compare/v1.5.0...v1.5.1) (2024-02-28)
+
+
+### Bug Fixes
+
+* **security:** sanitize path and prevent shell scripts ([#33](https://github.com/wellwelwel/poku/issues/33)) ([39f7d8c](https://github.com/wellwelwel/poku/commit/39f7d8c8b6e5e18a66f56581a6e0665132baa04c))
+
 ## [1.5.0](https://github.com/wellwelwel/poku/compare/v1.4.0...v1.5.0) (2024-02-26)
 
 
