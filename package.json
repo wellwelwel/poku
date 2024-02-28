@@ -1,7 +1,7 @@
 {
   "name": "poku",
   "version": "1.5.0",
-  "description": "🐷 Poku is your test runner pet for Node.js, Bun and Deno, combining flexibility, parallel and sequential runs, human-friendly assertion errors and high isolation level",
+  "description": "🐷 Poku brings human-friendly testing and assertion to Node.js, Bun & Deno at the same time.",
   "main": "./lib/index.js",
   "scripts": {
     "test": "npx tsx --tsconfig ./tsconfig.test.json ./test/run.test.ts",
