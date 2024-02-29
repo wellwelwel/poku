@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0](https://github.com/wellwelwel/poku/compare/v1.5.1...v1.6.0) (2024-02-29)
+
+
+### Features
+
+* innovating `beforeEach` and `afterEach` ([#53](https://github.com/wellwelwel/poku/issues/53)) ([3ea3a12](https://github.com/wellwelwel/poku/commit/3ea3a1227ee1fd897759fc47b24511f904f6b927))
+* support target file and directories ([#47](https://github.com/wellwelwel/poku/issues/47)) ([4353996](https://github.com/wellwelwel/poku/commit/43539969f9f2a444026ba52cc9e77a440953cea1))
+
 ## [1.5.1](https://github.com/wellwelwel/poku/compare/v1.5.0...v1.5.1) (2024-02-28)
 
 
