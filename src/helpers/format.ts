@@ -9,6 +9,7 @@ export const format = {
   bold: (value: string) => `\x1b[1m${value}\x1b[0m`,
   underline: (value: string) => `\x1b[4m${value}\x1b[0m`,
   info: (value: string) => `\x1b[94m${value}\x1b[0m`,
+  italic: (value: string) => `\x1b[3m${value}\x1b[0m`,
   success: (value: string) => `\x1b[32m${value}\x1b[0m`,
   fail: (value: string) => `\x1b[91m${value}\x1b[0m`,
   bg: (bg: number, text: string) => {

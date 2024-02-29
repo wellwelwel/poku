@@ -8,8 +8,9 @@ import { format } from '../helpers/format.js';
 import { Configs } from '../@types/poku.js';
 import { isDebug, isQuiet } from '../helpers/logs.js';
 import { removeConsecutiveRepeats } from '../helpers/remove-repeats.js';
+import { beforeEach, afterEach } from './each.js';
 
-type FileResults = {
+export type FileResults = {
   success: string[];
   fail: string[];
 };
@@ -23,7 +24,7 @@ export const runTestFile = (
   filePath: string,
   configs?: Configs
 ): Promise<boolean> =>
-  new Promise((resolve) => {
+  new Promise(async (resolve) => {
     const runtimeOptions = runner(filePath, configs);
     const runtime = runtimeOptions.shift();
     const runtimeArguments =
@@ -93,6 +94,9 @@ export const runTestFile = (
         );
     }
 
+    if (!(await beforeEach(fileRelative, configs))) return false;
+
+    // Export spawn helper is not an option
     const child = spawn(runtime!, runtimeArguments, {
       stdio: ['inherit', 'pipe', 'pipe'],
       shell: false,
@@ -106,8 +110,10 @@ export const runTestFile = (
 
     child.stderr.on('data', stdOut);
 
-    child.on('close', (code) => {
+    child.on('close', async (code) => {
       if (showLogs) log();
+
+      if (!(await afterEach(fileRelative, configs))) return false;
 
       const result = code === 0;
 

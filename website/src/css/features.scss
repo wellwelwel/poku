@@ -1,7 +1,8 @@
 @import 'mixins';
 
 .features {
-  p {
+  p,
+  .p {
     @include flex(row, center, flex-start);
     gap: 7.5px;
     margin: 0;
@@ -55,7 +56,8 @@
   &.black {
     color: #000;
 
-    p {
+    p,
+    .p {
       color: #000;
 
       & > span,
@@ -72,7 +74,8 @@
           color: var(--ifm-link-color);
         }
 
-        & > p {
+        & > p,
+        .p {
           display: inline-block;
         }
       }
@@ -90,7 +93,8 @@
 
 html[data-theme='dark'] {
   .features {
-    p {
+    p,
+    .p {
       color: #fff;
 
       & > span {

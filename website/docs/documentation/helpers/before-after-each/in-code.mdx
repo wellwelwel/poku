@@ -1,0 +1,219 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# In-Code
+
+## How can I combine `beforeEach`, `afterEach` and `assert`?
+
+Both `beforeEach`, `afterEach` are recommended for tests that consume a particular global state for each test.<br />
+For example, by populating or resetting a database before and/or after multiple assertions).
+
+### See how Poku solve it 🧙🏻
+
+<Tabs>
+  <TabItem default value='Using beforeEach and afterEach'>
+
+    ```ts
+    import { assert, beforeEach, afterEach } from 'poku';
+
+    const prepareService = () => true;
+    const resetService = () => true;
+
+    beforeEach(() => prepareService());
+    afterEach(() => resetService());
+
+    assert(true, 'Test A');
+    assert(true, 'Test B');
+    assert(true, 'Test C');
+    assert(true, 'Test D');
+    ```
+
+:::tip
+
+- ✅ Handling **global** and **external** services (_preparing a database, for example_)
+- ✅ It's made for **exclusive use** in combination with **Poku**'s **`assert`** methods
+- ✅ You can combine `beforeEach`, `afetrEach` and all `assert` methods, except for `assert.fail(message?: string)`.
+
+:::
+
+:::danger
+
+- ❌ Don't change local variables and states inside `beforeEach` or `afterEach` ([_use a mock instead_](/docs/category/mock))
+
+:::
+
+  </TabItem>
+  <TabItem value='Without beforeEach and afterEach'>
+  
+    ```ts
+    import { assert } from 'poku';
+    
+    const prepareService = () => true;
+    const resetService = () => true;
+
+    prepareService();
+    assert(true, 'Test A');
+    resetService();
+
+    prepareService();
+    assert(true, 'Test B');
+    resetService();
+
+    prepareService();
+    assert(true, 'Test C');
+    resetService();
+
+    prepareService();
+    assert(true, 'Test D');
+    resetService();
+    ```
+
+  </TabItem>
+  <TabItem value='🐷 Exclusive Features'>
+  
+  **Poku** provides three optional methods from both `beforeEach` and `afterEach`:
+  
+    - `.pause()`
+    - `.continue()`
+    - `.reset()`
+  
+    ```ts
+    import { assert, beforeEach, afterEach } from 'poku';
+    
+    const prepareService = () => true;
+    const resetService = () => true;
+
+    const before = beforeEach(() => prepareService());
+    const after = afterEach(() => resetService());
+
+    assert.ok(true, 'Test A');
+    assert.ok(true, 'Test B');
+
+    before.pause();
+
+    assert.ok(true, 'Test C');
+    assert.ok(true, 'Test D');
+
+    before.continue();
+
+    assert.ok(true, 'Test E');
+
+    // From now, it will not run beforeEach until you declare it again.
+    before.reset();
+
+    assert.ok(true, 'Test F');
+    ```
+
+:::tip
+You can overwriting both `beforeEach` and `afterEach` by declaring them again anytime.
+:::
+
+  </TabItem>
+</Tabs>
+
+### By using Promises
+
+<Tabs>
+  <TabItem default value='Using beforeEach and afterEach'>
+
+    ```ts
+    import { assertPromise as assert, beforeEach, afterEach } from 'poku';
+
+    const prepareService = () => new Promise((resolve) => resolve(true));
+    const resetService = () => new Promise((resolve) => resolve(true));
+
+    beforeEach(async () => await prepareService());
+    afterEach(async () => await resetService());
+
+    await assert(true, 'Test A');
+    await assert(true, 'Test B');
+    await assert(true, 'Test C');
+    await assert(true, 'Test D');
+    ```
+
+:::tip
+
+- ✅ Handling **global** and **external** services (_preparing a database, for example_)
+- ✅ It's made for **exclusive use** in combination with **Poku**'s **`assert`** methods
+- ✅ You can combine `beforeEach`, `afetrEach` and all `assert` methods, except for `assert.fail(message?: string)`.
+
+:::
+
+:::danger
+
+- ❌ Don't change local variables and states inside `beforeEach` or `afterEach` ([_use a mock instead_](/docs/category/mock))
+
+:::
+
+  </TabItem>
+  <TabItem  value='Without beforeEach and afterEach'>
+
+    ```ts
+    import { assert } from 'poku';
+
+    const prepareService = () => new Promise((resolve) => resolve(true));
+    const resetService = () => new Promise((resolve) => resolve(true));
+
+    await prepareService();
+    assert(true, 'Test A');
+    await resetService();
+
+    await prepareService();
+    assert(true, 'Test B');
+    await resetService();
+
+    await prepareService();
+    assert(true, 'Test C');
+    await resetService();
+
+    await prepareService();
+    assert(true, 'Test D');
+    await resetService();
+    ```
+
+  </TabItem>
+  <TabItem  value='🐷 Exclusive Features'>
+  
+    **Poku** provides three optional methods from both `beforeEach` and `afterEach`:
+  
+    - `.pause()`
+    - `.continue()`
+    - `.reset()`
+
+    ```ts
+    import { assertPromise as assert, beforeEach, afterEach } from 'poku';
+
+    const prepareService = () => new Promise((resolve) => resolve(true));
+    const resetService = () => new Promise((resolve) => resolve(true));
+
+    const before = await beforeEach(async () => await prepareService());
+    const after = await afterEach(async () => await resetService());
+
+    await assert.ok(true, 'Test A');
+    await assert.ok(true, 'Test B');
+
+    before.pause();
+
+    await assert.ok(true, 'Test C');
+    await assert.ok(true, 'Test D');
+
+    before.continue();
+
+    await assert.ok(true, 'Test E');
+
+    // From now, it will not run beforeEach until you declare it again.
+    before.reset();
+
+    await assert.ok(true, 'Test F');
+    ```
+
+:::tip
+You can overwriting both `beforeEach` and `afterEach` by declaring them again anytime.
+:::
+
+  </TabItem>
+</Tabs>

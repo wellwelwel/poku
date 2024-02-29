@@ -7,13 +7,6 @@ on:
       - 'website/**'
   workflow_dispatch:
 
-env:
-  SRV_HOST: ${{secrets.SRV_HOST}}
-  SRV_USER: ${{secrets.SRV_USER}}
-  SRV_PORT: ${{secrets.SRV_PORT}}
-  SRV_PASS: ${{secrets.SRV_PASS}}
-  APP_PORT: ${{secrets.APP_PORT}}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -47,11 +40,21 @@ jobs:
 
       - name: Checking Docker Build
         run: cd website && docker compose up -d --build
+        env:
+          APP_PORT: ${{secrets.APP_PORT}}
 
       - name: Checking for Service Status Header
         run: |
           sleep 1
-          curl --fail --silent --output /dev/null http://localhost:3000
+          curl --fail --silent --output /dev/null http://localhost:${{ env.APP_PORT }}
+        env:
+          APP_PORT: ${{secrets.APP_PORT}}
 
       - name: Deploy
         run: cd website && npm run deploy
+        env:
+          SRV_HOST: ${{secrets.SRV_HOST}}
+          SRV_USER: ${{secrets.SRV_USER}}
+          SRV_PORT: ${{secrets.SRV_PORT}}
+          SRV_PASS: ${{secrets.SRV_PASS}}
+          APP_PORT: ${{secrets.APP_PORT}}

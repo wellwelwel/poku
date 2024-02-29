@@ -51,4 +51,32 @@ export type Configs = {
    * @default 'node'
    */
   platform?: 'node' | 'bun' | 'deno';
+  /**
+   * You can use this option to run a **callback** or a **file** before each test file on your suite.
+   *
+   * Ex.:
+   *
+   * ```ts
+   * beforeEach(prepare)
+   * ```
+   *
+   * ```ts
+   * beforeEach('/tools/prepare.ts')
+   * ```
+   */
+  beforeEach?: () => unknown | Promise<unknown>;
+  /**
+   * You can use this option to run a **callback** or a **file** after each test file on your suite.
+   *
+   * Ex.:
+   *
+   * ```ts
+   * afterEach(cleanup)
+   * ```
+   *
+   * ```ts
+   * afterEach('/tools/cleanup.ts')
+   * ```
+   */
+  afterEach?: () => unknown | Promise<unknown>;
 } & ListFilesConfigs;

@@ -16,6 +16,8 @@ It supports both [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
 
 - [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatible.
 
+> The `assert` is used to write tests and verify if your code works as expected by comparing values and throwing errors, otherwise 🧑🏻‍🎓
+>
 > _Since **1.3.0**_
 
 ## Migrating to **Poku**'s `assert`
@@ -47,7 +49,20 @@ assert.deepStrictEqual(1, '1', 'My optional custom message');
 // ...
 ```
 
+:::tip
+**Poku**'s `assert` will use the message exactly as it is when using `describe` and `it`. <br />
+Your **Poku** is waiting for you 🐷✨
+:::
+
+<hr />
+
 ## Available methods
+
+```ts
+import { assert, assertPromise } from 'poku';
+```
+
+> You can combine promise **assert** with beforeEach and afterEach helpers.
 
 - `assert(value[, message])`
 - `assert.deepEqual(actual, expected[, message])`
@@ -72,7 +87,7 @@ You can follow the [**assert documentation**](https://nodejs.org/api/assert.html
 
 :::info
 
-To use `assert` with **TypeScript**, you will need to instal **@types/node**:
+To use `assert` with **TypeScript**, you may will need to instal **@types/node**:
 
 ```bash
 npm i -D @types/node
