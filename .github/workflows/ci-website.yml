@@ -5,9 +5,6 @@ on:
       - 'website/**'
   workflow_dispatch:
 
-env:
-  APP_PORT: ${{secrets.APP_PORT}}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -44,8 +41,12 @@ jobs:
 
       - name: Checking Docker Build
         run: cd website && docker compose up -d --build
+        env:
+          APP_PORT: ${{secrets.APP_PORT}}
 
       - name: Checking for Service Status Header
         run: |
           sleep 1
-          curl --fail --silent --output /dev/null http://localhost:3000
+          curl --fail --silent --output /dev/null http://localhost:${{ env.APP_PORT }}
+        env:
+          APP_PORT: ${{secrets.APP_PORT}}

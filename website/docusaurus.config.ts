@@ -10,7 +10,7 @@ const config: Config = {
   organizationName: 'wellwelwel',
   projectName: 'poku',
   trailingSlash: false,
-  favicon: 'img/silhouette.svg',
+  favicon: 'favicon.ico',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',

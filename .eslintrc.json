@@ -39,7 +39,7 @@
     "eqeqeq": [2, "always"],
     "no-var": 2,
     "block-scoped-var": 2,
-    "no-async-promise-executor": 2,
+    "no-async-promise-executor": "off",
     "no-bitwise": [2, { "allow": ["~"] }],
     "no-duplicate-imports": [2, { "includeExports": true }],
     "no-eq-null": 2,

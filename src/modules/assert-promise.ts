@@ -3,81 +3,73 @@ import {
   parseAssertion,
   ParseAssertionOptions,
 } from '../helpers/parseAsssetion.js';
+import { each } from './assert.js';
 
-type Each = {
-  before?: undefined | (() => unknown);
-  after?: undefined | (() => unknown);
-};
-
-export const each: Each = {
-  before: undefined,
-  after: undefined,
-};
-
-const ok = (
+const ok = async (
   value: unknown,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
+): Promise<void> => {
+  if (each.before) await each.before();
   parseAssertion(() => nodeAssert.ok(value), { message });
-  each.after && each.after();
+  if (each.after) await each.after();
 };
 
-const equal = (
+const equal = async (
   actual: unknown,
   expected: unknown,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
+): Promise<void> => {
+  if (each.before) await each.before();
   parseAssertion(() => nodeAssert.equal(actual, expected), { message });
-  each.after && each.after();
+  if (each.after) await each.after();
 };
 
-const deepEqual = (
+const deepEqual = async (
   actual: unknown,
   expected: unknown,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
-  parseAssertion(() => nodeAssert.deepEqual(actual, expected), { message });
-  each.after && each.after();
+): Promise<void> => {
+  if (each.before) await each.before();
+  parseAssertion(() => nodeAssert.deepEqual(actual, expected), {
+    message,
+  });
+  if (each.after) await each.after();
 };
 
-const strictEqual = (
+const strictEqual = async (
   actual: unknown,
   expected: unknown,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
-  parseAssertion(() => nodeAssert.strictEqual(actual, expected), { message });
-  each.after && each.after();
+): Promise<void> => {
+  if (each.before) await each.before();
+  parseAssertion(() => nodeAssert.strictEqual(actual, expected), {
+    message,
+  });
+  if (each.after) await each.after();
 };
 
-const deepStrictEqual = (
+const deepStrictEqual = async (
   actual: unknown,
   expected: unknown,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
+): Promise<void> => {
+  if (each.before) await each.before();
   parseAssertion(() => nodeAssert.deepStrictEqual(actual, expected), {
     message,
   });
-  each.after && each.after();
+  if (each.after) await each.after();
 };
 
-const doesNotMatch = (
+const doesNotMatch = async (
   value: string,
   regExp: RegExp,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
+): Promise<void> => {
+  if (each.before) await each.before();
   parseAssertion(() => nodeAssert.doesNotMatch(value, regExp), {
     message,
-    actual: 'Value',
-    expected: 'RegExp',
-    defaultMessage: 'Value should not match regExp',
   });
-  each.after && each.after();
+  if (each.after) await each.after();
 };
 
 function doesNotReject(
@@ -100,9 +92,9 @@ async function doesNotReject(
     typeof errorOrMessage === 'object'
   ) {
     try {
-      each.before && each.before();
+      if (each.before) await each.before();
       await nodeAssert.doesNotReject(block, errorOrMessage);
-      each.after && each.after();
+      if (each.after) await each.after();
     } catch (error) {
       parseAssertion(
         () => {
@@ -118,9 +110,9 @@ async function doesNotReject(
     }
   } else {
     try {
-      each.before && each.before();
+      if (each.before) await each.before();
       await nodeAssert.doesNotReject(block);
-      each.after && each.after();
+      if (each.after) await each.after();
     } catch (error_1) {
       parseAssertion(
         () => {
@@ -147,20 +139,20 @@ function doesNotThrow(
   error: nodeAssert.AssertPredicate,
   message?: ParseAssertionOptions['message']
 ): void;
-function doesNotThrow(
+async function doesNotThrow(
   block: () => unknown,
   errorOrMessage?: nodeAssert.AssertPredicate | string | Error,
   message?: ParseAssertionOptions['message']
-): void {
+): Promise<Promise<void>> {
   if (
     typeof errorOrMessage === 'function' ||
     errorOrMessage instanceof RegExp ||
     typeof errorOrMessage === 'object'
   ) {
     try {
-      each.before && each.before();
+      if (each.before) await each.before();
       nodeAssert.doesNotThrow(block, errorOrMessage, message);
-      each.after && each.after();
+      if (each.after) await each.after();
     } catch (error) {
       parseAssertion(
         () => {
@@ -177,9 +169,9 @@ function doesNotThrow(
   } else {
     const msg = typeof errorOrMessage === 'string' ? errorOrMessage : undefined;
     try {
-      each.before && each.before();
+      if (each.before) await each.before();
       nodeAssert.doesNotThrow(block, msg);
-      each.after && each.after();
+      if (each.after) await each.after();
     } catch (error) {
       parseAssertion(
         () => {
@@ -205,22 +197,22 @@ function throws(
   error: nodeAssert.AssertPredicate,
   message?: ParseAssertionOptions['message']
 ): void;
-function throws(
+async function throws(
   block: () => unknown,
   errorOrMessage?:
     | nodeAssert.AssertPredicate
     | ParseAssertionOptions['message'],
   message?: ParseAssertionOptions['message']
-): void {
+): Promise<Promise<void>> {
   if (
     typeof errorOrMessage === 'function' ||
     errorOrMessage instanceof RegExp ||
     typeof errorOrMessage === 'object'
   ) {
     try {
-      each.before && each.before();
+      if (each.before) await each.before();
       nodeAssert.throws(block, errorOrMessage, message);
-      each.after && each.after();
+      if (each.after) await each.after();
     } catch (error) {
       parseAssertion(
         () => {
@@ -236,9 +228,9 @@ function throws(
   } else {
     const msg = typeof errorOrMessage === 'string' ? errorOrMessage : undefined;
     try {
-      each.before && each.before();
+      if (each.before) await each.before();
       nodeAssert.throws(block, message);
-      each.after && each.after();
+      if (each.after) await each.after();
     } catch (error) {
       parseAssertion(
         () => {
@@ -254,72 +246,69 @@ function throws(
   }
 }
 
-const notEqual = (
+const notEqual = async (
   actual: unknown,
   expected: unknown,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
+): Promise<void> => {
+  if (each.before) await each.before();
   parseAssertion(() => nodeAssert.notEqual(actual, expected), {
     message,
   });
-  each.after && each.after();
+  if (each.after) await each.after();
 };
 
-const notDeepEqual = (
+const notDeepEqual = async (
   actual: unknown,
   expected: unknown,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
-  parseAssertion(() => nodeAssert.notDeepEqual(actual, expected), { message });
-  each.after && each.after();
+): Promise<void> => {
+  if (each.before) await each.before();
+  parseAssertion(() => nodeAssert.notDeepEqual(actual, expected), {
+    message,
+  });
+  if (each.after) await each.after();
 };
 
-const notStrictEqual = (
+const notStrictEqual = async (
   actual: unknown,
   expected: unknown,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
+): Promise<void> => {
+  if (each.before) await each.before();
   parseAssertion(() => nodeAssert.notStrictEqual(actual, expected), {
     message,
   });
-  each.after && each.after();
+  if (each.after) await each.after();
 };
 
-const notDeepStrictEqual = (
+const notDeepStrictEqual = async (
   actual: unknown,
   expected: unknown,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
+): Promise<void> => {
+  if (each.before) await each.before();
   parseAssertion(() => nodeAssert.notDeepStrictEqual(actual, expected), {
     message,
   });
-  each.after && each.after();
+  if (each.after) await each.after();
 };
 
-const match = (
+const match = async (
   value: string,
   regExp: RegExp,
   message?: ParseAssertionOptions['message']
-): void => {
-  each.before && each.before();
-  parseAssertion(() => nodeAssert.match(value, regExp), {
-    message,
-    actual: 'Value',
-    expected: 'RegExp',
-    defaultMessage: 'Value should match regExp',
-  });
-  each.after && each.after();
+): Promise<void> => {
+  if (each.before) await each.before();
+  parseAssertion(() => nodeAssert.match(value, regExp), { message });
+  if (each.after) await each.after();
 };
 
-const ifError = (value: unknown): void => {
+const ifError = async (value: unknown): Promise<void> => {
   try {
-    each.before && each.before();
+    if (each.before) await each.before();
     nodeAssert.ifError(value);
-    each.after && each.after();
+    if (each.after) await each.after();
   } catch (error) {
     parseAssertion(
       () => {
@@ -371,9 +360,9 @@ async function rejects(
     typeof errorOrMessage === 'object'
   ) {
     try {
-      each.before && each.before();
+      if (each.before) await each.before();
       await nodeAssert.rejects(block, errorOrMessage);
-      each.after && each.after();
+      if (each.after) await each.after();
     } catch (error) {
       parseAssertion(
         () => {
@@ -390,9 +379,9 @@ async function rejects(
   } else {
     const msg = typeof errorOrMessage === 'string' ? errorOrMessage : undefined;
     try {
-      each.before && each.before();
+      if (each.before) await each.before();
       await nodeAssert.rejects(block);
-      each.after && each.after();
+      if (each.after) await each.after();
     } catch (error_1) {
       parseAssertion(
         () => {
@@ -408,7 +397,7 @@ async function rejects(
   }
 }
 
-export const assert = Object.assign(
+export const assertPromise = Object.assign(
   (value: unknown, message?: ParseAssertionOptions['message']) =>
     ok(value, message),
   {

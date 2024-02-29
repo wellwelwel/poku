@@ -12,6 +12,8 @@
 [ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/codeql.yml?event=push&style=flat&label=Code%20QL&branch=main
 [license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
 [license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff&label=License
+[downloads-image]: https://img.shields.io/npm/dt/poku.svg?&color=FFC312&label=Downloads
+[downloads-url]: https://npmjs.org/package/poku
 
 # Poku
 
@@ -27,6 +29,7 @@
 [![TypeScript Version][typescript-version-image]][typescript-url]
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![GitHub Workflow Status (with event)][ql-image]][ql-url]
+[![NPM Downloads][downloads-image]][downloads-url]
 [![License][license-image]][license-url]
 
 Enjoying **Poku**? Consider giving him a star ⭐️
@@ -39,7 +42,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ## Why Poku?
 
-Let's make `describe`, `beforeEach` and everything else easier ([**see why and how**](https://poku.dev/docs/examples/beforeEach)) 🚀 <br/>
+Let's make `describe`, `beforeEach` and everything else easier 🚀 <br/>
 
 - Supports **ESM** and **CJS**
 - Designed to be highly intuitive
