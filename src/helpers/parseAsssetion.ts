@@ -23,9 +23,19 @@ const findFile = (error: Error) => {
 
   for (const line of stackLines) {
     if (!line.includes(basePath)) {
-      const match = line.match(/at\s(\/.+|file:\/\/\/.+)/i);
+      const match = line.match(
+        /at\s(\/.+|file:.+)|^(\s+)at\smodule\scode\s\((\/.+|file:.+)\)/i
+      );
+
+      // Node and Deno
       if (match && match[1]) {
         file = match[1];
+        break;
+      }
+
+      // Bun
+      if (match && match[3]) {
+        file = match[3];
         break;
       }
     }
@@ -57,7 +67,7 @@ export const parseAssertion = (
   } catch (error) {
     if (error instanceof assert.AssertionError) {
       const { code, actual, expected, operator } = error;
-      const absoultePath = findFile(error);
+      const absoultePath = findFile(error).replace(/file:/, '');
       const file = path.relative(path.resolve(process.cwd()), absoultePath);
 
       let message: string = '';
