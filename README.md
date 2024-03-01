@@ -21,7 +21,7 @@
 
 **Poku** is your test runner pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] combining **flexibility**, **parallel** and **sequential** runs, **human-friendly assertion errors** and **high isolation level**.
 
-> By creating **Poku**, my aim is to show that testing can be simpler.
+> By creating **Poku**, my aim is to show that testing can be simpler 🌱
 
 [![Node.js Version][node-version-image]][node-version-url]
 [![Bun Version][bun-version-image]][bun-version-url]
@@ -36,7 +36,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ---
 
-🐷 [**Documentation Website**](https://poku.dev) • 🔬 [**Compare Poku with the Most Popular Test Runners**](https://poku.dev/docs/comparing) • 🧪 [**Examples**](https://poku.dev/docs/category/examples)
+🐷 [**Documentation**](https://poku.dev) • 🧪 [**Examples**](https://poku.dev/docs/category/examples) • 🔬 [**Compare Poku with the Most Popular Test Runners**](https://poku.dev/docs/comparing)
 
 ---
 
@@ -56,46 +56,9 @@ Let's make `describe`, `beforeEach` and everything else easier 🚀 <br/>
 
 ---
 
-- [![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
-- **Zero** external dependencies 🌱
-
----
-
-## Documentation
-
-- See detailed usage in [**Documentation**](https://poku.dev/docs/category/documentation) section for **Poku**'s **CLI**, **API (_in-code_)** and **assert**, advanced concepts and much more.
-
----
-
-## Examples
-
-- See real example usages in [**Examples**](https://poku.dev/docs/category/examples) section for **Poku**'s + **Mock**, **Virutal DOM** and more.
-
----
-
-## Overview
-
-### `poku`
-
-| Sequential                                         | Concurrent                                       |
-| -------------------------------------------------- | ------------------------------------------------ |
-| <img src=".github/assets/readme/sequential.png" /> | <img src=".github/assets/readme/parallel.png" /> |
-
-> [**See the complete `poku` documentation**](https://poku.dev/docs/category/poku).
-
----
-
-### `assert`
-
-| Using `poku`                                        | Using `node`                                        |
-| --------------------------------------------------- | --------------------------------------------------- |
-| <img src=".github/assets/readme/assert-poku.png" /> | <img src=".github/assets/readme/assert-node.png" /> |
-
-> [**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
-
----
-
 ## Install
+
+[![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
 
 ### **Node.js**
 
@@ -121,9 +84,27 @@ bun add -d poku
 import { poku } from 'npm:poku';
 ```
 
+You can also use **Poku** with [**esm.sh**](https://esm.sh):
+
+```ts
+import { poku } from 'https://esm.sh/poku';
+```
+
 ---
 
 ## Quick Start
+
+### `assert`
+
+Use it exactly as it's for **Node.js** 💚
+
+```ts
+import { asesrt } from 'poku';
+
+assert(true, 'Poku will describe it 📝');
+```
+
+> [**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
 
 ### `poku`
 
@@ -135,46 +116,47 @@ import { poku } from 'npm:poku';
 
 ```bash
 npx poku targetPath
-npx poku targetPathA,targetPathB
 ```
 
 > <img src=".github/assets/readme/bun.svg" width="24" />
 
 ```bash
 bun poku targetPath
-bun poku targetPathA,targetPathB
 ```
 
 > <img src=".github/assets/readme/deno.svg" width="24" />
 
 ```bash
 deno run npm:poku targetPath
-deno run npm:poku targetPathA,targetPathB
 ```
 
-#### API (_In-code_)
+> [**See the complete `poku` documentation**](https://poku.dev/docs/category/poku).
 
-##### Node.js, TypeScript (Node.js) and Bun
+---
 
-```ts
-import { poku } from 'poku';
+## Overview
 
-await poku(['targetPath']);
-```
+### `poku`
 
-##### Deno
+| Sequential                                         | Concurrent                                       |
+| -------------------------------------------------- | ------------------------------------------------ |
+| <img src=".github/assets/readme/sequential.png" /> | <img src=".github/assets/readme/parallel.png" /> |
 
-```ts
-import { poku } from 'npm:poku';
+> [**See the complete `poku` documentation**](https://poku.dev/docs/category/poku).
 
-await poku(['targetPath']);
-```
+---
 
 ### `assert`
 
-Use it exactly as it's for **Node.js** 💚
+| Using `poku`                                        | Using `node`                                        |
+| --------------------------------------------------- | --------------------------------------------------- |
+| <img src=".github/assets/readme/assert-poku.png" /> | <img src=".github/assets/readme/assert-node.png" /> |
+
+> [**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
 
 ---
+
+## Documentation and Examples
 
 To see the detailed documentation, please visit the [**Documentation**](https://poku.dev/docs/category/documentation) and [**Examples**](https://poku.dev/docs/category/examples) sections in the [**Poku**'s website](https://poku.dev).
 
