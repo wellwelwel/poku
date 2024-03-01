@@ -56,7 +56,9 @@ By creating **Poku**, my aim is to show that testing can be simpler 🌱
 
 ---
 
-## Install
+## Quick Start
+
+### Install Poku
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
 
@@ -98,10 +100,6 @@ import { poku } from 'npm:poku';
 </td>
 </tr>
 </table>
-
----
-
-## Quick Start
 
 ### Test it 🔬
 
