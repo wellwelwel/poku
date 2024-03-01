@@ -1,10 +1,11 @@
-name: CI
+name: 'CI'
 on:
   push:
     branches:
       - 'main'
   pull_request:
   workflow_dispatch:
+
 jobs:
   node:
     runs-on: ubuntu-latest
@@ -122,3 +123,35 @@ jobs:
 
       - name: 🔬 Deno ${{ matrix.node-version }}
         run: FILTER=deno-${{ matrix.node-version }} npm run test:ci
+
+  coverage:
+    needs: [node, bun, deno]
+    runs-on: ubuntu-latest
+    name: ☔️ Coverage
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21.x'
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🤹🏻‍♀️ Checking for Coverage
+        run: npm run test:coverage
+
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: wellwelwel/poku

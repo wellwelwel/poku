@@ -1,4 +1,4 @@
-name: 'CI - Website'
+name: 'CI'
 on:
   pull_request:
     paths:
@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    name: 🌎 Website
     steps:
       - name: Actions - Checkout
         uses: actions/checkout@v4

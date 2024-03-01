@@ -1,4 +1,4 @@
-name: '📩 Release Please'
+name: 'Publish'
 on:
   push:
     branches:
@@ -10,6 +10,7 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    name: 📩 Release Please
     steps:
       - name: 🤝 Release Please
         uses: google-github-actions/release-please-action@v3

@@ -19,9 +19,7 @@
 
 <img align="right" width="128" height="128" alt="Logo" src=".github/assets/readme/poku.svg">
 
-**Poku** is your test runner pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] combining **flexibility**, **parallel** and **sequential** runs, **human-friendly assertion errors** and **high isolation level**.
-
-> By creating **Poku**, my aim is to show that testing can be simpler.
+**Poku** is your Test Runner Pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
 
 [![Node.js Version][node-version-image]][node-version-url]
 [![Bun Version][bun-version-image]][bun-version-url]
@@ -36,40 +34,123 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ---
 
-🐷 [**Documentation Website**](https://poku.dev) • 🔬 [**Compare Poku with the Most Popular Test Runners**](https://poku.dev/docs/comparing) • 🧪 [**Examples**](https://poku.dev/docs/category/examples)
+🐷 [**Documentation**](https://poku.dev) • 🧪 [**Examples**](https://poku.dev/docs/category/examples) • 🔬 [**Compare the Most Popular Test Runners**](https://poku.dev/docs/comparing)
 
 ---
 
 ## Why Poku?
 
-Let's make `describe`, `beforeEach` and everything else easier 🚀 <br/>
+By creating **Poku**, my aim is to show that testing can be simpler 🌱
 
+- No configurations
 - Supports **ESM** and **CJS**
+- High **isolation** level per file
+- Zero external dependencies
+- **Parallel** and **Sequential** runs
 - Designed to be highly intuitive
 - Compatible with **Coverage** tools
 - [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
-- Zero configurations, except you want
-- Allows both **API (_in-code_)** and **CLI** usage
-- Poku adapts to your test, not the other way around
-- You can use **Poku**'s `assert` with every test runner you want
-- [**And much more!**](https://poku.dev)
+- You don't need to learn it all at once to get started 🧑🏻‍🎓
+
+> _Poku adapts to your test, not the other way around._
 
 ---
 
-- [![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
-- **Zero** external dependencies 🌱
+## Install
+
+[![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
+
+<table>
+<tr>
+<th><img src=".github/assets/readme/node-js.svg" width="24" /></th>
+<th><img src=".github/assets/readme/node-js.svg" width="24" /> <img src=".github/assets/readme/plus.svg" width="24" /> <img src=".github/assets/readme/typescript.svg" width="24" /></th>
+<th><img src=".github/assets/readme/bun.svg" width="24" /></th>
+<th><img src=".github/assets/readme/deno.svg" width="24" /></th>
+</tr>
+<tr>
+<td width="400">
+
+```bash
+npm i -D poku
+```
+
+</td>
+<td width="400">
+
+```bash
+npm i -D poku tsx
+```
+
+</td>
+<td width="400">
+
+```bash
+bun add -d poku
+```
+
+</td>
+<td width="400">
+
+```ts
+import { poku } from 'npm:poku';
+```
+
+</td>
+</tr>
+</table>
 
 ---
 
-## Documentation
+## Quick Start
 
-- See detailed usage in [**Documentation**](https://poku.dev/docs/category/documentation) section for **Poku**'s **CLI**, **API (_in-code_)** and **assert**, advanced concepts and much more.
+### Test it 🔬
 
----
+_`test/file.test.js`_
 
-## Examples
+```ts
+import { assert } from 'poku';
 
-- See real example usages in [**Examples**](https://poku.dev/docs/category/examples) section for **Poku**'s + **Mock**, **Virutal DOM** and more.
+assert(true, 'Poku will describe it 📝');
+```
+
+[**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
+
+### Run it 🚀
+
+<table>
+<tr>
+<th><img src=".github/assets/readme/node-js.svg" width="24" /></th>
+<th><img src=".github/assets/readme/bun.svg" width="24" /></th>
+<th><img src=".github/assets/readme/deno.svg" width="24" /></th>
+</tr>
+<tr>
+<td width="400">
+
+```bash
+npx poku
+```
+
+</td>
+<td width="400">
+
+```bash
+bun poku
+```
+
+</td>
+<td width="400">
+
+```bash
+deno run npm:poku
+```
+
+</td>
+</tr>
+</table>
+
+[**See the complete `poku` documentation**](https://poku.dev/docs/category/poku).
+
+### That's it 🎉
 
 ---
 
@@ -87,6 +168,9 @@ Let's make `describe`, `beforeEach` and everything else easier 🚀 <br/>
 
 ### `assert`
 
+- 💚 Use it exactly as it's for **Node.js**
+- 🐷 **Node.js**, **Bun** and **Deno** compatibility.
+
 | Using `poku`                                        | Using `node`                                        |
 | --------------------------------------------------- | --------------------------------------------------- |
 | <img src=".github/assets/readme/assert-poku.png" /> | <img src=".github/assets/readme/assert-node.png" /> |
@@ -95,86 +179,7 @@ Let's make `describe`, `beforeEach` and everything else easier 🚀 <br/>
 
 ---
 
-## Install
-
-### **Node.js**
-
-```bash
-npm i -D poku
-```
-
-### TypeScript (Node.js)
-
-```bash
-npm i -D poku tsx
-```
-
-### Bun
-
-```bash
-bun add -d poku
-```
-
-### **Deno**
-
-```ts
-import { poku } from 'npm:poku';
-```
-
----
-
-## Quick Start
-
-### `poku`
-
-#### CLI
-
-> Try to set the flag `--parallel` before the target path 🚀
-
-> <img src=".github/assets/readme/node-js.svg" width="24" />
-
-```bash
-npx poku targetPath
-npx poku targetPathA,targetPathB
-```
-
-> <img src=".github/assets/readme/bun.svg" width="24" />
-
-```bash
-bun poku targetPath
-bun poku targetPathA,targetPathB
-```
-
-> <img src=".github/assets/readme/deno.svg" width="24" />
-
-```bash
-deno run npm:poku targetPath
-deno run npm:poku targetPathA,targetPathB
-```
-
-#### API (_In-code_)
-
-##### Node.js, TypeScript (Node.js) and Bun
-
-```ts
-import { poku } from 'poku';
-
-await poku(['targetPath']);
-```
-
-##### Deno
-
-```ts
-import { poku } from 'npm:poku';
-
-await poku(['targetPath']);
-```
-
-### `assert`
-
-Use it exactly as it's for **Node.js** 💚
-
----
+## Documentation and Examples
 
 To see the detailed documentation, please visit the [**Documentation**](https://poku.dev/docs/category/documentation) and [**Examples**](https://poku.dev/docs/category/examples) sections in the [**Poku**'s website](https://poku.dev).
 
@@ -188,7 +193,9 @@ I'm continuously working to improve **Poku**. If you've got something interestin
 
 ## Acknowledgements
 
-- [**Contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
+[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
+
+[![Contributors](https://contrib.rocks/image?repo=wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 ---
 
@@ -207,3 +214,10 @@ Poku is under the [**MIT** License](./LICENSE).
 ## Security Policy
 
 Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Safe?**](https://poku.dev/docs/security) from Documentation.
+
+---
+
+## Author
+
+| [![wellwelwel](https://avatars.githubusercontent.com/u/46850407?v=4?v=3&s=115)<br><sub>@wellwelwel</sub>](https://github.com/wellwelwel) |
+| :--------------------------------------------------------------------------------------------------------------------------------------: |

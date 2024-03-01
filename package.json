@@ -1,10 +1,12 @@
 {
   "name": "poku",
   "version": "1.6.0",
-  "description": "🐷 Poku brings human-friendly testing and assertion to Node.js, Bun & Deno at the same time.",
+  "description": "🐷 Poku makes testing easy for Node.js, Bun & Deno at the same time.",
   "main": "./lib/index.js",
   "scripts": {
     "test": "npx tsx --tsconfig ./tsconfig.test.json ./test/run.test.ts",
+    "pretest:coverage": "npm run build",
+    "test:coverage": "docker compose -f test/docker/docker-compose.coverage.yml up",
     "test:ci": "tsx ./test/ci.test.ts",
     "test:node": "FILTER='node-' npm run test:ci",
     "test:deno": "FILTER='deno-' npm run test:ci",
@@ -96,6 +98,7 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.3",
+    "nyc": "^15.1.0",
     "packages-update": "^1.2.1",
     "prettier": "^3.2.5",
     "tsx": "^4.7.1",
