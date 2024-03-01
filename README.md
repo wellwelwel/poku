@@ -19,7 +19,7 @@
 
 <img align="right" width="128" height="128" alt="Logo" src=".github/assets/readme/poku.svg">
 
-**Poku** is your test runner pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] combining **flexibility**, **parallel** and **sequential** runs, **human-friendly assertion errors** and **high isolation level**.
+**Poku** is your Test Runner Pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
 
 [![Node.js Version][node-version-image]][node-version-url]
 [![Bun Version][bun-version-image]][bun-version-url]
@@ -44,7 +44,9 @@ By creating **Poku**, my aim is to show that testing can be simpler 🌱
 
 - No configurations
 - Supports **ESM** and **CJS**
+- High **isolation** level per file
 - Zero external dependencies
+- **Parallel** and **Sequential** runs
 - Designed to be highly intuitive
 - Compatible with **Coverage** tools
 - [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
