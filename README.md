@@ -48,10 +48,10 @@ Let's make `describe`, `beforeEach` and everything else easier 🚀 <br/>
 - Designed to be highly intuitive
 - Compatible with **Coverage** tools
 - [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
-- Zero configurations, except you want
 - Allows both **API (_in-code_)** and **CLI** usage
 - Poku adapts to your test, not the other way around
 - You can use **Poku**'s `assert` with every test runner you want
+- Zero configurations and external dependencies (_except you want them_)
 - [**And much more!**](https://poku.dev)
 
 ---
@@ -60,43 +60,52 @@ Let's make `describe`, `beforeEach` and everything else easier 🚀 <br/>
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
 
-### **Node.js**
+<table>
+<tr>
+<th><img src=".github/assets/readme/node-js.svg" width="24" /></th>
+<th><img src=".github/assets/readme/node-js.svg" width="24" /> <img src=".github/assets/readme/plus.svg" width="24" /> <img src=".github/assets/readme/typescript.svg" width="24" /></th>
+<th><img src=".github/assets/readme/bun.svg" width="24" /></th>
+<th><img src=".github/assets/readme/deno.svg" width="24" /></th>
+</tr>
+<tr>
+<td width="400">
 
 ```bash
 npm i -D poku
 ```
 
-### TypeScript (Node.js)
+</td>
+<td width="400">
 
 ```bash
 npm i -D poku tsx
 ```
 
-### Bun
+</td>
+<td width="400">
 
 ```bash
 bun add -d poku
 ```
 
-### **Deno**
+</td>
+<td width="400">
 
 ```ts
 import { poku } from 'npm:poku';
 ```
 
-You can also use **Poku** with [**esm.sh**](https://esm.sh):
-
-```ts
-import { poku } from 'https://esm.sh/poku';
-```
+</td>
+</tr>
+</table>
 
 ---
 
 ## Quick Start
 
-### `assert`
+### Test it 🔬
 
-Use it exactly as it's for **Node.js** 💚
+_`test/file.test.js`_
 
 ```ts
 import { asesrt } from 'poku';
@@ -104,33 +113,44 @@ import { asesrt } from 'poku';
 assert(true, 'Poku will describe it 📝');
 ```
 
-> [**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
+[**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
 
-### `poku`
+### Run it 🚀
 
-#### CLI
-
-> Try to set the flag `--parallel` before the target path 🚀
-
-> <img src=".github/assets/readme/node-js.svg" width="24" />
-
-```bash
-npx poku targetPath
-```
-
-> <img src=".github/assets/readme/bun.svg" width="24" />
+<table>
+<tr>
+<th><img src=".github/assets/readme/node-js.svg" width="24" /></th>
+<th><img src=".github/assets/readme/bun.svg" width="24" /></th>
+<th><img src=".github/assets/readme/deno.svg" width="24" /></th>
+</tr>
+<tr>
+<td width="400">
 
 ```bash
-bun poku targetPath
+npx poku
 ```
 
-> <img src=".github/assets/readme/deno.svg" width="24" />
+</td>
+<td width="400">
 
 ```bash
-deno run npm:poku targetPath
+bun poku
 ```
 
-> [**See the complete `poku` documentation**](https://poku.dev/docs/category/poku).
+</td>
+<td width="400">
+
+```bash
+deno run npm:poku
+```
+
+</td>
+</tr>
+</table>
+
+[**See the complete `poku` documentation**](https://poku.dev/docs/category/poku).
+
+### That's it 🎉
 
 ---
 
@@ -147,6 +167,9 @@ deno run npm:poku targetPath
 ---
 
 ### `assert`
+
+- 💚 Use it exactly as it's for **Node.js**
+- 🐷 **Node.js**, **Bun** and **Deno** compatibility.
 
 | Using `poku`                                        | Using `node`                                        |
 | --------------------------------------------------- | --------------------------------------------------- |
