@@ -113,8 +113,6 @@ import { assert } from 'poku';
 assert(true, 'Poku will describe it 📝');
 ```
 
-[**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
-
 ### Run it 🚀
 
 <table>
@@ -148,9 +146,10 @@ deno run npm:poku
 </tr>
 </table>
 
-[**See the complete `poku` documentation**](https://poku.dev/docs/category/poku).
-
 ### That's it 🎉
+
+- [**See the complete `assert`'s documentation**](https://poku.dev/docs/documentation/assert).
+- [**See the complete `poku`'s documentation**](https://poku.dev/docs/category/poku).
 
 ---
 
@@ -162,7 +161,7 @@ deno run npm:poku
 | -------------------------------------------------- | ------------------------------------------------ |
 | <img src=".github/assets/readme/sequential.png" /> | <img src=".github/assets/readme/parallel.png" /> |
 
-> [**See the complete `poku` documentation**](https://poku.dev/docs/category/poku).
+> [**See the complete `poku`'s documentation**](https://poku.dev/docs/category/poku).
 
 ---
 
@@ -175,7 +174,7 @@ deno run npm:poku
 | --------------------------------------------------- | --------------------------------------------------- |
 | <img src=".github/assets/readme/assert-poku.png" /> | <img src=".github/assets/readme/assert-node.png" /> |
 
-> [**See the complete assert's documentation**](https://poku.dev/docs/documentation/assert).
+> [**See the complete `assert`'s documentation**](https://poku.dev/docs/documentation/assert).
 
 ---
 
