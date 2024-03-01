@@ -5,7 +5,8 @@
   "main": "./lib/index.js",
   "scripts": {
     "test": "npx tsx --tsconfig ./tsconfig.test.json ./test/run.test.ts",
-    "test:coverage": "nyc npm run test",
+    "pretest:coverage": "npm run build",
+    "test:coverage": "docker compose -f test/docker/docker-compose.coverage.yml up",
     "test:ci": "tsx ./test/ci.test.ts",
     "test:node": "FILTER='node-' npm run test:ci",
     "test:deno": "FILTER='deno-' npm run test:ci",

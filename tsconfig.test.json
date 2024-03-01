@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["test"],
-  "exclude": ["src", "tools"],
+  "include": ["test", "src"],
+  "exclude": ["tools"],
   "compilerOptions": {
     "outDir": "ci",
     "declaration": false,
