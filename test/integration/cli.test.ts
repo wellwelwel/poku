@@ -3,10 +3,8 @@ import { spawn } from 'node:child_process';
 import { assert } from '../../src/index.js';
 import { runner } from '../../src/helpers/runner.js';
 
-const currentFile =
-  typeof __filename === 'string'
-    ? __filename
-    : new URL(import.meta.url).pathname;
+// `/_.ts`: Simulate TypeScript file for Deno
+const currentFile = typeof __filename === 'string' ? __filename : '/_.ts';
 const runtimeOptions = runner(currentFile);
 const runtime = runtimeOptions.shift()!;
 const ext = runtime === 'node' ? 'js' : 'ts';
