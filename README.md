@@ -193,7 +193,9 @@ I'm continuously working to improve **Poku**. If you've got something interestin
 
 ## Acknowledgements
 
-- [**Contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
+[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
+
+[![Contributors](https://contrib.rocks/image?repo=wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 ---
 
@@ -212,3 +214,10 @@ Poku is under the [**MIT** License](./LICENSE).
 ## Security Policy
 
 Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Safe?**](https://poku.dev/docs/security) from Documentation.
+
+---
+
+## Author
+
+| [![wellwelwel](https://avatars.githubusercontent.com/u/46850407?v=4?v=3&s=115)<br><sub>@wellwelwel</sub>](https://github.com/wellwelwel) |
+| :--------------------------------------------------------------------------------------------------------------------------------------: |
