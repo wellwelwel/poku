@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/wellwelwel/poku/compare/v1.6.0...v1.6.1) (2024-03-01)
+
+
+### Bug Fixes
+
+* **bun:** file path is not parsed ([#58](https://github.com/wellwelwel/poku/issues/58)) ([dad9498](https://github.com/wellwelwel/poku/commit/dad9498b8f6392343da1443d0f7913ec63216126))
+
 ## [1.6.0](https://github.com/wellwelwel/poku/compare/v1.5.1...v1.6.0) (2024-02-29)
 
 
