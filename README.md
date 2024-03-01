@@ -21,8 +21,6 @@
 
 **Poku** is your test runner pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] combining **flexibility**, **parallel** and **sequential** runs, **human-friendly assertion errors** and **high isolation level**.
 
-> By creating **Poku**, my aim is to show that testing can be simpler 🌱
-
 [![Node.js Version][node-version-image]][node-version-url]
 [![Bun Version][bun-version-image]][bun-version-url]
 [![Deno Version][deno-version-image]][deno-version-url]
@@ -42,17 +40,17 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ## Why Poku?
 
-Let's make `describe`, `beforeEach` and everything else easier 🚀 <br/>
+By creating **Poku**, my aim is to show that testing can be simpler 🌱
 
+- No configurations
 - Supports **ESM** and **CJS**
+- Zero external dependencies
 - Designed to be highly intuitive
 - Compatible with **Coverage** tools
 - [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
 - Allows both **API (_in-code_)** and **CLI** usage
 - Poku adapts to your test, not the other way around
-- You can use **Poku**'s `assert` with every test runner you want
-- Zero configurations and external dependencies (_except you want them_)
-- [**And much more!**](https://poku.dev)
+- **And much more**
 
 ---
 
