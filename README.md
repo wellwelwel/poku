@@ -34,7 +34,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ---
 
-🐷 [**Documentation**](https://poku.dev) • 🧪 [**Examples**](https://poku.dev/docs/category/examples) • 🔬 [**Compare Poku with the Most Popular Test Runners**](https://poku.dev/docs/comparing)
+🐷 [**Documentation**](https://poku.dev) • 🧪 [**Examples**](https://poku.dev/docs/category/examples) • 🔬 [**Compare the Most Popular Test Runners**](https://poku.dev/docs/comparing)
 
 ---
 
@@ -48,9 +48,9 @@ By creating **Poku**, my aim is to show that testing can be simpler 🌱
 - Designed to be highly intuitive
 - Compatible with **Coverage** tools
 - [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
-- Allows both **API (_in-code_)** and **CLI** usage
-- Poku adapts to your test, not the other way around
-- **And much more**
+- You don't need to learn it all at once to get started 🧑🏻‍🎓
+
+> _Poku adapts to your test, not the other way around._
 
 ---
 
@@ -106,7 +106,7 @@ import { poku } from 'npm:poku';
 _`test/file.test.js`_
 
 ```ts
-import { asesrt } from 'poku';
+import { assert } from 'poku';
 
 assert(true, 'Poku will describe it 📝');
 ```
