@@ -147,7 +147,10 @@ jobs:
       - name: 📦 Installing Dependencies
         run: npm ci
 
-      - name: 🤹🏻‍♀️ Checking for Coverage
+      - name: 🤹🏻‍♀️ Building the Project
+        run: npm run build
+
+      - name: 🧪 Checking for Coverage
         run: npm run test:coverage
 
       - name: ☔️ Upload coverage reports to Codecov
