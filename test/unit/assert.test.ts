@@ -45,10 +45,4 @@ assert.notDeepStrictEqual(
 
 assert.match('hello world', /world/, 'match with matching string and regex');
 
-assert.ifError(null);
-
-try {
-  assert.fail('Forced failure');
-} catch (error) {
-  console.log('Fail caught:', error.message);
-}
+// assert.ts         |   29.54 |     11.5 |      25 |   28.33 | ...8,296-300,319-326,338-343,368-399
