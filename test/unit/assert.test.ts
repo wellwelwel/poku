@@ -15,12 +15,6 @@ assert.strictEqual('text', 'text', 'strictEqual with same strings');
 assert.deepStrictEqual({ a: 1 }, { a: 1 }, 'deepStrictEqual with same objects');
 assert.deepStrictEqual([1, 2], [1, 2], 'deepStrictEqual with same arrays');
 
-assert.doesNotMatch(
-  'hello',
-  /world/,
-  'doesNotMatch with non-matching string and regex'
-);
-
 assert.doesNotThrow(() => 1 + 1, 'doesNotThrow with non-throwing function');
 
 assert.throws(() => {
@@ -43,4 +37,12 @@ assert.notDeepStrictEqual(
   'notDeepStrictEqual with loosely equal but not strictly deep equal objects'
 );
 
-assert.match('hello world', /world/, 'match with matching string and regex');
+// TODO: Document compatibility from Node.js 12
+// assert.doesNotMatch(
+//   'hello',
+//   /world/,
+//   'doesNotMatch with non-matching string and regex'
+// );
+
+// TODO: Document compatibility from Node.js 12
+// assert.match('hello world', /world/, 'match with matching string and regex');
