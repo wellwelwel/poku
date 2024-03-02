@@ -1,4 +1,4 @@
-import { assert } from '../../src/index.js';
+import { assertPromise as assert } from '../../src/index.js';
 
 assert.ok(true, 'ok with true');
 assert.ok(1, 'ok with 1');
