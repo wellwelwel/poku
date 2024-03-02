@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
-import { Copy, Github, Heart, Package2 } from 'lucide-react';
+import { Github, Heart, Package2 } from 'lucide-react';
 import Link from '@docusaurus/Link';
 import Head from '@docusaurus/Head';
 // eslint-disable-next-line import/no-unresolved
 import Heading from '@theme/Heading';
+import { ConfettiButton } from '@site/src/components/Confetti';
 
 // Asserts
 import '@site/src/css/home.scss';
@@ -17,17 +18,6 @@ import Docs from '@site/static/img/open.svg';
 
 const Home = () => {
   const [size, setSize] = useState<null | string>(null);
-
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast.success('Copied');
-    } catch (error) {
-      toast.error("Couldn't Copy", {
-        description: error instanceof Error ? error.message : undefined,
-      });
-    }
-  };
 
   useEffect(() => {
     if (process.env.NODE_ENV !== 'production') {
@@ -115,7 +105,7 @@ const Home = () => {
                     <Success />
                     <Link to='https://github.com/denoland/deno'>
                       Deno
-                      <small>1.3.0 +</small>
+                      <small>1.30.0 +</small>
                     </Link>
                   </p>
                   <p>
@@ -123,16 +113,6 @@ const Home = () => {
                     <span>
                       <strong>Sequential</strong> and <strong>Parallel</strong>{' '}
                       runs
-                    </span>
-                  </p>
-                  <p>
-                    <Success />
-                    <span>
-                      No need to compile{' '}
-                      <Link to='https://github.com/microsoft/TypeScript'>
-                        <strong>TypeScript</strong>
-                      </Link>{' '}
-                      *
                     </span>
                   </p>
                   <p>
@@ -190,9 +170,7 @@ const Home = () => {
                 </small>
                 <div className='custom-code-block'>
                   npm i -D poku
-                  <button onClick={() => copyToClipboard('npm i -D poku')}>
-                    <Copy />
-                  </button>
+                  <ConfettiButton />
                 </div>
                 <Link aria-label={"Learn the Poku's Documentation"} to='/docs'>
                   Here's How to Start <Docs width={24} height={24} />

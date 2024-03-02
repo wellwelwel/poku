@@ -8,7 +8,6 @@ services:
     volumes:
       - ${PWD}/ci:/usr/app/
       - ${PWD}/node_modules:/usr/app/node_modules/:ro
-      - ${PWD}/coverage:/usr/app/coverage/
     environment:
       NODE_ENV: production
-    command: npx nyc --include src --exclude src/@types --reporter=text --reporter=lcov --all node test/run.test.js
+    command: npx c8 --include "src/**" --exclude "src/@types/**" --reporter=text --reporter=lcov node test/run.test.js

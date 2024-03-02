@@ -12,7 +12,7 @@ Some test runners use **`eval`**, **Poku** prefers to use **`spawn`** to create 
 
 ## Protective Measures
 
-See the [**Protective Measures**](https://poku.dev/docs/security#protective-measures) in the documentation.
+See the [**Protective Measures**](https://poku.io/docs/security#protective-measures) in the documentation.
 
 ---
 

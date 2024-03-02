@@ -1,4 +1,4 @@
-import { assert } from '../../src/index.js';
+import { assertPromise as assert } from '../../src/index.js';
 
 assert.ok(true, 'ok with true');
 assert.ok(1, 'ok with 1');
@@ -38,11 +38,11 @@ assert.notDeepStrictEqual(
 );
 
 // TODO: Document compatibility from Node.js 12
+// assert.match('hello world', /world/, 'match with matching string and regex');
+
+// TODO: Document compatibility from Node.js 12
 // assert.doesNotMatch(
 //   'hello',
 //   /world/,
 //   'doesNotMatch with non-matching string and regex'
 // );
-
-// TODO: Document compatibility from Node.js 12
-// assert.match('hello world', /world/, 'match with matching string and regex');
