@@ -27,9 +27,10 @@
 [![TypeScript Version][typescript-version-image]][typescript-url]
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![GitHub Workflow Status (with event)][ql-image]][ql-url]
-[![codecov](https://codecov.io/gh/wellwelwel/poku/graph/badge.svg?token=8GV3WHDPJH)](https://github.com/wellwelwel/poku/issues/62)
 [![NPM Downloads][downloads-image]][downloads-url]
 [![License][license-image]][license-url]
+
+<!-- ![Codecov](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=Coverage) -->
 
 Enjoying **Poku**? Consider giving him a star ⭐️
 
