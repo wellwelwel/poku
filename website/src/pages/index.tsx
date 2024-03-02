@@ -105,7 +105,7 @@ const Home = () => {
                     <Success />
                     <Link to='https://github.com/denoland/deno'>
                       Deno
-                      <small>1.3.0 +</small>
+                      <small>1.30.0 +</small>
                     </Link>
                   </p>
                   <p>
