@@ -125,7 +125,7 @@ jobs:
         run: FILTER=deno-${{ matrix.node-version }} npm run test:ci
 
   coverage:
-    needs: [node]
+    # needs: [node, bun, deno]
     runs-on: ubuntu-latest
     name: ☔️ Coverage
     steps:
@@ -155,3 +155,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: wellwelwel/poku
+          files: ./ci/coverage/cobertura-coverage.xml
