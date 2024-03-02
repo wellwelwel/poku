@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npx tsx --tsconfig ./tsconfig.test.json ./test/run.test.ts",
     "pretest:coverage": "npm run build",
-    "test:coverage": "docker compose -f test/docker/docker-compose.nyc.yml up",
+    "test:coverage": "docker compose -f test/docker/docker-compose.c8.yml up",
     "test:ci": "tsx ./test/ci.test.ts",
     "test:node": "FILTER='node-' npm run test:ci",
     "test:deno": "FILTER='deno-' npm run test:ci",
@@ -93,6 +93,7 @@
     "@types/node": "^20.11.21",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
+    "c8": "^9.1.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",

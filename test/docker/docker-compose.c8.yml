@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  coverage:
+    container_name: 'coverage'
+    image: node:lts-alpine
+    working_dir: /usr/app
+    volumes:
+      - ${PWD}/ci:/usr/app/
+      - ${PWD}/node_modules:/usr/app/node_modules/:ro
+    environment:
+      NODE_ENV: production
+    command: npx c8 -r cobertura -r lcov -r text node test/run.test.js
