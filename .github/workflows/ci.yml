@@ -151,7 +151,7 @@ jobs:
         run: npm run build
 
       - name: 🧪 Checking for Coverage
-        run: npm run test:coverage
+        run: npm run test:ci:coverage
 
       - name: ☔️ Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
