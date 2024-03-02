@@ -125,7 +125,7 @@ jobs:
         run: FILTER=deno-${{ matrix.node-version }} npm run test:ci
 
   coverage:
-    needs: [node, bun, deno]
+    needs: [node]
     runs-on: ubuntu-latest
     name: ☔️ Coverage
     steps:
@@ -135,7 +135,7 @@ jobs:
       - name: ➕ Actions - Setup NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: '21.x'
+          node-version: '20.x'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
