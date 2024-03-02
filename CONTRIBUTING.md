@@ -42,11 +42,27 @@ FILTER='bun-'  npm run test:ci
 FILTER='deno-' npm run test:ci
 ```
 
+---
+
+### Coverage
+
+```sh
+npm run test:c8
+```
+
+---
+
 ### Lint
 
 ```sh
 npm run lint:checker
 ```
+
+> Also
+>
+> ```sh
+> npm run lint:fix
+> ```
 
 ---
 
