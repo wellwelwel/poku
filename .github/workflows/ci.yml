@@ -155,4 +155,3 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: wellwelwel/poku
-          files: ./ci/coverage/cobertura-coverage.xml!././ci/coverage/tmp
