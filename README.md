@@ -34,7 +34,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ---
 
-🐷 [**Documentation**](https://poku.dev) • 🧪 [**Examples**](https://poku.dev/docs/category/examples) • 🔬 [**Compare the Most Popular Test Runners**](https://poku.dev/docs/comparing)
+🐷 [**Documentation**](https://poku.io) • 🧪 [**Examples**](https://poku.io/docs/category/examples) • 🔬 [**Compare the Most Popular Test Runners**](https://poku.io/docs/comparing)
 
 ---
 
@@ -56,18 +56,18 @@ By creating **Poku**, my aim is to show that testing can be simpler 🌱
 
 ---
 
-## Quick Start
+## Quickstart
 
-### Install Poku
+### Install 📦
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
 
 <table>
 <tr>
-<th><img src=".github/assets/readme/node-js.svg" width="24" /></th>
-<th><img src=".github/assets/readme/node-js.svg" width="24" /> <img src=".github/assets/readme/plus.svg" width="24" /> <img src=".github/assets/readme/typescript.svg" width="24" /></th>
-<th><img src=".github/assets/readme/bun.svg" width="24" /></th>
-<th><img src=".github/assets/readme/deno.svg" width="24" /></th>
+<td><img src=".github/assets/readme/node-js.svg" width="24" /></td>
+<td><img src=".github/assets/readme/node-js.svg" width="24" /> <img src=".github/assets/readme/plus.svg" width="24" /> <img src=".github/assets/readme/typescript.svg" width="24" /></td>
+<td><img src=".github/assets/readme/bun.svg" width="24" /></td>
+<td><img src=".github/assets/readme/deno.svg" width="24" /></td>
 </tr>
 <tr>
 <td width="400">
@@ -103,21 +103,32 @@ import { poku } from 'npm:poku';
 
 ### Test it 🔬
 
-_`test/file.test.js`_
+<table>
+<tr>
+<td>
+<em><code>test/file.test.js</code></em>
+</td>
+</tr>
+<tr>
+<td width="1200">
 
 ```ts
 import { assert } from 'poku';
 
-assert(true, 'Poku will describe it 📝');
+assert(true, 'Poku will describe it 🐷');
 ```
+
+</td>
+</tr>
+</table>
 
 ### Run it 🚀
 
 <table>
 <tr>
-<th><img src=".github/assets/readme/node-js.svg" width="24" /></th>
-<th><img src=".github/assets/readme/bun.svg" width="24" /></th>
-<th><img src=".github/assets/readme/deno.svg" width="24" /></th>
+<td><img src=".github/assets/readme/node-js.svg" width="24" /></td>
+<td><img src=".github/assets/readme/bun.svg" width="24" /></td>
+<td><img src=".github/assets/readme/deno.svg" width="24" /></td>
 </tr>
 <tr>
 <td width="400">
@@ -146,8 +157,8 @@ deno run npm:poku
 
 ### That's it 🎉
 
-- [**See the complete `assert`'s documentation**](https://poku.dev/docs/documentation/assert).
-- [**See the complete `poku`'s documentation**](https://poku.dev/docs/category/poku).
+- [**See the complete `assert`'s documentation**](https://poku.io/docs/documentation/assert).
+- [**See the complete `poku`'s documentation**](https://poku.io/docs/category/poku).
 
 ---
 
@@ -159,40 +170,32 @@ deno run npm:poku
 | -------------------------------------------------- | ------------------------------------------------ |
 | <img src=".github/assets/readme/sequential.png" /> | <img src=".github/assets/readme/parallel.png" /> |
 
-> [**See the complete `poku`'s documentation**](https://poku.dev/docs/category/poku).
+> [**See the complete `poku`'s documentation**](https://poku.io/docs/category/poku).
 
 ---
 
 ### `assert`
 
 - 💚 Use it exactly as it's for **Node.js**
-- 🐷 **Node.js**, **Bun** and **Deno** compatibility.
+- 🐷 **Node.js**, **Bun** and **Deno** compatibility
 
 | Using `poku`                                        | Using `node`                                        |
 | --------------------------------------------------- | --------------------------------------------------- |
 | <img src=".github/assets/readme/assert-poku.png" /> | <img src=".github/assets/readme/assert-node.png" /> |
 
-> [**See the complete `assert`'s documentation**](https://poku.dev/docs/documentation/assert).
+> [**See the complete `assert`'s documentation**](https://poku.io/docs/documentation/assert).
 
 ---
 
 ## Documentation and Examples
 
-To see the detailed documentation, please visit the [**Documentation**](https://poku.dev/docs/category/documentation) and [**Examples**](https://poku.dev/docs/category/examples) sections in the [**Poku**'s website](https://poku.dev).
+To see the detailed documentation, please visit the [**Documentation**](https://poku.io/docs/category/documentation) and [**Examples**](https://poku.io/docs/category/examples) sections in the [**Poku**'s website](https://poku.io).
 
 ---
 
 ## Community
 
 I'm continuously working to improve **Poku**. If you've got something interesting to share, feel free to submit a [**Pull Request**](https://github.com/wellwelwel/poku/compare). If you notice something wrong, I'd appreciate if you'd open an [**Issue**](https://github.com/wellwelwel/poku/issues/new).
-
----
-
-## Acknowledgements
-
-[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
-
-[![Contributors](https://contrib.rocks/image?repo=wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 ---
 
@@ -204,13 +207,21 @@ Please check the [**CONTRIBUTING.md**](./CONTRIBUTING.md) for instructions 🚀
 
 ## License
 
-Poku is under the [**MIT** License](./LICENSE).
+Poku is under the [**MIT License**](./LICENSE).
 
 ---
 
 ## Security Policy
 
-Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Safe?**](https://poku.dev/docs/security) from Documentation.
+Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Safe?**](https://poku.io/docs/security) from Documentation.
+
+---
+
+## Acknowledgements
+
+[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
+
+[![Contributors](https://contrib.rocks/image?repo=wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 ---
 
@@ -218,3 +229,23 @@ Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Saf
 
 | [![wellwelwel](https://avatars.githubusercontent.com/u/46850407?v=4?v=3&s=115)<br><sub>@wellwelwel</sub>](https://github.com/wellwelwel) |
 | :--------------------------------------------------------------------------------------------------------------------------------------: |
+
+Install 📦
+
+```bash
+npm i -D poku
+```
+
+Test it 🔬
+
+```js
+import { assert } from 'poku';
+
+assert(true, 'Poku will describe it 🐷');
+```
+
+Run it 🚀
+
+```bash
+npx poku
+```

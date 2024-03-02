@@ -14,7 +14,7 @@ const status = {
 /**
  * - ✅ Handling **global** and **external** services (_preparing a database, for example_)
  * - ✅ It's made for **exclusive use** in combination with **Poku**'s **`assert`** methods
- * - ❌ Changing local variables values and states ([_use a mock instead_](https://poku.dev/docs/category/mock))
+ * - ❌ Changing local variables values and states ([_use a mock instead_](https://poku.io/docs/category/mock))
  *
  * ---
  *
@@ -55,7 +55,7 @@ export const beforeEach = (callback: () => unknown): Control => {
 /**
  * - ✅ Handling **global** and **external** services (_preparing a database, for example_)
  * - ✅ It's made for **exclusive use** in combination with **Poku**'s **`assert`** methods
- * - ❌ Changing local variables values and states ([_use a mock instead_](https://poku.dev/docs/category/mock))
+ * - ❌ Changing local variables values and states ([_use a mock instead_](https://poku.io/docs/category/mock))
  *
  * ---
  *

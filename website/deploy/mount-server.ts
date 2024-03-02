@@ -15,7 +15,7 @@ import { svps } from './access.js';
     mounted &&
     (await svps.createVirtualHosts([
       {
-        domain: 'poku.dev',
+        domain: 'poku.io',
         port: Number(process.env.APP_PORT),
         www: true,
       },

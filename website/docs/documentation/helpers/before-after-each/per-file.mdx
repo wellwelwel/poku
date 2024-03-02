@@ -19,12 +19,12 @@ import Failure from '@site/static/img/each-fail.png';
 
 <Tabs>
   <TabItem default value='test/run.test.js'>
-  
+
     ```ts
     import { poku } from 'poku';
 
-    const prepareService = () => new Promise((resolve) => resolve(true));
-    const resetService = () => new Promise((_, reject) => reject('Yeah'));
+    const prepareService = () => new Promise((resolve) => resolve(undefined));
+    const resetService = () => new Promise((_, reject) => reject('Let\'s crash it'));
 
     await poku('test/unit', {
       beforeEach: prepareService,

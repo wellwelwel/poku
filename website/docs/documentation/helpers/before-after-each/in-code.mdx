@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 ## How can I combine `beforeEach`, `afterEach` and `assert`?
 
 Both `beforeEach`, `afterEach` are recommended for tests that consume a particular global state for each test.<br />
-For example, by populating or resetting a database before and/or after multiple assertions).
+For example, by populating or resetting a database before and/or after multiple assertions.
 
 ### See how Poku solve it 🧙🏻
 
@@ -48,10 +48,10 @@ For example, by populating or resetting a database before and/or after multiple 
 
   </TabItem>
   <TabItem value='Without beforeEach and afterEach'>
-  
+
     ```ts
     import { assert } from 'poku';
-    
+
     const prepareService = () => true;
     const resetService = () => true;
 
@@ -74,16 +74,16 @@ For example, by populating or resetting a database before and/or after multiple 
 
   </TabItem>
   <TabItem value='🐷 Exclusive Features'>
-  
-  **Poku** provides three optional methods from both `beforeEach` and `afterEach`:
-  
+
+**Poku** provides three optional methods from both `beforeEach` and `afterEach`:
+
     - `.pause()`
     - `.continue()`
     - `.reset()`
-  
+
     ```ts
     import { assert, beforeEach, afterEach } from 'poku';
-    
+
     const prepareService = () => true;
     const resetService = () => true;
 
@@ -177,9 +177,9 @@ You can overwriting both `beforeEach` and `afterEach` by declaring them again an
 
   </TabItem>
   <TabItem  value='🐷 Exclusive Features'>
-  
+
     **Poku** provides three optional methods from both `beforeEach` and `afterEach`:
-  
+
     - `.pause()`
     - `.continue()`
     - `.reset()`

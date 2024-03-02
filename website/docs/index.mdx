@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: 🐷 Poku is your test runner pet for Node.js, Bun and Deno, combining flexibility, parallel and sequential runs, human-friendly assertion errors and high isolation level.
+description: 🐷 Poku is your Test Runner Pet for Node.js, Bun and Deno.
 ---
 
 import Tabs from '@theme/Tabs';
@@ -32,9 +32,7 @@ import '@site/src/css/features.scss';
 
 # Getting Started
 
-**Poku** is your test runner pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] combining **flexibility**, **parallel** and **sequential** runs, **human-friendly assertion errors** and **high isolation level**.
-
-> By creating Poku, our aim is to show that testing can be simpler.
+**Poku** is your Test Runner Pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
 
 [![Node.js Version][node-version-image]][node-version-url]
 [![Bun Version][bun-version-image]][bun-version-url]
@@ -55,6 +53,8 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 <hr />
 
 ## Why Poku?
+
+By creating **Poku**, my aim is to show that testing can be simpler 🌱
 
 <div className='features black'>
   <div className='p'>
@@ -83,13 +83,17 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 > 🧪 Then learn how to use `poku` CLI to run all your test files at once <br />
 > 🧙🏻 So, just if you want to, go deeper into learning about **Poku** <br />
 >
-> 🩵 Take your time.
+> 🩵 Take your time
 
 - [**Compare Poku with the Most Popular Test Runners 🧪**](/docs/comparing)
 
 <hr />
 
-## **Install**
+## Quickstart
+
+### **Install** 📦
+
+[![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
 
 <Tabs>
   <TabItem default value='Node.js'>
@@ -129,54 +133,41 @@ import { poku } from 'https://esm.sh/poku';
 
 </Tabs>
 
-<hr />
-
-## Quick Start
-
-### API (_in-code_)
+### **Test it** 🔬
 
 <Tabs>
-  <TabItem default value='Node.js, TypeScript (Node.js) and Bun'>
-
-    ```ts
-    import { poku } from 'poku';
-
-    await poku(['targetPath']);
-    ```
-
-  </TabItem>
-  <TabItem value='Deno'>
+  <TabItem default value='test/file.test.js'>
 
 ```ts
-import { poku } from 'npm:poku';
+import { assert } from 'poku';
 
-await poku(['targetPath']);
+assert(true, 'Poku will describe it 🐷');
 ```
 
   </TabItem>
 </Tabs>
 
-### CLI
+### **Run it** 🚀
 
 <Tabs>
   <TabItem default value='Node.js and TypeScript (Node.js)'>
 
 ```bash
-npx poku targetPath
+npx poku
 ```
 
   </TabItem>
   <TabItem  value='Bun'>
 
 ```bash
-bun poku targetPath
+bun poku
 ```
 
   </TabItem>
   <TabItem  value='Deno'>
 
 ```bash
-deno run npm:poku targetPath
+deno run npm:poku
 ```
 
     **Poku** requires these permissions by default:
@@ -186,6 +177,11 @@ deno run npm:poku targetPath
 
   </TabItem>
 </Tabs>
+
+### That's it 🎉
+
+- [**See the complete `assert`'s documentation**](/docs/documentation/assert).
+- [**See the complete `poku`'s documentation**](/docs/category/poku).
 
 <hr />
 
@@ -198,12 +194,6 @@ deno run npm:poku targetPath
 ## Community
 
 I'm continuously working to improve **Poku**. If you've got something interesting to share, feel free to submit a [**Pull Request**](https://github.com/wellwelwel/poku/compare). If you notice something wrong, I'd appreciate if you'd open an [**Issue**](https://github.com/wellwelwel/poku/issues/new).
-
-<hr />
-
-## Acknowledgements
-
-- [**Contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
 
 <hr />
 
@@ -222,3 +212,36 @@ Poku is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main
 ## Security Policy
 
 Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md) and the section [**Is Poku Safe?**](/docs/security) from Documentation.
+
+<hr />
+
+## Acknowledgements
+
+[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
+
+<a
+  href='https://github.com/wellwelwel/poku/graphs/contributors'
+  target='_blank'
+  rel='noopener noreferrer'
+  style={{ textDecoration: 'none', color: 'inherit' }}
+>
+  <img
+    src='https://contrib.rocks/image?repo=wellwelwel/poku'
+    alt='Contributors'
+    style={{ maxWidth: '100%', transform: 'scale(.75)' }}
+  />
+</a>
+
+<hr />
+
+## Author
+
+<a href='https://github.com/wellwelwel'>
+  <img
+    src='https://avatars.githubusercontent.com/u/46850407'
+    alt='wellwelwel'
+    style={{ borderRadius: '50%', widows: 64, height: 64 }}
+  />
+  <br />
+  <sub>@wellwelwel</sub>
+</a>

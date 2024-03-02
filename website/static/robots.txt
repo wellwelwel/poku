@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://poku.dev/sitemap.xml
+Sitemap: https://poku.io/sitemap.xml

@@ -5,7 +5,7 @@ import { navbarLocalePlugin } from './plugins/locale.js';
 
 const config: Config = {
   title: 'Poku',
-  url: 'https://poku.dev/',
+  url: 'https://poku.io/',
   baseUrl: '/',
   organizationName: 'wellwelwel',
   projectName: 'poku',
@@ -28,13 +28,13 @@ const config: Config = {
           customCss: './src/css/custom.scss',
         },
         blog: false,
-        googleTagManager: {
-          containerId: 'GTM-K554VSWG',
-        },
-        gtag: {
-          trackingID: 'AW-16473775095',
-          anonymizeIP: true,
-        },
+        // googleTagManager: {
+        //   containerId: '',
+        // },
+        // gtag: {
+        //   trackingID: '',
+        //   anonymizeIP: true,
+        // },
       } satisfies Preset.Options,
     ],
   ],
@@ -44,7 +44,7 @@ const config: Config = {
       {
         name: 'keywords',
         content:
-          'Poku, Test Runner, Node.js, Bun, Deno, TypeScript, Parallel Runs, Sequential Runs, Assertion Errors, ESM, CJS, CLI Usage, API Usage, No Config, Documentation, GitHub, Compatibility, No Constraints, Individual Process, Lightweight, Mocha, Jest, Ava, Tap, Tape, Karma, Vitest',
+          'Poku, PokuJS, Test Runner, Node.js, Bun, Deno, TypeScript, Parallel Runs, Sequential Runs, Assertion Errors, ESM, CJS, CLI Usage, API Usage, No Config, Documentation, GitHub, Compatibility, No Constraints, Individual Process, Lightweight, Mocha, Jest, Ava, Tap, Tape, Karma, Vitest',
       },
     ],
     image: 'img/social.png',
