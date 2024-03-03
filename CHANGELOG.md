@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://github.com/wellwelwel/poku/compare/v1.6.1...v1.7.0) (2024-03-03)
+
+
+### Features
+
+* **docs:** introduce Portuguese BR docs ([#66](https://github.com/wellwelwel/poku/issues/66)) ([9a6dc87](https://github.com/wellwelwel/poku/commit/9a6dc871261fc89203c33de758e946df3f555ab0))
+* **logs:** simplify the describe ([#63](https://github.com/wellwelwel/poku/issues/63)) ([790ced0](https://github.com/wellwelwel/poku/commit/790ced0fab67f2e6a5de37e571a4e5343852f548))
+
 ## [1.6.1](https://github.com/wellwelwel/poku/compare/v1.6.0...v1.6.1) (2024-03-01)
 
 
