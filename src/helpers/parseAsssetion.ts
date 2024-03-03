@@ -26,17 +26,16 @@ export const parseAssertion = async (
 
   try {
     if (typeof each.before.cb === 'function') {
-      each.before.cb instanceof Promise
-        ? await each.before.cb()
-        : each.before.cb();
+      const beforeResult = each.before.cb();
+      if (beforeResult instanceof Promise) await beforeResult;
     }
 
-    cb instanceof Promise ? await cb() : cb();
+    const cbResult = cb();
+    if (cbResult instanceof Promise) await cbResult;
 
     if (typeof each.after.cb === 'function') {
-      each.after.cb instanceof Promise
-        ? await each.after.cb()
-        : each.after.cb();
+      const afterResult = each.after.cb();
+      if (afterResult instanceof Promise) await afterResult;
     }
 
     if (typeof options.message === 'string') {
