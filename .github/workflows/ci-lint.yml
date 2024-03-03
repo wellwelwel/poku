@@ -1,4 +1,4 @@
-name: CI
+name: 🧑🏻‍🎓
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: 🧑🏻‍🎓 Lint
+    name: Lint
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4

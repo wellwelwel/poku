@@ -1,4 +1,4 @@
-name: 'CI'
+name: '🔬'
 on:
   push:
     branches:
@@ -32,7 +32,7 @@ jobs:
             '20',
             'latest',
           ]
-    name: 🔬 Node.js ${{ matrix.node-version }}
+    name: Node.js ${{ matrix.node-version }}
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4

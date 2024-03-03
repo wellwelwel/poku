@@ -1,4 +1,4 @@
-name: 'Docs'
+name: '🚀'
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: 🚀 Deploy
+    name: Deploy Website
     steps:
       - name: Actions - Checkout
         uses: actions/checkout@v4
