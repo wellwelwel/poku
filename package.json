@@ -1,6 +1,6 @@
 {
   "name": "poku",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "🐷 Poku makes testing easy for Node.js, Bun & Deno at the same time.",
   "main": "./lib/index.js",
   "scripts": {
