@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  playground-deno:
+    container_name: playground-deno
+    build:
+      context: ${PWD}
+      dockerfile: ./test/docker/playground/deno/Dockerfile
+    working_dir: /usr/app
+    stdin_open: true
+    tty: true
