@@ -1,0 +1,290 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Comparando Test Runners
+
+**Comparações usando **Node.js**, **TypeScript** (_sem compilar_) e **ESM** para mostrar um simples teste de erro:**
+
+- Vamos começar desde a instalação 🔬
+
+<Tabs>
+  <TabItem default value='Poku'>
+
+## [Poku](https://github.com/wellwelwel/poku)
+
+### Instalação
+
+```bash
+npm i -D poku tsx
+```
+
+> ~10M
+
+<hr />
+
+### Criando o arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+import { assert } from 'poku';
+
+assert.deepStrictEqual('1', 1, 'Número não deve ser uma string');
+```
+
+<hr />
+
+### Executando o teste
+
+```bash
+npx poku
+```
+
+<hr />
+
+É isso 🎉
+
+:::tip
+
+O **Poku** não usa **`describe`** ou **`it`**, visto que a mensagem já está no **`assert`**.
+
+- O **`assert`** do **Poku** é apenas uma abstração do **`assert`** original do **Node.js**. <br />
+- Isso significa: <ins>**Sem necessidade de novos aprendizados**</ins> 🎉
+
+:::
+
+Adote um **Poku** pra você 🩵
+
+  </TabItem>
+  <TabItem value='Jest'>
+
+## [Jest](https://github.com/jestjs/jest)
+
+### Instalação
+
+```bash
+npm i -D jest @types/jest ts-jest
+```
+
+> ~65M
+
+<hr />
+
+### Configurando o TypeScript
+
+> Adicione no seu _tsconfig.json_
+
+```json
+{
+  "compilerOptions": {
+    "esModuleInterop": true
+  }
+}
+```
+
+<hr />
+
+### Configurando o Jest
+
+> _jest.config.js_
+
+```js
+export default {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  testMatch: ['**/test/**/*.test.ts'],
+};
+```
+
+<hr />
+
+### Criando o arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+describe('Comparação de Tipos', () => {
+  test('Número não deve ser uma string', () => {
+    expect('1').toStrictEqual(1);
+  });
+});
+```
+
+<hr />
+
+### Executando o teste
+
+```bash
+npx jest
+```
+
+  </TabItem>
+  <TabItem value='Mocha + Chai'>
+
+## [Mocha](https://github.com/mochajs/mocha) + [Chai](https://github.com/chaijs/chai)
+
+### Instalação
+
+```bash
+npm i -D mocha @types/mocha chai @types/chai tsx
+```
+
+> ~18M
+
+<hr />
+
+### Configurando o Mocha
+
+> _.mocharc.json_
+
+```json
+{
+  "require": "tsx",
+  "extension": ["ts"],
+  "spec": "./test/**/*.test.ts"
+}
+```
+
+<hr />
+
+### Criando o arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+import { expect } from 'chai';
+
+describe('Comparação de Tipos', () => {
+  it('Número não deve ser uma string', () => {
+    expect('1').to.deep.equal(1);
+  });
+});
+```
+
+<hr />
+
+### Executando o teste
+
+```bash
+npx mocha
+```
+
+  </TabItem>
+  <TabItem value='Vitest'>
+
+## [Vitest](https://github.com/vitest-dev/vitest)
+
+### Instalação
+
+```bash
+npm i -D vitest ts-node
+```
+
+> ~66M
+
+<hr />
+
+### Configurando o Vitest
+
+> _vitest.config.ts_
+
+```ts
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    include: ['test/**/*.test.ts'],
+    globals: true,
+    environment: 'node',
+  },
+});
+```
+
+<hr />
+
+### Criando o arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+import { describe, it, expect } from 'vitest';
+
+describe('Comparação de Tipos', () => {
+  it('Número não deve ser uma string', () => {
+    expect('1').toStrictEqual(1);
+  });
+});
+```
+
+<hr />
+
+### Executando o teste
+
+```bash
+npx vitest run
+```
+
+  </TabItem>
+  <TabItem value='AVA'>
+
+## [AVA](https://github.com/avajs/ava) (CJS)
+
+:::info
+
+Não consegui testar o **AVA** como **ESM** sem antes compilar o **TypeScript**. <br />
+Por favor, envie um _PR_ se você souber como chegar a essa abordagem.
+
+- Relacionado: [avajs/ava#3308](https://github.com/avajs/ava/discussions/3308).
+
+:::
+
+### Instalação
+
+```bash
+npm i -D ava tsx
+```
+
+> ~26M
+
+<hr />
+
+### Configurando o AVA
+
+> Include in the _package.json_:
+
+```json
+{
+  "ava": {
+    "files": ["test/**/*.test.ts"],
+    "extensions": {
+      "ts": "commonjs"
+    },
+    "nodeArguments": ["--import=tsx"]
+  }
+}
+```
+
+<hr />
+
+### Criando o arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+import test from 'ava';
+
+test('Número não deve ser uma string', (t) => {
+  t.deepEqual('1', 1);
+});
+```
+
+<hr />
+
+### Executando o teste
+
+```bash
+npx ava
+```
+
+  </TabItem>
+</Tabs>

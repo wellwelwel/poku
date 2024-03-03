@@ -1,0 +1,124 @@
+---
+sidebar_position: 1
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+import Example from '@site/static/img/describe-example.png';
+
+# describe
+
+On **Poku**, `describe` is just a pretty `console.log` to title your test suites in the terminal.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Group A');
+assert(true, '1');
+assert(true, '2');
+
+describe('Group B');
+assert(true, '1');
+assert(true, '2');
+```
+
+## Personalization
+
+> `describe(title: string, options?: DescribeOptions)`
+
+### pad
+
+Skips a line before to console it.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Group A', { pad: true });
+assert.ok(true, '1');
+assert.ok(true, '2');
+```
+
+### background
+
+Change the background color for your personal title.
+
+> Set `false` to disable it.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Group A', { background: 'blue' });
+assert.ok(true, '1');
+assert.ok(true, '2');
+```
+
+<FAQ title='Available Colors'>
+
+- `white`
+- `black`
+- `grey`
+- `red`
+- `green`
+- `yellow`
+- `blue`
+- `magenta`
+- `cyan`
+- `brightRed`
+- `brightGreen`
+- `brightYellow`
+- `brightBlue`
+- `brightMagenta`
+- `brightCyan`
+
+</FAQ>
+
+### icon (prefix)
+
+**Poku** also allows the prefix customization.
+
+> The default icon is `☰`.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Group A', { icon: '🚀' });
+assert.ok(true, '1');
+assert.ok(true, '2');
+```
+
+<hr />
+
+## Overview
+
+<FAQ title='Source'>
+
+    ```ts
+    import { assert, describe } from 'poku';
+
+    describe('Needs to Succeed', {
+      pad: true,
+      background: false,
+      icon: '🚀',
+    });
+
+    assert.ok(true, 'Test 1');
+    assert.ok(true, 'Test 2');
+
+    describe('Needs to Fail', {
+      pad: true,
+      background: 'yellow',
+      icon: '🚫',
+    });
+
+    assert.throws(() => { throw new Error() }, 'Test 1');
+    assert.throws(() => { throw new Error() }, 'Test 2');
+    ```
+
+</FAQ>
+
+<table>
+  <tr>
+    <td>
+      <img src={Example} />
+    </td>
+  </tr>
+</table>

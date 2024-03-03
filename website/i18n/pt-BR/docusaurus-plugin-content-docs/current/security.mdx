@@ -1,0 +1,26 @@
+# O Poku é Seguro?
+
+O **Poku** é um projeto de código aberto, então você pode ver tanto o [Código Fonte no Repositório do **GitHub**](https://github.com/wellwelwel/poku) como o [Código de Distribuição no **NPM**](https://www.npmjs.com/package/poku?activeTab=code).
+
+## Por que o Poku usa o `child_process`?
+
+Alguns _Test Runners_ usam **`eval`**, o **Poku** prefere usar o **`spawn`** para criar um processo isolado seguramente para cada arquivo de teste.
+
+## Medidas de Proteção
+
+- Bloqueia o acesso acima do diretório atual filtrando os caminhos `../` e `/`, por exemplo:
+  - `/root` será sanitizado para `./root`
+  - `../../etc/secret` será sanitizado para `./etc/secret`
+- Normaliza os caminhos de acordo com o sistema operacional, permitindo todos os colaboradores usarem o mesmo caminho, cada um com seu sistema operacional:
+  - `\` para **Windows**
+  - `/` para **Linux** e **macOS**
+- Normaliza os caminhos ao filtrar caractéres incomuns para caminhos, por exemplo:
+  - `<>:|^?*`
+- Previne _shell scripts_ ao definir `shell` como `false` no **`spawn`**, garantindo que apenas argumentos seguros serão usados.
+- Cada **RegExp** é previamente testado usando o [**ReDoS Checker**](https://devina.io/redos-checker).
+
+## Política de Segurança
+
+:::info
+Veja a [**Política de Segurança** no repositório do **GitHub**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
+:::

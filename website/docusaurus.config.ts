@@ -12,6 +12,19 @@ const config: Config = {
   trailingSlash: false,
   favicon: 'favicon.ico',
 
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pt-BR'],
+    localeConfigs: {
+      en: {
+        label: '🇺🇸 English',
+      },
+      'pt-BR': {
+        label: '🇧🇷 Português (Brasil)',
+      },
+    },
+  },
+
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   onBrokenAnchors: 'throw',
@@ -72,6 +85,10 @@ const config: Config = {
           'aria-label': 'GitHub Sponsor',
         },
         { type: 'search', position: 'right' },
+        {
+          type: 'localeDropdown',
+          position: 'right',
+        },
       ],
     },
     prism: {
