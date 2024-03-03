@@ -1,4 +1,5 @@
-import { listFiles } from 'npm:poku';
+// eslint-disable-next-line import/no-unresolved
+import { listFiles } from 'https://esm.sh/poku';
 
 const ensureDenoCompatibility = async (path: string) => {
   const files = listFiles(path, {
