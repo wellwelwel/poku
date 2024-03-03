@@ -1,12 +1,12 @@
 import { promises as fs } from 'node:fs';
-import { listFiles } from '../../src/modules/list-files.js';
+import { listFiles } from '../../src/index.js';
 
 const ensureNodeCompatibility = async (path: string) => {
-  const files = listFiles(path, [], {
-    filter: /\.(m)?(j|t)?s$/,
+  const files = listFiles(path, {
+    filter: /\.(j|t)s$/,
   });
 
-  console.log('Ensuring Compatibility For:', files);
+  console.log('Ensuring Node Compatibility For:', files);
 
   for (const file of files) {
     const raw = await fs.readFile(file, 'utf8');
