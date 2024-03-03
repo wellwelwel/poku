@@ -9,7 +9,7 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: 'CI'
+name: '🔎'
 
 on:
   push:
@@ -20,7 +20,7 @@ on:
 
 jobs:
   analyze:
-    name: 🔎 CodeQL
+    name: CodeQL
     # Runner size impacts CodeQL analysis time. To learn more, please see:
     #   - https://gh.io/recommended-hardware-resources-for-running-codeql
     #   - https://gh.io/supported-runners-and-hardware-resources

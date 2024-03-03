@@ -1,4 +1,4 @@
-name: 'CI'
+name: '☔️'
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
-    name: ☔️ Coverage
+    name: Coverage
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
