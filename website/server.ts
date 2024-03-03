@@ -1,8 +1,18 @@
 import { serve, file } from 'bun';
 
 const publicDir = './build';
-const index = `${publicDir}/index.html`;
-const docs = `${publicDir}/docs.html`;
+
+const paths = {
+  index: {
+    en: `${publicDir}/index.html`,
+    ptBR: `${publicDir}/pt-BR/index.html`,
+  },
+  docs: {
+    en: `${publicDir}/docs.html`,
+    ptBR: `${publicDir}/pt-BR/docs.html`,
+  },
+};
+
 const port = process.env.APP_PORT;
 
 const setCache = (filePath: string): string => {
@@ -35,6 +45,11 @@ serve({
         });
       }
 
+      const index = pathname.includes('pt-BR')
+        ? paths.index.ptBR
+        : paths.index.en;
+
+      const docs = pathname.includes('pt-BR') ? paths.docs.ptBR : paths.docs.en;
       const page = pathname.includes('/docs') ? docs : index;
 
       return new Response(file(page).stream(), {

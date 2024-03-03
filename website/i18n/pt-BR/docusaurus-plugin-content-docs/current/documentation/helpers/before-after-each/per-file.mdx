@@ -1,0 +1,58 @@
+---
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { FAQ } from '@site/src/components/FAQ';
+import Success from '@site/static/img/each-success.png';
+import Failure from '@site/static/img/each-fail.png';
+
+# Per File
+
+## Running a callback before and after each test file
+
+- [x] `poku` **API (_in-code_)**
+- [ ] `poku` **CLI**
+
+**Poku** brings a simple way to perform a callback before and/or after every test file.
+
+<Tabs>
+  <TabItem default value='test/run.test.js'>
+
+    ```ts
+    import { poku } from 'poku';
+
+    const prepareService = () => new Promise((resolve) => resolve(undefined));
+    const resetService = () => new Promise((_, reject) => reject('Let\'s crash it'));
+
+    await poku('test/unit', {
+      beforeEach: prepareService,
+      afterEach: resetService,
+    });
+    ```
+
+    ```bash
+    npx poku test/run.test.js
+    ```
+
+  </TabItem>
+</Tabs>
+
+<FAQ title="Success Case" >
+
+<img src={Success} />
+
+</FAQ>
+
+<FAQ title="Failure Case (check the debug)" >
+
+<img src={Failure} />
+
+</FAQ>
+
+<hr />
+
+:::info
+Although it also works with `parallel` runs, it's strongly discouraged to use these features for sequential tests.
+:::

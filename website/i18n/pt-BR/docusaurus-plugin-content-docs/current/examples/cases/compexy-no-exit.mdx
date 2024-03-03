@@ -1,0 +1,76 @@
+# A Complex Case
+
+**Imagine these steps to perform a test:**
+
+1. Perform **Unit Tests** suite in parallel
+2. Clear and Populate the Database
+3. Check for **Expected Successes Integration** suite sequentially
+4. Clear and Populate the Database — again
+5. Check for **Expected Failures Integration** suite sequentially
+
+**Requirements:**
+
+Each step requires success to be processed.
+
+**Directory Structure:**
+
+```bash
+├── .
+├── test
+│ ├── unit
+│ ├── integration
+│ │ ├── successes
+│ │ │ └── **/.spec.js
+│ │ └── failures
+│ │   └── **/.spec.js
+│ ├─ run.test.js # The runner
+│ ├─ tools.test.js
+```
+
+> Do we really need to complicate things even more by creating advanced tests runs to run our already complex tests? 😅
+
+### Poku's Solution ✨
+
+```ts
+import { poku, assert } from 'poku';
+import { recreateDatabase } from './tools.test.js';
+
+const unitCode = await poku('test/unit', {
+  parallel: true,
+  noExit: true,
+});
+
+assert.strictEqual(0, unitCode, 'Running Unit Tests');
+
+await assert.doesNotReject(
+  recreateDatabase(),
+  'Preparing DB for Successes Integration Tests'
+);
+
+const successesCode = await poku('test/integration/successes', {
+  noExit: true,
+});
+
+assert.strictEqual(0, successesCode, 'Running Successes Integration Tests');
+
+await assert.doesNotReject(
+  recreateDatabase(),
+  'Preparing DB for Successes Integration Tests'
+);
+
+const failuresCode = await poku('test/integration/failures', {
+  noExit: true,
+});
+
+assert.strictEqual(0, failuresCode, 'Running Failures Integration Tests');
+```
+
+> Why comment the code if we can do it better? 🧙🏻
+
+**Finally**
+
+```bash
+npx poku test/run.test.js
+```
+
+> Or `npx poku test/run.test.ts` for **TypeScript**.

@@ -1,0 +1,23 @@
+# `listFiles`
+
+> `listFiles(targetDir: string, configs?: ListFilesConfigs)`
+
+Returns all files in a directory, independent of their depth.
+
+> _Since **1.2.0**_
+
+```ts
+listFiles('some-dir');
+```
+
+- You can use the `filter` and `exclude` options, as well as they are for **`poku`** method.
+
+:::info
+
+To use `listFiles` with **TypeScript**, you will need to instal **@types/node**:
+
+```bash
+npm i -D @types/node
+```
+
+:::
