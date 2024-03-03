@@ -4,6 +4,8 @@ import assert from 'node:assert';
 import { EOL } from 'node:os';
 import { format } from './format.js';
 import { hr } from './hr.js';
+import { findFile } from './find-file.js';
+import { each } from '../configs/each.js';
 
 export type ParseAssertionOptions = {
   message?: string | Error;
@@ -14,40 +16,8 @@ export type ParseAssertionOptions = {
   hideDiff?: boolean;
 };
 
-const findFile = (error: Error) => {
-  const stackLines = error.stack?.split(EOL) || [];
-
-  let file = '';
-
-  const basePath = 'poku/lib/';
-
-  for (const line of stackLines) {
-    if (!line.includes(basePath)) {
-      const match = line.match(
-        /at\s(\/.+|file:.+)|^(\s+)at\smodule\scode\s\((\/.+|file:.+)\)/i
-      );
-
-      // Node and Deno
-      if (match && match[1]) {
-        file = match[1];
-        break;
-      }
-
-      // Bun
-      if (match && match[3]) {
-        file = match[3];
-        break;
-      }
-    }
-  }
-
-  return file;
-};
-
-const formatFail = (str: string) => format.bold(format.fail(`✘ ${str}`));
-
-export const parseAssertion = (
-  cb: () => void,
+export const parseAssertion = async (
+  cb: () => void | Promise<void>,
   options: ParseAssertionOptions
 ) => {
   const isPoku =
@@ -55,7 +25,18 @@ export const parseAssertion = (
   const FILE = process.env.FILE;
 
   try {
-    cb();
+    if (typeof each.before.cb === 'function') {
+      const beforeResult = each.before.cb();
+      if (beforeResult instanceof Promise) await beforeResult;
+    }
+
+    const cbResult = cb();
+    if (cbResult instanceof Promise) await cbResult;
+
+    if (typeof each.after.cb === 'function') {
+      const afterResult = each.after.cb();
+      if (afterResult instanceof Promise) await afterResult;
+    }
 
     if (typeof options.message === 'string') {
       const message = isPoku
@@ -67,7 +48,7 @@ export const parseAssertion = (
   } catch (error) {
     if (error instanceof assert.AssertionError) {
       const { code, actual, expected, operator } = error;
-      const absoultePath = findFile(error).replace(/file:/, '');
+      const absoultePath = findFile(error).replace(/file:(\/\/)?/, '');
       const file = path.relative(path.resolve(process.cwd()), absoultePath);
 
       let message: string = '';
@@ -80,8 +61,8 @@ export const parseAssertion = (
 
       const finalMessage =
         message?.trim().length > 0
-          ? `${formatFail(message)}`
-          : `${formatFail('No Message')}`;
+          ? format.bold(format.fail(`✘ ${message}`))
+          : format.bold(format.fail('✘ No Message'));
 
       console.log(
         isPoku

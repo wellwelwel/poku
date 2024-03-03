@@ -1,5 +1,23 @@
 import { padStart } from './pad.js';
 
+export const backgroundColor = {
+  white: 7,
+  black: 40,
+  grey: 100,
+  red: 41,
+  green: 42,
+  yellow: 43,
+  blue: 44,
+  magenta: 45,
+  cyan: 46,
+  brightRed: 101,
+  brightGreen: 102,
+  brightYellow: 103,
+  brightBlue: 104,
+  brightMagenta: 105,
+  brightCyan: 106,
+} as const;
+
 export const format = {
   counter: (current: number, total: number, pad = '0') => {
     const totalDigits = String(total).length;

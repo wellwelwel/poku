@@ -36,13 +36,30 @@ For example, by populating or resetting a database before and/or after multiple 
 
 - ✅ Handling **global** and **external** services (_preparing a database, for example_)
 - ✅ It's made for **exclusive use** in combination with **Poku**'s **`assert`** methods
-- ✅ You can combine `beforeEach`, `afetrEach` and all `assert` methods, except for `assert.fail(message?: string)`.
+- ✅ You can combine `beforeEach`, `afterEach` and all `assert` methods, except for `assert.fail(message?: string)`.
 
 :::
 
-:::danger
+:::info
 
-- ❌ Don't change local variables and states inside `beforeEach` or `afterEach` ([_use a mock instead_](/docs/category/mock))
+- Although `beforeEach` and `afterEach` accepts local variables changes, it's strongly encouraged ([_you can use a mock instead_](/docs/category/mock)).
+
+See why (_note the `immediate` option_):
+
+```ts
+import { assert, beforeEach, afterEach } from 'poku';
+
+let value = 0;
+
+beforeEach(() => ++value, { immediate: true });
+afterEach(() => ++value);
+
+assert.equal(value, 1); // ✅
+assert.equal(value, 3); // ✅
+
+// ✋ In the `eachBefore` context, `value` is now `4`, while locally it's `5`
+console.log(value);
+```
 
 :::
 
@@ -139,13 +156,32 @@ You can overwriting both `beforeEach` and `afterEach` by declaring them again an
 
 - ✅ Handling **global** and **external** services (_preparing a database, for example_)
 - ✅ It's made for **exclusive use** in combination with **Poku**'s **`assert`** methods
-- ✅ You can combine `beforeEach`, `afetrEach` and all `assert` methods, except for `assert.fail(message?: string)`.
+- ✅ You can combine `beforeEach`, `afterEach` and all `assert` methods, except for `assert.fail(message?: string)`.
 
 :::
 
-:::danger
+:::info
 
-- ❌ Don't change local variables and states inside `beforeEach` or `afterEach` ([_use a mock instead_](/docs/category/mock))
+- Although `beforeEach` and `afterEach` accepts local variables changes, it's strongly encouraged ([_you can use a mock instead_](/docs/category/mock)).
+
+See why (_note the `immediate` option_):
+
+```ts
+import { assertPromise as assert, beforeEach, afterEach } from 'poku';
+
+let value = 0;
+
+beforeEach(async () => new Promise((resolve) => resolve(++value)), {
+  immediate: true,
+});
+afterEach(async () => new Promise((resolve) => resolve(++value)));
+
+await assert.equal(value, 1); // ✅
+await assert.equal(value, 3); // ✅
+
+// ✋ In the `eachBefore` context, `value` is now `4`, while locally it's `5`
+console.log(value);
+```
 
 :::
 
