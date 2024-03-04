@@ -36,7 +36,7 @@
     "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",
     "sass": "^1.71.1",
-    "sonner": "^1.4.2"
+    "sonner": "^1.4.3"
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "^3.1.1",
