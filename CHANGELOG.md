@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/wellwelwel/poku/compare/v1.7.0...v1.8.0) (2024-03-04)
+
+
+### Features
+
+* add `test` helper ([#71](https://github.com/wellwelwel/poku/issues/71)) ([a4ea046](https://github.com/wellwelwel/poku/commit/a4ea046f10e893c262f96fdd4f1c4ac3977cb5f0))
+
 ## [1.7.0](https://github.com/wellwelwel/poku/compare/v1.6.1...v1.7.0) (2024-03-03)
 
 
