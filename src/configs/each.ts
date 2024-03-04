@@ -6,6 +6,8 @@ export type Control = {
 
 export type EachConfigs = {
   status: boolean;
+  assert?: boolean;
+  test?: boolean;
   cb?: () => unknown | Promise<unknown>;
 };
 
@@ -16,9 +18,13 @@ export const each: {
   before: {
     status: true,
     cb: undefined,
+    assert: true,
+    test: true,
   },
   after: {
     status: true,
     cb: undefined,
+    assert: true,
+    test: true,
   },
 };

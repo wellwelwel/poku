@@ -25,7 +25,7 @@ export const parseAssertion = async (
   const FILE = process.env.FILE;
 
   try {
-    if (typeof each.before.cb === 'function') {
+    if (typeof each.before.cb === 'function' && each.before.assert) {
       const beforeResult = each.before.cb();
       if (beforeResult instanceof Promise) await beforeResult;
     }
@@ -33,7 +33,7 @@ export const parseAssertion = async (
     const cbResult = cb();
     if (cbResult instanceof Promise) await cbResult;
 
-    if (typeof each.after.cb === 'function') {
+    if (typeof each.after.cb === 'function' && each.after.assert) {
       const afterResult = each.after.cb();
       if (afterResult instanceof Promise) await afterResult;
     }
