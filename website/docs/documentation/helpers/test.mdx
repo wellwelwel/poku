@@ -1,0 +1,66 @@
+---
+sidebar_position: 3
+---
+
+# test
+
+> `test(() => void)`
+
+`test` is a helper to assist you in such cases:
+
+- Use the beforeEach and afterEach for each `test` performed
+- Isolate or group your tests in the same file
+
+```ts
+import { test, beforeEach, afterEach } from 'poku';
+
+const prepareService = () => true;
+const resetService = () => true;
+
+beforeEach(() => prepareService(), {
+  assert: false,
+});
+
+afterEach(() => resetService(), {
+  assert: false,
+});
+
+test(() => {
+  // do anything you want
+});
+
+test(() => {
+  // do anything you want
+});
+```
+
+:::info
+Ensure you disabled the assert on **beforeEach** and **afterEach**.
+:::
+
+## By using promises
+
+```ts
+import { test, beforeEach, afterEach } from 'poku';
+
+const prepareService = () =>
+  new Promise((resolve) => resolve(true), {
+    assert: false,
+  });
+
+const resetService = () =>
+  new Promise((resolve) => resolve(true), {
+    assert: false,
+  });
+
+beforeEach(async () => await prepareService());
+afterEach(async () => await resetService());
+
+await test(async () => {
+  // do anything you want
+});
+
+await test(async () => {
+  // do anything you want
+});
+```

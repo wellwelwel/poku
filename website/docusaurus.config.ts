@@ -99,13 +99,16 @@ const config: Config = {
       defaultMode: 'dark',
       respectPrefersColorScheme: false,
     },
+    algolia: {
+      appId: '8W3D1A9OL6',
+      apiKey: '7e1ef3de299364cedc6f3240f7f00063',
+      indexName: 'poku',
+      searchPagePath: false,
+      contextualSearch: false,
+    },
   } satisfies Preset.ThemeConfig,
 
-  plugins: [
-    'docusaurus-plugin-sass',
-    '@easyops-cn/docusaurus-search-local',
-    navbarLocalePlugin,
-  ],
+  plugins: ['docusaurus-plugin-sass', navbarLocalePlugin],
 };
 
 export default config;

@@ -2,6 +2,8 @@ import { Control, each } from '../configs/each.js';
 
 type EachOptions = {
   immediate?: boolean;
+  test?: boolean;
+  assert?: boolean;
 };
 
 /**
@@ -29,6 +31,10 @@ export const beforeEach = (
   callback: () => unknown,
   options?: EachOptions
 ): Control => {
+  each.before.test = typeof options?.test === 'boolean' ? options.test : true;
+  each.before.assert =
+    typeof options?.assert === 'boolean' ? options.assert : true;
+
   options?.immediate && callback();
 
   each.before.cb = () => {
@@ -71,7 +77,14 @@ export const beforeEach = (
  * after.reset();
  * ```
  */
-export const afterEach = (callback: () => unknown): Control => {
+export const afterEach = (
+  callback: () => unknown,
+  options: Omit<EachOptions, 'immediate'>
+): Control => {
+  each.after.test = typeof options?.test === 'boolean' ? options.test : true;
+  each.after.assert =
+    typeof options?.assert === 'boolean' ? options.assert : true;
+
   each.after.cb = () => {
     if (each.after.status) callback();
   };

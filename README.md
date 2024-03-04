@@ -167,6 +167,25 @@ deno run npm:poku
 
 ---
 
+## Available Methods
+
+### Essentials
+
+- `poku` (_test runner_)
+- `assert` and `assertPromise` (_test assertion_)
+
+### Helpers
+
+- `beforeEach` and `afterEach`
+- `test`
+- `describe` and `log`
+- `listFiles`
+- `exit`
+
+[**See the complete documentation**](https://poku.io/docs).
+
+---
+
 ## Overview
 
 ### `poku`
