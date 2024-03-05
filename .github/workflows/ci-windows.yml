@@ -38,7 +38,9 @@ jobs:
         run: npm run build
 
       - name: 🔬 Node ${{ matrix.node-version }}
-        run: FILTER=node-${{ matrix.node-version }} npm run test:ci
+        run: npm run test:ci
+        env:
+          FILTER: node-${{ matrix.node-version }}
 
   bun:
     runs-on: windows-latest
@@ -71,7 +73,9 @@ jobs:
         run: npm run build
 
       - name: 🔬 Bun ${{ matrix.node-version }}
-        run: FILTER=bun-${{ matrix.node-version }} npm run test:ci
+        run: npm run test:ci
+        env:
+          FILTER: bun-${{ matrix.node-version }}
 
   deno:
     runs-on: windows-latest
@@ -104,4 +108,6 @@ jobs:
         run: npm run build
 
       - name: 🔬 Deno ${{ matrix.node-version }}
-        run: FILTER=deno-${{ matrix.node-version }} npm run test:ci
+        run: npm run test:ci
+        env:
+          FILTER: deno-${{ matrix.node-version }}
