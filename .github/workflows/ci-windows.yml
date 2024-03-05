@@ -1,4 +1,4 @@
-name: '🔬'
+name: '🪟'
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: Windows - Node.js
+    name: Windows
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
