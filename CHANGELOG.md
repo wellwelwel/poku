@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/wellwelwel/poku/compare/v1.8.0...v1.8.1) (2024-03-05)
+
+
+### Bug Fixes
+
+* **Windows:** adapt path sanitization and npx.cmd ([#80](https://github.com/wellwelwel/poku/issues/80)) ([a30359d](https://github.com/wellwelwel/poku/commit/a30359d1e2e4b01b5a2479cf28d97cadc5f3f155))
+
 ## [1.8.0](https://github.com/wellwelwel/poku/compare/v1.7.0...v1.8.0) (2024-03-04)
 
 
