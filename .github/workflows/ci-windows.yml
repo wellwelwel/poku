@@ -21,13 +21,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+          cache: 'npm'
 
-      - name: ➕ Cache dependencies
-        uses: actions/cache@v4
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          node-version: '20.x'
 
       - name: 📦 Installing Dependencies
         run: npm ci
@@ -37,3 +36,38 @@ jobs:
 
       - name: 🔬 Node
         run: npm run test
+
+  bun:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: Windows - Bun
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🤹🏻‍♀️ Building the Project
+        run: npm run build
+
+      - name: 🔬 Node
+        run: bun test
