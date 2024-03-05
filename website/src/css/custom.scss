@@ -126,6 +126,10 @@ pre[class*='language-'] {
     no-repeat;
 }
 
+html[data-theme='light'] {
+  background-color: #eff2f9;
+}
+
 html[data-theme='dark'] {
   background-color: #161927;
   color: #b9bfdc;
