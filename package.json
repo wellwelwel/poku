@@ -15,7 +15,7 @@
     "prebuild": "rm -rf ./lib ./ci",
     "predocker:deno": "docker compose -f ./test/docker/playground/deno/docker-compose.yml down",
     "docker:deno": "docker compose -f ./test/docker/playground/deno/docker-compose.yml up --build",
-    "build": "tsc; npx tsc -p tsconfig.test.json",
+    "build": "tsc; tsc -p tsconfig.test.json",
     "postbuild": "tsx ./tools/compatibility/node.ts; chmod +x lib/bin/index.js; npm audit",
     "eslint:checker": "eslint . --ext .js,.ts",
     "eslint:fix": "eslint . --fix --config ./.eslintrc.json",
