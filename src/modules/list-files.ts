@@ -7,7 +7,7 @@ export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
   const sanitizedPath = input
     .replace(/[/\\]+/g, path.sep) // adapting slashes according to OS
     .replace(/(\.\.(\/|\\|$))+/g, '') // ensure the current path level
-    .replace(/[<>:|^?*]+/g, ''); // removing unusual path characters
+    .replace(/[<>|^?*]+/g, ''); // removing unusual path characters
 
   // Preventing absolute path access
   return ensureTarget ? sanitizedPath.replace(/^[/\\]/, './') : sanitizedPath;

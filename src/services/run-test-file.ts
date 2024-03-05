@@ -26,9 +26,15 @@ export const runTestFile = (
 ): Promise<boolean> =>
   new Promise(async (resolve) => {
     const runtimeOptions = runner(filePath, configs);
-    const runtime = runtimeOptions.shift();
-    const runtimeArguments =
+    const originalRuntime = runtimeOptions.shift();
+    let runtime = originalRuntime;
+    let runtimeArguments =
       runtimeOptions.length > 1 ? [...runtimeOptions, filePath] : [filePath];
+
+    if (process.platform === 'win32' && originalRuntime === 'tsx') {
+      runtime = 'npx.cmd';
+      runtimeArguments = ['tsx', ...runtimeArguments];
+    }
 
     const fileRelative = path.relative(process.cwd(), filePath);
     const showLogs = !isQuiet(configs);

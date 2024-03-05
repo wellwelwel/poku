@@ -1,0 +1,38 @@
+name: '🪟'
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  node:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: Windows
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🤹🏻‍♀️ Building the Project
+        run: npm run build
+
+      - name: 🔬 Node
+        run: npm run test
