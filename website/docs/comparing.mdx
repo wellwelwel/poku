@@ -227,24 +227,25 @@ npx vitest run
   </TabItem>
   <TabItem value='AVA'>
 
-## [AVA](https://github.com/avajs/ava) (CJS)
-
-:::info
-
-I was unable to test **AVA** as **ESM** without compile **TypeScript**. <br />
-Please submit a _PR_ if you know how to reach this approach.
-
-- Related: [avajs/ava#3308](https://github.com/avajs/ava/discussions/3308).
-
-:::
+## [AVA](https://github.com/avajs/ava)
 
 ### Installation
 
 ```bash
-npm i -D ava tsx
+npm i -D ava tsimp
 ```
 
-> ~26M
+> ~55M
+
+<hr />
+
+### Configuring Git
+
+> Include in the _.gitignore_:
+
+```json
+/.tsimp
+```
 
 <hr />
 
@@ -257,9 +258,9 @@ npm i -D ava tsx
   "ava": {
     "files": ["test/**/*.test.ts"],
     "extensions": {
-      "ts": "commonjs"
+      "ts": "module"
     },
-    "nodeArguments": ["--import=tsx"]
+    "nodeArguments": ["--import=tsimp"]
   }
 }
 ```
