@@ -145,6 +145,15 @@ assert(true, 'Poku will describe it 🐷');
 ```
 
   </TabItem>
+  <TabItem default value='test/file.test.ts (Deno)'>
+
+```ts
+import { assert } from 'npm:poku';
+
+assert(true, 'Poku will describe it 🐷');
+```
+
+  </TabItem>
 </Tabs>
 
 ### **Run it** 🚀
@@ -182,6 +191,25 @@ deno run npm:poku
 
 - [**See the complete `assert`'s documentation**](/docs/documentation/assert).
 - [**See the complete `poku`'s documentation**](/docs/category/poku).
+
+<hr />
+
+## Available Methods
+
+### Essentials
+
+- `poku` (_test runner_)
+- `assert` and `assertPromise` (_test assertion_)
+
+### Helpers
+
+- `beforeEach` and `afterEach`
+- `test`
+- `describe` and `log`
+- `listFiles`
+- `exit`
+
+[**See the complete documentation**](/docs/category/documentation).
 
 <hr />
 
