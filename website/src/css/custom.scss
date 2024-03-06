@@ -142,6 +142,10 @@ html[data-theme='dark'] {
     color: #8188ab;
   }
 
+  .navbar.navbar--fixed-top {
+    background-color: #242742;
+  }
+
   .navbar__manual--title {
     color: var(--ifm-color-primary);
 
@@ -171,6 +175,43 @@ html[data-theme='dark'] {
   .tabs__item--active {
     border-bottom-color: #872f61;
     color: #f271bb;
+  }
+
+  .theme-admonition {
+    p {
+      & > code {
+        background-color: rgba(255, 255, 255, 0.1);
+        border: none;
+        padding-inline: 5px;
+        font-weight: 600;
+      }
+    }
+
+    pre {
+      code {
+        background-color: #14161f;
+      }
+    }
+
+    &.alert--success {
+      --ifm-alert-background-color: #7230d6;
+      --ifm-alert-border-color: #b27fff;
+    }
+
+    &.alert--info {
+      --ifm-alert-background-color: #2c2f44;
+      --ifm-alert-border-color: #656b94;
+    }
+
+    &.alert--secondary {
+      --ifm-alert-background-color: #292e55;
+      --ifm-alert-border-color: #5d72ff;
+    }
+
+    &.alert--danger {
+      --ifm-alert-background-color: #540218;
+      --ifm-alert-border-color: #ff0043;
+    }
   }
 }
 

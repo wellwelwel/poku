@@ -4,6 +4,7 @@ sidebar_position: 2
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { FAQ } from '@site/src/components/FAQ';
 
 # `assert`
 
@@ -44,8 +45,8 @@ _But only if you want to, of course._
 </Tabs>
 
 ```ts
-assert(true);
-assert.deepStrictEqual(1, '1', 'My optional custom message');
+assert(true, "It's true 🧪");
+assert.strictEqual(1, '1', 'Poku will describe it and show an error 🐷');
 // ...
 ```
 
@@ -56,7 +57,7 @@ Your **Poku** is waiting for you 🐷✨
 
 <hr />
 
-## Available methods
+## Available Methods
 
 ```ts
 import { assert, assertPromise } from 'poku';
@@ -64,26 +65,119 @@ import { assert, assertPromise } from 'poku';
 
 > You can combine promise **assert** with beforeEach and afterEach helpers.
 
-- `assert(value[, message])`
-- `assert.deepEqual(actual, expected[, message])`
-- `assert.deepStrictEqual(actual, expected[, message])`
-- `assert.doesNotMatch(string, regexp[, message])`
-- `assert.doesNotReject(asyncFn[, error][, message])`
-- `assert.doesNotThrow(fn[, error][, message])`
-- `assert.equal(actual, expected[, message])`
-- `assert.fail([message])`
-- `assert.ifError(value)`
-- `assert.match(string, regexp[, message])`
-- `assert.notDeepEqual(actual, expected[, message])`
-- `assert.notDeepStrictEqual(actual, expected[, message])`
-- `assert.notEqual(actual, expected[, message])`
-- `assert.notStrictEqual(actual, expected[, message])`
-- `assert.ok(value[, message])`
-- `assert.rejects(asyncFn[, error][, message])`
-- `assert.strictEqual(actual, expected[, message])`
-- `assert.throws(fn[, error][, message])`
+<FAQ title='Positive Assertion' open>
+
+### Truthy
+
+```ts
+assert(value[, message])
+```
+
+```ts
+assert.ok(value[, message])
+```
+
+### Equality
+
+```ts
+assert.equal(actual, expected[, message])
+```
+
+```ts
+assert.strictEqual(actual, expected[, message])
+```
+
+### Deep Equality
+
+```ts
+assert.deepEqual(actual, expected[, message])
+```
+
+```ts
+assert.deepStrictEqual(actual, expected[, message])
+```
+
+### Matching
+
+```ts
+assert.match(string, regexp[, message])
+```
+
+### Success
+
+```ts
+assert.doesNotReject(asyncFn[, error][, message])
+```
+
+```ts
+assert.doesNotThrow(fn[, error][, message])
+```
+
+</FAQ>
+
+<FAQ title='Negative Assertion'>
+
+### Inequality
+
+```ts
+assert.notEqual(actual, expected[, message])
+```
+
+```ts
+assert.notStrictEqual(actual, expected[, message])
+```
+
+### Deep Inequality
+
+```ts
+assert.notDeepEqual(actual, expected[, message])
+```
+
+```ts
+assert.notDeepStrictEqual(actual, expected[, message])
+```
+
+### Non-Matching
+
+```ts
+assert.doesNotMatch(string, regexp[, message])
+```
+
+### Failure
+
+```ts
+assert.rejects(asyncFn[, error][, message])
+```
+
+```ts
+assert.throws(fn[, error][, message])
+```
+
+</FAQ>
+
+<FAQ title='Error Handling'>
+
+### Falsy
+
+```ts
+assert.ifError(value);
+```
+
+- _Tests for a error value, useful in callbacks_
+
+### Forces a failure
+
+```ts
+assert.fail([message]);
+```
+
+</FAQ>
 
 You can follow the [**assert documentation**](https://nodejs.org/api/assert.html) from **Node.js**'s documentation.
+
+:::note
+For **Node.js**, the `assert.match` and `assert.doesNotMatch` methods are available from version 12 or higher.
+:::
 
 :::info
 

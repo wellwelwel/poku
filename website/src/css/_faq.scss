@@ -3,6 +3,16 @@ details {
     background-color: var(--faq-background);
     border-color: var(--faq-border-color);
 
+    p,
+    li {
+      code {
+        background-color: rgba(255, 255, 255, 0.1);
+        border: none;
+        padding-inline: 5px;
+        font-weight: 500;
+      }
+    }
+
     pre {
       code {
         border: 0.0625rem solid var(--faq-code-border-color);
@@ -18,11 +28,6 @@ details {
       --faq-background: #f8fcff;
       --faq-border-color: var(--ifm-color-primary);
       --faq-code-border-color: #add2eb;
-
-      code[class*='language-'],
-      pre[class*='language-'] {
-        background-color: #fbfdff !important;
-      }
     }
   }
 }
