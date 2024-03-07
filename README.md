@@ -251,11 +251,19 @@ Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Saf
 
 [![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
 
-[![Contributors](https://contrib.rocks/image?repo=wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
+[![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 ---
 
 ## Author
 
-| [![wellwelwel](https://avatars.githubusercontent.com/u/46850407?v=4?v=3&s=115)<br><sub>@wellwelwel</sub>](https://github.com/wellwelwel) |
-| :--------------------------------------------------------------------------------------------------------------------------------------: |
+<a href="https://github.com/wellwelwel">
+<table>
+  <tr>
+    <td align="center">
+        <img src="https://avatars.githubusercontent.com/u/46850407" alt="wellwelwel" width=96><br>
+        <em>@wellwelwel</em>
+    </td>
+  </tr>
+</table>
+</a>
