@@ -37,8 +37,8 @@ jobs:
         if: ${{ steps.release.outputs.releases_created }}
         with:
           path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
 
       - name: 📦 Installing Dependencies
         if: ${{ steps.release.outputs.releases_created }}
