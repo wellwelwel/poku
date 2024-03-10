@@ -24,7 +24,7 @@ const backgroundProcess = (
       env: process.env,
     });
 
-    const end = () => service.kill();
+    const end = () => service.kill('SIGTERM');
 
     service.stdout.on('data', (data: Buffer) => {
       if (!isResolved && typeof options?.startAfter !== 'number') {

@@ -17,6 +17,7 @@ test(async () => {
   const server = await startService(`server-a.${ext}`, {
     startAfter: 'ready',
     cwd: 'test/fixtures/server',
+    timeout: 10000,
   });
 
   const res = await legacyFetch('localhost', 4000);
@@ -37,6 +38,7 @@ test(async () => {
   const server = await startScript(`start:b:${ext}`, {
     startAfter: 'ready',
     cwd: 'test/fixtures/server',
+    timeout: 10000,
   });
 
   const res = await legacyFetch('localhost', 4001);
