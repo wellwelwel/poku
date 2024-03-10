@@ -22,7 +22,7 @@ export type DescribeOptions = {
  * By default **Poku** only shows outputs generated from itself.
  * This helper allows you to use an alternative to `console.log` with **Poku**.
  *
- * Need to debug? Just use the [`debug`](https://poku.io/docs/documentation/poku/configs/debug) option from `poku`.
+ * Need to debug? Just use the [`debug`](https://poku.io/docs/documentation/poku/options/debug) option from `poku`.
  */
 export const log = (message: string) => console.log(`\x1b[0m${message}\x1b[0m`);
 

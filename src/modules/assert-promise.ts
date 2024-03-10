@@ -286,7 +286,7 @@ const match = async (
   message?: ParseAssertionOptions['message']
 ): Promise<void> => {
   if (typeof version === 'number' && version < 12) {
-    throw new Error('doesNotMatch is available from Node.js 12 or higher');
+    throw new Error('match is available from Node.js 12 or higher');
   }
 
   await parseAssertion(() => nodeAssert?.match(value, regExp), {
