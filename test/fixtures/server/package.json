@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "start:ts": "tsx server.ts",
+    "start:js": "node server.js"
+  }
+}
