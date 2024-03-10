@@ -8,47 +8,45 @@ import {
 } from '../../../src/index.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
 
-(async () => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  const ext = isProduction ? 'js' : 'ts';
+const isProduction = process.env.NODE_ENV === 'production';
+const ext = isProduction ? 'js' : 'ts';
 
-  await test(async () => {
-    describe('Start Service', { background: false, icon: '🔀' });
+test(async () => {
+  describe('Start Service', { background: false, icon: '🔀' });
 
-    const server = await startService(`server.${ext}`, {
-      startAfter: 'ready',
-      cwd: 'test/fixtures/server',
-    });
-
-    const res = await legacyFetch('localhost', 5100);
-
-    assert.strictEqual(res?.statusCode, 200, 'Server is on');
-    assert.deepStrictEqual(
-      JSON.parse(res?.body),
-      { name: 'Poku' },
-      'Poku is online'
-    );
-
-    server.end();
+  const server = await startService(`server-a.${ext}`, {
+    startAfter: 'ready',
+    cwd: 'test/fixtures/server',
   });
 
-  await test(async () => {
-    describe('Start Script', { background: false, icon: '🔀' });
+  const res = await legacyFetch('localhost', 4000);
 
-    const server = await startScript(`start:${ext}`, {
-      startAfter: 'ready',
-      cwd: 'test/fixtures/server',
-    });
+  assert.strictEqual(res?.statusCode, 200, 'Service is on');
+  assert.deepStrictEqual(
+    JSON.parse(res?.body),
+    { name: 'Poku' },
+    'Poku service is online'
+  );
 
-    const res = await legacyFetch('localhost', 5100);
+  server.end();
+});
 
-    assert.strictEqual(res?.statusCode, 200, 'Server is on');
-    assert.deepStrictEqual(
-      JSON.parse(res?.body),
-      { name: 'Poku' },
-      'Poku is online'
-    );
+test(async () => {
+  describe('Start Script', { background: false, icon: '🔀' });
 
-    server.end();
+  const server = await startScript(`start:b:${ext}`, {
+    startAfter: 'ready',
+    cwd: 'test/fixtures/server',
   });
-})();
+
+  const res = await legacyFetch('localhost', 4001);
+
+  assert.strictEqual(res?.statusCode, 200, 'Script is on');
+  assert.deepStrictEqual(
+    JSON.parse(res?.body),
+    { name: 'Poku' },
+    'Poku script is online'
+  );
+
+  server.end();
+});

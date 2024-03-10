@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "start:ts": "tsx server.ts",
-    "start:js": "node server.js"
+    "start:a:ts": "tsx server-a.ts",
+    "start:a:js": "node server-a.js",
+    "start:b:ts": "tsx server-b.ts",
+    "start:b:js": "node server-b.js"
   }
 }
