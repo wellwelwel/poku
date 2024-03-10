@@ -20,7 +20,7 @@ import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
       cwd: 'test/fixtures/server',
     });
 
-    const res = await legacyFetch('localhost', 4000);
+    const res = await legacyFetch('localhost', 5100);
 
     assert.strictEqual(res?.statusCode, 200, 'Server is on');
     assert.deepStrictEqual(
@@ -40,7 +40,7 @@ import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
       cwd: 'test/fixtures/server',
     });
 
-    const res = await legacyFetch('localhost', 4000);
+    const res = await legacyFetch('localhost', 5100);
 
     assert.strictEqual(res?.statusCode, 200, 'Server is on');
     assert.deepStrictEqual(
