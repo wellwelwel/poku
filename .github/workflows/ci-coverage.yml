@@ -9,6 +9,7 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     name: Coverage
     steps:
       - name: ➕ Actions - Checkout

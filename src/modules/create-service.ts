@@ -22,9 +22,13 @@ const backgroundProcess = (
       shell: false,
       cwd: options?.cwd ? sanitizePath(path.normalize(options.cwd)) : undefined,
       env: process.env,
+      detached: true,
     });
 
-    const end = () => service.kill('SIGKILL');
+    const end = () => {
+      process.kill(-service.pid!, 'SIGKILL');
+      return true;
+    };
 
     service.stdout.on('data', (data: Buffer) => {
       if (!isResolved && typeof options?.startAfter !== 'number') {
