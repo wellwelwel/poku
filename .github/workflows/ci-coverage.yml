@@ -9,6 +9,7 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     name: Coverage
     steps:
       - name: ➕ Actions - Checkout
@@ -30,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: 🧪 Checking for Coverage
-        run: npm run test:ci:c8
+        run: npm run test:c8
 
       - name: ☔️ Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4

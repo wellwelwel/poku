@@ -1,0 +1,199 @@
+---
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { FAQ } from '@site/src/components/FAQ';
+
+# Local Server
+
+Let's create a simple server:
+
+<Tabs>
+  <TabItem default value='server.js (Node.js)'>
+
+```js
+// highlight-start
+import { createServer } from 'node:http';
+
+createServer((_, res) => {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ name: 'Poku' }));
+}).listen(4000, () => console.log('ready'));
+
+// highlight-end
+```
+
+  </TabItem>
+  <TabItem default value='server.js (Bun)'>
+
+```js
+// highlight-start
+Bun.serve({
+  port: 4000,
+  fetch: () =>
+    new Response(JSON.stringify({ name: 'Poku' }), {
+      headers: { 'Content-Type': 'application/json' },
+    }),
+});
+
+console.log('ready');
+// highlight-end
+```
+
+  </TabItem>
+  <TabItem default value='server.js (Deno)'>
+
+```ts
+// highlight-start
+Deno.serve({
+  port: 4000,
+  handler: () =>
+    new Response(JSON.stringify({ name: 'Poku' }), {
+      headers: { 'Content-Type': 'application/json' },
+    }),
+  onListen: () => console.log('ready'),
+});
+// highlight-end
+```
+
+  </TabItem>
+</Tabs>
+
+And now, test it:
+
+<Tabs>
+  <TabItem default value='test/server.test.js'>
+
+```js
+import { assert, startService } from 'poku'; // 'npm:poku' for Deno
+
+const server = await startService('server.js', {
+  // Wait for the "ready" console output
+  startAfter: 'ready',
+});
+
+// Use the requester you want
+// highlight-start
+const res = await fetch('http://localhost:4000');
+const data = await res.json();
+// highlight-end
+
+assert.strictEqual(res.status, 200, 'Server is on');
+assert.deepStrictEqual(data, { name: 'Poku' }, 'Poku is here');
+
+server.end();
+```
+
+  </TabItem>
+</Tabs>
+
+<FAQ title='Need to test using a consistent session? 🍪'>
+
+**Just do it** 🚀
+
+Here's an example using [**Axios**](https://github.com/axios/axios):
+
+```js
+import { assert, startService } from 'poku';
+// highlight-start
+import axios from 'axios';
+import axiosCookieJarSupport from 'axios-cookiejar-support';
+import { CookieJar } from 'tough-cookie';
+
+// highlight-end
+const server = await startService('server.js');
+
+// highlight-start
+axiosCookieJarSupport(axios);
+
+const cookieJar = new CookieJar();
+
+export const api = axios.create({
+  withCredentials: true,
+  jar: cookieJar,
+});
+
+const { data } = await api.get('http://localhost:4000');
+// highlight-end
+
+assert.deepStrictEqual(data, { name: 'Poku' }, 'Poku is here');
+```
+
+</FAQ>
+
+:::tip
+
+- **Requester:** You can use [**Axios**](https://github.com/axios/axios), [**Node Fetch**](https://github.com/node-fetch/node-fetch) and everyone you want 💙
+- **Server:** you can use every server you want, such as [**Express**](https://github.com/expressjs/express), [**Koa**](https://github.com/koajs/koa), etc.
+- [**NextJS**](https://github.com/vercel/next.js), [**ViteJS**](https://github.com/vitejs/vite), [**nodemon**](https://github.com/remy/nodemon) and more? See bellow 👇🏻
+
+:::
+
+<hr />
+
+You also can start your server using the `startScript`.
+
+<Tabs>
+  <TabItem default value='test/server.test.js'>
+
+```js
+import { assert, startScript } from 'poku';
+
+const server = await startScript('start', {
+  // Wait for the "ready" console output
+  startAfter: 'Ready',
+});
+
+// Use the requester you want
+// highlight-start
+const res = await fetch('http://localhost:4000');
+const data = await res.json();
+// highlight-end
+
+assert.strictEqual(res.status, 200, 'Server is on');
+assert.deepStrictEqual(data, { name: 'Poku' }, 'Poku is here');
+
+server.end();
+```
+
+  </TabItem>
+  <TabItem default value='package.json (Node.js)'>
+
+```json
+{
+  "script": {
+    "serve": "node server.js"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value='package.json (Bun)'>
+
+```json
+{
+  "script": {
+    "serve": "bun server.js"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value='deno.json (Deno)'>
+
+```json
+{
+  "tasks": {
+    "serve": "deno run --allow-net server.js"
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+:::tip
+Using `startScript`, you can execute [**NextJS**](https://github.com/vercel/next.js), [**SvelteJS**](https://github.com/sveltejs/svelte), [**nodemon**](https://github.com/remy/nodemon) and all the scripts you've always used 🐷
+:::

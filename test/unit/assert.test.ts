@@ -1,4 +1,6 @@
-import { assert } from '../../src/index.js';
+import { assert, describe } from '../../src/index.js';
+
+describe('Assert Suite', { background: false, icon: '🔬' });
 
 assert.ok(true, 'ok with true');
 assert.ok(1, 'ok with 1');
@@ -36,13 +38,3 @@ assert.notDeepStrictEqual(
   { a: '1' },
   'notDeepStrictEqual with loosely equal but not strictly deep equal objects'
 );
-
-// TODO: Document compatibility from Node.js 12
-// assert.doesNotMatch(
-//   'hello',
-//   /world/,
-//   'doesNotMatch with non-matching string and regex'
-// );
-
-// TODO: Document compatibility from Node.js 12
-// assert.match('hello world', /world/, 'match with matching string and regex');

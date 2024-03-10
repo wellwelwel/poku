@@ -278,7 +278,7 @@ const match = (
   message?: ParseAssertionOptions['message']
 ): void => {
   if (typeof version === 'number' && version < 12) {
-    throw new Error('doesNotMatch is available from Node.js 12 or higher');
+    throw new Error('match is available from Node.js 12 or higher');
   }
 
   parseAssertion(() => nodeAssert?.match(value, regExp), {

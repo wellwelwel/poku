@@ -54,7 +54,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ## Why Poku?
 
-By creating **Poku**, my aim is to show that testing can be simpler 🌱
+**Poku** can show you how simple testing can be 🌱
 
 <div className='features black'>
   <div className='p'>
@@ -80,10 +80,11 @@ By creating **Poku**, my aim is to show that testing can be simpler 🌱
 <br />
 
 > 🔬 Start by seeing how to use `assert` <br />
+> 🧑🏻‍🔬 Need to test an API? Check the `startService` and `startScript` <br />
 > 🧪 Then learn how to use `poku` CLI to run all your test files at once <br />
 > 🧙🏻 So, just if you want to, go deeper into learning about **Poku** <br />
 >
-> 🩵 Take your time
+> 🩵 Take Your Time
 
 - [**Compare Poku with the Most Popular Test Runners 🧪**](/docs/comparing)
 
@@ -129,8 +130,7 @@ You can also use **Poku** with [**esm.sh**](https://esm.sh):
 import { poku } from 'https://esm.sh/poku';
 ```
 
-    </TabItem>
-
+  </TabItem>
 </Tabs>
 
 ### **Test it** 🔬
@@ -155,6 +155,8 @@ assert(true, 'Poku will describe it 🐷');
 
   </TabItem>
 </Tabs>
+
+> Note that these examples use [**ESM**](/docs/examples/cjs-esm), but you can use [**CJS**](/docs/examples/cjs-esm) as well.
 
 ### **Run it** 🚀
 
@@ -198,13 +200,14 @@ deno run npm:poku
 
 ### Essentials
 
-- `poku` (_test runner_)
-- `assert` and `assertPromise` (_test assertion_)
+- [**poku**](/docs/category/poku) (_test runner_)
+- [**assert**](/docs/documentation/assert) (_test assertion_)
+- [**startScript**](/docs/documentation/startScript) and [**startService**](/docs/documentation/startService) (_run scripts and services in a background process_)
 
 ### Helpers
 
-- `beforeEach` and `afterEach`
 - `test`
+- `beforeEach` and `afterEach`
 - `describe` and `log`
 - `listFiles`
 - `exit`
@@ -215,7 +218,7 @@ deno run npm:poku
 
 ## Documentation
 
-> Initially, the [**documentation**](/docs/category/documentation) and [**examples**](/docs/category/examples) are based on **Node.js** usage, but you can use all the options normally for both **Bun** and **Deno**.
+> Initially, the [**documentation**](/docs/category/documentation) and [**examples**](/docs/category/examples) are based on **Node.js** and **ESM** usage, but you can use all the options normally for both **Bun** and **Deno**, including **CJS**.
 
 <hr />
 

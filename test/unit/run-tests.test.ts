@@ -1,22 +1,22 @@
-import { assert } from '../../src/index.js';
+import { assert, describe, test } from '../../src/index.js';
 import { runTests } from '../../src/services/run-tests.js';
 
-(async () => {
-  {
-    const code = await runTests('./test/fixtures/fail', {
-      noExit: true,
-      quiet: true,
-    });
+describe('Service: runTests', { background: false, icon: '🔬' });
 
-    assert.deepStrictEqual(code, false, 'Failure test directory case');
-  }
+test(async () => {
+  const code = await runTests('./test/fixtures/fail', {
+    noExit: true,
+    quiet: true,
+  });
 
-  {
-    const code = await runTests('./test/fixtures/success', {
-      noExit: true,
-      quiet: true,
-    });
+  assert.deepStrictEqual(code, false, 'Failure test directory case');
+});
 
-    assert.deepStrictEqual(code, true, 'Success test directory case');
-  }
-})();
+test(async () => {
+  const code = await runTests('./test/fixtures/success', {
+    noExit: true,
+    quiet: true,
+  });
+
+  assert.deepStrictEqual(code, true, 'Success test directory case');
+});
