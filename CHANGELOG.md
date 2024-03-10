@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/wellwelwel/poku/compare/v1.8.1...v1.9.0) (2024-03-10)
+
+
+### Features
+
+* introduce `startScript` and `startService` ([#91](https://github.com/wellwelwel/poku/issues/91)) ([bc414bb](https://github.com/wellwelwel/poku/commit/bc414bb1bea57209b33334963e198dc155378e3b))
+
 ## [1.8.1](https://github.com/wellwelwel/poku/compare/v1.8.0...v1.8.1) (2024-03-05)
 
 
