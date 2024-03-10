@@ -15,7 +15,7 @@ Some test runners use **`eval`**, **Poku** prefers to use **`spawn`** to create 
   - `\` for **Windows**
   - `/` for **Linux** and **macOS**
 - Normalizes paths by filtering unusual path characters, for example:
-  - `<>:|^?*`
+  - `<>|^?*`
 - Prevents shell scripts by setting `shell` to `false` in **`spawn`** options, ensuring that only secure arguments will be used.
 - Every **RegExp** is prev-tested using the [**ReDoS Checker**](https://devina.io/redos-checker).
 

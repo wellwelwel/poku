@@ -6,21 +6,7 @@ sidebar_position: 1
 
 > `poku(targetPaths: string | string[])`
 >
-> By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it using the [`filter`](/docs/documentation/poku/configs/filter) option.
-
-## API (_in-code_)
-
-```ts
-poku('targetePath');
-```
-
-```ts
-poku(['targetePathA', 'targetePathB']);
-```
-
-```ts
-poku('./');
-```
+> By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it using the [`filter`](/docs/documentation/poku/options/filter) option.
 
 ## CLI
 
@@ -29,11 +15,11 @@ By setting the directories as the **last argument**:
 > _Since **1.3.0**_
 
 ```bash
-npx poku targetePath
+npx poku targetPath
 ```
 
 ```bash
-npx poku targetePathA,targetePathB
+npx poku targetPathA,targetPathB
 ```
 
 ```bash
@@ -44,13 +30,27 @@ npx poku
 By using `--include` option, you can use it in any order:
 
 ```bash
-npx poku --include='targetePath'
+npx poku --include='targetPath'
 ```
 
 ```bash
-npx poku --include='targetePathA,targetePathB'
+npx poku --include='targetPathA,targetPathB'
 ```
 
 ```bash
 npx poku --include='./'
+```
+
+## API (_in-code_)
+
+```ts
+poku('targetPath');
+```
+
+```ts
+poku(['targetPathA', 'targetPathB']);
+```
+
+```ts
+poku('./');
 ```

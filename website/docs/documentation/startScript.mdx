@@ -1,0 +1,151 @@
+---
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { FAQ } from '@site/src/components/FAQ';
+import Success from '@site/static/img/success.svg';
+
+# Start Script
+
+Run your `package.json` scripts in a background process and test them 🧑🏻‍🔬
+
+> startScript(filePath: string, options?: startScriptOptions);
+>
+> _Since **1.9.0**_
+
+`startScript` execute a script directly from your `package.json` or `deno.json` and keep it running in a background process until you release it.
+
+<div className='features black'>
+  <div className='p'>
+    <Success />
+    <span>
+      Really useful to test your
+      [**NextJS**](https://github.com/vercel/next.js),
+      [**NuxtJS**](https://github.com/nuxt/nuxt),
+      [**nodemon**](https://github.com/remy/nodemon) and every project app 🚀
+    </span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>Allows **cookies** to persist (_or not_) 🍪</span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>
+      **Poku** allows you to use the requester you want, such as
+      [**Axios**](https://github.com/axios/axios), the native `fetch` and
+      everyone ✨
+    </span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>
+      No need to add external plugins to something so simple, just run it as it
+      is 🌱
+    </span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>
+      Stop changing your code due to tester rules, you created your code, not
+      **Poku** 🩵
+    </span>
+  </div>
+</div>
+
+<hr />
+
+[See practical examples using **fetch**, [**Axios**](https://github.com/axios/axios), a **persistent session** and more](/docs/examples/local-server).
+
+<hr />
+
+## Good Practices 👮🏽
+
+### ✅ Sinalize the "ready" status
+
+When possible, set a console output to indicate that the service is ready. <br />
+This will allow you to avoid premature executions and port leaks.
+
+### ✅ Set a timeout
+
+By defining a timeout, you avert indefinite processes that conclude neither in success nor failure.
+
+### ✅ End your service when the job is done
+
+You don't necessarily have to end your service running in the background as the last line of the test, if it's no longer used.
+
+```ts
+import { startScript } from 'poku'; // 'npm:poku' for Deno
+
+const server = await startScript('start', {
+  /**
+   * Wait for the "ready" console output
+   */
+  startAfter: 'Ready',
+
+  /**
+   * By default, the `timeout` is `60000` (1 minute) for neither in success nor failure
+   */
+  timeout: 60000,
+});
+
+server.end();
+```
+
+<FAQ title='Oh No! I broke it, and now? 🤡'>
+
+Releasing a leaking port:
+
+```bash
+lsof -i :PORT
+```
+
+- Replace `PORT` with the port number you're investigating.
+
+Then, use the `PID` returned with the `kill` command:
+
+```bash
+kill -9 PID
+```
+
+- Replace `PID` with the actual process ID you found using the `lsof` command.
+
+</FAQ>
+
+<hr />
+
+## Available Options
+
+```ts
+type StartScriptOptions = {
+  /**
+   * - By default, it will resolve in the first console output
+   * - By setting a string: it will wait for a specifc string on console output to resolve
+   * - By setting a number: it will wait for time in milliseconds to resolve
+   *
+   * @default undefined
+   */
+  startAfter?: string | number;
+  /**
+   * Stops the service after:
+   * @default 60000
+   */
+  timeout?: number;
+  /**
+   * Shows the output from service
+   */
+  verbose?: boolean;
+  /**
+   * Specify a target path to start the process
+   *
+   * @default "./"
+   */
+  cwd?: string | undefined;
+  /**
+   * By default, Poku will use `npm`. Change it as you want.
+   */
+  runner?: 'npm' | 'bun' | 'deno' | 'yarn' | 'pnpm';
+};
+```

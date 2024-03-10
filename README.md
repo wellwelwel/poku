@@ -44,7 +44,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ## Why Poku?
 
-By creating **Poku**, my aim is to show that testing can be simpler 🌱
+**Poku** can show you how simple testing can be 🌱
 
 - No configurations
 - Supports **ESM** and **CJS**
@@ -127,6 +127,8 @@ assert(true, 'Poku will describe it 🐷');
 </tr>
 </table>
 
+> Note that these examples use [**ESM**](https://poku.io/docs/examples/cjs-esm), but you can use [**CJS**](https://poku.io/docs/examples/cjs-esm) as well.
+
 ### Run it 🚀
 
 <table>
@@ -171,8 +173,10 @@ deno run npm:poku
 
 ### Essentials
 
-- `poku` (_test runner_)
-- `assert` and `assertPromise` (_test assertion_)
+- [**poku**](https://poku.io/docs/category/poku) (_test runner_)
+- [**assert**](https://poku.io/docs/documentation/assert) (_test assertion_)
+- [**startScript**](https://poku.io/docs/documentation/startScript) (_run `package.json` scripts in a background process_)
+- [**startService**](https://poku.io/docs/documentation/startService) (_run files in a background process_)
 
 ### Helpers
 

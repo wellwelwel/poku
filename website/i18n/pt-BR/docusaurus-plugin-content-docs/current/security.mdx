@@ -15,7 +15,7 @@ Alguns _Test Runners_ usam **`eval`**, o **Poku** prefere usar o **`spawn`** par
   - `\` para **Windows**
   - `/` para **Linux** e **macOS**
 - Normaliza os caminhos ao filtrar caractéres incomuns para caminhos, por exemplo:
-  - `<>:|^?*`
+  - `<>|^?*`
 - Previne _shell scripts_ ao definir `shell` como `false` no **`spawn`**, garantindo que apenas argumentos seguros serão usados.
 - Cada **RegExp** é previamente testado usando o [**ReDoS Checker**](https://devina.io/redos-checker).
 

@@ -129,8 +129,7 @@ Você também pode usar o **Poku** via [**esm.sh**](https://esm.sh):
 import { poku } from 'https://esm.sh/poku';
 ```
 
-    </TabItem>
-
+  </TabItem>
 </Tabs>
 
 ### **Teste** 🔬
@@ -146,6 +145,8 @@ assert(true, 'Poku irá descrever isso 🐷');
 
   </TabItem>
 </Tabs>
+
+> Note que os exemplos são baseados em [**ESM**](/docs/examples/cjs-esm), mas você pode usar [**CJS**](/docs/examples/cjs-esm) normalmente.
 
 ### **Execute** 🚀
 
@@ -185,9 +186,29 @@ deno run npm:poku
 
 <hr />
 
+## Métodos Disponíveis
+
+### Essenciais
+
+- `poku` (_test runner_)
+- `assert` e `assertPromise` (_testes de asserção_)
+- `startService` e `startScript` (_excecutar serviços em plano de fundo_)
+
+### Auxiliares
+
+- `test`
+- `beforeEach` e `afterEach`
+- `describe` e `log`
+- `listFiles`
+- `exit`
+
+[**Veja a documentação completa**](/docs/category/documentation).
+
+<hr />
+
 ## Documentação
 
-> Inicialmente, a [**documentação**](/docs/category/documentation) e [**exemplos**](/docs/category/examples) são baseados no **Node.js**, mas você pode usar tudo normalmente para **Bun** and **Deno**.
+> Inicialmente, a [**documentação**](/docs/category/documentation) e [**exemplos**](/docs/category/examples) são baseados no **Node.js** e **ESM**, mas você pode usar tudo normalmente para **Bun** e **Deno**, além do **CJS**.
 
 <hr />
 
@@ -226,21 +247,21 @@ Verifique o [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECUR
   style={{ textDecoration: 'none', color: 'inherit' }}
 >
   <img
-    src='https://contrib.rocks/image?repo=wellwelwel/poku'
+    src='https://opencollective.com/poku/contributors.svg?width=890&button=false'
     alt='Contribuidores'
-    style={{ maxWidth: '100%', transform: 'scale(.75)' }}
+    style={{ maxWidth: '100%' }}
   />
 </a>
 
 <hr />
 
-## Autor
+## Author
 
 <a href='https://github.com/wellwelwel'>
   <img
     src='https://avatars.githubusercontent.com/u/46850407'
     alt='wellwelwel'
-    style={{ borderRadius: '50%', widows: 64, height: 64 }}
+    style={{ borderRadius: '50%', width: 64, height: 64 }}
   />
   <br />
   <sub>@wellwelwel</sub>
