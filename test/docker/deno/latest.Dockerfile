@@ -6,6 +6,6 @@ COPY ./src ./src
 COPY ./test ./test
 COPY ./tools ./tools
 
-RUN deno run --allow-read --allow-write --allow-env --allow-run tools/compatibility/deno.ts
+RUN deno run --allow-read --allow-write --allow-env --allow-run --allow-net tools/compatibility/deno.ts
 
 CMD ["deno", "run", "--allow-read", "--allow-env", "--allow-run", "test/run.test.ts"]

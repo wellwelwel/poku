@@ -16,8 +16,7 @@ const ensureNodeCompatibility = async (path: string) => {
   }
 };
 
-ensureNodeCompatibility('./src').then(() => {
-  ensureNodeCompatibility('./test').then(() => {
-    Deno.exit(0);
-  });
-});
+await ensureNodeCompatibility('./src');
+await ensureNodeCompatibility('./test');
+
+Deno.exit(0);
