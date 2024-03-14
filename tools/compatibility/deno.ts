@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { listFiles } from 'npm:poku';
+import { listFiles } from 'https://esm.sh/poku';
 
 const ensureNodeCompatibility = async (path: string) => {
   const files = listFiles(path, {
