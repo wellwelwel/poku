@@ -1,20 +1,17 @@
-import { promises as fs } from 'node:fs';
-import { listFiles } from '../../src/modules/list-files.ts';
+// eslint-disable-next-line import/no-unresolved
+import { listFiles } from 'npm:poku';
 
-const ensureDenoCompatibility = async (path: string) => {
-  const files = listFiles(path, [], {
-    filter: /\.(m)?(t)?s$/,
-  });
+const files = listFiles('.', {
+  filter: /\.ts/,
+});
 
-  // console.log('Ensuring Compatibility For:', files);
+console.log('Ensuring Deno Compatibility For:', files);
 
-  for (const file of files) {
-    const raw = await fs.readFile(file, 'utf8');
-    const content = raw.replace(/((import|export|from).+)(\.js)/g, '$1.ts');
+for await (const file of files) {
+  const raw = await Deno.readTextFile(file);
+  const content = raw.replace(/((import|export|from).+)(\.js)/g, '$1.ts');
 
-    await fs.writeFile(file, content);
-  }
-};
+  await Deno.writeTextFile(file, content);
+}
 
-ensureDenoCompatibility('src');
-ensureDenoCompatibility('test');
+Deno.exit(0);
