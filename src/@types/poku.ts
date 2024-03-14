@@ -57,11 +57,11 @@ export type Configs = {
    * Ex.:
    *
    * ```ts
-   * beforeEach(prepare)
+   * beforeEach(() => myFunc())
    * ```
    *
    * ```ts
-   * beforeEach('/tools/prepare.ts')
+   * beforeEach(async () => await myFunc())
    * ```
    */
   beforeEach?: () => unknown | Promise<unknown>;
@@ -71,11 +71,11 @@ export type Configs = {
    * Ex.:
    *
    * ```ts
-   * afterEach(cleanup)
+   * afterEach(() => myFunc())
    * ```
    *
    * ```ts
-   * afterEach('/tools/cleanup.ts')
+   * afterEach(async () => await myFunc())
    * ```
    */
   afterEach?: () => unknown | Promise<unknown>;
