@@ -1,11 +1,11 @@
 [node-version-url]: https://github.com/nodejs/node
-[node-version-image]: https://img.shields.io/badge/Node.js->=6.0.0-badc58
+[node-version-image]: https://img.shields.io/badge/Node.js->=%206.0.0-badc58
 [bun-version-url]: https://github.com/oven-sh/bun
-[bun-version-image]: https://img.shields.io/badge/Bun->=0.5.3-f471b5
+[bun-version-image]: https://img.shields.io/badge/Bun->=%200.5.3-f471b5
 [deno-version-url]: https://github.com/denoland/deno
-[deno-version-image]: https://img.shields.io/badge/Deno->=1.30.0-70ffaf
+[deno-version-image]: https://img.shields.io/badge/Deno->=%201.30.0-70ffaf
 [typescript-url]: https://github.com/microsoft/TypeScript
-[typescript-version-image]: https://img.shields.io/badge/TypeScript->=5.0.2-3077c6
+[typescript-version-image]: https://img.shields.io/badge/TypeScript->=%204.7.2-3077c6
 [ci-url]: https://github.com/wellwelwel/poku/actions/workflows/ci.yml?query=branch%3Amain
 [ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=CI&branch=main
 [ql-url]: https://github.com/wellwelwel/poku/actions/workflows/codeql.yml?query=branch%3Amain
