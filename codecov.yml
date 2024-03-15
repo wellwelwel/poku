@@ -3,3 +3,9 @@ codecov:
 
 fixes:
   - 'ci/::/'
+
+coverage:
+  status:
+    project:
+      default:
+        target: 75%
