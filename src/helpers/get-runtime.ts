@@ -1,4 +1,4 @@
-import type { Configs } from '../@types/poku.ts';
+import type { Configs } from '../@types/poku.js';
 
 declare const Deno: unknown;
 declare const Bun: unknown;
