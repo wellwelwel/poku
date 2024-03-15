@@ -1,0 +1,10 @@
+codecov:
+  ignore:
+    - '**/*'
+
+coverage:
+  status:
+    project:
+      default:
+        paths:
+          - 'ci/src/**/*.js'
