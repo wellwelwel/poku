@@ -1,7 +1,5 @@
-codecov:
-  ignore:
-    - '**/*'
+ignore:
+  - '**/*'
 
-coverage:
-  include:
-    - 'ci/src/**/*.js'
+include:
+  - 'ci/src/**/*.js'
