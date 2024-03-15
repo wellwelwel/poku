@@ -1,5 +1,9 @@
-ignore:
-  - '**/*'
-
-include:
-  - 'ci/src/**/*.js'
+codecov:
+  ignore:
+    - 'website'
+    - 'tools'
+    - 'test'
+    - 'src'
+    - 'lib'
+    - 'fixtures'
+    - 'ci/test'
