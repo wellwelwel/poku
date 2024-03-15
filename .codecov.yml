@@ -1,8 +1,0 @@
-ignore:
-  - 'website'
-  - 'tools'
-  - 'test'
-  - 'src'
-  - 'lib'
-  - 'fixtures'
-  - 'ci/test'
