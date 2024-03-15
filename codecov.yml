@@ -1,9 +1,8 @@
-codecov:
-  ignore:
-    - 'website'
-    - 'tools'
-    - 'test'
-    - 'src'
-    - 'lib'
-    - 'fixtures'
-    - 'ci/test'
+ignore:
+  - 'website'
+  - 'tools'
+  - 'test'
+  - 'src'
+  - 'lib'
+  - 'fixtures'
+  - 'ci/test'
