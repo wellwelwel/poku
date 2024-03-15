@@ -3,8 +3,5 @@ codecov:
     - '**/*'
 
 coverage:
-  status:
-    project:
-      default:
-        paths:
-          - 'ci/src/**/*.js'
+  include:
+    - 'ci/src/**/*.js'
