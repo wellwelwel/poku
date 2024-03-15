@@ -79,8 +79,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
 
       - name: 📦 Installing Dependencies
         run: npm ci
@@ -112,14 +112,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
 
       - name: 📦 Installing Dependencies
         run: npm ci
-
-      - name: 🤹🏻‍♀️ Building the Project
-        run: npm run build
 
       - name: 🔬 Deno ${{ matrix.node-version }}
         run: FILTER=deno-${{ matrix.node-version }} npm run test:ci
