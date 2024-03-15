@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["test", "src"],
+  "include": ["test", "src", "fixtures"],
   "exclude": ["tools"],
   "compilerOptions": {
     "outDir": "ci",

@@ -5,6 +5,7 @@ WORKDIR /usr/app
 COPY ./src ./src
 COPY ./test ./test
 COPY ./tools ./tools
+COPY ./fixtures ./fixtures
 
 RUN deno run --allow-read --allow-write --allow-env --allow-run tools/compatibility/deno.ts
 
