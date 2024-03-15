@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/wellwelwel/poku/compare/v1.9.0...v1.9.1) (2024-03-15)
+
+
+### Bug Fixes
+
+* **test runner:** ensure all logs when using `debug` option ([#112](https://github.com/wellwelwel/poku/issues/112)) ([42a1e5e](https://github.com/wellwelwel/poku/commit/42a1e5eecc60547226c9539a2adac3d354817fde))
+
 ## [1.9.0](https://github.com/wellwelwel/poku/compare/v1.8.1...v1.9.0) (2024-03-10)
 
 
