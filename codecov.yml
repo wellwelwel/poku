@@ -1,2 +1,8 @@
-fixes:
-  - 'ci/::'
+coverage:
+  status:
+    project:
+      default: false
+    patch:
+      default: false
+  fixes:
+    - 'ci/::/'
