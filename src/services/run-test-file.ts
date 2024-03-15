@@ -39,7 +39,7 @@ export const runTestFile = (
     const log = () => {
       const outputs = removeConsecutiveRepeats(
         showSuccess
-          ? output.split(/(\r\n|\r|\n)/)
+          ? [output]
           : output.split(/(\r\n|\r|\n)/).filter((current) => {
               if (current.includes('Exited with code')) return false;
               return (
