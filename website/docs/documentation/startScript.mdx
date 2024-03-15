@@ -57,7 +57,7 @@ Run your `package.json` scripts in a background process and test them 🧑🏻�
 
 <hr />
 
-[See practical examples using **fetch**, [**Axios**](https://github.com/axios/axios), a **persistent session** and more](/docs/examples/local-server).
+[See practical examples using **fetch**, **Axios**, a **persistent session** and more](/docs/examples/local-server).
 
 <hr />
 
@@ -124,6 +124,12 @@ type StartScriptOptions = {
    * - By default, it will resolve in the first console output
    * - By setting a string: it will wait for a specifc string on console output to resolve
    * - By setting a number: it will wait for time in milliseconds to resolve
+   *
+   * ---
+   *
+   * ℹ️ `startAfter` is case sensitive.
+   *
+   * ---
    *
    * @default undefined
    */

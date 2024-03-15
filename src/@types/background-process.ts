@@ -7,6 +7,12 @@ type BackgroundProcessOptions = {
    * - By setting a string: it will wait for a specifc string on console output to resolve
    * - By setting a number: it will wait for time in milliseconds to resolve
    *
+   * ---
+   *
+   * ℹ️ `startAfter` is case sensitive.
+   *
+   * ---
+   *
    * @default undefined
    */
   startAfter?: string | number;
