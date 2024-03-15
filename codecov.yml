@@ -1,8 +1,5 @@
-coverage:
-  status:
-    project:
-      default: false
-    patch:
-      default: false
-  fixes:
-    - 'ci/::/'
+codecov:
+  disable_default_path_fixes: true
+
+fixes:
+  - 'ci/::/'
