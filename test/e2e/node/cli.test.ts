@@ -43,8 +43,10 @@ test(async () => {
   describe('Poku Test Runner: CLI', { background: false, icon: '🐷' });
 
   const output = await executeCLI([
-    `./src/bin/index.${ext}`,
-    `test/integration/code.test.${ext}`,
+    ext === 'ts' ? `src/bin/index.${ext}` : `ci/src/bin/index.${ext}`,
+    ext === 'ts'
+      ? `test/integration/code.test.${ext}`
+      : `ci/test/integration/code.test.${ext}`,
   ]);
 
   assert(/PASS › 1/.test(JSON.stringify(output)), 'CLI needs to pass 1');

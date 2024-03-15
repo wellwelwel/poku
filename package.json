@@ -6,7 +6,7 @@
   "scripts": {
     "test": "tsx ./test/run.test.ts",
     "pretest:c8": "npm run build",
-    "test:c8": "c8 --include 'src/**' --exclude 'src/@types/**' --reporter=text --reporter=lcov npx poku --parallel --debug test/unit,test/integration,test/e2e",
+    "test:c8": "c8 --include 'ci/src/**' --exclude 'ci/src/@types/**' --reporter=text --reporter=lcov npx poku ci/test/unit,ci/test/integration,ci/test/e2e",
     "test:ci": "tsx ./test/ci.test.ts",
     "test:node": "FILTER='node-' npm run test:ci",
     "test:deno": "FILTER='deno-' npm run test:ci",

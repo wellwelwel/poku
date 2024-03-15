@@ -9,7 +9,7 @@ const ext = getRuntime() === 'deno' ? 'ts' : isProduction ? 'js' : 'ts';
 describe('Service: runTestFile', { background: false, icon: '🔬' });
 
 test(async () => {
-  const code = await runTestFile(`./test/fixtures/fail/exit.test.${ext}`, {
+  const code = await runTestFile(`./fixtures/fail/exit.test.${ext}`, {
     quiet: true,
   });
 
@@ -17,7 +17,7 @@ test(async () => {
 });
 
 test(async () => {
-  const code = await runTestFile(`./test/fixtures/success/exit.test.${ext}`, {
+  const code = await runTestFile(`./fixtures/success/exit.test.${ext}`, {
     quiet: true,
   });
 
