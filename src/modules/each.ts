@@ -33,7 +33,7 @@ export const beforeEach = (
 ): Control => {
   each.before.test = typeof options?.test === 'boolean' ? options.test : true;
   each.before.assert =
-    typeof options?.assert === 'boolean' ? options.assert : true;
+    typeof options?.assert === 'boolean' ? options.assert : false;
 
   options?.immediate && callback();
 
@@ -83,7 +83,7 @@ export const afterEach = (
 ): Control => {
   each.after.test = typeof options?.test === 'boolean' ? options.test : true;
   each.after.assert =
-    typeof options?.assert === 'boolean' ? options.assert : true;
+    typeof options?.assert === 'boolean' ? options.assert : false;
 
   each.after.cb = () => {
     if (each.after.status) callback();
