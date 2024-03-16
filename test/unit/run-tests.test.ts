@@ -4,7 +4,7 @@ import { runTests } from '../../src/services/run-tests.js';
 describe('Service: runTests', { background: false, icon: '🔬' });
 
 test(async () => {
-  const code = await runTests('./test/fixtures/fail', {
+  const code = await runTests('./fixtures/fail', {
     noExit: true,
     quiet: true,
   });
@@ -13,7 +13,7 @@ test(async () => {
 });
 
 test(async () => {
-  const code = await runTests('./test/fixtures/success', {
+  const code = await runTests('./fixtures/success', {
     noExit: true,
     quiet: true,
   });

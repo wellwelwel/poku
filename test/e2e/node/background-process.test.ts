@@ -16,7 +16,7 @@ test(async () => {
 
   const server = await startService(`server-a.${ext}`, {
     startAfter: 'ready',
-    cwd: 'test/fixtures/server',
+    cwd: 'fixtures/server',
     timeout: 10000,
   });
 
@@ -37,7 +37,7 @@ test(async () => {
 
   const server = await startScript(`start:b:${ext}`, {
     startAfter: 'ready',
-    cwd: 'test/fixtures/server',
+    cwd: 'fixtures/server',
     timeout: 10000,
   });
 

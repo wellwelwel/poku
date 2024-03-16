@@ -3,7 +3,7 @@ import { poku, assert, describe, test } from '../../src/index.js';
 describe('Poku Runner Suite', { background: false, icon: '🐷' });
 
 test(async () => {
-  const code = await poku(['./test/fixtures/success', 'test/fixtures/fail'], {
+  const code = await poku(['./fixtures/success', 'fixtures/fail'], {
     noExit: true,
     quiet: true,
   });
@@ -12,7 +12,7 @@ test(async () => {
 });
 
 test(async () => {
-  const code = await poku('./test/fixtures/fail', {
+  const code = await poku('./fixtures/fail', {
     noExit: true,
     quiet: true,
   });
@@ -21,7 +21,7 @@ test(async () => {
 });
 
 test(async () => {
-  const code = await poku('./test/fixtures/success', {
+  const code = await poku('./fixtures/success', {
     noExit: true,
     quiet: true,
   });
@@ -30,7 +30,7 @@ test(async () => {
 });
 
 test(async () => {
-  const code = await poku(['./test/fixtures/success'], {
+  const code = await poku(['./fixtures/success'], {
     noExit: true,
     quiet: true,
   });
@@ -39,7 +39,7 @@ test(async () => {
 });
 
 test(async () => {
-  const code = await poku(['./test/fixtures/success', 'test/fixtures/fail'], {
+  const code = await poku(['./fixtures/success', 'fixtures/fail'], {
     noExit: true,
     filter: /success/,
     quiet: true,
@@ -49,7 +49,7 @@ test(async () => {
 });
 
 test(async () => {
-  const code = await poku(['./test/fixtures/success', 'test/fixtures/fail'], {
+  const code = await poku(['./fixtures/success', 'fixtures/fail'], {
     noExit: true,
     filter: /fail/,
     quiet: true,
@@ -59,7 +59,7 @@ test(async () => {
 });
 
 test(async () => {
-  const code = await poku(['test/fixtures/fail'], {
+  const code = await poku(['fixtures/fail'], {
     noExit: true,
     filter: /success/,
     quiet: true,
@@ -69,7 +69,7 @@ test(async () => {
 });
 
 test(async () => {
-  const code = await poku(['./test/fixtures/success', 'test/fixtures/fail'], {
+  const code = await poku(['./fixtures/success', 'fixtures/fail'], {
     noExit: true,
     filter: /\.(m)?(j|t)?s$/,
     quiet: true,
