@@ -15,49 +15,57 @@
 [downloads-image]: https://img.shields.io/npm/dt/poku.svg?&color=FFC312&label=Downloads
 [downloads-url]: https://npmjs.org/package/poku
 
+<div align="center">
+<img width="170" height="170" alt="Logo" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/poku.svg">
+
 # Poku
 
-<img align="right" width="128" height="128" alt="Logo" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/poku.svg">
-
-[**English**](https://poku.io/docs) | [**Português (BR)**](https://poku.io/pt-BR/docs)
-
-**Poku** is your Test Runner Pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
+**Poku** can show you _how simple testing can be_ 🌱
 
 [![Node.js Version][node-version-image]][node-version-url]
 [![Bun Version][bun-version-image]][bun-version-url]
 [![Deno Version][deno-version-image]][deno-version-url]
-[![TypeScript Version][typescript-version-image]][typescript-url]
+[![TypeScript Version][typescript-version-image]][typescript-url]<br />
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![GitHub Workflow Status (with event)][ql-image]][ql-url]
 [![NPM Downloads][downloads-image]][downloads-url]
 [![License][license-image]][license-url]
 
-<!-- ![Codecov](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=Coverage) -->
-
 Enjoying **Poku**? Consider giving him a star ⭐️
 
----
-
-🐷 [**Documentation**](https://poku.io) • 🧪 [**Examples**](https://poku.io/docs/category/examples) • 🔬 [**Compare the Most Popular Test Runners**](https://poku.io/docs/comparing)
+</div>
 
 ---
 
-## Why Poku?
+<div align="center">
 
-**Poku** can show you how simple testing can be 🌱
+🐷 [**Documentation**](https://poku.io)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [**Examples**](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🔬 [**Compare the Most Popular Test Runners**](https://poku.io/docs/comparing)
 
-- No configurations
-- Supports **ESM** and **CJS**
-- High **isolation** level per file
-- **Poku** is [**100%** documented](https://poku.io/docs)
-- Zero external dependencies
-- **Parallel** and **Sequential** runs
-- Designed to be highly intuitive
-- Compatible with **Coverage** tools
-- [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility
-- You don't need to learn it all at once to get started 🧑🏻‍🎓
+</div>
 
-> _Poku adapts to your test, not the other way around._
+---
+
+## Reasons to Adopt a Poku →
+
+<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> No configurations<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Auto detect **ESM** and **CJS**<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Auto detect **Typescript** files<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Don't export your **server** (_just run it_) 🚀<br />
+
+<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Less verbose<br />
+<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> High **isolation** level per file<br />
+<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> **Parallel** and **Sequential** runs 🏃🏽🏃🏻<br />
+
+<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> **Poku** is [**100%** documented](https://poku.io/docs)<br />
+<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Designed to be human-friendly<br />
+<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> **Poku** doesn't use a global state<br />
+<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Compatible with **Coverage** tools<br />
+<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility 🩵<br />
+
+🧑🏻‍🎓 You don't need to learn it all at once to get started <br />
+🧑🏻‍🔬 **Poku** adapts to your test, not the other way around<br />
+☁ Zero external dependencies (_that means **lightweight**_) <br />
+👴🏼 **Poku** doesn't restrict you from testing in legacy environments<br />
 
 ---
 
