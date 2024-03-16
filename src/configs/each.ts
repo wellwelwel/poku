@@ -18,13 +18,13 @@ export const each: {
   before: {
     status: true,
     cb: undefined,
-    assert: true,
+    assert: false,
     test: true,
   },
   after: {
     status: true,
     cb: undefined,
-    assert: true,
+    assert: false,
     test: true,
   },
 };
