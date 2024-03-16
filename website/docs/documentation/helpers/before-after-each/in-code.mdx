@@ -7,12 +7,56 @@ import TabItem from '@theme/TabItem';
 
 # In-Code
 
-## How can I combine `beforeEach`, `afterEach` and `assert`?
+## `beforeEach` and `afterEach`
 
 Both `beforeEach`, `afterEach` are recommended for tests that consume a particular global state for each test.<br />
 For example, by populating or resetting a database before and/or after multiple assertions.
 
-### See how Poku solve it 🧙🏻
+### Basic usage
+
+```ts
+import { test, beforeEach, afterEach } from 'poku';
+
+const prepareService = () => true;
+const resetService = () => true;
+
+beforeEach(() => prepareService());
+
+afterEach(() => resetService());
+
+test(() => {
+  // do anything you want
+});
+
+test(() => {
+  // do anything you want
+});
+```
+
+### By using promises
+
+```ts
+import { test, beforeEach, afterEach } from 'poku';
+
+const prepareService = () => new Promise((resolve) => resolve(true));
+
+const resetService = () => new Promise((resolve) => resolve(true));
+
+beforeEach(async () => await prepareService());
+afterEach(async () => await resetService());
+
+await test(async () => {
+  // do anything you want
+});
+
+await test(async () => {
+  // do anything you want
+});
+```
+
+## Combine `beforeEach`, `afterEach` and `assert`
+
+Since `test` is completely optional on **Poku**, you can use `beforeEach`, `afterEach` and `assert` together:
 
 <Tabs>
   <TabItem default value='Using beforeEach and afterEach'>
@@ -23,8 +67,8 @@ For example, by populating or resetting a database before and/or after multiple 
     const prepareService = () => true;
     const resetService = () => true;
 
-    beforeEach(() => prepareService());
-    afterEach(() => resetService());
+    beforeEach(() => prepareService(), { assert: true });
+    afterEach(() => resetService(), { assert: true });
 
     assert(true, 'Test A');
     assert(true, 'Test B');
@@ -51,8 +95,8 @@ import { assert, beforeEach, afterEach } from 'poku';
 
 let value = 0;
 
-beforeEach(() => ++value, { immediate: true });
-afterEach(() => ++value);
+beforeEach(() => ++value, { immediate: true, assert: true });
+afterEach(() => ++value, { assert: true });
 
 assert.equal(value, 1); // ✅
 assert.equal(value, 3); // ✅

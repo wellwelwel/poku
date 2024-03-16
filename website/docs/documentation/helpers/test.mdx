@@ -8,59 +8,52 @@ sidebar_position: 3
 
 `test` is a helper to assist you in such cases:
 
-- Use the beforeEach and afterEach for each `test` performed
+- Use the [`beforeEach` and `afterEach`](/docs/documentation/helpers/before-after-each/in-code) for each `test` performed
 - Isolate or group your tests in the same file
+- Run tests in the same file in parallel
+
+## Basic Usage
 
 ```ts
-import { test, beforeEach, afterEach } from 'poku';
+import { test, assert } from 'poku';
 
-const prepareService = () => true;
-const resetService = () => true;
+test(() => {
+  const myVar = 'a';
 
-beforeEach(() => prepareService(), {
-  assert: false,
-});
-
-afterEach(() => resetService(), {
-  assert: false,
+  assert.strictEqual(myVar, 'a', 'My first test helper');
 });
 
 test(() => {
-  // do anything you want
-});
+  const myVar = 'b';
 
-test(() => {
-  // do anything you want
+  assert.strictEqual(myVar, 'b', 'My second test helper');
 });
 ```
-
-:::info
-Ensure you disabled the assert on **beforeEach** and **afterEach**.
-:::
 
 ## By using promises
 
 ```ts
-import { test, beforeEach, afterEach } from 'poku';
-
-const prepareService = () =>
-  new Promise((resolve) => resolve(true), {
-    assert: false,
-  });
-
-const resetService = () =>
-  new Promise((resolve) => resolve(true), {
-    assert: false,
-  });
-
-beforeEach(async () => await prepareService());
-afterEach(async () => await resetService());
+import { test, assert } from 'poku';
 
 await test(async () => {
   // do anything you want
 });
 
 await test(async () => {
+  // do anything you want
+});
+```
+
+## Running in Parallel
+
+```ts
+import { test, assert } from 'poku';
+
+test(async () => {
+  // do anything you want
+});
+
+test(async () => {
   // do anything you want
 });
 ```

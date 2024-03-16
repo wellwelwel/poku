@@ -54,6 +54,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 <img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Less verbose<br />
 <img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> High **isolation** level per file<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> No eval needed 🔐<br />
 <img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> **Parallel** and **Sequential** runs 🏃🏽🏃🏻<br />
 
 <img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> **Poku** is [**100%** documented](https://poku.io/docs)<br />
@@ -62,6 +63,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 <img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Compatible with **Coverage** tools<br />
 <img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility 🩵<br />
 
+✨ You are free to work with the packages you desire<br />
 🧑🏻‍🎓 You don't need to learn it all at once to get started <br />
 🧑🏻‍🔬 **Poku** adapts to your test, not the other way around<br />
 ☁ Zero external dependencies (_that means **lightweight**_) <br />
@@ -256,6 +258,13 @@ Poku is under the [**MIT License**](./LICENSE).
 ## Security Policy
 
 Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Safe?**](https://poku.io/docs/security) from Documentation.
+
+---
+
+## Limitations
+
+- **Poku** is still a bit lonely, without an **active community** around him, but we can change it 🤝
+- Each file generates a sub-process during its execution. This can be reflected in projects with an extremely high volume of test files when run in parallel.
 
 ---
 
