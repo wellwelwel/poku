@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.2](https://github.com/wellwelwel/poku/compare/v1.9.1...v1.9.2) (2024-03-16)
+
+
+### Bug Fixes
+
+* **compatibility:** add support for TypeScript 4.7 or higher ([#114](https://github.com/wellwelwel/poku/issues/114)) ([b44f965](https://github.com/wellwelwel/poku/commit/b44f9652ae4156a982c7886e5094ae2a9ec9e9f2))
+* conflict when using "eachs" for both test and assert ([#117](https://github.com/wellwelwel/poku/issues/117)) ([68e72eb](https://github.com/wellwelwel/poku/commit/68e72eb3daaaf5ee4640347b89e823d70a283b71))
+
 ## [1.9.1](https://github.com/wellwelwel/poku/compare/v1.9.0...v1.9.1) (2024-03-15)
 
 
