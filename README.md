@@ -47,21 +47,21 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ## Reasons to Adopt a Poku →
 
-<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> No configurations<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Auto detect **ESM** and **CJS**<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Auto detect **Typescript** files<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Don't export your **server** (_just run it_) 🚀<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No configurations<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM** and **CJS**<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **Typescript** files<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Don't export your **server** (_just run it_) 🚀<br />
 
-<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Less verbose<br />
-<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> High **isolation** level per file<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> No eval needed 🔐<br />
-<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> **Parallel** and **Sequential** runs 🏃🏽🏃🏻<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Less verbose<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No eval needed 🔐<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Parallel** and **Sequential** runs 🏃🏽🏃🏻<br />
 
-<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> **Poku** is [**100%** documented](https://poku.io/docs)<br />
-<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Designed to be human-friendly<br />
-<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> **Poku** doesn't use a global state<br />
-<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> Compatible with **Coverage** tools<br />
-<img width="16" height="16" alt="Logo" src=".github/assets/readme/check.svg"> [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility 🩵<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Poku** is [**100%** documented](https://poku.io/docs)<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Designed to be human-friendly<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Poku** doesn't use a global state<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Compatible with **Coverage** tools<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility 🩵<br />
 
 ✨ You are free to work with the packages you desire<br />
 🧑🏻‍🎓 You don't need to learn it all at once to get started <br />
