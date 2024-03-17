@@ -1,4 +1,3 @@
-import process from 'node:process';
 import {
   startService,
   assert,
@@ -7,17 +6,18 @@ import {
   startScript,
 } from '../../../src/index.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
+import { ext, isProduction } from '../../helpers/capture-cli.test.js';
+// import { getRuntime } from '../../../src/helpers/get-runtime.js';
 
-const isProduction = process.env.NODE_ENV === 'production';
-const ext = isProduction ? 'js' : 'ts';
+// const runtime = getRuntime();
 
 test(async () => {
   describe('Start Service', { background: false, icon: '🔀' });
 
   const server = await startService(`server-a.${ext}`, {
     startAfter: 'ready',
-    cwd: 'fixtures/server',
-    timeout: 10000,
+    cwd:
+      ext === 'ts' || isProduction ? 'fixtures/server' : 'ci/fixtures/server',
   });
 
   const res = await legacyFetch('localhost', 4000);
@@ -33,12 +33,15 @@ test(async () => {
 });
 
 test(async () => {
+  // if (getRuntime() !== 'node') return;
+
   describe('Start Script', { background: false, icon: '🔀' });
 
-  const server = await startScript(`start:b:${ext}`, {
+  const server = await startScript(`start:${ext}`, {
     startAfter: 'ready',
-    cwd: 'fixtures/server',
-    timeout: 10000,
+    cwd:
+      ext === 'ts' || isProduction ? 'fixtures/server' : 'ci/fixtures/server',
+    // runner: runtime === 'node' ? 'npm' : runtime,
   });
 
   const res = await legacyFetch('localhost', 4001);

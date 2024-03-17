@@ -4,7 +4,7 @@
   "description": "🐷 Poku makes testing easy for Node.js, Bun & Deno at the same time.",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "tsx ./test/run.test.ts",
+    "test": "npx poku --parallel --debug test/unit,test/integration,test/e2e",
     "pretest:c8": "npm run build",
     "test:c8": "c8 --reporter=text --reporter=lcov npm run test:e2e",
     "test:e2e": "npx poku --parallel ci/test/unit,ci/test/integration,ci/test/e2e",
@@ -16,7 +16,7 @@
     "docker:deno": "docker compose -f ./test/docker/playground/deno/docker-compose.yml up --build",
     "clear": "rm -rf ./lib ./ci",
     "build": "tsc && tsc -p tsconfig.test.json",
-    "postbuild": "tsx ./tools/compatibility/node.ts && chmod +x lib/bin/index.js",
+    "postbuild": "tsx ./tools/compatibility/node.ts && cp fixtures/server/package.json ci/fixtures/server/package.json && chmod +x lib/bin/index.js",
     "eslint:checker": "eslint . --ext .js,.ts",
     "eslint:fix": "eslint . --fix --config ./.eslintrc.json",
     "lint:checker": "npm run eslint:checker && npm run prettier:checker",

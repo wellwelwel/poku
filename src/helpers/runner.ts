@@ -14,7 +14,14 @@ export const runner = (filename: string, configs?: Configs): string[] => {
 
   // Deno
   if (runtime === 'deno')
-    return ['deno', 'run', '--allow-read', '--allow-env', '--allow-run'];
+    return [
+      'deno',
+      'run',
+      '--allow-read', // Poku searches for all test files
+      '--allow-env', // Poku share the process.env with the `child_process`
+      '--allow-run', // Poku CLI
+      '--allow-net', // Create Service
+    ];
 
   // Node.js
   return path.extname(filename) === '.ts'
@@ -24,7 +31,7 @@ export const runner = (filename: string, configs?: Configs): string[] => {
 
 export const scriptRunner = (runner: Runner): string[] => {
   // Bun
-  if (runner === 'bun') return ['bun'];
+  if (runner === 'bun') return ['bun', 'run'];
 
   // Deno
   if (runner === 'deno') return ['deno', 'task'];

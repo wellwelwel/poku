@@ -8,12 +8,23 @@ import {
 } from '../@types/background-process.js';
 import { sanitizePath } from './list-files.js';
 
+/* c8 ignore start */
+const runningProcesses: { [key: number]: () => void } = {};
+
+const secureEnds = () =>
+  Object.values(runningProcesses).forEach((end) => end());
+
+process.once('SIGINT', () => {
+  secureEnds();
+});
+/* c8 ignore end */
+
 const backgroundProcess = (
   runtime: string,
   args: string[],
   file: string,
-  options?: StartServiceOptions
-): Promise<{ end: () => boolean }> =>
+  options?: StartServiceOptions & { isScript?: boolean; runner?: string }
+): Promise<{ end: () => void }> =>
   new Promise((resolve, reject) => {
     let isResolved = false;
 
@@ -25,19 +36,39 @@ const backgroundProcess = (
       detached: true,
     });
 
+    /* c8 ignore start */
     const end = () => {
+      delete runningProcesses[service.pid!];
+
+      if (
+        ['bun', 'deno'].includes(runtime) ||
+        ['bun', 'deno'].includes(String(options?.runner))
+      ) {
+        process.kill(service.pid!, 'SIGKILL');
+
+        // runtime === 'bun' &&
+        //   options?.isScript &&
+        //   process.kill(service.pid! + 1, 'SIGKILL');
+
+        return;
+      }
+
       process.kill(-service.pid!, 'SIGKILL');
-      return true;
+
+      return;
     };
+
+    runningProcesses[service.pid!] = end;
+    /* c8 ignore end */
 
     service.stdout.on('data', (data: Buffer) => {
       if (!isResolved && typeof options?.startAfter !== 'number') {
-        const stringData = String(data);
+        const stringData = JSON.stringify(String(data));
 
         if (
           typeof options?.startAfter === 'undefined' ||
           (typeof options?.startAfter === 'string' &&
-            stringData.includes(options.startAfter))
+            stringData.includes(options?.startAfter))
         ) {
           resolve({ end });
           clearTimeout(timeout);
@@ -50,20 +81,36 @@ const backgroundProcess = (
     });
 
     service.stderr.on('data', (data: Buffer) => {
-      reject(new Error(`Service failed to start: ${data}`));
+      if (!isResolved && typeof options?.startAfter !== 'number') {
+        const stringData = JSON.stringify(String(data));
+
+        if (
+          typeof options?.startAfter === 'undefined' ||
+          (typeof options?.startAfter === 'string' &&
+            stringData.includes(options?.startAfter))
+        ) {
+          resolve({ end });
+          clearTimeout(timeout);
+
+          isResolved = true;
+        }
+      }
+
+      options?.verbose && console.log(String(data));
     });
 
     service.on('error', (err) => {
-      reject(new Error(`Service failed to start: ${err}`));
+      secureEnds();
+      reject(`Service failed to start: ${err}`);
     });
 
     service.on('close', (code) => {
-      if (code !== 0) reject(new Error(`Service exited with code ${code}`));
+      if (code !== 0) reject(`Service exited with code ${code}`);
     });
 
     const timeout = setTimeout(() => {
       if (!isResolved) {
-        service.kill();
+        secureEnds();
         reject(`createService: Timeout\nFile: ${file}`);
       }
     }, options?.timeout || 10000);
@@ -89,7 +136,7 @@ const backgroundProcess = (
 export const startService = async (
   file: string,
   options?: StartServiceOptions
-): Promise<{ end: () => boolean }> => {
+): Promise<{ end: () => void }> => {
   const runtimeOptions = runner(file, { platform: options?.platform });
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, file];
@@ -113,10 +160,15 @@ export const startService = async (
 export const startScript = async (
   script: string,
   options?: StartScriptOptions
-): Promise<{ end: () => boolean }> => {
-  const runtimeOptions = scriptRunner(options?.runner || 'npm');
+): Promise<{ end: () => void }> => {
+  const runner = options?.runner || 'npm';
+  const runtimeOptions = scriptRunner(runner);
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, script];
 
-  return await backgroundProcess(runtime, runtimeArgs, script, options);
+  return await backgroundProcess(runtime, runtimeArgs, script, {
+    ...options,
+    isScript: true,
+    runner,
+  });
 };

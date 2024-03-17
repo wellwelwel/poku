@@ -17,4 +17,5 @@ const ensureDenoCompatibility = async (path: string) => {
 };
 
 ensureDenoCompatibility('src');
+ensureDenoCompatibility('fixtures');
 ensureDenoCompatibility('test');
