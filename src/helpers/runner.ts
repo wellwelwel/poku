@@ -43,5 +43,5 @@ export const scriptRunner = (runner: Runner): string[] => {
   if (runner === 'pnpm') return ['pnpm', 'run'];
 
   // Node.js
-  return ['npm', 'run'];
+  return [isWindows ? 'npm.cmd' : 'npm', 'run'];
 };
