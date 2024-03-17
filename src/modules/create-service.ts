@@ -33,15 +33,19 @@ const backgroundProcess = (
       shell: false,
       cwd: options?.cwd ? sanitizePath(path.normalize(options.cwd)) : undefined,
       env: process.env,
-      detached: true,
+      detached: !isWindows,
     });
 
     /* c8 ignore start */
     const end = () => {
       delete runningProcesses[service.pid!];
 
+      if (isWindows) {
+        service.kill();
+        return;
+      }
+
       if (
-        isWindows ||
         ['bun', 'deno'].includes(runtime) ||
         ['bun', 'deno'].includes(String(options?.runner))
       ) {
