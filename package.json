@@ -14,9 +14,10 @@
     "test:bun": "FILTER='bun-' npm run test:ci",
     "predocker:deno": "docker compose -f ./test/docker/playground/deno/docker-compose.yml down",
     "docker:deno": "docker compose -f ./test/docker/playground/deno/docker-compose.yml up --build",
-    "clear": "rm -rf ./lib ./ci",
+    "clear": "shx rm -rf ./lib ./ci ./coverage",
+    "prebuild": "npm run clear",
     "build": "tsc && tsc -p tsconfig.test.json",
-    "postbuild": "tsx ./tools/compatibility/node.ts && cp fixtures/server/package.json ci/fixtures/server/package.json && chmod +x lib/bin/index.js",
+    "postbuild": "tsx ./tools/compatibility/node.ts && shx cp fixtures/server/package.json ci/fixtures/server/package.json && shx chmod +x lib/bin/index.js",
     "eslint:checker": "eslint . --ext .js,.ts",
     "eslint:fix": "eslint . --fix --config ./.eslintrc.json",
     "lint:checker": "npm run eslint:checker && npm run prettier:checker",
@@ -114,6 +115,7 @@
     "eslint-plugin-prettier": "^5.1.3",
     "packages-update": "^1.2.1",
     "prettier": "^3.2.5",
+    "shx": "^0.3.4",
     "tsx": "^4.7.1",
     "typescript": "^5.4.2"
   }
