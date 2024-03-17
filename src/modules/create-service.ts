@@ -1,6 +1,6 @@
 import process from 'node:process';
 import { spawn } from 'node:child_process';
-import { runner, scriptRunner } from '../helpers/runner.js';
+import { isWindows, runner, scriptRunner } from '../helpers/runner.js';
 import path from 'node:path';
 import {
   StartScriptOptions,
@@ -41,6 +41,7 @@ const backgroundProcess = (
       delete runningProcesses[service.pid!];
 
       if (
+        isWindows ||
         ['bun', 'deno'].includes(runtime) ||
         ['bun', 'deno'].includes(String(options?.runner))
       ) {

@@ -4,7 +4,7 @@ import { getRuntime } from './get-runtime.js';
 import { Configs } from '../@types/poku.js';
 import { Runner } from '../@types/runner.js';
 
-const isWindows = process.platform === 'win32';
+export const isWindows = process.platform === 'win32';
 
 export const runner = (filename: string, configs?: Configs): string[] => {
   const runtime = getRuntime(configs);
