@@ -3,6 +3,9 @@ import { assert, describe } from '../../src/index.js';
 describe('Assert Suite', { background: false, icon: '🔬' });
 
 assert.ok(1, 'ok with 1');
+assert.ok('string', 'ok with string');
+assert.ok([], 'ok with empty array');
+assert.ok({}, 'ok with empty object');
 
 assert.equal(1, 1, 'equal with same numbers');
 assert.equal('text', 'text', 'equal with same strings');
@@ -23,6 +26,9 @@ assert.throws(() => {
 }, 'throws with throwing function');
 
 assert.notEqual(1, 2, 'notEqual with different numbers');
+assert.notEqual(1, '1', 'notEqual with loosely type checking');
+
+assert.notStrictEqual(1, true, 'notStrictEqual with different types');
 
 assert.notDeepEqual({ a: 1 }, { a: 2 }, 'notDeepEqual with different objects');
 
