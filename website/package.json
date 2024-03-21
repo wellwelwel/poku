@@ -56,7 +56,7 @@
     "packages-update": "^1.2.1",
     "poku": "^1.9.2",
     "prettier": "^3.2.5",
-    "svps": "^2.2.1",
+    "svps": "^2.3.0",
     "tsx": "^4.7.1",
     "typescript": "^5.4.3"
   },
