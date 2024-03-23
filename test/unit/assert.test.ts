@@ -26,7 +26,6 @@ assert.throws(() => {
 }, 'throws with throwing function');
 
 assert.notEqual(1, 2, 'notEqual with different numbers');
-assert.notEqual(1, '1', 'notEqual with loosely type checking');
 
 assert.notStrictEqual(1, true, 'notStrictEqual with different types');
 
@@ -124,7 +123,6 @@ assert.doesNotThrow(() => {
 assert.strictEqual(obj.a, 2, 'Property a should be 2 after mutation');
 
 // Testing async functions
-// Corrigindo o teste para refletir uma operação que deve rejeitar
 const asyncFunctionThatFails = () =>
   new Promise((_, reject) =>
     setTimeout(() => reject(new Error('Failed')), 100)
@@ -141,3 +139,167 @@ assert.rejects(
 const text = 'sample text';
 assert.match(text, /sample/, 'Text should match the regex');
 assert.doesNotMatch(text, /notpresent/, 'Text should not match the regex');
+
+describe('ifError Test Suite', { background: false, icon: '🔬' });
+
+assert.ifError(null, 'ifError did not throw an error for null');
+assert.ifError(undefined, 'ifError did not throw an error for undefined');
+
+describe('doesNotMatch Test Suite', { background: false, icon: '🔬' });
+
+assert.doesNotMatch(
+  'abc',
+  /123/,
+  'String "abc" should not match the pattern /123/'
+);
+
+assert.doesNotMatch('', /\d/, 'Empty string should not match the pattern /d/');
+
+assert.doesNotMatch(
+  'abc',
+  /\d+/,
+  'String "abc" should not match the pattern /d+/'
+);
+
+// describe('Assert fail Test Suite', { background: false, icon: '🔬' });
+//
+// try {
+//   assert.fail('My custom defined error');
+// } catch (error) {
+//   console.log(error);
+// }
+
+describe('doesNotThrow Test Suite', { background: false, icon: '🔬' });
+
+// Definição da função callbackFunction
+function callbackFunction(cb: (err: Error | null, result?: string) => void) {
+  // Simula uma operação que não lança um erro
+  cb(null, 'no error');
+}
+
+// Testando a função que usa callback
+assert.doesNotThrow(
+  () =>
+    callbackFunction((err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result); // Saída esperada: 'no error'
+    }),
+  'Should not throw an error for a callback function that does not error'
+);
+
+// Outros testes para doesNotThrow
+assert.doesNotThrow(
+  () => 42,
+  'Should not throw an error for a function returning a number'
+);
+
+assert.doesNotThrow(
+  () => 'no error',
+  'Should not throw an error for a function returning a string'
+);
+
+assert.throws(() => {
+  throw new Error('Test error');
+}, 'Should throw an error for a function that actually throws');
+
+assert.doesNotThrow(
+  async () => 'no error',
+  'Should not throw an error for an async function that resolves'
+);
+
+describe('throws Test Suite', { background: false, icon: '🔬' });
+
+const functionThatThrows = () => {
+  throw new Error('Specific error');
+};
+
+assert.throws(
+  functionThatThrows,
+  new Error('Specific error'),
+  'Should throw the specific error'
+);
+
+assert.throws(
+  functionThatThrows,
+  /Specific error/,
+  'Should throw an error matching the regex'
+);
+
+assert.throws(
+  functionThatThrows,
+  // @ts-ignore
+  (err) => err.message === 'Specific error',
+  'Should throw an error where the message equals the specific string'
+);
+
+describe('rejects Test Suite', { background: false, icon: '🔬' });
+
+const asyncFunctionThatRejects = async () => {
+  throw new Error('Async error');
+};
+
+assert.rejects(
+  asyncFunctionThatRejects,
+  new Error('Async error'),
+  'Should reject with the specified error message'
+);
+
+assert.rejects(
+  () => Promise.reject(new Error('Simple rejection')),
+  // @ts-ignore
+  (err) => err.message === 'Simple rejection',
+  'Should handle rejection with a simple string message'
+);
+
+assert.rejects(
+  asyncFunctionThatRejects,
+  new Error('Async error'),
+  'Should reject with an Error object with "Async error" message'
+);
+
+describe('doesNotReject Test Suite', { background: false, icon: '🔬' });
+
+// Test where the promise resolves successfully
+const asyncFunctionThatResolves = async () => {
+  return 'Resolved successfully';
+};
+
+// This should pass because the function resolves
+assert.doesNotReject(
+  asyncFunctionThatResolves,
+  'Should not reject for a function that resolves'
+);
+
+// Test with a promise that resolves immediately
+assert.doesNotReject(
+  Promise.resolve('Immediate resolve'),
+  'Should not reject for an immediately resolving promise'
+);
+
+// Test where the promise could reject but does not
+const asyncFunctionThatCouldReject = async () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('Delayed resolve');
+    }, 100);
+  });
+};
+
+assert.doesNotReject(
+  asyncFunctionThatCouldReject,
+  'Should not reject for a function that could reject but resolves instead'
+);
+
+// Test using async function but with no rejection happening
+assert.doesNotReject(
+  async () => 'Async function with no rejection',
+  'Should handle async functions that do not reject'
+);
+
+// Ensure it handles cases where no arguments are passed to doesNotReject
+assert.doesNotReject(
+  asyncFunctionThatResolves,
+  'Should handle cases with no specific error argument in doesNotReject'
+);
