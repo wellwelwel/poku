@@ -1,5 +1,8 @@
 import { assertPromise as assert, describe } from '../../src/index.js';
-import { isNode10OrHigher } from '../../src/helpers/version-helper.js';
+import {
+  isNode10OrHigher,
+  isNode8OrHigher,
+} from '../../src/helpers/version-helper.js';
 
 describe('Assert (Promise) Suite', { background: false, icon: '🔬' });
 
@@ -17,12 +20,6 @@ assert.strictEqual('text', 'text', 'strictEqual with same strings');
 
 assert.deepStrictEqual({ a: 1 }, { a: 1 }, 'deepStrictEqual with same objects');
 assert.deepStrictEqual([1, 2], [1, 2], 'deepStrictEqual with same arrays');
-
-assert.doesNotThrow(() => 1 + 1, 'doesNotThrow with non-throwing function');
-
-assert.throws(() => {
-  throw new Error('error');
-}, 'throws with throwing function');
 
 assert.notEqual(1, 2, 'notEqual with different numbers');
 
@@ -95,10 +92,21 @@ assert.notDeepStrictEqual(
     'Should resolve to deep strictly equal the array'
   );
 
-  await assert.doesNotThrow(
-    () => Promise.resolve('no error'),
-    'Should not throw an error'
-  );
+  if (isNode8OrHigher()) {
+    await assert.doesNotThrow(
+      () => Promise.resolve('no error'),
+      'Should not throw an error'
+    );
+
+    await assert.doesNotThrow(
+      () => 1 + 1,
+      'doesNotThrow with non-throwing function'
+    );
+
+    await assert.throws(() => {
+      throw new Error('error');
+    }, 'throws with throwing function');
+  }
 
   if (isNode10OrHigher()) {
     await assert.rejects(

@@ -2,6 +2,7 @@ import { assert, describe } from '../../src/index.js';
 import {
   isNode12OrHigher,
   isNode10OrHigher,
+  isNode8OrHigher,
 } from '../../src/helpers/version-helper.js';
 
 describe('Assert Suite', { background: false, icon: '🔬' });
@@ -24,10 +25,6 @@ assert.deepStrictEqual({ a: 1 }, { a: 1 }, 'deepStrictEqual with same objects');
 assert.deepStrictEqual([1, 2], [1, 2], 'deepStrictEqual with same arrays');
 
 assert.doesNotThrow(() => 1 + 1, 'doesNotThrow with non-throwing function');
-
-assert.throws(() => {
-  throw new Error('error');
-}, 'throws with throwing function');
 
 assert.notEqual(1, 2, 'notEqual with different numbers');
 
@@ -71,14 +68,6 @@ assert.notDeepEqual(
   'Arrays [2, 3, 4] and [4, 5, 6] should not be deeply equal'
 );
 
-// Test to check functions that do or do not throw errors
-assert.doesNotThrow(() => {
-  return 42;
-}, 'Should not throw an exception for a function returning 42');
-assert.throws(() => {
-  throw new Error('Test error');
-}, 'Should throw an exception for a function that generates an error');
-
 // Tests to check deep and strict equality
 assert.deepStrictEqual(
   { a: 1, b: 2 },
@@ -121,10 +110,6 @@ assert.notDeepStrictEqual(
 
 // Testing object mutations
 const obj = { a: 1 };
-assert.doesNotThrow(() => {
-  obj.a = 2;
-}, 'Changing property should not throw');
-assert.strictEqual(obj.a, 2, 'Property a should be 2 after mutation');
 
 // Testing async functions
 
@@ -133,67 +118,86 @@ describe('ifError Test Suite', { background: false, icon: '🔬' });
 assert.ifError(null, 'ifError did not throw an error for null');
 assert.ifError(undefined, 'ifError did not throw an error for undefined');
 
-describe('doesNotThrow Test Suite', { background: false, icon: '🔬' });
+if (isNode8OrHigher()) {
+  describe('doesNotThrow Test Suite', { background: false, icon: '🔬' });
 
-function callbackFunction(cb: (err: Error | null, result?: string) => void) {
-  // Simula uma operação que não lança um erro
-  cb(null, 'no error');
+  assert.throws(() => {
+    throw new Error('error');
+  }, 'throws with throwing function');
+
+  function callbackFunction(cb: (err: Error | null, result?: string) => void) {
+    // Simula uma operação que não lança um erro
+    cb(null, 'no error');
+  }
+
+  assert.doesNotThrow(() => {
+    obj.a = 2;
+  }, 'Changing property should not throw');
+  assert.strictEqual(obj.a, 2, 'Property a should be 2 after mutation');
+
+  // Test to check functions that do or do not throw errors
+  assert.doesNotThrow(() => {
+    return 42;
+  }, 'Should not throw an exception for a function returning 42');
+  assert.throws(() => {
+    throw new Error('Test error');
+  }, 'Should throw an exception for a function that generates an error');
+
+  assert.doesNotThrow(
+    () =>
+      callbackFunction((err, result) => {
+        if (err) {
+          throw err;
+        }
+        console.log(result); // Saída esperada: 'no error'
+      }),
+    'Should not throw an error for a callback function that does not error'
+  );
+
+  assert.doesNotThrow(
+    () => 42,
+    'Should not throw an error for a function returning a number'
+  );
+
+  assert.doesNotThrow(
+    () => 'no error',
+    'Should not throw an error for a function returning a string'
+  );
+
+  assert.throws(() => {
+    throw new Error('Test error');
+  }, 'Should throw an error for a function that actually throws');
+
+  assert.doesNotThrow(
+    async () => await 'no error',
+    'Should not throw an error for an async function that resolves'
+  );
+
+  describe('throws Test Suite', { background: false, icon: '🔬' });
+
+  const functionThatThrows = () => {
+    throw new Error('Specific error');
+  };
+
+  assert.throws(
+    functionThatThrows,
+    new Error('Specific error'),
+    'Should throw the specific error'
+  );
+
+  assert.throws(
+    functionThatThrows,
+    /Specific error/,
+    'Should throw an error matching the regex'
+  );
+
+  assert.throws(
+    functionThatThrows,
+    // @ts-expect-error: Testing unexpected error type for demonstration
+    (err) => err.message === 'Specific error',
+    'Should throw an error where the message equals the specific string'
+  );
 }
-
-assert.doesNotThrow(
-  () =>
-    callbackFunction((err, result) => {
-      if (err) {
-        throw err;
-      }
-      console.log(result); // Saída esperada: 'no error'
-    }),
-  'Should not throw an error for a callback function that does not error'
-);
-
-assert.doesNotThrow(
-  () => 42,
-  'Should not throw an error for a function returning a number'
-);
-
-assert.doesNotThrow(
-  () => 'no error',
-  'Should not throw an error for a function returning a string'
-);
-
-assert.throws(() => {
-  throw new Error('Test error');
-}, 'Should throw an error for a function that actually throws');
-
-assert.doesNotThrow(
-  async () => await 'no error',
-  'Should not throw an error for an async function that resolves'
-);
-
-describe('throws Test Suite', { background: false, icon: '🔬' });
-
-const functionThatThrows = () => {
-  throw new Error('Specific error');
-};
-
-assert.throws(
-  functionThatThrows,
-  new Error('Specific error'),
-  'Should throw the specific error'
-);
-
-assert.throws(
-  functionThatThrows,
-  /Specific error/,
-  'Should throw an error matching the regex'
-);
-
-assert.throws(
-  functionThatThrows,
-  // @ts-expect-error: Testing unexpected error type for demonstration
-  (err) => err.message === 'Specific error',
-  'Should throw an error where the message equals the specific string'
-);
 
 if (isNode12OrHigher()) {
   describe('match Test Suite', { background: false, icon: '🔬' });
