@@ -1,8 +1,8 @@
-codecov:
-  disable_default_path_fixes: true
+# codecov:
+#   disable_default_path_fixes: true
 
-fixes:
-  - 'ci/::/'
+# fixes:
+#   - 'ci/::/'
 
 coverage:
   status:
