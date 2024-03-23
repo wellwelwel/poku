@@ -1,4 +1,5 @@
 import { assert, describe } from '../../src/index.js';
+import { isNode12OrHigher } from '../../src/helpers/version-helper.js';
 
 describe('Assert Suite', { background: false, icon: '🔬' });
 
@@ -135,49 +136,36 @@ assert.rejects(
   'Async function should reject with an error'
 );
 
-// Testing regex matches
-const text = 'sample text';
-assert.match(text, /sample/, 'Text should match the regex');
-assert.doesNotMatch(text, /notpresent/, 'Text should not match the regex');
-
 describe('ifError Test Suite', { background: false, icon: '🔬' });
 
 assert.ifError(null, 'ifError did not throw an error for null');
 assert.ifError(undefined, 'ifError did not throw an error for undefined');
 
 describe('doesNotMatch Test Suite', { background: false, icon: '🔬' });
+if (isNode12OrHigher()) {
+  assert.doesNotMatch(
+    'abc',
+    /123/,
+    'String "abc" should not match the pattern /123/'
+  );
 
-assert.doesNotMatch(
-  'abc',
-  /123/,
-  'String "abc" should not match the pattern /123/'
-);
+  assert.doesNotMatch('', /\d/, 'Empty string should not match the pattern /d/');
 
-assert.doesNotMatch('', /\d/, 'Empty string should not match the pattern /d/');
+  assert.doesNotMatch(
+    'abc',
+    /\d+/,
+    'String "abc" should not match the pattern /d+/'
+  );
+}
 
-assert.doesNotMatch(
-  'abc',
-  /\d+/,
-  'String "abc" should not match the pattern /d+/'
-);
-
-// describe('Assert fail Test Suite', { background: false, icon: '🔬' });
-//
-// try {
-//   assert.fail('My custom defined error');
-// } catch (error) {
-//   console.log(error);
-// }
 
 describe('doesNotThrow Test Suite', { background: false, icon: '🔬' });
 
-// Definição da função callbackFunction
 function callbackFunction(cb: (err: Error | null, result?: string) => void) {
   // Simula uma operação que não lança um erro
   cb(null, 'no error');
 }
 
-// Testando a função que usa callback
 assert.doesNotThrow(
   () =>
     callbackFunction((err, result) => {
@@ -189,7 +177,6 @@ assert.doesNotThrow(
   'Should not throw an error for a callback function that does not error'
 );
 
-// Outros testes para doesNotThrow
 assert.doesNotThrow(
   () => 42,
   'Should not throw an error for a function returning a number'
@@ -303,3 +290,13 @@ assert.doesNotReject(
   asyncFunctionThatResolves,
   'Should handle cases with no specific error argument in doesNotReject'
 );
+
+describe('match Test Suite', { background: false, icon: '🔬' });
+
+// Testing regex matches
+const text = 'sample text';
+if (isNode12OrHigher()) {
+  assert.match(text, /sample/, 'Text should match the regex');
+  assert.doesNotMatch(text, /notpresent/, 'Text should not match the regex');
+}
+
