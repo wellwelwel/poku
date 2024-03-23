@@ -100,8 +100,8 @@ assert.notDeepStrictEqual(
   );
 
   await assert.rejects(
-    () => Promise.reject(new Error('error')),
-    Error,
+    async () => await Promise.reject(new Error('error')),
+    Error('error'),
     'Should throw an error'
   );
 

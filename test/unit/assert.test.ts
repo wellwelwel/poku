@@ -149,7 +149,11 @@ if (isNode12OrHigher()) {
     'String "abc" should not match the pattern /123/'
   );
 
-  assert.doesNotMatch('', /\d/, 'Empty string should not match the pattern /d/');
+  assert.doesNotMatch(
+    '',
+    /\d/,
+    'Empty string should not match the pattern /d/'
+  );
 
   assert.doesNotMatch(
     'abc',
@@ -157,7 +161,6 @@ if (isNode12OrHigher()) {
     'String "abc" should not match the pattern /d+/'
   );
 }
-
 
 describe('doesNotThrow Test Suite', { background: false, icon: '🔬' });
 
@@ -234,9 +237,8 @@ assert.rejects(
 );
 
 assert.rejects(
-  () => Promise.reject(new Error('Simple rejection')),
-  // @ts-expect-error: Testing unexpected error type for demonstration
-  (err) => err.message === 'Simple rejection',
+  () => Promise.reject('Simple rejection'),
+  (err) => err === 'Simple rejection',
   'Should handle rejection with a simple string message'
 );
 
@@ -299,4 +301,3 @@ if (isNode12OrHigher()) {
   assert.match(text, /sample/, 'Text should match the regex');
   assert.doesNotMatch(text, /notpresent/, 'Text should not match the regex');
 }
-
