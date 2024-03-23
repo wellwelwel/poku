@@ -117,18 +117,16 @@ describe('ifError Test Suite', { background: false, icon: '🔬' });
 
 assert.ifError(null, 'ifError did not throw an error for null');
 assert.ifError(undefined, 'ifError did not throw an error for undefined');
-
+function callbackFunction(cb: (err: Error | null, result?: string) => void) {
+  // Simula uma operação que não lança um erro
+  cb(null, 'no error');
+}
 if (isNode8OrHigher()) {
   describe('doesNotThrow Test Suite', { background: false, icon: '🔬' });
 
   assert.throws(() => {
     throw new Error('error');
   }, 'throws with throwing function');
-
-  function callbackFunction(cb: (err: Error | null, result?: string) => void) {
-    // Simula uma operação que não lança um erro
-    cb(null, 'no error');
-  }
 
   assert.doesNotThrow(() => {
     obj.a = 2;
