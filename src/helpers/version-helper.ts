@@ -10,4 +10,6 @@ const version = getVersionNumber();
 export const isNode12OrHigher = () => version >= 12;
 export const isNode14OrHigher = () => version >= 14;
 
+export const isNode10OrHigher = () => version >= 10;
+
 export const supportsESM = () => isNode14OrHigher();

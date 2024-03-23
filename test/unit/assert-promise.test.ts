@@ -1,4 +1,5 @@
 import { assertPromise as assert, describe } from '../../src/index.js';
+import { isNode10OrHigher } from '../../src/helpers/version-helper';
 
 describe('Assert (Promise) Suite', { background: false, icon: '🔬' });
 
@@ -99,11 +100,13 @@ assert.notDeepStrictEqual(
     'Should not throw an error'
   );
 
-  await assert.rejects(
-    async () => await Promise.reject(new Error('error')),
-    Error('error'),
-    'Should throw an error'
-  );
+  if (isNode10OrHigher()) {
+    await assert.rejects(
+      async () => await Promise.reject(new Error('error')),
+      Error('error'),
+      'Should throw an error'
+    );
+  }
 
   const notEqualNumber = 1;
   await assert.notEqual(notEqualNumber, 2, 'Should resolve to not equal 2');

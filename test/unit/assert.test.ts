@@ -1,5 +1,8 @@
 import { assert, describe } from '../../src/index.js';
-import { isNode12OrHigher } from '../../src/helpers/version-helper.js';
+import {
+  isNode12OrHigher,
+  isNode10OrHigher,
+} from '../../src/helpers/version-helper.js';
 
 describe('Assert Suite', { background: false, icon: '🔬' });
 
@@ -124,17 +127,6 @@ assert.doesNotThrow(() => {
 assert.strictEqual(obj.a, 2, 'Property a should be 2 after mutation');
 
 // Testing async functions
-const asyncFunctionThatFails = () =>
-  new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('Failed')), 100)
-  );
-
-assert.rejects(
-  // eslint-disable-next-line require-await
-  async () => asyncFunctionThatFails(),
-  new Error('Failed'),
-  'Async function should reject with an error'
-);
 
 describe('ifError Test Suite', { background: false, icon: '🔬' });
 
@@ -227,27 +219,6 @@ assert.throws(
 describe('rejects Test Suite', { background: false, icon: '🔬' });
 
 // eslint-disable-next-line require-await
-const asyncFunctionThatRejects = async () => {
-  throw new Error('Async error');
-};
-
-assert.rejects(
-  asyncFunctionThatRejects,
-  new Error('Async error'),
-  'Should reject with the specified error message'
-);
-
-assert.rejects(
-  () => Promise.reject('Simple rejection'),
-  (err) => err === 'Simple rejection',
-  'Should handle rejection with a simple string message'
-);
-
-assert.rejects(
-  asyncFunctionThatRejects,
-  new Error('Async error'),
-  'Should reject with an Error object with "Async error" message'
-);
 
 describe('doesNotReject Test Suite', { background: false, icon: '🔬' });
 
@@ -301,4 +272,39 @@ const text = 'sample text';
 if (isNode12OrHigher()) {
   assert.match(text, /sample/, 'Text should match the regex');
   assert.doesNotMatch(text, /notpresent/, 'Text should not match the regex');
+}
+
+describe('rejects Test Suite', { background: false, icon: '🔬' });
+
+if (isNode10OrHigher()) {
+  const asyncFunctionThatRejects = async () => {
+    throw new Error('Async error');
+  };
+  const asyncFunctionThatFails = () =>
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Failed')), 100)
+    );
+
+  assert.rejects(
+    // eslint-disable-next-line require-await
+    async () => asyncFunctionThatFails(),
+    new Error('Failed'),
+    'Async function should reject with an error'
+  );
+  assert.rejects(
+    asyncFunctionThatRejects,
+    new Error('Async error'),
+    'Should reject with an Error object with "Async error" message'
+  );
+  assert.rejects(
+    () => Promise.reject('Simple rejection'),
+    (err) => err === 'Simple rejection',
+    'Should handle rejection with a simple string message'
+  );
+
+  assert.rejects(
+    asyncFunctionThatRejects,
+    new Error('Async error'),
+    'Should reject with the specified error message'
+  );
 }
