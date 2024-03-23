@@ -1,8 +1,5 @@
+import { nodeVersion } from '../../src/helpers/get-runtime.js';
 import { assertPromise as assert, describe } from '../../src/index.js';
-import {
-  isNode10OrHigher,
-  isNode8OrHigher,
-} from '../../src/helpers/version-helper.js';
 
 describe('Assert (Promise) Suite', { background: false, icon: '🔬' });
 
@@ -92,7 +89,7 @@ assert.notDeepStrictEqual(
     'Should resolve to deep strictly equal the array'
   );
 
-  if (isNode8OrHigher()) {
+  if (!nodeVersion || nodeVersion > 8) {
     await assert.doesNotThrow(
       () => Promise.resolve('no error'),
       'Should not throw an error'
@@ -108,7 +105,7 @@ assert.notDeepStrictEqual(
     }, 'throws with throwing function');
   }
 
-  if (isNode10OrHigher()) {
+  if (!nodeVersion || nodeVersion > 10) {
     await assert.rejects(
       async () => await Promise.reject(new Error('error')),
       Error('error'),

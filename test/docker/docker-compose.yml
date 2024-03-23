@@ -1,14 +1,6 @@
 version: '3.9'
 
 services:
-  bun-0.5.3:
-    container_name: 'bun.0.5.3'
-    build:
-      context: ../../
-      dockerfile: ./test/docker/bun/0.5.3.Dockerfile
-    environment:
-      NODE_ENV: production
-
   bun-01:
     container_name: 'bun-01'
     build:
