@@ -221,49 +221,50 @@ describe('rejects Test Suite', { background: false, icon: '🔬' });
 // eslint-disable-next-line require-await
 
 describe('doesNotReject Test Suite', { background: false, icon: '🔬' });
+if (isNode10OrHigher()) {
+  // Test where the promise resolves successfully
+  const asyncFunctionThatResolves = () => {
+    return Promise.resolve('Resolved successfully');
+  };
 
-// Test where the promise resolves successfully
-const asyncFunctionThatResolves = () => {
-  return Promise.resolve('Resolved successfully');
-};
+  // This should pass because the function resolves
+  assert.doesNotReject(
+    asyncFunctionThatResolves,
+    'Should not reject for a function that resolves'
+  );
 
-// This should pass because the function resolves
-assert.doesNotReject(
-  asyncFunctionThatResolves,
-  'Should not reject for a function that resolves'
-);
+  // Test with a promise that resolves immediately
+  assert.doesNotReject(
+    Promise.resolve('Immediate resolve'),
+    'Should not reject for an immediately resolving promise'
+  );
 
-// Test with a promise that resolves immediately
-assert.doesNotReject(
-  Promise.resolve('Immediate resolve'),
-  'Should not reject for an immediately resolving promise'
-);
+  // Test where the promise could reject but does not
+  const asyncFunctionThatCouldReject = () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve('Delayed resolve');
+      }, 100);
+    });
+  };
 
-// Test where the promise could reject but does not
-const asyncFunctionThatCouldReject = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve('Delayed resolve');
-    }, 100);
-  });
-};
+  assert.doesNotReject(
+    asyncFunctionThatCouldReject,
+    'Should not reject for a function that could reject but resolves instead'
+  );
 
-assert.doesNotReject(
-  asyncFunctionThatCouldReject,
-  'Should not reject for a function that could reject but resolves instead'
-);
+  // Test using async function but with no rejection happening
+  assert.doesNotReject(
+    () => Promise.resolve('Async function with no rejection'),
+    'Should handle async functions that do not reject'
+  );
 
-// Test using async function but with no rejection happening
-assert.doesNotReject(
-  () => Promise.resolve('Async function with no rejection'),
-  'Should handle async functions that do not reject'
-);
-
-// Ensure it handles cases where no arguments are passed to doesNotReject
-assert.doesNotReject(
-  asyncFunctionThatResolves,
-  'Should handle cases with no specific error argument in doesNotReject'
-);
+  // Ensure it handles cases where no arguments are passed to doesNotReject
+  assert.doesNotReject(
+    asyncFunctionThatResolves,
+    'Should handle cases with no specific error argument in doesNotReject'
+  );
+}
 
 describe('match Test Suite', { background: false, icon: '🔬' });
 
