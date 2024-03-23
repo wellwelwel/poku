@@ -226,8 +226,9 @@ assert.throws(
 
 describe('rejects Test Suite', { background: false, icon: '🔬' });
 
+// eslint-disable-next-line require-await
 const asyncFunctionThatRejects = async () => {
-  await Promise.reject(new Error('Async error'));
+  throw new Error('Async error');
 };
 
 assert.rejects(
@@ -251,8 +252,8 @@ assert.rejects(
 describe('doesNotReject Test Suite', { background: false, icon: '🔬' });
 
 // Test where the promise resolves successfully
-const asyncFunctionThatResolves = async () => {
-  return await Promise.resolve('Resolved successfully');
+const asyncFunctionThatResolves = () => {
+  return Promise.resolve('Resolved successfully');
 };
 
 // This should pass because the function resolves
@@ -268,8 +269,8 @@ assert.doesNotReject(
 );
 
 // Test where the promise could reject but does not
-const asyncFunctionThatCouldReject = async () => {
-  return await new Promise((resolve) => {
+const asyncFunctionThatCouldReject = () => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve('Delayed resolve');
     }, 100);
@@ -283,7 +284,7 @@ assert.doesNotReject(
 
 // Test using async function but with no rejection happening
 assert.doesNotReject(
-  async () => await Promise.resolve('Async function with no rejection'),
+  () => Promise.resolve('Async function with no rejection'),
   'Should handle async functions that do not reject'
 );
 
