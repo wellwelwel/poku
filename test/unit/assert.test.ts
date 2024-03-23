@@ -205,7 +205,7 @@ assert.throws(() => {
 }, 'Should throw an error for a function that actually throws');
 
 assert.doesNotThrow(
-  async () => 'no error',
+  async () => await 'no error',
   'Should not throw an error for an async function that resolves'
 );
 
@@ -229,7 +229,7 @@ assert.throws(
 
 assert.throws(
   functionThatThrows,
-  // @ts-ignore
+  // @ts-expect-error: Testing unexpected error type for demonstration
   (err) => err.message === 'Specific error',
   'Should throw an error where the message equals the specific string'
 );
@@ -237,7 +237,7 @@ assert.throws(
 describe('rejects Test Suite', { background: false, icon: '🔬' });
 
 const asyncFunctionThatRejects = async () => {
-  throw new Error('Async error');
+  await Promise.reject(new Error('Async error'));
 };
 
 assert.rejects(
@@ -248,7 +248,7 @@ assert.rejects(
 
 assert.rejects(
   () => Promise.reject(new Error('Simple rejection')),
-  // @ts-ignore
+  // @ts-expect-error: Testing unexpected error type for demonstration
   (err) => err.message === 'Simple rejection',
   'Should handle rejection with a simple string message'
 );
@@ -263,7 +263,7 @@ describe('doesNotReject Test Suite', { background: false, icon: '🔬' });
 
 // Test where the promise resolves successfully
 const asyncFunctionThatResolves = async () => {
-  return 'Resolved successfully';
+  return await Promise.resolve('Resolved successfully');
 };
 
 // This should pass because the function resolves
@@ -280,7 +280,7 @@ assert.doesNotReject(
 
 // Test where the promise could reject but does not
 const asyncFunctionThatCouldReject = async () => {
-  return new Promise((resolve) => {
+  return await new Promise((resolve) => {
     setTimeout(() => {
       resolve('Delayed resolve');
     }, 100);
@@ -294,7 +294,7 @@ assert.doesNotReject(
 
 // Test using async function but with no rejection happening
 assert.doesNotReject(
-  async () => 'Async function with no rejection',
+  async () => await Promise.resolve('Async function with no rejection'),
   'Should handle async functions that do not reject'
 );
 
