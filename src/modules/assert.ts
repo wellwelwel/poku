@@ -101,10 +101,7 @@ const notDeepStrictEqual = (
   });
 };
 
-const ifError = (
-  value: unknown,
-  message?: string
-): void => {
+const ifError = (value: unknown, message?: string): void => {
   parseAssertion(
     () => {
       nodeAssert.ifError(value);
