@@ -1,5 +1,8 @@
 {
   "all": true,
   "include": ["src/**"],
-  "exclude": ["src/@types/**"]
+  "exclude": ["src/@types/**"],
+  "extension": ["ts"],
+  "reporter": ["text", "lcov"],
+  "clean": true
 }

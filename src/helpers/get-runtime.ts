@@ -1,3 +1,5 @@
+/* c8 ignore start */
+
 import process from 'node:process';
 import type { Configs } from '../@types/poku.js';
 
@@ -38,3 +40,5 @@ export const nodeVersion =
   getRuntime() === 'node'
     ? Number(process.version.match(/v(\d+)\./)?.[1])
     : undefined;
+
+/* c8 ignore stop */

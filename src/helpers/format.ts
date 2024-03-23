@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import { padStart } from './pad.js';
 
 export const backgroundColor = {
@@ -40,3 +41,4 @@ export const format = {
 
 export const getLargestStringLength = (arr: string[]): number =>
   arr.reduce((max, current) => Math.max(max, current.length), 0);
+/* c8 ignore stop */

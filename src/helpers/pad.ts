@@ -2,6 +2,7 @@
  * Custom implementations of `padStart` for compatibility with Node.js version 6.
  */
 
+/* c8 ignore start */
 export const padStart = (
   str: string,
   targetLength: number,
@@ -20,3 +21,4 @@ export const padStart = (
 
   return fullPadString + str;
 };
+/* c8 ignore end */

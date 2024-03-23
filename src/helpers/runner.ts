@@ -1,3 +1,5 @@
+/* c8 ignore start */
+
 import process from 'node:process';
 import path from 'node:path';
 import { getRuntime } from './get-runtime.js';
@@ -45,3 +47,5 @@ export const scriptRunner = (runner: Runner): string[] => {
   // Node.js
   return [isWindows ? 'npm.cmd' : 'npm', 'run'];
 };
+
+/* c8 ignore stop */

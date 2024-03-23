@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npx poku --parallel --debug test/unit,test/integration,test/e2e",
     "pretest:c8": "npm run build",
-    "test:c8": "c8 --reporter=text --reporter=lcov npm run test",
+    "test:c8": "c8 npm run test",
     "test:ci": "tsx ./test/ci.test.ts",
     "test:node": "FILTER='node-' npm run test:ci",
     "test:deno": "FILTER='deno-' npm run test:ci",

@@ -278,9 +278,11 @@ const match = async (
   regExp: RegExp,
   message?: ParseAssertionOptions['message']
 ): Promise<void> => {
+  /* c8 ignore start */
   if (typeof nodeVersion === 'number' && nodeVersion < 12) {
     throw new Error('match is available from Node.js 12 or higher');
   }
+  /* c8 ignore stop */
 
   await parseAssertion(() => nodeAssert?.match(value, regExp), {
     message,
@@ -295,9 +297,11 @@ const doesNotMatch = async (
   regExp: RegExp,
   message?: ParseAssertionOptions['message']
 ): Promise<void> => {
+  /* c8 ignore start */
   if (typeof nodeVersion === 'number' && nodeVersion < 12) {
     throw new Error('doesNotMatch is available from Node.js 12 or higher');
   }
+  /* c8 ignore stop */
 
   await parseAssertion(() => nodeAssert.doesNotMatch(value, regExp), {
     message,
