@@ -1,5 +1,5 @@
 {
   "all": true,
-  "include": ["ci/src/**"],
-  "exclude": ["ci/src/@types/**"]
+  "include": ["src/**"],
+  "exclude": ["src/@types/**"]
 }
