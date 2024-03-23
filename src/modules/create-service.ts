@@ -1,12 +1,15 @@
 import process from 'node:process';
 import { spawn } from 'node:child_process';
-import { runner, scriptRunner } from '../helpers/runner.js';
+import { isWindows, runner, scriptRunner } from '../helpers/runner.js';
 import path from 'node:path';
 import {
   StartScriptOptions,
   StartServiceOptions,
 } from '../@types/background-process.js';
 import { sanitizePath } from './list-files.js';
+import { EOL } from 'node:os';
+import { format } from '../helpers/format.js';
+import { nodeVersion } from '../helpers/get-runtime.js';
 
 /* c8 ignore start */
 const runningProcesses: { [key: number]: () => void } = {};
@@ -28,11 +31,15 @@ const backgroundProcess = (
   new Promise((resolve, reject) => {
     let isResolved = false;
 
+    const isDetached =
+      options?.isScript && [7, 9, 18, 20].includes(nodeVersion!);
+
     const service = spawn(runtime, args, {
       stdio: ['inherit', 'pipe', 'pipe'],
       shell: false,
       cwd: options?.cwd ? sanitizePath(path.normalize(options.cwd)) : undefined,
       env: process.env,
+      detached: isDetached,
     });
 
     const PID = service.pid!;
@@ -41,7 +48,7 @@ const backgroundProcess = (
     const end = () => {
       delete runningProcesses[PID];
 
-      process.kill(PID);
+      isDetached ? process.kill(-PID) : process.kill(PID);
 
       return;
     };
@@ -144,6 +151,12 @@ export const startService = async (
  * By default, it uses **npm**, but you can costumize it using the `runner` option.
  *
  * Useful for servers, APIs, etc.
+ *
+ * ---
+ *
+ * `startScript` currently doesn't works for **Windows**, **Bun** and **Deno**.
+ *
+ * - See: https://github.com/wellwelwel/poku/issues/143
  */
 export const startScript = async (
   script: string,
@@ -153,6 +166,13 @@ export const startScript = async (
   const runtimeOptions = scriptRunner(runner);
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, script];
+
+  /* c8 ignore start */
+  if (isWindows || ['bun', 'deno'].includes(runner))
+    throw new Error(
+      `${format.bold('startScript')} currently doesn't works for Windows, Bun and Deno.${EOL}See: https://github.com/wellwelwel/poku/issues/143`
+    );
+  /* c8 ignore end */
 
   return await backgroundProcess(runtime, runtimeArgs, script, {
     ...options,

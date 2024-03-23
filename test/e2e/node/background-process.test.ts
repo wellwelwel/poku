@@ -7,9 +7,10 @@ import {
 } from '../../../src/index.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
 import { ext, isProduction } from '../../helpers/capture-cli.test.js';
-// import { getRuntime } from '../../../src/helpers/get-runtime.js';
+import { getRuntime } from '../../../src/helpers/get-runtime.js';
+import { isWindows } from '../../../src/helpers/runner.js';
 
-// const runtime = getRuntime();
+const runtime = getRuntime();
 
 test(async () => {
   describe('Start Service', { background: false, icon: '🔀' });
@@ -33,7 +34,7 @@ test(async () => {
 });
 
 test(async () => {
-  // if (getRuntime() !== 'node') return;
+  if (getRuntime() !== 'node' || isWindows) return;
 
   describe('Start Script', { background: false, icon: '🔀' });
 
@@ -41,7 +42,7 @@ test(async () => {
     startAfter: 'ready',
     cwd:
       ext === 'ts' || isProduction ? 'fixtures/server' : 'ci/fixtures/server',
-    // runner: runtime === 'node' ? 'npm' : runtime,
+    runner: runtime === 'node' ? 'npm' : runtime,
   });
 
   const res = await legacyFetch('localhost', 4001);
