@@ -1,12 +1,6 @@
-# codecov:
-#   disable_default_path_fixes: true
-
-# fixes:
-#   - 'ci/::/'
-
 coverage:
   status:
     project:
       default:
-        target: 75%
+        target: 84%
         threshold: 2%

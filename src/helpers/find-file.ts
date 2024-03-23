@@ -30,5 +30,4 @@ export const findFile = (error: Error) => {
 
   return file;
 };
-
 /* c8 ignore end */
