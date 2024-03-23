@@ -1,5 +1,5 @@
 import { assertPromise as assert, describe } from '../../src/index.js';
-import { isNode10OrHigher } from '../../src/helpers/version-helper';
+import { isNode10OrHigher } from '../../src/helpers/version-helper.js';
 
 describe('Assert (Promise) Suite', { background: false, icon: '🔬' });
 

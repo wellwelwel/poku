@@ -278,7 +278,7 @@ describe('rejects Test Suite', { background: false, icon: '🔬' });
 
 if (isNode10OrHigher()) {
   const asyncFunctionThatRejects = async () => {
-    throw new Error('Async error');
+    await Promise.reject(new Error('Async error'));
   };
   const asyncFunctionThatFails = () =>
     new Promise((_, reject) =>
