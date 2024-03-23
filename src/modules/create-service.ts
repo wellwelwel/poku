@@ -1,6 +1,6 @@
 import process from 'node:process';
 import { spawn } from 'node:child_process';
-import { isWindows, runner, scriptRunner } from '../helpers/runner.js';
+import { runner, scriptRunner } from '../helpers/runner.js';
 import path from 'node:path';
 import {
   StartScriptOptions,
@@ -33,37 +33,20 @@ const backgroundProcess = (
       shell: false,
       cwd: options?.cwd ? sanitizePath(path.normalize(options.cwd)) : undefined,
       env: process.env,
-      detached: !isWindows,
     });
+
+    const PID = service.pid!;
 
     /* c8 ignore start */
     const end = () => {
-      delete runningProcesses[service.pid!];
+      delete runningProcesses[PID];
 
-      if (isWindows) {
-        service.kill();
-        return;
-      }
-
-      if (
-        ['bun', 'deno'].includes(runtime) ||
-        ['bun', 'deno'].includes(String(options?.runner))
-      ) {
-        process.kill(service.pid!, 'SIGKILL');
-
-        // runtime === 'bun' &&
-        //   options?.isScript &&
-        //   process.kill(service.pid! + 1, 'SIGKILL');
-
-        return;
-      }
-
-      process.kill(-service.pid!, 'SIGKILL');
+      process.kill(PID);
 
       return;
     };
 
-    runningProcesses[service.pid!] = end;
+    runningProcesses[PID] = end;
     /* c8 ignore end */
 
     service.stdout.on('data', (data: Buffer) => {
