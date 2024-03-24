@@ -35,7 +35,7 @@ const backgroundProcess = (
       shell: false,
       cwd: options?.cwd ? sanitizePath(path.normalize(options.cwd)) : undefined,
       env: process.env,
-      detached: true,
+      detached: !isWindows,
     });
 
     const PID = service.pid!;
@@ -44,10 +44,14 @@ const backgroundProcess = (
     const end = () => {
       delete runningProcesses[PID];
 
+      if (isWindows) {
+        process.kill(PID);
+        return;
+      }
+
       if (
         ['bun', 'deno'].includes(runtime) ||
-        ['bun', 'deno'].includes(String(options?.runner)) ||
-        isWindows
+        ['bun', 'deno'].includes(String(options?.runner))
       ) {
         process.kill(PID, 'SIGKILL');
 
