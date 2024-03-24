@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Toaster, toast } from 'sonner';
+import { Toaster } from 'sonner';
 import { Github, Heart, Package2 } from 'lucide-react';
 import Link from '@docusaurus/Link';
 import Head from '@docusaurus/Head';
@@ -34,32 +34,9 @@ const Home = () => {
         if (signal.aborted) return;
 
         setSize(`${(data.size / 1024).toFixed(1)} KB`);
-        setTimeout(() => {
-          toast.success('All tests passed.', {
-            description: (
-              <>
-                Exited with code <strong>0</strong>
-              </>
-            ),
-            className: 'poku-runned',
-          });
-        }, 1250);
       })
-      .catch((error) => {
+      .catch(() => {
         if (signal.aborted) return;
-
-        setTimeout(() => {
-          toast.error('Some tests failed.', {
-            description: (
-              <>
-                <p>{error.message}</p>
-                <span>
-                  Exited with code <strong>1</strong>
-                </span>
-              </>
-            ),
-          });
-        }, 1250);
       });
 
     return () => {
