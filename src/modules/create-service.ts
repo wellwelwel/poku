@@ -59,7 +59,7 @@ const backgroundProcess = (
         ['bun', 'deno'].includes(runtime) ||
         ['bun', 'deno'].includes(String(options?.runner))
       ) {
-        process.kill(PID, 'SIGKILL');
+        process.kill(PID);
 
         return;
       }
