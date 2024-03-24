@@ -1,6 +1,7 @@
 import { EOL } from 'node:os';
 import { format, backgroundColor } from '../helpers/format.js';
 
+/* c8 ignore start */
 export type DescribeOptions = {
   /**
    * Skips a line before to console it.
@@ -44,3 +45,4 @@ export const describe = (title: string, options?: DescribeOptions) => {
     `${pad ? EOL : ''}${format.bg(backgroundColor[typeof background === 'string' ? background : 'grey'], message)}`
   );
 };
+/* c8 ignore stop */

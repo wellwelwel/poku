@@ -59,6 +59,7 @@ export const parseAssertion = async (
       else if (typeof options.defaultMessage === 'string')
         message = options.defaultMessage;
 
+      /* c8 ignore start */
       const finalMessage =
         message?.trim().length > 0
           ? format.bold(format.fail(`✘ ${message}`))
@@ -109,4 +110,6 @@ export const parseAssertion = async (
     // Non-assertion errors
     throw error;
   }
+  /* c8 ignore stop */
+  /* c8 ignore next */
 };

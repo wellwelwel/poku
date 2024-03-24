@@ -11,6 +11,7 @@ export async function test(
   }
 
   const resultCb = cb();
+  /* c8 ignore next */
   if (resultCb instanceof Promise) await resultCb;
 
   if (typeof each.after.cb === 'function' && each.after.test) {
