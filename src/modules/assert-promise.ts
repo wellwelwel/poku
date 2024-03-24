@@ -100,12 +100,16 @@ const notDeepStrictEqual = async (
   });
 };
 
-const ifError = async (value: unknown): Promise<void> => {
+const ifError = async (
+  value: unknown,
+  message?: ParseAssertionOptions['message']
+): Promise<void> => {
   await parseAssertion(
     () => {
       nodeAssert.ifError(value);
     },
     {
+      message,
       defaultMessage: 'Expected no error, but received an error',
       hideDiff: true,
       throw: true,
