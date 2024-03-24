@@ -97,7 +97,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['1.30.0', 'latest']
+        node-version: ['latest']
     name: Deno ${{ matrix.node-version }}
     steps:
       - name: ➕ Actions - Checkout
