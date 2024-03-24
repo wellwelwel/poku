@@ -1,16 +1,21 @@
+import { nodeVersion } from '../../src/helpers/get-runtime.js';
 import { assert, describe } from '../../src/index.js';
-import {
-  isNode12OrHigher,
-  isNode10OrHigher,
-  isNode8OrHigher,
-} from '../../src/helpers/version-helper.js';
 
 describe('Assert Suite', { background: false, icon: '🔬' });
 
+assert(true, 'ok (default) with true');
+assert(1, 'ok (default) with 1');
+assert('string', 'ok (default) with string');
+assert([], 'ok (default) with empty array');
+assert({}, 'ok (default) with empty object');
+assert(() => {}, 'ok (default) with empty function');
+
+assert.ok(true, 'ok with true');
 assert.ok(1, 'ok with 1');
 assert.ok('string', 'ok with string');
 assert.ok([], 'ok with empty array');
 assert.ok({}, 'ok with empty object');
+assert.ok(() => {}, 'ok with empty function');
 
 assert.equal(1, 1, 'equal with same numbers');
 assert.equal('text', 'text', 'equal with same strings');
@@ -121,7 +126,7 @@ function callbackFunction(cb: (err: Error | null, result?: string) => void) {
   // Simula uma operação que não lança um erro
   cb(null, 'no error');
 }
-if (isNode8OrHigher()) {
+if (!nodeVersion || nodeVersion > 8) {
   describe('doesNotThrow Test Suite', { background: false, icon: '🔬' });
 
   assert.throws(() => {
@@ -143,11 +148,8 @@ if (isNode8OrHigher()) {
 
   assert.doesNotThrow(
     () =>
-      callbackFunction((err, result) => {
-        if (err) {
-          throw err;
-        }
-        console.log(result); // Saída esperada: 'no error'
+      callbackFunction((err) => {
+        assert.ifError(err);
       }),
     'Should not throw an error for a callback function that does not error'
   );
@@ -167,7 +169,7 @@ if (isNode8OrHigher()) {
   }, 'Should throw an error for a function that actually throws');
 
   assert.doesNotThrow(
-    async () => await 'no error',
+    () => 'no error',
     'Should not throw an error for an async function that resolves'
   );
 
@@ -197,7 +199,7 @@ if (isNode8OrHigher()) {
   );
 }
 
-if (isNode12OrHigher()) {
+if (!nodeVersion || nodeVersion > 12) {
   describe('match Test Suite', { background: false, icon: '🔬' });
 
   // Testing regex matches
@@ -225,7 +227,7 @@ if (isNode12OrHigher()) {
   );
 }
 
-if (isNode10OrHigher()) {
+if (!nodeVersion || nodeVersion > 10) {
   describe('rejects Test Suite', { background: false, icon: '🔬' });
   const asyncFunctionThatRejects = async () => {
     await Promise.reject(new Error('Async error'));

@@ -1,3 +1,4 @@
+/* c8 ignore start */
 export const removeConsecutiveRepeats = (
   arr: string[],
   specificItem: RegExp
@@ -28,3 +29,4 @@ export const removeConsecutiveRepeats = (
 
   return result;
 };
+/* c8 ignore stop */

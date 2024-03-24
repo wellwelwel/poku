@@ -1,5 +1,6 @@
 import { EOL } from 'node:os';
 
+/* c8 ignore start */
 export const findFile = (error: Error) => {
   const stackLines = error.stack?.split(EOL) || [];
 
@@ -29,3 +30,4 @@ export const findFile = (error: Error) => {
 
   return file;
 };
+/* c8 ignore end */

@@ -1,5 +1,8 @@
 {
-  "include": ["ci/src/**"],
   "all": true,
-  "exclude": ["ci/src/@types/**"]
+  "include": ["src/**"],
+  "exclude": ["src/@types/**"],
+  "extension": ["ts"],
+  "reporter": ["text", "lcov"],
+  "clean": true
 }

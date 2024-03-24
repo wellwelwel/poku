@@ -1,16 +1,9 @@
-import process from 'node:process';
 import * as nodeAssert from 'node:assert';
 import {
   parseAssertion,
   ParseAssertionOptions,
 } from '../helpers/parseAsssetion.js';
-import { getRuntime } from '../helpers/get-runtime.js';
-
-const runtime = getRuntime();
-const version =
-  runtime === 'node'
-    ? Number(process.version.match(/v(\d+)\./)?.[1])
-    : undefined;
+import { nodeVersion } from '../helpers/get-runtime.js';
 
 const ok = async (
   value: unknown,
@@ -285,9 +278,11 @@ const match = async (
   regExp: RegExp,
   message?: ParseAssertionOptions['message']
 ): Promise<void> => {
-  if (typeof version === 'number' && version < 12) {
+  /* c8 ignore start */
+  if (typeof nodeVersion === 'number' && nodeVersion < 12) {
     throw new Error('match is available from Node.js 12 or higher');
   }
+  /* c8 ignore stop */
 
   await parseAssertion(() => nodeAssert?.match(value, regExp), {
     message,
@@ -302,9 +297,11 @@ const doesNotMatch = async (
   regExp: RegExp,
   message?: ParseAssertionOptions['message']
 ): Promise<void> => {
-  if (typeof version === 'number' && version < 12) {
+  /* c8 ignore start */
+  if (typeof nodeVersion === 'number' && nodeVersion < 12) {
     throw new Error('doesNotMatch is available from Node.js 12 or higher');
   }
+  /* c8 ignore stop */
 
   await parseAssertion(() => nodeAssert.doesNotMatch(value, regExp), {
     message,

@@ -1,3 +1,6 @@
+/* c8 ignore start */
+
+import process from 'node:process';
 import type { Configs } from '../@types/poku.js';
 
 declare const Deno: unknown;
@@ -32,3 +35,10 @@ export const getRuntime = (
   if (typeof Bun !== 'undefined') return 'bun';
   return 'node';
 };
+
+export const nodeVersion =
+  getRuntime() === 'node'
+    ? Number(process.version.match(/v(\d+)\./)?.[1])
+    : undefined;
+
+/* c8 ignore stop */

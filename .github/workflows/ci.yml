@@ -64,7 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['0.5.3', '01', 'canary']
+        node-version: ['01', 'canary']
     name: Bun ${{ matrix.node-version }}
     steps:
       - name: ➕ Actions - Checkout

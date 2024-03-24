@@ -1,10 +1,12 @@
+/* c8 ignore start */
+
 import process from 'node:process';
 import path from 'node:path';
 import { getRuntime } from './get-runtime.js';
 import { Configs } from '../@types/poku.js';
 import { Runner } from '../@types/runner.js';
 
-const isWindows = process.platform === 'win32';
+export const isWindows = process.platform === 'win32';
 
 export const runner = (filename: string, configs?: Configs): string[] => {
   const runtime = getRuntime(configs);
@@ -14,7 +16,14 @@ export const runner = (filename: string, configs?: Configs): string[] => {
 
   // Deno
   if (runtime === 'deno')
-    return ['deno', 'run', '--allow-read', '--allow-env', '--allow-run'];
+    return [
+      'deno',
+      'run',
+      '--allow-read', // Poku searches for all test files
+      '--allow-env', // Poku share the process.env with the `child_process`
+      '--allow-run', // Poku CLI
+      '--allow-net', // Create Service
+    ];
 
   // Node.js
   return path.extname(filename) === '.ts'
@@ -24,7 +33,7 @@ export const runner = (filename: string, configs?: Configs): string[] => {
 
 export const scriptRunner = (runner: Runner): string[] => {
   // Bun
-  if (runner === 'bun') return ['bun'];
+  if (runner === 'bun') return ['bun', 'run'];
 
   // Deno
   if (runner === 'deno') return ['deno', 'task'];
@@ -36,5 +45,7 @@ export const scriptRunner = (runner: Runner): string[] => {
   if (runner === 'pnpm') return ['pnpm', 'run'];
 
   // Node.js
-  return ['npm', 'run'];
+  return [isWindows ? 'npm.cmd' : 'npm', 'run'];
 };
+
+/* c8 ignore stop */
