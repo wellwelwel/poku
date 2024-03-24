@@ -9,6 +9,14 @@ services:
     environment:
       NODE_ENV: production
 
+  bun-latest:
+    container_name: 'bun-latest'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/bun/latest.Dockerfile
+    environment:
+      NODE_ENV: production
+
   bun-canary:
     container_name: 'bun-canary'
     build:
