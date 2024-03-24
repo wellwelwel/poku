@@ -44,7 +44,17 @@ const backgroundProcess = (
     const end = () => {
       delete runningProcesses[PID];
 
-      process.kill(-PID);
+      if (
+        ['bun', 'deno'].includes(runtime) ||
+        ['bun', 'deno'].includes(String(options?.runner)) ||
+        isWindows
+      ) {
+        process.kill(PID, 'SIGKILL');
+
+        return;
+      }
+
+      process.kill(-PID, 'SIGKILL');
 
       return;
     };
