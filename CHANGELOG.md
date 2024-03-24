@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.3](https://github.com/wellwelwel/poku/compare/v1.9.2...v1.9.3) (2024-03-24)
+
+
+### Bug Fixes
+
+* **assert:** allow custom message for `ifError` ([#147](https://github.com/wellwelwel/poku/issues/147)) ([7252fd4](https://github.com/wellwelwel/poku/commit/7252fd45289a91478974a846582b3bd522dfa094))
+* **Windows, Bun & Deno:** startService doesn't ends ([#118](https://github.com/wellwelwel/poku/issues/118)) ([2dd7fe0](https://github.com/wellwelwel/poku/commit/2dd7fe02b46772862d2ca78dc98de681e75d285c))
+
 ## [1.9.2](https://github.com/wellwelwel/poku/compare/v1.9.1...v1.9.2) (2024-03-16)
 
 
