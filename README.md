@@ -10,10 +10,12 @@
 [ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=CI&branch=main
 [ql-url]: https://github.com/wellwelwel/poku/actions/workflows/codeql.yml?query=branch%3Amain
 [ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci-codeql.yml?event=push&style=flat&label=Code%20QL&branch=main
-[license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
-[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff&label=License
+[coverage-image]: https://img.shields.io/codecov/c/github/wellwelwel/poku?label=Coverage
+[coverage-url]: https://app.codecov.io/github/wellwelwel/poku
 [downloads-image]: https://img.shields.io/npm/dt/poku.svg?&color=FFC312&label=Downloads
 [downloads-url]: https://npmjs.org/package/poku
+[license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
+[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff&label=License
 
 <div align="center">
 <img width="170" height="170" alt="Logo" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/poku.svg">
@@ -28,6 +30,7 @@
 [![TypeScript Version][typescript-version-image]][typescript-url]<br />
 [![GitHub Workflow Status (with event)][ci-image]][ci-url]
 [![GitHub Workflow Status (with event)][ql-image]][ql-url]
+[![Coverage][coverage-image]][coverage-url]
 [![NPM Downloads][downloads-image]][downloads-url]
 [![License][license-image]][license-url]
 
