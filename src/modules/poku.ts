@@ -1,3 +1,8 @@
+/**
+ * Both CLI, API, noExit, sequential and parallel runs are strictly tested, but these tests use deep child process for it
+ */
+
+/* c8 ignore start */
 import { EOL } from 'node:os';
 import { Code } from '../@types/code.js';
 import { Configs } from '../@types/poku.js';
@@ -76,3 +81,4 @@ export async function poku(
 
   exit(code, configs?.quiet);
 }
+/* c8 ignore stop */
