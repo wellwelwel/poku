@@ -17,15 +17,6 @@ services:
     environment:
       NODE_ENV: production
 
-  deno-1.30.0:
-    container_name: 'deno-1.30.0'
-    platform: linux/amd64
-    build:
-      context: ../../
-      dockerfile: ./test/docker/deno/1.30.0.Dockerfile
-    environment:
-      NODE_ENV: production
-
   deno-latest:
     container_name: 'deno-latest'
     platform: linux/amd64
