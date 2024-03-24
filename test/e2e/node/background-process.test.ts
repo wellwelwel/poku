@@ -8,7 +8,6 @@ import {
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
 import { ext, isProduction } from '../../helpers/capture-cli.test.js';
 import { getRuntime } from '../../../src/helpers/get-runtime.js';
-import { isWindows } from '../../../src/helpers/runner.js';
 
 const runtime = getRuntime();
 
@@ -34,7 +33,7 @@ test(async () => {
 });
 
 test(async () => {
-  if (getRuntime() !== 'node' || isWindows) return;
+  if (getRuntime() !== 'node') return;
 
   describe('Start Script', { background: false, icon: '🔀' });
 

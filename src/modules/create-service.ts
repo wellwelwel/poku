@@ -16,9 +16,13 @@ const runningProcesses: { [key: number]: () => void } = {};
 const secureEnds = () =>
   Object.values(runningProcesses).forEach((end) => end());
 
+const killWindowsProcess = (PID: number) =>
+  spawn('taskkill', ['/F', '/T', '/PID', PID.toString()]);
+
 process.once('SIGINT', () => {
   secureEnds();
 });
+
 /* c8 ignore end */
 
 const backgroundProcess = (
@@ -36,6 +40,8 @@ const backgroundProcess = (
       cwd: options?.cwd ? sanitizePath(path.normalize(options.cwd)) : undefined,
       env: process.env,
       detached: !isWindows,
+      windowsHide: isWindows,
+      timeout: options?.timeout,
     });
 
     const PID = service.pid!;
@@ -45,7 +51,7 @@ const backgroundProcess = (
       delete runningProcesses[PID];
 
       if (isWindows) {
-        process.kill(PID);
+        killWindowsProcess(PID);
         return;
       }
 
@@ -178,7 +184,7 @@ export const startScript = async (
   const runtimeArgs = [...runtimeOptions, script];
 
   /* c8 ignore start */
-  if (isWindows || ['bun', 'deno'].includes(runner))
+  if (['bun', 'deno'].includes(runner))
     throw new Error(
       `${format.bold('startScript')} currently doesn't works for Windows, Bun and Deno.${EOL}See: https://github.com/wellwelwel/poku/issues/143`
     );
