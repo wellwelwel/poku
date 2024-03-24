@@ -9,7 +9,6 @@ import {
 import { sanitizePath } from './list-files.js';
 import { EOL } from 'node:os';
 import { format } from '../helpers/format.js';
-import { nodeVersion } from '../helpers/get-runtime.js';
 
 /* c8 ignore start */
 const runningProcesses: { [key: number]: () => void } = {};
@@ -31,15 +30,12 @@ const backgroundProcess = (
   new Promise((resolve, reject) => {
     let isResolved = false;
 
-    const isDetached =
-      options?.isScript && [7, 9, 18, 20].includes(nodeVersion!);
-
     const service = spawn(runtime, args, {
       stdio: ['inherit', 'pipe', 'pipe'],
       shell: false,
       cwd: options?.cwd ? sanitizePath(path.normalize(options.cwd)) : undefined,
       env: process.env,
-      detached: isDetached,
+      detached: true,
     });
 
     const PID = service.pid!;
@@ -48,7 +44,7 @@ const backgroundProcess = (
     const end = () => {
       delete runningProcesses[PID];
 
-      isDetached ? process.kill(-PID) : process.kill(PID);
+      process.kill(-PID);
 
       return;
     };
