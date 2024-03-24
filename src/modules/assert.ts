@@ -94,13 +94,17 @@ const notDeepStrictEqual = (
   });
 };
 
-const ifError = (value: unknown, message?: string): void => {
+const ifError = (
+  value: unknown,
+  message?: ParseAssertionOptions['message']
+): void => {
   parseAssertion(
     () => {
       nodeAssert.ifError(value);
     },
     {
-      defaultMessage: message || 'Expected no error, but received an error',
+      message,
+      defaultMessage: 'Expected no error, but received an error',
       hideDiff: true,
       throw: true,
     }
