@@ -22,7 +22,6 @@ const killWindowsProcess = (PID: number) =>
 process.once('SIGINT', () => {
   secureEnds();
 });
-
 /* c8 ignore end */
 
 const backgroundProcess = (
@@ -170,7 +169,7 @@ export const startService = async (
  *
  * ---
  *
- * `startScript` currently doesn't works for **Windows**, **Bun** and **Deno**.
+ * `startScript` currently doesn't works for **Bun** and **Deno**.
  *
  * - See: https://github.com/wellwelwel/poku/issues/143
  */
@@ -186,7 +185,7 @@ export const startScript = async (
   /* c8 ignore start */
   if (['bun', 'deno'].includes(runner))
     throw new Error(
-      `${format.bold('startScript')} currently doesn't works for Windows, Bun and Deno.${EOL}See: https://github.com/wellwelwel/poku/issues/143`
+      `${format.bold('startScript')} currently doesn't works for Bun and Deno.${EOL}See: https://github.com/wellwelwel/poku/issues/143`
     );
   /* c8 ignore end */
 
