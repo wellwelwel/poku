@@ -115,7 +115,7 @@
     "packages-update": "^1.2.1",
     "prettier": "^3.2.5",
     "shx": "^0.3.4",
-    "tsx": "4.2.1",
+    "tsx": "4.7.1",
     "typescript": "^5.4.2"
   }
 }
