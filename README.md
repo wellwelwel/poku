@@ -111,8 +111,8 @@ bun add -d poku
 </td>
 <td width="400">
 
-```ts
-import { poku } from 'npm:poku';
+```bash
+deno add npm:poku
 ```
 
 </td>
@@ -124,7 +124,7 @@ import { poku } from 'npm:poku';
 <table>
 <tr>
 <td>
-<em><code>test/file.test.js</code></em>
+<em><code>test/file.test.mjs</code></em>
 </td>
 </tr>
 <tr>
@@ -140,7 +140,8 @@ assert(true, 'Poku will describe it 🐷');
 </tr>
 </table>
 
-> Note that these examples use [**ESM**](https://poku.io/docs/examples/cjs-esm), but you can use [**CJS**](https://poku.io/docs/examples/cjs-esm) as well.
+- Change from `.mjs` to `.js` by defining `"type": "module"` in your _package.json_.
+- Note that these examples use [**ESM**](https://poku.io/docs/examples/cjs-esm), but you can use [**CJS**](https://poku.io/docs/examples/cjs-esm) as well.
 
 ### Run it 🚀
 

@@ -25,24 +25,10 @@ It supports both [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
 
 _But only if you want to, of course._
 
-<Tabs>
-  <TabItem default value='Node.js, TypeScript (Node.js) and Bun'>
-      
-    ```diff
-    - import assert from 'node:assert';
-    + import { assert } from 'poku';
-    ```
-
-  </TabItem>
-  <TabItem value='Deno'>
-  
-    ```diff
-    - import assert from 'node:assert';
-    + import { assert } from 'npm:poku';
-    ```
-
-  </TabItem>
-</Tabs>
+```diff
+- import assert from 'node:assert';
++ import { assert } from 'poku';
+```
 
 ```ts
 assert(true, "It's true 🧪");
