@@ -1,3 +1,5 @@
+/* c8 ignore start */
+
 import process from 'node:process';
 import { hr } from '../helpers/hr.js';
 import { Code } from '../@types/code.js';
@@ -38,3 +40,5 @@ process.on('uncaughtException', (err) => {
   console.log('uncaughtException', err);
   process.exit(1);
 });
+
+/* c8 ignore stop */

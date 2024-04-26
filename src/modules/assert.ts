@@ -269,16 +269,15 @@ async function doesNotReject(
   );
 }
 
+/* c8 ignore start */
 const match = (
   value: string,
   regExp: RegExp,
   message?: ParseAssertionOptions['message']
 ): void => {
-  /* c8 ignore start */
   if (typeof nodeVersion === 'number' && nodeVersion < 12) {
     throw new Error('match is available from Node.js 12 or higher');
   }
-  /* c8 ignore stop */
 
   parseAssertion(() => nodeAssert?.match(value, regExp), {
     message,
@@ -287,17 +286,17 @@ const match = (
     defaultMessage: 'Value should match regExp',
   });
 };
+/* c8 ignore stop */
 
+/* c8 ignore start */
 const doesNotMatch = (
   value: string,
   regExp: RegExp,
   message?: ParseAssertionOptions['message']
 ): void => {
-  /* c8 ignore start */
   if (typeof nodeVersion === 'number' && nodeVersion < 12) {
     throw new Error('doesNotMatch is available from Node.js 12 or higher');
   }
-  /* c8 ignore stop */
 
   parseAssertion(() => nodeAssert.doesNotMatch(value, regExp), {
     message,
@@ -306,6 +305,7 @@ const doesNotMatch = (
     defaultMessage: 'Value should not match regExp',
   });
 };
+/* c8 ignore stop */
 
 export const assert = Object.assign(
   (value: unknown, message?: ParseAssertionOptions['message']) =>

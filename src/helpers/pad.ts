@@ -21,4 +21,4 @@ export const padStart = (
 
   return fullPadString + str;
 };
-/* c8 ignore end */
+/* c8 ignore stop */

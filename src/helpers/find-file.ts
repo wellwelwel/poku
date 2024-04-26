@@ -30,4 +30,4 @@ export const findFile = (error: Error) => {
 
   return file;
 };
-/* c8 ignore end */
+/* c8 ignore stop */
