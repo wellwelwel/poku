@@ -22,7 +22,7 @@ const killWindowsProcess = (PID: number) =>
 process.once('SIGINT', () => {
   secureEnds();
 });
-/* c8 ignore end */
+/* c8 ignore stop */
 
 const backgroundProcess = (
   runtime: string,
@@ -35,10 +35,13 @@ const backgroundProcess = (
 
     const service = spawn(runtime, args, {
       stdio: ['inherit', 'pipe', 'pipe'],
+      /* c8 ignore next */
       shell: isWindows,
       cwd: options?.cwd ? sanitizePath(path.normalize(options.cwd)) : undefined,
       env: process.env,
+      /* c8 ignore next */
       detached: !isWindows,
+      /* c8 ignore next */
       windowsHide: isWindows,
       timeout: options?.timeout,
     });
@@ -69,7 +72,7 @@ const backgroundProcess = (
     };
 
     runningProcesses[PID] = end;
-    /* c8 ignore end */
+    /* c8 ignore stop */
 
     service.stdout.on('data', (data: Buffer) => {
       if (!isResolved && typeof options?.startAfter !== 'number') {
@@ -187,7 +190,7 @@ export const startScript = async (
     throw new Error(
       `${format.bold('startScript')} currently doesn't works for Bun and Deno.${EOL}See: https://github.com/wellwelwel/poku/issues/143`
     );
-  /* c8 ignore end */
+  /* c8 ignore stop */
 
   return await backgroundProcess(runtime, runtimeArgs, script, {
     ...options,

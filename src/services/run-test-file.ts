@@ -98,6 +98,7 @@ export const runTestFile = (
     // Export spawn helper is not an option
     const child = spawn(runtime, runtimeArguments, {
       stdio: ['inherit', 'pipe', 'pipe'],
+      /* c8 ignore next */
       shell: isWindows,
       env: {
         ...process.env,

@@ -22,7 +22,7 @@ if (hasArg('log-success'))
   console.log(
     `The flag ${format.bold('--log-success')} is deprecated. Use ${format.bold('--debug')} instead.`
   );
-/* c8 ignore end */
+/* c8 ignore stop */
 
 poku(dirs, {
   platform: platformIsValid(platform) ? platform : undefined,
