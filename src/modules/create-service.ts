@@ -35,7 +35,7 @@ const backgroundProcess = (
 
     const service = spawn(runtime, args, {
       stdio: ['inherit', 'pipe', 'pipe'],
-      shell: false,
+      shell: isWindows,
       cwd: options?.cwd ? sanitizePath(path.normalize(options.cwd)) : undefined,
       env: process.env,
       detached: !isWindows,
