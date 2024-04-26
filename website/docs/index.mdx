@@ -129,14 +129,8 @@ bun add -d poku
   </TabItem>
   <TabItem  value='Deno'>
 
-```ts
-import { poku } from 'npm:poku';
-```
-
-You can also use **Poku** with [**esm.sh**](https://esm.sh):
-
-```ts
-import { poku } from 'https://esm.sh/poku';
+```bash
+deno add npm:poku
 ```
 
   </TabItem>
@@ -145,7 +139,7 @@ import { poku } from 'https://esm.sh/poku';
 ### **Test it** 🔬
 
 <Tabs>
-  <TabItem default value='test/file.test.js'>
+  <TabItem default value='test/file.test.mjs'>
 
 ```ts
 import { assert } from 'poku';
@@ -154,18 +148,10 @@ assert(true, 'Poku will describe it 🐷');
 ```
 
   </TabItem>
-  <TabItem default value='test/file.test.ts (Deno)'>
-
-```ts
-import { assert } from 'npm:poku';
-
-assert(true, 'Poku will describe it 🐷');
-```
-
-  </TabItem>
 </Tabs>
 
-> Note that these examples use [**ESM**](/docs/examples/cjs-esm), but you can use [**CJS**](/docs/examples/cjs-esm) as well.
+- Change from `.mjs` to `.js` by defining `"type": "module"` in your _package.json_.
+- Note that these examples use [**ESM**](/docs/examples/cjs-esm), but you can use [**CJS**](/docs/examples/cjs-esm) as well.
 
 ### **Run it** 🚀
 

@@ -87,7 +87,7 @@ By defining a timeout, you avert indefinite processes that conclude neither in s
 You don't necessarily have to end your service running in the background as the last line of the test, if it's no longer used.
 
 ```ts
-import { startScript } from 'poku'; // 'npm:poku' for Deno
+import { startScript } from 'poku';
 
 const server = await startScript('start', {
   /**
