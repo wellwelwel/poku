@@ -2,7 +2,7 @@ import process from 'node:process';
 import path from 'node:path';
 import { EOL } from 'node:os';
 import { spawn } from 'node:child_process';
-import { runner } from '../helpers/runner.js';
+import { isWindows, runner } from '../helpers/runner.js';
 import { indentation } from '../helpers/indentation.js';
 import { format } from '../helpers/format.js';
 import { Configs } from '../@types/poku.js';
@@ -98,7 +98,7 @@ export const runTestFile = (
     // Export spawn helper is not an option
     const child = spawn(runtime, runtimeArguments, {
       stdio: ['inherit', 'pipe', 'pipe'],
-      shell: false,
+      shell: isWindows,
       env: {
         ...process.env,
         FILE: configs?.parallel ? fileRelative : '',
