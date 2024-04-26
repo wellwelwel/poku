@@ -1,12 +1,12 @@
 #! /usr/bin/env node
 
+/* c8 ignore start */
 import { escapeRegExp } from '../modules/list-files.js';
 import { getArg, getLastParam, hasArg } from '../helpers/get-arg.js';
 import { poku } from '../index.js';
 import { platformIsValid } from '../helpers/get-runtime.js';
 import { format } from '../helpers/format.js';
 
-/* c8 ignore start */
 const dirs =
   (hasArg('include')
     ? getArg('include')?.split(',')
@@ -22,7 +22,6 @@ if (hasArg('log-success'))
   console.log(
     `The flag ${format.bold('--log-success')} is deprecated. Use ${format.bold('--debug')} instead.`
   );
-/* c8 ignore stop */
 
 poku(dirs, {
   platform: platformIsValid(platform) ? platform : undefined,
@@ -32,3 +31,4 @@ poku(dirs, {
   quiet,
   debug,
 });
+/* c8 ignore stop */
