@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.4](https://github.com/wellwelwel/poku/compare/v1.9.3...v1.9.4) (2024-04-26)
+
+
+### Bug Fixes
+
+* **Windows:** adapt for Node.js breaking change ([#210](https://github.com/wellwelwel/poku/issues/210)) ([71d36e9](https://github.com/wellwelwel/poku/commit/71d36e9cebcc76f8fa06e603401e543e299cf57c))
+
 ## [1.9.3](https://github.com/wellwelwel/poku/compare/v1.9.2...v1.9.3) (2024-03-24)
 
 
