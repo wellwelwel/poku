@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import path from 'node:path';
+import { isWindows } from '../../src/helpers/runner.js';
 
 export const executeDockerCompose = (serviceName: string): Promise<number> => {
   const cwd = path.resolve('./test/docker');
@@ -25,6 +26,7 @@ export const executeDockerCompose = (serviceName: string): Promise<number> => {
           const logsProcess = spawn(command, ['logs', '-f', serviceName], {
             cwd,
             stdio: 'inherit',
+            shell: isWindows,
           });
 
           logsProcess.on('close', () => resolve(1));

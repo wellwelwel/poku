@@ -1,6 +1,6 @@
 import process from 'node:process';
 import { spawn } from 'node:child_process';
-import { runner } from '../../src/helpers/runner.js';
+import { isWindows, runner } from '../../src/helpers/runner.js';
 
 // `/_.ts`: Simulate TypeScript file for Deno
 const currentFile = typeof __filename === 'string' ? __filename : '/_.ts';
@@ -16,7 +16,7 @@ export const executeCLI = (args: string[]): Promise<string> =>
     const runtimeArguments = [...runtimeOptions, ...args];
 
     const childProcess = spawn(runtime, runtimeArguments, {
-      shell: false,
+      shell: isWindows,
     });
 
     let output: string = '';
