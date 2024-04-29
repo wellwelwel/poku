@@ -88,26 +88,3 @@ test(() => {
     'value should still 9 by reseting both beforeEach and afterEach'
   );
 });
-
-// test(() => {
-//   let counter = 0;
-
-//   const asyncPreIncrement = async () =>
-//     await new Promise((resolve) => resolve(++counter));
-
-//   beforeEach(asyncPreIncrement, { immediate: true });
-
-//   afterEach(asyncPreIncrement, {});
-
-//   assert.equal(
-//     counter,
-//     1,
-//     'value asynchronously incremented by 1 from beforeEach should be 1'
-//   );
-
-//   assert.equal(
-//     counter,
-//     3,
-//     'same value asynchronously incremented again by 1 from beforeEach and also by afterEach should be 3 now and then will be 4'
-//   );
-// });
