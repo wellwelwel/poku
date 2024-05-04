@@ -66,6 +66,8 @@ export const runTests = async (
       showLogs &&
         console.log(`${indentation.test}${format.fail('✘')} ${log}`, nextLine);
       passed = false;
+
+      if (configs?.fastFail) return passed;
     }
   }
 

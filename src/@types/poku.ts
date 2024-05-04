@@ -52,6 +52,13 @@ export type Configs = {
    */
   platform?: 'node' | 'bun' | 'deno';
   /**
+   * By setting `true` the tests will stop at the first failure.
+   * This option will not work if `parallel` execution is chosen
+   *
+   * @default false
+   */
+  fastFail?: boolean;
+  /**
    * You can use this option to run a **callback** or a **file** before each test file on your suite.
    *
    * Ex.:
