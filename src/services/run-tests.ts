@@ -82,20 +82,28 @@ export const runTestsParallel = async (
   const testDir = path.join(cwd, dir);
   const files = IS_FILE(dir) ? [dir] : listFiles(testDir, undefined, configs);
 
-  const promises = files.map(async (filePath) => {
-    const testPassed = await runTestFile(filePath, configs);
+  try {
+    const promises = files.map(async (filePath) => {
+      const testPassed = await runTestFile(filePath, configs);
 
-    if (!testPassed) {
-      ++results.fail;
-      return false;
-    }
+      if (!testPassed) {
+        ++results.fail;
 
-    ++results.success;
+        if (configs?.fastFail)
+          throw new Error('Test failed with fastFail enabled');
 
-    return true;
-  });
+        return false;
+      }
 
-  const concurrency = await Promise.all(promises);
+      ++results.success;
 
-  return concurrency.every((result) => result);
+      return true;
+    });
+
+    const concurrency = await Promise.all(promises);
+
+    return concurrency.every((result) => result);
+  } catch {
+    return false;
+  }
 };

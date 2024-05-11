@@ -53,7 +53,6 @@ export type Configs = {
   platform?: 'node' | 'bun' | 'deno';
   /**
    * By setting `true` the tests will stop at the first failure.
-   * This option will not work if `parallel` execution is chosen
    *
    * @default false
    */
