@@ -154,6 +154,14 @@ services:
     environment:
       NODE_ENV: production
 
+  node-21:
+    container_name: 'node-21'
+    build:
+      context: ../../
+      dockerfile: ./test/docker/node/21.Dockerfile
+    environment:
+      NODE_ENV: production
+
   node-latest:
     container_name: 'node-latest'
     build:
