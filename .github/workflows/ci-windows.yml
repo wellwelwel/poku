@@ -20,13 +20,8 @@ jobs:
       - name: ➕ Actions - Setup NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           cache: 'npm'
-
-      - name: ➕ Actions - Setup NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
 
       - name: 📦 Installing Dependencies
         run: npm ci
