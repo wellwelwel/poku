@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/wellwelwel/poku/compare/v1.9.4...v1.10.0) (2024-05-12)
+
+
+### Features
+
+* **poku:** add fail-fast option ([#226](https://github.com/wellwelwel/poku/issues/226)) ([c204c5d](https://github.com/wellwelwel/poku/commit/c204c5d47883e1ae08d442da90ff468d08dfa2c7))
+
 ## [1.9.4](https://github.com/wellwelwel/poku/compare/v1.9.3...v1.9.4) (2024-04-26)
 
 
