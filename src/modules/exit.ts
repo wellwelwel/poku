@@ -11,24 +11,21 @@ export const exit = (code: Code, quiet?: boolean) => {
 
   !quiet &&
     process.on('exit', (code) => {
-      isPoku &&
+      if (isPoku) {
+        hr();
         console.log(
           format.bg(42, `PASS › ${results.success}`),
           format.bg(results.fail === 0 ? 100 : 41, `FAIL › ${results.fail}`)
         );
-
-      isPoku && hr();
+        hr();
+      }
 
       console.log(
         `${format.dim('Exited with code')} ${format.bold(format?.[code === 0 ? 'success' : 'fail'](String(code)))}`
       );
     });
 
-  isPoku && !quiet && hr();
-
-  if (code !== 0) process.exit(1);
-
-  process.exit(0);
+  process.exit(code === 0 ? 0 : 1);
 };
 
 process.on('unhandledRejection', (reason) => {
