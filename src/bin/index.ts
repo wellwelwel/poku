@@ -17,7 +17,7 @@ const exclude = getArg('exclude');
 const parallel = hasArg('parallel');
 const quiet = hasArg('quiet');
 const debug = hasArg('debug');
-const fastFail = hasArg('fastFail');
+const failFast = hasArg('fail-fast');
 
 if (hasArg('log-success'))
   console.log(
@@ -31,6 +31,6 @@ poku(dirs, {
   parallel,
   quiet,
   debug,
-  fastFail,
+  failFast,
 });
 /* c8 ignore stop */

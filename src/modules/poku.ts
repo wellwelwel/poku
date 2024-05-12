@@ -33,49 +33,61 @@ export async function poku(
   const dirs = prepareDirs.length > 0 ? prepareDirs : ['./'];
   const showLogs = !isQuiet(configs);
 
-  if (configs?.parallel) {
-    if (showLogs) {
-      hr();
-      console.log(`${format.bold('Running the Test Suite in Parallel')}${EOL}`);
+  // Sequential
+  if (!configs?.parallel) {
+    for (const dir of dirs) {
+      const result = await runTests(dir, configs);
+
+      if (!result) {
+        code = 1;
+        if (configs?.failFast) break;
+      }
     }
-
-    const concurrency = await Promise.all(
-      dirs.map((dir) => runTestsParallel(dir, configs))
-    );
-
-    if (concurrency.some((result) => !result)) code = 1;
-
-    showLogs && hr();
-
-    if (showLogs && fileResults.success.length > 0)
-      console.log(
-        fileResults.success
-          .map(
-            (current) =>
-              `${indentation.test}${format.success('✔')} ${format.dim(current)}`
-          )
-          .join(EOL)
-      );
-
-    if (showLogs && fileResults.fail.length > 0)
-      console.log(
-        fileResults.fail
-          .map((current) => `${indentation.test}${format.fail('✘')} ${current}`)
-          .join(EOL)
-      );
 
     if (configs?.noExit) return code;
 
     exit(code, configs?.quiet);
-
     return;
   }
 
-  for (const dir of dirs) {
-    const result = await runTests(dir, configs);
-
-    if (!result) code = 1;
+  // Parallel
+  if (showLogs) {
+    hr();
+    console.log(`${format.bold('Running the Test Suite in Parallel')}${EOL}`);
   }
+
+  try {
+    const promises = dirs.map(async (dir) => {
+      const result = await runTestsParallel(dir, configs);
+
+      if (!result && configs?.failFast) throw '';
+
+      return result;
+    });
+
+    const concurrency = await Promise.all(promises);
+
+    if (concurrency.some((result) => !result)) code = 1;
+  } catch {}
+
+  showLogs && hr();
+
+  if (showLogs && fileResults.success.length > 0)
+    console.log(
+      fileResults.success
+        .map(
+          (current) =>
+            `${indentation.test}${format.success('✔')} ${format.dim(current)}`
+        )
+        .join(EOL)
+    );
+
+  if (showLogs && fileResults.fail.length > 0)
+    console.log(
+      fileResults.fail
+        .map((current) => `${indentation.test}${format.fail('✘')} ${current}`)
+        .join(EOL)
+    );
 
   if (configs?.noExit) return code;
 

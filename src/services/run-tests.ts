@@ -67,7 +67,13 @@ export const runTests = async (
         console.log(`${indentation.test}${format.fail('✘')} ${log}`, nextLine);
       passed = false;
 
-      if (configs?.fastFail) return passed;
+      if (configs?.failFast) {
+        hr();
+        console.log(
+          `  ${format.fail('ℹ')} ${format.bold('fail-fast')} is enabled`
+        );
+        break;
+      }
     }
   }
 
@@ -84,26 +90,30 @@ export const runTestsParallel = async (
 
   try {
     const promises = files.map(async (filePath) => {
+      if (configs?.failFast && results.fail > 0) return;
+
       const testPassed = await runTestFile(filePath, configs);
 
       if (!testPassed) {
         ++results.fail;
 
-        if (configs?.fastFail)
-          throw new Error('Test failed with fastFail enabled');
+        if (configs?.failFast)
+          throw `  ${format.fail('ℹ')} ${format.bold('fail-fast')} is enabled`;
 
         return false;
       }
 
       ++results.success;
-
       return true;
     });
 
     const concurrency = await Promise.all(promises);
 
     return concurrency.every((result) => result);
-  } catch {
+  } catch (error) {
+    hr();
+    console.log(error);
+
     return false;
   }
 };
