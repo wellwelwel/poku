@@ -8,7 +8,6 @@ import {
 } from '../@types/background-process.js';
 import { sanitizePath } from './list-files.js';
 import { findPID, killPID } from '../services/pid.js';
-import { nodeVersion } from '../helpers/get-runtime.js';
 
 /* c8 ignore start */
 const runningProcesses: Map<number, (port?: number) => void> = new Map();
