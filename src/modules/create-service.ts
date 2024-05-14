@@ -11,9 +11,9 @@ import { sanitizePath } from './list-files.js';
 import { findPID, killPID } from '../services/pid.js';
 
 /* c8 ignore start */
-const runningProcesses: Map<number, (port?: number) => void> = new Map();
+const runningProcesses: Map<number, { end: End; port?: number }> = new Map();
 
-const secureEnds = () => runningProcesses.forEach((end) => end());
+const secureEnds = () => runningProcesses.forEach(({ end, port }) => end(port));
 
 process.once('SIGINT', () => {
   secureEnds();
@@ -95,7 +95,7 @@ const backgroundProcess = (
           }
         });
 
-      runningProcesses.set(PID, end);
+      runningProcesses.set(PID, { end, port: portBackup });
       /* c8 ignore stop */
 
       service.stdout.on('data', (data: Buffer) => {
