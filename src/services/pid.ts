@@ -1,3 +1,9 @@
+/* c8 ignore start */
+
+/**
+ * TODO: Add coverage after turning this service into a module
+ */
+
 import { spawn } from 'node:child_process';
 import { EOL } from 'node:os';
 
@@ -78,3 +84,4 @@ export const findPID = {
       } catch {}
     }),
 };
+/* c8 ignore stop */

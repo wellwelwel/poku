@@ -10,13 +10,13 @@ import {
 import { sanitizePath } from './list-files.js';
 import { findPID, killPID } from '../services/pid.js';
 
-/* c8 ignore start */
 const runningProcesses: Map<number, { end: End; port?: number }> = new Map();
 
-const secureEnds = () => runningProcesses.forEach(({ end, port }) => end(port));
-
-process.once('SIGINT', () => {
-  secureEnds();
+/* c8 ignore start */
+process.once('SIGINT', async () => {
+  for (const { end, port } of runningProcesses.values()) {
+    await end(port);
+  }
 });
 /* c8 ignore stop */
 
