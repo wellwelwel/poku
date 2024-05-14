@@ -37,9 +37,7 @@ We can discuss design of API and implementation ideas.
 
 ## Testing
 
-The tests can be easily run:
-
-### General
+### General (recommended)
 
 ```sh
 npm run test
@@ -53,9 +51,9 @@ Methods that vary according to **Node.js** version, platform or OS aren't tested
 npm run test:c8
 ```
 
-### Per Platform (Compatibility — Docker)
+### Compatibility Per Platform (Docker)
 
-> Testing using **Docker** can require a considerable local storage.
+> ⚠️ Testing using **Docker** can require a considerable local storage.
 
 ```sh
 npm run test:ci:node
@@ -65,7 +63,7 @@ npm run test:ci:deno
 
 - You may prefer to use **GitHub Actions** for compatibility testing.
 
-### All (Compatibility — Docker)
+### Compatibility (All — Docker)
 
 > ⚠️ Slow and heavy
 
