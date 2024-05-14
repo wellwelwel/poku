@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/wellwelwel/poku/compare/v1.10.0...v1.10.1) (2024-05-14)
+
+
+### Bug Fixes
+
+* **startScript:** disable throw for Bun and Deno ([#242](https://github.com/wellwelwel/poku/issues/242)) ([0619688](https://github.com/wellwelwel/poku/commit/0619688c5062eafefdd3209d78165c218694fece))
+
 ## [1.10.0](https://github.com/wellwelwel/poku/compare/v1.9.4...v1.10.0) (2024-05-12)
 
 
