@@ -139,7 +139,7 @@ const backgroundProcess = (
           secureEnds();
           reject(`createService: Timeout\nFile: ${file}`);
         }
-      }, options?.timeout || 10000);
+      }, options?.timeout || 60000);
 
       if (typeof options?.startAfter === 'number') {
         setTimeout(() => {
