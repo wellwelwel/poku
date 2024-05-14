@@ -65,19 +65,16 @@ const backgroundProcess = (
           } else process.kill(-PID, 'SIGKILL');
 
           if (port && runtime !== 'bun') {
-            setTimeout(
-              async () => {
-                const PIDs = isWindows
-                  ? await findPID.windows(port)
-                  : await findPID.unix(port);
+            setTimeout(async () => {
+              const PIDs = isWindows
+                ? await findPID.windows(port)
+                : await findPID.unix(port);
 
-                PIDs.forEach((subPID) => {
-                  if (subPID)
-                    isWindows ? killPID.windows(subPID) : killPID.unix(subPID);
-                });
-              },
-              typeof nodeVersion === 'number' && nodeVersion < 16 ? 250 : 100
-            );
+              PIDs.forEach((subPID) => {
+                if (subPID)
+                  isWindows ? killPID.windows(subPID) : killPID.unix(subPID);
+              });
+            }, 250);
           }
         } catch {}
       };
