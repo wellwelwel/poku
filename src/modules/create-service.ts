@@ -76,7 +76,7 @@ const backgroundProcess = (
                     isWindows ? killPID.windows(subPID) : killPID.unix(subPID);
                 });
               },
-              typeof nodeVersion === 'number' && nodeVersion < 16 ? 250 : 0
+              typeof nodeVersion === 'number' && nodeVersion < 16 ? 250 : 100
             );
           }
         } catch {}
