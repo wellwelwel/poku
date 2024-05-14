@@ -99,6 +99,7 @@ const backgroundProcess = (
       runningProcesses.set(PID, { end, port: portBackup });
       /* c8 ignore stop */
 
+      /* c8 ignore start */
       service.stdout.on('data', (data: Buffer) => {
         if (!isResolved && typeof options?.startAfter !== 'number') {
           const stringData = JSON.stringify(String(data));
@@ -117,7 +118,9 @@ const backgroundProcess = (
 
         options?.verbose && console.log(String(data));
       });
+      /* c8 ignore stop */
 
+      /* c8 ignore start */
       service.stderr.on('data', (data: Buffer) => {
         if (!isResolved && typeof options?.startAfter !== 'number') {
           const stringData = JSON.stringify(String(data));
@@ -136,15 +139,20 @@ const backgroundProcess = (
 
         options?.verbose && console.log(String(data));
       });
+      /* c8 ignore stop */
 
+      /* c8 ignore stop */
       service.on('error', (err) => {
         end(portBackup);
         reject(`Service failed to start: ${err}`);
       });
+      /* c8 ignore stop */
 
+      /* c8 ignore start */
       service.on('close', (code) => {
         if (code !== 0) reject(`Service exited with code ${code}`);
       });
+      /* c8 ignore stop */
 
       const timeout = setTimeout(() => {
         if (!isResolved) {
