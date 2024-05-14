@@ -9,49 +9,51 @@ import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
 import { ext, isProduction } from '../../helpers/capture-cli.test.js';
 import { getRuntime } from '../../../src/helpers/get-runtime.js';
 
-const runtime = getRuntime();
+(async () => {
+  const runtime = getRuntime();
 
-test(async () => {
-  describe('Start Service', { background: false, icon: '🔀' });
+  await test(async () => {
+    describe('Start Service', { background: false, icon: '🔀' });
 
-  const server = await startService(`server-a.${ext}`, {
-    startAfter: 'ready',
-    cwd:
-      ext === 'ts' || isProduction ? 'fixtures/server' : 'ci/fixtures/server',
+    const server = await startService(`server-a.${ext}`, {
+      startAfter: 'ready',
+      cwd:
+        ext === 'ts' || isProduction ? 'fixtures/server' : 'ci/fixtures/server',
+    });
+
+    const res = await legacyFetch('localhost', 4000);
+
+    assert.strictEqual(res?.statusCode, 200, 'Service is on');
+    assert.deepStrictEqual(
+      JSON.parse(res?.body),
+      { name: 'Poku' },
+      'Poku service is online'
+    );
+
+    await server.end(runtime === 'bun' ? undefined : 4000);
   });
 
-  const res = await legacyFetch('localhost', 4000);
+  await test(async () => {
+    if (runtime === 'bun') return;
 
-  assert.strictEqual(res?.statusCode, 200, 'Service is on');
-  assert.deepStrictEqual(
-    JSON.parse(res?.body),
-    { name: 'Poku' },
-    'Poku service is online'
-  );
+    describe('Start Script', { background: false, icon: '🔀' });
 
-  server.end();
-});
+    const server = await startScript(`start:${ext}`, {
+      startAfter: 'ready',
+      cwd:
+        ext === 'ts' || isProduction ? 'fixtures/server' : 'ci/fixtures/server',
+      runner: runtime === 'node' ? 'npm' : runtime,
+    });
 
-test(async () => {
-  if (getRuntime() !== 'node') return;
+    const res = await legacyFetch('localhost', 4001);
 
-  describe('Start Script', { background: false, icon: '🔀' });
+    assert.strictEqual(res?.statusCode, 200, 'Script is on');
+    assert.deepStrictEqual(
+      JSON.parse(res?.body),
+      { name: 'Poku' },
+      'Poku script is online'
+    );
 
-  const server = await startScript(`start:${ext}`, {
-    startAfter: 'ready',
-    cwd:
-      ext === 'ts' || isProduction ? 'fixtures/server' : 'ci/fixtures/server',
-    runner: runtime === 'node' ? 'npm' : runtime,
+    await server.end(4001);
   });
-
-  const res = await legacyFetch('localhost', 4001);
-
-  assert.strictEqual(res?.statusCode, 200, 'Script is on');
-  assert.deepStrictEqual(
-    JSON.parse(res?.body),
-    { name: 'Poku' },
-    'Poku script is online'
-  );
-
-  server.end();
-});
+})();

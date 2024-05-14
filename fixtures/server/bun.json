@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "start:ts": "bun server-b.ts",
+    "start:js": "bun server-b.js"
+  }
+}

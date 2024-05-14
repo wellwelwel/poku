@@ -1,7 +1,15 @@
 {
   "all": true,
   "include": ["src/**"],
-  "exclude": ["src/@types/**"],
+  "exclude": [
+    "src/@types/**",
+    "fixtures",
+    "test",
+    "tools",
+    "website",
+    "ci",
+    "lib"
+  ],
   "extension": ["ts"],
   "reporter": ["text", "lcov"],
   "clean": true

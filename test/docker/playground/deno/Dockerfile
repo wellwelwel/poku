@@ -1,11 +1,13 @@
-FROM denoland/deno:alpine-1.30.0
+FROM denoland/deno:alpine
 
 WORKDIR /usr/app
 
 COPY ./src ./src
 COPY ./test ./test
 COPY ./tools ./tools
+COPY ./fixtures ./fixtures
 
 RUN deno run --allow-read --allow-write --allow-env --allow-run tools/compatibility/deno.ts
+# deno run --allow-read --allow-net --allow-env --allow-run test/
 
 CMD ["tail", "-f", "/dev/null"]
