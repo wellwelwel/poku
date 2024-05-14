@@ -37,6 +37,7 @@ export const executeCLI = (args: string[]): Promise<string> =>
       if (code === 0) {
         resolve(JSON.stringify(output));
       } else {
+        console.log(output);
         reject(`Process exited with code ${code}`);
       }
     });
