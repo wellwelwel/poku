@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process';
 import { isWindows, runner, scriptRunner } from '../helpers/runner.js';
 import path from 'node:path';
 import {
+  End,
   StartScriptOptions,
   StartServiceOptions,
 } from '../@types/background-process.js';
@@ -24,7 +25,7 @@ const backgroundProcess = (
   args: string[],
   file: string,
   options?: StartServiceOptions & { runner?: string }
-): Promise<{ end: (port?: number) => void }> =>
+): Promise<{ end: End }> =>
   new Promise((resolve, reject) => {
     try {
       let isResolved = false;
@@ -47,36 +48,41 @@ const backgroundProcess = (
       const PID = service.pid!;
 
       /* c8 ignore start */
-      const end = (port?: number) => {
-        try {
-          runningProcesses.delete(PID);
+      const end: End = (port?: number) =>
+        new Promise((resolve) => {
+          try {
+            runningProcesses.delete(PID);
 
-          if (isWindows) {
-            killPID.windows(PID);
-            return;
+            if (isWindows) {
+              killPID.windows(PID);
+              return;
+            }
+
+            if (
+              ['bun', 'deno'].includes(runtime) ||
+              ['bun', 'deno'].includes(String(options?.runner))
+            ) {
+              process.kill(PID);
+            } else process.kill(-PID, 'SIGKILL');
+
+            if (port && runtime !== 'bun') {
+              setTimeout(async () => {
+                const PIDs = isWindows
+                  ? await findPID.windows(port)
+                  : await findPID.unix(port);
+
+                PIDs.forEach((subPID) => {
+                  if (subPID)
+                    isWindows ? killPID.windows(subPID) : killPID.unix(subPID);
+                });
+
+                resolve(undefined);
+              }, 250);
+            } else resolve(undefined);
+          } catch {
+            resolve(undefined);
           }
-
-          if (
-            ['bun', 'deno'].includes(runtime) ||
-            ['bun', 'deno'].includes(String(options?.runner))
-          ) {
-            process.kill(PID);
-          } else process.kill(-PID, 'SIGKILL');
-
-          if (port && runtime !== 'bun') {
-            setTimeout(async () => {
-              const PIDs = isWindows
-                ? await findPID.windows(port)
-                : await findPID.unix(port);
-
-              PIDs.forEach((subPID) => {
-                if (subPID)
-                  isWindows ? killPID.windows(subPID) : killPID.unix(subPID);
-              });
-            }, 250);
-          }
-        } catch {}
-      };
+        });
 
       runningProcesses.set(PID, end);
       /* c8 ignore stop */
@@ -157,7 +163,7 @@ const backgroundProcess = (
 export const startService = async (
   file: string,
   options?: StartServiceOptions
-): Promise<{ end: (port?: number) => void }> => {
+): Promise<{ end: End }> => {
   const runtimeOptions = runner(file, { platform: options?.platform });
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, file];
@@ -185,7 +191,7 @@ export const startService = async (
 export const startScript = async (
   script: string,
   options?: StartScriptOptions
-): Promise<{ end: (port?: number) => void }> => {
+): Promise<{ end: End }> => {
   const runner = options?.runner || 'npm';
   const runtimeOptions = scriptRunner(runner);
   const runtime = runtimeOptions.shift()!;

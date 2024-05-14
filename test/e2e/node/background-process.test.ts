@@ -29,7 +29,7 @@ test(async () => {
     'Poku service is online'
   );
 
-  server.end(4000);
+  await server.end(4000);
 });
 
 test(async () => {
@@ -53,5 +53,5 @@ test(async () => {
     'Poku script is online'
   );
 
-  server.end(4001);
+  await server.end(4001);
 });
