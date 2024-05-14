@@ -83,7 +83,7 @@ const backgroundProcess = (
 
                 resolve(undefined);
                 return;
-              }, 10000);
+              }, 500);
             } else {
               resolve(undefined);
               return;
