@@ -8,6 +8,7 @@ import {
 } from '../@types/background-process.js';
 import { sanitizePath } from './list-files.js';
 import { findPID, killPID } from '../services/pid.js';
+import { nodeVersion } from '../helpers/get-runtime.js';
 
 /* c8 ignore start */
 const runningProcesses: Map<number, (port?: number) => void> = new Map();
@@ -64,16 +65,19 @@ const backgroundProcess = (
           } else process.kill(-PID, 'SIGKILL');
 
           if (port && runtime !== 'bun') {
-            setTimeout(async () => {
-              const PIDs = isWindows
-                ? await findPID.windows(port)
-                : await findPID.unix(port);
+            setTimeout(
+              async () => {
+                const PIDs = isWindows
+                  ? await findPID.windows(port)
+                  : await findPID.unix(port);
 
-              PIDs.forEach((subPID) => {
-                if (subPID)
-                  isWindows ? killPID.windows(subPID) : killPID.unix(subPID);
-              });
-            });
+                PIDs.forEach((subPID) => {
+                  if (subPID)
+                    isWindows ? killPID.windows(subPID) : killPID.unix(subPID);
+                });
+              },
+              typeof nodeVersion === 'number' && nodeVersion < 16 ? 250 : 0
+            );
           }
         } catch {}
       };
