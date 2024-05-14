@@ -13,11 +13,11 @@ import { findPID, killPID } from '../services/pid.js';
 /* c8 ignore start */
 const runningProcesses: Map<number, (port?: number) => void> = new Map();
 
-// const secureEnds = () => runningProcesses.forEach((end) => end());
+const secureEnds = () => runningProcesses.forEach((end) => end());
 
-// process.once('SIGINT', () => {
-//   secureEnds();
-// });
+process.once('SIGINT', () => {
+  secureEnds();
+});
 /* c8 ignore stop */
 
 const backgroundProcess = (
