@@ -67,7 +67,7 @@ const backgroundProcess = (
               process.kill(PID);
             } else process.kill(-PID, 'SIGKILL');
 
-            if (port) {
+            if (port && ['bun', 'deno'].includes(runtime)) {
               setTimeout(async () => {
                 const PIDs = isWindows
                   ? await findPID.windows(port)
@@ -83,7 +83,7 @@ const backgroundProcess = (
 
                 resolve(undefined);
                 return;
-              }, 500);
+              });
             } else {
               resolve(undefined);
               return;
