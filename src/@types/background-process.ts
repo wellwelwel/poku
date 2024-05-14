@@ -17,7 +17,7 @@ type BackgroundProcessOptions = {
    */
   startAfter?: string | number;
   /**
-   * Stops the service after:
+   * Stops the service for neither success nor failure after:
    * @default 60000
    */
   timeout?: number;

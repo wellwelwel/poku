@@ -61,16 +61,6 @@ Run your `package.json` scripts in a background process and test them 🧑🏻�
 
 <hr />
 
-:::danger
-
-`startScript` currently doesn't works for **Bun** and **Deno**.
-
-- See: [**#143**](https://github.com/wellwelwel/poku/issues/143)
-
-:::
-
-<hr />
-
 ## Good Practices 👮🏽
 
 ### ✅ Sinalize the "ready" status
@@ -93,16 +83,28 @@ const server = await startScript('start', {
   /**
    * Wait for the "ready" console output
    */
-  startAfter: 'Ready',
+  startAfter: 'ready',
 
   /**
-   * By default, the `timeout` is `60000` (1 minute) for neither in success nor failure
+   * By default, the `timeout` is `60000` (1 minute) for neither success nor failure
    */
   timeout: 60000,
 });
 
-server.end();
+await server.end();
 ```
+
+:::tip
+
+You can also pass a port to `end` to enforce the background subprocess end, especially for **Bun** and **Deno**.
+
+ℹ️ To use a port in `end`, you will need `lsof` for **Unix** or `netstat` for **Windows**.
+
+:::
+
+:::info
+If you're encountering issues using this feature with **Bun**, please see [**oven-sh/bun#11055**](https://github.com/oven-sh/bun/issues/11055) when using `end` method passing a port or [**oven-sh/bun#7441**](https://github.com/oven-sh/bun/issues/7441) for unfinished subprocesses.
+:::
 
 <FAQ title='Oh No! I broke it, and now? 🤡'>
 
@@ -145,7 +147,7 @@ type StartScriptOptions = {
    */
   startAfter?: string | number;
   /**
-   * Stops the service after:
+   * Stops the service for neither success nor failure after:
    * @default 60000
    */
   timeout?: number;
@@ -164,4 +166,6 @@ type StartScriptOptions = {
    */
   runner?: 'npm' | 'bun' | 'deno' | 'yarn' | 'pnpm';
 };
+
+type End = (port?: number) => Promise<void>;
 ```
