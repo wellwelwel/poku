@@ -47,6 +47,8 @@ const backgroundProcess = (
 
       const PID = service.pid!;
 
+      let portBackup: number | undefined;
+
       /* c8 ignore start */
       const end: End = (port?: number) =>
         new Promise((resolve) => {
@@ -135,7 +137,7 @@ const backgroundProcess = (
       });
 
       service.on('error', (err) => {
-        // secureEnds();
+        end(portBackup);
         reject(`Service failed to start: ${err}`);
       });
 
@@ -145,7 +147,7 @@ const backgroundProcess = (
 
       const timeout = setTimeout(() => {
         if (!isResolved) {
-          // secureEnds();
+          end(portBackup);
           reject(`createService: Timeout\nFile: ${file}`);
         }
       }, options?.timeout || 60000);
