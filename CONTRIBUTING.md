@@ -28,26 +28,32 @@ Then running `npm ci` to install the dependecies from _package-lock.json_.
 
 The tests can be easily run:
 
-### All
+### General
 
 ```sh
-npm run test:ci
+npm run test
 ```
-
-### Per Platform
-
-```sh
-FILTER='node-' npm run test:ci
-FILTER='bun-'  npm run test:ci
-FILTER='deno-' npm run test:ci
-```
-
----
 
 ### Coverage
 
+Methods that vary according to **Node.js** version, platform or OS aren't tested against the coverage rate.
+
 ```sh
 npm run test:c8
+```
+
+### Per Platform (Docker)
+
+```sh
+npm run test:ci:node
+npm run test:ci:bun
+npm run test:ci:deno
+```
+
+### All (Docker)
+
+```sh
+npm run test:ci
 ```
 
 ---
