@@ -2,16 +2,30 @@ import { spawn } from 'node:child_process';
 import { EOL } from 'node:os';
 
 export const killPID = {
-  unix: (PID: number) => {
-    try {
-      spawn('kill', ['-9', String(PID)]);
-    } catch {}
-  },
-  windows: (PID: number) => {
-    try {
-      spawn('taskkill', ['/F', '/T', '/PID', String(PID)]);
-    } catch {}
-  },
+  unix: (PID: number): Promise<void> =>
+    new Promise((resolve) => {
+      try {
+        const service = spawn('kill', ['-9', String(PID)]);
+
+        service.on('close', () => {
+          resolve(undefined);
+        });
+      } catch {
+        resolve(undefined);
+      }
+    }),
+  windows: (PID: number): Promise<void> =>
+    new Promise((resolve) => {
+      try {
+        const service = spawn('taskkill', ['/F', '/T', '/PID', String(PID)]);
+
+        service.on('close', () => {
+          resolve(undefined);
+        });
+      } catch {
+        resolve(undefined);
+      }
+    }),
 };
 
 export const findPID = {

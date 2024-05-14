@@ -71,16 +71,25 @@ const backgroundProcess = (
                   ? await findPID.windows(port)
                   : await findPID.unix(port);
 
-                PIDs.forEach((subPID) => {
+                PIDs.forEach(async (subPID) => {
                   if (subPID)
-                    isWindows ? killPID.windows(subPID) : killPID.unix(subPID);
+                    isWindows
+                      ? await killPID.windows(subPID)
+                      : await killPID.unix(subPID);
                 });
 
                 resolve(undefined);
+                return;
               }, 250);
-            } else resolve(undefined);
+            } else {
+              resolve(undefined);
+              return;
+            }
           } catch {
-            resolve(undefined);
+            {
+              resolve(undefined);
+              return;
+            }
           }
         });
 
