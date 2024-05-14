@@ -29,11 +29,11 @@ test(async () => {
     'Poku service is online'
   );
 
-  server.end();
+  server.end(4000);
 });
 
 test(async () => {
-  if (getRuntime() !== 'node') return;
+  if (runtime === 'bun') return;
 
   describe('Start Script', { background: false, icon: '🔀' });
 
@@ -53,5 +53,5 @@ test(async () => {
     'Poku script is online'
   );
 
-  server.end();
+  server.end(4001);
 });

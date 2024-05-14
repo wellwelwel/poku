@@ -1,0 +1,66 @@
+import { spawn } from 'node:child_process';
+import { EOL } from 'node:os';
+
+export const killPID = {
+  unix: (PID: number) => {
+    try {
+      spawn('kill', ['-9', String(PID)]);
+    } catch {}
+  },
+  windows: (PID: number) => {
+    try {
+      spawn('taskkill', ['/F', '/T', '/PID', String(PID)]);
+    } catch {}
+  },
+};
+
+export const findPID = {
+  unix: (port: number): Promise<number[]> =>
+    new Promise((resolve) => {
+      try {
+        const PIDs: Set<number> = new Set();
+        const service = spawn('lsof', ['-t', '-i', `:${Number(port)}`]);
+
+        service.stdout.on('data', (data: Buffer) => {
+          const output = data.toString().trim().split(EOL);
+
+          output.forEach((pid) => {
+            if (pid) PIDs.add(Number(pid));
+          });
+
+          service.on('close', () => {
+            resolve(Array.from(PIDs));
+          });
+        });
+      } catch {}
+    }),
+  windows: (port: number): Promise<number[]> =>
+    new Promise((resolve) => {
+      try {
+        const PIDs: Set<number> = new Set();
+        const service = spawn('cmd.exe', [
+          '/c',
+          `netstat -aon | findstr :${Number(port)}`,
+        ]);
+
+        service.stdout.on('data', (data: Buffer) => {
+          const output = data.toString().trim();
+          const lines = output.trim().split(EOL);
+
+          lines.map((line) => {
+            const tokens = line.trim().split(/\s+/);
+
+            PIDs.add(Number(tokens[4]));
+          });
+        });
+
+        service.on('close', () => {
+          resolve(Array.from(PIDs));
+        });
+
+        service.stderr.on('data', (data) => {
+          console.error(`Erro: ${data}`);
+        });
+      } catch {}
+    }),
+};

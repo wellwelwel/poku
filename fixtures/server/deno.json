@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "start:ts": "deno run --allow-net server-b.ts"
+  }
+}

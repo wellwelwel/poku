@@ -27,7 +27,6 @@ services:
 
   deno-latest:
     container_name: 'deno-latest'
-    platform: linux/amd64
     build:
       context: ../../
       dockerfile: ./test/docker/deno/latest.Dockerfile
