@@ -29,7 +29,7 @@ test(async () => {
     'Poku service is online'
   );
 
-  await server.end(4000);
+  await server.end(runtime === 'bun' ? undefined : 4000);
 });
 
 test(async () => {
