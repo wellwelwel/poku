@@ -15,6 +15,7 @@ const platform = getArg('platform');
 const filter = getArg('filter');
 const exclude = getArg('exclude');
 const killPort = getArg('kill-port');
+const killPID = getArg('kill-pid');
 const parallel = hasArg('parallel');
 const quiet = hasArg('quiet');
 const debug = hasArg('debug');
@@ -31,6 +32,14 @@ if (hasArg('log-success'))
 
     for (const port of ports) {
       await kill.port(Number(port));
+    }
+  }
+
+  if (killPID) {
+    const PIDs = killPID.split(',');
+
+    for (const PID of PIDs) {
+      await kill.pid(Number(PID));
     }
   }
 
