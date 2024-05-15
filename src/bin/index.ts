@@ -28,19 +28,15 @@ if (hasArg('log-success'))
 
 (async () => {
   if (killPort) {
-    const ports = killPort.split(',');
+    const ports = killPort.split(',').map((port) => Number(port));
 
-    for (const port of ports) {
-      await kill.port(Number(port));
-    }
+    await kill.port(ports);
   }
 
   if (killPID) {
-    const PIDs = killPID.split(',');
+    const PIDs = killPID.split(',').map((port) => Number(port));
 
-    for (const PID of PIDs) {
-      await kill.pid(Number(PID));
-    }
+    await kill.pid(Number(PIDs));
   }
 
   await poku(dirs, {
