@@ -34,8 +34,6 @@ import { getRuntime } from '../../../src/helpers/get-runtime.js';
   });
 
   await test(async () => {
-    if (runtime === 'bun') return;
-
     describe('Start Script', { background: false, icon: '🔀' });
 
     const server = await startScript(`start:${ext}`, {

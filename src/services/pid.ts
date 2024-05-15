@@ -35,7 +35,13 @@ export const findPID = {
     new Promise((resolve) => {
       try {
         const PIDs: Set<number> = new Set();
-        const service = spawn('lsof', ['-t', '-i', `:${Number(port)}`]);
+        const service = spawn('lsof', [
+          '-t',
+          '-i',
+          `:${Number(port)}`,
+          '-s',
+          'TCP:LISTEN',
+        ]);
 
         service.stdout.on('data', (data: Buffer) => {
           const output = data.toString().trim().split(EOL);
@@ -65,8 +71,13 @@ export const findPID = {
 
           lines.map((line) => {
             const tokens = line.trim().split(/\s+/);
+            const stateIndex = tokens.indexOf('LISTENING');
 
-            PIDs.add(Number(tokens[4]));
+            if (stateIndex !== -1 && tokens[stateIndex + 1]) {
+              const pid = Number(tokens[stateIndex + 1]);
+
+              if (!isNaN(pid)) PIDs.add(pid);
+            }
           });
         });
 
@@ -80,4 +91,5 @@ export const findPID = {
       } catch {}
     }),
 };
+
 /* c8 ignore stop */
