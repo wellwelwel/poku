@@ -36,7 +36,7 @@ if (hasArg('log-success'))
   if (killPID) {
     const PIDs = killPID.split(',').map((port) => Number(port));
 
-    await kill.pid(Number(PIDs));
+    await kill.pid(PIDs);
   }
 
   await poku(dirs, {
