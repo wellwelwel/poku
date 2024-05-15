@@ -60,6 +60,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No eval needed 🔐<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No global state<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Parallel** and **Sequential** runs 🏃🏽🏃🏻<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **background services**, **processes** and **ports**<br />
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Poku** is [**100%** documented](https://poku.io/docs)<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Designed to be human-friendly<br />
@@ -187,10 +188,15 @@ deno run npm:poku
 
 ### Essentials
 
-- [**poku**](https://poku.io/docs/category/poku) (_test runner_)
-- [**assert**](https://poku.io/docs/documentation/assert) (_test assertion_)
-- [**startScript**](https://poku.io/docs/documentation/startScript) (_run `package.json` scripts in a background process_)
-- [**startService**](https://poku.io/docs/documentation/startService) (_run files in a background process_)
+- **Test**
+  - [**poku**](https://poku.io/docs/category/poku) (_test runner_)
+  - [**assert**](https://poku.io/docs/documentation/assert) (_test assertion_)
+- **Background Services**
+  - [**startScript**](https://poku.io/docs/documentation/startScript) (_run `package.json` scripts in a background process_)
+  - [**startService**](https://poku.io/docs/documentation/startService) (_run files in a background process_)
+- **Processes**
+  - [**kill**]() (_terminate Ports and PIDs_)
+  - [**getPIDs**]() (_get all processes IDs using a port_)
 
 ### Helpers
 
