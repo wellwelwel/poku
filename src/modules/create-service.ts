@@ -10,7 +10,8 @@ import {
 import { sanitizePath } from './list-files.js';
 import { kill } from './processes.js';
 
-const runningProcesses: Map<number, { end: End; port?: number }> = new Map();
+const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
+  new Map();
 
 /* c8 ignore start */
 process.once('SIGINT', async () => {
@@ -50,7 +51,7 @@ const backgroundProcess = (
       let portBackup: number | undefined;
 
       /* c8 ignore start */
-      const end: End = (port?: number) =>
+      const end: End = (port) =>
         new Promise((resolve) => {
           try {
             runningProcesses.delete(PID);

@@ -4,37 +4,43 @@ import { isWindows } from '../helpers/runner.js';
 import {
   getPIDs as getPIDsService,
   killPID as killPIDService,
+  setPortsAndPIDs,
 } from '../services/pid.js';
 
 /**
  * Returns an array containing the ID of all processes listening to the specified port
  */
-export const getPIDs = async (port: number): Promise<number[]> => {
-  const sanitizedPort = Number(port);
+export const getPIDs = async (port: number | number[]): Promise<number[]> => {
+  const ports = setPortsAndPIDs(port);
+  const PIDs: number[] = [];
 
-  if (isNaN(sanitizedPort)) return [];
+  await Promise.all(
+    ports.map(async (p) => {
+      PIDs.push(
+        ...(await (isWindows
+          ? getPIDsService.windows(p)
+          : getPIDsService.unix(p)))
+      );
+    })
+  );
 
-  return await (isWindows
-    ? getPIDsService.windows(sanitizedPort)
-    : getPIDsService.unix(sanitizedPort));
+  return PIDs;
 };
 
-const killPID = async (PID: number): Promise<void> => {
-  const sanitizedPID = Number(PID);
+const killPID = async (PID: number | number[]): Promise<void> => {
+  const PIDs = setPortsAndPIDs(PID);
 
-  if (isNaN(sanitizedPID)) return;
-
-  isWindows
-    ? await killPIDService.windows(sanitizedPID)
-    : await killPIDService.unix(sanitizedPID);
+  await Promise.all(
+    PIDs.map(async (p) => {
+      isWindows
+        ? await killPIDService.windows(p)
+        : await killPIDService.unix(p);
+    })
+  );
 };
 
-const killPort = async (port: number): Promise<void> => {
-  const sanitizedPort = Number(port);
-
-  if (isNaN(sanitizedPort)) return;
-
-  const PIDs = await getPIDs(sanitizedPort);
+const killPort = async (port: number | number[]): Promise<void> => {
+  const PIDs = await getPIDs(port);
 
   for (const PID of PIDs) {
     if (!PID) continue;

@@ -2,11 +2,17 @@
 
 import { spawn } from 'node:child_process';
 import { EOL } from 'node:os';
+import { forceArray } from '../helpers/force-array.js';
+
+export const setPortsAndPIDs = (portOrPID: number | number[]) =>
+  forceArray(portOrPID)
+    .map((p) => Number(p))
+    .filter((p) => !isNaN(p));
 
 export const killPID = {
   unix: (PID: number): Promise<void> =>
     new Promise((resolve) => {
-      const service = spawn('kill', ['-9', String(PID)]);
+      const service = spawn('kill', ['-9', String(Number(PID))]);
 
       service.on('close', () => {
         resolve(undefined);
@@ -14,7 +20,12 @@ export const killPID = {
     }),
   windows: (PID: number): Promise<void> =>
     new Promise((resolve) => {
-      const service = spawn('taskkill', ['/F', '/T', '/PID', String(PID)]);
+      const service = spawn('taskkill', [
+        '/F',
+        '/T',
+        '/PID',
+        String(Number(PID)),
+      ]);
 
       service.on('close', () => {
         resolve(undefined);
