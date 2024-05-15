@@ -8,7 +8,7 @@ import {
   StartServiceOptions,
 } from '../@types/background-process.js';
 import { sanitizePath } from './list-files.js';
-import { findPID, killPID } from '../services/pid.js';
+import { kill } from './kill.js';
 
 const runningProcesses: Map<number, { end: End; port?: number }> = new Map();
 
@@ -56,7 +56,7 @@ const backgroundProcess = (
             runningProcesses.delete(PID);
 
             if (isWindows) {
-              killPID.windows(PID);
+              kill.pid(PID);
               return;
             }
 
@@ -69,18 +69,7 @@ const backgroundProcess = (
 
             if (port && ['bun', 'deno'].includes(runtime)) {
               setTimeout(async () => {
-                const PIDs = isWindows
-                  ? await findPID.windows(port)
-                  : await findPID.unix(port);
-
-                for (const subPID of PIDs) {
-                  if (!subPID) continue;
-
-                  isWindows
-                    ? await killPID.windows(subPID)
-                    : await killPID.unix(subPID);
-                }
-
+                await kill.port(port);
                 resolve(undefined);
                 return;
               });
