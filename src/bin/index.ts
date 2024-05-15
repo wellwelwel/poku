@@ -3,7 +3,7 @@
 /* c8 ignore start */
 import { escapeRegExp } from '../modules/list-files.js';
 import { getArg, getLastParam, hasArg } from '../helpers/get-arg.js';
-import { poku } from '../index.js';
+import { kill, poku } from '../index.js';
 import { platformIsValid } from '../helpers/get-runtime.js';
 import { format } from '../helpers/format.js';
 
@@ -14,6 +14,7 @@ const dirs =
 const platform = getArg('platform');
 const filter = getArg('filter');
 const exclude = getArg('exclude');
+const killPort = getArg('kill-port');
 const parallel = hasArg('parallel');
 const quiet = hasArg('quiet');
 const debug = hasArg('debug');
@@ -24,13 +25,24 @@ if (hasArg('log-success'))
     `The flag ${format.bold('--log-success')} is deprecated. Use ${format.bold('--debug')} instead.`
   );
 
-poku(dirs, {
-  platform: platformIsValid(platform) ? platform : undefined,
-  filter: filter ? new RegExp(escapeRegExp(filter)) : undefined,
-  exclude: exclude ? new RegExp(escapeRegExp(exclude)) : undefined,
-  parallel,
-  quiet,
-  debug,
-  failFast,
-});
+(async () => {
+  if (killPort) {
+    const ports = killPort.split(',');
+
+    for (const port of ports) {
+      await kill.port(Number(port));
+    }
+  }
+
+  await poku(dirs, {
+    platform: platformIsValid(platform) ? platform : undefined,
+    filter: filter ? new RegExp(escapeRegExp(filter)) : undefined,
+    exclude: exclude ? new RegExp(escapeRegExp(exclude)) : undefined,
+    parallel,
+    quiet,
+    debug,
+    failFast,
+  });
+})();
+
 /* c8 ignore stop */
