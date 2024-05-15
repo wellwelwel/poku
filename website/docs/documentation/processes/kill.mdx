@@ -1,0 +1,77 @@
+---
+sidebar_position: 1
+---
+
+# kill
+
+Terminates the specified ports and process IDs.
+
+## port
+
+> `kill.port(port: number | number[])`
+>
+> _Since **1.11.0**_
+
+Terminates the specified ports.
+
+### API (_in-code_)
+
+```ts
+await kill.port(4000);
+```
+
+Also, terminating multiple ports:
+
+```ts
+await kill.port([4000, 4001]);
+```
+
+### CLI
+
+Terminates the specified ports before running the test suite.
+
+```bash
+npx poku --kill-port="4000" targetPath
+```
+
+Also, terminating multiple ports:
+
+```bash
+npx poku --kill-port="4000,4001" targetPath
+```
+
+---
+
+## pid
+
+> `kill.pid(PID: number | number[])`
+>
+> _Since **1.11.0**_
+
+Terminates the specified processes.
+
+### API (_in-code_)
+
+```ts
+await kill.pid(100);
+```
+
+Also, terminating multiple processes:
+
+```ts
+await kill.pid([100, 200]);
+```
+
+### CLI
+
+Terminates the specified processes before running the test suite
+
+```bash
+npx poku --kill-pid="100" targetPath
+```
+
+Also, terminating multiple processes:
+
+```bash
+npx poku --kill-pid="100,200" targetPath
+```
