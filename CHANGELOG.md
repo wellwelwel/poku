@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.2](https://github.com/wellwelwel/poku/compare/v1.10.1...v1.10.2) (2024-05-15)
+
+
+### Bug Fixes
+
+* **Bun:** close only listening PIDs ([#245](https://github.com/wellwelwel/poku/issues/245)) ([e9e36a2](https://github.com/wellwelwel/poku/commit/e9e36a2932e8a824249202b7e1b7aaaa7bf40ebf))
+
 ## [1.10.1](https://github.com/wellwelwel/poku/compare/v1.10.0...v1.10.1) (2024-05-14)
 
 
