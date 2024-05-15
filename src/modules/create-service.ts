@@ -203,10 +203,6 @@ export const startService = async (
  * By default, it uses **npm**, but you can costumize it using the `runner` option.
  *
  * Useful for servers, APIs, etc.
- *
- * ---
- *
- * For **Bun**, please see https://github.com/oven-sh/bun/issues/11055
  */
 export const startScript = async (
   script: string,
