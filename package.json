@@ -83,8 +83,10 @@
     "files",
     "list-files",
     "tsx",
-    "fast",
-    "easy",
+    "kill",
+    "process",
+    "port",
+    "cross-platform",
     "poku",
     "pokujs"
   ],

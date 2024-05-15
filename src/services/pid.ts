@@ -30,7 +30,7 @@ export const killPID = {
     }),
 };
 
-export const findPID = {
+export const getPIDs = {
   unix: (port: number): Promise<number[]> =>
     new Promise((resolve) => {
       try {
@@ -49,12 +49,14 @@ export const findPID = {
           output.forEach((pid) => {
             if (pid) PIDs.add(Number(pid));
           });
-
-          service.on('close', () => {
-            resolve(Array.from(PIDs));
-          });
         });
-      } catch {}
+
+        service.on('close', () => {
+          resolve(Array.from(PIDs));
+        });
+      } catch {
+        resolve([]);
+      }
     }),
   windows: (port: number): Promise<number[]> =>
     new Promise((resolve) => {
@@ -69,6 +71,10 @@ export const findPID = {
           const output = data.toString().trim();
           const lines = output.trim().split(EOL);
 
+          /**
+           * TODO: Chack line for "/:\d+\s+\w+\s+\d+\s+(\d+)/" regex match to safe support multiple Windows versions
+           * (Tested against ReDos Checker)
+           */
           lines.map((line) => {
             const tokens = line.trim().split(/\s+/);
             const stateIndex = tokens.indexOf('LISTENING');
@@ -84,11 +90,9 @@ export const findPID = {
         service.on('close', () => {
           resolve(Array.from(PIDs));
         });
-
-        service.stderr.on('data', (data) => {
-          console.error(`Erro: ${data}`);
-        });
-      } catch {}
+      } catch {
+        resolve([]);
+      }
     }),
 };
 

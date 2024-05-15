@@ -8,7 +8,7 @@ import {
   StartServiceOptions,
 } from '../@types/background-process.js';
 import { sanitizePath } from './list-files.js';
-import { kill } from './kill.js';
+import { kill } from './processes.js';
 
 const runningProcesses: Map<number, { end: End; port?: number }> = new Map();
 
