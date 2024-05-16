@@ -9,6 +9,13 @@ export const setPortsAndPIDs = (portOrPID: number | number[]) =>
     .map((p) => Number(p))
     .filter((p) => !isNaN(p));
 
+export const populateRange = (startsAt: number, endsAt: number) => {
+  const first = Number(startsAt);
+  const last = Number(endsAt);
+
+  return Array.from({ length: last - first + 1 }, (_, i) => first + i);
+};
+
 export const killPID = {
   unix: (PID: number): Promise<void> =>
     new Promise((resolve) => {

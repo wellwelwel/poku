@@ -155,4 +155,6 @@ type StartServiceOptions = {
    */
   platform?: 'node' | 'bun' | 'deno';
 };
+
+type End = (port?: number | number[]) => Promise<void>;
 ```

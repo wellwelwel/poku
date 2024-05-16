@@ -195,8 +195,8 @@ deno run npm:poku
   - [**startScript**](https://poku.io/docs/documentation/startScript) (_run `package.json` scripts in a background process_)
   - [**startService**](https://poku.io/docs/documentation/startService) (_run files in a background process_)
 - **Processes**
-  - [**kill**](https://poku.io/docs/documentation/processes/kill) (_terminate Ports and PIDs_)
-  - [**getPIDs**](https://poku.io/docs/documentation/processes/get-pids) (_get all processes IDs using a port_)
+  - [**kill**](https://poku.io/docs/documentation/processes/kill) (_terminate Ports, Port Ranges and PIDs_)
+  - [**getPIDs**](https://poku.io/docs/documentation/processes/get-pids) (_get all processes IDs using ports and port ranges_)
 
 ### Helpers
 

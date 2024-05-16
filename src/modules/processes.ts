@@ -4,13 +4,11 @@ import { isWindows } from '../helpers/runner.js';
 import {
   getPIDs as getPIDsService,
   killPID as killPIDService,
+  populateRange,
   setPortsAndPIDs,
 } from '../services/pid.js';
 
-/**
- * Returns an array containing the ID of all processes listening to the specified port
- */
-export const getPIDs = async (port: number | number[]): Promise<number[]> => {
+const getPIDsByPorts = async (port: number | number[]): Promise<number[]> => {
   const ports = setPortsAndPIDs(port);
   const PIDs: number[] = [];
 
@@ -26,6 +24,25 @@ export const getPIDs = async (port: number | number[]): Promise<number[]> => {
 
   return PIDs;
 };
+
+const getPIDsByRange = async (
+  startsAt: number,
+  endsAt: number
+): Promise<number[]> => {
+  const ports = populateRange(startsAt, endsAt);
+
+  return await getPIDs(ports);
+};
+
+/**
+ * Returns an array containing the ID of all processes listening to the specified port
+ */
+export const getPIDs = Object.assign(getPIDsByPorts, {
+  /**
+   * Returns an array containing the ID of all processes listening to the specified range port
+   */
+  range: getPIDsByRange,
+});
 
 const killPID = async (PID: number | number[]): Promise<void> => {
   const PIDs = setPortsAndPIDs(PID);
@@ -49,6 +66,16 @@ const killPort = async (port: number | number[]): Promise<void> => {
   }
 };
 
+const killRange = async (startsAt: number, endsAt: number): Promise<void> => {
+  const PIDs = await getPIDs.range(startsAt, endsAt);
+
+  for (const PID of PIDs) {
+    if (!PID) continue;
+
+    await killPID(PID);
+  }
+};
+
 export const kill = {
   /**
    * Terminates the specified process ID
@@ -58,6 +85,10 @@ export const kill = {
    * Terminates all processes listening on the specified port
    */
   port: killPort,
+  /**
+   * Terminates all processes listening on the specified range ports
+   */
+  range: killRange,
 };
 
 /* c8 ignore stop */

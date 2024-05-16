@@ -2,13 +2,17 @@
 sidebar_position: 2
 ---
 
-# getPIDs
+# Seaching PIDs
+
+## getPIDs
 
 Returns all processes IDs used by the specified ports.
 
 > `getPIDs(port: number | number[])`
 >
 > _Since **1.11.0**_
+
+- Requires `lsof` for **Unix** and `netstat` for **Windows**.
 
 ```ts
 await getPIDs(4000);
@@ -17,3 +21,51 @@ await getPIDs(4000);
 ```ts
 await getPIDs([4000, 4001]);
 ```
+
+---
+
+## getPIDs.range
+
+Returns all processes IDs used by the specified port range.
+
+> `getPIDs.range(startsAt: number, endsAt: number)`
+>
+> _Since **1.11.0**_
+
+- Requires `lsof` for **Unix** and `netstat` for **Windows**.
+
+```ts
+await getPIDs.range(4000, 4100);
+```
+
+---
+
+:::tip
+
+If your environment doesn't include `lsof`:
+
+**macOS (Homebrew)**
+
+```sh
+brew install lsof
+```
+
+**Debian, Ubuntu, etc.**
+
+```sh
+sudo apt-get install lsof
+```
+
+**Arch Linux, etc.**
+
+```sh
+sudo pacman -S lsof
+```
+
+**Alpine Linux, etc.**
+
+```sh
+apk add lsof
+```
+
+:::
