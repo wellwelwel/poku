@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/wellwelwel/poku/compare/v1.10.2...v1.11.0) (2024-05-16)
+
+
+### Features
+
+* **kill, getPIDs:** find and kill processes by ports and PIDs ([#247](https://github.com/wellwelwel/poku/issues/247)) ([13305cf](https://github.com/wellwelwel/poku/commit/13305cf82a787b8f2e68abd45d3a3b0f7cfae9ba))
+
 ## [1.10.2](https://github.com/wellwelwel/poku/compare/v1.10.1...v1.10.2) (2024-05-15)
 
 
