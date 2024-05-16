@@ -5,6 +5,11 @@ index.describe('Import Suite', { background: false, icon: '🔬' });
 index.assert.ok(index.poku, 'Importing poku method');
 index.assert.ok(index.assert, 'Importing assert method');
 index.assert.ok(index.assertPromise, 'Importing assertPromise method');
+index.assert.ok(index.startService, 'Importing startService method');
+index.assert.ok(index.startScript, 'Importing startScript method');
+
+index.assert.ok(index.getPIDs, 'Importing getPIDs helper');
+index.assert.ok(index.kill, 'Importing kill helper');
 index.assert.ok(index.describe, 'Importing describe helper');
 index.assert.ok(index.beforeEach, 'Importing beforeEach helper');
 index.assert.ok(index.afterEach, 'Importing afterEach helper');

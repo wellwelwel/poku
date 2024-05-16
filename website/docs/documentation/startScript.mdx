@@ -167,5 +167,5 @@ type StartScriptOptions = {
   runner?: 'npm' | 'bun' | 'deno' | 'yarn' | 'pnpm';
 };
 
-type End = (port?: number) => Promise<void>;
+type End = (port?: number | number[]) => Promise<void>;
 ```

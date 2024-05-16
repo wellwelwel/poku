@@ -1,0 +1,143 @@
+---
+sidebar_position: 1
+---
+
+# Killing Processes
+
+Terminates the specified ports, port ranges and process IDs.
+
+## kill.port
+
+> `kill.port(port: number | number[])`
+>
+> _Since **1.11.0**_
+
+Terminates the specified ports.
+
+- Requires `lsof` for **Unix** and `netstat` for **Windows**.
+
+### API (_in-code_)
+
+```ts
+await kill.port(4000);
+```
+
+Also, terminating multiple ports:
+
+```ts
+await kill.port([4000, 4001]);
+```
+
+### CLI
+
+Terminates the specified ports before running the test suite.
+
+```bash
+npx poku --kill-port="4000" targetPath
+```
+
+Also, terminating multiple ports:
+
+```bash
+npx poku --kill-port="4000,4001" targetPath
+```
+
+---
+
+## kill.range
+
+> `kill.range(startsAt: number, endsAt: number)`
+>
+> _Since **1.11.0**_
+
+Terminates the specified port range.
+
+- Requires `lsof` for **Unix** and `netstat` for **Windows**.
+
+### API (_in-code_)
+
+```ts
+await kill.range(4000, 4100);
+```
+
+### CLI
+
+Terminates the specified port range before running the test suite.
+
+```bash
+npx poku --kill-range="4000-4100" targetPath
+```
+
+Also, terminating multiple port ranges:
+
+```bash
+npx poku --kill-range="4000-4100,5000-5100" targetPath
+```
+
+---
+
+## kill.pid
+
+> `kill.pid(PID: number | number[])`
+>
+> _Since **1.11.0**_
+
+Terminates the specified processes.
+
+### API (_in-code_)
+
+```ts
+await kill.pid(100);
+```
+
+Also, terminating multiple processes:
+
+```ts
+await kill.pid([100, 200]);
+```
+
+### CLI
+
+Terminates the specified processes before running the test suite
+
+```bash
+npx poku --kill-pid="100" targetPath
+```
+
+Also, terminating multiple processes:
+
+```bash
+npx poku --kill-pid="100,200" targetPath
+```
+
+---
+
+:::tip
+
+If your environment doesn't include `lsof`:
+
+**macOS (Homebrew)**
+
+```sh
+brew install lsof
+```
+
+**Debian, Ubuntu, etc.**
+
+```sh
+sudo apt-get install lsof
+```
+
+**Arch Linux, etc.**
+
+```sh
+sudo pacman -S lsof
+```
+
+**Alpine Linux, etc.**
+
+```sh
+apk add lsof
+```
+
+:::

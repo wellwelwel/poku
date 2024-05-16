@@ -47,4 +47,4 @@ export type StartServiceOptions = {
   readonly platform?: Configs['platform'];
 } & BackgroundProcessOptions;
 
-export type End = (port?: number) => Promise<void>;
+export type End = (port?: number | number[]) => Promise<void>;

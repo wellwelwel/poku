@@ -8,9 +8,10 @@ import {
   StartServiceOptions,
 } from '../@types/background-process.js';
 import { sanitizePath } from './list-files.js';
-import { findPID, killPID } from '../services/pid.js';
+import { kill } from './processes.js';
 
-const runningProcesses: Map<number, { end: End; port?: number }> = new Map();
+const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
+  new Map();
 
 /* c8 ignore start */
 process.once('SIGINT', async () => {
@@ -50,13 +51,13 @@ const backgroundProcess = (
       let portBackup: number | undefined;
 
       /* c8 ignore start */
-      const end: End = (port?: number) =>
+      const end: End = (port) =>
         new Promise((resolve) => {
           try {
             runningProcesses.delete(PID);
 
             if (isWindows) {
-              killPID.windows(PID);
+              kill.pid(PID);
               return;
             }
 
@@ -69,18 +70,7 @@ const backgroundProcess = (
 
             if (port && ['bun', 'deno'].includes(runtime)) {
               setTimeout(async () => {
-                const PIDs = isWindows
-                  ? await findPID.windows(port)
-                  : await findPID.unix(port);
-
-                for (const subPID of PIDs) {
-                  if (!subPID) continue;
-
-                  isWindows
-                    ? await killPID.windows(subPID)
-                    : await killPID.unix(subPID);
-                }
-
+                await kill.port(port);
                 resolve(undefined);
                 return;
               });
