@@ -33,8 +33,6 @@ jobs:
 
       - name: ⚙️ Configuring Git
         run: |
-          git config --global user.name 'wellwelwel'
-          git config --global user.email '46850407+wellwelwel@users.noreply.github.com'
           git update-index --refresh > /dev/null 2>&1 || true
 
       - name: 🔎 Checking for Changes
@@ -78,7 +76,7 @@ jobs:
           git commit -m 'chore(website): update dependencies'
           git push origin HEAD:deps-docs --force
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: 🧙🏻 Creating Pull Request
         if: steps.check_changes.outputs.changes == 'true' && steps.set_pr_exists.outputs.pr_exists == 'false'
