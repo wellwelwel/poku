@@ -35,23 +35,23 @@ jobs:
         id: check_changes
         run: |
           if git diff-index --quiet HEAD --; then
-            echo "changes=false" >> $GITHUB_ENV
+            echo "changes=false" >> $GITHUB_OUTPUT
           else
-            echo "changes=true" >> $GITHUB_ENV
+            echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
       - name: ⚙️ Configuring Git
-        if: env.changes == 'true'
+        if: steps.check_changes.outputs.changes == 'true'
         run: |
           git config --global user.name 'wellwelwel'
           git config --global user.email '46850407+wellwelwel@users.noreply.github.com'
 
       - name: 🔍 Checking if "jq" is installed
-        if: env.changes == 'true'
+        if: steps.check_changes.outputs.changes == 'true'
         run: sudo apt-get install -y jq
 
       - name: 🔍 Checking if Pull Request exists
-        if: env.changes == 'true'
+        if: steps.check_changes.outputs.changes == 'true'
         id: check_pr
         uses: octokit/request-action@v2.x
         with:
@@ -63,16 +63,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🔎 Checking if PR exists and is open
-        if: env.changes == 'true'
+        if: steps.check_changes.outputs.changes == 'true'
         id: set_pr_exists
         run: |
-          echo "pr_exists=false" >> $GITHUB_ENV
+          echo "pr_exists=false" >> $GITHUB_OUTPUT
           for pr in $(jq -r '.[] | select(.title=="chore: update dependencies") | .number' <<< "${{ steps.check_pr.outputs.data }}"); do
-            echo "pr_exists=true" >> $GITHUB_ENV
+            echo "pr_exists=true" >> $GITHUB_OUTPUT
           done
 
       - name: 🚀 Commiting and Pushing Changes
-        if: env.changes == 'true'
+        if: steps.check_changes.outputs.changes == 'true'
         run: |
           git add .
           git commit -m 'chore: update dependencies'
@@ -81,7 +81,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🧙🏻 Creating Pull Request
-        if: env.changes == 'true' && env.pr_exists == 'false'
+        if: steps.check_changes.outputs.changes == 'true' && steps.set_pr_exists.outputs.pr_exists == 'false'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.PAT }}
