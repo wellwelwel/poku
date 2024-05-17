@@ -1,4 +1,4 @@
-name: '🪟'
+name: '🍎'
 on:
   push:
     branches:
@@ -8,20 +8,26 @@ on:
 
 jobs:
   node:
-    runs-on: windows-latest
+    runs-on: macos-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: Windows
+    name: macOS
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-osx-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-osx-
 
       - name: ➕ Actions - Setup NodeJS
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-          cache: 'npm'
 
       - name: 📦 Installing Dependencies
         run: npm ci
