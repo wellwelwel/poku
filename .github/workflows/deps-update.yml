@@ -31,6 +31,13 @@ jobs:
       - name: ⏫ Updating Dependencies
         run: npm run update
 
+      - name: ⚙️ Configuring Git
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git config --global user.name 'wellwelwel'
+          git config --global user.email '46850407+wellwelwel@users.noreply.github.com'
+          git update-index --refresh
+
       - name: 🔎 Checking for Changes
         id: check_changes
         run: |
@@ -42,12 +49,6 @@ jobs:
 
       - name: 🔬 Verifying Changes Output
         run: echo "${{ steps.check_changes.outputs.changes }}"
-
-      - name: ⚙️ Configuring Git
-        if: steps.check_changes.outputs.changes == 'true'
-        run: |
-          git config --global user.name 'wellwelwel'
-          git config --global user.email '46850407+wellwelwel@users.noreply.github.com'
 
       - name: 🔍 Checking if "jq" is installed
         if: steps.check_changes.outputs.changes == 'true'
