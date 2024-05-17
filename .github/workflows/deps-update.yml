@@ -53,7 +53,7 @@ jobs:
       - name: 🔍 Checking if Pull Request exists
         if: env.changes == 'true'
         id: check_pr
-        uses: octokit/request-action@v2
+        uses: octokit/request-action@v2.x
         with:
           route: GET /repos/:owner/:repo/pulls
           owner: ${{ github.repository_owner }}
