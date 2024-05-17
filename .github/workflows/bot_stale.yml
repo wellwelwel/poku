@@ -1,4 +1,4 @@
-name: '🧹'
+name: '🧹 Bot — Stale'
 
 on:
   schedule:
@@ -8,7 +8,7 @@ on:
 jobs:
   stale:
     runs-on: ubuntu-latest
-    name: Stale Issues and PRs
+    name: Issues and PRs
     steps:
       - uses: actions/stale@v9
         with:

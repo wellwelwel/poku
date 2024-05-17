@@ -1,4 +1,5 @@
-name: '⏫'
+# Groups minor and patch dependency updates into a single PR.
+name: '⏫ Bot — Dependencies'
 
 on:
   schedule:
@@ -8,7 +9,7 @@ on:
 jobs:
   update-deps:
     runs-on: ubuntu-latest
-    name: Dependencies Update
+    name: Update
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4

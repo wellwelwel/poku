@@ -9,7 +9,7 @@
 [ci-url]: https://github.com/wellwelwel/poku/actions/workflows/ci.yml?query=branch%3Amain
 [ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=CI&branch=main
 [ql-url]: https://github.com/wellwelwel/poku/actions/workflows/codeql.yml?query=branch%3Amain
-[ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci-codeql.yml?event=push&style=flat&label=Code%20QL&branch=main
+[ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql?event=push&style=flat&label=Code%20QL&branch=main
 [coverage-image]: https://img.shields.io/codecov/c/github/wellwelwel/poku?label=Coverage
 [coverage-url]: https://app.codecov.io/github/wellwelwel/poku
 [downloads-image]: https://img.shields.io/npm/dt/poku.svg?&color=FFC312&label=Downloads

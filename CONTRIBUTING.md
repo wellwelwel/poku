@@ -40,7 +40,8 @@ We can discuss design of API and implementation ideas.
 ### General (recommended)
 
 ```sh
-npm run test
+npm run test     # Test with the installed Node.js version
+npm run test:bun # Test with the installed Bun version
 ```
 
 ### Coverage
@@ -56,16 +57,24 @@ npm run test:c8
 > ⚠️ Testing using **Docker** can require a considerable local storage.
 
 ```sh
-npm run test:ci:node
-npm run test:ci:bun
-npm run test:ci:deno
+npm run build # Build the Project
+```
+
+```sh
+npm run test:ci:node  # All Node.js versions from 6+
+npm run test:ci:bun   # All Bun versions from 1+
+npm run test:ci:deno  # All Deno versions from 1+
 ```
 
 - You may prefer to use **GitHub Actions** for compatibility testing.
 
-### Compatibility (All — Docker)
+### Compatibility (All Platforms — Docker)
 
 > ⚠️ Slow and heavy
+
+```sh
+npm run build # Build the Project
+```
 
 ```sh
 npm run test:ci

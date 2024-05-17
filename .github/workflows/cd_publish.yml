@@ -1,12 +1,15 @@
-name: '📩'
+name: '🚀 CD — Publish'
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+
 permissions:
   contents: write
   pull-requests: write
+
 jobs:
   release-please:
     runs-on: ubuntu-latest

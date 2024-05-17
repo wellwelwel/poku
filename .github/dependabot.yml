@@ -1,3 +1,4 @@
+# Focuses on major updates, dependabot creates separate PRs for each dependency update
 version: 2
 updates:
   - package-ecosystem: 'npm'
