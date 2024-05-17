@@ -40,4 +40,4 @@ jobs:
 
       # Testing via Docker Official Images
       - name: 🔬 Bun ${{ matrix.bun-version }}
-        run: FILTER=bun-${{ matrix.node-version }} npm run test:ci
+        run: FILTER=bun-${{ matrix.bun-version }} npm run test:ci
