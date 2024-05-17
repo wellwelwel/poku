@@ -84,7 +84,7 @@ jobs:
         if: env.changes == 'true' && env.pr_exists == 'false'
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           branch: deps
           delete-branch: true
           title: 'chore: update dependencies'
