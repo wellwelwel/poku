@@ -46,9 +46,6 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: 🔬 Verifying Changes Output
-        run: echo "${{ steps.check_changes.outputs.changes }}"
-
       - name: 🔍 Checking if "jq" is installed
         if: steps.check_changes.outputs.changes == 'true'
         run: sudo apt-get install -y jq
