@@ -17,7 +17,7 @@ jobs:
         uses: google-github-actions/release-please-action@v3
         id: release
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           release-type: node
           package-name: poku
           changelog-path: 'CHANGELOG.md'
