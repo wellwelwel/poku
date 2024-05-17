@@ -1,4 +1,4 @@
-name: '🐷 CI — Website'
+name: '📒 CI (Website) — Build'
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    name: Build
+    name: Check
     steps:
       - name: Actions - Checkout
         uses: actions/checkout@v4
