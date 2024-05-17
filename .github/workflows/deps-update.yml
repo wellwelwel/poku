@@ -1,0 +1,94 @@
+name: ⏫
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-deps:
+    runs-on: ubuntu-latest
+    name: Dependencies Update
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: ⏫ Updating Dependencies
+        run: npm run update
+
+      - name: 🔎 Checking for Changes
+        id: check_changes
+        run: |
+          if git diff-index --quiet HEAD --; then
+            echo "changes=false" >> $GITHUB_ENV
+          else
+            echo "changes=true" >> $GITHUB_ENV
+          fi
+
+      - name: ⚙️ Configuring Git
+        if: env.changes == 'true'
+        run: |
+          git config --global user.name 'wellwelwel'
+          git config --global user.email '46850407+wellwelwel@users.noreply.github.com'
+
+      - name: 🔍 Checking if "jq" is installed
+        if: env.changes == 'true'
+        run: sudo apt-get install -y jq
+
+      - name: 🔍 Checking if Pull Request exists
+        if: env.changes == 'true'
+        id: check_pr
+        uses: octokit/request-action@v2
+        with:
+          route: GET /repos/:owner/:repo/pulls
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          state: open
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔎 Checking if PR exists and is open
+        if: env.changes == 'true'
+        id: set_pr_exists
+        run: |
+          echo "pr_exists=false" >> $GITHUB_ENV
+          for pr in $(jq -r '.[] | select(.title=="chore: update dependencies") | .number' <<< "${{ steps.check_pr.outputs.data }}"); do
+            echo "pr_exists=true" >> $GITHUB_ENV
+          done
+
+      - name: 🚀 Commiting and Pushing Changes
+        if: env.changes == 'true'
+        run: |
+          git add .
+          git commit -m 'chore: update dependencies'
+          git push origin HEAD:deps --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🧙🏻 Creating Pull Request
+        if: env.changes == 'true' && env.pr_exists == 'false'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Automated update
+          branch: deps
+          delete-branch: true
+          title: 'chore: update dependencies'
+          body: 'Daily update dependencies'
+          labels: |
+            dependencies
