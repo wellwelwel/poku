@@ -1,3 +1,4 @@
+# Groups minor and patch dependency updates into a single PR.
 name: '⏫ Bot — Dependencies'
 
 on:
