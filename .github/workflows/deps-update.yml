@@ -35,7 +35,7 @@ jobs:
         run: |
           git config --global user.name 'wellwelwel'
           git config --global user.email '46850407+wellwelwel@users.noreply.github.com'
-          git update-index --refresh
+          git update-index --refresh > /dev/null 2>&1 || true
 
       - name: 🔎 Checking for Changes
         id: check_changes
