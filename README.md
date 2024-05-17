@@ -1,19 +1,19 @@
 [node-version-url]: https://github.com/nodejs/node
-[node-version-image]: https://img.shields.io/badge/Node.js->=%206.0.0-badc58
 [bun-version-url]: https://github.com/oven-sh/bun
-[bun-version-image]: https://img.shields.io/badge/Bun->=%200.5.3-f471b5
 [deno-version-url]: https://github.com/denoland/deno
-[deno-version-image]: https://img.shields.io/badge/Deno->=%201.30.0-70ffaf
 [typescript-url]: https://github.com/microsoft/TypeScript
-[typescript-version-image]: https://img.shields.io/badge/TypeScript->=%204.7.2-3077c6
-[ci-url]: https://github.com/wellwelwel/poku/actions/workflows/ci.yml?query=branch%3Amain
-[ci-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci.yml?event=push&style=flat&label=CI&branch=main
-[ql-url]: https://github.com/wellwelwel/poku/actions/workflows/codeql.yml?query=branch%3Amain
-[ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql?event=push&style=flat&label=Code%20QL&branch=main
+[ci-linux-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain
+[ci-linux-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&style=flat&label=&branch=main&logo=ubuntu&logoColor=white
+[ci-osx-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain
+[ci-osx-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&style=flat&label=&branch=main&logo=apple&logoColor=white
+[ci-windows-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain
+[ci-windows-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&style=flat&label=&branch=main&logo=windows&logoColor=white
+[ql-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain
+[ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&style=flat&label=&branch=main&logo=github&logoColor=white
 [coverage-image]: https://img.shields.io/codecov/c/github/wellwelwel/poku?label=Coverage
 [coverage-url]: https://app.codecov.io/github/wellwelwel/poku
-[downloads-image]: https://img.shields.io/npm/dt/poku.svg?&color=FFC312&label=Downloads
-[downloads-url]: https://npmjs.org/package/poku
+[downloads-image]: https://img.shields.io/npm/dt/poku.svg?&label=Downloads&logo=npm&logoColor=white&color=1e90ff
+[downloads-url]: https://www.npmjs.com/package/poku
 [license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
 [license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff&label=License
 
@@ -24,14 +24,12 @@
 
 **Poku** can show you _how simple testing can be_ 🌱
 
-[![Node.js Version][node-version-image]][node-version-url]
-[![Bun Version][bun-version-image]][bun-version-url]
-[![Deno Version][deno-version-image]][deno-version-url]
-[![TypeScript Version][typescript-version-image]][typescript-url]<br />
-[![GitHub Workflow Status (with event)][ci-image]][ci-url]
-[![GitHub Workflow Status (with event)][ql-image]][ql-url]
-[![Coverage][coverage-image]][coverage-url]
+[![GitHub Workflow Status (with event)][ci-linux-image]][ci-linux-url]
+[![GitHub Workflow Status (with event)][ci-osx-image]][ci-osx-url]
+[![GitHub Workflow Status (with event)][ci-windows-image]][ci-windows-url]
+[![GitHub Workflow Status (with event)][ql-image]][ql-url]<br />
 [![NPM Downloads][downloads-image]][downloads-url]
+[![Coverage][coverage-image]][coverage-url]
 [![License][license-image]][license-url]
 
 Enjoying **Poku**? Consider giving him a star ⭐️
