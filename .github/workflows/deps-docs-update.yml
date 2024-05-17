@@ -32,7 +32,6 @@ jobs:
         run: cd website && npm run update
 
       - name: ⚙️ Configuring Git
-        if: steps.check_changes.outputs.changes == 'true'
         run: |
           git config --global user.name 'wellwelwel'
           git config --global user.email '46850407+wellwelwel@users.noreply.github.com'
