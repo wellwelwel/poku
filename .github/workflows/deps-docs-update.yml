@@ -76,7 +76,7 @@ jobs:
         run: |
           git add .
           git commit -m 'chore(website): update dependencies'
-          git push origin HEAD:deps --force
+          git push origin HEAD:deps-docs --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -85,11 +85,9 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.PAT }}
-          branch: deps
+          branch: deps-docs
           delete-branch: true
           title: 'chore(website): update dependencies'
-          body: 'Daily update dependencies'
+          body: '- 🤖 Daily update website dependencies'
           labels: |
             dependencies
-          committer: wellwelwel <46850407+wellwelwel@users.noreply.github.com>
-          author: wellwelwel <46850407+wellwelwel@users.noreply.github.com>

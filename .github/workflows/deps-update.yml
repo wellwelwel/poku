@@ -88,8 +88,6 @@ jobs:
           branch: deps
           delete-branch: true
           title: 'chore: update dependencies'
-          body: 'Daily update dependencies'
+          body: '- 🤖 Daily update project dependencies'
           labels: |
             dependencies
-          committer: wellwelwel <46850407+wellwelwel@users.noreply.github.com>
-          author: wellwelwel <46850407+wellwelwel@users.noreply.github.com>
