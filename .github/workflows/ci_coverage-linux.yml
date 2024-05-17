@@ -1,17 +1,19 @@
-name: '👔'
+name: '☔️ CI — Coverage'
+
 on:
   push:
     branches:
       - 'main'
   pull_request:
   workflow_dispatch:
+
 jobs:
-  Lint:
+  node:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: Lint
+    name: Linux & Node.js
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -31,8 +33,12 @@ jobs:
       - name: 📦 Installing Dependencies
         run: npm ci
 
-      - name: 🤹🏻‍♀️ ESLint Check
-        run: npm run eslint:checker
+      - name: 🧪 Checking for Coverage
+        run: npm run test:c8
 
-      - name: 🤹🏻‍♀️ Prettier Check
-        run: npm run prettier:checker
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: linux-nodejs
+          name: codecov-umbrella-linux-node

@@ -1,4 +1,5 @@
-name: '🍎'
+name: '☔️ CI — Coverage'
+
 on:
   push:
     branches:
@@ -12,7 +13,7 @@ jobs:
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: macOS
+    name: macOS & Node.js
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -32,5 +33,12 @@ jobs:
       - name: 📦 Installing Dependencies
         run: npm ci
 
-      - name: 🔬 Node
-        run: npm run test
+      - name: 🧪 Checking for Coverage
+        run: npm run test:c8
+
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: osx-nodejs
+          name: codecov-umbrella-osx-node

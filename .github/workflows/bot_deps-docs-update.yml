@@ -1,14 +1,14 @@
-name: '⏫'
+name: '⏫ Bot (Website) — Dependencies'
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 15 * * *'
   workflow_dispatch:
 
 jobs:
   update-deps:
     runs-on: ubuntu-latest
-    name: Dependencies Update
+    name: Update
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -18,18 +18,18 @@ jobs:
         with:
           node-version: '22.x'
 
-      - name: ➕ Cache dependencies
+      - name: Cache Dependencies
         uses: actions/cache@v4
         with:
           path: ~/.npm
-          key: npm-linux-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-linux-
+          key: npm-website-${{ hashFiles('website/package-lock.json') }}
+          restore-keys: npm-website-
 
-      - name: 📦 Installing Dependencies
-        run: npm ci
+      - name: Installing Dependencies
+        run: cd website && npm ci
 
       - name: ⏫ Updating Dependencies
-        run: npm run update
+        run: cd website && npm run update
 
       - name: ⚙️ Configuring Git
         run: |
@@ -65,7 +65,7 @@ jobs:
         id: set_pr_exists
         run: |
           echo "pr_exists=false" >> $GITHUB_OUTPUT
-          for pr in $(jq -r '.[] | select(.title=="chore: update dependencies") | .number' <<< "${{ steps.check_pr.outputs.data }}"); do
+          for pr in $(jq -r '.[] | select(.title=="chore(website): update dependencies") | .number' <<< "${{ steps.check_pr.outputs.data }}"); do
             echo "pr_exists=true" >> $GITHUB_OUTPUT
           done
 
@@ -73,8 +73,8 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           git add .
-          git commit -m 'chore: update dependencies'
-          git push origin HEAD:deps --force
+          git commit -m 'chore(website): update dependencies'
+          git push origin HEAD:deps-docs --force
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
@@ -83,9 +83,9 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.PAT }}
-          branch: deps
+          branch: deps-docs
           delete-branch: true
-          title: 'chore: update dependencies'
-          body: '- 🤖 Daily update project dependencies'
+          title: 'chore(website): update dependencies'
+          body: '- 🤖 Daily update website dependencies'
           labels: |
             dependencies

@@ -1,4 +1,5 @@
-name: '☔️'
+name: '☔️ CI — Coverage'
+
 on:
   push:
     branches:
@@ -7,10 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  coverage:
-    runs-on: ubuntu-latest
+  node:
+    runs-on: windows-latest
     timeout-minutes: 5
-    name: Coverage
+    strategy:
+      fail-fast: false
+    name: Windows & Node.js
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -19,13 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-
-      - name: ➕ Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: npm-linux-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-linux-
+          cache: 'npm'
 
       - name: 📦 Installing Dependencies
         run: npm ci
@@ -37,3 +34,5 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          flags: windows-nodejs
+          name: codecov-umbrella-windows-node
