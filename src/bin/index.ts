@@ -17,6 +17,7 @@ const exclude = getArg('exclude');
 const killPort = getArg('kill-port');
 const killRange = getArg('kill-range');
 const killPID = getArg('kill-pid');
+const concurrency = Number(getArg('concurrency')) || undefined;
 const parallel = hasArg('parallel');
 const quiet = hasArg('quiet');
 const debug = hasArg('debug');
@@ -61,6 +62,7 @@ if (hasArg('log-success'))
     quiet,
     debug,
     failFast,
+    concurrency,
   });
 })();
 
