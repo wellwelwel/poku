@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/wellwelwel/poku/compare/v1.11.0...v1.12.0) (2024-05-18)
+
+
+### Features
+
+* **test runner:** add concurrency limit option ([#260](https://github.com/wellwelwel/poku/issues/260)) ([58c9dc0](https://github.com/wellwelwel/poku/commit/58c9dc0a185d4752c32a6f907be09ecc490cdcf6))
+
 ## [1.11.0](https://github.com/wellwelwel/poku/compare/v1.10.2...v1.11.0) (2024-05-16)
 
 
