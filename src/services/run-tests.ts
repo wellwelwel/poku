@@ -92,8 +92,9 @@ export const runTestsParallel = async (
   const concurrencyResults: (boolean | undefined)[][] = [];
 
   if (concurrencyLimit > 0)
-    for (let i = 0; i < files.length; i += concurrencyLimit)
+    for (let i = 0; i < files.length; i += concurrencyLimit) {
       filesByConcurrency.push(files.slice(i, i + concurrencyLimit));
+    }
   else filesByConcurrency.push(files);
 
   try {
