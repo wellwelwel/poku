@@ -1,4 +1,4 @@
-name: '☔️ CI — Coverage'
+name: '🍎 CI — Coverage'
 
 on:
   push:
@@ -42,3 +42,38 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: osx-nodejs
           name: codecov-umbrella-osx-node
+
+  node-options:
+    runs-on: macos-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: macOS & Node.js (Options)
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-osx-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-osx-
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🧪 Checking for Coverage
+        run: npm run test:c8:options
+
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: osx-nodejs-options
+          name: codecov-umbrella-osx-node-options

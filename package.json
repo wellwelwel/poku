@@ -4,9 +4,11 @@
   "description": "🐷 Poku makes testing easy for Node.js, Bun & Deno at the same time.",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "tsx src/bin/index.ts --parallel --debug --include=\"test/unit,test/integration,test/e2e\"",
-    "test:bun": "bun src/bin/index.ts --parallel --platform=bun --debug --include=\"test/unit,test/integration,test/e2e\"",
+    "test": "tsx src/bin/index.ts --include=\"test/unit,test/integration,test/e2e\"",
+    "test:options": "tsx src/bin/index.ts --parallel --concurrency=\"10\" --fast-fail --debug --exclude=\".bak\" --kill-port=\"4000\" --kill-range=\"4000-4001\" --include=\"test/unit,test/integration,test/e2e\"",
+    "test:bun": "bun src/bin/index.ts --platform=bun --include=\"test/unit,test/integration,test/e2e\"",
     "test:c8": "c8 npm run test",
+    "test:c8:options": "c8 npm run test:options",
     "test:ci": "tsx ./test/ci.test.ts",
     "test:ci:node": "FILTER='node-' npm run test:ci",
     "test:ci:bun": "FILTER='bun-' npm run test:ci",
