@@ -40,8 +40,9 @@ We can discuss design of API and implementation ideas.
 ### General (recommended)
 
 ```sh
-npm run test     # Test with the installed Node.js version
-npm run test:bun # Test with the installed Bun version
+npm run test          # Test with the installed Node.js version
+npm run test:options  # Test with the installed Node.js version using CLI options
+npm run test:bun      # Test with the installed Bun version
 ```
 
 ### Coverage
@@ -49,7 +50,13 @@ npm run test:bun # Test with the installed Bun version
 Methods that vary according to **Node.js** version, platform or OS aren't tested against the coverage rate.
 
 ```sh
-npm run test:c8
+npm run test:c8:sequential
+npm run test:c8:sequential:options
+```
+
+```sh
+npm run test:c8:parallel
+npm run test:c8:parallel:options
 ```
 
 ### Compatibility Per Platform (Docker)

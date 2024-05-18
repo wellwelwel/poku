@@ -270,8 +270,8 @@ Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Saf
 
 ## Limitations
 
-- **Poku** is still a bit lonely, without an **active community** around him, but we can change it 🤝
-- Each file generates a sub-process during its execution. This can be reflected in projects with an extremely high volume of test files when run in parallel.
+- **Poku** community is gradually building up 🤝
+- Although it has no external dependencies, **Poku** is not _all-in-one_, so it doesn't have features such as _mocks_ and _spies_, where you can use your favorite packages or native solutions.
 
 ---
 

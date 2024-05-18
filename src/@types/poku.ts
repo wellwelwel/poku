@@ -58,6 +58,12 @@ export type Configs = {
    */
   failFast?: boolean;
   /**
+   * Limits the number of tests running concurrently.
+   *
+   * @default 0
+   */
+  concurrency?: number;
+  /**
    * You can use this option to run a **callback** or a **file** before each test file on your suite.
    *
    * Ex.:

@@ -87,29 +87,41 @@ export const runTestsParallel = async (
   const cwd = process.cwd();
   const testDir = path.join(cwd, dir);
   const files = IS_FILE(dir) ? [dir] : listFiles(testDir, undefined, configs);
+  const filesByConcurrency: string[][] = [];
+  const concurrencyLimit = configs?.concurrency || 0;
+  const concurrencyResults: (boolean | undefined)[][] = [];
+
+  if (concurrencyLimit > 0)
+    for (let i = 0; i < files.length; i += concurrencyLimit) {
+      filesByConcurrency.push(files.slice(i, i + concurrencyLimit));
+    }
+  else filesByConcurrency.push(files);
 
   try {
-    const promises = files.map(async (filePath) => {
-      if (configs?.failFast && results.fail > 0) return;
+    for (const fileGroup of filesByConcurrency) {
+      const promises = fileGroup.map(async (filePath) => {
+        if (configs?.failFast && results.fail > 0) return;
 
-      const testPassed = await runTestFile(filePath, configs);
+        const testPassed = await runTestFile(filePath, configs);
 
-      if (!testPassed) {
-        ++results.fail;
+        if (!testPassed) {
+          ++results.fail;
 
-        if (configs?.failFast)
-          throw `  ${format.fail('ℹ')} ${format.bold('fail-fast')} is enabled`;
+          if (configs?.failFast)
+            throw `  ${format.fail('ℹ')} ${format.bold('fail-fast')} is enabled`;
 
-        return false;
-      }
+          return false;
+        }
 
-      ++results.success;
-      return true;
-    });
+        ++results.success;
+        return true;
+      });
 
-    const concurrency = await Promise.all(promises);
+      const concurrency = await Promise.all(promises);
+      concurrencyResults.push(concurrency);
+    }
 
-    return concurrency.every((result) => result);
+    return concurrencyResults.every((group) => group.every((result) => result));
   } catch (error) {
     hr();
     console.log(error);
