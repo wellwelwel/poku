@@ -50,11 +50,13 @@ npm run test:bun      # Test with the installed Bun version
 Methods that vary according to **Node.js** version, platform or OS aren't tested against the coverage rate.
 
 ```sh
-npm run test:c8
+npm run test:c8:sequential
+npm run test:c8:sequential:options
 ```
 
 ```sh
-npm run test:c8:options
+npm run test:c8:parallel
+npm run test:c8:parallel:options
 ```
 
 ### Compatibility Per Platform (Docker)
