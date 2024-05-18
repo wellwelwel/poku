@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  node:
+  sequential:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: Linux & Node.js
+    name: Linux (Sequential)
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -34,21 +34,21 @@ jobs:
         run: npm ci
 
       - name: 🧪 Checking for Coverage
-        run: npm run test:c8
+        run: npm run test:c8:sequential
 
       - name: ☔️ Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: linux-nodejs
-          name: codecov-umbrella-linux-node
+          flags: linux-sequential
+          name: codecov-umbrella-linux-sequential
 
-  node-options:
+  sequential-options:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: Linux & Node.js (Options)
+    name: Linux (Sequential & Options)
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -69,11 +69,81 @@ jobs:
         run: npm ci
 
       - name: 🧪 Checking for Coverage
-        run: npm run test:c8:options
+        run: npm run test:c8:sequential:options
 
       - name: ☔️ Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: linux-nodejs-options
-          name: codecov-umbrella-linux-node-options
+          flags: linux-sequential-options
+          name: codecov-umbrella-linux-sequential-options
+
+  parallel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: Linux (Parallel)
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🧪 Checking for Coverage
+        run: npm run test:c8:parallel
+
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: linux-parallel
+          name: codecov-umbrella-linux-parallel
+
+  parallel-options:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: Linux (Parallel & Options)
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🧪 Checking for Coverage
+        run: npm run test:c8:parallel:options
+
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: linux-parallel-options
+          name: codecov-umbrella-linux-parallel-options

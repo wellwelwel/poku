@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  node:
+  sequential:
     runs-on: windows-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: Windows & Node.js
+    name: Windows (Sequential)
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -28,21 +28,21 @@ jobs:
         run: npm ci
 
       - name: 🧪 Checking for Coverage
-        run: npm run test:c8
+        run: npm run test:c8:sequential
 
       - name: ☔️ Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: windows-nodejs
-          name: codecov-umbrella-windows-node
+          flags: windows-sequential
+          name: codecov-umbrella-windows-sequential
 
-  node-options:
+  sequential-options:
     runs-on: windows-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: Windows & Node.js (Options)
+    name: Windows (Sequential & Options)
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -57,11 +57,69 @@ jobs:
         run: npm ci
 
       - name: 🧪 Checking for Coverage
-        run: npm run test:c8:options
+        run: npm run test:c8:sequential:options
 
       - name: ☔️ Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: windows-nodejs-options
-          name: codecov-umbrella-windows-node-options
+          flags: windows-sequential-options
+          name: codecov-umbrella-windows-sequential-options
+
+  parallel:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: Windows (Parallel)
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🧪 Checking for Coverage
+        run: npm run test:c8:parallel
+
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: windows-parallel
+          name: codecov-umbrella-windows-parallel
+
+  parallel-options:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: Windows (Parallel & Options)
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🧪 Checking for Coverage
+        run: npm run test:c8:parallel:options
+
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: windows-parallel-options
+          name: codecov-umbrella-windows-parallel-options

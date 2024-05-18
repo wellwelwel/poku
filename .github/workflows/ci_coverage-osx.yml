@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  node:
+  sequential:
     runs-on: macos-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: macOS & Node.js
+    name: macOS (Sequential)
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -34,21 +34,21 @@ jobs:
         run: npm ci
 
       - name: 🧪 Checking for Coverage
-        run: npm run test:c8
+        run: npm run test:c8:sequential
 
       - name: ☔️ Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: osx-nodejs
-          name: codecov-umbrella-osx-node
+          flags: osx-sequential
+          name: codecov-umbrella-osx-sequential
 
-  node-options:
+  sequential-options:
     runs-on: macos-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: macOS & Node.js (Options)
+    name: macOS (Sequential & Options)
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -69,11 +69,81 @@ jobs:
         run: npm ci
 
       - name: 🧪 Checking for Coverage
-        run: npm run test:c8:options
+        run: npm run test:c8:sequential:options
 
       - name: ☔️ Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: osx-nodejs-options
-          name: codecov-umbrella-osx-node-options
+          flags: osx-sequential-options
+          name: codecov-umbrella-osx-sequential-options
+
+  parallel:
+    runs-on: macos-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: macOS (Parallel)
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-osx-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-osx-
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🧪 Checking for Coverage
+        run: npm run test:c8:parallel
+
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: osx-parallel
+          name: codecov-umbrella-osx-parallel
+
+  parallel-options:
+    runs-on: macos-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: macOS (Parallel & Options)
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-osx-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-osx-
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🧪 Checking for Coverage
+        run: npm run test:c8:parallel:options
+
+      - name: ☔️ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: osx-parallel-options
+          name: codecov-umbrella-osx-parallel-options
