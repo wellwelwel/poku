@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/wellwelwel/poku/compare/v1.12.0...v1.12.1) (2024-05-19)
+
+
+### Bug Fixes
+
+* **assert:** improve multi-depth logs ([#265](https://github.com/wellwelwel/poku/issues/265)) ([f7abbfa](https://github.com/wellwelwel/poku/commit/f7abbfac0044995578d4a3b3603465c756a799fb))
+
 ## [1.12.0](https://github.com/wellwelwel/poku/compare/v1.11.0...v1.12.0) (2024-05-18)
 
 
