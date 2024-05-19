@@ -1,5 +1,5 @@
 import { assert } from '../../src/index.js';
-import { padStart } from '../../src/helpers/pad.js';
+import { padStart } from '../../src/polyfills/pad.js';
 
 assert.deepStrictEqual(padStart('', 0, ''), '');
 assert.deepStrictEqual(padStart('', 2, ' '), '  ');

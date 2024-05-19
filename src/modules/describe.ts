@@ -1,7 +1,7 @@
+/* c8 ignore start */
 import { EOL } from 'node:os';
 import { format, backgroundColor } from '../helpers/format.js';
 
-/* c8 ignore start */
 export type DescribeOptions = {
   /**
    * Skips a line before to console it.

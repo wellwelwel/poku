@@ -3,7 +3,7 @@ import path from 'node:path';
 import { EOL } from 'node:os';
 import { spawn } from 'node:child_process';
 import { isWindows, runner } from '../helpers/runner.js';
-import { indentation } from '../helpers/indentation.js';
+import { indentation } from '../configs/indentation.js';
 import { format } from '../helpers/format.js';
 import { Configs } from '../@types/poku.js';
 import { isDebug, isQuiet } from '../helpers/logs.js';

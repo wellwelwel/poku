@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 /* c8 ignore start */
+
 import { escapeRegExp } from '../modules/list-files.js';
 import { getArg, getLastParam, hasArg } from '../helpers/get-arg.js';
 import { kill, poku } from '../index.js';

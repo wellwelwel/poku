@@ -13,7 +13,7 @@ import { format } from '../helpers/format.js';
 import { isQuiet } from '../helpers/logs.js';
 import { hr } from '../helpers/hr.js';
 import { fileResults } from '../services/run-test-file.js';
-import { indentation } from '../helpers/indentation.js';
+import { indentation } from '../configs/indentation.js';
 
 export async function poku(
   targetPaths: string | string[],
