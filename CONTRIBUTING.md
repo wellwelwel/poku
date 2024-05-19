@@ -39,11 +39,42 @@ We can discuss design of API and implementation ideas.
 
 ### General (recommended)
 
+#### Sequential and Parallel
+
 ```sh
-npm run test          # Test with the installed Node.js version
-npm run test:options  # Test with the installed Node.js version using CLI options
-npm run test:bun      # Test with the installed Bun version
+npm run test      # Test with the locally installed Node.js version
+npm run test:bun  # Test with the locally installed Bun version
 ```
+
+#### Sequential
+
+```sh
+npm run test:sequential      # Test with the locally installed Node.js version
+npm run test:bun:sequential  # Test with the locally installed Bun version
+```
+
+> Pass custom flags using `--`, for example:
+>
+> ```sh
+> npm run test:sequential -- --debug --fail-fast
+> ```
+>
+> - Same for **Bun**
+
+#### Parallel
+
+```sh
+npm run test:parallel      # Test with the locally installed Node.js version
+npm run test:bun:parallel  # Test with the locally installed Bun version
+```
+
+> Pass custom flags using `--`, for example:
+>
+> ```sh
+> npm run test:parallel -- --concurrency=5 --fail-fast
+> ```
+>
+> - Same for **Bun**
 
 ### Coverage
 
