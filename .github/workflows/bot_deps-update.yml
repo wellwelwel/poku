@@ -89,6 +89,6 @@ jobs:
           branch: deps
           delete-branch: true
           title: 'chore: update dependencies'
-          body: '- 🤖 Daily update project dependencies'
+          body: '- 🤖 Update project dependencies'
           labels: |
             dependencies
