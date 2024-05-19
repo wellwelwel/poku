@@ -3,7 +3,7 @@
   "include": ["src/**"],
   "exclude": ["ci", "fixtures", "lib", "test", "tools", "website"],
   "extension": ["ts"],
-  "reporter": ["text", "lcov", "cobertura"],
+  "reporter": ["text", "lcov"],
   "clean": true,
   "branches": 85,
   "statements": 90,
