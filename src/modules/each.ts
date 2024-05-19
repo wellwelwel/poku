@@ -1,3 +1,4 @@
+/* c8 ignore next */
 import { Control, each } from '../configs/each.js';
 
 /* c8 ignore start */

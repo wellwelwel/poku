@@ -1,3 +1,5 @@
+/* c8 ignore start */
+
 import type { Configs as ListFilesConfigs } from './list-files.js';
 
 export type Configs = {
@@ -92,3 +94,5 @@ export type Configs = {
    */
   afterEach?: () => unknown | Promise<unknown>;
 } & ListFilesConfigs;
+
+/* c8 ignore stop */

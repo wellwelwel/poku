@@ -1,3 +1,5 @@
+/* c8 ignore start */
+
 import { Runner } from './runner.js';
 import { Configs } from './poku.js';
 
@@ -48,3 +50,5 @@ export type StartServiceOptions = {
 } & BackgroundProcessOptions;
 
 export type End = (port?: number | number[]) => Promise<void>;
+
+/* c8 ignore stop */

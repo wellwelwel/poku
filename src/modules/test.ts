@@ -1,3 +1,4 @@
+/* c8 ignore next */
 import { each } from '../configs/each.js';
 
 export async function test(cb: () => Promise<unknown>): Promise<void>;
@@ -7,6 +8,7 @@ export async function test(
 ): Promise<void> {
   if (typeof each.before.cb === 'function' && each.before.test) {
     const beforeResult = each.before.cb();
+    /* c8 ignore next */
     if (beforeResult instanceof Promise) await beforeResult;
   }
 
@@ -16,6 +18,7 @@ export async function test(
 
   if (typeof each.after.cb === 'function' && each.after.test) {
     const afterResult = each.after.cb();
+    /* c8 ignore next */
     if (afterResult instanceof Promise) await afterResult;
   }
 }

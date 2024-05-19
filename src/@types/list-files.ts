@@ -1,3 +1,5 @@
+/* c8 ignore start */
+
 export type Configs = {
   /**
    * Filter by path to match only the files that should be performed.
@@ -12,3 +14,10 @@ export type Configs = {
    */
   exclude?: RegExp | RegExp[];
 };
+
+export type FileResults = {
+  success: string[];
+  fail: string[];
+};
+
+/* c8 ignore stop */

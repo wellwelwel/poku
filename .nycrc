@@ -1,15 +1,7 @@
 {
   "all": true,
   "include": ["src/**"],
-  "exclude": [
-    "ci",
-    "src/@types/**",
-    "fixtures",
-    "lib",
-    "test",
-    "tools",
-    "website"
-  ],
+  "exclude": ["ci", "fixtures", "lib", "test", "tools", "website"],
   "extension": ["ts"],
   "reporter": ["text", "lcov", "cobertura"],
   "clean": true,
