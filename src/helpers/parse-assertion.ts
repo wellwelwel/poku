@@ -6,17 +6,44 @@ import { format } from './format.js';
 import { hr } from './hr.js';
 import { findFile } from './find-file.js';
 import { each } from '../configs/each.js';
+import { fromEntries, entries } from '../polyfills/object.js';
+/* c8 ignore next */
+import { ParseAssertionOptions } from '../@types/assert.js';
+import { nodeVersion } from './get-runtime.js';
 
-/* c8 ignore start */
-export type ParseAssertionOptions = {
-  message?: string | Error;
-  defaultMessage?: string;
-  actual?: string;
-  expected?: string;
-  throw?: boolean;
-  hideDiff?: boolean;
+export const parseResultType = (type?: unknown): string => {
+  const recurse = (value: unknown): unknown => {
+    if (typeof value === 'undefined') return 'undefined';
+
+    if (
+      typeof value === 'function' ||
+      typeof value === 'bigint' ||
+      value instanceof RegExp
+    )
+      return String(value);
+
+    if (Array.isArray(value)) return value.map(recurse);
+
+    /* c8 ignore start */
+    if (value !== null && typeof value === 'object') {
+      if (!nodeVersion || nodeVersion >= 12)
+        return Object.fromEntries(
+          Object.entries(value).map(([key, val]) => [key, recurse(val)])
+        );
+
+      return fromEntries(
+        entries(value).map(([key, val]) => [key, recurse(val)])
+      );
+    }
+    /* c8 ignore stop */
+
+    return value;
+  };
+
+  const result = recurse(type);
+
+  return typeof result === 'string' ? result : JSON.stringify(result, null, 2);
 };
-/* c8 ignore stop */
 
 export const parseAssertion = async (
   cb: () => void | Promise<void>,
@@ -78,26 +105,19 @@ export const parseAssertion = async (
       console.log(`${format.dim('  Operator')} ${operator}${EOL}`);
 
       if (!options?.hideDiff) {
+        const splitActual = parseResultType(actual).split('\n');
+        const splitExpected = parseResultType(expected).split('\n');
+
         console.log(format.dim(`  ${options?.actual || 'Actual'}:`));
-        console.log(
-          format.bold(
-            typeof actual === 'function' || actual instanceof RegExp
-              ? `  ${String(actual)}`
-              : `  ${format.fail(JSON.stringify(actual))}`
-          )
+        splitActual.forEach((line) =>
+          console.log(`  ${format.bold(format.fail(line))}`)
         );
 
         console.log(
           `${EOL}  ${format.dim(`${options?.expected || 'Expected'}:`)}`
         );
-        console.log(
-          format.bold(
-            `${
-              typeof expected === 'function' || expected instanceof RegExp
-                ? `  ${String(expected)}`
-                : `  ${format.success(JSON.stringify(expected))}`
-            }`
-          )
+        splitExpected.forEach((line) =>
+          console.log(`  ${format.bold(format.success(line))}`)
         );
       }
 
