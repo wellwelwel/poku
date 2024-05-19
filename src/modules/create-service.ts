@@ -37,7 +37,8 @@ const backgroundProcess = (
         shell: isWindows,
         cwd: options?.cwd
           ? sanitizePath(path.normalize(options.cwd))
-          : undefined,
+          : /* c8 ignore next */
+            undefined,
         env: process.env,
         /* c8 ignore next */
         detached: !isWindows,

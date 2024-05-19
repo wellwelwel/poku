@@ -4,7 +4,7 @@ import {
   beforeEach,
   afterEach,
   test,
-} from '../../src/index.js';
+} from '../../../src/index.js';
 
 describe('Before and After Each Suite', {
   background: false,

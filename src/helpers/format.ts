@@ -1,5 +1,5 @@
 /* c8 ignore start */
-import { padStart } from './pad.js';
+import { padStart } from '../polyfills/pad.js';
 
 export const backgroundColor = {
   white: 7,

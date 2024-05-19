@@ -1,8 +1,9 @@
+/* c8 ignore start */
+
 /**
  * Both CLI, API, noExit, sequential and parallel runs are strictly tested, but these tests use deep child process for it
  */
 
-/* c8 ignore start */
 import { EOL } from 'node:os';
 import { Code } from '../@types/code.js';
 import { Configs } from '../@types/poku.js';
@@ -12,8 +13,8 @@ import { exit } from './exit.js';
 import { format } from '../helpers/format.js';
 import { isQuiet } from '../helpers/logs.js';
 import { hr } from '../helpers/hr.js';
-import { fileResults } from '../services/run-test-file.js';
-import { indentation } from '../helpers/indentation.js';
+import { fileResults } from '../configs/files.js';
+import { indentation } from '../configs/indentation.js';
 
 export async function poku(
   targetPaths: string | string[],

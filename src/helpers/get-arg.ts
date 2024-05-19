@@ -1,3 +1,4 @@
+/* c8 ignore start */
 import process from 'node:process';
 
 const [, , ...args] = process.argv;
@@ -15,3 +16,4 @@ export const hasArg = (arg: string): boolean =>
 export const getLastParam = (): string => {
   return args[args.length - 1];
 };
+/* c8 ignore stop */

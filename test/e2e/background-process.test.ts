@@ -4,10 +4,10 @@ import {
   test,
   describe,
   startScript,
-} from '../../../src/index.js';
-import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
-import { ext, isProduction } from '../../helpers/capture-cli.test.js';
-import { getRuntime } from '../../../src/helpers/get-runtime.js';
+} from '../../src/index.js';
+import { legacyFetch } from '../helpers/legacy-fetch.test.js';
+import { ext, isProduction } from '../helpers/capture-cli.test.js';
+import { getRuntime } from '../../src/helpers/get-runtime.js';
 
 (async () => {
   const runtime = getRuntime();

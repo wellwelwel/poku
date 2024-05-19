@@ -7,6 +7,7 @@ import { hr } from './hr.js';
 import { findFile } from './find-file.js';
 import { each } from '../configs/each.js';
 
+/* c8 ignore start */
 export type ParseAssertionOptions = {
   message?: string | Error;
   defaultMessage?: string;
@@ -15,6 +16,7 @@ export type ParseAssertionOptions = {
   throw?: boolean;
   hideDiff?: boolean;
 };
+/* c8 ignore stop */
 
 export const parseAssertion = async (
   cb: () => void | Promise<void>,

@@ -1,5 +1,5 @@
-import { nodeVersion } from '../../src/helpers/get-runtime.js';
-import { assertPromise as assert, describe, test } from '../../src/index.js';
+import { nodeVersion } from '../../../src/helpers/get-runtime.js';
+import { assertPromise as assert, describe, test } from '../../../src/index.js';
 
 describe('Assert Promise Suite (No Message)', {
   background: false,

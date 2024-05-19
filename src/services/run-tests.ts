@@ -2,7 +2,7 @@ import process from 'node:process';
 import { EOL } from 'node:os';
 import path from 'node:path';
 import { runner } from '../helpers/runner.js';
-import { indentation } from '../helpers/indentation.js';
+import { indentation } from '../configs/indentation.js';
 import {
   isFile as IS_FILE,
   listFiles,
@@ -14,10 +14,12 @@ import { runTestFile } from './run-test-file.js';
 import { Configs } from '../@types/poku.js';
 import { isQuiet } from '../helpers/logs.js';
 
+/* c8 ignore start */
 export const results = {
   success: 0,
   fail: 0,
 };
+/* c8 ignore stop */
 
 export const runTests = async (
   dir: string,
