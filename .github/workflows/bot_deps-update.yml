@@ -63,7 +63,7 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: 🗑️ Deleting ${{ env.BRANCH }} Branch
+      - name: 🗑️ Deleting Branch
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
