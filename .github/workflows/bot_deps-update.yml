@@ -78,14 +78,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
-      # - name: 🧙🏻 Creating Pull Request
-      #   if: steps.check_changes.outputs.changes == 'true' && steps.set_pr_exists.outputs.pr_exists == 'false'
-      #   uses: peter-evans/create-pull-request@v6
-      #   with:
-      #     token: ${{ secrets.PAT }}
-      #     branch: ${{ env.BRANCH }}
-      #     delete-branch: true
-      #     title: '${{ env.PR_TITLE }}'
-      #     body: '- 🤖 Update project dependencies'
-      #     labels: |
-      #       dependencies
+      - name: 🧙🏻 Creating Pull Request
+        if: steps.check_changes.outputs.changes == 'true' && steps.set_pr_exists.outputs.pr_exists == 'false'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.PAT }}
+          branch: ${{ env.BRANCH }}
+          delete-branch: true
+          title: '${{ env.PR_TITLE }}'
+          body: '- 🤖 Update project dependencies'
+          labels: |
+            dependencies
