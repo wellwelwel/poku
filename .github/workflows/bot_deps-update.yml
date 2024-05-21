@@ -63,15 +63,6 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: 🤖 Checking open PRs
-        if: steps.check_changes.outputs.changes == 'true'
-        id: set_pr_exists
-        run: |
-          echo "pr_exists=false" >> $GITHUB_OUTPUT
-          if npx tsx tools/workflows/get-prs.ts --title="${{ env.TITLE }}"; then
-            echo "pr_exists=true" >> $GITHUB_OUTPUT
-          fi
-
       - name: 🚀 Commiting and Pushing Changes
         if: steps.check_changes.outputs.changes == 'true'
         run: |
@@ -82,7 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: 🧙🏻 Creating Pull Request
-        if: steps.check_changes.outputs.changes == 'true' && steps.set_pr_exists.outputs.pr_exists == 'false'
+        if: steps.check_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.PAT }}
