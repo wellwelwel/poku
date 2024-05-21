@@ -53,7 +53,7 @@ jobs:
 
       - name: 🤖 Checking open PRs
         if: steps.check_changes.outputs.changes == 'true'
-        id: check_pr
+        id: set_pr_exists
         run: |
           echo "pr_exists=false" >> $GITHUB_OUTPUT
           if npx tsx tools/workflows/get-prs.ts --title="${{ env.PR_TITLE }}"; then
