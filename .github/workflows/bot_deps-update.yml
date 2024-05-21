@@ -37,6 +37,7 @@ jobs:
           if [ "${{ env.BRANCH }}" = "$MAIN_BRANCH" ]; then
             exit 1
           fi
+          echo $MAIN_BRANCH
 
       - name: 📦 Installing Dependencies
         run: npm ci
