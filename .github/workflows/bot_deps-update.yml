@@ -72,8 +72,8 @@ jobs:
 
       - name: 🧙🏻 Debug
         run: |
-          echo steps.check_changes.outputs.changes
-          echo steps.set_pr_exists.outputs.pr_exists
+          echo ${{ steps.check_changes.outputs.changes }}
+          echo ${{ steps.set_pr_exists.outputs.pr_exists }}
 
       # - name: 🧙🏻 Creating Pull Request
       #   if: steps.check_changes.outputs.changes == 'true' && steps.set_pr_exists.outputs.pr_exists == 'false'
