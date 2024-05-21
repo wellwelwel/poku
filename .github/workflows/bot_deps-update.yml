@@ -4,7 +4,11 @@ name: '⏫ Bot — Dependencies'
 on:
   schedule:
     - cron: '0 3 * * *'
+  pull_request:
   workflow_dispatch:
+
+env:
+  PR_TITLE: 'chore: update dependencies'
 
 jobs:
   update-deps:
@@ -47,26 +51,12 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: 🤖 Getting PRs
+      - name: 🤖 Checking open PRs
         if: steps.check_changes.outputs.changes == 'true'
         id: check_pr
-        uses: octokit/request-action@v2.x
-        with:
-          route: GET /repos/:owner/:repo/pulls
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
-          state: open
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 🔎 Checking if PR exists
-        if: steps.check_changes.outputs.changes == 'true'
-        id: set_pr_exists
         run: |
-          sudo apt-get install -y jq
           echo "pr_exists=false" >> $GITHUB_OUTPUT
-          pr_titles=$(jq -r '.[] | select(.title=="chore: update dependencies") | .title' <<< "${{ steps.check_pr.outputs.data }}")
-          if [[ -n "$pr_titles" ]]; then
+          if npx tsx tools/workflows/get-prs.ts --title="${{ env.PR_TITLE }}"; then
             echo "pr_exists=true" >> $GITHUB_OUTPUT
           fi
 
@@ -74,7 +64,7 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           git add .
-          git commit -m 'chore: update dependencies'
+          git commit -m "${{ env.PR_TITLE }}"
           git push origin HEAD:deps --force
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -86,7 +76,7 @@ jobs:
           token: ${{ secrets.PAT }}
           branch: deps
           delete-branch: true
-          title: 'chore: update dependencies'
+          title: '${{ env.PR_TITLE }}'
           body: '- 🤖 Update project dependencies'
           labels: |
             dependencies
