@@ -59,6 +59,7 @@ jobs:
           if npx tsx tools/workflows/get-prs.ts --title="${{ env.PR_TITLE }}"; then
             echo "pr_exists=true" >> $GITHUB_OUTPUT
           fi
+          echo pr_exists
 
       - name: 🚀 Commiting and Pushing Changes
         if: steps.check_changes.outputs.changes == 'true'
@@ -69,14 +70,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
-      - name: 🧙🏻 Creating Pull Request
-        if: steps.check_changes.outputs.changes == 'true' && steps.set_pr_exists.outputs.pr_exists == 'false'
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.PAT }}
-          branch: deps
-          delete-branch: true
-          title: '${{ env.PR_TITLE }}'
-          body: '- 🤖 Update project dependencies'
-          labels: |
-            dependencies
+      - name: 🧙🏻 Debug
+        run: |
+          echo steps.check_changes.outputs.changes
+          echo steps.set_pr_exists.outputs.pr_exists
+
+      # - name: 🧙🏻 Creating Pull Request
+      #   if: steps.check_changes.outputs.changes == 'true' && steps.set_pr_exists.outputs.pr_exists == 'false'
+      #   uses: peter-evans/create-pull-request@v6
+      #   with:
+      #     token: ${{ secrets.PAT }}
+      #     branch: deps
+      #     delete-branch: true
+      #     title: '${{ env.PR_TITLE }}'
+      #     body: '- 🤖 Update project dependencies'
+      #     labels: |
+      #       dependencies
