@@ -10,7 +10,7 @@ on:
 env:
   PR_TITLE: 'chore: update dependencies'
   BRANCH: 'deps'
-  PATH: '.'
+  PACKAGE_PATH: '.'
   BODY: '- 🤖 Update project dependencies'
   LABEL: |
     dependencies
@@ -44,10 +44,10 @@ jobs:
           fi
 
       - name: 📦 Installing Dependencies
-        run: cd ${{ env.PATH }} && npm ci
+        run: cd ${{ env.PACKAGE_PATH }} && npm ci
 
       - name: ⏫ Updating Dependencies
-        run: cd ${{ env.PATH }} && npm run update
+        run: cd ${{ env.PACKAGE_PATH }} && npm run update
 
       - name: ⚙️ Configuring Git
         run: |
