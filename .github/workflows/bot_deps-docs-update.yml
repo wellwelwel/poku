@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
 
 env:
-  PR_TITLE: 'chore(website): update dependencies'
+  TITLE: 'chore(website): update dependencies'
   BRANCH: 'deps-website'
   PACKAGE_PATH: 'website'
   BODY: '- 🤖 Update website dependencies'
-  LABEL: |
+  LABELS: |
     dependencies
     website
 
@@ -69,7 +69,7 @@ jobs:
         id: set_pr_exists
         run: |
           echo "pr_exists=false" >> $GITHUB_OUTPUT
-          if npx tsx tools/workflows/get-prs.ts --title="${{ env.PR_TITLE }}"; then
+          if npx tsx tools/workflows/get-prs.ts --title="${{ env.TITLE }}"; then
             echo "pr_exists=true" >> $GITHUB_OUTPUT
           fi
 
@@ -77,7 +77,7 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           git add .
-          git commit -m "${{ env.PR_TITLE }}"
+          git commit -m "${{ env.TITLE }}"
           git push origin HEAD:refs/heads/${{ env.BRANCH }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -88,7 +88,7 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           branch: ${{ env.BRANCH }}
-          title: '${{ env.PR_TITLE }}'
-          body: ${{ env.BRANCH }}
+          title: '${{ env.TITLE }}'
+          body: ${{ env.BODY }}
           labels: ${{ env.LABELS }}
           delete-branch: true
