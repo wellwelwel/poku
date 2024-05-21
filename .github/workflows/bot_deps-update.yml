@@ -65,7 +65,7 @@ jobs:
         run: |
           git add .
           git commit -m "${{ env.PR_TITLE }}"
-          git push origin HEAD:deps --force
+          git push origin HEAD:refs/heads/deps --force
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
