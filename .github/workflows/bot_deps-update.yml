@@ -9,6 +9,7 @@ on:
 
 env:
   PR_TITLE: 'chore: update dependencies'
+  BRANCH: 'deps'
 
 jobs:
   update-deps:
@@ -29,6 +30,13 @@ jobs:
           path: ~/.npm
           key: npm-linux-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-linux-
+
+      - name: 🔒 Checking if branch is main
+        run: |
+          MAIN_BRANCH=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+          if [ "${{ env.BRANCH }}" = "$MAIN_BRANCH" ]; then
+            exit 1
+          fi
 
       - name: 📦 Installing Dependencies
         run: npm ci
@@ -66,7 +74,7 @@ jobs:
         run: |
           git add .
           git commit -m "${{ env.PR_TITLE }}"
-          git push origin HEAD:refs/heads/deps --force
+          git push origin HEAD:refs/heads/${{ env.BRANCH }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
@@ -80,7 +88,7 @@ jobs:
       #   uses: peter-evans/create-pull-request@v6
       #   with:
       #     token: ${{ secrets.PAT }}
-      #     branch: deps
+      #     branch: ${{ env.BRANCH }}
       #     delete-branch: true
       #     title: '${{ env.PR_TITLE }}'
       #     body: '- 🤖 Update project dependencies'
