@@ -3,12 +3,23 @@ name: '⏫ Bot (Website) — Dependencies'
 
 on:
   schedule:
-    - cron: '0 15 * * *'
+    - cron: '0 3 * * *'
   workflow_dispatch:
+  pull_request:
+
+env:
+  PR_TITLE: 'chore(website): update dependencies'
+  BRANCH: 'deps-website'
+  PACKAGE_PATH: 'website'
+  BODY: '- 🤖 Update website dependencies'
+  LABEL: |
+    dependencies
+    website
 
 jobs:
   update-deps:
     runs-on: ubuntu-latest
+    if: github.event.repository.fork == false
     name: Update
     steps:
       - name: ➕ Actions - Checkout
@@ -19,18 +30,25 @@ jobs:
         with:
           node-version: '22.x'
 
-      - name: Cache Dependencies
+      - name: ➕ Cache dependencies
         uses: actions/cache@v4
         with:
           path: ~/.npm
-          key: npm-website-${{ hashFiles('website/package-lock.json') }}
-          restore-keys: npm-website-
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
 
-      - name: Installing Dependencies
-        run: cd website && npm ci
+      - name: 🔒 Checking if branch is main
+        run: |
+          MAIN_BRANCH=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+          if [ "${{ env.BRANCH }}" = "$MAIN_BRANCH" ]; then
+            exit 1
+          fi
+
+      - name: 📦 Installing Dependencies
+        run: cd ${{ env.PACKAGE_PATH }} && npm ci
 
       - name: ⏫ Updating Dependencies
-        run: cd website && npm run update
+        run: cd ${{ env.PACKAGE_PATH }} && npm run update
 
       - name: ⚙️ Configuring Git
         run: |
@@ -47,37 +65,21 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: 🔍 Checking if "jq" is installed
-        if: steps.check_changes.outputs.changes == 'true'
-        run: sudo apt-get install -y jq
-
-      - name: 🔍 Checking if Pull Request exists
-        if: steps.check_changes.outputs.changes == 'true'
-        id: check_pr
-        uses: octokit/request-action@v2.x
-        with:
-          route: GET /repos/:owner/:repo/pulls
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
-          state: open
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 🔎 Checking if PR exists and is open
+      - name: 🤖 Checking open PRs
         if: steps.check_changes.outputs.changes == 'true'
         id: set_pr_exists
         run: |
           echo "pr_exists=false" >> $GITHUB_OUTPUT
-          for pr in $(jq -r '.[] | select(.title=="chore(website): update dependencies") | .number' <<< "${{ steps.check_pr.outputs.data }}"); do
+          if npx tsx tools/workflows/get-prs.ts --title="${{ env.PR_TITLE }}"; then
             echo "pr_exists=true" >> $GITHUB_OUTPUT
-          done
+          fi
 
       - name: 🚀 Commiting and Pushing Changes
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           git add .
-          git commit -m 'chore(website): update dependencies'
-          git push origin HEAD:deps-docs --force
+          git commit -m "${{ env.PR_TITLE }}"
+          git push origin HEAD:refs/heads/${{ env.BRANCH }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
@@ -86,9 +88,8 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.PAT }}
-          branch: deps-docs
+          branch: ${{ env.BRANCH }}
+          title: '${{ env.PR_TITLE }}'
+          body: ${{ env.BRANCH }}
+          labels: ${{ env.LABELS }}
           delete-branch: true
-          title: 'chore(website): update dependencies'
-          body: '- 🤖 Update website dependencies'
-          labels: |
-            dependencies
