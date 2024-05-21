@@ -42,17 +42,17 @@ jobs:
             exit 1
           fi
 
-      - name: ⚙️ Configuring Git
-        run: |
-          git config --global user.name 'wellwelwel'
-          git config --global user.email '46850407+wellwelwel@users.noreply.github.com'
-          git update-index --refresh > /dev/null 2>&1 || true
-
       - name: 📦 Installing Dependencies
         run: cd ${{ env.PACKAGE_PATH }} && npm ci
 
       - name: ⏫ Updating Dependencies
         run: cd ${{ env.PACKAGE_PATH }} && npm run update
+
+      - name: ⚙️ Configuring Git
+        run: |
+          git config --global user.name 'wellwelwel'
+          git config --global user.email '46850407+wellwelwel@users.noreply.github.com'
+          git update-index --refresh > /dev/null 2>&1 || true
 
       - name: 🔎 Checking for Changes
         id: check_changes
