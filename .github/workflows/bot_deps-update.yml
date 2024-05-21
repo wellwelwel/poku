@@ -4,12 +4,16 @@ name: '⏫ Bot — Dependencies'
 on:
   schedule:
     - cron: '0 3 * * *'
-  pull_request:
   workflow_dispatch:
+  pull_request:
 
 env:
   PR_TITLE: 'chore: update dependencies'
   BRANCH: 'deps'
+  PATH: '.'
+  BODY: '- 🤖 Update project dependencies'
+  LABEL: |
+    dependencies
 
 jobs:
   update-deps:
@@ -40,10 +44,10 @@ jobs:
           fi
 
       - name: 📦 Installing Dependencies
-        run: npm ci
+        run: cd ${{ env.PATH }} && npm ci
 
       - name: ⏫ Updating Dependencies
-        run: npm run update
+        run: cd ${{ env.PATH }} && npm run update
 
       - name: ⚙️ Configuring Git
         run: |
@@ -84,8 +88,7 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           branch: ${{ env.BRANCH }}
-          delete-branch: true
           title: '${{ env.PR_TITLE }}'
-          body: '- 🤖 Update project dependencies'
-          labels: |
-            dependencies
+          body: ${{ env.BRANCH }}
+          labels: ${{ env.LABELS }}
+          delete-branch: true
