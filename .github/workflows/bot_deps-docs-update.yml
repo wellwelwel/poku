@@ -3,9 +3,8 @@ name: '⏫ Bot (Website) — Dependencies'
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 3 * * 1-5'
   workflow_dispatch:
-  pull_request:
 
 env:
   PR_TITLE: 'chore(website): update dependencies'
