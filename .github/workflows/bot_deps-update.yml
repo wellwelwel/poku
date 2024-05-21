@@ -47,11 +47,7 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: 🔍 Checking if "jq" is installed
-        if: steps.check_changes.outputs.changes == 'true'
-        run: sudo apt-get install -y jq
-
-      - name: 🔍 Checking if Pull Request exists
+      - name: 🤖 Getting PRs
         if: steps.check_changes.outputs.changes == 'true'
         id: check_pr
         uses: octokit/request-action@v2.x
@@ -63,14 +59,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🔎 Checking if PR exists and is open
+      - name: 🔎 Checking if PR exists
         if: steps.check_changes.outputs.changes == 'true'
         id: set_pr_exists
         run: |
+          sudo apt-get install -y jq
           echo "pr_exists=false" >> $GITHUB_OUTPUT
-          for pr in $(jq -r '.[] | select(.title=="chore: update dependencies") | .number' <<< "${{ steps.check_pr.outputs.data }}"); do
+          pr_titles=$(jq -r '.[] | select(.title=="chore: update dependencies") | .title' <<< "${{ steps.check_pr.outputs.data }}")
+          if [[ -n "$pr_titles" ]]; then
             echo "pr_exists=true" >> $GITHUB_OUTPUT
-          done
+          fi
 
       - name: 🚀 Commiting and Pushing Changes
         if: steps.check_changes.outputs.changes == 'true'
