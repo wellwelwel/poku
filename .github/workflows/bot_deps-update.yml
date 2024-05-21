@@ -3,12 +3,21 @@ name: '⏫ Bot — Dependencies'
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 15 * * 1-5'
   workflow_dispatch:
+
+env:
+  PR_TITLE: 'chore: update dependencies'
+  BRANCH: 'deps'
+  PACKAGE_PATH: '.'
+  BODY: '- 🤖 Update project dependencies'
+  LABEL: |
+    dependencies
 
 jobs:
   update-deps:
     runs-on: ubuntu-latest
+    if: github.event.repository.fork == false
     name: Update
     steps:
       - name: ➕ Actions - Checkout
@@ -26,11 +35,18 @@ jobs:
           key: npm-linux-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-linux-
 
+      - name: 🔒 Checking if branch is main
+        run: |
+          MAIN_BRANCH=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+          if [ "${{ env.BRANCH }}" = "$MAIN_BRANCH" ]; then
+            exit 1
+          fi
+
       - name: 📦 Installing Dependencies
-        run: npm ci
+        run: cd ${{ env.PACKAGE_PATH }} && npm ci
 
       - name: ⏫ Updating Dependencies
-        run: npm run update
+        run: cd ${{ env.PACKAGE_PATH }} && npm run update
 
       - name: ⚙️ Configuring Git
         run: |
@@ -47,26 +63,12 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: 🤖 Getting PRs
-        if: steps.check_changes.outputs.changes == 'true'
-        id: check_pr
-        uses: octokit/request-action@v2.x
-        with:
-          route: GET /repos/:owner/:repo/pulls
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
-          state: open
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 🔎 Checking if PR exists
+      - name: 🤖 Checking open PRs
         if: steps.check_changes.outputs.changes == 'true'
         id: set_pr_exists
         run: |
-          sudo apt-get install -y jq
           echo "pr_exists=false" >> $GITHUB_OUTPUT
-          pr_titles=$(jq -r '.[] | select(.title=="chore: update dependencies") | .title' <<< "${{ steps.check_pr.outputs.data }}")
-          if [[ -n "$pr_titles" ]]; then
+          if npx tsx tools/workflows/get-prs.ts --title="${{ env.PR_TITLE }}"; then
             echo "pr_exists=true" >> $GITHUB_OUTPUT
           fi
 
@@ -74,8 +76,8 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           git add .
-          git commit -m 'chore: update dependencies'
-          git push origin HEAD:deps --force
+          git commit -m "${{ env.PR_TITLE }}"
+          git push origin HEAD:refs/heads/${{ env.BRANCH }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
@@ -84,9 +86,8 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.PAT }}
-          branch: deps
+          branch: ${{ env.BRANCH }}
+          title: '${{ env.PR_TITLE }}'
+          body: ${{ env.BRANCH }}
+          labels: ${{ env.LABELS }}
           delete-branch: true
-          title: 'chore: update dependencies'
-          body: '- 🤖 Update project dependencies'
-          labels: |
-            dependencies
