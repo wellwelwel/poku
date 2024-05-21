@@ -14,6 +14,7 @@ env:
 jobs:
   update-deps:
     runs-on: ubuntu-latest
+    if: github.event.repository.fork == false
     name: Update
     steps:
       - name: ➕ Actions - Checkout
@@ -37,7 +38,6 @@ jobs:
           if [ "${{ env.BRANCH }}" = "$MAIN_BRANCH" ]; then
             exit 1
           fi
-          echo $MAIN_BRANCH
 
       - name: 📦 Installing Dependencies
         run: npm ci
@@ -68,7 +68,6 @@ jobs:
           if npx tsx tools/workflows/get-prs.ts --title="${{ env.PR_TITLE }}"; then
             echo "pr_exists=true" >> $GITHUB_OUTPUT
           fi
-          echo pr_exists
 
       - name: 🚀 Commiting and Pushing Changes
         if: steps.check_changes.outputs.changes == 'true'
@@ -78,11 +77,6 @@ jobs:
           git push origin HEAD:refs/heads/${{ env.BRANCH }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
-
-      - name: 🧙🏻 Debug
-        run: |
-          echo ${{ steps.check_changes.outputs.changes }}
-          echo ${{ steps.set_pr_exists.outputs.pr_exists }}
 
       # - name: 🧙🏻 Creating Pull Request
       #   if: steps.check_changes.outputs.changes == 'true' && steps.set_pr_exists.outputs.pr_exists == 'false'
