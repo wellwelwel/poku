@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.0](https://github.com/wellwelwel/poku/compare/v1.12.1...v1.13.0) (2024-05-23)
+
+
+### Features
+
+* **deno:** support for custom `allow` permissions ([#284](https://github.com/wellwelwel/poku/issues/284)) ([4e551f6](https://github.com/wellwelwel/poku/commit/4e551f6c99fd6b7ff74a671fa441ac8279cf4a3c))
+* **deno:** support for custom `deny` permissions ([#286](https://github.com/wellwelwel/poku/issues/286)) ([3172c4b](https://github.com/wellwelwel/poku/commit/3172c4b14be3ca20b52d6dc4efa068cd89766875))
+
 ## [1.12.1](https://github.com/wellwelwel/poku/compare/v1.12.0...v1.12.1) (2024-05-19)
 
 
