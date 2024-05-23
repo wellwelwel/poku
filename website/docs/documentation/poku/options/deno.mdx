@@ -57,3 +57,39 @@ Clear all permissions:
 ```bash
 npx poku --deno-allow='' ./test
 ```
+
+## `deny`
+
+> `poku(targetPaths: string | string[], configs?: Configs)`
+>
+> `deny: string[]`
+
+Change permissions for **Deno**.
+
+### API (_in-code_)
+
+```ts
+poku(['...'], {
+  deno: {
+    deny: ['write', 'sys' /* ... */],
+  },
+});
+```
+
+```ts
+poku(['...'], {
+  deno: {
+    deny: ['env=HOME', 'write' /* ... */],
+  },
+});
+```
+
+### CLI
+
+```bash
+npx poku --deno-deny='write, sys' ./test
+```
+
+```bash
+npx poku --deno-deny='env=HOME, write' ./test
+```

@@ -27,6 +27,7 @@ const killRange = getArg('kill-range');
 const killPID = getArg('kill-pid');
 const concurrency = Number(getArg('concurrency')) || undefined;
 const denoAllow = getSubArg('deno-allow');
+const denoDeny = getSubArg('deno-deny');
 
 // Multiple arguments with values or not
 // TODO (Custom Args)
@@ -82,6 +83,7 @@ if (hasArg('log-success'))
     // arguments: args.length > 0 ? args : undefined,
     deno: {
       allow: denoAllow,
+      deny: denoDeny,
     },
   });
 })();
