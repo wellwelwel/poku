@@ -1,32 +1,18 @@
 import { assert, describe, test } from '../../../src/index.js';
 import { runner } from '../../../src/helpers/runner.js';
 
-describe('Deno Permissions (Allow)', { background: false, icon: '🔬' });
+describe('Deno Permissions (Deny)', { background: false, icon: '🔬' });
 
 test(() => {
   assert.deepStrictEqual(
     runner('', {
       platform: 'deno',
-    }),
-    [
-      'deno',
-      'run',
-      '--allow-read',
-      '--allow-env',
-      '--allow-run',
-      '--allow-net',
-    ],
-    'Default Permissions'
-  );
-
-  assert.deepStrictEqual(
-    runner('', {
-      platform: 'deno',
       deno: {
-        allow: ['read'],
+        allow: [],
+        deny: ['read'],
       },
     }),
-    ['deno', 'run', '--allow-read'],
+    ['deno', 'run', '--deny-read'],
     'Custom Permission'
   );
 
@@ -34,10 +20,11 @@ test(() => {
     runner('', {
       platform: 'deno',
       deno: {
-        allow: ['read', 'env'],
+        allow: [],
+        deny: ['read', 'env'],
       },
     }),
-    ['deno', 'run', '--allow-read', '--allow-env'],
+    ['deno', 'run', '--deny-read', '--deny-env'],
     'Custom Permissions'
   );
 
@@ -45,10 +32,11 @@ test(() => {
     runner('', {
       platform: 'deno',
       deno: {
-        allow: ['read=file.js', 'env'],
+        allow: [],
+        deny: ['read=file.js', 'env'],
       },
     }),
-    ['deno', 'run', '--allow-read=file.js', '--allow-env'],
+    ['deno', 'run', '--deny-read=file.js', '--deny-env'],
     'Custom Permissions per Files'
   );
 
@@ -56,10 +44,18 @@ test(() => {
     runner('', {
       platform: 'deno',
       deno: {
-        allow: [],
+        allow: ['read=file.js', 'net'],
+        deny: ['net=server.com', 'env'],
       },
     }),
-    ['deno', 'run'],
-    'No Permissions'
+    [
+      'deno',
+      'run',
+      '--allow-read=file.js',
+      '--allow-net',
+      '--deny-net=server.com',
+      '--deny-env',
+    ],
+    'Mixed Permissions'
   );
 });

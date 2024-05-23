@@ -28,7 +28,13 @@ export const runner = (filename: string, configs?: Configs): string[] => {
           '--allow-net', // Create Service
         ];
 
-    return ['deno', 'run', ...denoAllow];
+    const denoDeny = configs?.deno?.deny
+      ? configs.deno.deny
+          .map((deny) => (deny ? `--deny-${deny}` : ''))
+          .filter((deny) => deny)
+      : [];
+
+    return ['deno', 'run', ...denoAllow, ...denoDeny];
   }
 
   // Node.js
