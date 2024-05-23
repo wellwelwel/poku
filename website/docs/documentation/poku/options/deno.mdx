@@ -1,0 +1,59 @@
+---
+sidebar_position: 98
+---
+
+# `deno`
+
+## `allow`
+
+> `poku(targetPaths: string | string[], configs?: Configs)`
+>
+> `allow: string[]`
+
+Change permissions for **Deno**.
+
+By default **Poku** uses `--allow-run`, `--allow-env`, `--allow-read` and `--allow-net`.
+
+### API (_in-code_)
+
+```ts
+poku(['...'], {
+  deno: {
+    allow: ['read', 'run' /* ... */],
+  },
+});
+```
+
+```ts
+poku(['...'], {
+  deno: {
+    allow: ['read=file.js', 'run' /* ... */],
+  },
+});
+```
+
+Clear all permissions:
+
+```ts
+poku(['...'], {
+  deno: {
+    allow: [],
+  },
+});
+```
+
+### CLI
+
+```bash
+npx poku --deno-allow='read, run' ./test
+```
+
+```bash
+npx poku --deno-allow='read=file.js, run' ./test
+```
+
+Clear all permissions:
+
+```bash
+npx poku --deno-allow='' ./test
+```

@@ -15,15 +15,21 @@ export const runner = (filename: string, configs?: Configs): string[] => {
   if (runtime === 'bun') return ['bun'];
 
   // Deno
-  if (runtime === 'deno')
-    return [
-      'deno',
-      'run',
-      '--allow-read', // Poku searches for all test files
-      '--allow-env', // Poku share the process.env with the `child_process`
-      '--allow-run', // Poku CLI
-      '--allow-net', // Create Service
-    ];
+  if (runtime === 'deno') {
+    const denoAllow = configs?.deno?.allow
+      ? configs.deno.allow
+          .map((allow) => (allow ? `--allow-${allow}` : ''))
+          .filter((allow) => allow)
+      : [
+          // Defaults
+          '--allow-read', // Poku searches for all test files
+          '--allow-env', // Poku share the process.env with the `child_process`
+          '--allow-run', // Poku CLI
+          '--allow-net', // Create Service
+        ];
+
+    return ['deno', 'run', ...denoAllow];
+  }
 
   // Node.js
   return path.extname(filename) === '.ts'

@@ -2,6 +2,11 @@
 
 import type { Configs as ListFilesConfigs } from './list-files.js';
 
+export type DenoOptions = {
+  allow?: string[];
+  deny?: string[];
+};
+
 export type Configs = {
   /**
    * By setting `true`, **Poku** won't exit the process and will return the exit code (`0` or `1`).
@@ -93,6 +98,7 @@ export type Configs = {
    * ```
    */
   afterEach?: () => unknown | Promise<unknown>;
+  deno?: DenoOptions;
 } & ListFilesConfigs;
 
 /* c8 ignore stop */

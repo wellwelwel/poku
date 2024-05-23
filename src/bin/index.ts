@@ -3,11 +3,18 @@
 /* c8 ignore start */
 
 import { escapeRegExp } from '../modules/list-files.js';
-import { getArg, getLastParam, hasArg } from '../helpers/get-arg.js';
+import {
+  // getAllArgs,
+  getArg,
+  getLastParam,
+  hasArg,
+  getSubArg,
+} from '../helpers/get-arg.js';
 import { kill, poku } from '../index.js';
 import { platformIsValid } from '../helpers/get-runtime.js';
 import { format } from '../helpers/format.js';
 
+// Argument with values
 const dirs =
   (hasArg('include')
     ? getArg('include')?.split(',')
@@ -19,6 +26,13 @@ const killPort = getArg('kill-port');
 const killRange = getArg('kill-range');
 const killPID = getArg('kill-pid');
 const concurrency = Number(getArg('concurrency')) || undefined;
+const denoAllow = getSubArg('deno-allow');
+
+// Multiple arguments with values or not
+// TODO (Custom Args)
+// const args = getAllArgs('arg');
+
+// Argument exists
 const parallel = hasArg('parallel');
 const quiet = hasArg('quiet');
 const debug = hasArg('debug');
@@ -64,6 +78,11 @@ if (hasArg('log-success'))
     debug,
     failFast,
     concurrency,
+    // TODO (Custom Args)
+    // arguments: args.length > 0 ? args : undefined,
+    deno: {
+      allow: denoAllow,
+    },
   });
 })();
 
