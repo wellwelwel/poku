@@ -4,6 +4,7 @@
  * Both CLI, API, noExit, sequential and parallel runs are strictly tested, but these tests use deep child process for it
  */
 
+import process, { stdout } from 'node:process';
 import { EOL } from 'node:os';
 import { Code } from '../@types/code.js';
 import { Configs } from '../@types/poku.js';
@@ -15,6 +16,10 @@ import { isQuiet } from '../helpers/logs.js';
 import { hr } from '../helpers/hr.js';
 import { fileResults } from '../configs/files.js';
 import { indentation } from '../configs/indentation.js';
+
+process.on('SIGINT', () => {
+  stdout.write('\u001B[?25h');
+});
 
 export async function poku(
   targetPaths: string | string[],
