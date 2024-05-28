@@ -18,7 +18,12 @@ export const runTestFile = (
   new Promise(async (resolve) => {
     const runtimeOptions = runner(filePath, configs);
     const runtime = runtimeOptions.shift()!;
-    const runtimeArguments = [...runtimeOptions, filePath];
+    const runtimeArguments = [
+      ...runtimeOptions,
+      configs?.deno?.cjs
+        ? './node_modules/poku/lib/polyfills/deno.mjs'
+        : filePath,
+    ];
 
     const fileRelative = path.relative(process.cwd(), filePath);
     const showLogs = !isQuiet(configs);
@@ -93,7 +98,7 @@ export const runTestFile = (
       shell: isWindows,
       env: {
         ...process.env,
-        FILE: configs?.parallel ? fileRelative : '',
+        FILE: configs?.parallel || configs?.deno?.cjs ? fileRelative : '',
       },
     });
 

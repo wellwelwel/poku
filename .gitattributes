@@ -1,3 +1,4 @@
 website/** linguist-documentation
 test/docker/** linguist-vendored
+fixtures/** linguist-vendored
 src/bin/** linguist-language=TypeScript

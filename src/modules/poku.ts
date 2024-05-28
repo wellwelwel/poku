@@ -17,7 +17,7 @@ import { hr } from '../helpers/hr.js';
 import { fileResults } from '../configs/files.js';
 import { indentation } from '../configs/indentation.js';
 
-process.on('SIGINT', () => {
+process.once('SIGINT', () => {
   stdout.write('\u001B[?25h');
 });
 
@@ -99,4 +99,5 @@ export async function poku(
 
   exit(code, configs?.quiet);
 }
+
 /* c8 ignore stop */

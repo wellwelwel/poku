@@ -38,6 +38,7 @@ const parallel = hasArg('parallel');
 const quiet = hasArg('quiet');
 const debug = hasArg('debug');
 const failFast = hasArg('fail-fast');
+const denoCJS = hasArg('deno-cjs');
 
 if (hasArg('log-success'))
   console.log(
@@ -84,6 +85,7 @@ if (hasArg('log-success'))
     deno: {
       allow: denoAllow,
       deny: denoDeny,
+      cjs: denoCJS,
     },
   });
 })();

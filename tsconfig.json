@@ -20,6 +20,7 @@
     "esModuleInterop": true,
     "noEmitOnError": true,
     "declaration": true,
-    "declarationDir": "lib"
+    "declarationDir": "lib",
+    "allowSyntheticDefaultImports": true
   }
 }

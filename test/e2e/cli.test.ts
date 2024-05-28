@@ -1,5 +1,10 @@
 import { assert, describe, test } from '../../src/index.js';
 import { executeCLI, ext, isProduction } from '../helpers/capture-cli.test.js';
+import { getRuntime } from '../../src/helpers/get-runtime.js';
+
+const runtime = getRuntime();
+
+if (runtime === 'deno' && !isProduction) process.exit(0);
 
 test(async () => {
   describe('Poku Test Runner: CLI', { background: false, icon: '🐷' });

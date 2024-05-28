@@ -5,6 +5,7 @@ import type { Configs as ListFilesConfigs } from './list-files.js';
 export type DenoOptions = {
   allow?: string[];
   deny?: string[];
+  cjs?: boolean | string[];
 };
 
 export type Configs = {
