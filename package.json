@@ -1,6 +1,6 @@
 {
   "name": "poku",
-  "version": "1.13.1-experimental.1",
+  "version": "1.13.0",
   "description": "🐷 Poku makes testing easy for Node.js, Bun & Deno at the same time.",
   "main": "./lib/index.js",
   "scripts": {
@@ -97,6 +97,10 @@
     "process",
     "port",
     "cross-platform",
+    "commonjs",
+    "cjs",
+    "esm",
+    "runtime",
     "poku",
     "pokujs"
   ],
