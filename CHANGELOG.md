@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/wellwelwel/poku/compare/v1.13.0...v1.14.0) (2024-05-29)
+
+
+### Features
+
+* **deno:** allow direct CommonJS execution in Deno ([#300](https://github.com/wellwelwel/poku/issues/300)) ([fa358b5](https://github.com/wellwelwel/poku/commit/fa358b5515d7b1ab70bb807359cca6127e45f900))
+
 ## [1.13.0](https://github.com/wellwelwel/poku/compare/v1.12.1...v1.13.0) (2024-05-23)
 
 
