@@ -52,24 +52,15 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM** and **CJS**<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **Typescript** files<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Don't export your **server** (_just run it_) 🚀<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the same test suite for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url].<br />
 
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Less verbose<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No eval needed 🔐<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Safety and Reliability<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No global state<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Parallel** and **Sequential** runs 🏃🏽🏃🏻<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **Background Services** and **Servers**, **Processes** and **Ports**<br />
-
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Poku** is [**100%** documented](https://poku.io/docs)<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Designed to be human-friendly<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Compatible with **Coverage** tools<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatibility 🩵<br />
-
-✨ You are free to work with the packages you desire<br />
-🧑🏻‍🎓 You don't need to learn it all at once to get started <br />
-🧑🏻‍🔬 **Poku** adapts to your test, not the other way around<br />
-☁ Zero external dependencies (_that means **lightweight**_) <br />
-👴🏼 **Poku** doesn't restrict you from testing in legacy environments<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Compatible with **Coverage** tools<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CJS** (**CommonJS**) files directly with [**Deno**][deno-version-url]<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **services**, **servers**, **processes** and **ports**<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Poku** doesn't use `eval` nor will it change the environment's behavior 🔐<br />
 
 ---
 
@@ -139,8 +130,7 @@ assert(true, 'Poku will describe it 🐷');
 </tr>
 </table>
 
-- Change from `.mjs` to `.js` by defining `"type": "module"` in your _package.json_.
-- Note that these examples use [**ESM**](https://poku.io/docs/examples/cjs-esm), but you can use [**CJS**](https://poku.io/docs/examples/cjs-esm) as well.
+> Change from `.mjs` to `.js` by defining `"type": "module"` in your _package.json_.
 
 ### Run it 🚀
 
@@ -161,7 +151,7 @@ npx poku
 <td width="400">
 
 ```bash
-bun poku
+bunx poku
 ```
 
 </td>
@@ -202,6 +192,14 @@ deno run npm:poku
 - [**test**](https://poku.io/docs/documentation/helpers/test)
 - [**describe**](https://poku.io/docs/documentation/helpers/describe)
 - _and much more_ ✨
+
+---
+
+**Designed to be human-friendly**
+
+- ✨ You're free to work with the packages you desire
+- 🧑🏻‍🎓 You don't need to learn it all at once to get started
+- 👴🏼 **Poku** doesn't restrict you from testing in legacy environments
 
 [**See the complete documentation**](https://poku.io/docs).
 
