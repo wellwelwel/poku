@@ -45,18 +45,20 @@ poku(['...'], {
 ### CLI
 
 ```bash
-npx poku --deno-allow='read, run' ./test
+npx poku --deno-allow='read, run'
 ```
 
 ```bash
-npx poku --deno-allow='read=file.js, run' ./test
+npx poku --deno-allow='read=file.js, run'
 ```
 
 Clear all permissions:
 
 ```bash
-npx poku --deno-allow='' ./test
+npx poku --deno-allow=''
 ```
+
+<hr />
 
 ## `deny`
 
@@ -87,9 +89,51 @@ poku(['...'], {
 ### CLI
 
 ```bash
-npx poku --deno-deny='write, sys' ./test
+npx poku --deno-deny='write, sys'
 ```
 
 ```bash
-npx poku --deno-deny='env=HOME, write' ./test
+npx poku --deno-deny='env=HOME, write'
+```
+
+<hr />
+
+## `cjs`
+
+> `poku(targetPaths: string | string[], configs?: Configs)`
+>
+> `cjs: boolean | string[]`
+
+Now, it's possible to run tests that use `require`, `module.exports` and `module` directly with **Deno** 🎉
+
+It's a great feature to test if a project created primarily in **Node.js** or **Bun** is also compatible with **Deno** without the need to transpile the code or use workarounds.
+
+To run **CommonJS** with **Deno**, you can use:
+
+### API (_in-code_)
+
+```ts
+poku(['...'], {
+  deno: {
+    cjs: true,
+  },
+});
+```
+
+```ts
+poku(['...'], {
+  deno: {
+    cjs: ['.js', '.cjs' /* ... */],
+  },
+});
+```
+
+### CLI
+
+```bash
+npx poku --deno-cjs
+```
+
+```bash
+npx poku --deno-cjs='.js,.cjs'
 ```
