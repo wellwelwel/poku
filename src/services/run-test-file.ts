@@ -16,14 +16,18 @@ export const runTestFile = (
   configs?: Configs
 ): Promise<boolean> =>
   new Promise(async (resolve) => {
+    /* c8 ignore start */
     const runtimeOptions = runner(filePath, configs);
     const runtime = runtimeOptions.shift()!;
     const runtimeArguments = [
       ...runtimeOptions,
-      configs?.deno?.cjs
+      configs?.deno?.cjs === true ||
+      (Array.isArray(configs?.deno?.cjs) &&
+        configs.deno.cjs.some((ext) => filePath.includes(ext)))
         ? './node_modules/poku/lib/polyfills/deno.mjs'
         : filePath,
     ];
+    /* c8 ignore stop */
 
     const fileRelative = path.relative(process.cwd(), filePath);
     const showLogs = !isQuiet(configs);
@@ -32,6 +36,7 @@ export const runTestFile = (
 
     let output = '';
 
+    /* c8 ignore start */
     const log = () => {
       const outputs = removeConsecutiveRepeats(
         showSuccess
@@ -68,6 +73,7 @@ export const runTestFile = (
             `${runtime === 'tsx' ? 'npx tsx' : runtime}${runtimeArguments.slice(0, -1).join(' ')} ${fileRelative}`
           )}`,
         ]);
+      /* c8 ignore start */
 
       const mappedOutputs = outputs.map((current) => `${pad}${current}`);
 
