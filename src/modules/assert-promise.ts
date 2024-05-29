@@ -2,7 +2,7 @@ import * as nodeAssert from 'node:assert';
 import { parseAssertion } from '../helpers/parse-assertion.js';
 import { nodeVersion } from '../helpers/get-runtime.js';
 /* c8 ignore next */
-import { ParseAssertionOptions } from '../@types/assert.js';
+import type { ParseAssertionOptions } from '../@types/assert.js';
 
 const ok = async (
   value: unknown,

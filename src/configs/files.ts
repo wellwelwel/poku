@@ -1,6 +1,6 @@
 /* c8 ignore start */
 
-import { FileResults } from '../@types/list-files.js';
+import type { FileResults } from '../@types/list-files.js';
 
 export const fileResults: FileResults = {
   success: [],

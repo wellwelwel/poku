@@ -1,6 +1,7 @@
 import { EOL } from 'node:os';
-import { Configs } from '../@types/poku.js';
 import { format } from '../helpers/format.js';
+/* c8 ignore next */
+import type { Configs } from '../@types/poku.js';
 
 const eachCore = async (
   type: keyof Required<Pick<Configs, 'beforeEach' | 'afterEach'>>,
