@@ -32,6 +32,9 @@ jobs:
       - name: 📦 Installing Dependencies
         run: npm ci
 
+      - name: 🤹🏻‍♀️ Building the Project
+        run: npm run build
+
       # Testing via Docker Official Images
       - name: 🔬 Deno ${{ matrix.deno-version }}
         run: FILTER=deno-${{ matrix.deno-version }} npm run test:ci

@@ -2,6 +2,7 @@ FROM denoland/deno:alpine
 
 WORKDIR /usr/app
 
+COPY ./lib ./lib
 COPY ./src ./src
 COPY ./test ./test
 COPY ./tools ./tools

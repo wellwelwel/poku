@@ -1,6 +1,7 @@
 import process from 'node:process';
 import fs from 'node:fs';
 import path from 'node:path';
+/* c8 ignore next */
 import type { Configs } from '../@types/list-files.js';
 
 export const sanitizePath = (input: string, ensureTarget?: boolean): string => {

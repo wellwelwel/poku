@@ -2,9 +2,9 @@
 
 import process from 'node:process';
 import { hr } from '../helpers/hr.js';
-import { Code } from '../@types/code.js';
 import { results } from '../services/run-tests.js';
 import { format } from '../helpers/format.js';
+import type { Code } from '../@types/code.js';
 
 export const exit = (code: Code, quiet?: boolean) => {
   const isPoku = results.success > 0 || results.fail > 0;

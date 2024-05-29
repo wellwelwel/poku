@@ -7,9 +7,9 @@ import { hr } from './hr.js';
 import { findFile } from './find-file.js';
 import { each } from '../configs/each.js';
 import { fromEntries, entries } from '../polyfills/object.js';
-/* c8 ignore next */
-import { ParseAssertionOptions } from '../@types/assert.js';
 import { nodeVersion } from './get-runtime.js';
+/* c8 ignore next */
+import type { ParseAssertionOptions } from '../@types/assert.js';
 
 export const parseResultType = (type?: unknown): string => {
   const recurse = (value: unknown): unknown => {

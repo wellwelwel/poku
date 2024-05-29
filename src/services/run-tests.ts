@@ -11,8 +11,9 @@ import {
 import { hr } from '../helpers/hr.js';
 import { format } from '../helpers/format.js';
 import { runTestFile } from './run-test-file.js';
-import { Configs } from '../@types/poku.js';
 import { isQuiet } from '../helpers/logs.js';
+/* c8 ignore next */
+import type { Configs } from '../@types/poku.js';
 
 /* c8 ignore start */
 export const results = {

@@ -3,8 +3,8 @@
 import process from 'node:process';
 import path from 'node:path';
 import { getRuntime } from './get-runtime.js';
-import { Configs } from '../@types/poku.js';
-import { Runner } from '../@types/runner.js';
+import type { Configs } from '../@types/poku.js';
+import type { Runner } from '../@types/runner.js';
 
 export const isWindows = process.platform === 'win32';
 

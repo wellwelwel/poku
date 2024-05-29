@@ -2,23 +2,33 @@ import process from 'node:process';
 import path from 'node:path';
 import { EOL } from 'node:os';
 import { spawn } from 'node:child_process';
-import { isWindows, runner } from '../helpers/runner.js';
 import { indentation } from '../configs/indentation.js';
+import { fileResults } from '../configs/files.js';
+import { isWindows, runner } from '../helpers/runner.js';
 import { format } from '../helpers/format.js';
-import { Configs } from '../@types/poku.js';
 import { isDebug, isQuiet } from '../helpers/logs.js';
 import { removeConsecutiveRepeats } from '../helpers/remove-repeats.js';
 import { beforeEach, afterEach } from './each.js';
-import { fileResults } from '../configs/files.js';
+/* c8 ignore next */
+import type { Configs } from '../@types/poku.js';
 
 export const runTestFile = (
   filePath: string,
   configs?: Configs
 ): Promise<boolean> =>
   new Promise(async (resolve) => {
+    /* c8 ignore start */
     const runtimeOptions = runner(filePath, configs);
     const runtime = runtimeOptions.shift()!;
-    const runtimeArguments = [...runtimeOptions, filePath];
+    const runtimeArguments = [
+      ...runtimeOptions,
+      configs?.deno?.cjs === true ||
+      (Array.isArray(configs?.deno?.cjs) &&
+        configs.deno.cjs.some((ext) => filePath.includes(ext)))
+        ? 'https://cdn.jsdelivr.net/npm/poku/lib/polyfills/deno.mjs'
+        : filePath,
+    ];
+    /* c8 ignore stop */
 
     const fileRelative = path.relative(process.cwd(), filePath);
     const showLogs = !isQuiet(configs);
@@ -27,6 +37,7 @@ export const runTestFile = (
 
     let output = '';
 
+    /* c8 ignore start */
     const log = () => {
       const outputs = removeConsecutiveRepeats(
         showSuccess
@@ -63,6 +74,7 @@ export const runTestFile = (
             `${runtime === 'tsx' ? 'npx tsx' : runtime}${runtimeArguments.slice(0, -1).join(' ')} ${fileRelative}`
           )}`,
         ]);
+      /* c8 ignore start */
 
       const mappedOutputs = outputs.map((current) => `${pad}${current}`);
 
@@ -93,7 +105,7 @@ export const runTestFile = (
       shell: isWindows,
       env: {
         ...process.env,
-        FILE: configs?.parallel ? fileRelative : '',
+        FILE: configs?.parallel || configs?.deno?.cjs ? fileRelative : '',
       },
     });
 

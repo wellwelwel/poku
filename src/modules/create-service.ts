@@ -2,13 +2,14 @@ import process from 'node:process';
 import { spawn } from 'node:child_process';
 import { isWindows, runner, scriptRunner } from '../helpers/runner.js';
 import path from 'node:path';
-import {
+import { sanitizePath } from './list-files.js';
+import { kill } from './processes.js';
+/* c8 ignore next */
+import type {
   End,
   StartScriptOptions,
   StartServiceOptions,
 } from '../@types/background-process.js';
-import { sanitizePath } from './list-files.js';
-import { kill } from './processes.js';
 
 const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
   new Map();
