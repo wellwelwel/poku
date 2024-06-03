@@ -21,7 +21,7 @@
     "deploy": "npx tsx deploy/upload.ts"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.3.2",
+    "@docusaurus/core": "^3.4.0",
     "@docusaurus/plugin-google-gtag": "^3.3.2",
     "@docusaurus/plugin-google-tag-manager": "^3.3.2",
     "@docusaurus/preset-classic": "^3.3.2",
