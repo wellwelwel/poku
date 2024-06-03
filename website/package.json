@@ -54,7 +54,7 @@
     "eslint-plugin-react-refresh": "^0.4.7",
     "packages-update": "^2.0.0",
     "poku": "^1.14.0",
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.0",
     "svps": "^2.3.0",
     "tsx": "^4.11.0",
     "typescript": "^5.4.5"
