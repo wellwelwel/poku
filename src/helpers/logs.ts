@@ -10,20 +10,17 @@ export const isDebug = (configs?: Configs): boolean => Boolean(configs?.debug);
 
 export const printOutput = (options: {
   output: string;
-  runtime: string;
-  runtimeArguments: string[];
-  fileRelative: string;
+  result: boolean;
   configs?: Configs;
 }) => {
-  // const { output, runtime, runtimeArguments, fileRelative, configs } = options;
-  const { output, configs } = options;
+  const { output, result, configs } = options;
 
-  const showSuccess = isDebug(configs);
+  const debug = isDebug(configs);
   const pad = configs?.parallel ? '  ' : '    ';
   const splittedOutput = output.split(/\n/);
 
   const outputs = (
-    showSuccess
+    debug || !result
       ? splittedOutput
       : splittedOutput.filter((current) => {
           if (current.includes('Exited with code')) return false;
@@ -32,23 +29,6 @@ export const printOutput = (options: {
           );
         })
   ).filter((line) => line?.trim().length > 0);
-
-  // TODO: Create "strict" option
-  // if (!showSuccess && /error:/i.test(output) && !/error:/i.test(outputs.join()))
-  //   Object.assign(outputs, [
-  //     ...outputs,
-  //     format.bold(
-  //       format.fail(`✘ External Error ${format.dim(`› ${fileRelative}`)}`)
-  //     ),
-  //     format.dim('  For detailed diagnostics:'),
-  //     `${format.dim(`    CLI ›`)} rerun with the ${format.bold('--debug')} flag enabled.`,
-  //     `${format.dim(
-  //       `    API ›`
-  //     )} set the config option ${format.bold('debug')} to true.`,
-  //     `${format.dim('    RUN ›')} ${format.bold(
-  //       `${runtime === 'tsx' ? 'npx tsx' : runtime} ${runtimeArguments.slice(0, -1).join(' ')} ${fileRelative}`
-  //     )}`,
-  //   ]);
 
   if (outputs.length === 0) return;
 

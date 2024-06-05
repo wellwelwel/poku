@@ -6,7 +6,7 @@ import { getRuntime } from '../../src/helpers/get-runtime.js';
 const isProduction = process.env.NODE_ENV === 'production';
 const ext = getRuntime() === 'deno' ? 'ts' : isProduction ? 'js' : 'ts';
 
-describe('Service: runTestFile', { background: false, icon: '🔬' });
+describe('Service: runTestFile', { icon: '🔬' });
 
 test(async () => {
   const code = await runTestFile(`./fixtures/fail/exit.test.${ext}`, {

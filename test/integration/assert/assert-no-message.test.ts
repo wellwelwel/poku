@@ -1,7 +1,7 @@
 import { nodeVersion } from '../../../src/helpers/get-runtime.js';
 import { assert, describe, test } from '../../../src/index.js';
 
-describe('Assert Suite (No Message)', { background: false, icon: '🔬' });
+describe('Assert Suite (No Message)', { icon: '🔬' });
 
 test(() => {
   assert(true);

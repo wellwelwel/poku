@@ -62,18 +62,16 @@ export const runTestFile = (
     child.stderr.on('data', stdOut);
 
     child.on('close', async (code) => {
+      const result = code === 0;
+
       if (showLogs)
         printOutput({
           output,
-          runtime,
-          runtimeArguments,
-          fileRelative,
+          result,
           configs,
         });
 
       if (!(await afterEach(fileRelative, configs))) return false;
-
-      const result = code === 0;
 
       if (result) fileResults.success.push(fileRelative);
       else fileResults.fail.push(fileRelative);

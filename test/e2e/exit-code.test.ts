@@ -1,6 +1,6 @@
 import { poku, assert, describe, test } from '../../src/index.js';
 
-describe('Poku Runner Suite', { background: false, icon: '🐷' });
+describe('Poku Runner Suite', { icon: '🐷' });
 
 test(async () => {
   const code = await poku(['./fixtures/success', 'fixtures/fail'], {

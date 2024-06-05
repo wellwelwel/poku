@@ -13,7 +13,7 @@ import { getRuntime } from '../../src/helpers/get-runtime.js';
   const runtime = getRuntime();
 
   await test(async () => {
-    describe('Start Service (Single Port)', { background: false, icon: '🔀' });
+    describe('Start Service (Single Port)', { icon: '🔀' });
 
     const server = await startService(`server-a.${ext}`, {
       startAfter: 'ready',
@@ -34,7 +34,7 @@ import { getRuntime } from '../../src/helpers/get-runtime.js';
   });
 
   await test(async () => {
-    describe('Start Script (Single Port)', { background: false, icon: '🔀' });
+    describe('Start Script (Single Port)', { icon: '🔀' });
 
     const server = await startScript(`start:${ext}`, {
       startAfter: 'ready',

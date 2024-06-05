@@ -98,28 +98,33 @@ export const parseAssertion = async (
 
       console.log(
         isPoku
-          ? `${finalMessage} ${format.dim(format.fail(`› ${FILE}`))}`
-          : finalMessage
+          ? `${preIdentation}${finalMessage} ${format.dim(format.fail(`› ${FILE}`))}`
+          : `${preIdentation}${finalMessage}`
       );
 
-      file && console.log(`${format.dim('      File')} ${file}`);
-      console.log(`${format.dim('      Code')} ${code}`);
-      console.log(`${format.dim('  Operator')} ${operator}${EOL}`);
+      file &&
+        console.log(`${format.dim(`${preIdentation}      File`)} ${file}`);
+      console.log(`${format.dim(`${preIdentation}      Code`)} ${code}`);
+      console.log(
+        `${format.dim(`${preIdentation}  Operator`)} ${operator}${EOL}`
+      );
 
       if (!options?.hideDiff) {
         const splitActual = parseResultType(actual).split('\n');
         const splitExpected = parseResultType(expected).split('\n');
 
-        console.log(format.dim(`  ${options?.actual || 'Actual'}:`));
+        console.log(
+          format.dim(`${preIdentation}  ${options?.actual || 'Actual'}:`)
+        );
         splitActual.forEach((line) =>
-          console.log(`  ${format.bold(format.fail(line))}`)
+          console.log(`${preIdentation}  ${format.bold(format.fail(line))}`)
         );
 
         console.log(
-          `${EOL}  ${format.dim(`${options?.expected || 'Expected'}:`)}`
+          `${EOL}${preIdentation}  ${format.dim(`${options?.expected || 'Expected'}:`)}`
         );
         splitExpected.forEach((line) =>
-          console.log(`  ${format.bold(format.success(line))}`)
+          console.log(`${preIdentation}  ${format.bold(format.success(line))}`)
         );
       }
 

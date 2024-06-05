@@ -1,7 +1,7 @@
 import { assert, describe, test } from '../../../src/index.js';
 import { runner } from '../../../src/helpers/runner.js';
 
-describe('Deno Permissions (Deny)', { background: false, icon: '🔬' });
+describe('Deno Permissions (Deny)', { icon: '🔬' });
 
 test(() => {
   assert.deepStrictEqual(

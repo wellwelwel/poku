@@ -8,7 +8,7 @@ const runtime = getRuntime();
 
 if (runtime !== 'deno') process.exit(0);
 
-describe('Deno Compatibility', { background: false, icon: '🦕' });
+describe('Deno Compatibility', { icon: '🦕' });
 
 const FILE = './fixtures/deno/require.cjs';
 const polyfillPath = './lib/polyfills/deno.mjs';
