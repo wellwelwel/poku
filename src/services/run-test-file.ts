@@ -81,10 +81,12 @@ export const runTestFile = (
       resolve(result);
     });
 
+    /* c8 ignore start */
     child.on('error', (err) => {
       console.log(`Failed to start test: ${filePath}`, err);
       fileResults.fail.push(fileRelative);
 
       resolve(false);
     });
+    /* c8 ignore stop */
   });
