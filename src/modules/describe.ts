@@ -1,13 +1,11 @@
 /* c8 ignore start */
-import { EOL } from 'node:os';
+
 import { format, backgroundColor } from '../helpers/format.js';
 
+export let describeCounter = 0;
+
 export type DescribeOptions = {
-  /**
-   * Skips a line before to console it.
-   *
-   * @default false
-   */
+  /** @deprecated */
   pad?: boolean;
   /**
    * @default "grey"
@@ -31,18 +29,21 @@ export const log = (message: string) => console.log(`\x1b[0m${message}\x1b[0m`);
  * On **Poku**, `describe` is just a pretty `console.log` to title your test suites in the terminal.
  */
 export const describe = (title: string, options?: DescribeOptions) => {
-  const { pad, background, icon } = options || {};
+  const { background, icon } = options || {};
 
   const message = `${icon || '☰'} ${title}`;
-  const noBackground = typeof background === 'boolean' && !background;
+  const noBackground = !background;
+
+  describeCounter++;
 
   if (noBackground) {
-    console.log(`${pad ? EOL : ''}${format.bold(message)}`);
+    console.log(`${format.bold(message)}`);
     return;
   }
 
   console.log(
-    `${pad ? EOL : ''}${format.bg(backgroundColor[typeof background === 'string' ? background : 'grey'], message)}`
+    `${format.bg(backgroundColor[typeof background === 'string' ? background : 'grey'], message)}`
   );
 };
+
 /* c8 ignore stop */

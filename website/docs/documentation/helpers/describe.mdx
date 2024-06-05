@@ -25,23 +25,9 @@ assert(true, '2');
 
 > `describe(title: string, options?: DescribeOptions)`
 
-### pad
-
-Skips a line before to console it.
-
-```ts
-import { describe, assert } from 'poku';
-
-describe('Group A', { pad: true });
-assert.ok(true, '1');
-assert.ok(true, '2');
-```
-
 ### background
 
 Change the background color for your personal title.
-
-> Set `false` to disable it.
 
 ```ts
 import { describe, assert } from 'poku';
@@ -95,7 +81,6 @@ assert.ok(true, '2');
     import { assert, describe } from 'poku';
 
     describe('Needs to Succeed', {
-      pad: true,
       background: false,
       icon: '🚀',
     });
@@ -104,7 +89,6 @@ assert.ok(true, '2');
     assert.ok(true, 'Test 2');
 
     describe('Needs to Fail', {
-      pad: true,
       background: 'yellow',
       icon: '🚫',
     });

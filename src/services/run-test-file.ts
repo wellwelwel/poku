@@ -1,13 +1,11 @@
 import process from 'node:process';
 import path from 'node:path';
-import { EOL } from 'node:os';
 import { spawn } from 'node:child_process';
 import { indentation } from '../configs/indentation.js';
 import { fileResults } from '../configs/files.js';
 import { isWindows, runner } from '../helpers/runner.js';
 import { format } from '../helpers/format.js';
-import { isDebug, isQuiet } from '../helpers/logs.js';
-import { removeConsecutiveRepeats } from '../helpers/remove-repeats.js';
+import { isQuiet, printOutput } from '../helpers/logs.js';
 import { beforeEach, afterEach } from './each.js';
 /* c8 ignore next */
 import type { Configs } from '../@types/poku.js';
@@ -32,58 +30,8 @@ export const runTestFile = (
 
     const fileRelative = path.relative(process.cwd(), filePath);
     const showLogs = !isQuiet(configs);
-    const showSuccess = isDebug(configs);
-    const pad = configs?.parallel ? '  ' : '    ';
 
     let output = '';
-
-    /* c8 ignore start */
-    const log = () => {
-      const outputs = removeConsecutiveRepeats(
-        showSuccess
-          ? [output]
-          : output.split(/(\r\n|\r|\n)/).filter((current) => {
-              if (current.includes('Exited with code')) return false;
-              return (
-                /u001b\[0m|(\r\n|\r|\n)/i.test(JSON.stringify(current)) ||
-                current === ''
-              );
-            }),
-        /(\r\n|\r|\n)|^$/
-      );
-
-      // Remove last EOL
-      outputs.length > 1 && outputs.pop();
-
-      if (
-        !showSuccess &&
-        /error:/i.test(output) &&
-        !/error:/i.test(outputs.join())
-      )
-        Object.assign(outputs, [
-          ...outputs,
-          format.bold(
-            format.fail(`✘ External Error ${format.dim(`› ${fileRelative}`)}`)
-          ),
-          format.dim('  For detailed diagnostics:'),
-          `${format.dim(`    CLI ›`)} rerun with the ${format.bold('--debug')} flag enabled.`,
-          `${format.dim(
-            `    API ›`
-          )} set the config option ${format.bold('debug')} to true.`,
-          `${format.dim('    RUN ›')} ${format.bold(
-            `${runtime === 'tsx' ? 'npx tsx' : runtime}${runtimeArguments.slice(0, -1).join(' ')} ${fileRelative}`
-          )}`,
-        ]);
-      /* c8 ignore start */
-
-      const mappedOutputs = outputs.map((current) => `${pad}${current}`);
-
-      if (outputs.length === 1 && outputs[0] === '') return;
-
-      console.log(
-        showSuccess ? mappedOutputs.join('') : mappedOutputs.join(EOL)
-      );
-    };
 
     const stdOut = (data: Buffer): void => {
       output += String(data);
@@ -114,7 +62,14 @@ export const runTestFile = (
     child.stderr.on('data', stdOut);
 
     child.on('close', async (code) => {
-      if (showLogs) log();
+      if (showLogs)
+        printOutput({
+          output,
+          runtime,
+          runtimeArguments,
+          fileRelative,
+          configs,
+        });
 
       if (!(await afterEach(fileRelative, configs))) return false;
 
@@ -126,10 +81,12 @@ export const runTestFile = (
       resolve(result);
     });
 
+    /* c8 ignore start */
     child.on('error', (err) => {
       console.log(`Failed to start test: ${filePath}`, err);
       fileResults.fail.push(fileRelative);
 
       resolve(false);
     });
+    /* c8 ignore stop */
   });
