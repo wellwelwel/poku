@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.1](https://github.com/wellwelwel/poku/compare/v1.14.0...v1.14.1) (2024-06-05)
+
+
+### Bug Fixes
+
+* **cli:** improve performance and indentation ([#333](https://github.com/wellwelwel/poku/issues/333)) ([5efe7d0](https://github.com/wellwelwel/poku/commit/5efe7d0c25a87f7d77bec63f8d78192af3bf11d3))
+* **cli:** show external errors without requiring debugging ([#335](https://github.com/wellwelwel/poku/issues/335)) ([f954089](https://github.com/wellwelwel/poku/commit/f9540893f9a71c467b09630c112709802216d994))
+
 ## [1.14.0](https://github.com/wellwelwel/poku/compare/v1.13.0...v1.14.0) (2024-05-29)
 
 
