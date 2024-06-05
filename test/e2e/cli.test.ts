@@ -7,7 +7,7 @@ const runtime = getRuntime();
 if (runtime === 'deno' && !isProduction) process.exit(0);
 
 test(async () => {
-  describe('Poku Test Runner: CLI', { background: false, icon: '🐷' });
+  describe('Poku Test Runner: CLI', { icon: '🐷' });
 
   const output = await executeCLI([
     ext === 'ts' || isProduction

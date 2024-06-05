@@ -1,6 +1,6 @@
 import * as index from '../../src/index.js';
 
-index.describe('Import Suite', { background: false, icon: '🔬' });
+index.describe('Import Suite', { icon: '🔬' });
 
 index.assert.ok(index.poku, 'Importing poku method');
 index.assert.ok(index.assert, 'Importing assert method');
