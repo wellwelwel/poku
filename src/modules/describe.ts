@@ -5,11 +5,7 @@ import { format, backgroundColor } from '../helpers/format.js';
 export let describeCounter = 0;
 
 export type DescribeOptions = {
-  /**
-   * Skips a line before to console it.
-   *
-   * @default false
-   */
+  /** @deprecated */
   pad?: boolean;
   /**
    * @default "grey"
