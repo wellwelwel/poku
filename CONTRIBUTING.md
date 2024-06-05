@@ -8,8 +8,10 @@ If you're thinking of contributing, thank you 🎉
 
 You will need these tools installed on your system:
 
-- [**Node.js**](https://nodejs.org/pt-br/download/current)
-- [**Docker**](https://www.docker.com/products/docker-desktop/) (optional)
+- [**Node.js**](https://nodejs.org/en/download/package-manager)
+- [**Bun**](https://bun.sh/docs/installation) (optional)
+- [**Deno**](https://docs.deno.com/runtime/manual/getting_started/installation) (optional)
+- [**Docker**](https://www.docker.com/products/docker-desktop) (optional)
 
 > **Bun**, **Deno** and **Node.js** versions are tested using **Docker** official images.
 
@@ -42,39 +44,42 @@ We can discuss design of API and implementation ideas.
 #### Sequential and Parallel
 
 ```sh
-npm run test      # Test with the locally installed Node.js version
-npm run test:bun  # Test with the locally installed Bun version
+npm run test                  # Test with the locally installed Node.js version
+npm run test:bun              # Test with the locally installed Bun version
+npm run test:deno             # Test with the locally installed Deno version
 ```
 
 #### Sequential
 
 ```sh
-npm run test:sequential      # Test with the locally installed Node.js version
-npm run test:bun:sequential  # Test with the locally installed Bun version
+npm run test:sequential       # Test with the locally installed Node.js version
+npm run test:bun:sequential   # Test with the locally installed Bun version
+npm run test:deno:sequential  # Test with the locally installed Deno version
 ```
 
 > Pass custom flags using `--`, for example:
 >
 > ```sh
-> npm run test:sequential -- --debug --fail-fast
+> npm run test:sequential -- --debug --fail-fast # etc.
 > ```
 >
-> - Same for **Bun**
+> - Same for **Bun** and **Deno**.
 
 #### Parallel
 
 ```sh
-npm run test:parallel      # Test with the locally installed Node.js version
-npm run test:bun:parallel  # Test with the locally installed Bun version
+npm run test:parallel         # Test with the locally installed Node.js version
+npm run test:bun:parallel     # Test with the locally installed Bun version
+npm run test:deno:parallel    # Test with the locally installed Deno version
 ```
 
 > Pass custom flags using `--`, for example:
 >
 > ```sh
-> npm run test:parallel -- --concurrency=5 --fail-fast
+> npm run test:parallel -- --concurrency=5 --fail-fast # etc.
 > ```
 >
-> - Same for **Bun**
+> - Same for **Bun** and **Deno**.
 
 ### Coverage
 
