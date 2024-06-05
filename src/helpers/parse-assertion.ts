@@ -6,6 +6,7 @@ import { format } from './format.js';
 import { hr } from './hr.js';
 import { findFile } from './find-file.js';
 import { each } from '../configs/each.js';
+import { describeCounter } from '../modules/describe.js';
 import { fromEntries, entries } from '../polyfills/object.js';
 import { nodeVersion } from './get-runtime.js';
 /* c8 ignore next */
@@ -52,6 +53,7 @@ export const parseAssertion = async (
   const isPoku =
     typeof process.env?.FILE === 'string' && process.env?.FILE.length > 0;
   const FILE = process.env.FILE;
+  const preIdentation = describeCounter > 0 ? '  ' : '';
 
   try {
     if (typeof each.before.cb === 'function' && each.before.assert) {
@@ -69,8 +71,8 @@ export const parseAssertion = async (
 
     if (typeof options.message === 'string') {
       const message = isPoku
-        ? `${format.bold(format.success(`✔ ${options.message}`))} ${format.dim(format.success(`› ${FILE}`))}`
-        : format.bold(format.success(`✔ ${options.message}`));
+        ? `${preIdentation}${format.bold(format.success(`✔ ${options.message}`))} ${format.dim(format.success(`› ${FILE}`))}`
+        : `${preIdentation}${format.bold(format.success(`✔ ${options.message}`))}`;
 
       console.log(message);
     }
