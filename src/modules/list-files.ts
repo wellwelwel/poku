@@ -1,12 +1,12 @@
 import process from 'node:process';
-import fs from 'node:fs';
-import path from 'node:path';
+import { readdir, stat as fsStat } from 'node:fs/promises';
+import { sep, join } from 'node:path';
 /* c8 ignore next */
 import type { Configs } from '../@types/list-files.js';
 
 export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
   const sanitizedPath = input
-    .replace(/[/\\]+/g, path.sep) // adapting slashes according to OS
+    .replace(/[/\\]+/g, sep) // adapting slashes according to OS
     .replace(/(\.\.(\/|\\|$))+/g, '') // ensure the current path level
     .replace(/[<>|^?*]+/g, ''); // removing unusual path characters
 
@@ -14,23 +14,22 @@ export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
   return ensureTarget ? sanitizedPath.replace(/^[/\\]/, './') : sanitizedPath;
 };
 
+export const isFile = async (fullPath: string) =>
+  (await fsStat(fullPath)).isFile();
+
 export const escapeRegExp = (string: string) =>
   string.replace(/[.*{}[\]\\]/g, '\\$&');
 
-export const isFile = (fullPath: string) => fs.statSync(fullPath).isFile();
-
-export const isDir = (fullPath: string) => fs.statSync(fullPath).isDirectory();
-
 const envFilter = process.env.FILTER?.trim()
   ? new RegExp(escapeRegExp(process.env.FILTER), 'i')
-  : null;
+  : undefined;
 
-export const listFiles = (
+export const getAllFiles = async (
   dirPath: string,
   files: string[] = [],
   configs?: Configs
-) => {
-  const currentFiles = fs.readdirSync(sanitizePath(dirPath));
+): Promise<string[]> => {
+  const currentFiles = await readdir(sanitizePath(dirPath));
   const defaultRegExp = /\.(test|spec)\./i;
   const filter: RegExp =
     (envFilter
@@ -45,18 +44,30 @@ export const listFiles = (
       : [configs.exclude]
     : undefined;
 
-  for (const file of currentFiles) {
-    const fullPath = sanitizePath(path.join(dirPath, file));
+  await Promise.all(
+    currentFiles.map(async (file) => {
+      const fullPath = join(dirPath, file);
+      const stat = await fsStat(fullPath);
 
-    if (/node_modules/.test(fullPath)) continue;
-    if (exclude && exclude.some((regex) => regex.test(fullPath))) continue;
+      if (
+        fullPath.indexOf('node_modules') !== -1 ||
+        fullPath.indexOf('.git') === 0
+      )
+        return;
 
-    if (isDir(fullPath)) listFiles(fullPath, files, configs);
-    else if (filter.test(fullPath)) files.push(fullPath);
-  }
+      if (exclude) {
+        for (let i = 0; i < exclude.length; i++) {
+          if (exclude[i].test(fullPath)) return;
+        }
+      }
+
+      if (filter.test(fullPath)) return files.push(fullPath);
+      if (stat.isDirectory()) await getAllFiles(fullPath, files, configs);
+    })
+  );
 
   return files;
 };
 
-export const publicListFiles = (targetDir: string, configs?: Configs) =>
-  listFiles(sanitizePath(targetDir), [], configs);
+export const listFiles = async (targetDir: string, configs?: Configs) =>
+  await getAllFiles(sanitizePath(targetDir), [], configs);

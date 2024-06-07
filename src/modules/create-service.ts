@@ -1,7 +1,7 @@
 import process from 'node:process';
 import { spawn } from 'node:child_process';
 import { isWindows, runner, scriptRunner } from '../helpers/runner.js';
-import path from 'node:path';
+import { normalize } from 'node:path';
 import { sanitizePath } from './list-files.js';
 import { kill } from './processes.js';
 /* c8 ignore next */
@@ -10,6 +10,7 @@ import type {
   StartScriptOptions,
   StartServiceOptions,
 } from '../@types/background-process.js';
+import { write } from '../helpers/logs.js';
 
 const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
   new Map();
@@ -37,7 +38,7 @@ const backgroundProcess = (
         /* c8 ignore next */
         shell: isWindows,
         cwd: options?.cwd
-          ? sanitizePath(path.normalize(options.cwd))
+          ? sanitizePath(normalize(options.cwd))
           : /* c8 ignore next */
             undefined,
         env: process.env,
@@ -108,7 +109,7 @@ const backgroundProcess = (
           }
         }
 
-        options?.verbose && console.log(String(data));
+        options?.verbose && write(data);
       });
       /* c8 ignore stop */
 
@@ -129,7 +130,7 @@ const backgroundProcess = (
           }
         }
 
-        options?.verbose && console.log(String(data));
+        options?.verbose && write(data);
       });
       /* c8 ignore stop */
 
@@ -183,7 +184,7 @@ export const startService = async (
   return await backgroundProcess(
     runtime,
     runtimeArgs,
-    path.normalize(sanitizePath(file)),
+    normalize(sanitizePath(file)),
     options
   );
 };

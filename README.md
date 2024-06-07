@@ -224,14 +224,14 @@ Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Saf
 
 ---
 
-## License
-
-Poku is under the [**MIT License**](./LICENSE).
-
----
-
 ## Acknowledgements
 
 [![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku?style=flat-square)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 [![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)](https://github.com/wellwelwel/poku/graphs/contributors)
+
+---
+
+## License
+
+Poku is under the [**MIT License**](./LICENSE).

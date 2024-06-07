@@ -9,8 +9,11 @@ import { each } from '../configs/each.js';
 import { describeCounter } from '../modules/describe.js';
 import { fromEntries, entries } from '../polyfills/object.js';
 import { nodeVersion } from './get-runtime.js';
+import { write } from './logs.js';
 /* c8 ignore next */
 import type { ParseAssertionOptions } from '../@types/assert.js';
+
+const cwd = process.cwd();
 
 export const parseResultType = (type?: unknown): string => {
   const recurse = (value: unknown): unknown => {
@@ -74,13 +77,13 @@ export const parseAssertion = async (
         ? `${preIdentation}${format.bold(format.success(`✔ ${options.message}`))} ${format.dim(format.success(`› ${FILE}`))}`
         : `${preIdentation}${format.bold(format.success(`✔ ${options.message}`))}`;
 
-      console.log(message);
+      write(message);
     }
   } catch (error) {
     if (error instanceof assert.AssertionError) {
       const { code, actual, expected, operator } = error;
       const absoultePath = findFile(error).replace(/file:(\/\/)?/, '');
-      const file = path.relative(path.resolve(process.cwd()), absoultePath);
+      const file = path.relative(path.resolve(cwd), absoultePath);
 
       let message: string = '';
 
@@ -96,40 +99,35 @@ export const parseAssertion = async (
           ? format.bold(format.fail(`✘ ${message}`))
           : format.bold(format.fail('✘ No Message'));
 
-      console.log(
+      write(
         isPoku
           ? `${preIdentation}${finalMessage} ${format.dim(format.fail(`› ${FILE}`))}`
           : `${preIdentation}${finalMessage}`
       );
 
-      file &&
-        console.log(`${format.dim(`${preIdentation}      File`)} ${file}`);
-      console.log(`${format.dim(`${preIdentation}      Code`)} ${code}`);
-      console.log(
-        `${format.dim(`${preIdentation}  Operator`)} ${operator}${EOL}`
-      );
+      file && write(`${format.dim(`${preIdentation}      File`)} ${file}`);
+      write(`${format.dim(`${preIdentation}      Code`)} ${code}`);
+      write(`${format.dim(`${preIdentation}  Operator`)} ${operator}${EOL}`);
 
       if (!options?.hideDiff) {
         const splitActual = parseResultType(actual).split('\n');
         const splitExpected = parseResultType(expected).split('\n');
 
-        console.log(
-          format.dim(`${preIdentation}  ${options?.actual || 'Actual'}:`)
-        );
+        write(format.dim(`${preIdentation}  ${options?.actual || 'Actual'}:`));
         splitActual.forEach((line) =>
-          console.log(`${preIdentation}  ${format.bold(format.fail(line))}`)
+          write(`${preIdentation}  ${format.bold(format.fail(line))}`)
         );
 
-        console.log(
+        write(
           `${EOL}${preIdentation}  ${format.dim(`${options?.expected || 'Expected'}:`)}`
         );
         splitExpected.forEach((line) =>
-          console.log(`${preIdentation}  ${format.bold(format.success(line))}`)
+          write(`${preIdentation}  ${format.bold(format.success(line))}`)
         );
       }
 
       if (options.throw) {
-        console.log(error);
+        console.error(error);
         hr();
       }
 

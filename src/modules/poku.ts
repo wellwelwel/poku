@@ -6,11 +6,10 @@
 
 import process, { stdout } from 'node:process';
 import { EOL } from 'node:os';
-import { forceArray } from '../helpers/force-array.js';
 import { runTests, runTestsParallel } from '../services/run-tests.js';
 import { exit } from './exit.js';
 import { format } from '../helpers/format.js';
-import { isQuiet } from '../helpers/logs.js';
+import { isQuiet, write } from '../helpers/logs.js';
 import { hr } from '../helpers/hr.js';
 import { fileResults } from '../configs/files.js';
 import { indentation } from '../configs/indentation.js';
@@ -35,8 +34,8 @@ export async function poku(
 ): Promise<Code | void> {
   let code: Code = 0;
 
-  const prepareDirs = forceArray(targetPaths);
-  const dirs = prepareDirs.length > 0 ? prepareDirs : ['./'];
+  const prepareDirs = Array.prototype.concat(targetPaths);
+  const dirs = prepareDirs.length > 0 ? prepareDirs : ['.'];
   const showLogs = !isQuiet(configs);
 
   // Sequential
@@ -59,7 +58,7 @@ export async function poku(
   // Parallel
   if (showLogs) {
     hr();
-    console.log(`${format.bold('Running the Test Suite in Parallel')}${EOL}`);
+    write(`${format.bold('Running the Test Suite in Parallel')}${EOL}`);
   }
 
   try {
@@ -79,7 +78,7 @@ export async function poku(
   showLogs && hr();
 
   if (showLogs && fileResults.success.length > 0)
-    console.log(
+    write(
       fileResults.success
         .map(
           (current) =>
@@ -89,7 +88,7 @@ export async function poku(
     );
 
   if (showLogs && fileResults.fail.length > 0)
-    console.log(
+    write(
       fileResults.fail
         .map((current) => `${indentation.test}${format.fail('✘')} ${current}`)
         .join(EOL)

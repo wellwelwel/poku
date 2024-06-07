@@ -5,6 +5,7 @@ import { hr } from '../helpers/hr.js';
 import { results } from '../services/run-tests.js';
 import { format } from '../helpers/format.js';
 import type { Code } from '../@types/code.js';
+import { write } from '../helpers/logs.js';
 
 export const exit = (code: Code, quiet?: boolean) => {
   const isPoku = results.success > 0 || results.fail > 0;
@@ -13,14 +14,15 @@ export const exit = (code: Code, quiet?: boolean) => {
     process.on('exit', (code) => {
       if (isPoku) {
         hr();
-        console.log(
-          format.bg(42, `PASS › ${results.success}`),
-          format.bg(results.fail === 0 ? 100 : 41, `FAIL › ${results.fail}`)
+        write(
+          format.bg(42, `PASS › ${results.success}`) +
+            ' ' +
+            format.bg(results.fail === 0 ? 100 : 41, `FAIL › ${results.fail}`)
         );
         hr();
       }
 
-      console.log(
+      write(
         `${format.dim('Exited with code')} ${format.bold(format?.[code === 0 ? 'success' : 'fail'](String(code)))}`
       );
     });
@@ -29,12 +31,12 @@ export const exit = (code: Code, quiet?: boolean) => {
 };
 
 process.on('unhandledRejection', (reason) => {
-  console.log('unhandledRejection', reason);
+  console.error('unhandledRejection', reason);
   process.exit(1);
 });
 
 process.on('uncaughtException', (err) => {
-  console.log('uncaughtException', err);
+  console.error('uncaughtException', err);
   process.exit(1);
 });
 

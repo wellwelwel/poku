@@ -1,7 +1,7 @@
 /* c8 ignore start */
 
 import process from 'node:process';
-import path from 'node:path';
+import { extname } from 'node:path';
 import { getRuntime } from './get-runtime.js';
 import type { Configs } from '../@types/poku.js';
 import type { Runner } from '../@types/runner.js';
@@ -38,7 +38,7 @@ export const runner = (filename: string, configs?: Configs): string[] => {
   }
 
   // Node.js
-  return path.extname(filename) === '.ts'
+  return extname(filename) === '.ts'
     ? [isWindows ? 'npx.cmd' : 'npx', 'tsx']
     : ['node'];
 };
