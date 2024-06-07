@@ -7,7 +7,6 @@
 import process from 'node:process';
 import { readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
-/* c8 ignore next */
 import type { Configs } from '../@types/list-files.js';
 import { escapeRegExp, sanitizePath } from './list-files.js';
 
