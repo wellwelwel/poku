@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
+  benchmark:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
