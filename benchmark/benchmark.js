@@ -11,29 +11,28 @@ const exec = (command) => {
 };
 
 const test = () => {
-  const pokuResult = results.get('Poku 🐷') || results.get('Poku (Local)');
+  const pokuResult = results.get('Poku (Local)');
+  const tolerance = 0.01; // 1%
 
-  if (pokuResult) {
-    const tolerance = 0.01;
-    const tolerances = {
-      Jest: 4,
-      'Mocha + Chai': 1,
-      Vitest: 3,
-    };
+  const tolerancesPerTester = {
+    Jest: 4,
+    'Mocha + Chai': 1,
+    Vitest: 3,
+    Poku: 0.8,
+  };
 
-    for (const [name, result] of results) {
-      if (name === 'Poku 🐷' || name === 'Poku (Local)') continue;
+  for (const [name, result] of results) {
+    if (name === 'Poku (Local)') continue;
 
-      const expectedRatio = tolerances[name];
-      const actualRatio = pokuResult.opsPerSec / result.opsPerSec;
-      const isAtLeastExpected = actualRatio >= expectedRatio * (1 - tolerance);
+    const expectedRatio = tolerancesPerTester[name];
+    const actualRatio = pokuResult.opsPerSec / result.opsPerSec;
+    const isAtLeastExpected = actualRatio >= expectedRatio * (1 - tolerance);
 
-      if (!isAtLeastExpected) {
-        console.error(
-          `Error: Poku is not approximately ${expectedRatio.toFixed(2)}x faster than ${name} within ${tolerance * 100}% tolerance.`
-        );
-        process.exit(1);
-      }
+    if (!isAtLeastExpected) {
+      console.error(
+        `Poku isn't approximately ${expectedRatio.toFixed(2)}x faster than ${name} within ${tolerance * 100}% tolerance.`
+      );
+      process.exit(1);
     }
   }
 };
@@ -50,7 +49,7 @@ suite
   .add('Vitest        ', () => {
     exec('./node_modules/vitest/vitest.mjs run ./test/vitest');
   })
-  .add('Poku 🐷       ', () => {
+  .add('Poku          ', () => {
     exec('./node_modules/poku/lib/bin/index.js --parallel ./test/poku');
   })
   .add('Poku (Local)  ', () => {
