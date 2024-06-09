@@ -47,14 +47,14 @@ Enjoying **Poku**? Give him a star to show your support ⭐️
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the same test suite for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url]<br />
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easier and Less Verbose<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> [**Node.js**][node-version-url] familiar **API**<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily test your server just by running it 🚀<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CJS** (**CommonJS**) files directly with [**Deno**][deno-version-url]<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **services**, **servers**, **processes** and **ports**<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> [**Node.js**][node-version-url] familiar API<br />
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Safety and Reliability<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Performant and lightweight<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Performant and lightweight<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Compatible with **Coverage** tools<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Poku** doesn't use `eval` nor global state 🔐<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> _In other words, you can run your tests directly, without relying on **Poku**_<br />
@@ -64,8 +64,6 @@ Enjoying **Poku**? Give him a star to show your support ⭐️
 ## Quickstart
 
 ### Install
-
-[![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
 
 <table>
 <tr>
@@ -219,7 +217,7 @@ Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Saf
 
 ---
 
-## Quick comparisons
+## Quick Comparisons
 
 ### Performance
 
@@ -235,9 +233,11 @@ Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Saf
 
 ### Installation Size
 
-- [x] ~**175x** lighter than Jest <a href="https://pkg-size.dev/jest"><img src="https://pkg-size.dev/badge/install/21981956" title="Install size for jest"></a>
-- [x] ~**302x** lighter than Vitest <a href="https://pkg-size.dev/vitest"><img src="https://pkg-size.dev/badge/install/38368348" title="Install size for vitest"></a>
-- [x] ~**44x** lighter than Mocha + Chai <a href="https://pkg-size.dev/mocha chai"><img src="https://pkg-size.dev/badge/install/5548077" title="Install size for mocha, and chai"></a>
+<a href="https://pkg-size.dev/poku"><img src="https://pkg-size.dev/badge/install/125875" title="Install size for poku"></a>
+
+- [x] [~**175x** lighter than **Jest**](https://pkg-size.dev/jest)
+- [x] [~**302x** lighter than **Vitest**](https://pkg-size.dev/vitest)
+- [x] [~**44x** lighter than **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
 
 ---
 
