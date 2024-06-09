@@ -241,7 +241,7 @@ Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Saf
 
 ---
 
-## Limitations
+### Limitations
 
 - **Poku** community is gradually building up 🤝
 - Although it has no external dependencies, **Poku** is not _all-in-one_, so it doesn't have features such as _mocks_ and _spies_, where you can use your favorite packages or native solutions.
