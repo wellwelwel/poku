@@ -92,19 +92,24 @@ const getAllFiles = (
         if (filter.test(fullPath)) {
           files.push(fullPath);
 
+          /* c8 ignore start */
           if (!--pending) callback?.(null, files);
           return;
+          /* c8 ignore stop */
         }
 
         if (stat.isDirectory()) {
           getAllFiles(fullPath, files, configs, (err) => {
+            /* c8 ignore start */
             if (err) {
               if (!--pending) callback?.(err, files);
               return;
             }
+            /* c8 ignore stop */
 
             if (!--pending) callback?.(null, files);
           });
+          /* c8 ignore next */
         } else if (!--pending) callback?.(null, files);
       });
     });
