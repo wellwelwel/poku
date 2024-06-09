@@ -19,6 +19,7 @@ export const escapeRegExp = (string: string) =>
 export const isFile = (fullPath: string): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     fsStat(fullPath, (err, stats) => {
+      /* c8 ignore next */
       if (err) return reject(err);
 
       resolve(stats.isFile());
