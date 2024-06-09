@@ -1,6 +1,6 @@
 import process from 'node:process';
 import { EOL } from 'node:os';
-import path from 'node:path';
+import { join, relative } from 'node:path';
 import { runner } from '../helpers/runner.js';
 import { indentation } from '../configs/indentation.js';
 import {
@@ -11,9 +11,11 @@ import {
 import { hr } from '../helpers/hr.js';
 import { format } from '../helpers/format.js';
 import { runTestFile } from './run-test-file.js';
-import { isQuiet } from '../helpers/logs.js';
+import { isQuiet, write } from '../helpers/logs.js';
 /* c8 ignore next */
 import type { Configs } from '../@types/poku.js';
+
+const cwd = process.cwd();
 
 /* c8 ignore start */
 export const results = {
@@ -26,11 +28,12 @@ export const runTests = async (
   dir: string,
   configs?: Configs
 ): Promise<boolean> => {
-  const cwd = process.cwd();
-  const testDir = path.join(cwd, sanitizePath(dir));
-  const currentDir = path.relative(cwd, testDir);
-  const isFile = IS_FILE(testDir);
-  const files = isFile ? [testDir] : listFiles(testDir, undefined, configs);
+  const testDir = join(cwd, dir);
+  const currentDir = relative(cwd, testDir);
+  const isFile = await IS_FILE(testDir);
+  const files = isFile
+    ? [sanitizePath(testDir)]
+    : await listFiles(testDir, configs);
   const totalTests = files.length;
   const showLogs = !isQuiet(configs);
 
@@ -38,14 +41,14 @@ export const runTests = async (
 
   if (showLogs) {
     hr();
-    console.log(
+    write(
       `${format.bold(isFile ? 'File:' : 'Directory:')} ${format.underline(`./${currentDir}`)}${EOL}`
     );
   }
 
   for (let i = 0; i < files.length; i++) {
     const filePath = files[i];
-    const fileRelative = path.relative(cwd, filePath);
+    const fileRelative = relative(cwd, filePath);
 
     const testPassed = await runTestFile(filePath, configs);
 
@@ -59,22 +62,18 @@ export const runTests = async (
       ++results.success;
 
       showLogs &&
-        console.log(
-          `${indentation.test}${format.success('✔')} ${log}`,
-          nextLine
-        );
+        write(`${indentation.test}${format.success('✔')} ${log}${nextLine}`);
     } else {
       ++results.fail;
 
       showLogs &&
-        console.log(`${indentation.test}${format.fail('✘')} ${log}`, nextLine);
+        write(`${indentation.test}${format.fail('✘')} ${log}${nextLine}`);
+
       passed = false;
 
       if (configs?.failFast) {
         hr();
-        console.log(
-          `  ${format.fail('ℹ')} ${format.bold('fail-fast')} is enabled`
-        );
+        write(`  ${format.fail('ℹ')} ${format.bold('fail-fast')} is enabled`);
         break;
       }
     }
@@ -87,9 +86,10 @@ export const runTestsParallel = async (
   dir: string,
   configs?: Configs
 ): Promise<boolean> => {
-  const cwd = process.cwd();
-  const testDir = path.join(cwd, dir);
-  const files = IS_FILE(dir) ? [dir] : listFiles(testDir, undefined, configs);
+  const testDir = join(cwd, dir);
+  const files = (await IS_FILE(dir))
+    ? [sanitizePath(dir)]
+    : await listFiles(testDir, configs);
   const filesByConcurrency: string[][] = [];
   const concurrencyLimit = configs?.concurrency || 0;
   const concurrencyResults: (boolean | undefined)[][] = [];
@@ -127,7 +127,7 @@ export const runTestsParallel = async (
     return concurrencyResults.every((group) => group.every((result) => result));
   } catch (error) {
     hr();
-    console.log(error);
+    console.error(error);
 
     return false;
   }

@@ -5,7 +5,7 @@ export { assert } from './modules/assert.js';
 export { describe, log } from './modules/describe.js';
 export { assertPromise } from './modules/assert-promise.js';
 export { beforeEach, afterEach } from './modules/each.js';
-export { publicListFiles as listFiles } from './modules/list-files.js';
+export { publicListFiles as listFiles } from './modules/list-files-sync.js';
 export { test } from './modules/test.js';
 export { startService, startScript } from './modules/create-service.js';
 export { getPIDs, kill } from './modules/processes.js';

@@ -1,5 +1,6 @@
 /* c8 ignore start */
 
+import { stdout } from 'node:process';
 import { EOL } from 'node:os';
 import type { Configs } from '../@types/poku.js';
 
@@ -7,6 +8,9 @@ export const isQuiet = (configs?: Configs): boolean =>
   typeof configs?.quiet === 'boolean' && Boolean(configs?.quiet);
 
 export const isDebug = (configs?: Configs): boolean => Boolean(configs?.debug);
+
+export const write = (data: string | Uint8Array) =>
+  stdout.write(`${String(data)}\n`);
 
 export const printOutput = (options: {
   output: string;
@@ -34,7 +38,7 @@ export const printOutput = (options: {
 
   const mappedOutputs = outputs.map((current) => `${pad}${current}`);
 
-  console.log(mappedOutputs.join(EOL));
+  write(mappedOutputs.join(EOL));
 };
 
 /* c8 ignore stop */

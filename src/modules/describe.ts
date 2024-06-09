@@ -1,6 +1,7 @@
 /* c8 ignore start */
 
 import { format, backgroundColor } from '../helpers/format.js';
+import { write } from '../helpers/logs.js';
 
 export let describeCounter = 0;
 
@@ -23,7 +24,7 @@ export type DescribeOptions = {
  *
  * Need to debug? Just use the [`debug`](https://poku.io/docs/documentation/poku/options/debug) option from `poku`.
  */
-export const log = (message: string) => console.log(`\x1b[0m${message}\x1b[0m`);
+export const log = (message: string) => write(`\x1b[0m${message}\x1b[0m`);
 
 /**
  * On **Poku**, `describe` is just a pretty `console.log` to title your test suites in the terminal.
@@ -37,11 +38,11 @@ export const describe = (title: string, options?: DescribeOptions) => {
   describeCounter++;
 
   if (noBackground) {
-    console.log(`${format.bold(message)}`);
+    write(`${format.bold(message)}`);
     return;
   }
 
-  console.log(
+  write(
     `${format.bg(backgroundColor[typeof background === 'string' ? background : 'grey'], message)}`
   );
 };

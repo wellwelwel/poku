@@ -1,0 +1,44 @@
+name: '🎖️ CI — Benchmark'
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+    name: Compare
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v4
+
+      - name: ➕ Actions - Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
+
+      - name: ➕ Cache dependencies (Benchmark)
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-benchmark-${{ hashFiles('benchmark/package-lock.json') }}
+          restore-keys: npm-benchmark-
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🚀 Building Poku
+        run: npm run build
+
+      - name: 🎖️ Rock it
+        run: npm run benchmark

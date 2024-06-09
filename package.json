@@ -34,7 +34,8 @@
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:checker": "prettier --check .",
     "prettier:fix": "prettier --write .github/workflows/*.yml .",
-    "update": "pu minor && npm i && npm run lint:fix && npm audit"
+    "update": "pu minor && npm i && npm run lint:fix && npm audit",
+    "benchmark": "cd benchmark && npm ci && npm start"
   },
   "license": "MIT",
   "repository": {

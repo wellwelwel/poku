@@ -1,62 +1,130 @@
 import process from 'node:process';
-import fs from 'node:fs';
-import path from 'node:path';
+import { readdir, stat as fsStat } from 'node:fs';
+import { sep, join } from 'node:path';
 /* c8 ignore next */
 import type { Configs } from '../@types/list-files.js';
 
 export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
   const sanitizedPath = input
-    .replace(/[/\\]+/g, path.sep) // adapting slashes according to OS
+    .replace(/[/\\]+/g, sep) // adapting slashes according to OS
     .replace(/(\.\.(\/|\\|$))+/g, '') // ensure the current path level
     .replace(/[<>|^?*]+/g, ''); // removing unusual path characters
 
-  // Preventing absolute path access
   return ensureTarget ? sanitizedPath.replace(/^[/\\]/, './') : sanitizedPath;
 };
 
 export const escapeRegExp = (string: string) =>
   string.replace(/[.*{}[\]\\]/g, '\\$&');
 
-export const isFile = (fullPath: string) => fs.statSync(fullPath).isFile();
+export const isFile = (fullPath: string): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    fsStat(fullPath, (err, stats) => {
+      /* c8 ignore next */
+      if (err) return reject(err);
 
-export const isDir = (fullPath: string) => fs.statSync(fullPath).isDirectory();
+      resolve(stats.isFile());
+    });
+  });
+};
 
 const envFilter = process.env.FILTER?.trim()
   ? new RegExp(escapeRegExp(process.env.FILTER), 'i')
-  : null;
+  : undefined;
 
-export const listFiles = (
+const getAllFiles = (
   dirPath: string,
   files: string[] = [],
-  configs?: Configs
+  configs?: Configs,
+  callback?: (err: NodeJS.ErrnoException | null, result?: string[]) => void
 ) => {
-  const currentFiles = fs.readdirSync(sanitizePath(dirPath));
-  const defaultRegExp = /\.(test|spec)\./i;
-  const filter: RegExp =
-    (envFilter
-      ? envFilter
-      : configs?.filter instanceof RegExp
-        ? configs.filter
-        : defaultRegExp) || defaultRegExp;
+  readdir(sanitizePath(dirPath), (err, currentFiles) => {
+    if (err) return callback?.(err);
 
-  const exclude: Configs['exclude'] = configs?.exclude
-    ? Array.isArray(configs.exclude)
-      ? configs.exclude
-      : [configs.exclude]
-    : undefined;
+    const defaultRegExp = /\.(test|spec)\./i;
+    const filter: RegExp =
+      (envFilter
+        ? envFilter
+        : configs?.filter instanceof RegExp
+          ? configs.filter
+          : defaultRegExp) || defaultRegExp;
 
-  for (const file of currentFiles) {
-    const fullPath = sanitizePath(path.join(dirPath, file));
+    const exclude: Configs['exclude'] = configs?.exclude
+      ? Array.isArray(configs.exclude)
+        ? /* c8 ignore next */
+          configs.exclude
+        : [configs.exclude]
+      : undefined;
 
-    if (/node_modules/.test(fullPath)) continue;
-    if (exclude && exclude.some((regex) => regex.test(fullPath))) continue;
+    let pending = currentFiles.length;
+    if (!pending) return callback?.(null, files);
 
-    if (isDir(fullPath)) listFiles(fullPath, files, configs);
-    else if (filter.test(fullPath)) files.push(fullPath);
-  }
+    currentFiles.forEach((file) => {
+      const fullPath = join(dirPath, file);
 
-  return files;
+      fsStat(fullPath, (err, stat) => {
+        /* c8 ignore start */
+        if (err) {
+          if (!--pending) callback?.(null, files);
+          return;
+        }
+        /* c8 ignore stop */
+
+        if (
+          fullPath.indexOf('node_modules') !== -1 ||
+          fullPath.indexOf('.git') === 0
+        ) {
+          /* c8 ignore start */
+          if (!--pending) callback?.(null, files);
+          return;
+          /* c8 ignore stop */
+        }
+
+        if (exclude) {
+          for (let i = 0; i < exclude.length; i++) {
+            if (exclude[i].test(fullPath)) {
+              /* c8 ignore start */
+              if (!--pending) callback?.(null, files);
+              return;
+              /* c8 ignore stop */
+            }
+          }
+        }
+
+        if (filter.test(fullPath)) {
+          files.push(fullPath);
+
+          /* c8 ignore start */
+          if (!--pending) callback?.(null, files);
+          return;
+          /* c8 ignore stop */
+        }
+
+        if (stat.isDirectory()) {
+          getAllFiles(fullPath, files, configs, (err) => {
+            /* c8 ignore start */
+            if (err) {
+              if (!--pending) callback?.(err, files);
+              return;
+            }
+            /* c8 ignore stop */
+
+            if (!--pending) callback?.(null, files);
+          });
+          /* c8 ignore next */
+        } else if (!--pending) callback?.(null, files);
+      });
+    });
+  });
 };
 
-export const publicListFiles = (targetDir: string, configs?: Configs) =>
-  listFiles(sanitizePath(targetDir), [], configs);
+export const listFiles = (
+  targetDir: string,
+  configs?: Configs
+): Promise<string[]> =>
+  new Promise((resolve, reject) => {
+    getAllFiles(sanitizePath(targetDir), [], configs, (err, result) => {
+      if (err) return reject(err);
+
+      resolve(result!);
+    });
+  });

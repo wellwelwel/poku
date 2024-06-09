@@ -13,6 +13,7 @@ import {
 import { kill, poku } from '../index.js';
 import { platformIsValid } from '../helpers/get-runtime.js';
 import { format } from '../helpers/format.js';
+import { write } from '../helpers/logs.js';
 
 // Argument with values
 const dirs =
@@ -41,13 +42,13 @@ const debug = hasArg('debug');
 const failFast = hasArg('fail-fast');
 
 if (hasArg('log-success'))
-  console.log(
+  write(
     `The flag ${format.bold('--log-success')} is deprecated. Use ${format.bold('--debug')} instead.`
   );
 
 (async () => {
   if (killPort) {
-    const ports = killPort.split(',').map((port) => Number(port));
+    const ports = killPort.split(',').map(Number);
 
     await kill.port(ports);
   }
@@ -56,7 +57,7 @@ if (hasArg('log-success'))
     const ranges = killRange.split(',');
 
     for (const range of ranges) {
-      const ports = range.split('-').map((port) => Number(port));
+      const ports = range.split('-').map(Number);
 
       const startsAt = ports[0];
       const endsAt = ports[1];
@@ -66,7 +67,7 @@ if (hasArg('log-success'))
   }
 
   if (killPID) {
-    const PIDs = killPID.split(',').map((port) => Number(port));
+    const PIDs = killPID.split(',').map(Number);
 
     await kill.pid(PIDs);
   }

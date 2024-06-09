@@ -1,5 +1,6 @@
 import { EOL } from 'node:os';
 import { format } from '../helpers/format.js';
+import { write } from '../helpers/logs.js';
 /* c8 ignore next */
 import type { Configs } from '../@types/poku.js';
 
@@ -12,7 +13,7 @@ const eachCore = async (
 
   const functionName = configs[type]?.name;
 
-  console.log(
+  write(
     `    ${format.dim(format.info('◯'))} ${format.dim(format.italic(`${configs[type]}: ${functionName !== configs[type] ? functionName : 'anonymous function'}`))}`
   );
 
@@ -20,23 +21,21 @@ const eachCore = async (
     await configs[type]?.();
     return true;
   } catch (error) {
-    console.log(
+    write(
       format.bold(
         format.fail(
           `    ✘ ${type} callback failed ${format.dim(`› ${configs[type]}`)}`
         )
       )
     );
-    console.log(
+    write(
       format.fail(
         `      ├─ Who's trying to run this ${type}?${EOL}      │ └─ ${format.underline(fileRelative)}`
       )
     );
 
     error instanceof Error &&
-      console.log(
-        format.fail(`      ├─ Message:${EOL}      │ └─ ${error.message}`)
-      );
+      write(format.fail(`      ├─ Message:${EOL}      │ └─ ${error.message}`));
 
     return false;
   }

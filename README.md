@@ -50,8 +50,10 @@ Enjoying **Poku**? Give him a star to show your support ⭐️
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily test your server just by running it 🚀<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CJS** (**CommonJS**) files directly with [**Deno**][deno-version-url]<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **services**, **servers**, **processes** and **ports**<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> [**Node.js**][node-version-url] familiar API<br />
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Safety and Reliability<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Performant and lightweight<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Compatible with **Coverage** tools<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Poku** doesn't use `eval` nor global state 🔐<br />
@@ -217,16 +219,32 @@ Please check the [**SECURITY.md**](./SECURITY.md) and the section [**Is Poku Saf
 
 ---
 
-## Limitations
+## Quick comparisons
 
-- **Poku** community is gradually building up 🤝
-- Although it has no external dependencies, **Poku** is not _all-in-one_, so it doesn't have features such as _mocks_ and _spies_, where you can use your favorite packages or native solutions.
+### Performance
+
+**Poku** is continuously tested ([**CI**](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml)) to ensure the following expectations:
+
+- [x] **~4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
+- [x] **~3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
+- [x] **~1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
+
+> You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
 
 ---
 
-## License
+### Installation Size
 
-Poku is under the [**MIT License**](./LICENSE).
+- [x] ~**175x** lighter than Jest <a href="https://pkg-size.dev/jest"><img src="https://pkg-size.dev/badge/install/21981956" title="Install size for jest"></a>
+- [x] ~**302x** lighter than Vitest <a href="https://pkg-size.dev/vitest"><img src="https://pkg-size.dev/badge/install/38368348" title="Install size for vitest"></a>
+- [x] ~**44x** lighter than Mocha + Chai <a href="https://pkg-size.dev/mocha chai"><img src="https://pkg-size.dev/badge/install/5548077" title="Install size for mocha, and chai"></a>
+
+---
+
+### Limitations
+
+- **Poku** community is gradually building up 🤝
+- Although it has no external dependencies, **Poku** is not _all-in-one_, so it doesn't have features such as _mocks_ and _spies_, where you can use your favorite packages or native solutions.
 
 ---
 
@@ -235,3 +253,9 @@ Poku is under the [**MIT License**](./LICENSE).
 [![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku?style=flat-square)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 [![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)](https://github.com/wellwelwel/poku/graphs/contributors)
+
+---
+
+## License
+
+Poku is under the [**MIT License**](./LICENSE).

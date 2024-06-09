@@ -1,14 +1,16 @@
 import process from 'node:process';
-import path from 'node:path';
+import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
 import { indentation } from '../configs/indentation.js';
 import { fileResults } from '../configs/files.js';
 import { isWindows, runner } from '../helpers/runner.js';
 import { format } from '../helpers/format.js';
-import { isQuiet, printOutput } from '../helpers/logs.js';
+import { isQuiet, printOutput, write } from '../helpers/logs.js';
 import { beforeEach, afterEach } from './each.js';
 /* c8 ignore next */
 import type { Configs } from '../@types/poku.js';
+
+const cwd = process.cwd();
 
 export const runTestFile = (
   filePath: string,
@@ -28,7 +30,7 @@ export const runTestFile = (
     ];
     /* c8 ignore stop */
 
-    const fileRelative = path.relative(process.cwd(), filePath);
+    const fileRelative = relative(cwd, filePath);
     const showLogs = !isQuiet(configs);
 
     let output = '';
@@ -39,7 +41,7 @@ export const runTestFile = (
 
     if (!configs?.parallel) {
       showLogs &&
-        console.log(
+        write(
           `${indentation.test}${format.info(format.dim('●'))} ${format.dim(fileRelative)}`
         );
     }
@@ -81,7 +83,7 @@ export const runTestFile = (
 
     /* c8 ignore start */
     child.on('error', (err) => {
-      console.log(`Failed to start test: ${filePath}`, err);
+      console.error(`Failed to start test: ${filePath}`, err);
       fileResults.fail.push(fileRelative);
 
       resolve(false);
