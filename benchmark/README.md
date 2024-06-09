@@ -16,7 +16,7 @@ The testers to be compared are chosen based on the three most downloaded test ru
 
 ---
 
-**Poku** is currently continuously tested ([**CI**](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml)) to ensure the following expectations:
+**Poku** is continuously tested ([**CI**](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml)) to ensure the following expectations:
 
 - [x] **~4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
 - [x] **~3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
