@@ -5,12 +5,12 @@ describe('Testing "describe" method', {
   icon: '🔬',
 });
 
-test(() => {
+test('Using as titles', () => {
   describe('');
   describe('', {});
 });
 
-test(async () => {
+test('Using as functions', async () => {
   describe(() => {});
   describe(() => true);
   describe(() => false);
@@ -24,7 +24,7 @@ test(async () => {
   );
 });
 
-test(async () => {
+test('Using as groups', async () => {
   describe('', () => {});
   describe('', () => true);
   describe('', () => false);
