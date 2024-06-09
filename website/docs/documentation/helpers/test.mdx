@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 1
 ---
 
 # test
@@ -13,6 +13,8 @@ sidebar_position: 3
 - Run tests in the same file in parallel
 
 ## Basic Usage
+
+### Isolating scopes
 
 ```ts
 import { test, assert } from 'poku';
@@ -30,10 +32,39 @@ test(() => {
 });
 ```
 
-## By using promises
+### Grouping tests
 
 ```ts
 import { test, assert } from 'poku';
+
+test(() => {
+  assert.equal(1 + 1, 2, '1 + 1 should be 2');
+  assert.equal(2 + 2, 4, '2 + 2 should be 4');
+});
+```
+
+```ts
+import { test, assert } from 'poku';
+
+test('Sum tests', () => {
+  assert.equal(1 + 1, 2);
+  assert.equal(2 + 2, 4);
+});
+```
+
+```ts
+import { test, assert } from 'poku';
+
+test('Sum tests', () => {
+  assert.equal(1 + 1, 2, '1 + 1 should be 2');
+  assert.equal(2 + 2, 4, '2 + 2 should be 4');
+});
+```
+
+### Wating for Promises
+
+```ts
+import { test } from 'poku';
 
 await test(async () => {
   // do anything you want
@@ -44,10 +75,10 @@ await test(async () => {
 });
 ```
 
-## Running in Parallel
+### Running in parallel
 
 ```ts
-import { test, assert } from 'poku';
+import { test } from 'poku';
 
 test(async () => {
   // do anything you want
@@ -57,3 +88,27 @@ test(async () => {
   // do anything you want
 });
 ```
+
+### Wating for multiple promises
+
+```ts
+import { test } from 'poku';
+
+// do something before
+
+await Promise.all([
+  test(async () => {
+    // do anything you want
+  }),
+
+  test(async () => {
+    // do anything you want
+  }),
+]);
+
+// do something after
+```
+
+:::tip
+You can think on it as `beforeAll` and `afterAll`.
+:::
