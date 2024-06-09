@@ -1,10 +1,7 @@
-import {
-  startService,
-  assert,
-  test,
-  describe,
-  startScript,
-} from '../../src/index.js';
+import { describe } from '../../src/modules/describe.js';
+import { test } from '../../src/modules/test.js';
+import { assert } from '../../src/modules/assert.js';
+import { startScript, startService } from '../../src/modules/create-service.js';
 import { legacyFetch } from '../helpers/legacy-fetch.test.js';
 import { ext, isProduction } from '../helpers/capture-cli.test.js';
 import { getRuntime } from '../../src/helpers/get-runtime.js';
@@ -57,7 +54,6 @@ import { getRuntime } from '../../src/helpers/get-runtime.js';
 
   await test(async () => {
     describe('Start Service (Multiple Ports)', {
-      background: false,
       icon: '🔀',
     });
 
@@ -81,7 +77,6 @@ import { getRuntime } from '../../src/helpers/get-runtime.js';
 
   await test(async () => {
     describe('Start Script (Multiple Ports)', {
-      background: false,
       icon: '🔀',
     });
 
@@ -107,7 +102,6 @@ import { getRuntime } from '../../src/helpers/get-runtime.js';
   if (runtime === 'node') {
     await test(async () => {
       describe('Start Service (No Ports)', {
-        background: false,
         icon: '🔀',
       });
 
@@ -133,7 +127,6 @@ import { getRuntime } from '../../src/helpers/get-runtime.js';
 
     await test(async () => {
       describe('Start Script (No Ports)', {
-        background: false,
         icon: '🔀',
       });
 

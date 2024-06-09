@@ -1,5 +1,7 @@
 import process from 'node:process';
-import { assert, describe, test } from '../../src/index.js';
+import { describe } from '../../src/modules/describe.js';
+import { test } from '../../src/modules/test.js';
+import { assert } from '../../src/modules/assert.js';
 import { runTestFile } from '../../src/services/run-test-file.js';
 import { getRuntime } from '../../src/helpers/get-runtime.js';
 

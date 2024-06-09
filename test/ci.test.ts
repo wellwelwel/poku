@@ -1,4 +1,4 @@
-import { poku } from '../src/index.js';
+import { poku } from '../src/modules/poku.js';
 
 poku(['./test/compatibility'], {
   parallel: true,

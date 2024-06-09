@@ -1,4 +1,5 @@
-import { describe, test } from '../../../src/index.js';
+import { describe } from '../../../src/modules/describe.js';
+import { test } from '../../../src/modules/test.js';
 
 describe('Testing "test" method', {
   icon: '🔬',

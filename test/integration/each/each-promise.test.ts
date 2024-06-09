@@ -1,13 +1,9 @@
-import {
-  describe,
-  assert,
-  beforeEach,
-  afterEach,
-  test,
-} from '../../../src/index.js';
+import { describe } from '../../../src/modules/describe.js';
+import { test } from '../../../src/modules/test.js';
+import { assert } from '../../../src/modules/assert.js';
+import { beforeEach, afterEach } from '../../../src/modules/each.js';
 
 describe('Asynchronous Before and After Each Suite', {
-  background: false,
   icon: '🔬',
 });
 

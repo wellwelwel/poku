@@ -15,6 +15,7 @@ export const describe = (title: string, options?: DescribeOptions) => {
 
   indentation.describeCounter++;
 
+  /* c8 ignore start */
   if (noBackground) {
     write(`${format.bold(message)}`);
     return;
@@ -23,4 +24,5 @@ export const describe = (title: string, options?: DescribeOptions) => {
   write(
     `${format.bg(backgroundColor[typeof background === 'string' ? background : 'grey'], message)}`
   );
+  /* c8 ignore stop */
 };
