@@ -1,4 +1,6 @@
-import { assert, describe, test } from '../../../src/index.js';
+import { describe } from '../../../src/modules/describe.js';
+import { test } from '../../../src/modules/test.js';
+import { assert } from '../../../src/modules/assert.js';
 import { runner } from '../../../src/helpers/runner.js';
 
 describe('Deno Permissions (Deny)', { icon: '🔬' });

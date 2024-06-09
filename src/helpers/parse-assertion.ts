@@ -6,7 +6,7 @@ import { format } from './format.js';
 import { hr } from './hr.js';
 import { findFile } from './find-file.js';
 import { each } from '../configs/each.js';
-import { describeCounter } from '../modules/describe.js';
+import { indentation } from '../configs/indentation.js';
 import { fromEntries, entries } from '../polyfills/object.js';
 import { nodeVersion } from './get-runtime.js';
 import { write } from './logs.js';
@@ -56,7 +56,7 @@ export const parseAssertion = async (
   const isPoku =
     typeof process.env?.FILE === 'string' && process.env?.FILE.length > 0;
   const FILE = process.env.FILE;
-  const preIdentation = describeCounter > 0 ? '  ' : '';
+  const preIdentation = indentation.describeCounter > 0 ? '  ' : '';
 
   try {
     if (typeof each.before.cb === 'function' && each.before.assert) {

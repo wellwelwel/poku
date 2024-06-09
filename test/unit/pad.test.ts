@@ -1,4 +1,4 @@
-import { assert } from '../../src/index.js';
+import { assert } from '../../src/modules/assert.js';
 import { padStart } from '../../src/polyfills/pad.js';
 
 assert.deepStrictEqual(padStart('', 0, ''), '');

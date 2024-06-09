@@ -1,4 +1,7 @@
-import { poku, assert, describe, test } from '../../src/index.js';
+import { describe } from '../../src/modules/describe.js';
+import { test } from '../../src/modules/test.js';
+import { poku } from '../../src/modules/poku.js';
+import { assert } from '../../src/modules/assert.js';
 
 describe('Poku Runner Suite', { icon: '🐷' });
 
