@@ -65,6 +65,8 @@ Enjoying **Poku**? Give him a star to show your support ⭐️
 
 ### Install
 
+[![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
+
 <table>
 <tr>
 <td><blockquote><b>Node.js</b</blockquote></td>
