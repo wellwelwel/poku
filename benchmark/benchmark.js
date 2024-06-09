@@ -12,7 +12,6 @@ const exec = (command) => {
 
 const test = () => {
   const pokuResult = results.get('Poku (Local)');
-  const tolerance = 0.01; // 1%
 
   const tolerancesPerTester = {
     Jest: 4,
@@ -26,11 +25,11 @@ const test = () => {
 
     const expectedRatio = tolerancesPerTester[name];
     const actualRatio = pokuResult.opsPerSec / result.opsPerSec;
-    const isAtLeastExpected = actualRatio >= expectedRatio * (1 - tolerance);
+    const isAtLeastExpected = actualRatio >= expectedRatio;
 
     if (!isAtLeastExpected) {
       console.error(
-        `Poku isn't approximately ${expectedRatio.toFixed(2)}x faster than ${name} within ${tolerance * 100}% tolerance.`
+        `Poku (Local) isn't approximately ${expectedRatio.toFixed(2)}x faster than ${name}.`
       );
       process.exit(1);
     }

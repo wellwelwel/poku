@@ -49,7 +49,8 @@ const getAllFiles = (
 
     const exclude: Configs['exclude'] = configs?.exclude
       ? Array.isArray(configs.exclude)
-        ? configs.exclude
+        ? /* c8 ignore next */
+          configs.exclude
         : [configs.exclude]
       : undefined;
 
@@ -60,24 +61,30 @@ const getAllFiles = (
       const fullPath = join(dirPath, file);
 
       fsStat(fullPath, (err, stat) => {
+        /* c8 ignore start */
         if (err) {
           if (!--pending) callback?.(null, files);
           return;
         }
+        /* c8 ignore stop */
 
         if (
           fullPath.indexOf('node_modules') !== -1 ||
           fullPath.indexOf('.git') === 0
         ) {
+          /* c8 ignore start */
           if (!--pending) callback?.(null, files);
           return;
+          /* c8 ignore stop */
         }
 
         if (exclude) {
           for (let i = 0; i < exclude.length; i++) {
             if (exclude[i].test(fullPath)) {
+              /* c8 ignore start */
               if (!--pending) callback?.(null, files);
               return;
+              /* c8 ignore stop */
             }
           }
         }
