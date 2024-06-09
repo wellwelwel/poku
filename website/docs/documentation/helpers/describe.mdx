@@ -3,36 +3,35 @@ sidebar_position: 2
 ---
 
 import { FAQ } from '@site/src/components/FAQ';
-import Example from '@site/static/img/describe-example.png';
 
 # describe
 
-On **Poku**, `describe` is just a pretty `console.log` to title your test suites in the terminal.
+## Using as test titles
+
+On **Poku**, `describe` can be used just as a pretty `console.log` to title your test suites in the terminal.
 
 ```ts
 import { describe, assert } from 'poku';
 
-describe('Group A');
-assert(true, '1');
-assert(true, '2');
+describe('Test Title');
 
-describe('Group B');
 assert(true, '1');
 assert(true, '2');
 ```
 
-## Personalization
+### Personalization
 
 > `describe(title: string, options?: DescribeOptions)`
 
-### background
+#### background
 
 Change the background color for your personal title.
 
 ```ts
 import { describe, assert } from 'poku';
 
-describe('Group A', { background: 'blue' });
+describe('Test Title', { background: 'blue' });
+
 assert.ok(true, '1');
 assert.ok(true, '2');
 ```
@@ -57,7 +56,7 @@ assert.ok(true, '2');
 
 </FAQ>
 
-### icon (prefix)
+#### icon (prefix)
 
 **Poku** also allows the prefix customization.
 
@@ -66,42 +65,37 @@ assert.ok(true, '2');
 ```ts
 import { describe, assert } from 'poku';
 
-describe('Group A', { icon: '🚀' });
+describe('Test Title', { icon: '🔬' });
+
 assert.ok(true, '1');
 assert.ok(true, '2');
 ```
 
-<hr />
+## Grouping tests (usual)
 
-## Overview
+```ts
+import { describe, assert } from 'poku';
 
-<FAQ title='Source'>
+describe(() => {
+  assert.equal(1 + 1, 2, '1 + 1 should be 2');
+  assert.equal(2 + 2, 4, '2 + 2 should be 4');
+});
+```
 
-    ```ts
-    import { assert, describe } from 'poku';
+```ts
+import { describe, assert } from 'poku';
 
-    describe('Needs to Succeed', {
-      icon: '🚀',
-    });
+describe('Sum tests', () => {
+  assert.equal(1 + 1, 2);
+  assert.equal(2 + 2, 4);
+});
+```
 
-    assert.ok(true, 'Test 1');
-    assert.ok(true, 'Test 2');
+```ts
+import { describe, assert } from 'poku';
 
-    describe('Needs to Fail', {
-      background: 'yellow',
-      icon: '🚫',
-    });
-
-    assert.throws(() => { throw new Error() }, 'Test 1');
-    assert.throws(() => { throw new Error() }, 'Test 2');
-    ```
-
-</FAQ>
-
-<table>
-  <tr>
-    <td>
-      <img src={Example} />
-    </td>
-  </tr>
-</table>
+describe('Sum tests', () => {
+  assert.equal(1 + 1, 2, '1 + 1 should be 2');
+  assert.equal(2 + 2, 4, '2 + 2 should be 4');
+});
+```

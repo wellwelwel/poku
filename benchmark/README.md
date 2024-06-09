@@ -4,7 +4,7 @@ The benchmark is performed by comparing a simple success and a failure test, eac
 
 > [!important]
 >
-> **Poku** doesn't intend to be the best, but to offer a balance between high performance, compatibility, lightness and ease of use.
+> **Poku** doesn't intend to be "the best", but to offer a balance between high performance, isolation, compatibility, lightness and ease of use.
 
 ---
 

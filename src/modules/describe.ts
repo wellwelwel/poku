@@ -5,24 +5,55 @@ import { indentation } from '../configs/indentation.js';
 import type { DescribeOptions } from '../@types/describe.js';
 
 /**
- * On **Poku**, `describe` is just a pretty `console.log` to title your test suites in the terminal.
+ * On **Poku**, `describe` also can be used just as a pretty `console.log` to title your test suites in the terminal.
  */
-export const describe = (title: string, options?: DescribeOptions) => {
-  const { background, icon } = options || {};
+export async function describe(
+  title: string,
+  cb: () => Promise<unknown>
+): Promise<void>;
+export function describe(title: string, cb: () => unknown): void;
+export async function describe(cb: () => Promise<unknown>): Promise<void>;
+export function describe(cb: () => unknown): unknown;
+export function describe(title: string, options?: DescribeOptions): void;
+export async function describe(
+  arg1: string | (() => unknown | Promise<unknown>),
+  arg2?: (() => unknown | Promise<unknown>) | DescribeOptions
+): Promise<void> {
+  let title: string | undefined;
+  let cb: (() => unknown | Promise<unknown>) | undefined;
+  let options: DescribeOptions | undefined;
 
-  const message = `${icon || '☰'} ${title}`;
-  const noBackground = !background;
+  if (typeof arg1 === 'string') {
+    title = arg1;
 
-  indentation.describeCounter++;
-
-  /* c8 ignore start */
-  if (noBackground) {
-    write(`${format.bold(message)}`);
-    return;
+    if (typeof arg2 === 'function') cb = arg2;
+    else options = arg2;
+  } else if (typeof arg1 === 'function') {
+    cb = arg1;
+    options = arg2 as DescribeOptions;
   }
 
-  write(
-    `${format.bg(backgroundColor[typeof background === 'string' ? background : 'grey'], message)}`
-  );
+  /* c8 ignore start */
+  if (title) {
+    const { background, icon } = options || {};
+    const message = `${cb ? '›' : icon || '☰'} ${title || ''}`;
+    const noBackground = !background;
+
+    indentation.describeCounter++;
+
+    if (noBackground) write(`${format.bold(message)}`);
+    else {
+      write(
+        `${format.bg(backgroundColor[typeof background === 'string' ? background : 'grey'], message)}`
+      );
+    }
+  }
   /* c8 ignore stop */
-};
+
+  if (typeof cb !== 'function') return;
+
+  const resultCb = cb();
+
+  /* c8 ignore next */
+  if (resultCb instanceof Promise) await resultCb;
+}
