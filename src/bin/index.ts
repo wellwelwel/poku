@@ -4,49 +4,53 @@
 
 import { escapeRegExp } from '../modules/list-files.js';
 import {
-  // getAllArgs,
   getArg,
   getLastParam,
   hasArg,
-  getSubArg,
+  argToArray,
 } from '../helpers/get-arg.js';
-import { kill, poku } from '../index.js';
+import { poku } from '../modules/poku.js';
+import { kill } from '../modules/processes.js';
 import { platformIsValid } from '../helpers/get-runtime.js';
 import { format } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
-
-// Argument with values
-const dirs =
-  (hasArg('include')
-    ? getArg('include')?.split(',')
-    : getLastParam()?.split(',')) || [];
-const platform = getArg('platform');
-const filter = getArg('filter');
-const exclude = getArg('exclude');
-const killPort = getArg('kill-port');
-const killRange = getArg('kill-range');
-const killPID = getArg('kill-pid');
-const concurrency = Number(getArg('concurrency')) || undefined;
-const denoAllow = getSubArg('deno-allow');
-const denoDeny = getSubArg('deno-deny');
-const denoCJS = getArg('deno-cjs')?.split(',') || hasArg('deno-cjs');
-
-// Multiple arguments with values or not
-// TODO (Custom Args)
-// const args = getAllArgs('arg');
-
-// Argument exists
-const parallel = hasArg('parallel');
-const quiet = hasArg('quiet');
-const debug = hasArg('debug');
-const failFast = hasArg('fail-fast');
-
-if (hasArg('log-success'))
-  write(
-    `The flag ${format.bold('--log-success')} is deprecated. Use ${format.bold('--debug')} instead.`
-  );
+import type { Configs } from '../@types/poku.js';
+import { hr } from '../helpers/hr.js';
 
 (async () => {
+  const dirs = (() => {
+    const includeArg = getArg('include');
+    if (includeArg !== undefined) return includeArg.split(',');
+
+    const lastParam = getLastParam();
+    if (lastParam !== undefined) return lastParam.split(',');
+
+    return ['.'];
+  })();
+
+  const platform = getArg('platform');
+  const filter = getArg('filter');
+  const exclude = getArg('exclude');
+  const killPort = getArg('kill-port');
+  const killRange = getArg('kill-range');
+  const killPID = getArg('kill-pid');
+  const denoAllow = argToArray('deno-allow');
+  const denoDeny = argToArray('deno-deny');
+  const denoCJS =
+    getArg('deno-cjs')
+      ?.split(',')
+      .map((a) => a.trim())
+      .filter((a) => a) || hasArg('deno-cjs');
+
+  const parallel = hasArg('parallel');
+  const quiet = hasArg('quiet');
+  const debug = hasArg('debug');
+  const failFast = hasArg('fail-fast');
+
+  const concurrency = parallel
+    ? Number(getArg('concurrency')) || undefined
+    : undefined;
+
   if (killPort) {
     const ports = killPort.split(',').map(Number);
 
@@ -72,7 +76,7 @@ if (hasArg('log-success'))
     await kill.pid(PIDs);
   }
 
-  await poku(dirs, {
+  const options: Configs = {
     platform: platformIsValid(platform) ? platform : undefined,
     filter: filter ? new RegExp(escapeRegExp(filter)) : undefined,
     exclude: exclude ? new RegExp(escapeRegExp(exclude)) : undefined,
@@ -81,14 +85,24 @@ if (hasArg('log-success'))
     debug,
     failFast,
     concurrency,
-    // TODO (Custom Args)
-    // arguments: args.length > 0 ? args : undefined,
     deno: {
       allow: denoAllow,
       deny: denoDeny,
       cjs: denoCJS,
     },
-  });
+  };
+
+  if (debug) {
+    hr();
+    write(`${format.bg(104, 'Debug Enabled')}\n`);
+    write(`${format.italic(format.info('…'))} ${format.bold('Paths')}`);
+    console.table(dirs);
+    write('\n');
+    write(`${format.italic(format.info('…'))} ${format.bold('Options')}`);
+    console.dir(options, { depth: null, colors: true });
+  }
+
+  poku(dirs, options);
 })();
 
 /* c8 ignore stop */
