@@ -4,7 +4,7 @@
  * Both CLI, API, noExit, sequential and parallel runs are strictly tested, but these tests use deep child process for it
  */
 
-import process, { hrtime, stdout } from 'node:process';
+import process from 'node:process';
 import { EOL } from 'node:os';
 import { runTests, runTestsParallel } from '../services/run-tests.js';
 import { exit } from './exit.js';
@@ -17,7 +17,7 @@ import type { Code } from '../@types/code.js';
 import type { Configs } from '../@types/poku.js';
 
 process.once('SIGINT', () => {
-  stdout.write('\u001B[?25h');
+  process.stdout.write('\u001B[?25h');
 });
 
 export async function poku(
@@ -36,7 +36,7 @@ export async function poku(
 
   finalResults.started = new Date();
 
-  const start = hrtime();
+  const start = process.hrtime();
   const prepareDirs = Array.prototype.concat(targetPaths);
   const dirs = prepareDirs.length > 0 ? prepareDirs : ['.'];
   const showLogs = !isQuiet(configs);
@@ -54,7 +54,7 @@ export async function poku(
 
     if (configs?.noExit) return code;
 
-    const end = hrtime(start);
+    const end = process.hrtime(start);
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
     finalResults.time = total;
@@ -83,7 +83,7 @@ export async function poku(
     if (concurrency.some((result) => !result)) code = 1;
   } catch {
   } finally {
-    const end = hrtime(start);
+    const end = process.hrtime(start);
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
     finalResults.time = total;

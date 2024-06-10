@@ -1,4 +1,4 @@
-import { hrtime } from 'node:process';
+import process from 'node:process';
 /* c8 ignore next */
 import { each } from '../configs/each.js';
 /* c8 ignore next */
@@ -38,16 +38,16 @@ export async function test(
   if (message) {
     indentation.hasTest = true;
 
-    write(`${format.dim('◌')} ${format.bold(message)}`);
+    write(`${format.dim('◌')} ${format.dim(message)}`);
   }
   /* c8 ignore stop */
 
-  const start = hrtime();
+  const start = process.hrtime();
   const resultCb = cb();
 
   /* c8 ignore next */
   if (resultCb instanceof Promise) await resultCb;
-  const end = hrtime(start);
+  const end = process.hrtime(start);
 
   if (typeof each.after.cb === 'function' && each.after.test) {
     const afterResult = each.after.cb();
@@ -61,7 +61,7 @@ export async function test(
 
     indentation.hasTest = false;
     write(
-      `${format.bold(format.success('●'))} ${format.bold(message)} ${format.dim(`› ${total}ms`)}`
+      `${format.bold(format.success('●'))} ${format.bold(format.success(message))} ${format.dim(`› ${total}ms`)}`
     );
   }
   /* c8 ignore stop */

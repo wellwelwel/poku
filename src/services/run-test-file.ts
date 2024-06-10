@@ -1,4 +1,4 @@
-import process, { hrtime } from 'node:process';
+import process from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
 import { indentation } from '../configs/indentation.js';
@@ -46,8 +46,8 @@ export const runTestFile = (
         );
     }
 
-    const start = hrtime();
-    let end: ReturnType<typeof hrtime>;
+    const start = process.hrtime();
+    let end: ReturnType<typeof process.hrtime>;
 
     if (!(await beforeEach(fileRelative, configs))) return false;
 
@@ -67,7 +67,7 @@ export const runTestFile = (
     child.stderr.on('data', stdOut);
 
     child.on('close', async (code) => {
-      end = hrtime(start);
+      end = process.hrtime(start);
 
       const result = code === 0;
 
@@ -90,7 +90,7 @@ export const runTestFile = (
 
     /* c8 ignore start */
     child.on('error', (err) => {
-      end = hrtime(start);
+      end = process.hrtime(start);
 
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 

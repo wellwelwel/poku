@@ -20,15 +20,14 @@ export const exit = (code: Code, quiet?: boolean) => {
           `    ${format.dim('Start at ›')} ${format.bold(format.dim(`${setTime(finalResults.started)}`))}`
         );
         write(
-          `    ${format.dim('Duration ›')} ${format.bold(format.dim(`${finalResults.time}ms`))} ${`${format.dim(`(± ${toSecs(finalResults.time)} seconds)`)}`}`
+          `    ${format.dim('Duration ›')} ${format.bold(format.dim(`${finalResults.time}ms`))} ${`${format.dim(`(±${toSecs(finalResults.time)} seconds)`)}`}`
         );
         write(
           `  ${format.dim('Test Files ›')} ${format.bold(format.dim(`${fileResults.success.size + fileResults.fail.size}`))}`
         );
         hr();
         write(
-          '  ' +
-            format.bg(42, `PASS › ${results.success}`) +
+          format.bg(42, `PASS › ${results.success}`) +
             ' ' +
             format.bg(results.fail === 0 ? 100 : 41, `FAIL › ${results.fail}`)
         );
@@ -36,7 +35,7 @@ export const exit = (code: Code, quiet?: boolean) => {
       }
 
       write(
-        `${format.dim('Exited with code')} ${format.bold(format?.[code === 0 ? 'success' : 'fail'](String(code)))}`
+        `${format.dim('Exited with code')} ${format.bold(format?.[code === 0 ? 'success' : 'fail'](String(code)))}\n`
       );
     });
 

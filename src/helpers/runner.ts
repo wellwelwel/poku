@@ -26,6 +26,7 @@ export const runner = (filename: string, configs?: Configs): string[] => {
           '--allow-env', // Poku share the process.env with the `child_process`
           '--allow-run', // Poku CLI
           '--allow-net', // Create Service
+          '--allow-hrtime', // Precise performance execution time
         ];
 
     const denoDeny = configs?.deno?.deny
