@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.15.0](https://github.com/wellwelwel/poku/compare/v1.14.1...v1.15.0) (2024-06-10)
+
+
+### Features
+
+* **cli:** show individual and total test execution times ([#359](https://github.com/wellwelwel/poku/issues/359)) ([56f08d0](https://github.com/wellwelwel/poku/commit/56f08d00a925807b957585b5964497f1973388ee))
+* **cli:** show paths and options when using `--debug` ([#358](https://github.com/wellwelwel/poku/issues/358)) ([1c0da5c](https://github.com/wellwelwel/poku/commit/1c0da5cd7a874f64a9ed8b2888e3dd6c7007822e))
+* **describe:** support for Node.js familiar API usage ([#353](https://github.com/wellwelwel/poku/issues/353)) ([b423a7e](https://github.com/wellwelwel/poku/commit/b423a7e175f1caecc9b2719a45ee784bd974d67c))
+* **it:** support for Node.js familiar API usage ([#354](https://github.com/wellwelwel/poku/issues/354)) ([c7b2b48](https://github.com/wellwelwel/poku/commit/c7b2b488261d2c20708db9ed37f1a83e5dedf2ff))
+* **test:** support for Node.js familiar API usage ([#352](https://github.com/wellwelwel/poku/issues/352)) ([1c425e1](https://github.com/wellwelwel/poku/commit/1c425e15869e3135f9d47814234d22a32f5e9159))
+
+
+### Bug Fixes
+
+* **logs:** improve output for `test`, `describe` and `it` ([#357](https://github.com/wellwelwel/poku/issues/357)) ([a6facf0](https://github.com/wellwelwel/poku/commit/a6facf0f66a23eda0b3e5ef74547c2dac50ab575))
+* **perf:** improve validations, recursions, logs and imports ([#346](https://github.com/wellwelwel/poku/issues/346)) ([89bcac3](https://github.com/wellwelwel/poku/commit/89bcac34a6f82d1c44c68c5d092e4f75d6d18605))
+
 ## [1.14.1](https://github.com/wellwelwel/poku/compare/v1.14.0...v1.14.1) (2024-06-05)
 
 
