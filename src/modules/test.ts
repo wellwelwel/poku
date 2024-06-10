@@ -1,6 +1,9 @@
 /* c8 ignore next */
 import { each } from '../configs/each.js';
-import { describe } from './describe.js';
+/* c8 ignore next */
+import { indentation } from '../configs/indentation.js';
+import { format } from '../helpers/format.js';
+import { write } from '../helpers/logs.js';
 
 export async function test(
   message: string,
@@ -30,7 +33,13 @@ export async function test(
     cb = args[1] as () => unknown | Promise<unknown>;
   } else cb = args[0] as () => unknown | Promise<unknown>;
 
-  if (message) describe(message, { icon: '›' });
+  /* c8 ignore start */
+  if (message) {
+    indentation.hasTest = true;
+
+    write(`${format.dim('◌')} ${format.bold(message)}`);
+  }
+  /* c8 ignore stop */
 
   const resultCb = cb();
 
@@ -42,4 +51,11 @@ export async function test(
     /* c8 ignore next */
     if (afterResult instanceof Promise) await afterResult;
   }
+
+  /* c8 ignore start */
+  if (message) {
+    indentation.hasTest = false;
+    write(`${format.bold(format.success('●'))} ${format.bold(message)}`);
+  }
+  /* c8 ignore stop */
 }

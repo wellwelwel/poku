@@ -3,8 +3,9 @@
 export const indentation = {
   test: '  ',
   stdio: '      ',
-  describeCounter: 0,
-  testCounter: 0,
+  hasDescribe: false,
+  hasTest: false,
+  hasIt: false,
 };
 
 /* c8 ignore stop */
