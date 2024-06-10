@@ -17,33 +17,12 @@ const [, , ...processArgs] = process.argv;
  * ```
  */
 export const getArg = (arg: string, prefix = '--'): string | undefined => {
-  const mountArg = processArgs.find((a) => a.startsWith(`${prefix}${arg}=`));
-  if (!mountArg) return undefined;
+  const argPattern = `${prefix}${arg}=`;
+  const argValue = processArgs.find((a) => a.startsWith(argPattern));
 
-  return mountArg.split('=')?.[1].replace(/''|""/, '');
-};
+  if (!argValue) return undefined;
 
-/**
- * Parses all arguments of an argument value.
- *
- * ---
- *
- * CLI arguments examples:
- *
- * ```sh
- * command --arg='--sub=some'         # ['--sub=some']
- * command --arg='--sub=some, --sub2' # ['--sub=some', '--sub2']
- * ```
- */
-export const getSubArg = (arg: string, prefix = '--') => {
-  if (hasArg(arg) && !getArg(arg)?.[1]) return [];
-
-  return processArgs
-    .find((a) => a.startsWith(`${prefix}${arg}=`))
-    ?.split(`--${arg}=`)[1]
-    .split(',')
-    .map((a) => a.trim())
-    .filter((a) => a && !/''|""/.test(a));
+  return argValue.slice(argPattern.length).replace(/''|""/, '');
 };
 
 /**
@@ -58,8 +37,11 @@ export const getSubArg = (arg: string, prefix = '--') => {
  * command        # false
  * ```
  */
-export const hasArg = (arg: string, prefix = '--'): boolean =>
-  processArgs.some((a) => a.startsWith(`${prefix}${arg}`));
+export const hasArg = (arg: string, prefix = '--'): boolean => {
+  const argPattern = `${prefix}${arg}`;
+
+  return processArgs.some((a) => a.startsWith(argPattern));
+};
 
 /**
  * Gets the last param/value.
@@ -81,36 +63,19 @@ export const getLastParam = (prefix = '--'): string | undefined => {
   return lastArg;
 };
 
-// TODO (Custom Args)
-// export const getAllArgs = (arg: string, prefix = '--'): string[] => {
-//   return processArgs
-//     .filter((a) => a.startsWith(`${prefix}${arg}=`) || a === `${prefix}${arg}`)
-//     .map((a) => {
-//       const [key, ...value] = a.split('=');
-//       return value.length > 0 ? value.join('=') : key;
-//     });
-// };
+export const argToArray = (arg: string, prefix = '--') => {
+  const hasArgument = hasArg(arg);
+  if (!hasArgument) return undefined;
 
-// TODO (Custom Args)
-// export const setArgs = (
-//   args: (string | Record<string, string>)[],
-//   options?: { prefix: string }
-// ): string[] => {
-//   const customArgs: string[] = [];
-//   const prefix = options?.prefix || '';
+  const argValue = getArg(arg, prefix);
 
-//   args.forEach((arg) => {
-//     if (!Array.isArray(arg) && typeof arg === 'object') {
-//       for (const key in arg) {
-//         customArgs.push(`${prefix}${key}=${arg[key]}`);
-//       }
+  if (hasArgument && !argValue) return [];
+  if (!argValue) return undefined;
 
-//       return;
-//     }
+  return argValue
+    .split(',')
+    .map((a) => a.trim())
+    .filter((a) => a);
+};
 
-//     customArgs.push(`${prefix}${arg}`);
-//   });
-
-//   return customArgs;
-// };
 /* c8 ignore stop */
