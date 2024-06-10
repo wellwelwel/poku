@@ -1,5 +1,6 @@
 import { format, backgroundColor } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
+/* c8 ignore next */
 import { indentation } from '../configs/indentation.js';
 /* c8 ignore next */
 import type { DescribeOptions } from '../@types/describe.js';
@@ -35,11 +36,11 @@ export async function describe(
 
   /* c8 ignore start */
   if (title) {
-    const { background, icon } = options || {};
-    const message = `${cb ? '›' : icon || '☰'} ${title || ''}`;
-    const noBackground = !background;
+    indentation.hasDescribe = true;
 
-    indentation.describeCounter++;
+    const { background, icon } = options || {};
+    const message = `${cb ? format.dim('◌') : icon || '☰'} ${format.bold(title) || ''}`;
+    const noBackground = !background;
 
     if (noBackground) write(`${format.bold(message)}`);
     else {
@@ -56,4 +57,11 @@ export async function describe(
 
   /* c8 ignore next */
   if (resultCb instanceof Promise) await resultCb;
+
+  /* c8 ignore start */
+  if (title) {
+    indentation.hasDescribe = false;
+    write(`${format.bold(format.success('●'))} ${format.bold(title)}`);
+  }
+  /* c8 ignore stop */
 }
