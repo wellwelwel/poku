@@ -102,4 +102,9 @@ export type Configs = {
   deno?: DenoOptions;
 } & ListFilesConfigs;
 
+export type FinalResults = {
+  time: string;
+  started: Date;
+};
+
 /* c8 ignore stop */

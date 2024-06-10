@@ -16,8 +16,8 @@ export type Configs = {
 };
 
 export type FileResults = {
-  success: string[];
-  fail: string[];
+  success: Map<string, string>;
+  fail: Map<string, string>;
 };
 
 /* c8 ignore stop */

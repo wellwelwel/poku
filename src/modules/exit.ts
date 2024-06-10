@@ -6,6 +6,8 @@ import { results } from '../services/run-tests.js';
 import { format } from '../helpers/format.js';
 import type { Code } from '../@types/code.js';
 import { write } from '../helpers/logs.js';
+import { fileResults, finalResults } from '../configs/files.js';
+import { setTime, toSecs } from '../helpers/time.js';
 
 export const exit = (code: Code, quiet?: boolean) => {
   const isPoku = results.success > 0 || results.fail > 0;
@@ -15,7 +17,18 @@ export const exit = (code: Code, quiet?: boolean) => {
       if (isPoku) {
         hr();
         write(
-          format.bg(42, `PASS › ${results.success}`) +
+          `    ${format.dim('Start at ›')} ${format.bold(format.dim(`${setTime(finalResults.started)}`))}`
+        );
+        write(
+          `    ${format.dim('Duration ›')} ${format.bold(format.dim(`${finalResults.time}ms`))} ${`${format.dim(`(± ${toSecs(finalResults.time)} seconds)`)}`}`
+        );
+        write(
+          `  ${format.dim('Test Files ›')} ${format.bold(format.dim(`${fileResults.success.size + fileResults.fail.size}`))}`
+        );
+        hr();
+        write(
+          '  ' +
+            format.bg(42, `PASS › ${results.success}`) +
             ' ' +
             format.bg(results.fail === 0 ? 100 : 41, `FAIL › ${results.fail}`)
         );

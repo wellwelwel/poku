@@ -1,3 +1,4 @@
+import { hrtime } from 'node:process';
 /* c8 ignore next */
 import { each } from '../configs/each.js';
 /* c8 ignore next */
@@ -42,10 +43,12 @@ export async function it(
   }
   /* c8 ignore end */
 
+  const start = hrtime();
   const resultCb = cb();
 
   /* c8 ignore next */
   if (resultCb instanceof Promise) await resultCb;
+  const end = hrtime(start);
 
   if (typeof each.after.cb === 'function' && each.after.test) {
     const afterResult = each.after.cb();
@@ -55,9 +58,11 @@ export async function it(
 
   /* c8 ignore start */
   if (message) {
+    const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+
     indentation.hasIt = false;
     write(
-      `${indentation.hasDescribe ? '  ' : ''}${format.bold(format.success('●'))} ${format.bold(format.italic(message))}`
+      `${indentation.hasDescribe ? '  ' : ''}${format.bold(format.success('●'))} ${format.bold(format.italic(message))} ${format.italic(format.dim(`› ${total}ms`))}`
     );
   }
   /* c8 ignore stop */
