@@ -178,15 +178,15 @@ That's it 🎉
 - **Background Services**
   - [**startScript**](https://poku.io/docs/documentation/startScript) (_run `package.json` scripts in a background process_)
   - [**startService**](https://poku.io/docs/documentation/startService) (_run files in a background process_)
-- **Processes**
-  - [**kill**](https://poku.io/docs/documentation/processes/kill) (_terminate Ports, Port Ranges and PIDs_)
-  - [**getPIDs**](https://poku.io/docs/documentation/processes/get-pids) (_get all processes IDs using ports and port ranges_)
 
 ### Helpers
 
-- [**beforeEach**](https://poku.io/docs/category/beforeeach-and-aftereach) and [**afterEach**](https://poku.io/docs/category/beforeeach-and-aftereach)
 - [**test**](https://poku.io/docs/documentation/helpers/test)
-- [**describe**](https://poku.io/docs/documentation/helpers/describe)
+- [**describe**](https://poku.io/docs/documentation/helpers/describe) and [**it**](https://poku.io/docs/documentation/helpers/it)
+- [**beforeEach**](https://poku.io/docs/category/beforeeach-and-aftereach) and [**afterEach**](https://poku.io/docs/category/beforeeach-and-aftereach)
+- **Processes**
+  - [**kill**](https://poku.io/docs/documentation/processes/kill) (_terminate Ports, Port Ranges and PIDs_)
+  - [**getPIDs**](https://poku.io/docs/documentation/processes/get-pids) (_get all processes IDs using ports and port ranges_)
 - _and much more_ ✨
 
 ---
