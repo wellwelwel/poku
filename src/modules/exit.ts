@@ -6,6 +6,8 @@ import { results } from '../services/run-tests.js';
 import { format } from '../helpers/format.js';
 import type { Code } from '../@types/code.js';
 import { write } from '../helpers/logs.js';
+import { fileResults, finalResults } from '../configs/files.js';
+import { setTime, toSecs } from '../helpers/time.js';
 
 export const exit = (code: Code, quiet?: boolean) => {
   const isPoku = results.success > 0 || results.fail > 0;
@@ -13,6 +15,16 @@ export const exit = (code: Code, quiet?: boolean) => {
   !quiet &&
     process.on('exit', (code) => {
       if (isPoku) {
+        hr();
+        write(
+          `    ${format.dim('Start at ›')} ${format.bold(format.dim(`${setTime(finalResults.started)}`))}`
+        );
+        write(
+          `    ${format.dim('Duration ›')} ${format.bold(format.dim(`${finalResults.time}ms`))} ${`${format.dim(`(±${toSecs(finalResults.time)} seconds)`)}`}`
+        );
+        write(
+          `  ${format.dim('Test Files ›')} ${format.bold(format.dim(`${fileResults.success.size + fileResults.fail.size}`))}`
+        );
         hr();
         write(
           format.bg(42, `PASS › ${results.success}`) +
@@ -23,7 +35,7 @@ export const exit = (code: Code, quiet?: boolean) => {
       }
 
       write(
-        `${format.dim('Exited with code')} ${format.bold(format?.[code === 0 ? 'success' : 'fail'](String(code)))}`
+        `${format.dim('Exited with code')} ${format.bold(format?.[code === 0 ? 'success' : 'fail'](String(code)))}\n`
       );
     });
 

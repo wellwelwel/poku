@@ -50,13 +50,16 @@ export const runTests = async (
     const filePath = files[i];
     const fileRelative = relative(cwd, filePath);
 
+    const start = process.hrtime();
     const testPassed = await runTestFile(filePath, configs);
+    const end = process.hrtime(start);
+    const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
     const testNumber = i + 1;
     const counter = format.counter(testNumber, totalTests);
-    const command = `${runner(fileRelative, configs).join(' ')} ${fileRelative}`;
+    const command = `${runner(fileRelative, configs).join(' ')} ${fileRelative} ${format.dim(`› ${total}ms`)}`;
     const nextLine = i + 1 !== files.length ? EOL : '';
-    const log = `${counter}/${totalTests} ${command}`;
+    const log = `${counter}/${totalTests} ${command} `;
 
     if (testPassed) {
       ++results.success;

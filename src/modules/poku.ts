@@ -4,20 +4,20 @@
  * Both CLI, API, noExit, sequential and parallel runs are strictly tested, but these tests use deep child process for it
  */
 
-import process, { stdout } from 'node:process';
+import process from 'node:process';
 import { EOL } from 'node:os';
 import { runTests, runTestsParallel } from '../services/run-tests.js';
 import { exit } from './exit.js';
 import { format } from '../helpers/format.js';
 import { isQuiet, write } from '../helpers/logs.js';
 import { hr } from '../helpers/hr.js';
-import { fileResults } from '../configs/files.js';
+import { fileResults, finalResults } from '../configs/files.js';
 import { indentation } from '../configs/indentation.js';
 import type { Code } from '../@types/code.js';
 import type { Configs } from '../@types/poku.js';
 
 process.once('SIGINT', () => {
-  stdout.write('\u001B[?25h');
+  process.stdout.write('\u001B[?25h');
 });
 
 export async function poku(
@@ -34,6 +34,9 @@ export async function poku(
 ): Promise<Code | void> {
   let code: Code = 0;
 
+  finalResults.started = new Date();
+
+  const start = process.hrtime();
   const prepareDirs = Array.prototype.concat(targetPaths);
   const dirs = prepareDirs.length > 0 ? prepareDirs : ['.'];
   const showLogs = !isQuiet(configs);
@@ -50,6 +53,11 @@ export async function poku(
     }
 
     if (configs?.noExit) return code;
+
+    const end = process.hrtime(start);
+    const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+
+    finalResults.time = total;
 
     exit(code, configs?.quiet);
     return;
@@ -73,26 +81,37 @@ export async function poku(
     const concurrency = await Promise.all(promises);
 
     if (concurrency.some((result) => !result)) code = 1;
-  } catch {}
+  } catch {
+  } finally {
+    const end = process.hrtime(start);
+    const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+
+    finalResults.time = total;
+  }
 
   showLogs && hr();
 
-  if (showLogs && fileResults.success.length > 0)
+  if (showLogs && fileResults.success.size > 0) {
     write(
-      fileResults.success
+      Array.from(fileResults.success)
         .map(
-          (current) =>
-            `${indentation.test}${format.success('✔')} ${format.dim(current)}`
+          ([file, time]) =>
+            `${indentation.test}${format.success('✔')} ${format.dim(`${file} › ${time}ms`)}`
         )
         .join(EOL)
     );
+  }
 
-  if (showLogs && fileResults.fail.length > 0)
+  if (showLogs && fileResults.fail.size > 0) {
     write(
-      fileResults.fail
-        .map((current) => `${indentation.test}${format.fail('✘')} ${current}`)
+      Array.from(fileResults.success)
+        .map(
+          ([file, time]) =>
+            `${indentation.test}${format.fail('✘')} ${format.dim(`${file} › ${time}ms`)}`
+        )
         .join(EOL)
     );
+  }
 
   if (configs?.noExit) return code;
 

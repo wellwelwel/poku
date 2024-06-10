@@ -46,6 +46,9 @@ export const runTestFile = (
         );
     }
 
+    const start = process.hrtime();
+    let end: ReturnType<typeof process.hrtime>;
+
     if (!(await beforeEach(fileRelative, configs))) return false;
 
     // Export spawn helper is not an option
@@ -64,6 +67,8 @@ export const runTestFile = (
     child.stderr.on('data', stdOut);
 
     child.on('close', async (code) => {
+      end = process.hrtime(start);
+
       const result = code === 0;
 
       if (showLogs)
@@ -75,16 +80,22 @@ export const runTestFile = (
 
       if (!(await afterEach(fileRelative, configs))) return false;
 
-      if (result) fileResults.success.push(fileRelative);
-      else fileResults.fail.push(fileRelative);
+      const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+
+      if (result) fileResults.success.set(fileRelative, total);
+      else fileResults.fail.set(fileRelative, total);
 
       resolve(result);
     });
 
     /* c8 ignore start */
     child.on('error', (err) => {
+      end = process.hrtime(start);
+
+      const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+
       console.error(`Failed to start test: ${filePath}`, err);
-      fileResults.fail.push(fileRelative);
+      fileResults.fail.set(fileRelative, total);
 
       resolve(false);
     });

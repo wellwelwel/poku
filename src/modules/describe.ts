@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { format, backgroundColor } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
 /* c8 ignore next */
@@ -39,7 +40,7 @@ export async function describe(
     indentation.hasDescribe = true;
 
     const { background, icon } = options || {};
-    const message = `${cb ? format.dim('◌') : icon || '☰'} ${format.bold(title) || ''}`;
+    const message = `${cb ? format.dim('◌') : icon || '☰'} ${cb ? format.dim(title) : format.bold(title) || ''}`;
     const noBackground = !background;
 
     if (noBackground) write(`${format.bold(message)}`);
@@ -53,15 +54,21 @@ export async function describe(
 
   if (typeof cb !== 'function') return;
 
+  const start = process.hrtime();
   const resultCb = cb();
 
   /* c8 ignore next */
   if (resultCb instanceof Promise) await resultCb;
+  const end = process.hrtime(start);
 
   /* c8 ignore start */
   if (title) {
+    const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+
     indentation.hasDescribe = false;
-    write(`${format.bold(format.success('●'))} ${format.bold(title)}`);
+    write(
+      `${format.bold(format.success('●'))} ${format.bold(format.success(title))} ${format.dim(`› ${total}ms`)}`
+    );
   }
   /* c8 ignore stop */
 }
