@@ -15,10 +15,11 @@
     "typecheck": "tsc",
     "lintcheck": "prettier --check . && eslint . --ext .ts,.tsx",
     "lint": "prettier --write . && eslint . --fix",
-    "test:unit": "npx poku --parallel test/unit",
+    "test:unit": "poku --parallel test/unit",
     "test": "npm run typecheck && npm run lintcheck && npm run test:unit && npm run clear && npm run build",
-    "update": "npx pu minor && npm i && npm run lint",
-    "deploy": "npx tsx deploy/upload.ts"
+    "update": "pu minor && npm i && npm audit fix",
+    "postupdate": "npm run lint",
+    "deploy": "tsx deploy/upload.ts"
   },
   "dependencies": {
     "@docusaurus/core": "^3.4.0",
