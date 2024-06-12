@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/wellwelwel/poku/compare/v1.15.0...v1.15.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* **logs:** properly show failures in parallel runs ([#382](https://github.com/wellwelwel/poku/issues/382)) ([964b5a2](https://github.com/wellwelwel/poku/commit/964b5a22ddba424b38ab5fe43bd9406b578a7615))
+
 ## [1.15.0](https://github.com/wellwelwel/poku/compare/v1.14.1...v1.15.0) (2024-06-10)
 
 
