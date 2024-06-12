@@ -104,7 +104,7 @@ export async function poku(
 
   if (showLogs && fileResults.fail.size > 0) {
     write(
-      Array.from(fileResults.success)
+      Array.from(fileResults.fail)
         .map(
           ([file, time]) =>
             `${indentation.test}${format.fail('✘')} ${format.dim(`${file} › ${time}ms`)}`
