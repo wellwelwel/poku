@@ -126,7 +126,7 @@
     "@types/node": "^20.14.2",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
-    "c8": "^10.1.1",
+    "c8": "^10.1.2",
     "esbuild": "^0.21.5",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -136,7 +136,7 @@
     "packages-update": "^2.0.0",
     "prettier": "^3.3.2",
     "shx": "^0.3.4",
-    "tsx": "4.15.2",
+    "tsx": "4.15.4",
     "typescript": "^5.4.5"
   }
 }
