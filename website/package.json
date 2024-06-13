@@ -57,7 +57,7 @@
     "poku": "^1.15.0",
     "prettier": "^3.3.2",
     "svps": "^2.3.0",
-    "tsx": "^4.15.2",
+    "tsx": "^4.15.3",
     "typescript": "^5.4.5"
   },
   "browserslist": {
