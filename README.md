@@ -184,6 +184,7 @@ That's it 🎉
 - [**test**](https://poku.io/docs/documentation/helpers/test)
 - [**describe**](https://poku.io/docs/documentation/helpers/describe) and [**it**](https://poku.io/docs/documentation/helpers/it)
 - [**beforeEach**](https://poku.io/docs/category/beforeeach-and-aftereach) and [**afterEach**](https://poku.io/docs/category/beforeeach-and-aftereach)
+- [**watch**](https://poku.io/docs/documentation/poku/options/watch)
 - **Processes**
   - [**kill**](https://poku.io/docs/documentation/processes/kill) (_terminate Ports, Port Ranges and PIDs_)
   - [**getPIDs**](https://poku.io/docs/documentation/processes/get-pids) (_get all processes IDs using ports and port ranges_)
