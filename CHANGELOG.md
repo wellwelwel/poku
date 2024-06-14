@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/wellwelwel/poku/compare/v1.15.1...v1.16.0) (2024-06-14)
+
+
+### Features
+
+* introduce `watch` mode ([#393](https://github.com/wellwelwel/poku/issues/393)) ([8b816f7](https://github.com/wellwelwel/poku/commit/8b816f78b8569f9fafba2eb177c3c43952dfc9ee))
+
 ## [1.15.1](https://github.com/wellwelwel/poku/compare/v1.15.0...v1.15.1) (2024-06-12)
 
 
