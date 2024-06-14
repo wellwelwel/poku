@@ -1,10 +1,22 @@
 # Contributing
 
-If you're thinking of contributing, thank you 🎉
+If you're thinking of contributing, thank you, and _naturally_, please **be respectful** 🙋🏻‍♂️
+
+## Issues
+
+By opening an **Issue**, please describe the problem. If you can share a basic repro, it will be great.
 
 ---
 
-## Environment
+## Pull Requests
+
+By opening a **Pull Request**, please describe the proposed solution and what it solves.
+
+---
+
+## Developing
+
+### Environment
 
 You will need these tools installed on your system:
 
@@ -17,23 +29,20 @@ You will need these tools installed on your system:
 
 ---
 
-## Developing
-
-Fork this project, download your forked repository locally and create a new branch from `main`.  
+Fork this project, download your forked repository locally and create a new branch from `main`.
 Then run `npm ci` to clean install the node modules.
 
 > Please, do not change the _package-lock.json_.
 
 ### Fixes
 
-Where possible, provide an error test case that your fix covers.
+Where possible, provide an error test case that the fix covers.
 
 ### Features
 
-It's better to discuss an API before actually start implementing it. You can open an issue on **Github**.
-We can discuss design of API and implementation ideas.
+It's better to discuss an **API** before actually start implementing it. You can open an [**Issue on Github**](https://github.com/wellwelwel/poku/issues/new), so we can discuss the **API** design implementation ideas.
 
-- Please ensure test cases to cover your features.
+> Please ensure test cases to cover new features.
 
 ---
 
@@ -60,7 +69,7 @@ npm run test:deno:sequential  # Test with the locally installed Deno version
 > Pass custom flags using `--`, for example:
 >
 > ```sh
-> npm run test:sequential -- --debug --fail-fast # etc.
+> npm run test:sequential -- --debug --watch # etc.
 > ```
 >
 > - Same for **Bun** and **Deno**.
@@ -76,7 +85,7 @@ npm run test:deno:parallel    # Test with the locally installed Deno version
 > Pass custom flags using `--`, for example:
 >
 > ```sh
-> npm run test:parallel -- --concurrency=5 --fail-fast # etc.
+> npm run test:parallel -- --concurrency=5 --watch # etc.
 > ```
 >
 > - Same for **Bun** and **Deno**.
@@ -138,16 +147,3 @@ npm run lint:checker
 > ```sh
 > npm run lint:fix
 > ```
-
----
-
-## Issues and Pull Requests
-
-By opening an **Issue** or submit a **Pull Request**, describe your problem or solution. If you can share a basic repro, it will be great.
-
-- Prefer to talk in **English** for Issues.
-- For **Pull Requests**, you're welcome to discuss in both **English** and **Portuguese**.
-
----
-
-Naturally, please **be respectful** 🙋🏻‍♂️
