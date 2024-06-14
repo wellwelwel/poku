@@ -1,11 +1,14 @@
+import process from 'node:process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { it } from '../../src/modules/it.js';
 import { describe } from '../../src/modules/describe.js';
 import { beforeEach, afterEach } from '../../src/modules/each.js';
 import { assert } from '../../src/modules/assert.js';
-import { getRuntime } from '../../src/helpers/get-runtime.js';
+import { getRuntime, nodeVersion } from '../../src/helpers/get-runtime.js';
 import { watch, WatchCallback } from '../../src/services/watch.js';
+
+if (nodeVersion && nodeVersion < 10) process.exit(0);
 
 const runtime = getRuntime();
 
