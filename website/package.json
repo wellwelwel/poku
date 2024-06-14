@@ -43,7 +43,7 @@
     "@docusaurus/module-type-aliases": "^3.4.0",
     "@docusaurus/tsconfig": "^3.4.0",
     "@docusaurus/types": "^3.4.0",
-    "@types/bun": "^1.1.3",
+    "@types/bun": "^1.1.4",
     "@types/node": "^20.14.2",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
@@ -57,7 +57,7 @@
     "poku": "^1.15.1",
     "prettier": "^3.3.2",
     "svps": "^2.3.0",
-    "tsx": "^4.15.3",
+    "tsx": "^4.15.4",
     "typescript": "^5.4.5"
   },
   "browserslist": {
