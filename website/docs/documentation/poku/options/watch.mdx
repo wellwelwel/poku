@@ -1,0 +1,23 @@
+---
+sidebar_position: 9
+---
+
+# `watch`
+
+Watches the events on test paths (after running all the tests), re-running the tests files that are updated for each new event.
+
+> Currently, `watch` mode only watches for events from test files and directories.
+
+## CLI
+
+```bash
+npx poku --watch
+```
+
+You can use the flag `--watch-interval` to set a custom interval for `watch` events in milliseconds:
+
+> Default is `1500`
+
+```bash
+npx poku --watch --watch-interval=1500
+```
