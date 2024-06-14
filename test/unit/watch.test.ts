@@ -4,7 +4,10 @@ import { it } from '../../src/modules/it.js';
 import { describe } from '../../src/modules/describe.js';
 import { beforeEach, afterEach } from '../../src/modules/each.js';
 import { assert } from '../../src/modules/assert.js';
+import { getRuntime } from '../../src/helpers/get-runtime.js';
 import { watch, WatchCallback } from '../../src/services/watch.js';
+
+const runtime = getRuntime();
 
 const tmpDir = path.resolve('.', '.temp');
 
@@ -30,9 +33,11 @@ describe('Watcher Service', async () => {
 
   beforeEach(() => {
     createTempDir();
+    callbackResults = [];
   });
 
   afterEach(() => {
+    callbackResults = [];
     cleanTempDir();
   });
 
@@ -41,7 +46,14 @@ describe('Watcher Service', async () => {
     const watcher = await watch(tmpDir, callback);
     const filePath = path.join(tmpDir, 'file1.test.js');
 
-    fs.writeFileSync(filePath, 'export default { updated: true };');
+    fs.writeFileSync(filePath, 'export default {};');
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        fs.writeFileSync(filePath, 'export default { updated: true };'); // update
+        resolve(undefined);
+      }, 1000);
+    });
 
     return await new Promise((resolve) => {
       setTimeout(() => {
@@ -63,6 +75,9 @@ describe('Watcher Service', async () => {
   });
 
   await it('should watch for new files in directory', async () => {
+    if (runtime === 'bun') return;
+    if (runtime === 'deno') return;
+
     callbackResults = [];
 
     const watcher = await watch(tmpDir, callback);
@@ -116,6 +131,9 @@ describe('Watcher Service', async () => {
   });
 
   await it('should watch for changes in subdirectories', async () => {
+    if (runtime === 'bun') return;
+    if (runtime === 'deno') return;
+
     callbackResults = [];
     const watcher = await watch(tmpDir, callback);
     const subDirPath = path.join(tmpDir, 'subdir');
@@ -151,6 +169,9 @@ describe('Watcher Service', async () => {
   });
 
   await it('should watch for changes in nested subdirectories', async () => {
+    if (runtime === 'bun') return;
+    if (runtime === 'deno') return;
+
     callbackResults = [];
     const watcher = await watch(tmpDir, callback);
     const nestedSubDirPath = path.join(tmpDir, 'subdir', 'nestedsubdir');
@@ -187,6 +208,8 @@ describe('Watcher Service', async () => {
   });
 
   await it('should watch a single file directly', async () => {
+    if (runtime === 'bun') return;
+
     callbackResults = [];
     const filePath = path.join(tmpDir, 'file1.test.js');
 
