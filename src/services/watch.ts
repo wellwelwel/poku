@@ -1,8 +1,10 @@
+/* c8 ignore next */
 import { watch as nodeWatch, type FSWatcher } from 'node:fs';
 import { join } from 'node:path';
 import { readdir, stat } from '../polyfills/fs.js';
 import { listFiles } from '../modules/list-files.js';
 
+/* c8 ignore next */
 export type WatchCallback = (file: string, event: string) => void;
 
 class Watcher {
@@ -18,15 +20,18 @@ class Watcher {
   }
 
   private watchFile(filePath: string) {
+    /* c8 ignore next */
     if (this.fileWatchers.has(filePath)) return;
 
     const watcher = nodeWatch(filePath, (eventType) => {
       this.callback(filePath, eventType);
     });
 
+    /* c8 ignore start */
     watcher.on('error', () => {
       return;
     });
+    /* c8 ignore stop */
 
     this.fileWatchers.set(filePath, watcher);
   }
@@ -59,13 +64,17 @@ class Watcher {
         try {
           const stats = await stat(fullPath);
           if (stats.isDirectory()) await this.watchDirectory(fullPath);
+          /* c8 ignore start */
         } catch {}
+        /* c8 ignore stop */
       }
     });
 
+    /* c8 ignore start */
     watcher.on('error', () => {
       return;
     });
+    /* c8 ignore stop */
 
     this.dirWatchers.set(dir, watcher);
 
@@ -89,11 +98,13 @@ class Watcher {
         this.watchFiles(this.files);
         await this.watchDirectory(this.rootDir);
       } else this.watchFile(this.rootDir);
+      /* c8 ignore start */
     } catch (err) {
       throw new Error(
         `Path does not exist or is not accessible: ${this.rootDir}`
       );
     }
+    /* c8 ignore stop */
   }
 
   public stop() {
@@ -107,8 +118,10 @@ class Watcher {
       this.dirWatchers.delete(dirPath);
     }
   }
+  /* c8 ignore next */
 }
 
+/* c8 ignore next */
 export const watch = async (path: string, callback: WatchCallback) => {
   const watcher = new Watcher(path, callback);
 

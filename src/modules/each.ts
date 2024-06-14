@@ -82,7 +82,7 @@ export const beforeEach = (
  */
 export const afterEach = (
   callback: () => unknown,
-  options: Omit<EachOptions, 'immediate'>
+  options?: Omit<EachOptions, 'immediate'>
 ): Control => {
   each.after.test = typeof options?.test === 'boolean' ? options.test : true;
   each.after.assert =
