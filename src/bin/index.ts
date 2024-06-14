@@ -9,13 +9,15 @@ import {
   hasArg,
   argToArray,
 } from '../helpers/get-arg.js';
-import { poku } from '../modules/poku.js';
-import { kill } from '../modules/processes.js';
+import { fileResults } from '../configs/files.js';
 import { platformIsValid } from '../helpers/get-runtime.js';
 import { format } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
-import type { Configs } from '../@types/poku.js';
 import { hr } from '../helpers/hr.js';
+import { watch } from '../services/watch.js';
+import { poku } from '../modules/poku.js';
+import { kill } from '../modules/processes.js';
+import type { Configs } from '../@types/poku.js';
 
 (async () => {
   const dirs = (() => {
@@ -46,6 +48,7 @@ import { hr } from '../helpers/hr.js';
   const quiet = hasArg('quiet');
   const debug = hasArg('debug');
   const failFast = hasArg('fail-fast');
+  const watchMode = hasArg('watch');
 
   const concurrency = parallel
     ? Number(getArg('concurrency')) || undefined
@@ -85,6 +88,7 @@ import { hr } from '../helpers/hr.js';
     debug,
     failFast,
     concurrency,
+    noExit: watchMode,
     deno: {
       allow: denoAllow,
       deny: denoDeny,
@@ -102,7 +106,36 @@ import { hr } from '../helpers/hr.js';
     console.dir(options, { depth: null, colors: true });
   }
 
-  poku(dirs, options);
+  await poku(dirs, options);
+
+  if (watchMode) {
+    const executing = new Set<string>();
+    const interval = Number(getArg('watch-interval')) || 1500;
+
+    fileResults.success.clear();
+    fileResults.fail.clear();
+
+    hr();
+    write(`Watching: ${dirs.join(', ')}`);
+
+    dirs.forEach((dir) => {
+      watch(dir, (file, event) => {
+        if (event === 'change') {
+          if (executing.has(file)) return;
+
+          executing.add(file);
+          fileResults.success.clear();
+          fileResults.fail.clear();
+
+          poku(file, options).then(() => {
+            setTimeout(() => {
+              executing.delete(file);
+            }, interval);
+          });
+        }
+      });
+    });
+  }
 })();
 
 /* c8 ignore stop */
