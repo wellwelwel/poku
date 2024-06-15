@@ -58,7 +58,7 @@ jobs:
 
       - name: 🧪 Checking for Coverage
         # run: npm run test:c8:sequential:options
-        run: npm run test:sequential -- --debug --filter="map-tests"
+        run: npx tsx src/bin/index.ts --debug test/unit/map-tests.test.ts
 
       # - name: ☔️ Upload coverage reports to Codecov
       #   uses: codecov/codecov-action@v4
