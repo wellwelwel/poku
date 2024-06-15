@@ -49,7 +49,7 @@ export const mapTests = async (srcDir: string, testPaths: string[]) => {
         if (!importMap.has(normalizedSrcFile))
           importMap.set(normalizedSrcFile, []);
 
-        importMap.get(normalizedSrcFile)!.push(testFile);
+        importMap.get(normalizedSrcFile)!.push(normalizePath(testFile));
       }
       /* c8 ignore stop */
     }
