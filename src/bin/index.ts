@@ -14,6 +14,7 @@ import { platformIsValid } from '../helpers/get-runtime.js';
 import { format } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
 import { hr } from '../helpers/hr.js';
+import { mapTests } from '../services/map-tests.js';
 import { watch } from '../services/watch.js';
 import { poku } from '../modules/poku.js';
 import { kill } from '../modules/processes.js';
@@ -111,12 +112,34 @@ import type { Configs } from '../@types/poku.js';
   if (watchMode) {
     const executing = new Set<string>();
     const interval = Number(getArg('watch-interval')) || 1500;
+    const resultsClear = () => {
+      fileResults.success.clear();
+      fileResults.fail.clear();
+    };
 
-    fileResults.success.clear();
-    fileResults.fail.clear();
+    resultsClear();
 
-    hr();
-    write(`Watching: ${dirs.join(', ')}`);
+    mapTests('.', dirs).then((mappedTests) => [
+      Array.from(mappedTests.keys()).forEach((mappedTest) => {
+        watch(mappedTest, (file, event) => {
+          if (event === 'change') {
+            if (executing.has(file)) return;
+
+            executing.add(file);
+            resultsClear();
+
+            const tests = mappedTests.get(file);
+            if (!tests) return;
+
+            poku(tests, options).then(() => {
+              setTimeout(() => {
+                executing.delete(file);
+              }, interval);
+            });
+          }
+        });
+      }),
+    ]);
 
     dirs.forEach((dir) => {
       watch(dir, (file, event) => {
@@ -124,8 +147,7 @@ import type { Configs } from '../@types/poku.js';
           if (executing.has(file)) return;
 
           executing.add(file);
-          fileResults.success.clear();
-          fileResults.fail.clear();
+          resultsClear();
 
           poku(file, options).then(() => {
             setTimeout(() => {
@@ -135,6 +157,9 @@ import type { Configs } from '../@types/poku.js';
         }
       });
     });
+
+    hr();
+    write(`Watching: ${dirs.join(', ')}`);
   }
 })();
 
