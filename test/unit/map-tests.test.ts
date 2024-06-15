@@ -59,7 +59,7 @@ describe('mapTests', async () => {
       ],
     ]);
 
-    assert.deepStrictEqual(importMap, expected);
+    assert.deepStrictEqual(Array.from(importMap), Array.from(expected));
   });
 
   await it('should map single test file correctly', async () => {
@@ -73,6 +73,6 @@ describe('mapTests', async () => {
       ],
     ]);
 
-    assert.deepStrictEqual(importMap, expected);
+    assert.deepStrictEqual(Array.from(importMap), Array.from(expected));
   });
 });
