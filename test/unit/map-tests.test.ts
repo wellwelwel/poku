@@ -1,14 +1,15 @@
 import process from 'node:process';
+import { nodeVersion } from '../../src/helpers/get-runtime.js';
+
+if (nodeVersion && nodeVersion < 14) process.exit(0);
+
 import { join } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { it } from '../../src/modules/it.js';
 import { describe } from '../../src/modules/describe.js';
 import { beforeEach, afterEach } from '../../src/modules/each.js';
 import { assert } from '../../src/modules/assert.js';
-import { nodeVersion } from '../../src/helpers/get-runtime.js';
 import { mapTests } from '../../src/services/map-tests.js';
-
-if (nodeVersion && nodeVersion < 14) process.exit(0);
 
 const createFileSync = (filePath: string, content: string) => {
   writeFileSync(filePath, content);
