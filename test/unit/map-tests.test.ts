@@ -28,22 +28,22 @@ const dsep = (file: string) => file.replace(/[/\\]+/g, sep);
 const testSrcDir = 'test-src';
 const testTestDir = 'test-tests';
 
+beforeEach(() => {
+  createDirSync(testSrcDir);
+  createDirSync(testTestDir);
+  createFileSync(join(testSrcDir, 'example.js'), 'export const foo = 42;');
+  createFileSync(
+    join(testTestDir, 'example.test.js'),
+    'import { foo } from "../test-src/example.js";'
+  );
+});
+
+afterEach(() => {
+  removeDirSync(testSrcDir);
+  removeDirSync(testTestDir);
+});
+
 describe('mapTests', async () => {
-  beforeEach(() => {
-    createDirSync(testSrcDir);
-    createDirSync(testTestDir);
-    createFileSync(join(testSrcDir, 'example.js'), 'export const foo = 42;');
-    createFileSync(
-      join(testTestDir, 'example.test.js'),
-      'import { foo } from "../test-src/example.js";'
-    );
-  });
-
-  afterEach(() => {
-    removeDirSync(testSrcDir);
-    removeDirSync(testTestDir);
-  });
-
   await it('should map test files to their corresponding source files', async () => {
     const importMap = await mapTests(testSrcDir, [testTestDir]);
     const expected = new Map([
