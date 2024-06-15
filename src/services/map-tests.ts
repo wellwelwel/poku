@@ -9,7 +9,8 @@ const normalizePath = (filePath: string) =>
   filePath
     .replace(/(\.\/)/g, '')
     .replace(/^\.+/, '')
-    .replace(/[/\\]+/g, sep);
+    .replace(/[/\\]+/g, sep)
+    .replace(/\\/g, '/');
 
 /* c8 ignore next */
 export const mapTests = async (srcDir: string, testPaths: string[]) => {
@@ -32,11 +33,8 @@ export const mapTests = async (srcDir: string, testPaths: string[]) => {
     const content = await readFile(testFile, 'utf-8');
 
     for (const srcFile of allSrcFiles) {
-      const relativePath = normalizePath(
-        relative(dirname(testFile), srcFile).replace(/\\/g, '/')
-      );
-
-      const normalizedSrcFile = normalizePath(srcFile.replace(/\\/g, '/'));
+      const relativePath = normalizePath(relative(dirname(testFile), srcFile));
+      const normalizedSrcFile = normalizePath(srcFile);
 
       /* c8 ignore start */
       if (

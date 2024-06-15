@@ -3,7 +3,7 @@ import { nodeVersion } from '../../src/helpers/get-runtime.js';
 
 if (nodeVersion && nodeVersion < 14) process.exit(0);
 
-import { join, normalize } from 'node:path';
+import { join, sep } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { it } from '../../src/modules/it.js';
 import { describe } from '../../src/modules/describe.js';
@@ -26,6 +26,13 @@ const removeDirSync = (dirPath: string) => {
 const testSrcDir = 'test-src';
 const testTestDir = 'test-tests';
 
+const normalizePath = (filePath: string) =>
+  filePath
+    .replace(/(\.\/)/g, '')
+    .replace(/^\.+/, '')
+    .replace(/[/\\]+/g, sep)
+    .replace(/\\/g, '/'); // Garantir uso de '/' para comparações consistentes
+
 describe('mapTests', async () => {
   beforeEach(() => {
     createDirSync(testSrcDir);
@@ -44,14 +51,13 @@ describe('mapTests', async () => {
 
   await it('should map test files to their corresponding source files', async () => {
     const importMap = await mapTests(testSrcDir, [testTestDir]);
+
     const expected = new Map([
       [
-        normalize('test-src/example.js').replace(/\\/g, '/'),
-        [normalize('test-tests/example.test.js').replace(/\\/g, '/')],
+        normalizePath('test-src/example.js'),
+        [normalizePath('test-tests/example.test.js')],
       ],
     ]);
-
-    console.log('importMap:', Array.from(importMap.entries()));
 
     assert.deepStrictEqual(importMap, expected);
   });
@@ -59,10 +65,11 @@ describe('mapTests', async () => {
   await it('should map single test file correctly', async () => {
     const singleTestFile = join(testTestDir, 'example.test.js');
     const importMap = await mapTests(testSrcDir, [singleTestFile]);
+
     const expected = new Map([
       [
-        normalize('test-src/example.js').replace(/\\/g, '/'),
-        [normalize('test-tests/example.test.js').replace(/\\/g, '/')],
+        normalizePath('test-src/example.js'),
+        [normalizePath('test-tests/example.test.js')],
       ],
     ]);
 
