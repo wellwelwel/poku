@@ -54,7 +54,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Performant** and **lightweight**<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Compatible with **coverage** tools
 
-> 💡 **Poku** allows you to [test with the simplicity of **JavaScript**](https://poku.io/docs/philosophy), using your existing knowledge to create tests intuitively.
+> 💡 **Poku** brings the [essence of **JavaScript** back to testing](https://poku.io/docs/philosophy), allowing to use your knowledge to create tests intuitively.
 
 ---
 
