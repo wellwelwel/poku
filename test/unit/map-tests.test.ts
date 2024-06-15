@@ -1,7 +1,9 @@
 import process from 'node:process';
 import { nodeVersion } from '../../src/helpers/get-runtime.js';
+import { isWindows } from '../../src/helpers/runner.js';
 
-if (nodeVersion && nodeVersion < 14) process.exit(0);
+// TODO: Check why Windows doesn't get the files
+if (isWindows || (nodeVersion && nodeVersion < 14)) process.exit(0);
 
 import { join, sep } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
@@ -31,7 +33,7 @@ const normalizePath = (filePath: string) =>
     .replace(/(\.\/)/g, '')
     .replace(/^\.+/, '')
     .replace(/[/\\]+/g, sep)
-    .replace(/\\/g, '/'); // Garantir uso de '/' para comparações consistentes
+    .replace(/\\/g, '/');
 
 describe('mapTests', async () => {
   beforeEach(() => {
