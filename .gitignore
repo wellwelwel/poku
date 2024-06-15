@@ -7,3 +7,5 @@ node_modules
 .env
 .nyc_output
 /.temp
+/test-src
+/test-tests
