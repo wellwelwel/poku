@@ -1,12 +1,12 @@
 import process from 'node:process';
+import { join } from 'node:path';
+import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { it } from '../../src/modules/it.js';
 import { describe } from '../../src/modules/describe.js';
 import { beforeEach, afterEach } from '../../src/modules/each.js';
 import { assert } from '../../src/modules/assert.js';
 import { nodeVersion } from '../../src/helpers/get-runtime.js';
 import { mapTests } from '../../src/services/map-tests.js';
-import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
 
 if (nodeVersion && nodeVersion < 14) process.exit(0);
 
