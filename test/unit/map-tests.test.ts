@@ -1,9 +1,7 @@
 import process from 'node:process';
 import { nodeVersion } from '../../src/helpers/get-runtime.js';
-import { isWindows } from '../../src/helpers/runner.js';
 
-// TODO: Check why Windows doesn't get the files
-if (isWindows || (nodeVersion && nodeVersion < 14)) process.exit(0);
+if (nodeVersion && nodeVersion < 14) process.exit(0);
 
 import { join, sep } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
