@@ -3,7 +3,7 @@ import { nodeVersion } from '../../src/helpers/get-runtime.js';
 
 if (nodeVersion && nodeVersion < 14) process.exit(0);
 
-import { join, sep } from 'node:path';
+import { join, posix } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { it } from '../../src/modules/it.js';
 import { describe } from '../../src/modules/describe.js';
@@ -23,8 +23,6 @@ const removeDirSync = (dirPath: string) => {
   rmSync(dirPath, { recursive: true, force: true });
 };
 
-const dsep = (file: string) => file.replace(/[/\\]+/g, sep);
-
 const testSrcDir = 'test-src';
 const testTestDir = 'test-tests';
 
@@ -35,6 +33,10 @@ beforeEach(() => {
   createFileSync(
     join(testTestDir, 'example.test.js'),
     'import { foo } from "../test-src/example.js";'
+  );
+  createFileSync(
+    join(testTestDir, 'exampleAbsolute.test.js'),
+    `import { foo } from "${posix.join(testSrcDir, 'example.js')}";`
   );
 });
 
@@ -47,7 +49,13 @@ describe('mapTests', async () => {
   await it('should map test files to their corresponding source files', async () => {
     const importMap = await mapTests(testSrcDir, [testTestDir]);
     const expected = new Map([
-      [dsep('test-src/example.js'), [dsep('test-tests/example.test.js')]],
+      [
+        posix.join(testSrcDir, 'example.js'),
+        [
+          posix.join(testTestDir, 'example.test.js'),
+          posix.join(testTestDir, 'exampleAbsolute.test.js'),
+        ],
+      ],
     ]);
 
     console.log(importMap);
@@ -60,7 +68,10 @@ describe('mapTests', async () => {
     const singleTestFile = join(testTestDir, 'example.test.js');
     const importMap = await mapTests(testSrcDir, [singleTestFile]);
     const expected = new Map([
-      [dsep('test-src/example.js'), [dsep('test-tests/example.test.js')]],
+      [
+        posix.join(testSrcDir, 'example.js'),
+        [posix.join(testTestDir, 'example.test.js')],
+      ],
     ]);
 
     assert.deepStrictEqual(importMap, expected);
