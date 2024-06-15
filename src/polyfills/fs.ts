@@ -3,6 +3,7 @@
 import {
   stat as nodeStat,
   readdir as nodeReaddir,
+  readFile as nodeReadFile,
   type Dirent,
   type Stats,
 } from 'node:fs';
@@ -26,5 +27,16 @@ export const stat = (path: string): Promise<Stats> => {
     });
   });
 };
+
+export const readFile = (
+  path: string,
+  encoding: BufferEncoding = 'utf-8'
+): Promise<string> =>
+  new Promise((resolve, reject) => {
+    nodeReadFile(path, encoding, (err, data) => {
+      if (err) reject(err);
+      else resolve(data);
+    });
+  });
 
 /* c8 ignore stop */
