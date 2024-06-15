@@ -1,12 +1,15 @@
 /* c8 ignore next */
-import { relative, dirname } from 'node:path';
+import { relative, dirname, sep } from 'node:path';
 import { stat, readFile } from '../polyfills/fs.js';
 import { listFiles } from '../modules/list-files.js';
 
 const filter = /\.(js|cjs|mjs|ts|cts|mts)$/;
 
 const normalizePath = (filePath: string) =>
-  filePath.replace(/(\.\.\/|\.\/)/g, '');
+  filePath
+    .replace(/(\.\/)/g, '')
+    .replace(/^\.+/, '')
+    .replace(/[/\\]+/g, sep);
 
 /* c8 ignore next */
 export const mapTests = async (srcDir: string, testPaths: string[]) => {
