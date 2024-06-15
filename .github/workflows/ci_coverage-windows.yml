@@ -117,9 +117,9 @@ jobs:
       - name: 🧪 Checking for Coverage
         run: npm run test:c8:parallel:options
 
-      - name: ☔️ Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: windows-parallel-options
-          name: codecov-umbrella-windows-parallel-options
+      # - name: ☔️ Upload coverage reports to Codecov
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     flags: windows-parallel-options
+      #     name: codecov-umbrella-windows-parallel-options
