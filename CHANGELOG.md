@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/wellwelwel/poku/compare/v1.16.0...v1.17.0) (2024-06-15)
+
+
+### Features
+
+* watch dynamic imports ([#397](https://github.com/wellwelwel/poku/issues/397)) ([fd4fe6a](https://github.com/wellwelwel/poku/commit/fd4fe6a2fca1b5882c07d888e80ceae202b03051))
+
 ## [1.16.0](https://github.com/wellwelwel/poku/compare/v1.15.1...v1.16.0) (2024-06-14)
 
 
