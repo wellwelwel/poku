@@ -46,10 +46,12 @@ describe('mapTests', async () => {
     const importMap = await mapTests(testSrcDir, [testTestDir]);
     const expected = new Map([
       [
-        normalize('test-src/example.js'),
-        [normalize('test-tests/example.test.js')],
+        normalize('test-src/example.js').replace(/\\/g, '/'),
+        [normalize('test-tests/example.test.js').replace(/\\/g, '/')],
       ],
     ]);
+
+    console.log('importMap:', Array.from(importMap.entries()));
 
     assert.deepStrictEqual(importMap, expected);
   });
@@ -59,8 +61,8 @@ describe('mapTests', async () => {
     const importMap = await mapTests(testSrcDir, [singleTestFile]);
     const expected = new Map([
       [
-        normalize('test-src/example.js'),
-        [normalize('test-tests/example.test.js')],
+        normalize('test-src/example.js').replace(/\\/g, '/'),
+        [normalize('test-tests/example.test.js').replace(/\\/g, '/')],
       ],
     ]);
 
