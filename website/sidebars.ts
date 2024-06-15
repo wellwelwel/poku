@@ -6,7 +6,6 @@ const sidebars: SidebarsConfig = {
     'philosophy',
     'comparing',
     'overview',
-    'security',
     {
       type: 'category',
       label: 'Documentation',

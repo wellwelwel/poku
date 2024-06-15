@@ -1,36 +1,150 @@
 # Philosophy
 
-> **Poku**'s philosophy focuses on simplicity and efficiency, removing complexities to make testing accessible from the simplest to the most complex projects.
-
-It's important to say that **Poku** doesn't aim to be better, but different:
-
-- If you know **JavaScript**, you already know how to test (_even without **Poku**_)
-  - _Didn't know about `assert`? Learning **Poku** is learning **JavaScript**_
-- Just one line moves you from **Node.js** to **Poku** and vice versa
-- **Poku** won't limit your test coverage in legacy environments
-- Changing your **Runtime**? Carry your **Poku** with you:
-  - [x] 🐷 + **Node.js**
-  - [x] 🐷 + **TypeScript**
-  - [x] 🐷 + **Bun**
-  - [x] 🐷 + **Deno**
-
-> He came to show that testing can be simple 🌱
+**Poku**'s philosophy focuses on simplicity and efficiency, removing complexities to make testing accessible from the simplest to the most complex projects.
 
 <hr />
 
-Not only does **Poku** dispenses the need for new learning, by adopting assert with the same usability as **Node.js**, as he retains most of the popular features for test runners, while being naturally compatible with [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url], including older versions, and it's truly **zero configuration**.
+## JavaScript Essence for Tests 💡
 
-Moreover, **Poku** does away with the headache of dealing with different environments like **CJS** or **ESM**, as it adapts to any setting (even [**TypeScript**][typescript-url] without compilation when paired with [**tsx**][tsx]).
+Imagine you want to execute asynchronous functions, where one runs after the other, and display a message at the beginning and end of the execution:
 
-Also, **Poku** doesn't use a global state, allowing you to use it how and where you want.
+```ts
+console.log('Started');
 
-[![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku) <br />
-Is it a cloud? No, it's **Poku**! It's not just lightweight; it doesn't even have external dependencies, allowing you to only add advanced features when really necessary.
+await funcA();
+await funcB();
 
-> Adopt a **Poku** for yourself 🐷
+console.log('Done');
+```
 
-[node-version-url]: https://github.com/nodejs/node
-[bun-version-url]: https://github.com/oven-sh/bun
-[deno-version-url]: https://github.com/denoland/deno
-[typescript-url]: https://github.com/microsoft/TypeScript
-[tsx]: https://github.com/privatenumber/tsx
+Normally, we can't do this with most test runners.
+See this fictional example:
+
+```ts
+describe('My Test', { concurrency: 1 }, () => {
+  beforeAll(() => {
+    console.log('Started');
+  });
+
+  // The last step of the script is called before the tests themselves
+  afterAll(() => {
+    console.log('Done');
+  });
+
+  it(async () => {
+    // async test
+  });
+
+  it(async () => {
+    // async test
+  });
+});
+```
+
+Also, you can't run this like `node test.js` due to evaluations, global state, or test transformations, where you need to run your test using the test runner.
+
+**Poku** brings back the **JavaScript** essence to tests:
+
+```ts
+import { describe, it } from 'poku';
+
+describe('My Test', () => {
+  console.log('Started');
+
+  await it(async () => {
+    // async test
+  });
+
+  await it(async () => {
+    // async test
+  });
+
+  console.log('Done');
+});
+```
+
+:::tip
+
+**Poku** doesn't use a global state, allowing you to use it how and where you want:
+
+```sh
+# Node.js + Poku
+npx poku test.js
+
+# Node.js
+node test.js
+
+# Bun + Poku
+bunx poku test.js
+
+# Bun
+bun test.js
+
+# Deno + Poku
+deno run npm:poku test.js
+
+# Deno
+deno run test.js
+
+# Yarn + Poku
+yarn poku test.js
+
+# pnpm + Poku
+pnpm poku test.js
+```
+
+- Same idea for **TypeScript**.
+
+:::
+
+<hr />
+
+## Making Tests Really Easy 🌱
+
+In many cases, tests lead to the same common objective: the assertion of an expected value with a dynamic value.
+
+But tests usually don't show enough logs and details if you only focus on assertions. Even if they work, you might easily encounter an error message like "at least one test is necessary":
+
+```ts
+import assert from 'node:assert';
+
+const one = 1;
+assert.equal(one, 1, '1 needs to be equal to 1');
+```
+
+- The assert message in this example will only be displayed if the assertion test is invalid, and the test will pass silently.
+
+Instead of:
+
+```ts
+import assert from 'node:assert';
+import test from 'node:test';
+
+test('one is equal to 1', () => {
+  const one = 1;
+  assert.equal(one, 1, '1 needs to be equal to 1');
+});
+```
+
+**Poku** allows a test following the **BDD**/**TDD** method using only the assert method:
+
+```ts
+import { assert } from 'poku';
+
+const one = 1;
+assert.equal(one, 1, 'one is equal to 1');
+```
+
+:::tip
+
+- This will generate a complete log, both in case of success or failure, maintaining the exact **Node.js** development style, but being compatible with **Node.js**, **Bun**, and **Deno** without any need for alteration or configuration.
+- Each case can be different. For this, **Poku** has a completely modular way of using it, allowing you to use `test`, `describe`, `it`, `beforeEach`, `afterEach` and etc. according to your needs for more complex tests or tests that follow a specified pattern.
+
+:::
+
+<hr />
+
+## Why Not Install External Dependencies? 📦
+
+To keep the final installation size as lightweight as possible and to avoid compatibility issues with legacy environments.
+Also by requiring all possible dependencies to be fully compatible with **Node.js**, **Bun** and **Deno**.
