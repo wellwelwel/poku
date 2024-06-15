@@ -5,7 +5,7 @@ import { listFiles } from '../modules/list-files.js';
 
 const filter = /\.(js|cjs|mjs|ts|cts|mts)$/;
 
-const normalizePath = (filePath: string) =>
+export const normalizePath = (filePath: string) =>
   filePath
     .replace(/(\.\/)/g, '')
     .replace(/^\.+/, '')
@@ -29,17 +29,12 @@ export const mapTests = async (srcDir: string, testPaths: string[]) => {
       allTestFiles.push(testPath);
   }
 
-  console.log('allTestFiles:', allTestFiles);
-
   for (const testFile of allTestFiles) {
     const content = await readFile(testFile, 'utf-8');
 
     for (const srcFile of allSrcFiles) {
       const relativePath = normalizePath(relative(dirname(testFile), srcFile));
       const normalizedSrcFile = normalizePath(srcFile);
-
-      console.log('relativePath:', relativePath);
-      console.log('normalizedSrcFile:', normalizedSrcFile);
 
       /* c8 ignore start */
       if (
