@@ -30,8 +30,7 @@ const normalizePath = (filePath: string) =>
   filePath
     .replace(/(\.\/)/g, '')
     .replace(/^\.+/, '')
-    .replace(/[/\\]+/g, sep)
-    .replace(/\\/g, '/');
+    .replace(/[/\\]+/g, sep);
 
 describe('mapTests', async () => {
   beforeEach(() => {

@@ -9,8 +9,7 @@ const normalizePath = (filePath: string) =>
   filePath
     .replace(/(\.\/)/g, '')
     .replace(/^\.+/, '')
-    .replace(/[/\\]+/g, sep)
-    .replace(/\\/g, '/');
+    .replace(/[/\\]+/g, sep);
 
 /* c8 ignore next */
 export const mapTests = async (srcDir: string, testPaths: string[]) => {
