@@ -9,6 +9,6 @@ COPY ./tools ./tools
 COPY ./fixtures ./fixtures
 
 RUN apk add lsof
-RUN deno run --allow-read --allow-write --allow-env --allow-run tools/compatibility/deno.ts
+RUN deno run --allow-read --allow-write --allow-env --allow-run --unstable-sloppy-imports tools/compatibility/deno.ts
 
 CMD ["deno", "run", "--allow-read", "--allow-write", "--allow-hrtime", "--allow-env", "--allow-run", "test/run.test.ts"]
