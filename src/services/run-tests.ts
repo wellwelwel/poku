@@ -1,6 +1,6 @@
 import process from 'node:process';
 import { EOL } from 'node:os';
-import { join, relative } from 'node:path';
+import { join, relative, sep } from 'node:path';
 import { runner } from '../helpers/runner.js';
 import { indentation } from '../configs/indentation.js';
 import {
@@ -42,7 +42,7 @@ export const runTests = async (
   if (showLogs) {
     hr();
     write(
-      `${format.bold(isFile ? 'File:' : 'Directory:')} ${format.underline(`./${currentDir}`)}${EOL}`
+      `${format.bold(isFile ? 'File:' : 'Directory:')} ${format.underline(`.${sep}${currentDir}`)}${EOL}`
     );
   }
 
