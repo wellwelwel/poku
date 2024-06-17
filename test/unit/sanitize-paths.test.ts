@@ -12,7 +12,7 @@ test('Sanitize paths', () => {
 
   assert.strictEqual(
     sanitizePath('path/../../file'),
-    'path/file',
+    `path${sep}file`,
     'should remove access to parent directories'
   );
 
