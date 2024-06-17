@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.1](https://github.com/wellwelwel/poku/compare/v1.17.0...v1.17.1) (2024-06-17)
+
+
+### Bug Fixes
+
+* **assert:** `Map`, `Set` and `Symbol` aren't parsed ([#405](https://github.com/wellwelwel/poku/issues/405)) ([9ab7202](https://github.com/wellwelwel/poku/commit/9ab72027c96928a310595ef5e335a7d79670950b))
+
 ## [1.17.0](https://github.com/wellwelwel/poku/compare/v1.16.0...v1.17.0) (2024-06-15)
 
 
