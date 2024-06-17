@@ -1,3 +1,4 @@
+/* c8 ignore next */
 import process from 'node:process';
 /* c8 ignore next */
 import { each } from '../configs/each.js';
@@ -6,6 +7,7 @@ import { indentation } from '../configs/indentation.js';
 import { format } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
 
+/* c8 ignore start */
 export async function test(
   message: string,
   cb: () => Promise<unknown>
@@ -19,6 +21,7 @@ export async function test(
     (() => unknown | Promise<unknown>)?,
   ]
 ): Promise<void> {
+  /* c8 ignore stop */
   let message: string | undefined;
   let cb: () => unknown | Promise<unknown>;
 

@@ -79,7 +79,6 @@ test(async () => {
     ),
     'Function (Params)'
   );
-
   assert.deepStrictEqual(
     parseResultType({ a: true }),
     `{
@@ -100,25 +99,25 @@ test(async () => {
 }`,
     'Object (Complex)'
   );
-});
-assert.deepStrictEqual(
-  parseResultType([1]),
-  `[
+
+  assert.deepStrictEqual(
+    parseResultType([1]),
+    `[
   1
 ]`,
-  'Array'
-);
-assert.deepStrictEqual(parseResultType([]), `[]`, 'Array (Empty)');
-assert.deepStrictEqual(
-  parseResultType([
-    1,
-    true,
-    undefined,
-    /123/gm,
-    { a: { b: [{ c: undefined }] } },
-    [[[[/[^0-9]/]]]],
-  ]),
-  `[
+    'Array'
+  );
+  assert.deepStrictEqual(parseResultType([]), `[]`, 'Array (Empty)');
+  assert.deepStrictEqual(
+    parseResultType([
+      1,
+      true,
+      undefined,
+      /123/gm,
+      { a: { b: [{ c: undefined }] } },
+      [[[[/[^0-9]/]]]],
+    ]),
+    `[
   1,
   true,
   "undefined",
@@ -142,5 +141,28 @@ assert.deepStrictEqual(
     ]
   ]
 ]`,
-  'Array Complex'
-);
+    'Array Complex'
+  );
+  assert.deepStrictEqual(
+    parseResultType(new Map([['key', 'value']])),
+    `{
+  "key": "value"
+}`,
+    'Map'
+  );
+  assert.deepStrictEqual(
+    parseResultType(new Set([1, 2, 3, 3])),
+    `[
+  1,
+  2,
+  3
+]`,
+    'Set'
+  );
+  assert.deepStrictEqual(parseResultType(Symbol()), 'Symbol()', 'Symbol');
+  assert.deepStrictEqual(
+    parseResultType(Symbol.for('key')),
+    'Symbol(key)',
+    'Symbol.for'
+  );
+});
