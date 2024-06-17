@@ -1,3 +1,4 @@
+/* c8 ignore next */
 import process from 'node:process';
 import { format, backgroundColor } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
@@ -6,6 +7,7 @@ import { indentation } from '../configs/indentation.js';
 /* c8 ignore next */
 import type { DescribeOptions } from '../@types/describe.js';
 
+/* c8 ignore start */
 /**
  * On **Poku**, `describe` also can be used just as a pretty `console.log` to title your test suites in the terminal.
  */
@@ -21,6 +23,7 @@ export async function describe(
   arg1: string | (() => unknown | Promise<unknown>),
   arg2?: (() => unknown | Promise<unknown>) | DescribeOptions
 ): Promise<void> {
+  /* c8 ignore stop */
   let title: string | undefined;
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;

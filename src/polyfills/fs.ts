@@ -8,22 +8,37 @@ import {
   type Stats,
 } from 'node:fs';
 
-export const readdir = (
+export function readdir(path: string): Promise<string[]>;
+export function readdir(
   path: string,
   options: { withFileTypes: true }
-): Promise<Dirent[]> =>
-  new Promise((resolve, reject) => {
-    nodeReaddir(path, options, (err, entries) => {
-      if (err) reject(err);
-      else resolve(entries);
+): Promise<Dirent[]>;
+export function readdir(
+  path: string,
+  options?: { withFileTypes?: boolean }
+): Promise<string[] | Dirent[]> {
+  return new Promise((resolve, reject) => {
+    if (options?.withFileTypes) {
+      nodeReaddir(path, { withFileTypes: true }, (err, entries) => {
+        if (err) return reject(err);
+        resolve(entries);
+      });
+
+      return;
+    }
+
+    nodeReaddir(path, (err, files) => {
+      if (err) return reject(err);
+      resolve(files);
     });
   });
+}
 
 export const stat = (path: string): Promise<Stats> => {
   return new Promise((resolve, reject) => {
     nodeStat(path, (err, stats) => {
-      if (err) reject(err);
-      else resolve(stats);
+      if (err) return reject(err);
+      resolve(stats);
     });
   });
 };
@@ -34,8 +49,8 @@ export const readFile = (
 ): Promise<string> =>
   new Promise((resolve, reject) => {
     nodeReadFile(path, encoding, (err, data) => {
-      if (err) reject(err);
-      else resolve(data);
+      if (err) return reject(err);
+      resolve(data);
     });
   });
 
