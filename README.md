@@ -46,6 +46,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easier and Less Verbose<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> [**Node.js**][node-version-url] familiar **API**<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Instantly re-run related tests in `watch` mode<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CJS** (**CommonJS**) files directly with [**Deno**][deno-version-url]<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle, **servers**, **services**, **processes**, and **ports**<br />
 
@@ -174,8 +175,8 @@ deno run npm:poku
 
 - [**test**](https://poku.io/docs/documentation/helpers/test)
   , [**describe**](https://poku.io/docs/documentation/helpers/describe) and [**it**](https://poku.io/docs/documentation/helpers/it) _(organize, group, and isolate tests)_
+- [**watch**](https://poku.io/docs/documentation/poku/options/watch) _(watch for changes and re-run related test files)_
 - [**beforeEach**](https://poku.io/docs/category/beforeeach-and-aftereach) and [**afterEach**](https://poku.io/docs/category/beforeeach-and-aftereach) _(hooks for test setup and teardown)_
-- [**watch**](https://poku.io/docs/documentation/poku/options/watch) _(watch test files for changes)_
 - [**startScript**](https://poku.io/docs/documentation/startScript) _(run **package.json** scripts in background)_
 - [**startService**](https://poku.io/docs/documentation/startService) _(run files in background)_
 - [**kill**](https://poku.io/docs/documentation/processes/kill) _(terminate ports, port ranges, and PIDs)_

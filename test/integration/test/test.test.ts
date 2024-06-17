@@ -1,11 +1,6 @@
-import { describe } from '../../../src/modules/describe.js';
 import { test } from '../../../src/modules/test.js';
 
-describe('Testing "test" method', {
-  icon: '🔬',
-});
-
-test(async () => {
+test('Testing "test" method', async () => {
   test(() => {});
   test(() => true);
   test(() => false);

@@ -1,12 +1,9 @@
-import { describe } from '../../src/modules/describe.js';
 import { test } from '../../src/modules/test.js';
 import { assert } from '../../src/modules/assert.js';
 import { parseResultType } from '../../src/helpers/parse-assertion.js';
 import { nodeVersion } from '../../src/helpers/get-runtime.js';
 
-describe('Assert: Parse Result Type', { icon: '🔬' });
-
-test(async () => {
+test('Assert: Parse Result Type', async () => {
   assert.deepStrictEqual(
     parseResultType(),
     'undefined',

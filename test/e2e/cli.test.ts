@@ -1,4 +1,3 @@
-import { describe } from '../../src/modules/describe.js';
 import { test } from '../../src/modules/test.js';
 import { assert } from '../../src/modules/assert.js';
 import { executeCLI, ext, isProduction } from '../helpers/capture-cli.test.js';
@@ -8,9 +7,7 @@ const runtime = getRuntime();
 
 if (runtime === 'deno' && !isProduction) process.exit(0);
 
-test(async () => {
-  describe('Poku Test Runner: CLI', { icon: '🐷' });
-
+test('Poku Test Runner: CLI', async () => {
   const output = await executeCLI([
     ext === 'ts' || isProduction
       ? `src/bin/index.${ext}`
