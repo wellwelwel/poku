@@ -19,16 +19,25 @@ const cwd = process.cwd();
 
 export const parseResultType = (type?: unknown): string => {
   const recurse = (value: unknown): unknown => {
-    if (typeof value === 'undefined') return 'undefined';
-
     if (
+      typeof value === 'undefined' ||
       typeof value === 'function' ||
       typeof value === 'bigint' ||
+      typeof value === 'symbol' ||
       value instanceof RegExp
     )
       return String(value);
 
     if (Array.isArray(value)) return value.map(recurse);
+    if (value instanceof Set) return Array.from(value).map(recurse);
+    /* c8 ignore start */
+    if (value instanceof Map)
+      return recurse(
+        !nodeVersion || nodeVersion >= 12
+          ? Object.fromEntries(value)
+          : fromEntries(value)
+      );
+    /* c8 ignore stop */
 
     /* c8 ignore start */
     if (value !== null && typeof value === 'object') {
@@ -66,7 +75,9 @@ export const parseAssertion = async (
   try {
     if (typeof each.before.cb === 'function' && each.before.assert) {
       const beforeResult = each.before.cb();
+      /* c8 ignore next */
       if (beforeResult instanceof Promise) await beforeResult;
+      /* c8 ignore next */
     }
 
     const cbResult = cb();
@@ -74,7 +85,9 @@ export const parseAssertion = async (
 
     if (typeof each.after.cb === 'function' && each.after.assert) {
       const afterResult = each.after.cb();
+      /* c8 ignore next */
       if (afterResult instanceof Promise) await afterResult;
+      /* c8 ignore next */
     }
 
     if (typeof options.message === 'string') {
