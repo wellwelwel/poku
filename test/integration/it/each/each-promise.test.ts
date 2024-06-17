@@ -13,68 +13,27 @@ const beforeEachHelper = beforeEach(asyncPreIncrement, { immediate: true });
 const afterEachHelper = afterEach(asyncPreIncrement, {});
 
 describe('Asynchronous Before and After Each Suite (it)', () => {
-  it(() => {
-    assert.equal(
-      counter,
-      2,
-      'value incremented by 1 from beforeEach with immediate option should be 2'
-    );
-  });
-
-  it(() => {
-    assert.equal(
-      counter,
-      4,
-      'value incremented by 1 from beforeEach with immediate option and by 1 from previous test with afterEach should be 4'
-    );
-  });
+  it(() => assert.equal(counter, 2, 'Counter should be 2 after beforeEach'));
+  it(() =>
+    assert.equal(counter, 4, 'Counter should be 4 after before/afterEach')
+  );
 
   afterEachHelper.pause();
   beforeEachHelper.pause();
 
-  it(() => {
-    assert.equal(
-      counter,
-      5,
-      'value should still 5 by pausing both beforeEach and afterEach, considering the abscence of beforeEach effect'
-    );
-  });
-
-  it(() => {
-    assert.equal(
-      counter,
-      5,
-      'value should still 5 by pausing both beforeEach and afterEach, considering the the abscence of beforeEach and afterEach (from previous test) effects'
-    );
-  });
+  it(() => assert.equal(counter, 5, 'Counter should remain 5 after pausing'));
+  it(() => assert.equal(counter, 5, 'Counter should still be 5'));
 
   afterEachHelper.continue();
   beforeEachHelper.continue();
 
-  it(() => {
-    assert.equal(
-      counter,
-      6,
-      'value incremented by 1 from unpausing beforeEach should be 6'
-    );
-  });
-
-  it(() => {
-    assert.equal(
-      counter,
-      8,
-      'value incremented by 1 from beforeEach and 1 by previous test with afterEach should be 8'
-    );
-  });
+  it(() => assert.equal(counter, 6, 'Counter should be 6 after resuming'));
+  it(() =>
+    assert.equal(counter, 8, 'Counter should be 8 after before/afterEach')
+  );
 
   beforeEachHelper.reset();
   afterEachHelper.reset();
 
-  it(() => {
-    assert.equal(
-      counter,
-      9,
-      'value should still 9 by reseting both beforeEach and afterEach'
-    );
-  });
+  it(() => assert.equal(counter, 9, 'Counter should be 9 after reset'));
 });
