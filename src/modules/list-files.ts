@@ -12,7 +12,9 @@ export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
     .replace(/[<>|^?*]+/g, ''); // removing unusual path characters
 
   // Preventing absolute path access
-  return ensureTarget ? sanitizedPath.replace(/^[/\\]/, './') : sanitizedPath;
+  return ensureTarget
+    ? sanitizedPath.replace(/^[/\\]/, `.${sep}`)
+    : sanitizedPath;
 };
 
 /* c8 ignore start */
