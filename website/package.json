@@ -44,7 +44,7 @@
     "@docusaurus/tsconfig": "^3.4.0",
     "@docusaurus/types": "^3.4.0",
     "@types/bun": "^1.1.4",
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.14.4",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "eslint": "^8.57.0",
