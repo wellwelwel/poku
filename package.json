@@ -124,9 +124,9 @@
   ],
   "type": "commonjs",
   "devDependencies": {
-    "@types/node": "^20.14.2",
-    "@typescript-eslint/eslint-plugin": "^7.13.0",
-    "@typescript-eslint/parser": "^7.13.0",
+    "@types/node": "^20.14.5",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
+    "@typescript-eslint/parser": "^7.13.1",
     "c8": "^10.1.2",
     "esbuild": "^0.21.5",
     "eslint": "^8.57.0",
