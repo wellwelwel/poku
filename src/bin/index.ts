@@ -120,7 +120,9 @@ import type { Configs } from '../@types/poku.js';
 
     resultsClear();
 
-    mapTests('.', dirs).then((mappedTests) => [
+    mapTests('.', dirs).then((mappedTests) => {
+      // console.log(mappedTests);
+
       Array.from(mappedTests.keys()).forEach((mappedTest) => {
         watch(mappedTest, (file, event) => {
           if (event === 'change') {
@@ -133,15 +135,15 @@ import type { Configs } from '../@types/poku.js';
             const tests = mappedTests.get(filePath);
             if (!tests) return;
 
-            poku(tests, options).then(() => {
+            poku(Array.from(tests), options).then(() => {
               setTimeout(() => {
                 executing.delete(filePath);
               }, interval);
             });
           }
         });
-      }),
-    ]);
+      });
+    });
 
     dirs.forEach((dir) => {
       watch(dir, (file, event) => {

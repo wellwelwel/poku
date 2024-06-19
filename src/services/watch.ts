@@ -99,11 +99,7 @@ class Watcher {
         await this.watchDirectory(this.rootDir);
       } else this.watchFile(this.rootDir);
       /* c8 ignore start */
-    } catch (err) {
-      throw new Error(
-        `Path does not exist or is not accessible: ${this.rootDir}`
-      );
-    }
+    } catch {}
     /* c8 ignore stop */
   }
 

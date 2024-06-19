@@ -35,9 +35,9 @@ const envFilter = process.env.FILTER?.trim()
 
 export const getAllFiles = async (
   dirPath: string,
-  files: string[] = [],
+  files: Set<string> = new Set(),
   configs?: Configs
-): Promise<string[]> => {
+): Promise<Set<string>> => {
   const currentFiles = await readdir(sanitizePath(dirPath));
   const defaultRegExp = /\.(test|spec)\./i;
   /* c8 ignore start */
@@ -75,7 +75,7 @@ export const getAllFiles = async (
         }
       }
 
-      if (filter.test(fullPath)) return files.push(fullPath);
+      if (filter.test(fullPath)) return files.add(fullPath);
       if (stat.isDirectory()) await getAllFiles(fullPath, files, configs);
     })
   );
@@ -84,6 +84,9 @@ export const getAllFiles = async (
 };
 
 /* c8 ignore start */
-export const listFiles = async (targetDir: string, configs?: Configs) =>
-  await getAllFiles(sanitizePath(targetDir), [], configs);
+export const listFiles = async (
+  targetDir: string,
+  configs?: Configs
+): Promise<string[]> =>
+  Array.from(await getAllFiles(sanitizePath(targetDir), new Set(), configs));
 /* c8 ignore stop */
