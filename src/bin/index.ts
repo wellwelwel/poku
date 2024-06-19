@@ -110,16 +110,6 @@ import type { Configs } from '../@types/poku.js';
   await poku(dirs, options);
 
   if (watchMode) {
-    // const obs = new PerformanceObserver((items) => {
-    //   items.getEntries().forEach((entry) => {
-    //     console.log(`${entry.name}: ${entry.duration}ms`);
-    //   });
-    // });
-    // obs.observe({ entryTypes: ['measure'] });
-
-    // console.time('totalTime');
-    // performance.mark('start');
-
     const executing = new Set<string>();
     const interval = Number(getArg('watch-interval')) || 1500;
 
@@ -174,17 +164,6 @@ import type { Configs } from '../@types/poku.js';
 
     hr();
     write(`Watching: ${dirs.join(', ')}`);
-
-    // performance.mark('end');
-    // performance.measure('Test Duration', 'start', 'end');
-
-    // console.timeEnd('totalTime');
-
-    // const memoryUsage = process.memoryUsage();
-    // console.log('Memory Usage:', memoryUsage);
-
-    // const cpuUsage = process.cpuUsage();
-    // console.log('CPU Usage:', cpuUsage);
   }
 })();
 
