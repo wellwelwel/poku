@@ -3,6 +3,7 @@ import { stat, readFile } from '../polyfills/fs.js';
 import { listFiles } from '../modules/list-files.js';
 
 const importMap = new Map<string, Set<string>>();
+const processedFiles = new Set<string>();
 
 const filter = /\.(js|cjs|mjs|ts|cts|mts)$/;
 
@@ -35,8 +36,9 @@ export const findMatchingFiles = (
   const matchingFiles = new Set<string>();
 
   srcFilesWithoutExt.forEach((srcFile) => {
+    const normalizedSrcFile = normalizePath(srcFile);
+
     srcFilesWithExt.forEach((fileWithExt) => {
-      const normalizedSrcFile = normalizePath(srcFile);
       const normalizedFileWithExt = normalizePath(fileWithExt);
 
       if (normalizedFileWithExt.includes(normalizedSrcFile))
@@ -47,7 +49,10 @@ export const findMatchingFiles = (
   return matchingFiles;
 };
 
-const collectTestFiles = async (testPaths: string[]): Promise<Set<string>> => {
+const collectTestFiles = async (
+  testPaths: string[],
+  exclude?: RegExp | RegExp[]
+): Promise<Set<string>> => {
   const statsPromises = testPaths.map((testPath) => stat(testPath));
 
   const stats = await Promise.all(statsPromises);
@@ -58,7 +63,7 @@ const collectTestFiles = async (testPaths: string[]): Promise<Set<string>> => {
     if (stat.isDirectory())
       return listFiles(testPath, {
         filter,
-        // exclude: /^(website|ci|lib|benchmark|tools|fixtures)\//,
+        exclude,
       });
     if (stat.isFile() && filter.test(testPath)) return [testPath];
     else return [];
@@ -67,6 +72,27 @@ const collectTestFiles = async (testPaths: string[]): Promise<Set<string>> => {
   const nestedTestFiles = await Promise.all(listFilesPromises);
 
   return new Set(nestedTestFiles.flat());
+};
+
+const processDeepImports = async (
+  srcFile: string,
+  testFile: string,
+  intersectedSrcFiles: Set<string>
+) => {
+  if (processedFiles.has(srcFile)) return;
+  processedFiles.add(srcFile);
+
+  const srcContent = await readFile(srcFile, 'utf-8');
+  const deepImports = getDeepImports(srcContent);
+  const matchingFiles = findMatchingFiles(deepImports, intersectedSrcFiles);
+
+  for (const deepImport of matchingFiles) {
+    if (!importMap.has(deepImport)) importMap.set(deepImport, new Set());
+
+    importMap.get(deepImport)!.add(normalizePath(testFile));
+
+    await processDeepImports(deepImport, testFile, intersectedSrcFiles);
+  }
 };
 
 const createImportMap = async (
@@ -93,22 +119,9 @@ const createImportMap = async (
         ) {
           if (!importMap.has(normalizedSrcFile))
             importMap.set(normalizedSrcFile, new Set());
-
           importMap.get(normalizedSrcFile)!.add(normalizePath(testFile));
 
-          const srcContent = await readFile(srcFile, 'utf-8');
-          const deepImports = getDeepImports(srcContent);
-          const matchingFiles = findMatchingFiles(
-            deepImports,
-            intersectedSrcFiles
-          );
-
-          matchingFiles.forEach((deepImport) => {
-            if (!importMap.has(deepImport))
-              importMap.set(deepImport, new Set());
-
-            importMap.get(deepImport)!.add(normalizePath(testFile));
-          });
+          await processDeepImports(srcFile, testFile, intersectedSrcFiles);
         }
       }
     })
@@ -117,12 +130,16 @@ const createImportMap = async (
   return importMap;
 };
 
-export const mapTests = async (srcDir: string, testPaths: string[]) => {
+export const mapTests = async (
+  srcDir: string,
+  testPaths: string[],
+  exclude?: RegExp | RegExp[]
+) => {
   const [allTestFiles, allSrcFiles] = await Promise.all([
-    collectTestFiles(testPaths),
+    collectTestFiles(testPaths, exclude),
     listFiles(srcDir, {
       filter,
-      // exclude: /^(website|ci|lib|benchmark|tools|fixtures|test)\//,
+      exclude,
     }),
   ]);
 
