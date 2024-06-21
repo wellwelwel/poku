@@ -1,5 +1,5 @@
 /* c8 ignore next */
-import process from 'node:process';
+import { hrtime } from 'node:process';
 /* c8 ignore next */
 import { each } from '../configs/each.js';
 /* c8 ignore next */
@@ -46,12 +46,12 @@ export async function it(
   }
   /* c8 ignore end */
 
-  const start = process.hrtime();
+  const start = hrtime();
   const resultCb = cb();
 
   /* c8 ignore next */
   if (resultCb instanceof Promise) await resultCb;
-  const end = process.hrtime(start);
+  const end = hrtime(start);
 
   if (typeof each.after.cb === 'function' && each.after.test) {
     const afterResult = each.after.cb();

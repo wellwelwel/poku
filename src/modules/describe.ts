@@ -1,5 +1,5 @@
 /* c8 ignore next */
-import process from 'node:process';
+import { hrtime } from 'node:process';
 import { format, backgroundColor } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
 /* c8 ignore next */
@@ -57,12 +57,12 @@ export async function describe(
 
   if (typeof cb !== 'function') return;
 
-  const start = process.hrtime();
+  const start = hrtime();
   const resultCb = cb();
 
   /* c8 ignore next */
   if (resultCb instanceof Promise) await resultCb;
-  const end = process.hrtime(start);
+  const end = hrtime(start);
 
   /* c8 ignore start */
   if (title) {

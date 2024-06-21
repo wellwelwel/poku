@@ -1,7 +1,7 @@
 /* c8 ignore start */
-import process from 'node:process';
+import { argv } from 'node:process';
 
-const [, , ...processArgs] = process.argv;
+const [, , ...processArgs] = argv;
 
 /**
  * Gets the value of an argument.

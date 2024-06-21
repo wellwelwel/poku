@@ -5,7 +5,6 @@
  */
 
 import process from 'node:process';
-import { EOL } from 'node:os';
 import { runTests, runTestsParallel } from '../services/run-tests.js';
 import { exit } from './exit.js';
 import { format } from '../helpers/format.js';
@@ -68,7 +67,7 @@ export async function poku(
   // Parallel
   if (showLogs) {
     hr();
-    write(`${format.bold('Running the Test Suite in Parallel')}${EOL}`);
+    write(`${format.bold('Running the Test Suite in Parallel')}\n`);
   }
 
   try {
@@ -100,7 +99,7 @@ export async function poku(
           ([file, time]) =>
             `${indentation.test}${format.success('✔')} ${format.dim(`${file} › ${time}ms`)}`
         )
-        .join(EOL)
+        .join('\n')
     );
   }
 
@@ -111,7 +110,7 @@ export async function poku(
           ([file, time]) =>
             `${indentation.test}${format.fail('✘')} ${format.dim(`${file} › ${time}ms`)}`
         )
-        .join(EOL)
+        .join('\n')
     );
   }
 

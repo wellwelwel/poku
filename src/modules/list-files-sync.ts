@@ -4,7 +4,7 @@
  * This method will be removed in a future release to use `list-files.ts` instead.
  */
 
-import process from 'node:process';
+import { env } from 'node:process';
 import { readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { Configs } from '../@types/list-files.js';
@@ -12,8 +12,8 @@ import { escapeRegExp, sanitizePath } from './list-files.js';
 
 const isDir = (fullPath: string) => statSync(fullPath).isDirectory();
 
-const envFilter = process.env.FILTER?.trim()
-  ? new RegExp(escapeRegExp(process.env.FILTER), 'i')
+const envFilter = env.FILTER?.trim()
+  ? new RegExp(escapeRegExp(env.FILTER), 'i')
   : null;
 
 const listFiles = (
