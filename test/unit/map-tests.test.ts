@@ -99,9 +99,24 @@ describe('mapTests', async () => {
         import { some } from './j.mjs';
         import './k';
         import './l.js';
+        import('./m.js');
         `
       ),
-      new Set(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']),
+      new Set([
+        'a',
+        'b',
+        'c',
+        'd',
+        'e',
+        'f',
+        'g',
+        'h',
+        'i',
+        'j',
+        'k',
+        'l',
+        'm',
+      ]),
       'import'
     );
 
