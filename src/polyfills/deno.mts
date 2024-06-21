@@ -1,5 +1,3 @@
-/* c8 ignore start */
-
 /**
  * Allows testing CJS files with `require` and `exports` in Deno.
  */
@@ -19,5 +17,3 @@ globalThis.require = createRequire(targetPath);
 globalThis.exports = {};
 
 require(normalize(filePath));
-
-/* c8 ignore stop */

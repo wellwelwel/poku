@@ -1,5 +1,3 @@
-/* c8 ignore start */
-
 import { type backgroundColor } from '../helpers/format.js';
 
 export type DescribeOptions = {
@@ -14,5 +12,3 @@ export type DescribeOptions = {
    * @default "grey"
    */
 };
-
-/* c8 ignore stop */

@@ -1,5 +1,3 @@
-/* c8 ignore start */
-
 export const indentation = {
   test: '  ',
   stdio: '      ',
@@ -7,5 +5,3 @@ export const indentation = {
   hasTest: false,
   hasIt: false,
 };
-
-/* c8 ignore stop */

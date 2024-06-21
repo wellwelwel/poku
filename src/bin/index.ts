@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-/* c8 ignore start */
 import process from 'node:process';
 import { escapeRegExp } from '../modules/list-files.js';
 import {
@@ -165,5 +164,3 @@ Promise.all(tasks).then(() => {
     }
   });
 });
-
-/* c8 ignore stop */

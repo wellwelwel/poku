@@ -1,5 +1,3 @@
-/* c8 ignore start */
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const entries = (obj: { [key: string]: any }): [string, unknown][] => {
   const ownProps = Object.keys(obj);
@@ -25,5 +23,3 @@ export const fromEntries = (
     {} as Record<string, unknown>
   );
 };
-
-/* c8 ignore stop */

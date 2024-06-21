@@ -1,5 +1,3 @@
-/* c8 ignore start */
-
 import {
   stat as nodeStat,
   readdir as nodeReaddir,
@@ -53,5 +51,3 @@ export const readFile = (
       resolve(data);
     });
   });
-
-/* c8 ignore stop */

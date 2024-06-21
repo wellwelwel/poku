@@ -1,5 +1,3 @@
-/* c8 ignore start */
-
 export type Configs = {
   /**
    * Filter by path to match only the files that should be performed.
@@ -19,5 +17,3 @@ export type FileResults = {
   success: Map<string, string>;
   fail: Map<string, string>;
 };
-
-/* c8 ignore stop */
