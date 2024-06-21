@@ -1,5 +1,5 @@
 /* c8 ignore next */
-import process from 'node:process';
+import { env } from 'node:process';
 import { sep, join } from 'node:path';
 import { readdir, stat as fsStat } from '../polyfills/fs.js';
 /* c8 ignore next */
@@ -28,8 +28,8 @@ export const escapeRegExp = (string: string) =>
 /* c8 ignore stop */
 
 /* c8 ignore start */
-const envFilter = process.env.FILTER?.trim()
-  ? new RegExp(escapeRegExp(process.env.FILTER), 'i')
+const envFilter = env.FILTER?.trim()
+  ? new RegExp(escapeRegExp(env.FILTER), 'i')
   : undefined;
 /* c8 ignore stop */
 

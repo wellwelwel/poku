@@ -1,5 +1,5 @@
 /* c8 ignore start */ // c8 bug
-import process from 'node:process';
+import { cwd as processCWD, hrtime, env } from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
 import { indentation } from '../configs/indentation.js';
@@ -11,7 +11,7 @@ import { beforeEach, afterEach } from './each.js';
 /* c8 ignore next */
 import type { Configs } from '../@types/poku.js';
 
-const cwd = process.cwd();
+const cwd = processCWD();
 /* c8 ignore stop */ // c8 bug
 
 /* c8 ignore next */ // c8 bug
@@ -49,8 +49,8 @@ export const runTestFile = (
         );
     }
 
-    const start = process.hrtime();
-    let end: ReturnType<typeof process.hrtime>;
+    const start = hrtime();
+    let end: ReturnType<typeof hrtime>;
 
     /* c8 ignore next */
     if (!(await beforeEach(fileRelative, configs))) return false;
@@ -61,7 +61,7 @@ export const runTestFile = (
       /* c8 ignore next */
       shell: isWindows,
       env: {
-        ...process.env,
+        ...env,
         FILE: configs?.parallel || configs?.deno?.cjs ? fileRelative : '',
       },
     });
@@ -71,7 +71,7 @@ export const runTestFile = (
     child.stderr.on('data', stdOut);
 
     child.on('close', async (code) => {
-      end = process.hrtime(start);
+      end = hrtime(start);
 
       const result = code === 0;
 
@@ -95,7 +95,7 @@ export const runTestFile = (
 
     /* c8 ignore start */
     child.on('error', (err) => {
-      end = process.hrtime(start);
+      end = hrtime(start);
 
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 

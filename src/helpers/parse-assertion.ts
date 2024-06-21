@@ -1,7 +1,6 @@
-import process from 'node:process';
+import { cwd as processCWD, env, exit } from 'node:process';
 import path from 'node:path';
 import assert from 'node:assert';
-import { EOL } from 'node:os';
 import { format } from './format.js';
 import { hr } from './hr.js';
 import { findFile } from './find-file.js';
@@ -15,7 +14,7 @@ import { write } from './logs.js';
 /* c8 ignore next */
 import type { ParseAssertionOptions } from '../@types/assert.js';
 
-const cwd = process.cwd();
+const cwd = processCWD();
 
 export const parseResultType = (type?: unknown): string => {
   const recurse = (value: unknown): unknown => {
@@ -64,9 +63,8 @@ export const parseAssertion = async (
   cb: () => void | Promise<void>,
   options: ParseAssertionOptions
 ) => {
-  const isPoku =
-    typeof process.env?.FILE === 'string' && process.env?.FILE.length > 0;
-  const FILE = process.env.FILE;
+  const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
+  const FILE = env.FILE;
   let preIdentation = '';
 
   if (indentation.hasDescribe || indentation.hasTest) preIdentation += '  ';
@@ -125,7 +123,7 @@ export const parseAssertion = async (
 
       file && write(`${format.dim(`${preIdentation}      File`)} ${file}`);
       write(`${format.dim(`${preIdentation}      Code`)} ${code}`);
-      write(`${format.dim(`${preIdentation}  Operator`)} ${operator}${EOL}`);
+      write(`${format.dim(`${preIdentation}  Operator`)} ${operator}\n`);
 
       if (!options?.hideDiff) {
         const splitActual = parseResultType(actual).split('\n');
@@ -137,7 +135,7 @@ export const parseAssertion = async (
         );
 
         write(
-          `${EOL}${preIdentation}  ${format.dim(`${options?.expected || 'Expected'}:`)}`
+          `\n${preIdentation}  ${format.dim(`${options?.expected || 'Expected'}:`)}`
         );
         splitExpected.forEach((line) =>
           write(`${preIdentation}  ${format.bold(format.success(line))}`)
@@ -149,7 +147,7 @@ export const parseAssertion = async (
         hr();
       }
 
-      process.exit(1);
+      exit(1);
     }
 
     // Non-assertion errors

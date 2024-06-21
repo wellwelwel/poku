@@ -1,4 +1,3 @@
-import { EOL } from 'node:os';
 import { listFiles, assert } from 'poku';
 
 const invalidFiles: string[] = [];
@@ -17,7 +16,7 @@ const checkExtensions = (
     files.forEach((file) => {
       if (!ignoreList.test(file) && !allowedExtensions.test(file)) {
         invalidFiles.push(file);
-        message.push(`${EOL}${String(allowedExtensions)}`);
+        message.push(`\n${String(allowedExtensions)}`);
         message.push(`- ${file}`);
       }
     });
@@ -33,5 +32,5 @@ checkExtensions(['src/css'], /\.scss$/);
 assert.deepStrictEqual(
   invalidFiles.length,
   0,
-  Array.from(new Set(message)).join(EOL)
+  Array.from(new Set(message)).join('\n')
 );

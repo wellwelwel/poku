@@ -1,7 +1,6 @@
 /* c8 ignore start */
 
 import { spawn } from 'node:child_process';
-import { EOL } from 'node:os';
 import { forceArray } from '../helpers/force-array.js';
 
 export const setPortsAndPIDs = (portOrPID: number | number[]) =>
@@ -53,7 +52,7 @@ export const getPIDs = {
       ]);
 
       service.stdout.on('data', (data: Buffer) => {
-        const output = data.toString().trim().split(EOL);
+        const output = data.toString().trim().split('\n');
 
         output.forEach((pid) => {
           if (pid) PIDs.add(Number(pid));
@@ -74,7 +73,7 @@ export const getPIDs = {
 
       service.stdout.on('data', (data: Buffer) => {
         const output = data.toString().trim();
-        const lines = output.trim().split(EOL);
+        const lines = output.trim().split('\n');
 
         /**
          * TODO: Chack line for "/:\d+\s+\w+\s+\d+\s+(\d+)/" regex match to safe support multiple Windows versions

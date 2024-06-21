@@ -1,8 +1,6 @@
 /* c8 ignore start */
-import { EOL } from 'node:os';
-
 export const findFile = (error: Error) => {
-  const stackLines = error.stack?.split(EOL) || [];
+  const stackLines = error.stack?.split('\n') || [];
 
   let file = '';
 

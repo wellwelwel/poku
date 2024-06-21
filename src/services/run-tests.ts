@@ -1,5 +1,4 @@
-import process from 'node:process';
-import { EOL } from 'node:os';
+import { cwd as processCWD, hrtime } from 'node:process';
 import { join, relative, sep } from 'node:path';
 import { runner } from '../helpers/runner.js';
 import { indentation } from '../configs/indentation.js';
@@ -15,7 +14,7 @@ import { isQuiet, write } from '../helpers/logs.js';
 /* c8 ignore next */
 import type { Configs } from '../@types/poku.js';
 
-const cwd = process.cwd();
+const cwd = processCWD();
 
 /* c8 ignore start */
 export const results = {
@@ -42,7 +41,7 @@ export const runTests = async (
   if (showLogs) {
     hr();
     write(
-      `${format.bold(isFile ? 'File:' : 'Directory:')} ${format.underline(`.${sep}${currentDir}`)}${EOL}`
+      `${format.bold(isFile ? 'File:' : 'Directory:')} ${format.underline(`.${sep}${currentDir}`)}\n`
     );
   }
 
@@ -50,15 +49,15 @@ export const runTests = async (
     const filePath = files[i];
     const fileRelative = relative(cwd, filePath);
 
-    const start = process.hrtime();
+    const start = hrtime();
     const testPassed = await runTestFile(filePath, configs);
-    const end = process.hrtime(start);
+    const end = hrtime(start);
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
     const testNumber = i + 1;
     const counter = format.counter(testNumber, totalTests);
     const command = `${runner(fileRelative, configs).join(' ')} ${fileRelative} ${format.dim(`› ${total}ms`)}`;
-    const nextLine = i + 1 !== files.length ? EOL : '';
+    const nextLine = i + 1 !== files.length ? '\n' : '';
     const log = `${counter}/${totalTests} ${command} `;
 
     if (testPassed) {

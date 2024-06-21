@@ -1,12 +1,12 @@
 /* c8 ignore start */
 
-import process from 'node:process';
+import { platform } from 'node:process';
 import { extname } from 'node:path';
 import { getRuntime } from './get-runtime.js';
 import type { Configs } from '../@types/poku.js';
 import type { Runner } from '../@types/runner.js';
 
-export const isWindows = process.platform === 'win32';
+export const isWindows = platform === 'win32';
 
 export const runner = (filename: string, configs?: Configs): string[] => {
   const runtime = getRuntime(configs);
