@@ -11,21 +11,23 @@ const eachCore = async (
 ): Promise<boolean> => {
   if (typeof configs?.[type] !== 'function') return true;
 
-  const functionName = configs[type]?.name;
+  const cb = configs[type];
+  /* c8 ignore next */
+  if (typeof cb !== 'function') return true;
 
   write(
-    `    ${format.dim(format.info('◯'))} ${format.dim(format.italic(`${configs[type]}: ${functionName !== configs[type] ? functionName : 'anonymous function'}`))}`
+    `    ${format.dim(format.info('◯'))} ${format.dim(format.italic(`${cb}: ${cb.name || 'anonymous function'}`))}`
   );
 
   try {
-    await configs[type]?.();
+    const resultCb = cb();
+    /* c8 ignore next */
+    if (resultCb instanceof Promise) await resultCb;
     return true;
   } catch (error) {
     write(
       format.bold(
-        format.fail(
-          `    ✘ ${type} callback failed ${format.dim(`› ${configs[type]}`)}`
-        )
+        format.fail(`    ✘ ${type} callback failed ${format.dim(`› ${cb}`)}`)
       )
     );
     write(
