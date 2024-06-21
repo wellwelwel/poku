@@ -163,7 +163,7 @@ import type { Configs } from '../@types/poku.js';
     });
 
     hr();
-    write(`Watching: ${dirs.join(', ')}`);
+    write(`${format.bold('Watching:')} ${format.underline(dirs.join(', '))}`);
   }
 })();
 
