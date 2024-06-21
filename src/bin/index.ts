@@ -2,6 +2,7 @@
 
 /* c8 ignore start */
 
+import process from 'node:process';
 import { escapeRegExp } from '../modules/list-files.js';
 import {
   getArg,
@@ -16,7 +17,7 @@ import { write } from '../helpers/logs.js';
 import { hr } from '../helpers/hr.js';
 import { mapTests, normalizePath } from '../services/map-tests.js';
 import { watch } from '../services/watch.js';
-import { poku } from '../modules/poku.js';
+import { onSigint, poku } from '../modules/poku.js';
 import { kill } from '../modules/processes.js';
 import type { Configs } from '../@types/poku.js';
 
@@ -118,9 +119,10 @@ import type { Configs } from '../@types/poku.js';
       fileResults.fail.clear();
     };
 
+    process.removeListener('SIGINT', onSigint);
     resultsClear();
 
-    mapTests('.', dirs, options.exclude).then((mappedTests) => {
+    mapTests('.', dirs, options.filter, options.exclude).then((mappedTests) => {
       Array.from(mappedTests.keys()).forEach((mappedTest) => {
         watch(mappedTest, (file, event) => {
           if (event === 'change') {

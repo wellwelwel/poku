@@ -6,7 +6,7 @@ import { listFiles } from '../modules/list-files.js';
 const importMap = new Map<string, Set<string>>();
 const processedFiles = new Set<string>();
 
-const filter = /\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)$/;
+const extFilter = /\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)$/;
 
 export const normalizePath = (filePath: string) =>
   filePath
@@ -23,7 +23,7 @@ export const getDeepImports = (content: string): Set<string> => {
     if (line.includes('import') || line.includes('require')) {
       const path = line.match(/['"](\.{1,2}\/[^'"]+)['"]/);
 
-      if (path) paths.add(normalizePath(path[1].replace(filter, '')));
+      if (path) paths.add(normalizePath(path[1].replace(extFilter, '')));
     }
   }
 
@@ -53,6 +53,7 @@ export const findMatchingFiles = (
 /* c8 ignore start */
 const collectTestFiles = async (
   testPaths: string[],
+  testFilter?: RegExp,
   exclude?: RegExp | RegExp[]
 ): Promise<Set<string>> => {
   const statsPromises = testPaths.map((testPath) => stat(testPath));
@@ -64,11 +65,11 @@ const collectTestFiles = async (
 
     if (stat.isDirectory())
       return listFiles(testPath, {
-        filter,
+        filter: testFilter,
         exclude,
       });
 
-    if (stat.isFile() && filter.test(testPath)) return [testPath];
+    if (stat.isFile() && extFilter.test(testPath)) return [testPath];
     else return [];
   });
 
@@ -121,7 +122,7 @@ const createImportMap = async (
 
         /* c8 ignore start */
         if (
-          content.includes(relativePath.replace(filter, '')) ||
+          content.includes(relativePath.replace(extFilter, '')) ||
           content.includes(normalizedSrcFile)
         ) {
           if (!importMap.has(normalizedSrcFile))
@@ -140,12 +141,13 @@ const createImportMap = async (
 export const mapTests = async (
   srcDir: string,
   testPaths: string[],
+  testFilter?: RegExp,
   exclude?: RegExp | RegExp[]
 ) => {
   const [allTestFiles, allSrcFiles] = await Promise.all([
-    collectTestFiles(testPaths, exclude),
+    collectTestFiles(testPaths, testFilter, exclude),
     listFiles(srcDir, {
-      filter,
+      filter: extFilter,
       exclude,
     }),
   ]);

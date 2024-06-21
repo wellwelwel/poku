@@ -16,9 +16,11 @@ import { indentation } from '../configs/indentation.js';
 import type { Code } from '../@types/code.js';
 import type { Configs } from '../@types/poku.js';
 
-process.once('SIGINT', () => {
+export const onSigint = () => {
   process.stdout.write('\u001B[?25h');
-});
+};
+
+process.once('SIGINT', onSigint);
 
 export async function poku(
   targetPaths: string | string[],
