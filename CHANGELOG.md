@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/wellwelwel/poku/compare/v1.17.1...v1.18.0) (2024-06-21)
+
+
+### Features
+
+* **watch:** recursive deep level support ([#422](https://github.com/wellwelwel/poku/issues/422)) ([e1ffae0](https://github.com/wellwelwel/poku/commit/e1ffae03a25c57c04ed25556c27d4f8d59f958a1))
+
 ## [1.17.1](https://github.com/wellwelwel/poku/compare/v1.17.0...v1.17.1) (2024-06-17)
 
 
