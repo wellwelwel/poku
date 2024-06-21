@@ -110,6 +110,7 @@ const ifError = (
   );
 };
 
+/* c8 ignore start */
 const fail = (message?: ParseAssertionOptions['message']): void => {
   parseAssertion(
     () => {
@@ -122,6 +123,7 @@ const fail = (message?: ParseAssertionOptions['message']): void => {
     }
   );
 };
+/* c8 ignore stop */
 
 function doesNotThrow(
   block: () => unknown,
@@ -328,4 +330,5 @@ export const assert = Object.assign(
     fail,
     rejects,
   }
+  /* c8 ignore next */
 );

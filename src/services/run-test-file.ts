@@ -1,3 +1,4 @@
+/* c8 ignore start */ // c8 bug
 import process from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
@@ -11,7 +12,9 @@ import { beforeEach, afterEach } from './each.js';
 import type { Configs } from '../@types/poku.js';
 
 const cwd = process.cwd();
+/* c8 ignore stop */ // c8 bug
 
+/* c8 ignore next */ // c8 bug
 export const runTestFile = (
   filePath: string,
   configs?: Configs
@@ -49,6 +52,7 @@ export const runTestFile = (
     const start = process.hrtime();
     let end: ReturnType<typeof process.hrtime>;
 
+    /* c8 ignore next */
     if (!(await beforeEach(fileRelative, configs))) return false;
 
     // Export spawn helper is not an option
@@ -78,6 +82,7 @@ export const runTestFile = (
           configs,
         });
 
+      /* c8 ignore next */
       if (!(await afterEach(fileRelative, configs))) return false;
 
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);

@@ -134,7 +134,7 @@ const backgroundProcess = (
       });
       /* c8 ignore stop */
 
-      /* c8 ignore stop */
+      /* c8 ignore start */
       service.on('error', (err) => {
         end(portBackup);
         reject(`Service failed to start: ${err}`);
@@ -147,12 +147,14 @@ const backgroundProcess = (
       });
       /* c8 ignore stop */
 
+      /* c8 ignore start */
       const timeout = setTimeout(() => {
         if (!isResolved) {
           end(portBackup);
           reject(`createService: Timeout\nFile: ${file}`);
         }
       }, options?.timeout || 60000);
+      /* c8 ignore stop */
 
       if (typeof options?.startAfter === 'number') {
         setTimeout(() => {

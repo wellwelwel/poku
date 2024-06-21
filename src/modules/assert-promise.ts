@@ -116,6 +116,7 @@ const ifError = async (
   );
 };
 
+/* c8 ignore start */
 const fail = async (
   message?: ParseAssertionOptions['message']
 ): Promise<void> => {
@@ -130,6 +131,7 @@ const fail = async (
     }
   );
 };
+/* c8 ignore stop */
 
 function doesNotThrow(
   block: () => unknown,
@@ -336,4 +338,5 @@ export const assertPromise = Object.assign(
     fail,
     rejects,
   }
+  /* c8 ignore next */
 );
