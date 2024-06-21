@@ -69,16 +69,21 @@ export const runTests = async (
     } else {
       ++results.fail;
 
-      showLogs &&
+      /* c8 ignore start */
+      if (showLogs) {
         write(`${indentation.test}${format.fail('✘')} ${log}${nextLine}`);
+      }
+      /* c8 ignore stop */
 
       passed = false;
 
+      /* c8 ignore start */
       if (configs?.failFast) {
         hr();
         write(`  ${format.fail('ℹ')} ${format.bold('fail-fast')} is enabled`);
         break;
       }
+      /* c8 ignore stop */
     }
   }
 
@@ -110,6 +115,7 @@ export const runTestsParallel = async (
 
         const testPassed = await runTestFile(filePath, configs);
 
+        /* c8 ignore start */
         if (!testPassed) {
           ++results.fail;
 
@@ -118,6 +124,7 @@ export const runTestsParallel = async (
 
           return false;
         }
+        /* c8 ignore stop */
 
         ++results.success;
         return true;
@@ -128,10 +135,12 @@ export const runTestsParallel = async (
     }
 
     return concurrencyResults.every((group) => group.every((result) => result));
+    /* c8 ignore start */
   } catch (error) {
     hr();
     console.error(error);
 
     return false;
   }
+  /* c8 ignore stop */
 };

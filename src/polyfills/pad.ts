@@ -1,5 +1,3 @@
-/* c8 ignore start */
-
 /**
  * Custom implementations of `padStart` for compatibility with Node.js version 6.
  */
@@ -21,5 +19,3 @@ export const padStart = (
 
   return fullPadString + str;
 };
-
-/* c8 ignore stop */

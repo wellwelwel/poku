@@ -97,6 +97,7 @@ export const parseAssertion = async (
 
       write(message);
     }
+    /* c8 ignore start */
   } catch (error) {
     if (error instanceof assert.AssertionError) {
       const { code, actual, expected, operator } = error;
@@ -111,7 +112,6 @@ export const parseAssertion = async (
       else if (typeof options.defaultMessage === 'string')
         message = options.defaultMessage;
 
-      /* c8 ignore start */
       const finalMessage =
         message?.trim().length > 0
           ? format.bold(format.fail(`✘ ${message}`))
@@ -156,5 +156,4 @@ export const parseAssertion = async (
     throw error;
   }
   /* c8 ignore stop */
-  /* c8 ignore next */
 };

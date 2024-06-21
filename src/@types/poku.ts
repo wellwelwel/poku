@@ -1,5 +1,3 @@
-/* c8 ignore start */
-
 import type { Configs as ListFilesConfigs } from './list-files.js';
 
 export type DenoOptions = {
@@ -106,5 +104,3 @@ export type FinalResults = {
   time: string;
   started: Date;
 };
-
-/* c8 ignore stop */

@@ -1,5 +1,3 @@
-/* c8 ignore start */
-
 export type Control = {
   pause: () => void;
   continue: () => void;
@@ -30,5 +28,3 @@ export const each: {
     test: true,
   },
 };
-
-/* c8 ignore stop */
