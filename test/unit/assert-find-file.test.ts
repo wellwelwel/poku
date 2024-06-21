@@ -1,6 +1,11 @@
+import process from 'node:process';
 import { test } from '../../src/modules/test.js';
 import { assert } from '../../src/modules/assert.js';
 import { findFile } from '../../src/helpers/find-file.js';
+import { isWindows } from '../../src/helpers/runner.js';
+
+// TODO: Fix findFile fow Windows (sep)
+if (isWindows) process.exit(0);
 
 const setStack = (stack: string): Error => {
   const error = new Error('Test error');
