@@ -44,7 +44,7 @@
     "@docusaurus/tsconfig": "^3.4.0",
     "@docusaurus/types": "^3.4.0",
     "@types/bun": "^1.1.5",
-    "@types/node": "^20.14.6",
+    "@types/node": "^20.14.7",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "eslint": "^8.57.0",
@@ -58,7 +58,7 @@
     "prettier": "^3.3.2",
     "svps": "^2.3.0",
     "tsx": "^4.15.6",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.2"
   },
   "browserslist": {
     "production": [
