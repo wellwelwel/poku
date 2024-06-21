@@ -55,7 +55,7 @@ describe('Watcher Service', async () => {
       setTimeout(() => {
         fs.writeFileSync(filePath, 'export default { updated: true };'); // update
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
 
     return await new Promise((resolve) => {
@@ -73,7 +73,7 @@ describe('Watcher Service', async () => {
 
         watcher.stop();
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
   });
 
@@ -92,7 +92,7 @@ describe('Watcher Service', async () => {
       setTimeout(() => {
         fs.writeFileSync(newFilePath, 'export default {};'); // update
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
 
     return await new Promise((resolve) => {
@@ -110,7 +110,7 @@ describe('Watcher Service', async () => {
 
         watcher.stop();
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
   });
 
@@ -129,7 +129,7 @@ describe('Watcher Service', async () => {
           'Callback should not be called after watcher is stopped'
         );
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
   });
 
@@ -149,7 +149,7 @@ describe('Watcher Service', async () => {
       setTimeout(() => {
         fs.writeFileSync(newFilePath, 'export default {};'); // update
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
 
     return new Promise((resolve) => {
@@ -167,7 +167,7 @@ describe('Watcher Service', async () => {
 
         watcher.stop();
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
   });
 
@@ -187,7 +187,7 @@ describe('Watcher Service', async () => {
       setTimeout(() => {
         fs.writeFileSync(newNestedFilePath, 'export default {};'); // update
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
 
     return await new Promise((resolve) => {
@@ -206,7 +206,7 @@ describe('Watcher Service', async () => {
 
         watcher.stop();
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
   });
 
@@ -224,7 +224,7 @@ describe('Watcher Service', async () => {
       setTimeout(() => {
         fs.writeFileSync(filePath, 'export default {};');
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
 
     return await new Promise((resolve) => {
@@ -242,7 +242,7 @@ describe('Watcher Service', async () => {
 
         watcher.stop();
         resolve(undefined);
-      }, 250);
+      }, 500);
     });
   });
 });

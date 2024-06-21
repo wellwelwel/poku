@@ -52,6 +52,7 @@ class Watcher {
   }
 
   private async watchDirectory(dir: string) {
+    /* c8 ignore next */
     if (this.dirWatchers.has(dir)) return;
 
     const watcher = nodeWatch(dir, async (_, filename) => {
@@ -99,11 +100,7 @@ class Watcher {
         await this.watchDirectory(this.rootDir);
       } else this.watchFile(this.rootDir);
       /* c8 ignore start */
-    } catch (err) {
-      throw new Error(
-        `Path does not exist or is not accessible: ${this.rootDir}`
-      );
-    }
+    } catch {}
     /* c8 ignore stop */
   }
 

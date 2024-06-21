@@ -5,11 +5,17 @@ if (nodeVersion && nodeVersion < 14) process.exit(0);
 
 import { join } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
-import { it } from '../../src/modules/it.js';
+import { test } from '../../src/modules/test.js';
 import { describe } from '../../src/modules/describe.js';
+import { it } from '../../src/modules/it.js';
 import { beforeEach, afterEach } from '../../src/modules/each.js';
 import { assert } from '../../src/modules/assert.js';
-import { mapTests, normalizePath } from '../../src/services/map-tests.js';
+import {
+  findMatchingFiles,
+  getDeepImports,
+  mapTests,
+  normalizePath,
+} from '../../src/services/map-tests.js';
 
 const createFileSync = (filePath: string, content: string) => {
   writeFileSync(filePath, content);
@@ -26,54 +32,219 @@ const removeDirSync = (dirPath: string) => {
 const testSrcDir = 'test-src';
 const testTestDir = 'test-tests';
 
-describe('mapTests', async () => {
-  beforeEach(() => {
-    createDirSync(testSrcDir);
-    createDirSync(testTestDir);
-    createFileSync(join(testSrcDir, 'example.js'), 'export const foo = 42;');
-    createFileSync(
-      join(testTestDir, 'example.test.js'),
-      'import { foo } from "../test-src/example.js";'
-    );
+test(async () => {
+  await describe('Map Tests', async () => {
+    beforeEach(() => {
+      createDirSync(testSrcDir);
+      createDirSync(testTestDir);
+      createFileSync(join(testSrcDir, 'example.js'), 'export const foo = 42;');
+      createFileSync(
+        join(testTestDir, 'example.test.js'),
+        'import { foo } from "../test-src/example.js";'
+      );
+    });
+
+    afterEach(() => {
+      removeDirSync(testSrcDir);
+      removeDirSync(testTestDir);
+    });
+
+    await it('should map test files to their corresponding source files', async () => {
+      const importMap = await mapTests(testSrcDir, [testTestDir]);
+
+      const expected = new Map([
+        [
+          normalizePath('test-src/example.js'),
+          new Set([normalizePath('test-tests/example.test.js')]),
+        ],
+      ]);
+
+      assert.deepStrictEqual(
+        importMap,
+        expected,
+        'Check if tests are correctly mapped to their corresponding source files.'
+      );
+    });
+
+    await it('should map single test file correctly', async () => {
+      const singleTestFile = join(testTestDir, 'example.test.js');
+      const importMap = await mapTests(testSrcDir, [singleTestFile]);
+
+      const expected = new Map([
+        [
+          normalizePath('test-src/example.js'),
+          new Set([normalizePath('test-tests/example.test.js')]),
+        ],
+      ]);
+
+      assert.deepStrictEqual(
+        importMap,
+        expected,
+        'Check if a test file is correctly mapped to its corresponding source file.'
+      );
+    });
+
+    it('Deep Imports', () => {
+      assert.deepStrictEqual(
+        getDeepImports(
+          `
+          import some from 'some-a';
+          import * as some from 'some-b';
+          import * as some from './a';
+          import { some } from './b';
+          import * as some from './c.js';
+          import { some } from './d.js';
+          import * as some from './e.ts';
+          import { some } from './f.ts';
+          import * as some from './g.cjs';
+          import { some } from './h.cjs';
+          import * as some from './i.mjs';
+          import { some } from './j.mjs';
+          import './k';
+          import './l.js';
+          import('./m.js');
+          `
+        ),
+        new Set([
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+        ]),
+        'import'
+      );
+
+      assert.deepStrictEqual(
+        getDeepImports(
+          `
+          const some = require('some-a');
+          const some = require('some-b');
+          const some = require('./a');
+          const { some } = require('./b');
+          const some = require('./c.js');
+          const { some } = require('./d.js');
+          const some = require('./e.ts');
+          const { some } = require('./f.ts');
+          const some = require('./g.cjs');
+          const { some } = require('./h.cjs');
+          const some = require('./i.mjs');
+          const { some } = require('./j.mjs');
+          require('./k');
+          require('./l.js');
+          require('./m.js').default;
+          `
+        ),
+        new Set([
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+        ]),
+        'require'
+      );
+    });
   });
 
-  afterEach(() => {
-    removeDirSync(testSrcDir);
-    removeDirSync(testTestDir);
-  });
+  describe('Match Files', () => {
+    it('should find matching files based on normalized paths', () => {
+      const srcFilesWithoutExt = new Set([
+        'src/utils/helper',
+        'src/components/button',
+      ]);
+      const srcFilesWithExt = new Set([
+        'src/utils/helper.js',
+        'src/utils/helper.ts',
+        'src/components/button.jsx',
+        'src/components/button.test.js',
+      ]);
 
-  await it('should map test files to their corresponding source files', async () => {
-    const importMap = await mapTests(testSrcDir, [testTestDir]);
+      const matchingFiles = findMatchingFiles(
+        srcFilesWithoutExt,
+        srcFilesWithExt
+      );
 
-    const expected = new Map([
-      [
-        normalizePath('test-src/example.js'),
-        [normalizePath('test-tests/example.test.js')],
-      ],
-    ]);
+      const expected = new Set([
+        normalizePath('src/utils/helper.js'),
+        normalizePath('src/utils/helper.ts'),
+        normalizePath('src/components/button.jsx'),
+        normalizePath('src/components/button.test.js'),
+      ]);
 
-    assert.deepStrictEqual(
-      importMap,
-      expected,
-      'Check if tes are correctly mapped to their corresponding source files.'
-    );
-  });
+      assert.deepStrictEqual(
+        matchingFiles,
+        expected,
+        'Check if matching files are correctly identified.'
+      );
+    });
 
-  await it('should map single test file correctly', async () => {
-    const singleTestFile = join(testTestDir, 'example.test.js');
-    const importMap = await mapTests(testSrcDir, [singleTestFile]);
+    it('should return an empty set if no matching files are found', () => {
+      const srcFilesWithoutExt = new Set([
+        'src/services/api',
+        'src/components/card',
+      ]);
+      const srcFilesWithExt = new Set([
+        'src/utils/helper.js',
+        'src/utils/helper.ts',
+        'src/components/button.jsx',
+      ]);
 
-    const expected = new Map([
-      [
-        normalizePath('test-src/example.js'),
-        [normalizePath('test-tests/example.test.js')],
-      ],
-    ]);
+      const matchingFiles = findMatchingFiles(
+        srcFilesWithoutExt,
+        srcFilesWithExt
+      );
 
-    assert.deepStrictEqual(
-      importMap,
-      expected,
-      'Check if a test file is correctly mapped to its corresponding source file.'
-    );
+      assert.deepStrictEqual(
+        matchingFiles,
+        new Set(),
+        'Check if an empty set is returned when no matching files are found.'
+      );
+    });
+
+    it('should handle cases where file paths contain special characters', () => {
+      const srcFilesWithoutExt = new Set([
+        'src/utils/@helper',
+        'src/components/button',
+      ]);
+      const srcFilesWithExt = new Set([
+        'src/utils/@helper.js',
+        'src/utils/@helper.ts',
+        'src/components/button.jsx',
+      ]);
+
+      const matchingFiles = findMatchingFiles(
+        srcFilesWithoutExt,
+        srcFilesWithExt
+      );
+
+      const expected = new Set([
+        normalizePath('src/utils/@helper.js'),
+        normalizePath('src/utils/@helper.ts'),
+        normalizePath('src/components/button.jsx'),
+      ]);
+
+      assert.deepStrictEqual(
+        matchingFiles,
+        expected,
+        'Check if matching files with special characters in paths are correctly identified.'
+      );
+    });
   });
 });
