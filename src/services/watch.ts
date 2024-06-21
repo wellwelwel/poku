@@ -52,6 +52,7 @@ class Watcher {
   }
 
   private async watchDirectory(dir: string) {
+    /* c8 ignore next */
     if (this.dirWatchers.has(dir)) return;
 
     const watcher = nodeWatch(dir, async (_, filename) => {

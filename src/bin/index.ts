@@ -121,8 +121,6 @@ import type { Configs } from '../@types/poku.js';
     resultsClear();
 
     mapTests('.', dirs, options.exclude).then((mappedTests) => {
-      console.log(mappedTests);
-
       Array.from(mappedTests.keys()).forEach((mappedTest) => {
         watch(mappedTest, (file, event) => {
           if (event === 'change') {

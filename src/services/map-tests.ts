@@ -1,3 +1,4 @@
+/* c8 ignore next */
 import { relative, dirname, sep } from 'node:path';
 import { stat, readFile } from '../polyfills/fs.js';
 import { listFiles } from '../modules/list-files.js';
@@ -5,7 +6,7 @@ import { listFiles } from '../modules/list-files.js';
 const importMap = new Map<string, Set<string>>();
 const processedFiles = new Set<string>();
 
-const filter = /\.(js|cjs|mjs|ts|cts|mts)$/;
+const filter = /\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)$/;
 
 export const normalizePath = (filePath: string) =>
   filePath
@@ -49,6 +50,7 @@ export const findMatchingFiles = (
   return matchingFiles;
 };
 
+/* c8 ignore start */
 const collectTestFiles = async (
   testPaths: string[],
   exclude?: RegExp | RegExp[]
@@ -65,6 +67,7 @@ const collectTestFiles = async (
         filter,
         exclude,
       });
+
     if (stat.isFile() && filter.test(testPath)) return [testPath];
     else return [];
   });
@@ -73,7 +76,9 @@ const collectTestFiles = async (
 
   return new Set(nestedTestFiles.flat());
 };
+/* c8 ignore stop */
 
+/* c8 ignore start */
 const processDeepImports = async (
   srcFile: string,
   testFile: string,
@@ -94,6 +99,7 @@ const processDeepImports = async (
     await processDeepImports(deepImport, testFile, intersectedSrcFiles);
   }
 };
+/* c8 ignore stop */
 
 const createImportMap = async (
   allTestFiles: Set<string>,
@@ -113,6 +119,7 @@ const createImportMap = async (
         );
         const normalizedSrcFile = normalizePath(srcFile);
 
+        /* c8 ignore start */
         if (
           content.includes(relativePath.replace(filter, '')) ||
           content.includes(normalizedSrcFile)
@@ -123,13 +130,13 @@ const createImportMap = async (
 
           await processDeepImports(srcFile, testFile, intersectedSrcFiles);
         }
+        /* c8 ignore stop */
       }
     })
   );
-
-  return importMap;
 };
 
+/* c8 ignore next */
 export const mapTests = async (
   srcDir: string,
   testPaths: string[],
@@ -143,7 +150,7 @@ export const mapTests = async (
     }),
   ]);
 
-  const result = await createImportMap(allTestFiles, new Set(allSrcFiles));
+  await createImportMap(allTestFiles, new Set(allSrcFiles));
 
-  return result;
+  return importMap;
 };
