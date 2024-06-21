@@ -35,18 +35,16 @@ export const findMatchingFiles = (
 ): Set<string> => {
   const matchingFiles = new Set<string>();
 
-  for (const srcFile of srcFilesWithoutExt) {
+  srcFilesWithoutExt.forEach((srcFile) => {
     const normalizedSrcFile = normalizePath(srcFile);
 
-    for (const fileWithExt of srcFilesWithExt) {
+    srcFilesWithExt.forEach((fileWithExt) => {
       const normalizedFileWithExt = normalizePath(fileWithExt);
 
-      if (normalizedFileWithExt.includes(normalizedSrcFile)) {
+      if (normalizedFileWithExt.includes(normalizedSrcFile))
         matchingFiles.add(fileWithExt);
-        break;
-      }
-    }
-  }
+    });
+  });
 
   return matchingFiles;
 };
