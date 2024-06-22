@@ -2,7 +2,6 @@
 /**
  * Both CLI, API, noExit, sequential and parallel runs are strictly tested, but these tests use deep child process for it
  */
-
 import process from 'node:process';
 import { runTests, runTestsParallel } from '../services/run-tests.js';
 import { exit } from './exit.js';

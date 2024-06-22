@@ -89,9 +89,14 @@ export const parseAssertion = async (
     }
 
     if (typeof options.message === 'string') {
-      const message = isPoku
-        ? `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
-        : `${preIdentation}${format(`✔ ${options.message}`).success().bold()}`;
+      const message =
+        isPoku &&
+        !indentation.hasDescribe &&
+        !indentation.hasIt &&
+        !indentation.hasTest
+          ? /* c8 ignore next */
+            `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
+          : `${preIdentation}${format(`✔ ${options.message}`).success().bold()}`;
 
       write(message);
     }

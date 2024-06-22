@@ -1,5 +1,5 @@
 /* c8 ignore next */
-import { hrtime } from 'node:process';
+import { hrtime, env } from 'node:process';
 import { format, backgroundColor } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
 /* c8 ignore next */
@@ -28,6 +28,9 @@ export async function describe(
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;
 
+  const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
+  const FILE = env.FILE;
+
   if (typeof arg1 === 'string') {
     title = arg1;
 
@@ -43,7 +46,7 @@ export async function describe(
     indentation.hasDescribe = true;
 
     const { background, icon } = options || {};
-    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(title).dim() : format(title).bold() || ''}`;
+    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold() || ''}`;
     const noBackground = !background;
 
     if (noBackground) write(format(message).bold());
