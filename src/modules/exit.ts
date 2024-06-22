@@ -1,8 +1,7 @@
 /* c8 ignore start */
-
 import process from 'node:process';
 import { hr } from '../helpers/hr.js';
-import { results } from '../services/run-tests.js';
+import { results } from '../configs/poku.js';
 import { format } from '../helpers/format.js';
 import type { Code } from '../@types/code.js';
 import { write } from '../helpers/logs.js';
@@ -51,5 +50,4 @@ process.on('uncaughtException', (err) => {
   console.error('uncaughtException', err);
   process.exit(1);
 });
-
 /* c8 ignore stop */

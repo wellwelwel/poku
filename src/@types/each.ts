@@ -10,3 +10,9 @@ export type EachConfigs = {
   test?: boolean;
   cb?: () => unknown | Promise<unknown>;
 };
+
+export type EachOptions = {
+  immediate?: boolean;
+  test?: boolean;
+  assert?: boolean;
+};

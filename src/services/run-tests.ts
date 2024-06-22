@@ -13,15 +13,9 @@ import { runTestFile } from './run-test-file.js';
 import { isQuiet, write } from '../helpers/logs.js';
 /* c8 ignore next */
 import type { Configs } from '../@types/poku.js';
+import { results } from '../configs/poku.js';
 
 const cwd = processCWD();
-
-/* c8 ignore start */
-export const results = {
-  success: 0,
-  fail: 0,
-};
-/* c8 ignore stop */
 
 export const runTests = async (
   dir: string,

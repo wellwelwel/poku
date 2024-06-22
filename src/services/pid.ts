@@ -1,5 +1,4 @@
 /* c8 ignore start */
-
 import { spawn } from 'node:child_process';
 import { forceArray } from '../helpers/force-array.js';
 
@@ -96,5 +95,4 @@ export const getPIDs = {
       });
     }),
 };
-
 /* c8 ignore stop */

@@ -1,5 +1,4 @@
 /* c8 ignore start */
-
 import { isWindows } from '../helpers/runner.js';
 import {
   getPIDs as getPIDsService,
@@ -90,5 +89,4 @@ export const kill = {
    */
   range: killRange,
 };
-
 /* c8 ignore stop */

@@ -1,14 +1,6 @@
 /* c8 ignore next */
-import type { Control } from '../@types/each.js';
+import type { Control, EachOptions } from '../@types/each.js';
 import { each } from '../configs/each.js';
-
-/* c8 ignore start */
-type EachOptions = {
-  immediate?: boolean;
-  test?: boolean;
-  assert?: boolean;
-};
-/* c8 ignore stop */
 
 /**
  * - ✅ Handling **global** and **external** services (_preparing a database, for example_)
