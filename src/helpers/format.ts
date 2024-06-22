@@ -20,7 +20,7 @@ export const backgroundColor = {
 } as const;
 
 export class Formatter {
-  private parts: string[] = [];
+  private parts: string = '';
   private text: string;
 
   constructor(text: string) {
@@ -34,56 +34,56 @@ export class Formatter {
   counter(current: number, total: number, pad = '0') {
     const totalDigits = String(total).length;
     const formattedCounter = padStart(String(current), totalDigits, pad);
-    this.parts.push(formattedCounter);
+    this.parts += formattedCounter;
     return this;
   }
 
   dim() {
-    this.parts.push('\x1b[2m');
+    this.parts += '\x1b[2m';
     return this;
   }
 
   bold() {
-    this.parts.push('\x1b[1m');
+    this.parts += '\x1b[1m';
     return this;
   }
 
   underline() {
-    this.parts.push('\x1b[4m');
+    this.parts += '\x1b[4m';
     return this;
   }
 
   info() {
-    this.parts.push('\x1b[94m');
+    this.parts += '\x1b[94m';
     return this;
   }
 
   italic() {
-    this.parts.push('\x1b[3m');
+    this.parts += '\x1b[3m';
     return this;
   }
 
   success() {
-    this.parts.push('\x1b[32m');
+    this.parts += '\x1b[32m';
     return this;
   }
 
   fail() {
-    this.parts.push('\x1b[91m');
+    this.parts += '\x1b[91m';
     return this;
   }
 
-  bg(bg: (typeof backgroundColor)[keyof typeof backgroundColor]) {
-    this.parts.push(`\x1b[${bg}m\x1b[1m`);
+  bg(color: (typeof backgroundColor)[keyof typeof backgroundColor]) {
+    this.parts += `\x1b[${color}m\x1b[1m`;
     return this;
   }
 
   [Symbol.toPrimitive]() {
-    return `${this.parts.join('')}${this.text}\x1b[0m`;
+    return `${this.parts}${this.text}\x1b[0m`;
   }
 }
 
-export const format = (text?: string) => Formatter.create(text || '');
+export const format = (text: string) => Formatter.create(text);
 
 /* c8 ignore next */
 export const getLargestStringLength = (arr: string[]): number =>

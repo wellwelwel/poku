@@ -96,7 +96,7 @@ export async function poku(
       Array.from(fileResults.success)
         .map(
           ([file, time]) =>
-            `${indentation.test}${format('✔').success()} ${format(`${file} › ${time}ms`).dim()}`
+            `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${time}ms`).success()}`).dim()}`
         )
         .join('\n')
     );
@@ -107,7 +107,7 @@ export async function poku(
       Array.from(fileResults.fail)
         .map(
           ([file, time]) =>
-            `${indentation.test}${format('✘').fail()} ${format(`${file} › ${time}ms`).dim()}`
+            `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time}ms`).fail()}`).dim()}`
         )
         .join('\n')
     );

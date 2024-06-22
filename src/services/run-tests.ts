@@ -49,22 +49,26 @@ export const runTests = async (
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
     const testNumber = i + 1;
-    const counter = format().counter(testNumber, totalTests);
-    const command = `${runner(fileRelative, configs).join(' ')} ${fileRelative} ${format(`› ${total}ms`).dim()}`;
+    const counter = format('').counter(testNumber, totalTests);
+    const command = `${runner(fileRelative, configs).join(' ')} ${fileRelative}`;
     const nextLine = i + 1 !== files.length ? '\n' : '';
-    const log = `${counter}/${totalTests} ${command} `;
+    const log = `${counter}/${totalTests} ${command}`;
 
     if (testPassed) {
       ++results.success;
 
       showLogs &&
-        write(`${indentation.test}${format('✔').success()} ${log}${nextLine}`);
+        write(
+          `${indentation.test}${format('✔').success()} ${log}${format(` › ${total}ms`).success().dim()}${nextLine}`
+        );
     } else {
       ++results.fail;
 
       /* c8 ignore start */
       if (showLogs) {
-        write(`${indentation.test}${format('✘').fail()} ${log}${nextLine}`);
+        write(
+          `${indentation.test}${format('✘').fail()} ${log}${format(` › ${total}ms`).fail().dim()}${nextLine}`
+        );
       }
       /* c8 ignore stop */
 
