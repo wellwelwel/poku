@@ -6,7 +6,8 @@ import { describe } from '../../src/modules/describe.js';
 import { beforeEach, afterEach } from '../../src/modules/each.js';
 import { assert } from '../../src/modules/assert.js';
 import { getRuntime, nodeVersion } from '../../src/helpers/get-runtime.js';
-import { watch, WatchCallback } from '../../src/services/watch.js';
+import { watch } from '../../src/services/watch.js';
+import type { WatchCallback } from '../../src/@types/watch.js';
 
 if (nodeVersion && nodeVersion < 10) process.exit(0);
 
