@@ -1,5 +1,6 @@
 /* c8 ignore next */
-import { Control, each } from '../configs/each.js';
+import type { Control } from '../@types/each.js';
+import { each } from '../configs/each.js';
 
 /* c8 ignore start */
 type EachOptions = {
