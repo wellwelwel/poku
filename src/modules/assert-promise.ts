@@ -1,6 +1,6 @@
 /* c8 ignore next */
 import type { ParseAssertionOptions } from '../@types/assert.js';
-import nodeAssert from 'node:assert';
+import * as nodeAssert from 'node:assert';
 import { parseAssertion } from '../helpers/parse-assertion.js';
 import { nodeVersion } from '../helpers/get-runtime.js';
 
