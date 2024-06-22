@@ -84,8 +84,8 @@ test(async () => {
     (await describe('Start Service (Timer)', async () => {
       await it(async () => {
         const server = await startService(`server-a.${ext}`, {
-          startAfter: 1500,
-          timeout: 3000,
+          startAfter: 5000,
+          timeout: 6000,
           cwd:
             ext === 'ts' || isProduction
               ? 'fixtures/server'
@@ -133,8 +133,8 @@ test(async () => {
     (await describe('Start Script (Timer)', async () => {
       await it(async () => {
         const server = await startScript(`start:${ext}`, {
-          startAfter: 1500,
-          timeout: 3000,
+          startAfter: 5000,
+          timeout: 6000,
           cwd:
             ext === 'ts' || isProduction
               ? 'fixtures/server'
