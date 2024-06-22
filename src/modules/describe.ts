@@ -1,6 +1,6 @@
 /* c8 ignore next */
-import { hrtime } from 'node:process';
-import { format, backgroundColor } from '../helpers/format.js';
+import { hrtime, env } from 'node:process';
+import { format } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
 /* c8 ignore next */
 import { indentation } from '../configs/indentation.js';
@@ -28,6 +28,9 @@ export async function describe(
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;
 
+  const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
+  const FILE = env.FILE;
+
   if (typeof arg1 === 'string') {
     title = arg1;
 
@@ -43,13 +46,15 @@ export async function describe(
     indentation.hasDescribe = true;
 
     const { background, icon } = options || {};
-    const message = `${cb ? format.dim('◌') : icon || '☰'} ${cb ? format.dim(title) : format.bold(title) || ''}`;
+    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold() || ''}`;
     const noBackground = !background;
 
-    if (noBackground) write(`${format.bold(message)}`);
+    if (noBackground) write(format(message).bold());
     else {
       write(
-        `${format.bg(backgroundColor[typeof background === 'string' ? background : 'grey'], message)}`
+        format(` ${message} `).bg(
+          typeof background === 'string' ? background : 'grey'
+        )
       );
     }
   }
@@ -70,7 +75,7 @@ export async function describe(
 
     indentation.hasDescribe = false;
     write(
-      `${format.bold(format.success('●'))} ${format.bold(format.success(title))} ${format.dim(`› ${total}ms`)}`
+      `${format(`● ${title}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
     );
   }
   /* c8 ignore stop */

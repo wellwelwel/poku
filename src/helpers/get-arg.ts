@@ -77,5 +77,4 @@ export const argToArray = (arg: string, prefix = '--') => {
     .map((a) => a.trim())
     .filter((a) => a);
 };
-
 /* c8 ignore stop */

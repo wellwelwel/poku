@@ -2,7 +2,6 @@
 /**
  * Both CLI, API, noExit, sequential and parallel runs are strictly tested, but these tests use deep child process for it
  */
-
 import process from 'node:process';
 import { runTests, runTestsParallel } from '../services/run-tests.js';
 import { exit } from './exit.js';
@@ -66,7 +65,7 @@ export async function poku(
   // Parallel
   if (showLogs) {
     hr();
-    write(`${format.bold('Running the Test Suite in Parallel')}\n`);
+    write(`${format('Running the Test Suite in Parallel').bold()}\n`);
   }
 
   try {
@@ -96,7 +95,7 @@ export async function poku(
       Array.from(fileResults.success)
         .map(
           ([file, time]) =>
-            `${indentation.test}${format.success('✔')} ${format.dim(`${file} › ${time}ms`)}`
+            `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${time}ms`).success()}`).dim()}`
         )
         .join('\n')
     );
@@ -107,7 +106,7 @@ export async function poku(
       Array.from(fileResults.fail)
         .map(
           ([file, time]) =>
-            `${indentation.test}${format.fail('✘')} ${format.dim(`${file} › ${time}ms`)}`
+            `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time}ms`).fail()}`).dim()}`
         )
         .join('\n')
     );

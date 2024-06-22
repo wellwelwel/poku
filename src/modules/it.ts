@@ -1,5 +1,5 @@
 /* c8 ignore next */
-import { hrtime } from 'node:process';
+import { hrtime, env } from 'node:process';
 /* c8 ignore next */
 import { each } from '../configs/each.js';
 /* c8 ignore next */
@@ -25,6 +25,9 @@ export async function it(
   let message: string | undefined;
   let cb: () => unknown | Promise<unknown>;
 
+  const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
+  const FILE = env.FILE;
+
   if (typeof each.before.cb === 'function' && each.before.test) {
     const beforeResult = each.before.cb();
 
@@ -41,7 +44,9 @@ export async function it(
   if (message) {
     indentation.hasIt = true;
     write(
-      `${indentation.hasDescribe ? '  ' : ''}${format.dim('◌')} ${format.dim(message)}`
+      isPoku && !indentation.hasDescribe
+        ? `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
+        : `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
     );
   }
   /* c8 ignore end */
@@ -65,7 +70,7 @@ export async function it(
 
     indentation.hasIt = false;
     write(
-      `${indentation.hasDescribe ? '  ' : ''}${format.bold(format.success('●'))} ${format.bold(format.success(message))} ${format.dim(`› ${total}ms`)}`
+      `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
     );
   }
   /* c8 ignore stop */

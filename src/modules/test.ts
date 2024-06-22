@@ -1,5 +1,5 @@
 /* c8 ignore next */
-import { hrtime } from 'node:process';
+import { hrtime, env } from 'node:process';
 /* c8 ignore next */
 import { each } from '../configs/each.js';
 /* c8 ignore next */
@@ -25,6 +25,9 @@ export async function test(
   let message: string | undefined;
   let cb: () => unknown | Promise<unknown>;
 
+  const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
+  const FILE = env.FILE;
+
   if (typeof each.before.cb === 'function' && each.before.test) {
     const beforeResult = each.before.cb();
 
@@ -41,7 +44,11 @@ export async function test(
   if (message) {
     indentation.hasTest = true;
 
-    write(`${format.dim('◌')} ${format.dim(message)}`);
+    write(
+      isPoku
+        ? format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()
+        : format(`◌ ${message}`).dim()
+    );
   }
   /* c8 ignore stop */
 
@@ -64,7 +71,7 @@ export async function test(
 
     indentation.hasTest = false;
     write(
-      `${format.bold(format.success('●'))} ${format.bold(format.success(message))} ${format.dim(`› ${total}ms`)}`
+      `${format(`● ${message}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
     );
   }
   /* c8 ignore stop */
