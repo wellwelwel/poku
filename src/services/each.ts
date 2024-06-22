@@ -33,14 +33,15 @@ const eachCore = async (
         .fail()
         .bold()
     );
+    write(format(`      ├─ Who's trying to run this ${type}?`).fail());
     write(
-      format(
-        `      ├─ Who's trying to run this ${type}?\n      │ └─ ${format(fileRelative).fail().underline()}`
-      ).fail()
+      format(`      │ └─ ${format(fileRelative).fail().underline()}`).fail()
     );
 
-    error instanceof Error &&
-      write(format(`      ├─ Message:\n      │ └─ ${error.message}`).fail());
+    if (error instanceof Error) {
+      write(format(`      ├─ Message:`).fail());
+      write(format(`      │ └─ ${error.message}`).fail());
+    }
 
     return false;
   }
