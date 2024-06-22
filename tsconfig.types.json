@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/@types"],
+  "exclude": ["test", "tools"],
+  "compilerOptions": {
+    "outDir": "lib/@types",
+    "emitDeclarationOnly": true
+  }
+}

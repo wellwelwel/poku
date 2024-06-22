@@ -1,6 +1,6 @@
 {
   "include": ["src"],
-  "exclude": ["test", "tools"],
+  "exclude": ["test", "tools", "src/@types"],
   "compilerOptions": {
     "target": "ES2015",
     "lib": ["ES2015"],
