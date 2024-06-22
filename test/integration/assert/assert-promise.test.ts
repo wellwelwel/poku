@@ -71,10 +71,6 @@ describe('Assert (Promise) Suite', async () => {
   });
 
   it(() => {
-    assert.doesNotThrow(() => 1 + 1, 'doesNotThrow with non-throwing function');
-  });
-
-  it(() => {
     assert.notEqual(1, 2, 'notEqual with different numbers');
     assert.notEqual(2 + 2, 5, '2 + 2 should not equal 5');
     assert.notEqual(
@@ -179,6 +175,19 @@ describe('Assert (Promise) Suite', async () => {
       });
 
       it(() => {
+        assert.doesNotThrow(
+          () => {
+            return 'test';
+          },
+          /test/,
+          'RegExp predicate should not match'
+        );
+
+        assert.doesNotThrow(
+          () => 1 + 1,
+          'doesNotThrow with non-throwing function'
+        );
+
         assert.doesNotThrow(() => {
           obj.a = 2;
         }, 'Changing property should not throw');
@@ -283,6 +292,26 @@ describe('Assert (Promise) Suite', async () => {
           new Error('Async error'),
           'Should reject with the specified error message'
         );
+        await assert.rejects(
+          asyncFunctionThatRejects,
+          /Async error/,
+          'Should reject with the specified regex message'
+        );
+        await assert.rejects(
+          asyncFunctionThatRejects,
+          { message: 'Async error' },
+          'Should reject with the specified predicate message'
+        );
+        await assert.rejects(
+          asyncFunctionThatRejects,
+          'Should reject with the specified string message'
+        );
+        await assert.rejects(
+          asyncFunctionThatRejects,
+          // @ts-expect-error invalid third param
+          undefined,
+          'Should reject with the specified string message (third arg)'
+        );
       });
 
       await it(async () => {
@@ -305,6 +334,10 @@ describe('Assert (Promise) Suite', async () => {
         await assert.doesNotReject(
           asyncFunctionThatResolves,
           'Should handle cases with no specific error argument in doesNotReject'
+        );
+        await assert.doesNotReject(
+          asyncFunctionThatResolves,
+          /Resolved successfully/
         );
       });
     }

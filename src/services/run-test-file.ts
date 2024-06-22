@@ -1,4 +1,5 @@
-/* c8 ignore start */ // c8 bug
+/* c8 ignore next */
+import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime, env } from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
@@ -8,11 +9,8 @@ import { isWindows, runner } from '../helpers/runner.js';
 import { format } from '../helpers/format.js';
 import { isQuiet, printOutput, write } from '../helpers/logs.js';
 import { beforeEach, afterEach } from './each.js';
-/* c8 ignore next */
-import type { Configs } from '../@types/poku.js';
 
 const cwd = processCWD();
-/* c8 ignore stop */ // c8 bug
 
 /* c8 ignore next */ // c8 bug
 export const runTestFile = (

@@ -1,13 +1,11 @@
-/* c8 ignore next */
+/* c8 ignore next */ // c8 bug
 import { hrtime, env } from 'node:process';
-/* c8 ignore next */
 import { each } from '../configs/each.js';
-/* c8 ignore next */
 import { indentation } from '../configs/indentation.js';
 import { format } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
 
-/* c8 ignore start */
+/* c8 ignore start */ // c8 bug
 export async function it(
   message: string,
   cb: () => Promise<unknown>
@@ -40,16 +38,15 @@ export async function it(
     cb = args[1] as () => unknown | Promise<unknown>;
   } else cb = args[0] as () => unknown | Promise<unknown>;
 
-  /* c8 ignore start */
   if (message) {
     indentation.hasIt = true;
     write(
       isPoku && !indentation.hasDescribe
-        ? `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
-        : `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
+        ? `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}` /* c8 ignore next */ // c8 bug
+        : /* c8 ignore next */
+          `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
     );
   }
-  /* c8 ignore end */
 
   const start = hrtime();
   const resultCb = cb();
@@ -64,7 +61,6 @@ export async function it(
     if (afterResult instanceof Promise) await afterResult;
   }
 
-  /* c8 ignore start */
   if (message) {
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
@@ -73,5 +69,4 @@ export async function it(
       `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
     );
   }
-  /* c8 ignore stop */
 }

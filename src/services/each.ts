@@ -1,7 +1,7 @@
-import { format } from '../helpers/format.js';
-import { write } from '../helpers/logs.js';
 /* c8 ignore next */
 import type { Configs } from '../@types/poku.js';
+import { format } from '../helpers/format.js';
+import { write } from '../helpers/logs.js';
 
 const eachCore = async (
   type: keyof Required<Pick<Configs, 'beforeEach' | 'afterEach'>>,
@@ -47,7 +47,7 @@ const eachCore = async (
     return false;
   }
   /* c8 ignore stop */
-  /* c8 ignore next */
+  /* c8 ignore next */ // c8 bug
 };
 
 export const beforeEach = async (fileRelative: string, configs?: Configs) => {

@@ -8,6 +8,9 @@ describe('Testing "describe" method', {
 test('Using as titles', () => {
   describe('');
   describe('', {});
+  describe('Default');
+  describe('Background (Boolean)', { background: true });
+  describe('Background (String)', { background: 'blue' });
 });
 
 test('Using as functions', async () => {
