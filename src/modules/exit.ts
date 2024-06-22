@@ -26,7 +26,7 @@ export const exit = (code: Code, quiet?: boolean) => {
         );
         hr();
         write(
-          `${format(` PASS › ${results.success} `).bg(42)} ${format(` FAIL › ${results.fail} `).bg(results.fail === 0 ? 100 : 41)}`
+          `${format(` PASS › ${results.success} `).bg('green')} ${format(` FAIL › ${results.fail} `).bg(results.fail === 0 ? 'grey' : 'red')}`
         );
         hr();
       }

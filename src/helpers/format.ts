@@ -78,8 +78,8 @@ export class Formatter {
     return this;
   }
 
-  bg(color: (typeof backgroundColor)[keyof typeof backgroundColor]) {
-    this.parts += `\x1b[${color}m\x1b[1m`;
+  bg(color: keyof typeof backgroundColor) {
+    this.parts += `\x1b[${backgroundColor[color]}m\x1b[1m`;
     return this;
   }
 

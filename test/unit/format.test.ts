@@ -58,7 +58,7 @@ test('Format', () => {
   );
 
   assert.strictEqual(
-    `${format(' bg text ').bg(41)}`,
+    `${format(' bg text ').bg('red')}`,
     '\x1b[41m\x1b[1m bg text \x1b[0m',
     'bg'
   );

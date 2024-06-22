@@ -1,6 +1,6 @@
 /* c8 ignore next */
 import { hrtime, env } from 'node:process';
-import { format, backgroundColor } from '../helpers/format.js';
+import { format } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
 /* c8 ignore next */
 import { indentation } from '../configs/indentation.js';
@@ -53,7 +53,7 @@ export async function describe(
     else {
       write(
         format(` ${message} `).bg(
-          backgroundColor[typeof background === 'string' ? background : 'grey']
+          typeof background === 'string' ? background : 'grey'
         )
       );
     }

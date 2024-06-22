@@ -95,7 +95,7 @@ const options: Configs = {
 
 if (debug) {
   hr();
-  write(`${format(' Debug Enabled ').bg(104)}\n`);
+  write(`${format(' Debug Enabled ').bg('brightBlue')}\n`);
   write(`${format('…').info().italic()} ${format('Paths').bold()}`);
   console.table(dirs);
   write('\n');
