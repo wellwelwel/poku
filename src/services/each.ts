@@ -35,7 +35,7 @@ const eachCore = async (
     );
     write(
       format(
-        `      ├─ Who's trying to run this ${type}?\n      │ └─ ${format(fileRelative).underline()}`
+        `      ├─ Who's trying to run this ${type}?\n      │ └─ ${format(fileRelative).fail().underline()}`
       ).fail()
     );
 
