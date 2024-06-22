@@ -3,9 +3,8 @@ import { watch as nodeWatch, type FSWatcher } from 'node:fs';
 import { join } from 'node:path';
 import { readdir, stat } from '../polyfills/fs.js';
 import { listFiles } from '../modules/list-files.js';
-
 /* c8 ignore next */
-export type WatchCallback = (file: string, event: string) => void;
+import type { WatchCallback } from '../@types/watch.js';
 
 class Watcher {
   private rootDir: string;

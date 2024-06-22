@@ -1,5 +1,4 @@
 /* c8 ignore start */
-
 /**
  * This method will be removed in a future release to use `list-files.ts` instead.
  */
@@ -51,5 +50,4 @@ const listFiles = (
 
 export const publicListFiles = (targetDir: string, configs?: Configs) =>
   listFiles(sanitizePath(targetDir), [], configs);
-
 /* c8 ignore stop */

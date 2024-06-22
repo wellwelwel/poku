@@ -1,5 +1,4 @@
 /* c8 ignore start */
-
 import { write } from '../helpers/logs.js';
 
 /**
@@ -9,5 +8,4 @@ import { write } from '../helpers/logs.js';
  * Need to debug? Just use the [`debug`](https://poku.io/docs/documentation/poku/options/debug) option from `poku`.
  */
 export const log = (message: string) => write(`\x1b[0m${message}\x1b[0m`);
-
 /* c8 ignore stop */
