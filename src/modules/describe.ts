@@ -1,13 +1,11 @@
 /* c8 ignore next */
+import type { DescribeOptions } from '../@types/describe.js';
 import { hrtime, env } from 'node:process';
 import { format } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
-/* c8 ignore next */
 import { indentation } from '../configs/indentation.js';
-/* c8 ignore next */
-import type { DescribeOptions } from '../@types/describe.js';
 
-/* c8 ignore start */
+/* c8 ignore start */ // c8 bug
 /**
  * On **Poku**, `describe` also can be used just as a pretty `console.log` to title your test suites in the terminal.
  */
@@ -41,12 +39,11 @@ export async function describe(
     options = arg2 as DescribeOptions;
   }
 
-  /* c8 ignore start */
   if (title) {
     indentation.hasDescribe = true;
 
     const { background, icon } = options || {};
-    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold() || ''}`;
+    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : /* c8 ignore next */ title).dim() : format(title).bold() || ''}`;
     const noBackground = !background;
 
     if (noBackground) write(format(message).bold());
@@ -58,7 +55,6 @@ export async function describe(
       );
     }
   }
-  /* c8 ignore stop */
 
   if (typeof cb !== 'function') return;
 
@@ -69,7 +65,6 @@ export async function describe(
   if (resultCb instanceof Promise) await resultCb;
   const end = hrtime(start);
 
-  /* c8 ignore start */
   if (title) {
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
@@ -78,5 +73,4 @@ export async function describe(
       `${format(`● ${title}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
     );
   }
-  /* c8 ignore stop */
 }

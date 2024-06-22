@@ -1,9 +1,8 @@
 /* c8 ignore next */
+import type { Configs } from '../@types/list-files.js';
 import { env } from 'node:process';
 import { sep, join } from 'node:path';
 import { readdir, stat as fsStat } from '../polyfills/fs.js';
-/* c8 ignore next */
-import type { Configs } from '../@types/list-files.js';
 
 export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
   const sanitizedPath = input
@@ -83,7 +82,7 @@ export const getAllFiles = async (
   return files;
 };
 
-/* c8 ignore start */
+/* c8 ignore start */ // c8 bug
 export const listFiles = async (
   targetDir: string,
   configs?: Configs

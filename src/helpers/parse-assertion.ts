@@ -1,18 +1,16 @@
+/* c8 ignore next */
+import type { ParseAssertionOptions } from '../@types/assert.js';
 import { cwd as processCWD, env, exit } from 'node:process';
 import path from 'node:path';
 import assert from 'node:assert';
 import { format } from './format.js';
 import { hr } from './hr.js';
 import { findFile } from './find-file.js';
-/* c8 ignore next */
 import { each } from '../configs/each.js';
-/* c8 ignore next */
 import { indentation } from '../configs/indentation.js';
 import { fromEntries, entries } from '../polyfills/object.js';
 import { nodeVersion } from './get-runtime.js';
 import { write } from './logs.js';
-/* c8 ignore next */
-import type { ParseAssertionOptions } from '../@types/assert.js';
 
 const cwd = processCWD();
 
@@ -93,6 +91,7 @@ export const parseAssertion = async (
         isPoku &&
         !indentation.hasDescribe &&
         !indentation.hasIt &&
+        /* c8 ignore next */ // c8 bug?
         !indentation.hasTest
           ? /* c8 ignore next */
             `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`

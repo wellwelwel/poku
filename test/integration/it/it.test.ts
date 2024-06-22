@@ -27,4 +27,7 @@ test('Testing "it" method', () => {
     await it('', async () =>
       await new Promise((resolve) => resolve(undefined)));
   });
+
+  it('it without describe', async () =>
+    await new Promise((resolve) => resolve(undefined)));
 });

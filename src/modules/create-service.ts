@@ -1,15 +1,15 @@
-import process from 'node:process';
-import { spawn } from 'node:child_process';
-import { isWindows, runner, scriptRunner } from '../helpers/runner.js';
-import { normalize } from 'node:path';
-import { sanitizePath } from './list-files.js';
-import { kill } from './processes.js';
 /* c8 ignore next */
 import type {
   End,
   StartScriptOptions,
   StartServiceOptions,
 } from '../@types/background-process.js';
+import process from 'node:process';
+import { spawn } from 'node:child_process';
+import { isWindows, runner, scriptRunner } from '../helpers/runner.js';
+import { normalize } from 'node:path';
+import { sanitizePath } from './list-files.js';
+import { kill } from './processes.js';
 import { write } from '../helpers/logs.js';
 
 const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
@@ -37,10 +37,8 @@ const backgroundProcess = (
         stdio: ['inherit', 'pipe', 'pipe'],
         /* c8 ignore next */
         shell: isWindows,
-        cwd: options?.cwd
-          ? sanitizePath(normalize(options.cwd))
-          : /* c8 ignore next */
-            undefined,
+        /* c8 ignore next */
+        cwd: options?.cwd ? sanitizePath(normalize(options.cwd)) : undefined,
         env: process.env,
         /* c8 ignore next */
         detached: !isWindows,
@@ -166,6 +164,7 @@ const backgroundProcess = (
           }
         }, options.startAfter);
       }
+      /* c8 ignore next */ // c8 bug
     } catch {}
   });
 
@@ -191,6 +190,7 @@ export const startService = async (
   );
 };
 
+/* c8 ignore start */ // c8 bug
 /**
  *
  * Starts a script (package.json) or task (deno.json) in a background process
@@ -203,6 +203,8 @@ export const startScript = async (
   script: string,
   options?: StartScriptOptions
 ): Promise<{ end: End }> => {
+  /* c8 ignore stop */
+  /* c8 ignore next */
   const runner = options?.runner || 'npm';
   const runtimeOptions = scriptRunner(runner);
   const runtime = runtimeOptions.shift()!;

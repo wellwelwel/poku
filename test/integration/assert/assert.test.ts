@@ -71,10 +71,6 @@ describe('Assert Suite', async () => {
   });
 
   it(() => {
-    assert.doesNotThrow(() => 1 + 1, 'doesNotThrow with non-throwing function');
-  });
-
-  it(() => {
     assert.notEqual(1, 2, 'notEqual with different numbers');
     assert.notEqual(2 + 2, 5, '2 + 2 should not equal 5');
     assert.notEqual(
@@ -179,6 +175,11 @@ describe('Assert Suite', async () => {
       });
 
       it(() => {
+        assert.doesNotThrow(
+          () => 1 + 1,
+          'doesNotThrow with non-throwing function'
+        );
+
         assert.doesNotThrow(() => {
           obj.a = 2;
         }, 'Changing property should not throw');
@@ -210,6 +211,14 @@ describe('Assert Suite', async () => {
         assert.doesNotThrow(
           () => 'no error',
           'Should not throw an error for an async function that resolves'
+        );
+
+        assert.doesNotThrow(
+          () => {
+            return 'test';
+          },
+          /test/,
+          'RegExp predicate should not match'
         );
       });
     }
@@ -283,9 +292,39 @@ describe('Assert Suite', async () => {
           new Error('Async error'),
           'Should reject with the specified error message'
         );
+        await assert.rejects(
+          asyncFunctionThatRejects,
+          /Async error/,
+          'Should reject with the specified regex message'
+        );
+        await assert.rejects(
+          asyncFunctionThatRejects,
+          { message: 'Async error' },
+          'Should reject with the specified object predicate message'
+        );
+        await assert.rejects(
+          asyncFunctionThatRejects,
+          (err: Error) => err.message === 'Async error',
+          'Should reject with the specified function predicate message'
+        );
+        await assert.rejects(
+          asyncFunctionThatRejects,
+          'Should reject with the specified string message'
+        );
+        await assert.rejects(
+          asyncFunctionThatRejects,
+          // @ts-expect-error invalid second param
+          undefined,
+          'Should reject with the specified string message (third arg)'
+        );
+        await assert.rejects(asyncFunctionThatRejects);
       });
 
       await it(async () => {
+        await assert.doesNotReject(
+          asyncFunctionThatResolves,
+          'Should not reject for a function that resolves'
+        );
         await assert.doesNotReject(
           asyncFunctionThatResolves,
           'Should not reject for a function that resolves'
@@ -304,7 +343,7 @@ describe('Assert Suite', async () => {
         );
         await assert.doesNotReject(
           asyncFunctionThatResolves,
-          'Should handle cases with no specific error argument in doesNotReject'
+          /Resolved successfully/
         );
       });
     }

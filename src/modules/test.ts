@@ -1,13 +1,11 @@
-/* c8 ignore next */
+/* c8 ignore next */ // c8 bug
 import { hrtime, env } from 'node:process';
-/* c8 ignore next */
 import { each } from '../configs/each.js';
-/* c8 ignore next */
 import { indentation } from '../configs/indentation.js';
 import { format } from '../helpers/format.js';
 import { write } from '../helpers/logs.js';
 
-/* c8 ignore start */
+/* c8 ignore start */ // c8 bug
 export async function test(
   message: string,
   cb: () => Promise<unknown>
@@ -40,17 +38,18 @@ export async function test(
     cb = args[1] as () => unknown | Promise<unknown>;
   } else cb = args[0] as () => unknown | Promise<unknown>;
 
-  /* c8 ignore start */
   if (message) {
     indentation.hasTest = true;
 
     write(
       isPoku
-        ? format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()
-        : format(`◌ ${message}`).dim()
+        ? format(
+            `◌ ${message} › ${format(`${FILE}`).italic().gray()}`
+          ).dim() /* c8 ignore next */ // c8 bug
+        : /* c8 ignore next */
+          format(`◌ ${message}`).dim()
     );
   }
-  /* c8 ignore stop */
 
   const start = hrtime();
   const resultCb = cb();

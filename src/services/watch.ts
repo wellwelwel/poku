@@ -1,10 +1,9 @@
 /* c8 ignore next */
+import type { WatchCallback } from '../@types/watch.js';
 import { watch as nodeWatch, type FSWatcher } from 'node:fs';
 import { join } from 'node:path';
 import { readdir, stat } from '../polyfills/fs.js';
 import { listFiles } from '../modules/list-files.js';
-/* c8 ignore next */
-import type { WatchCallback } from '../@types/watch.js';
 
 class Watcher {
   private rootDir: string;
@@ -100,7 +99,7 @@ class Watcher {
       } else this.watchFile(this.rootDir);
       /* c8 ignore start */
     } catch {}
-    /* c8 ignore stop */
+    /* c8 ignore stop */ // c8 bug
   }
 
   public stop() {
@@ -114,10 +113,10 @@ class Watcher {
       this.dirWatchers.delete(dirPath);
     }
   }
-  /* c8 ignore next */
+  /* c8 ignore next */ // c8 bug
 }
 
-/* c8 ignore next */
+/* c8 ignore next */ // c8 bug
 export const watch = async (path: string, callback: WatchCallback) => {
   const watcher = new Watcher(path, callback);
 

@@ -1,8 +1,8 @@
+/* c8 ignore next */
+import type { ParseAssertionOptions } from '../@types/assert.js';
 import nodeAssert from 'node:assert';
 import { parseAssertion } from '../helpers/parse-assertion.js';
 import { nodeVersion } from '../helpers/get-runtime.js';
-/* c8 ignore next */
-import type { ParseAssertionOptions } from '../@types/assert.js';
 
 const ok = (
   value: unknown,
@@ -136,7 +136,9 @@ function doesNotThrow(
 ): void;
 function doesNotThrow(
   block: () => unknown,
-  errorOrMessage?: nodeAssert.AssertPredicate | string | Error,
+  errorOrMessage?:
+    | nodeAssert.AssertPredicate
+    | ParseAssertionOptions['message'],
   message?: ParseAssertionOptions['message']
 ): void {
   parseAssertion(
@@ -202,17 +204,19 @@ function throws(
 
 function rejects(
   block: (() => Promise<unknown>) | Promise<unknown>,
-  message?: string | Error
+  message?: ParseAssertionOptions['message']
 ): Promise<void>;
 function rejects(
   block: (() => Promise<unknown>) | Promise<unknown>,
   error: nodeAssert.AssertPredicate,
-  message?: string | Error
+  message?: ParseAssertionOptions['message']
 ): Promise<void>;
 async function rejects(
   block: (() => Promise<unknown>) | Promise<unknown>,
-  errorOrMessage?: nodeAssert.AssertPredicate | string | Error,
-  message?: string | Error
+  errorOrMessage?:
+    | nodeAssert.AssertPredicate
+    | ParseAssertionOptions['message'],
+  message?: ParseAssertionOptions['message']
 ): Promise<void> {
   await parseAssertion(
     async () => {
@@ -239,17 +243,19 @@ async function rejects(
 
 function doesNotReject(
   block: (() => Promise<unknown>) | Promise<unknown>,
-  message?: string | Error
+  message?: ParseAssertionOptions['message']
 ): Promise<void>;
 function doesNotReject(
   block: (() => Promise<unknown>) | Promise<unknown>,
   error: nodeAssert.AssertPredicate,
-  message?: string | Error
+  message?: ParseAssertionOptions['message']
 ): Promise<void>;
 async function doesNotReject(
   block: (() => Promise<unknown>) | Promise<unknown>,
-  errorOrMessage?: nodeAssert.AssertPredicate | string | Error,
-  message?: string | Error
+  errorOrMessage?:
+    | nodeAssert.AssertPredicate
+    | ParseAssertionOptions['message'],
+  message?: ParseAssertionOptions['message']
 ): Promise<void> {
   await parseAssertion(
     async () => {
@@ -330,5 +336,5 @@ export const assert = Object.assign(
     fail,
     rejects,
   }
-  /* c8 ignore next */
+  /* c8 ignore next */ // c8 bug
 );

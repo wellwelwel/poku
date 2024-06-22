@@ -52,6 +52,7 @@ export const beforeEach = (
   return { pause, continue: continueFunc, reset };
 };
 
+/* c8 ignore start */ // c8 bug
 /**
  * - ✅ Handling **global** and **external** services (_preparing a database, for example_)
  * - ✅ It's made for **exclusive use** in combination with **Poku**'s **`assert`** methods
@@ -77,6 +78,7 @@ export const afterEach = (
   callback: () => unknown,
   options?: Omit<EachOptions, 'immediate'>
 ): Control => {
+  /* c8 ignore stop */
   each.after.test = typeof options?.test === 'boolean' ? options.test : true;
   each.after.assert =
     typeof options?.assert === 'boolean' ? options.assert : false;

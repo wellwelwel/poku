@@ -1,3 +1,5 @@
+/* c8 ignore next */
+import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime } from 'node:process';
 import { join, relative, sep } from 'node:path';
 import { runner } from '../helpers/runner.js';
@@ -11,8 +13,6 @@ import { hr } from '../helpers/hr.js';
 import { format } from '../helpers/format.js';
 import { runTestFile } from './run-test-file.js';
 import { isQuiet, write } from '../helpers/logs.js';
-/* c8 ignore next */
-import type { Configs } from '../@types/poku.js';
 import { results } from '../configs/poku.js';
 
 const cwd = processCWD();

@@ -1,4 +1,4 @@
-/* c8 ignore start */
+/* c8 ignore start */ // c8 bug (incompatibility) =>
 /**
  * Both CLI, API, noExit, sequential and parallel runs are strictly tested, but these tests use deep child process for it
  */

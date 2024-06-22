@@ -1,4 +1,4 @@
-/* c8 ignore next */
+/* c8 ignore next */ // c8 bug
 import { relative, dirname, sep } from 'node:path';
 import { stat, readFile } from '../polyfills/fs.js';
 import { listFiles } from '../modules/list-files.js';
@@ -137,7 +137,7 @@ const createImportMap = async (
   );
 };
 
-/* c8 ignore next */
+/* c8 ignore next */ // c8 bug
 export const mapTests = async (
   srcDir: string,
   testPaths: string[],
