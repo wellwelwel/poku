@@ -95,11 +95,11 @@ const options: Configs = {
 
 if (debug) {
   hr();
-  write(`${format.bg(104, 'Debug Enabled')}\n`);
-  write(`${format.italic(format.info('…'))} ${format.bold('Paths')}`);
+  write(`${format(' Debug Enabled ').bg(104)}\n`);
+  write(`${format('…').info().italic()} ${format('Paths').bold()}`);
   console.table(dirs);
   write('\n');
-  write(`${format.italic(format.info('…'))} ${format.bold('Options')}`);
+  write(`${format('…').info().italic()} ${format('Options').bold()}`);
   console.dir(options, { depth: null, colors: true });
 }
 
@@ -160,7 +160,9 @@ Promise.all(tasks).then(() => {
       });
 
       hr();
-      write(`${format.bold('Watching:')} ${format.underline(dirs.join(', '))}`);
+      write(
+        `${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`
+      );
     }
   });
 });

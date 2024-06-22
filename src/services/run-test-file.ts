@@ -45,7 +45,7 @@ export const runTestFile = (
     if (!configs?.parallel) {
       showLogs &&
         write(
-          `${indentation.test}${format.info(format.dim('●'))} ${format.dim(fileRelative)}`
+          `${indentation.test}${format('●').info().dim()} ${format(fileRelative).dim()}`
         );
     }
 

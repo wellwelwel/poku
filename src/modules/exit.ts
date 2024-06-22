@@ -16,25 +16,23 @@ export const exit = (code: Code, quiet?: boolean) => {
       if (isPoku) {
         hr();
         write(
-          `    ${format.dim('Start at ›')} ${format.bold(format.dim(`${setTime(finalResults.started)}`))}`
+          `    ${format(`Start at › ${format(`${setTime(finalResults.started)}`).bold()}`).dim()}`
         );
         write(
-          `    ${format.dim('Duration ›')} ${format.bold(format.dim(`${finalResults.time}ms`))} ${`${format.dim(`(±${toSecs(finalResults.time)} seconds)`)}`}`
+          `    ${format('Duration ›').dim()} ${format(`${finalResults.time}ms`).bold().dim()} ${format(`(±${toSecs(finalResults.time)} seconds)`).dim()}`
         );
         write(
-          `  ${format.dim('Test Files ›')} ${format.bold(format.dim(`${fileResults.success.size + fileResults.fail.size}`))}`
+          `  ${format(`Test Files › ${format(String(fileResults.success.size + fileResults.fail.size)).bold()}`).dim()}`
         );
         hr();
         write(
-          format.bg(42, `PASS › ${results.success}`) +
-            ' ' +
-            format.bg(results.fail === 0 ? 100 : 41, `FAIL › ${results.fail}`)
+          `${format(` PASS › ${results.success} `).bg(42)} ${format(` FAIL › ${results.fail} `).bg(results.fail === 0 ? 100 : 41)}`
         );
         hr();
       }
 
       write(
-        `${format.dim('Exited with code')} ${format.bold(format?.[code === 0 ? 'success' : 'fail'](String(code)))}\n`
+        `${format('Exited with code').dim()} ${format(String(code)).bold()[code === 0 ? 'success' : 'fail']()}\n`
       );
     });
 

@@ -1,5 +1,4 @@
 /* c8 ignore start */
-
 import { padStart } from '../polyfills/pad.js';
 
 export const setTime = (date: Date): string => {
@@ -16,5 +15,4 @@ export const toSecs = (milliseconds: string): string => {
 
   return seconds;
 };
-
 /* c8 ignore stop */

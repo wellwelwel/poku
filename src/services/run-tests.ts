@@ -35,7 +35,7 @@ export const runTests = async (
   if (showLogs) {
     hr();
     write(
-      `${format.bold(isFile ? 'File:' : 'Directory:')} ${format.underline(`.${sep}${currentDir}`)}\n`
+      `${format(isFile ? 'File:' : 'Directory:').bold()} ${format(`.${sep}${currentDir}`).underline()}\n`
     );
   }
 
@@ -49,8 +49,8 @@ export const runTests = async (
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
     const testNumber = i + 1;
-    const counter = format.counter(testNumber, totalTests);
-    const command = `${runner(fileRelative, configs).join(' ')} ${fileRelative} ${format.dim(`› ${total}ms`)}`;
+    const counter = format().counter(testNumber, totalTests);
+    const command = `${runner(fileRelative, configs).join(' ')} ${fileRelative} ${format(`› ${total}ms`).dim()}`;
     const nextLine = i + 1 !== files.length ? '\n' : '';
     const log = `${counter}/${totalTests} ${command} `;
 
@@ -58,13 +58,13 @@ export const runTests = async (
       ++results.success;
 
       showLogs &&
-        write(`${indentation.test}${format.success('✔')} ${log}${nextLine}`);
+        write(`${indentation.test}${format('✔').success()} ${log}${nextLine}`);
     } else {
       ++results.fail;
 
       /* c8 ignore start */
       if (showLogs) {
-        write(`${indentation.test}${format.fail('✘')} ${log}${nextLine}`);
+        write(`${indentation.test}${format('✘').fail()} ${log}${nextLine}`);
       }
       /* c8 ignore stop */
 
@@ -73,7 +73,9 @@ export const runTests = async (
       /* c8 ignore start */
       if (configs?.failFast) {
         hr();
-        write(`  ${format.fail('ℹ')} ${format.bold('fail-fast')} is enabled`);
+        write(
+          `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
+        );
         break;
       }
       /* c8 ignore stop */
@@ -113,7 +115,7 @@ export const runTestsParallel = async (
           ++results.fail;
 
           if (configs?.failFast)
-            throw `  ${format.fail('ℹ')} ${format.bold('fail-fast')} is enabled`;
+            throw `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`;
 
           return false;
         }

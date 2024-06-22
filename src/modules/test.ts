@@ -41,7 +41,7 @@ export async function test(
   if (message) {
     indentation.hasTest = true;
 
-    write(`${format.dim('◌')} ${format.dim(message)}`);
+    write(format(`◌ ${message}`).dim());
   }
   /* c8 ignore stop */
 
@@ -64,7 +64,7 @@ export async function test(
 
     indentation.hasTest = false;
     write(
-      `${format.bold(format.success('●'))} ${format.bold(format.success(message))} ${format.dim(`› ${total}ms`)}`
+      `${format(`● ${message}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
     );
   }
   /* c8 ignore stop */

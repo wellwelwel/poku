@@ -90,8 +90,8 @@ export const parseAssertion = async (
 
     if (typeof options.message === 'string') {
       const message = isPoku
-        ? `${preIdentation}${format.bold(format.success(`✔ ${options.message}`))} ${format.dim(format.success(`› ${FILE}`))}`
-        : `${preIdentation}${format.bold(format.success(`✔ ${options.message}`))}`;
+        ? `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
+        : `${preIdentation}${format(`✔ ${options.message}`).success().bold()}`;
 
       write(message);
     }
@@ -112,33 +112,35 @@ export const parseAssertion = async (
 
       const finalMessage =
         message?.trim().length > 0
-          ? format.bold(format.fail(`✘ ${message}`))
-          : format.bold(format.fail('✘ No Message'));
+          ? format(`✘ ${message}`).fail().bold()
+          : format('✘ No Message').fail().bold();
 
       write(
         isPoku
-          ? `${preIdentation}${finalMessage} ${format.dim(format.fail(`› ${FILE}`))}`
+          ? `${preIdentation}${finalMessage} ${format(`› ${FILE}`).fail().dim()}`
           : `${preIdentation}${finalMessage}`
       );
 
-      file && write(`${format.dim(`${preIdentation}      File`)} ${file}`);
-      write(`${format.dim(`${preIdentation}      Code`)} ${code}`);
-      write(`${format.dim(`${preIdentation}  Operator`)} ${operator}\n`);
+      file && write(`${format(`${preIdentation}      File`).dim()} ${file}`);
+      write(`${format(`${preIdentation}      Code`).dim()} ${code}`);
+      write(`${format(`${preIdentation}  Operator`).dim()} ${operator}\n`);
 
       if (!options?.hideDiff) {
         const splitActual = parseResultType(actual).split('\n');
         const splitExpected = parseResultType(expected).split('\n');
 
-        write(format.dim(`${preIdentation}  ${options?.actual || 'Actual'}:`));
+        write(
+          format(`${preIdentation}  ${options?.actual || 'Actual'}:`).dim()
+        );
         splitActual.forEach((line) =>
-          write(`${preIdentation}  ${format.bold(format.fail(line))}`)
+          write(`${preIdentation}  ${format(line).fail().bold()}`)
         );
 
         write(
-          `\n${preIdentation}  ${format.dim(`${options?.expected || 'Expected'}:`)}`
+          `\n${preIdentation}  ${format(`${options?.expected || 'Expected'}:`).dim()}`
         );
         splitExpected.forEach((line) =>
-          write(`${preIdentation}  ${format.bold(format.success(line))}`)
+          write(`${preIdentation}  ${format(line).success().bold()}`)
         );
       }
 

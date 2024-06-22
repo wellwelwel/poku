@@ -15,7 +15,11 @@ const eachCore = async (
   if (typeof cb !== 'function') return true;
 
   write(
-    `    ${format.dim(format.info('◯'))} ${format.dim(format.italic(`${cb}: ${cb.name || 'anonymous function'}`))}`
+    `    ${format('◯').dim().info()} ${format(
+      `${cb}: ${cb.name || 'anonymous function'}`
+    )
+      .dim()
+      .italic()}`
   );
 
   try {
@@ -25,18 +29,18 @@ const eachCore = async (
     return true;
   } catch (error) {
     write(
-      format.bold(
-        format.fail(`    ✘ ${type} callback failed ${format.dim(`› ${cb}`)}`)
-      )
+      format(`    ✘ ${type} callback failed ${format(`› ${cb}`).dim()}`)
+        .fail()
+        .bold()
     );
     write(
-      format.fail(
-        `      ├─ Who's trying to run this ${type}?\n      │ └─ ${format.underline(fileRelative)}`
-      )
+      format(
+        `      ├─ Who's trying to run this ${type}?\n      │ └─ ${format(fileRelative).underline()}`
+      ).fail()
     );
 
     error instanceof Error &&
-      write(format.fail(`      ├─ Message:\n      │ └─ ${error.message}`));
+      write(format(`      ├─ Message:\n      │ └─ ${error.message}`).fail());
 
     return false;
   }

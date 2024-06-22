@@ -66,7 +66,7 @@ export async function poku(
   // Parallel
   if (showLogs) {
     hr();
-    write(`${format.bold('Running the Test Suite in Parallel')}\n`);
+    write(`${format('Running the Test Suite in Parallel').bold()}\n`);
   }
 
   try {
@@ -96,7 +96,7 @@ export async function poku(
       Array.from(fileResults.success)
         .map(
           ([file, time]) =>
-            `${indentation.test}${format.success('✔')} ${format.dim(`${file} › ${time}ms`)}`
+            `${indentation.test}${format('✔').success()} ${format(`${file} › ${time}ms`).dim()}`
         )
         .join('\n')
     );
@@ -107,7 +107,7 @@ export async function poku(
       Array.from(fileResults.fail)
         .map(
           ([file, time]) =>
-            `${indentation.test}${format.fail('✘')} ${format.dim(`${file} › ${time}ms`)}`
+            `${indentation.test}${format('✘').fail()} ${format(`${file} › ${time}ms`).dim()}`
         )
         .join('\n')
     );

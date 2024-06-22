@@ -43,13 +43,15 @@ export async function describe(
     indentation.hasDescribe = true;
 
     const { background, icon } = options || {};
-    const message = `${cb ? format.dim('◌') : icon || '☰'} ${cb ? format.dim(title) : format.bold(title) || ''}`;
+    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(title).dim() : format(title).bold() || ''}`;
     const noBackground = !background;
 
-    if (noBackground) write(`${format.bold(message)}`);
+    if (noBackground) write(format(message).bold());
     else {
       write(
-        `${format.bg(backgroundColor[typeof background === 'string' ? background : 'grey'], message)}`
+        format(` ${message} `).bg(
+          backgroundColor[typeof background === 'string' ? background : 'grey']
+        )
       );
     }
   }
@@ -70,7 +72,7 @@ export async function describe(
 
     indentation.hasDescribe = false;
     write(
-      `${format.bold(format.success('●'))} ${format.bold(format.success(title))} ${format.dim(`› ${total}ms`)}`
+      `${format(`● ${title}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
     );
   }
   /* c8 ignore stop */
