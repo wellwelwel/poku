@@ -11,7 +11,6 @@ import { isQuiet, printOutput, write } from '../helpers/logs.js';
 import { beforeEach, afterEach } from './each.js';
 
 const cwd = processCWD();
-/* c8 ignore stop */ // c8 bug
 
 /* c8 ignore next */ // c8 bug
 export const runTestFile = (
