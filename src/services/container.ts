@@ -14,11 +14,10 @@ const runDockerCommand = (
   args: string[],
   options?: SpawnOptionsWithoutStdio,
   verbose?: boolean
-): Promise<void> => {
-  return new Promise((resolve, reject) => {
+): Promise<boolean> => {
+  return new Promise((resolve) => {
     const dockerProcess = spawn(command, args, {
       ...options,
-      /* c8 ignore next */
       shell: isWindows,
     });
 
@@ -29,10 +28,13 @@ const runDockerCommand = (
     }
     /* c8 ignore stop */
 
-    /* c8 ignore start */
     dockerProcess.on('close', (code) => {
-      if (code === 0) return resolve();
-      return reject(new Error(`Docker "run" failed with exit code ${code}`));
+      resolve(code === 0);
+    });
+
+    /* c8 ignore start */
+    dockerProcess.on('error', () => {
+      resolve(false);
     });
     /* c8 ignore stop */
   });
@@ -94,10 +96,10 @@ export class DockerContainer {
   }
 
   public async start() {
-    const args: string[] = ['run', '--rm'];
+    const args: string[] = ['run'];
 
-    if (this.detach !== false) args.push('-d');
-
+    /* c8 ignore next */
+    args.push(this.detach !== false ? '-d' : '--init');
     args.push(...['--name', this.containerName]);
 
     this.ports.forEach((port) => args.push(...['-p', port]));
@@ -107,7 +109,7 @@ export class DockerContainer {
 
     if (this.envFile) args.push(...['--env-file', this.envFile]);
 
-    await runDockerCommand(
+    return await runDockerCommand(
       'docker',
       [...args, this.tagName],
       { cwd: this.cwd },
@@ -116,7 +118,7 @@ export class DockerContainer {
   }
 
   public async stop() {
-    await runDockerCommand(
+    return await runDockerCommand(
       'docker',
       ['stop', this.containerName],
       { cwd: this.cwd },
@@ -180,12 +182,13 @@ export class DockerCompose {
     if (this.projectName) args.push(...['-p', this.projectName]);
 
     args.push('up');
-    if (this.detach !== false) args.push('-d');
+    /* c8 ignore next */
+    args.push(this.detach !== false ? '-d' : '--abort-on-container-exit');
 
     if (this.build) args.push('--build');
     if (this.serviceName) args.push(this.serviceName);
 
-    await runDockerCommand(
+    return await runDockerCommand(
       'docker-compose',
       args,
       { cwd: this.cwd },
@@ -199,7 +202,7 @@ export class DockerCompose {
     if (this.envFile) args.push(...['--env-file', this.envFile]);
     if (this.projectName) args.push(...['-p', this.projectName]);
 
-    await runDockerCommand(
+    return await runDockerCommand(
       'docker-compose',
       [...args, 'down'],
       { cwd: this.cwd },

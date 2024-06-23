@@ -2,27 +2,21 @@ import { test } from '../../src/modules/test.js';
 import { assert } from '../../src/modules/assert.js';
 import { docker } from '../../src/modules/container.js';
 
-const projectName = 'poku';
 const serviceName = 'bun-canary';
 
 test(`Compatibility Tests: ${serviceName}`, async () => {
   const dockerfile = docker.dockerfile({
+    detach: false,
     containerName: serviceName,
-    tagName: `${projectName}-${serviceName}`,
+    tagName: serviceName,
+    file: 'test/docker/bun/canary.Dockerfile',
+    environments: ['NODE_ENV=production'],
   });
 
   await dockerfile.remove();
+  await dockerfile.build();
 
-  const compose = docker.compose({
-    build: true,
-    cwd: './test/docker',
-    detach: false,
-    serviceName,
-    projectName,
-    // verbose: true,
-  });
-
-  const result = await compose.up();
+  const result = await dockerfile.start();
 
   if (!result)
     assert.fail(`See the logs by running \`docker logs ${serviceName}\``);
