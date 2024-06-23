@@ -6,6 +6,10 @@ import { write } from '../../../src/helpers/logs.js';
 import { format } from '../../../src/helpers/format.js';
 import { docker } from '../../../src/modules/container.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
+// import { isWindows } from '../../../src/helpers/runner.js';
+
+// // External error: no matching manifest for windows/amd64
+// if (isWindows) process.exit(0);
 
 const hasDockerCompose = (() => {
   try {
