@@ -34,7 +34,6 @@ describe('Docker Compose Service', async () => {
       envFile: 'src/.some.env',
       build: true,
       serviceName: 'server',
-      verbose: true,
     });
 
     await compose.up();
@@ -61,7 +60,6 @@ describe('Docker Compose Service', async () => {
     const compose = docker.compose({
       projectName: 'poku-test-docker-compose',
       cwd: 'fixtures/docker',
-      verbose: true,
     });
 
     await compose.up();

@@ -47,6 +47,7 @@ export class DockerContainer {
   private environments;
   private cache;
   private envFile;
+  private detach;
   private cwd;
   private verbose;
 
@@ -59,6 +60,7 @@ export class DockerContainer {
       ports,
       environments,
       cache,
+      detach,
       envFile,
       cwd,
       verbose,
@@ -72,6 +74,7 @@ export class DockerContainer {
     this.cache = cache;
     this.environments = environments || [];
     this.envFile = envFile;
+    this.detach = detach;
     /* c8 ignore next */
     this.cwd = cwd ? sanitizePath(cwd) : undefined;
     this.verbose = verbose;
@@ -91,7 +94,11 @@ export class DockerContainer {
   }
 
   public async start() {
-    const args: string[] = ['run', '--rm', '-d', '--name', this.containerName];
+    const args: string[] = ['run', '--rm'];
+
+    if (this.detach !== false) args.push('-d');
+
+    args.push(...['--name', this.containerName]);
 
     this.ports.forEach((port) => args.push(...['-p', port]));
     this.environments.forEach((environment) =>
@@ -140,17 +147,27 @@ export class DockerCompose {
   private cwd;
   private verbose;
   private build;
+  private detach;
   private serviceName;
 
   constructor(configs: DockerComposeConfigs) {
-    const { file, projectName, build, serviceName, envFile, cwd, verbose } =
-      configs;
+    const {
+      file,
+      projectName,
+      build,
+      serviceName,
+      envFile,
+      detach,
+      cwd,
+      verbose,
+    } = configs;
 
     this.file = file || './docker-compose.yml';
     this.build = build;
     this.serviceName = serviceName;
     this.envFile = envFile;
     this.projectName = projectName;
+    this.detach = detach;
     /* c8 ignore next */
     this.cwd = cwd ? sanitizePath(cwd) : undefined;
     this.verbose = verbose;
@@ -162,7 +179,8 @@ export class DockerCompose {
     if (this.envFile) args.push(...['--env-file', this.envFile]);
     if (this.projectName) args.push(...['-p', this.projectName]);
 
-    args.push(...['up', '-d']);
+    args.push('up');
+    if (this.detach !== false) args.push('-d');
 
     if (this.build) args.push('--build');
     if (this.serviceName) args.push(this.serviceName);

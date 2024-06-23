@@ -54,6 +54,7 @@ export type DockerfileConfigs = {
    * ```
    */
   cache?: boolean;
+  detach?: boolean;
   cwd?: string;
   /** Show logs from Docker in real time */
   verbose?: boolean;
@@ -66,6 +67,7 @@ export type DockerComposeConfigs = {
   cwd?: string;
   build?: boolean;
   serviceName?: string;
+  detach?: boolean;
   /** Show logs from Docker in real time */
   verbose?: boolean;
 };
