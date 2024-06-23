@@ -32,6 +32,7 @@ describe('Docker Service', async () => {
       environments: ['NODE_ENV=production'],
       envFile: 'fixtures/docker/src/.some.env',
       cache: false,
+      verbose: true,
     });
 
     await dockerfile.remove();
@@ -63,6 +64,7 @@ describe('Docker Service', async () => {
       tagName: 'poku-test-dockerfile',
       containerName: 'poku-test-dockerfile-server',
       cwd: 'fixtures/docker',
+      verbose: true,
     });
 
     await dockerfile.remove();
