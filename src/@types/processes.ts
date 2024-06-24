@@ -24,6 +24,10 @@ export type WaitForPortOptions = {
    */
   delay?: number;
   /**
+   * Host to check the port on.
+   *
+   * ---
+   *
    * @default "localhost"
    */
   host?: string;

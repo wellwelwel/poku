@@ -1,5 +1,5 @@
 /* c8 ignore next */
-import type { WaitForPortOptions } from '../@types/wait-for.js';
+import type { WaitForPortOptions } from '../@types/processes.js';
 import { createConnection } from 'node:net';
 
 const checkPort = (port: number, host: string): Promise<boolean> =>
