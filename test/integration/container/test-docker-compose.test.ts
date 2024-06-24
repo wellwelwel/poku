@@ -39,7 +39,7 @@ describe('Docker Compose Service', async () => {
 
     await compose.up();
 
-    await waitForPort(6001, { delay: 1000, timeout: 120000 });
+    await waitForPort(6001, { delay: 100 });
 
     const res = await legacyFetch('localhost', 6001);
 
@@ -61,7 +61,7 @@ describe('Docker Compose Service', async () => {
 
     await compose.up();
 
-    await waitForPort(6001, { delay: 1000, timeout: 120000 });
+    await waitForPort(6001, { delay: 100 });
 
     const res = await legacyFetch('localhost', 6001);
 
