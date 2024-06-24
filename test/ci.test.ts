@@ -14,7 +14,7 @@ test(async () => {
     noExit: true,
   });
 
-  if (result === 0) await compose.down();
+  // if (result === 0) await compose.down();
 
   exit(result);
 });

@@ -10,10 +10,12 @@ export { beforeEach, afterEach } from './modules/each.js';
 export { publicListFiles as listFiles } from './modules/list-files-sync.js';
 export { startService, startScript } from './modules/create-service.js';
 export { getPIDs, kill } from './modules/processes.js';
+export { sleep, waitForPort } from './modules/wait-for.js';
 export { exit } from './modules/exit.js';
 export { docker } from './modules/container.js';
 export type { Code } from './@types/code.js';
 export type { Configs } from './@types/poku.js';
+export type { WaitForPortOptions } from './@types/processes.js';
 export type { Configs as ListFilesConfigs } from './@types/list-files.js';
 export type {
   DockerComposeConfigs,

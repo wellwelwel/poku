@@ -179,6 +179,7 @@ deno run npm:poku
 - [**startScript**](https://poku.io/docs/documentation/helpers/startScript) _(run **package.json** scripts in background)_
 - [**startService**](https://poku.io/docs/documentation/helpers/startService) _(run files in background)_
 - [**kill**](https://poku.io/docs/documentation/helpers/processes/kill) _(terminate ports, port ranges, and PIDs)_
+- [**waitForPort**](https://poku.io/docs/documentation/helpers/processes/wait-for-port) _(wait for specified ports to become active)_
 - [**getPIDs**](https://poku.io/docs/documentation/helpers/processes/get-pids) _(debug processes IDs using ports and port ranges)_
 - _and much more_ 👇🏻
 
