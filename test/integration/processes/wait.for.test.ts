@@ -1,25 +1,10 @@
 import process from 'node:process';
 import { createServer, Server } from 'node:http';
-import { execSync } from 'node:child_process';
 import { describe } from '../../../src/modules/describe.js';
 import { it } from '../../../src/modules/it.js';
 import { assert } from '../../../src/modules/assert.js';
 import { waitForPort, sleep } from '../../../src/modules/wait-for.js';
 import { kill } from '../../../src/modules/processes.js';
-import { write } from '../../../src/helpers/logs.js';
-import { format } from '../../../src/helpers/format.js';
-import { isWindows } from '../../../src/helpers/runner.js';
-
-const hasLSOF = (() => {
-  try {
-    if (isWindows) return true;
-
-    execSync('lsof -v', { stdio: 'ignore' });
-    return true;
-  } catch {
-    return false;
-  }
-})();
 
 const startServer = (port: number): Promise<Server> =>
   new Promise((resolve) => {
@@ -35,11 +20,6 @@ const stopServer = (server: Server): Promise<void> =>
   new Promise((resolve) => server.close(() => resolve(undefined)));
 
 describe('Wait For Port', async () => {
-  if (!hasLSOF) {
-    write(format('  ℹ Skipping: lsof not found').success().bold());
-    return;
-  }
-
   await kill.range(8000, 8003);
 
   await Promise.all([
