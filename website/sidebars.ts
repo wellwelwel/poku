@@ -5,7 +5,6 @@ const sidebars: SidebarsConfig = {
     'index',
     'philosophy',
     'comparing',
-    'overview',
     {
       type: 'category',
       label: 'Documentation',
@@ -18,7 +17,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Examples',
-      collapsed: false,
+      collapsed: true,
       link: {
         type: 'generated-index',
       },

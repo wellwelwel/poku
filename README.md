@@ -3,19 +3,19 @@
 [deno-version-url]: https://github.com/denoland/deno
 [typescript-url]: https://github.com/microsoft/TypeScript
 [ci-linux-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain
-[ci-linux-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&style=flat-square&label=&branch=main&logo=ubuntu&logoColor=white
+[ci-linux-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=white
 [ci-osx-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain
-[ci-osx-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&style=flat-square&label=&branch=main&logo=apple&logoColor=white
+[ci-osx-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=white
 [ci-windows-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-windows.yml?query=branch%3Amain
-[ci-windows-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&style=flat-square&label=&branch=main&logo=windows&logoColor=white
+[ci-windows-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&label=&branch=main&logo=windows&logoColor=white
 [ql-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain
-[ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&style=flat-square&label=&branch=main&logo=github&logoColor=white
-[coverage-image]: https://img.shields.io/codecov/c/github/wellwelwel/poku?style=flat-square&label=Coverage
+[ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white
+[coverage-image]: https://img.shields.io/codecov/c/github/wellwelwel/poku
 [coverage-url]: https://app.codecov.io/github/wellwelwel/poku
-[downloads-image]: https://img.shields.io/npm/dt/poku.svg?style=flat-square&label=Downloads&logo=npm&logoColor=white&color=1e90ff
+[downloads-image]: https://img.shields.io/npm/dt/poku.svg?logo=npm&logoColor=white&color=1e90ff
 [downloads-url]: https://www.npmjs.com/package/poku
-[license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
-[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff&style=flat-square&label=License
+[license-url]: https://licenses.dev/npm/poku
+[license-image]: https://licenses.dev/b/npm/poku
 
 <div align="center">
 <img width="125" height="125" alt="Logo" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/poku.svg">
@@ -40,15 +40,14 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 **Poku** makes testing easy and takes on the testers' difficulties to _let you focus on your tests_:
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No configurations<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM** and **CJS**<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **Typescript** files<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **Typescript** files<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the same test suite for [**Node.js**][node-version-url] _(6+)_, [**Bun**][bun-version-url] and [**Deno**][deno-version-url]<br />
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easier and Less Verbose<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> [**Node.js**][node-version-url] familiar **API**<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Instantly re-run related tests in `watch` mode<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CJS** (**CommonJS**) files directly with [**Deno**][deno-version-url]<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **services**, **processes**, and **ports**<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **containers**, **servers**, **services**, **processes**, and **ports**<br />
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Safety and Reliability<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
@@ -168,19 +167,19 @@ deno run npm:poku
 
 ### Essentials
 
-- [**poku**](https://poku.io/docs/category/poku) _(test runner)_
+- [**poku**](https://poku.io/docs/category/-poku) _(test runner)_
 - [**assert**](https://poku.io/docs/documentation/assert) _(test assertion)_
 
 ### Helpers
 
-- [**test**](https://poku.io/docs/documentation/helpers/test)
-  , [**describe**](https://poku.io/docs/documentation/helpers/describe) and [**it**](https://poku.io/docs/documentation/helpers/it) _(organize, group, and isolate tests)_
+- [**test**](https://poku.io/docs/documentation/helpers/test), [**describe**](https://poku.io/docs/documentation/helpers/describe) and [**it**](https://poku.io/docs/documentation/helpers/it) _(organize, group, and isolate tests)_
 - [**watch**](https://poku.io/docs/documentation/poku/options/watch) _(watch for changes and re-run related test files)_
-- [**beforeEach**](https://poku.io/docs/category/beforeeach-and-aftereach) and [**afterEach**](https://poku.io/docs/category/beforeeach-and-aftereach) _(hooks for test setup and teardown)_
-- [**startScript**](https://poku.io/docs/documentation/startScript) _(run **package.json** scripts in background)_
-- [**startService**](https://poku.io/docs/documentation/startService) _(run files in background)_
-- [**kill**](https://poku.io/docs/documentation/processes/kill) _(terminate ports, port ranges, and PIDs)_
-- [**getPIDs**](https://poku.io/docs/documentation/processes/get-pids) _(debug processes IDs using ports and port ranges)_
+- [**beforeEach**](https://poku.io/docs/category/-before-and-after-each) and [**afterEach**](https://poku.io/docs/category/-before-and-after-each) _(hooks for test setup and teardown)_
+- [**docker**](https://poku.io/docs/documentation/helpers/containers) _(build, start, compose, stop, remove, and test containers)_
+- [**startScript**](https://poku.io/docs/documentation/helpers/startScript) _(run **package.json** scripts in background)_
+- [**startService**](https://poku.io/docs/documentation/helpers/startService) _(run files in background)_
+- [**kill**](https://poku.io/docs/documentation/helpers/processes/kill) _(terminate ports, port ranges, and PIDs)_
+- [**getPIDs**](https://poku.io/docs/documentation/helpers/processes/get-pids) _(debug processes IDs using ports and port ranges)_
 - _and much more_ 👇🏻
 
 ---
@@ -238,7 +237,7 @@ Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/
 
 ## Acknowledgements
 
-[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku?style=flat-square)](https://github.com/wellwelwel/poku/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 [![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)](https://github.com/wellwelwel/poku/graphs/contributors)
 

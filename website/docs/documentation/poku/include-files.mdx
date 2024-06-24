@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Include Directories and Files
+# 📦 Include Directories and Files
 
 > `poku(targetPaths: string | string[])`
 >
@@ -25,6 +25,11 @@ npx poku targetPathA,targetPathB
 ```bash
 # Same as ./
 npx poku
+```
+
+```bash
+# Same as ./
+npx poku --parallel
 ```
 
 By using `--include` option, you can use it in any order:
@@ -54,3 +59,13 @@ poku(['targetPathA', 'targetPathB']);
 ```ts
 poku('./');
 ```
+
+<hr />
+
+:::tip
+The `targetPath` can be either a directory or a file.
+:::
+
+:::info
+It's not possible to run tests in the `.git` and `node_modules` directories.
+:::

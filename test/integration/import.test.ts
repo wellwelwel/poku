@@ -3,10 +3,11 @@ import * as index from '../../src/index.js';
 index.test('Import Suite', () => {
   index.assert.ok(index.poku, 'Importing poku method');
   index.assert.ok(index.assert, 'Importing assert method');
+
   index.assert.ok(index.assertPromise, 'Importing assertPromise method');
   index.assert.ok(index.startService, 'Importing startService method');
   index.assert.ok(index.startScript, 'Importing startScript method');
-
+  index.assert.ok(index.docker, 'Importing docker method');
   index.assert.ok(index.getPIDs, 'Importing getPIDs helper');
   index.assert.ok(index.kill, 'Importing kill helper');
   index.assert.ok(index.describe, 'Importing describe helper');

@@ -1,15 +1,7 @@
 {
-  "version.label": {
-    "message": "Next",
-    "description": "The label for version current"
-  },
   "sidebar.docs.category.Documentation": {
     "message": "Documentação",
     "description": "The label for category Documentation in sidebar docs"
-  },
-  "sidebar.docs.category.poku": {
-    "message": "poku",
-    "description": "The label for category poku in sidebar docs"
   },
   "sidebar.docs.category.Configs": {
     "message": "Opções",
@@ -20,16 +12,12 @@
     "description": "The label for category Helpers in sidebar docs"
   },
   "sidebar.docs.category.beforeEach and afterEach": {
-    "message": "beforeEach e afterEach",
+    "message": "Before e After Each",
     "description": "The label for category beforeEach and afterEach in sidebar docs"
   },
   "sidebar.docs.category.Examples": {
     "message": "Exemplos",
     "description": "The label for category Examples in sidebar docs"
-  },
-  "sidebar.docs.category.Mock": {
-    "message": "Mock",
-    "description": "The label for category Mock in sidebar docs"
   },
   "sidebar.docs.category.Use Cases": {
     "message": "Casos de Uso",
