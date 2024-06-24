@@ -1,6 +1,22 @@
 /* c8 ignore next */
+import { createConnection } from 'node:net';
 import type { WaitForPortOptions } from '../@types/wait-for.js';
-import { getPIDs } from './processes.js';
+
+const checkPort = (port: number, host: string): Promise<boolean> =>
+  new Promise((resolve) => {
+    const client = createConnection(port, host);
+
+    client.on('connect', () => {
+      client.destroy();
+      resolve(true);
+    });
+
+    /* c8 ignore start */
+    client.on('error', () => {
+      resolve(false);
+    });
+    /* c8 ignore stop */
+  });
 
 /**
  * Wait until the defined milliseconds.
@@ -27,6 +43,7 @@ export const waitForPort = async (
   const delay = options?.delay || 0;
   const interval = options?.interval || 100;
   const timeout = options?.timeout || 60000;
+  const host = options?.host || 'localhost';
 
   /* c8 ignore start */
   if (!Number.isInteger(port)) {
@@ -52,9 +69,9 @@ export const waitForPort = async (
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const pids = await getPIDs(port);
+    const hasPort = await checkPort(port, host);
 
-    if (pids.length > 0) break;
+    if (hasPort) break;
 
     /* c8 ignore start */
     if (Date.now() - startTime >= timeout) {
