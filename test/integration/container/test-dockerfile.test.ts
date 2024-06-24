@@ -44,7 +44,7 @@ describe('Docker Service', async () => {
     await dockerfile.build();
     await dockerfile.start();
 
-    await waitForPort(6000, { delay: 100 });
+    await waitForPort(6000, { delay: 1000, timeout: 120000 });
 
     const res = await legacyFetch('localhost', 6000);
 

@@ -39,7 +39,7 @@ describe('Docker Compose Service', async () => {
 
     await compose.up();
 
-    await waitForPort(6001, { delay: 100 });
+    await waitForPort(6001, { delay: 1000, timeout: 120000 });
 
     const res = await legacyFetch('localhost', 6001);
 
@@ -61,21 +61,17 @@ describe('Docker Compose Service', async () => {
 
     await compose.up();
 
-    await new Promise((resolve) =>
-      setTimeout(async () => {
-        const res = await legacyFetch('localhost', 6001);
+    await waitForPort(6001, { delay: 1000, timeout: 120000 });
 
-        await compose.down();
+    const res = await legacyFetch('localhost', 6001);
 
-        assert.strictEqual(res?.statusCode, 200, 'Service is on');
-        assert.strictEqual(
-          JSON.stringify(res?.body),
-          '"Hello, World!\\n"',
-          'Service is online'
-        );
+    await compose.down();
 
-        resolve(undefined);
-      }, 1000)
+    assert.strictEqual(res?.statusCode, 200, 'Service is on');
+    assert.strictEqual(
+      JSON.stringify(res?.body),
+      '"Hello, World!\\n"',
+      'Service is online'
     );
   });
 });
