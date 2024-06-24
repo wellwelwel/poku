@@ -1,7 +1,7 @@
 {
   "name": "poku",
   "version": "1.18.0",
-  "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno and you at the same time.",
+  "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno, and you at the same time.",
   "main": "./lib/index.js",
   "scripts": {
     "test": "npm run test:parallel && npm run test:sequential",
