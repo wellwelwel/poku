@@ -5,6 +5,7 @@ import { assert } from '../../../src/modules/assert.js';
 import { write } from '../../../src/helpers/logs.js';
 import { format } from '../../../src/helpers/format.js';
 import { docker } from '../../../src/modules/container.js';
+import { waitForPort } from '../../../src/modules/wait-for.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
 import { isWindows } from '../../../src/helpers/runner.js';
 
@@ -43,22 +44,18 @@ describe('Docker Service', async () => {
     await dockerfile.build();
     await dockerfile.start();
 
-    await new Promise((resolve) =>
-      setTimeout(async () => {
-        const res = await legacyFetch('localhost', 6000);
+    await waitForPort(6000, { delay: 100 });
 
-        await dockerfile.stop();
-        await dockerfile.remove();
+    const res = await legacyFetch('localhost', 6000);
 
-        assert.strictEqual(res?.statusCode, 200, 'Service is on');
-        assert.strictEqual(
-          JSON.stringify(res?.body),
-          '"Hello, World!\\n"',
-          'Service is online'
-        );
+    await dockerfile.stop();
+    await dockerfile.remove();
 
-        resolve(undefined);
-      }, 1000)
+    assert.strictEqual(res?.statusCode, 200, 'Service is on');
+    assert.strictEqual(
+      JSON.stringify(res?.body),
+      '"Hello, World!\\n"',
+      'Service is online'
     );
   });
 

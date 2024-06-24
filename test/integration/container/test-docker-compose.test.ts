@@ -7,6 +7,7 @@ import { format } from '../../../src/helpers/format.js';
 import { docker } from '../../../src/modules/container.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
 import { isWindows } from '../../../src/helpers/runner.js';
+import { waitForPort } from '../../../src/modules/wait-for.js';
 
 // External error: no matching manifest for windows/amd64
 if (isWindows) process.exit(0);
@@ -38,21 +39,17 @@ describe('Docker Compose Service', async () => {
 
     await compose.up();
 
-    await new Promise((resolve) =>
-      setTimeout(async () => {
-        const res = await legacyFetch('localhost', 6001);
+    await waitForPort(6001, { delay: 100 });
 
-        await compose.down();
+    const res = await legacyFetch('localhost', 6001);
 
-        assert.strictEqual(res?.statusCode, 200, 'Service is on');
-        assert.strictEqual(
-          JSON.stringify(res?.body),
-          '"Hello, World!\\n"',
-          'Service is online'
-        );
+    await compose.down();
 
-        resolve(undefined);
-      }, 1000)
+    assert.strictEqual(res?.statusCode, 200, 'Service is on');
+    assert.strictEqual(
+      JSON.stringify(res?.body),
+      '"Hello, World!\\n"',
+      'Service is online'
     );
   });
 
