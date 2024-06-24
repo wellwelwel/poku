@@ -19,3 +19,24 @@ You can use the flag `--watch-interval` to set a custom interval for `watch` eve
 ```bash
 npx poku --watch --watch-interval=1500
 ```
+
+<hr />
+
+:::note
+
+Currently, the deep dependency search doesn't consider line-breaking imports, for example:
+
+```ts
+import {
+  moduleA,
+  moduleB,
+  moduleC,
+  moduleD,
+  moduleE,
+  moduleF,
+} from './some.js';
+```
+
+- See [**#499**](https://github.com/wellwelwel/poku/issues/449).
+
+:::

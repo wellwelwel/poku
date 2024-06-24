@@ -215,6 +215,18 @@ html[data-theme='dark'] {
   }
 }
 
+.theme-doc-sidebar-container {
+  font-size: 0.9rem;
+
+  .menu__caret {
+    &::before {
+      width: 0.7rem;
+      height: 0.7rem;
+      opacity: 0.5;
+    }
+  }
+}
+
 // Components
 @import './loading';
 @import './faq';

@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: 🐷 Poku is your Test Runner Pet for Node.js, Bun and Deno.
+description: 🐷 Poku makes testing easy for Node.js, Bun, Deno and you at the same time.
 ---
 
 import Tabs from '@theme/Tabs';
@@ -26,19 +26,19 @@ import '@site/src/css/features.scss';
 [ci-windows-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&style=flat&label=&branch=main&logo=windows&logoColor=white
 [ql-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain
 [ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&style=flat&label=&branch=main&logo=github&logoColor=white
-[coverage-image]: https://img.shields.io/codecov/c/github/wellwelwel/poku?label=Coverage
+[coverage-image]: https://img.shields.io/codecov/c/github/wellwelwel/poku
 [coverage-url]: https://app.codecov.io/github/wellwelwel/poku
-[downloads-image]: https://img.shields.io/npm/dt/poku.svg?&label=Downloads&logo=npm&logoColor=white&color=1e90ff
+[downloads-image]: https://img.shields.io/npm/dt/poku.svg?&logo=npm&logoColor=white&color=1e90ff
 [downloads-url]: https://www.npmjs.com/package/poku
-[license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
-[license-image]: https://img.shields.io/npm/l/poku.svg?maxAge=2592000&color=9c88ff&label=License
+[license-url]: https://licenses.dev/npm/poku
+[license-image]: https://licenses.dev/b/npm/poku
 
 <div className='title-section'>
 <aside>
 
 # Getting Started
 
-**Poku** is your Test Runner Pet for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
+**Poku** makes testing easy for [**Node.js**][node-version-url], [**Bun**][bun-version-url], [**Deno**][deno-version-url] and **you** at the same time.
 
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][downloads-url]
@@ -47,9 +47,8 @@ import '@site/src/css/features.scss';
 [![GitHub Workflow Status (with event)][ci-linux-image]][ci-linux-url]
 [![GitHub Workflow Status (with event)][ci-osx-image]][ci-osx-url]
 [![GitHub Workflow Status (with event)][ci-windows-image]][ci-windows-url]
-[![GitHub Workflow Status (with event)][ql-image]][ql-url]
 
-Enjoying **Poku**? Consider giving him a star ⭐️
+Enjoying **Poku**? [Consider giving him a star](https://github.com/wellwelwel/poku) ⭐️
 
 </aside>
   <aside>
@@ -59,37 +58,51 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 <hr />
 
-## Why Poku?
+## Why does Poku Exist?
 
 **Poku** can show you how simple testing can be 🌱
 
 <div className='features black'>
   <div className='p'>
     <Success />
-    <span>You don't need to learn it all at once to get started 🧑🏻‍🎓</span>
+    <span>Auto detect **ESM**, **CJS**, and **Typescript** files</span>
   </div>
   <div className='p'>
     <Success />
     <span>
-      Let's make `describe`, `beforeEach` and everything else easier 🚀
+      Run the same test suite for **Node.js** _(6+)_, **Bun** and **Deno**
     </span>
   </div>
   <div className='p'>
     <Success />
+    <span>Instantly re-run related tests in `watch` mode</span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>Run **CJS** _(**CommonJS**)_ files directly with **Deno**</span>
+  </div>
+  <div className='p'>
+    <Success />
     <span>
-      **Poku** brings human-friendly testing and assertion to
-      [**Node.js**][node-version-url], [**Bun**][bun-version-url] &
-      [**Deno**][deno-version-url] at the same time ✨
+      Write tests with the same [Native **JavaScript** Syntax](/docs/philosophy)
     </span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>**Poku** brings human-friendly testing, assertion, and outputs</span>
   </div>
 </div>
 
 <br />
 
-> 🔬 Start by seeing how to use `assert` <br />
-> 🧑🏻‍🔬 Need to test an API? Check the `startService` and `startScript` <br />
-> 🧪 Then learn how to use `poku` CLI to run all your test files at once <br />
-> 🧙🏻 So, just if you want to, go deeper into learning about **Poku** <br />
+### Recommended Roadmap
+
+> 🔬 Start by seeing how to use [assert](/docs/documentation/assert). <br />
+> 🧪 Then learn how to use [poku](/docs/category/-poku) to run all your test files at once. <br />
+> 🧑🏻‍🔬 Need to test an API? Check the [startService](/docs/documentation/helpers/startService) and [startScript](/docs/documentation/helpers/startScript). <br />
+> 🐳 Need to mount and unmount containers before/after tests? Check the [dockerfile](/docs/documentation/helpers/containers#dockerfile) and [compose](/docs/documentation/helpers/containers#compose). <br />
+> 🐋 Also, need to check tests inside a container? Check the [dockerfile](/docs/documentation/helpers/containers#dockerfile) and [compose](/docs/documentation/helpers/containers#compose) too. <br />
+> 🧙🏻 So, just if you want to, go deeper into learning about **Poku**. <br />
 >
 > 🩵 Take Your Time
 
@@ -99,9 +112,7 @@ Enjoying **Poku**? Consider giving him a star ⭐️
 
 ## Quickstart
 
-### **Install** 📦
-
-[![Install Size](https://packagephobia.com/badge?p=poku)](https://packagephobia.com/result?p=poku)
+### **Install**
 
 <Tabs>
   <TabItem default value='Node.js'>
@@ -134,7 +145,7 @@ deno add npm:poku
   </TabItem>
 </Tabs>
 
-### **Test it** 🔬
+### **Test**
 
 <Tabs>
   <TabItem default value='test/file.test.mjs'>
@@ -151,7 +162,7 @@ assert(true, 'Poku will describe it 🐷');
 - Change from `.mjs` to `.js` by defining `"type": "module"` in your _package.json_.
 - Note that these examples use [**ESM**](/docs/examples/cjs-esm), but you can use [**CJS**](/docs/examples/cjs-esm) as well.
 
-### **Run it** 🚀
+### **Run**
 
 <Tabs>
   <TabItem default value='Node.js and TypeScript (Node.js)'>
@@ -164,7 +175,7 @@ npx poku
   <TabItem  value='Bun'>
 
 ```bash
-bun poku
+bunx poku
 ```
 
   </TabItem>
@@ -174,18 +185,15 @@ bun poku
 deno run npm:poku
 ```
 
-    **Poku** requires these permissions by default:
-      - `--allow-read`
-      - `--allow-env`
-      - `--allow-run`
-
   </TabItem>
 </Tabs>
 
-### **That's it** 🎉
+- **That's it** 🎉
+
+<hr />
 
 - [**See the complete `assert`'s documentation**](/docs/documentation/assert).
-- [**See the complete `poku`'s documentation**](/docs/category/poku).
+- [**See the complete `poku`'s documentation**](/docs/category/-poku).
 
 <hr />
 
@@ -193,19 +201,19 @@ deno run npm:poku
 
 ### Essentials
 
-- [**poku**](/docs/category/poku) _(test runner)_
+- [**poku**](/docs/category/-poku) _(test runner)_
 - [**assert**](/docs/documentation/assert) _(test assertion)_
 
 ### Helpers
 
-- [**test**](/docs/documentation/helpers/test)
-  , [**describe**](/docs/documentation/helpers/describe) and [**it**](/docs/documentation/helpers/it) _(organize, group, and isolate tests)_
+- [**test**](/docs/documentation/helpers/test), [**describe**](/docs/documentation/helpers/describe) and [**it**](/docs/documentation/helpers/it) _(organize, group, and isolate tests)_
 - [**watch**](/docs/documentation/poku/options/watch) _(watch for changes and re-run related test files)_
-- [**beforeEach**](/docs/category/beforeeach-and-aftereach) and [**afterEach**](/docs/category/beforeeach-and-aftereach) _(hooks for test setup and teardown)_
-- [**startScript**](/docs/documentation/startScript) _(run **package.json** scripts in background)_
-- [**startService**](/docs/documentation/startService) _(run files in background)_
-- [**kill**](/docs/documentation/processes/kill) _(terminate ports, port ranges, and PIDs)_
-- [**getPIDs**](/docs/documentation/processes/get-pids) _(debug processes IDs using ports and port ranges)_
+- [**beforeEach**](/docs/category/-before-and-after-each) and [**afterEach**](/docs/category/-before-and-after-each) _(hooks for test setup and teardown)_
+- [**docker**](/docs/documentation/helpers/containers) _(build, start, compose, stop, remove, and test containers)_
+- [**startScript**](/docs/documentation/helpers/startScript) _(run **package.json** scripts in background)_
+- [**startService**](/docs/documentation/helpers/startService) _(run files in background)_
+- [**kill**](/docs/documentation/helpers/processes/kill) _(terminate ports, port ranges, and PIDs)_
+- [**getPIDs**](/docs/documentation/helpers/processes/get-pids) _(debug processes IDs using ports and port ranges)_
 - _and much more_ 👇🏻
 
 [**See the complete documentation**](/docs/category/documentation).
@@ -218,33 +226,30 @@ deno run npm:poku
 
 <hr />
 
-## Community
-
-I'm continuously working to improve **Poku**. If you've got something interesting to share, feel free to submit a [**Pull Request**](https://github.com/wellwelwel/poku/compare). If you notice something wrong, I'd appreciate if you'd open an [**Issue**](https://github.com/wellwelwel/poku/issues/new).
-
-<hr />
-
 ## Contributing
 
-Please check the [**CONTRIBUTING.md**](https://github.com/wellwelwel/poku/blob/main/CONTRIBUTING.md) for instructions 🚀
-
-<hr />
-
-## License
-
-Poku is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).
+See the [**Contributing Guide**](https://github.com/wellwelwel/poku/blob/main/CONTRIBUTING.md) and please follow our [**Code of Conduct**](https://github.com/wellwelwel/poku/blob/main/CODE_OF_CONDUCT.md) 🚀
 
 <hr />
 
 ## Security Policy
 
+[![GitHub Workflow Status (with event)][ql-image]][ql-url]
+
 Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
+
+<hr />
+
+### Limitations
+
+- Although it has no external dependencies, **Poku** is not _all-in-one_, so it doesn't have features such as _mocks_, _spies_, _coverage reports_, etc., where you can use your favorite packages or native solutions.
+- **Poku** community is gradually building up.
 
 <hr />
 
 ## Acknowledgements
 
-[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku?label=Contributors)](https://github.com/wellwelwel/poku/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 <a
   href='https://github.com/wellwelwel/poku/graphs/contributors'
@@ -261,14 +266,6 @@ Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/
 
 <hr />
 
-## Author
+## License
 
-<a href='https://github.com/wellwelwel'>
-  <img
-    src='https://avatars.githubusercontent.com/u/46850407'
-    alt='wellwelwel'
-    style={{ borderRadius: '50%', width: 64, height: 64 }}
-  />
-  <br />
-  <sub>@wellwelwel</sub>
-</a>
+**Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).
