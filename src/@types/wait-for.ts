@@ -1,4 +1,4 @@
-export type WaitForPortOptions = {
+export type WaitForExpectedResultOptions = {
   /**
    * Retry interval in milliseconds
    *
@@ -24,6 +24,19 @@ export type WaitForPortOptions = {
    */
   delay?: number;
   /**
+   * Ensure strict comparisons.
+   *
+   * - For **Bun** users, this option isn't necessary.
+   *
+   * ---
+   *
+   * @default false
+   */
+  strict?: boolean;
+};
+
+export type WaitForPortOptions = {
+  /**
    * Host to check the port on.
    *
    * ---
@@ -31,4 +44,4 @@ export type WaitForPortOptions = {
    * @default "localhost"
    */
   host?: string;
-};
+} & Omit<WaitForExpectedResultOptions, 'strict'>;

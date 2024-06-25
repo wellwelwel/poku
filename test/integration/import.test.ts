@@ -16,6 +16,10 @@ index.test('Import Suite', () => {
   index.assert.ok(index.log, 'Importing log helper');
   index.assert.ok(index.test, 'Importing test helper');
   index.assert.ok(index.sleep, 'Importing sleep helper');
+  index.assert.ok(
+    index.waitForExpectedResult,
+    'Importing waitForExpectedResult helper'
+  );
   index.assert.ok(index.waitForPort, 'Importing waitForPort helper');
   index.assert.ok(index.exit, 'Importing exit helper');
   index.assert.ok(index.listFiles, 'Importing listFiles helper');

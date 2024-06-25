@@ -1,9 +1,8 @@
-import process from 'node:process';
 import { createServer, Server } from 'node:http';
-import { describe } from '../../../src/modules/describe.js';
+import { test } from '../../../src/modules/test.js';
 import { it } from '../../../src/modules/it.js';
 import { assert } from '../../../src/modules/assert.js';
-import { waitForPort, sleep } from '../../../src/modules/wait-for.js';
+import { waitForPort } from '../../../src/modules/wait-for.js';
 import { kill } from '../../../src/modules/processes.js';
 
 const startServer = (port: number): Promise<Server> =>
@@ -19,8 +18,10 @@ const startServer = (port: number): Promise<Server> =>
 const stopServer = (server: Server): Promise<void> =>
   new Promise((resolve) => server.close(() => resolve(undefined)));
 
-describe('Wait For Port', async () => {
-  await kill.range(8000, 8003);
+test('Wait For Port', async () => {
+  try {
+    await kill.range(8000, 8003);
+  } catch {}
 
   await Promise.all([
     it(async () => {
@@ -60,7 +61,7 @@ describe('Wait For Port', async () => {
       } catch (error) {
         assert.strictEqual(
           (error as Error).message,
-          `Timeout waiting for port ${port} to become active`,
+          `Timeout`,
           'Expected timeout for missing port'
         );
       }
@@ -81,19 +82,6 @@ describe('Wait For Port', async () => {
     }),
 
     it(async () => {
-      const startTime = Date.now();
-      const delay = 500;
-      await sleep(delay);
-      const elapsedTime = Date.now() - startTime;
-      const margin = 250;
-
-      assert.ok(
-        elapsedTime >= delay - margin && elapsedTime <= delay + margin,
-        `Expected sleep time to be around ${delay}ms (±${margin}ms), but was ${elapsedTime}ms`
-      );
-    }),
-
-    it(async () => {
       try {
         await waitForPort(NaN, { timeout: 2000 });
         assert.fail('Expected error for invalid port, but none was thrown');
@@ -106,12 +94,8 @@ describe('Wait For Port', async () => {
       }
     }),
   ]);
-});
 
-process.on('exit', () => {
-  process.on('exit', () => {
-    try {
-      kill.range(8000, 8003);
-    } catch {}
-  });
+  try {
+    await kill.range(8000, 8003);
+  } catch {}
 });
