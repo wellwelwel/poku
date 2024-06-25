@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.20.0](https://github.com/wellwelwel/poku/compare/v1.19.0...v1.20.0) (2024-06-25)
+
+
+### Features
+
+* **processes:** `waitForExpectedResult` helper ([#461](https://github.com/wellwelwel/poku/issues/461)) ([7e08d59](https://github.com/wellwelwel/poku/commit/7e08d5966b388824571022ffd158f77b1605f02e))
+
+
+### Bug Fixes
+
+* **watch:** map line-breaking imports ([#463](https://github.com/wellwelwel/poku/issues/463)) ([0d82461](https://github.com/wellwelwel/poku/commit/0d82461c7df314341f8b04ba74511653cf2230c7))
+
 ## [1.19.0](https://github.com/wellwelwel/poku/compare/v1.18.0...v1.19.0) (2024-06-24)
 
 
