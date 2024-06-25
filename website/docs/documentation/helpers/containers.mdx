@@ -1,5 +1,6 @@
 ---
 sidebar_position: 5
+tags: [containers]
 ---
 
 import { FAQ } from '@site/src/components/FAQ';
@@ -250,8 +251,10 @@ const result = await poku('./test/integration', {
   noExit: true,
 });
 
+// Stops the container
 await compose.down();
 
+// Shows the test results and ends the process with the test exit code.
 exit(result);
 ```
 

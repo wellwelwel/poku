@@ -1,0 +1,144 @@
+---
+sidebar_position: 3
+tags: [flakey, containers]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# Waiting For Expected Results
+
+Similar to `assert`, but instead of returning an error when comparing, it will retry until success or timeout.
+
+> Wait for connections, external services to be ready, or a specific result from a method before starting the tests.
+
+## waitForExpectedResult
+
+```ts
+import { waitForExpectedResult } from 'poku';
+
+await waitForExpectedResult(() => true, true, {
+  delay: 0,
+  interval: 100,
+  timeout: 60000,
+  strict: false,
+});
+```
+
+<hr />
+
+<FAQ title='Options' >
+
+```ts
+export type WaitForExpectedResultOptions = {
+  /**
+   * Retry interval in milliseconds
+   *
+   * ---
+   *
+   * @default 100
+   */
+  interval?: number;
+  /**
+   * Timeout in milliseconds
+   *
+   * ---
+   *
+   * @default 60000
+   */
+  timeout?: number;
+  /**
+   * Delays both the start and end by the defined milliseconds.
+   *
+   * ---
+   *
+   * @default 0
+   */
+  delay?: number;
+  /**
+   * Ensure strict comparisons.
+   *
+   * - For **Bun** users, this option isn't necessary.
+   *
+   * ---
+   *
+   * @default false
+   */
+  strict?: boolean;
+};
+```
+
+</FAQ>
+
+<hr />
+
+## Examples
+
+Waiting for a Database Connection Returning `true`:
+
+```ts
+import { waitForExpectedResult } from 'poku';
+import { db } from './db.js';
+
+await waitForExpectedResult(() => db.connect(), true);
+// await waitForExpectedResult(async () => await db.connect(), true);
+```
+
+<hr />
+
+Waiting for a Database Connection doesn't Throw:
+
+```ts
+import { waitForExpectedResult } from 'poku';
+import { db } from './db.js';
+
+await waitForExpectedResult(async () => {
+  try {
+    await db.connect();
+    return true;
+  } catch {}
+}, true);
+```
+
+<hr />
+
+Waiting for a database connection from a container before to run the entire test suite and stops it on finishing:
+
+> **Poku** **API _(in-code)_** usage.
+
+```ts
+import { poku, docker, waitForExpectedResult, exit } from 'poku';
+import { db } from './db.js';
+
+// Load the docker-compose.yml
+const compose = docker.compose();
+
+// Starts the container
+await compose.up();
+
+// Waits for the database
+await waitForExpectedResult(async () => {
+  try {
+    await db.connect();
+    return true;
+  } catch {}
+}, true);
+
+// Starts the test suite
+const result = await poku('./test/integration', {
+  noExit: true,
+});
+
+// Stops the container
+await compose.down();
+
+// Shows the test results and ends the process with the test exit code.
+exit(result);
+```
+
+```sh
+node run.test.mjs
+```
+
+:::tip
+[See an example using **Dockerfile**.](/docs/documentation/helpers/containers#dockerfile)
+:::

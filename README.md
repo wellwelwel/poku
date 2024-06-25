@@ -37,11 +37,11 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ## Why does Poku exist?
 
-**Poku** makes testing easy and takes on the testers' difficulties to _let you focus on your tests_:
+💡 **Poku** makes testing easy and brings the [native **JavaScript** syntax back to tests](https://poku.io/docs/philosophy), letting you to write tests intuitively — _just like in real **JavaScript** code_.
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No configurations<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the same test suite for [**Node.js**][node-version-url] _(6+)_, [**Bun**][bun-version-url] and [**Deno**][deno-version-url]<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the same test suite for [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url]<br />
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easier and Less Verbose<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> [**Node.js**][node-version-url] familiar **API**<br />
@@ -53,8 +53,6 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Performant** and **lightweight**<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Compatible with **coverage** tools
-
-> 💡 **Poku** brings the [essence of **JavaScript** back to testing](https://poku.io/docs/philosophy), allowing to use your knowledge to create tests intuitively.
 
 ---
 
@@ -180,6 +178,7 @@ deno run npm:poku
 - [**startService**](https://poku.io/docs/documentation/helpers/startService) _(run files in background)_
 - [**kill**](https://poku.io/docs/documentation/helpers/processes/kill) _(terminate ports, port ranges, and PIDs)_
 - [**waitForPort**](https://poku.io/docs/documentation/helpers/processes/wait-for-port) _(wait for specified ports to become active)_
+- [**waitForExpectedResult**](https://poku.io/docs/documentation/helpers/processes/wait-for-expected-result) _(retry until an expected result or times out)_
 - [**getPIDs**](https://poku.io/docs/documentation/helpers/processes/get-pids) _(debug processes IDs using ports and port ranges)_
 - _and much more_ 👇🏻
 
@@ -226,6 +225,8 @@ Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/
 - [~**300x** lighter than **Vitest**](https://pkg-size.dev/vitest)
 - [~**170x** lighter than **Jest**](https://pkg-size.dev/jest)
 - [~**40x** lighter than **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
+
+> **Poku** size is highly significant in development to ensure cost-saving **CI** that require servers that charge for storage and usage.
 
 ---
 

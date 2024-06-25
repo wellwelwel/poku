@@ -1,6 +1,10 @@
 /* c8 ignore next */
-import type { WaitForPortOptions } from '../@types/processes.js';
+import type {
+  WaitForExpectedResultOptions,
+  WaitForPortOptions,
+} from '../@types/wait-for.js';
 import { createConnection } from 'node:net';
+import { deepEqual, deepStrictEqual } from 'node:assert';
 
 const checkPort = (port: number, host: string): Promise<boolean> =>
   new Promise((resolve) => {
@@ -18,9 +22,7 @@ const checkPort = (port: number, host: string): Promise<boolean> =>
     /* c8 ignore stop */
   });
 
-/**
- * Wait until the defined milliseconds.
- */
+/** Wait until the defined milliseconds. */
 export const sleep = (milliseconds: number): Promise<void> => {
   /* c8 ignore start */
   if (!Number.isInteger(milliseconds)) {
@@ -31,23 +33,19 @@ export const sleep = (milliseconds: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-/* c8 ignore start */ // c8 bug
-/**
- * Wait until the defined port is active.
- */
-export const waitForPort = async (
-  port: number,
-  options?: WaitForPortOptions
+/** Wait until a result is equal the expected value */
+export const waitForExpectedResult = async (
+  callback: () => unknown | Promise<unknown>,
+  expectedResult: unknown,
+  options?: WaitForExpectedResultOptions
 ): Promise<void> => {
-  /* c8 ignore stop */
   const delay = options?.delay || 0;
   const interval = options?.interval || 100;
   const timeout = options?.timeout || 60000;
-  const host = options?.host || 'localhost';
 
   /* c8 ignore start */
-  if (!Number.isInteger(port)) {
-    throw new Error('Port must be an integer.');
+  if (typeof callback !== 'function') {
+    throw new Error('Callback must be a function.');
   }
 
   if (!Number.isInteger(interval)) {
@@ -69,13 +67,30 @@ export const waitForPort = async (
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const hasPort = await checkPort(port, host);
+    const result = await callback();
 
-    if (hasPort) break;
+    if (typeof expectedResult === 'function') {
+      if (typeof result === 'function' && result.name === expectedResult.name)
+        break;
+    } else if (typeof expectedResult === 'symbol') {
+      if (
+        typeof result === 'symbol' &&
+        String(result) === String(expectedResult)
+      )
+        break;
+    } else {
+      try {
+        options?.strict
+          ? deepStrictEqual(result, expectedResult)
+          : deepEqual(result, expectedResult);
+        break;
+        /* c8 ignore next */
+      } catch {}
+    }
 
     /* c8 ignore start */
     if (Date.now() - startTime >= timeout) {
-      throw new Error(`Timeout waiting for port ${port} to become active`);
+      throw new Error(`Timeout`);
     }
     /* c8 ignore stop */
 
@@ -83,4 +98,26 @@ export const waitForPort = async (
   }
 
   await sleep(delay);
+};
+
+/* c8 ignore start */ // c8 bug
+/** Wait until the defined port is active. */
+export const waitForPort = async (
+  port: number,
+  options?: WaitForPortOptions
+): Promise<void> => {
+  /* c8 ignore stop */
+  const host = options?.host || 'localhost';
+
+  /* c8 ignore start */
+  if (!Number.isInteger(port)) {
+    throw new Error('Port must be an integer.');
+  }
+  /* c8 ignore stop */
+
+  await waitForExpectedResult(
+    async () => await checkPort(port, host),
+    true,
+    options
+  );
 };
