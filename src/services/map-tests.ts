@@ -20,7 +20,11 @@ export const getDeepImports = (content: string): Set<string> => {
   const lines = content.split('\n');
 
   for (const line of lines) {
-    if (line.includes('import') || line.includes('require')) {
+    if (
+      line.includes('import') ||
+      line.includes('require') ||
+      line.includes(' from ')
+    ) {
       const path = line.match(/['"](\.{1,2}\/[^'"]+)['"]/);
 
       if (path) paths.add(normalizePath(path[1].replace(extFilter, '')));

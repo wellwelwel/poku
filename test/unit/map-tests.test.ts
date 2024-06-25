@@ -103,6 +103,20 @@ test(async () => {
           import './k';
           import './l.js';
           import('./m.js');
+          import {
+            moduleA,
+            moduleB,
+          } from 'some-c';
+          import {
+            moduleA,
+            moduleB,
+          } from './n.js';
+          import '../../o.js';
+          import {
+            moduleA,
+            moduleB,
+          } from '../p.js';
+          import('../q.js');
           `
         ),
         new Set([
@@ -119,6 +133,10 @@ test(async () => {
           'k',
           'l',
           'm',
+          'n',
+          'o',
+          'p',
+          'q',
         ]),
         'import'
       );
@@ -141,6 +159,7 @@ test(async () => {
           require('./k');
           require('./l.js');
           require('./m.js').default;
+          const { some } = require('../../../n.mjs');
           `
         ),
         new Set([
@@ -157,6 +176,7 @@ test(async () => {
           'k',
           'l',
           'm',
+          'n',
         ]),
         'require'
       );
