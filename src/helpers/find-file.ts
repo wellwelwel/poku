@@ -10,7 +10,7 @@ export const findFile = (error: Error) => {
   const basePath = 'poku/lib/';
 
   for (const line of stackLines) {
-    if (!line.includes(basePath)) {
+    if (line.indexOf(basePath) === -1) {
       const match = line.match(regex);
 
       // Node and Deno

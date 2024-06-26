@@ -33,7 +33,7 @@ export const printOutput = (options: {
     debug || !result
       ? splittedOutput
       : splittedOutput.filter((current) => {
-          if (current.includes('Exited with code')) {
+          if (current.indexOf('Exited with code') !== -1) {
             return false;
           }
           return regex.ansi.test(JSON.stringify(current)) || current === '';
