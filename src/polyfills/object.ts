@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const entries = (obj: { [key: string]: any }): [string, unknown][] => {
   const ownProps = Object.keys(obj);
   let i = ownProps.length;

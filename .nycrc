@@ -6,6 +6,7 @@
     "src/bin",
     "src/configs",
     "src/polyfills",
+    "src/index.ts",
     "benchmark",
     "ci",
     "fixtures",

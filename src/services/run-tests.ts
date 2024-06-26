@@ -1,4 +1,4 @@
-/* c8 ignore start */ // c8 bug (incompatibility) =>
+/* c8 ignore start */ // c8 bug (incompatibility)
 /**
  * This service is strictly tested, but these tests use deep child process for it
  */

@@ -13,50 +13,49 @@ import { beforeEach, afterEach } from './each.js';
 const cwd = processCWD();
 
 /* c8 ignore next */ // c8 bug
-export const runTestFile = (
+export const runTestFile = async (
   filePath: string,
   configs?: Configs
-): Promise<boolean> =>
-  new Promise(async (resolve) => {
-    /* c8 ignore start */
-    const runtimeOptions = runner(filePath, configs);
-    const runtime = runtimeOptions.shift()!;
-    const runtimeArguments = [
-      ...runtimeOptions,
-      configs?.deno?.cjs === true ||
-      (Array.isArray(configs?.deno?.cjs) &&
-        configs.deno.cjs.some((ext) => filePath.includes(ext)))
-        ? 'https://cdn.jsdelivr.net/npm/poku/lib/polyfills/deno.mjs'
-        : filePath,
-    ];
-    /* c8 ignore stop */
+): Promise<boolean> => {
+  /* c8 ignore start */ // multi-platform
+  const runtimeOptions = runner(filePath, configs);
+  const runtime = runtimeOptions.shift()!;
+  const runtimeArguments = [
+    ...runtimeOptions,
+    configs?.deno?.cjs === true ||
+    (Array.isArray(configs?.deno?.cjs) &&
+      configs.deno.cjs.some((ext) => filePath.includes(ext)))
+      ? 'https://cdn.jsdelivr.net/npm/poku/lib/polyfills/deno.mjs'
+      : filePath,
+  ];
+  /* c8 ignore stop */
 
-    const fileRelative = relative(cwd, filePath);
-    const showLogs = !isQuiet(configs);
+  const fileRelative = relative(cwd, filePath);
+  const showLogs = !isQuiet(configs);
 
-    let output = '';
+  let output = '';
 
-    const stdOut = (data: Buffer): void => {
-      output += String(data);
-    };
+  const stdOut = (data: Buffer): void => {
+    output += String(data);
+  };
 
-    if (!configs?.parallel) {
-      showLogs &&
-        write(
-          `${indentation.test}${format('●').info().dim()} ${format(fileRelative).dim()}`
-        );
-    }
+  if (!configs?.parallel) {
+    showLogs &&
+      write(
+        `${indentation.test}${format('●').info().dim()} ${format(fileRelative).dim()}`
+      );
+  }
 
-    const start = hrtime();
-    let end: ReturnType<typeof hrtime>;
+  const start = hrtime();
+  let end: ReturnType<typeof hrtime>;
 
-    /* c8 ignore start */
-    if (!(await beforeEach(fileRelative, configs))) {
-      return false;
-    }
-    /* c8 ignore stop */
+  /* c8 ignore start */
+  if (!(await beforeEach(fileRelative, configs))) {
+    return false;
+  }
+  /* c8 ignore stop */
 
-    // Export spawn helper is not an option
+  return new Promise((resolve) => {
     const child = spawn(runtime, runtimeArguments, {
       stdio: ['inherit', 'pipe', 'pipe'],
       /* c8 ignore next */
@@ -68,7 +67,6 @@ export const runTestFile = (
     });
 
     child.stdout.on('data', stdOut);
-
     child.stderr.on('data', stdOut);
 
     child.on('close', async (code) => {
@@ -86,7 +84,8 @@ export const runTestFile = (
 
       /* c8 ignore start */
       if (!(await afterEach(fileRelative, configs))) {
-        return false;
+        resolve(false);
+        return;
       }
       /* c8 ignore stop */
 
@@ -114,3 +113,4 @@ export const runTestFile = (
     });
     /* c8 ignore stop */
   });
+};
