@@ -1,8 +1,13 @@
+import process from 'node:process';
 import { execSync } from 'node:child_process';
 import { describe } from '../../src/modules/describe.js';
 import { it } from '../../src/modules/it.js';
 import { assert } from '../../src/modules/assert.js';
-import { inspectCLI } from '../helpers/capture-cli.test.js';
+import { isProduction, inspectCLI } from '../helpers/capture-cli.test.js';
+
+if (isProduction) {
+  process.exit(0);
+}
 
 const hasNode = (() => {
   try {
