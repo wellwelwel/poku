@@ -36,8 +36,7 @@
         "noMisplacedAssertion": "off"
       },
       "performance": {
-        "all": true,
-        "noBarrelFile": "off"
+        "all": true
       },
       "security": {
         "all": true
@@ -78,6 +77,16 @@
         "rules": {
           "suspicious": {
             "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["src/index.ts"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noBarrelFile": "off"
           }
         }
       }
