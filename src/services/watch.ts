@@ -18,10 +18,11 @@ class Watcher {
   }
 
   private watchFile(filePath: string) {
-    /* c8 ignore next */
+    /* c8 ignore start */
     if (this.fileWatchers.has(filePath)) {
       return;
     }
+    /* c8 ignore stop */
 
     const watcher = nodeWatch(filePath, (eventType) => {
       this.callback(filePath, eventType);

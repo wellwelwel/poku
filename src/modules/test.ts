@@ -29,10 +29,11 @@ export async function test(
   if (typeof each.before.cb === 'function' && each.before.test) {
     const beforeResult = each.before.cb();
 
-    /* c8 ignore next */
+    /* c8 ignore start */
     if (beforeResult instanceof Promise) {
       await beforeResult;
     }
+    /* c8 ignore stop */
   }
 
   if (typeof args[0] === 'string') {
@@ -66,10 +67,12 @@ export async function test(
 
   if (typeof each.after.cb === 'function' && each.after.test) {
     const afterResult = each.after.cb();
-    /* c8 ignore next */
+
+    /* c8 ignore start */
     if (afterResult instanceof Promise) {
       await afterResult;
     }
+    /* c8 ignore stop */
   }
 
   /* c8 ignore start */

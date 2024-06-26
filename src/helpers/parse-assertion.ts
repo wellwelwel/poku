@@ -84,11 +84,12 @@ export const parseAssertion = async (
   try {
     if (typeof each.before.cb === 'function' && each.before.assert) {
       const beforeResult = each.before.cb();
-      /* c8 ignore next */
+
+      /* c8 ignore start */
       if (beforeResult instanceof Promise) {
         await beforeResult;
       }
-      /* c8 ignore next */
+      /* c8 ignore stop */
     }
 
     const cbResult = cb();
@@ -98,11 +99,12 @@ export const parseAssertion = async (
 
     if (typeof each.after.cb === 'function' && each.after.assert) {
       const afterResult = each.after.cb();
-      /* c8 ignore next */
+
+      /* c8 ignore start */
       if (afterResult instanceof Promise) {
         await afterResult;
       }
-      /* c8 ignore next */
+      /* c8 ignore stop */
     }
 
     if (typeof options.message === 'string') {

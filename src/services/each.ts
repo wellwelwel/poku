@@ -8,15 +8,19 @@ const eachCore = async (
   fileRelative: string,
   configs?: Configs
 ): Promise<boolean> => {
+  /* c8 ignore start */
   if (typeof configs?.[type] !== 'function') {
     return true;
   }
+  /* c8 ignore stop */
 
   const cb = configs[type];
-  /* c8 ignore next */
+
+  /* c8 ignore start */
   if (typeof cb !== 'function') {
     return true;
   }
+  /* c8 ignore stop */
 
   write(
     `    ${format('◯').dim().info()} ${format(
@@ -28,10 +32,13 @@ const eachCore = async (
 
   try {
     const resultCb = cb();
-    /* c8 ignore next */
+
+    /* c8 ignore start */
     if (resultCb instanceof Promise) {
       await resultCb;
     }
+    /* c8 ignore stop */
+
     return true;
     /* c8 ignore start */
   } catch (error) {
@@ -53,7 +60,6 @@ const eachCore = async (
     return false;
   }
   /* c8 ignore stop */
-  /* c8 ignore next */ // c8 bug
 };
 
 export const beforeEach = async (fileRelative: string, configs?: Configs) => {
