@@ -139,7 +139,7 @@ npm run test:ci
 ### Lint
 
 ```sh
-npm run lint:checker
+npm run lint:check
 ```
 
 > Also
