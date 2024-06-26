@@ -1,4 +1,4 @@
-/* c8 ignore start */
+/* c8 ignore next */ // c8 bug
 import { padStart } from '../polyfills/pad.js';
 
 export const setTime = (date: Date): string => {
@@ -9,10 +9,10 @@ export const setTime = (date: Date): string => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
+/* c8 ignore next */ // c8 bug
 export const toSecs = (milliseconds: string): string => {
   const ms = Number.parseFloat(milliseconds);
   const seconds = (ms / 1000).toFixed(2);
 
   return seconds;
 };
-/* c8 ignore stop */

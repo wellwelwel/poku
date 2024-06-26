@@ -1,15 +1,14 @@
-/* c8 ignore start */
+/* c8 ignore start */ // This module is entirely process-based
 import { spawn } from 'node:child_process';
-import { forceArray } from '../helpers/force-array.js';
 
 const regex = {
   sequentialSpaces: /\s+/,
 } as const;
 
 export const setPortsAndPIDs = (portOrPID: number | number[]) =>
-  forceArray(portOrPID)
-    .map((p) => Number(p))
-    .filter((p) => !Number.isNaN(p));
+  Array.isArray(portOrPID)
+    ? portOrPID
+    : [portOrPID].map((p) => Number(p)).filter((p) => !Number.isNaN(p));
 
 export const populateRange = (startsAt: number, endsAt: number) => {
   const first = Number(startsAt);

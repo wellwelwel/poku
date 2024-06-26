@@ -1,8 +1,4 @@
-/* c8 ignore start */
-/**
- * This method will be removed in a future release to use `list-files.ts` instead.
- */
-
+/* c8 ignore start */ // This method will be removed in a future release to use `list-files.ts` instead
 import { env } from 'node:process';
 import { readdirSync, statSync } from 'node:fs';
 import path from 'node:path';

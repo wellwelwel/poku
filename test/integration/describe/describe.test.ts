@@ -1,5 +1,6 @@
 import { describe } from '../../../src/modules/describe.js';
 import { test } from '../../../src/modules/test.js';
+import { log } from '../../../src/modules/log.js';
 
 describe('Testing "describe" method', {
   icon: '🔬',
@@ -38,4 +39,8 @@ test('Using as groups', async () => {
   await describe('', () => new Promise((resolve) => resolve(undefined)));
   await describe('', async () =>
     await new Promise((resolve) => resolve(undefined)));
+});
+
+test('Using log "mini" helper', () => {
+  log('Custom Log');
 });
