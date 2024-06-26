@@ -1,10 +1,5 @@
-/* c8 ignore start */
-
-// Essentials
 export { poku } from './modules/poku.js';
 export { assert } from './modules/assert.js';
-
-// Helpers
 export { test } from './modules/test.js';
 export { describe } from './modules/describe.js';
 export { it } from './modules/it.js';
@@ -21,8 +16,6 @@ export { exit } from './modules/exit.js';
 export { log } from './modules/log.js';
 export { publicListFiles as listFiles } from './modules/list-files-sync.js';
 export { assertPromise } from './modules/assert-promise.js';
-
-// Types
 export type { Code } from './@types/code.js';
 export type { Configs } from './@types/poku.js';
 export type {
@@ -38,5 +31,3 @@ export type {
   WaitForPortOptions,
 } from './@types/wait-for.js';
 export type { Configs as ListFilesConfigs } from './@types/list-files.js';
-
-/* c8 ignore stop */

@@ -78,6 +78,12 @@
           { "allow": ["arrowFunctions"] }
         ]
       }
+    },
+    {
+      "files": ["src/polyfills/**"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off"
+      }
     }
   ],
   "settings": {
