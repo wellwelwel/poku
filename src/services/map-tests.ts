@@ -1,19 +1,24 @@
 /* c8 ignore next */ // c8 bug
-import { relative, dirname, sep } from 'node:path';
+import { relative, dirname } from 'node:path';
 import { stat, readFile } from '../polyfills/fs.js';
 import { listFiles } from '../modules/list-files.js';
 
 const importMap = new Map<string, Set<string>>();
 const processedFiles = new Set<string>();
 
-const extFilter = /\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)$/;
+const regex = {
+  extFilter: /\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)$/,
+  dependecy: /['"](\.{1,2}\/[^'"]+)['"]/,
+  dotBar: /(\.\/)/g,
+  sep: /[/\\]+/g,
+  dot: /^\.+/,
+} as const;
 
 export const normalizePath = (filePath: string) =>
   filePath
-    .replace(/(\.\/)/g, '')
-    .replace(/^\.+/, '')
-    .replace(/[/\\]+/g, sep)
-    .replace(/\\/g, '/');
+    .replace(regex.dotBar, '')
+    .replace(regex.dot, '')
+    .replace(regex.sep, '/');
 
 export const getDeepImports = (content: string): Set<string> => {
   const paths: Set<string> = new Set();
@@ -25,9 +30,11 @@ export const getDeepImports = (content: string): Set<string> => {
       line.indexOf('require') !== -1 ||
       line.indexOf(' from ') !== -1
     ) {
-      const path = line.match(/['"](\.{1,2}\/[^'"]+)['"]/);
+      const path = line.match(regex.dependecy);
 
-      if (path) paths.add(normalizePath(path[1].replace(extFilter, '')));
+      if (path) {
+        paths.add(normalizePath(path[1].replace(regex.extFilter, '')));
+      }
     }
   }
 
@@ -40,16 +47,17 @@ export const findMatchingFiles = (
 ): Set<string> => {
   const matchingFiles = new Set<string>();
 
-  srcFilesWithoutExt.forEach((srcFile) => {
+  for (const srcFile of srcFilesWithoutExt) {
     const normalizedSrcFile = normalizePath(srcFile);
 
-    srcFilesWithExt.forEach((fileWithExt) => {
+    for (const fileWithExt of srcFilesWithExt) {
       const normalizedFileWithExt = normalizePath(fileWithExt);
 
-      if (normalizedFileWithExt.includes(normalizedSrcFile))
+      if (normalizedFileWithExt.includes(normalizedSrcFile)) {
         matchingFiles.add(fileWithExt);
-    });
-  });
+      }
+    }
+  }
 
   return matchingFiles;
 };
@@ -67,14 +75,17 @@ const collectTestFiles = async (
   const listFilesPromises = stats.map((stat, index) => {
     const testPath = testPaths[index];
 
-    if (stat.isDirectory())
+    if (stat.isDirectory()) {
       return listFiles(testPath, {
         filter: testFilter,
         exclude,
       });
+    }
 
-    if (stat.isFile() && extFilter.test(testPath)) return [testPath];
-    else return [];
+    if (stat.isFile() && regex.extFilter.test(testPath)) {
+      return [testPath];
+    }
+    return [];
   });
 
   const nestedTestFiles = await Promise.all(listFilesPromises);
@@ -89,7 +100,9 @@ const processDeepImports = async (
   testFile: string,
   intersectedSrcFiles: Set<string>
 ) => {
-  if (processedFiles.has(srcFile)) return;
+  if (processedFiles.has(srcFile)) {
+    return;
+  }
   processedFiles.add(srcFile);
 
   const srcContent = await readFile(srcFile, 'utf-8');
@@ -97,9 +110,11 @@ const processDeepImports = async (
   const matchingFiles = findMatchingFiles(deepImports, intersectedSrcFiles);
 
   for (const deepImport of matchingFiles) {
-    if (!importMap.has(deepImport)) importMap.set(deepImport, new Set());
+    if (!importMap.has(deepImport)) {
+      importMap.set(deepImport, new Set());
+    }
 
-    importMap.get(deepImport)!.add(normalizePath(testFile));
+    importMap.get(deepImport)?.add(normalizePath(testFile));
 
     await processDeepImports(deepImport, testFile, intersectedSrcFiles);
   }
@@ -126,12 +141,13 @@ const createImportMap = async (
 
         /* c8 ignore start */
         if (
-          content.includes(relativePath.replace(extFilter, '')) ||
+          content.includes(relativePath.replace(regex.extFilter, '')) ||
           content.includes(normalizedSrcFile)
         ) {
-          if (!importMap.has(normalizedSrcFile))
+          if (!importMap.has(normalizedSrcFile)) {
             importMap.set(normalizedSrcFile, new Set());
-          importMap.get(normalizedSrcFile)!.add(normalizePath(testFile));
+          }
+          importMap.get(normalizedSrcFile)?.add(normalizePath(testFile));
 
           await processDeepImports(srcFile, testFile, intersectedSrcFiles);
         }
@@ -151,7 +167,7 @@ export const mapTests = async (
   const [allTestFiles, allSrcFiles] = await Promise.all([
     collectTestFiles(testPaths, testFilter, exclude),
     listFiles(srcDir, {
-      filter: extFilter,
+      filter: regex.extFilter,
       exclude,
     }),
   ]);

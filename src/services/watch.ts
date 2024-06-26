@@ -19,7 +19,9 @@ class Watcher {
 
   private watchFile(filePath: string) {
     /* c8 ignore next */
-    if (this.fileWatchers.has(filePath)) return;
+    if (this.fileWatchers.has(filePath)) {
+      return;
+    }
 
     const watcher = nodeWatch(filePath, (eventType) => {
       this.callback(filePath, eventType);
@@ -51,7 +53,9 @@ class Watcher {
 
   private async watchDirectory(dir: string) {
     /* c8 ignore next */
-    if (this.dirWatchers.has(dir)) return;
+    if (this.dirWatchers.has(dir)) {
+      return;
+    }
 
     const watcher = nodeWatch(dir, async (_, filename) => {
       if (filename) {
@@ -62,7 +66,9 @@ class Watcher {
 
         try {
           const stats = await stat(fullPath);
-          if (stats.isDirectory()) await this.watchDirectory(fullPath);
+          if (stats.isDirectory()) {
+            await this.watchDirectory(fullPath);
+          }
           /* c8 ignore start */
         } catch {}
         /* c8 ignore stop */
@@ -96,7 +102,9 @@ class Watcher {
 
         this.watchFiles(this.files);
         await this.watchDirectory(this.rootDir);
-      } else this.watchFile(this.rootDir);
+      } else {
+        this.watchFile(this.rootDir);
+      }
       /* c8 ignore start */
     } catch {}
     /* c8 ignore stop */ // c8 bug

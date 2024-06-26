@@ -69,10 +69,10 @@ const testCases = [
 ];
 
 test('Assert: Find file from stack', () => {
-  testCases.forEach(({ description, stack, expected }) => {
+  for (const { description, stack, expected } of testCases) {
     const error = setStack(stack);
     const result = findFile(error);
 
     assert.deepStrictEqual(result, expected, description);
-  });
+  }
 });

@@ -1,7 +1,9 @@
 import process from 'node:process';
 import { nodeVersion } from '../../src/helpers/get-runtime.js';
 
-if (nodeVersion && nodeVersion < 14) process.exit(0);
+if (nodeVersion && nodeVersion < 14) {
+  process.exit(0);
+}
 
 import { join } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';

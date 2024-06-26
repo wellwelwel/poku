@@ -20,7 +20,7 @@ export const backgroundColor = {
 } as const;
 
 export class Formatter {
-  private parts: string = '';
+  private parts = '';
   private text: string;
 
   constructor(text: string) {

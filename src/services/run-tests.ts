@@ -101,16 +101,20 @@ export const runTestsParallel = async (
   const concurrencyLimit = configs?.concurrency || 0;
   const concurrencyResults: (boolean | undefined)[][] = [];
 
-  if (concurrencyLimit > 0)
+  if (concurrencyLimit > 0) {
     for (let i = 0; i < files.length; i += concurrencyLimit) {
       filesByConcurrency.push(files.slice(i, i + concurrencyLimit));
     }
-  else filesByConcurrency.push(files);
+  } else {
+    filesByConcurrency.push(files);
+  }
 
   try {
     for (const fileGroup of filesByConcurrency) {
       const promises = fileGroup.map(async (filePath) => {
-        if (configs?.failFast && results.fail > 0) return;
+        if (configs?.failFast && results.fail > 0) {
+          return;
+        }
 
         const testPassed = await runTestFile(filePath, configs);
 
@@ -118,8 +122,11 @@ export const runTestsParallel = async (
         if (!testPassed) {
           ++results.fail;
 
-          if (configs?.failFast)
-            throw `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`;
+          if (configs?.failFast) {
+            throw new Error(
+              `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
+            );
+          }
 
           return false;
         }
@@ -137,7 +144,7 @@ export const runTestsParallel = async (
     /* c8 ignore start */
   } catch (error) {
     hr();
-    console.error(error);
+    error instanceof Error && console.error(error.message);
 
     return false;
   }

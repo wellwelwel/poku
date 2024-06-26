@@ -10,7 +10,9 @@ import { isWindows } from '../../../src/helpers/runner.js';
 import { waitForPort } from '../../../src/modules/wait-for.js';
 
 // External error: no matching manifest for windows/amd64
-if (isWindows) process.exit(0);
+if (isWindows) {
+  process.exit(0);
+}
 
 const hasDockerCompose = (() => {
   try {

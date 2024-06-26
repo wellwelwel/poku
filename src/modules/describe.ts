@@ -32,8 +32,11 @@ export async function describe(
   if (typeof arg1 === 'string') {
     title = arg1;
 
-    if (typeof arg2 === 'function') cb = arg2;
-    else options = arg2;
+    if (typeof arg2 === 'function') {
+      cb = arg2;
+    } else {
+      options = arg2;
+    }
   } else if (typeof arg1 === 'function') {
     cb = arg1;
     options = arg2 as DescribeOptions;
@@ -46,8 +49,9 @@ export async function describe(
     const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : /* c8 ignore next */ title).dim() : format(title).bold() || ''}`;
     const noBackground = !background;
 
-    if (noBackground) write(format(message).bold());
-    else {
+    if (noBackground) {
+      write(format(message).bold());
+    } else {
       write(
         format(` ${message} `).bg(
           typeof background === 'string' ? background : 'grey'
@@ -56,13 +60,17 @@ export async function describe(
     }
   }
 
-  if (typeof cb !== 'function') return;
+  if (typeof cb !== 'function') {
+    return;
+  }
 
   const start = hrtime();
   const resultCb = cb();
 
   /* c8 ignore next */
-  if (resultCb instanceof Promise) await resultCb;
+  if (resultCb instanceof Promise) {
+    await resultCb;
+  }
   const end = hrtime(start);
 
   if (title) {

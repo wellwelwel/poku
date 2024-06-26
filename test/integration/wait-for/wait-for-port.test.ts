@@ -1,4 +1,4 @@
-import { createServer, Server } from 'node:http';
+import { createServer, type Server } from 'node:http';
 import { test } from '../../../src/modules/test.js';
 import { it } from '../../../src/modules/it.js';
 import { assert } from '../../../src/modules/assert.js';
@@ -31,7 +31,7 @@ test('Wait For Port', async () => {
       try {
         await waitForPort(port, { timeout: 5000 });
         assert.ok(true, 'Port is active within timeout');
-      } catch (error) {
+      } catch {
         assert.fail('Port was not active within the timeout period');
       } finally {
         await stopServer(server);
@@ -45,7 +45,7 @@ test('Wait For Port', async () => {
       try {
         await waitForPort(port, { delay: 100 });
         assert.ok(true, 'Port is active within delay');
-      } catch (error) {
+      } catch {
         assert.fail('Port was not active within the timeout period');
       } finally {
         await stopServer(server);
@@ -61,7 +61,7 @@ test('Wait For Port', async () => {
       } catch (error) {
         assert.strictEqual(
           (error as Error).message,
-          `Timeout`,
+          'Timeout',
           'Expected timeout for missing port'
         );
       }
@@ -74,7 +74,7 @@ test('Wait For Port', async () => {
       try {
         await waitForPort(port, { interval: 1000 });
         assert.ok(true, 'Port is active within delay');
-      } catch (error) {
+      } catch {
         assert.fail('Port was not active within the timeout period');
       } finally {
         await stopServer(server);
@@ -83,7 +83,7 @@ test('Wait For Port', async () => {
 
     it(async () => {
       try {
-        await waitForPort(NaN, { timeout: 2000 });
+        await waitForPort(Number.NaN, { timeout: 2000 });
         assert.fail('Expected error for invalid port, but none was thrown');
       } catch (error) {
         assert.strictEqual(

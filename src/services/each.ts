@@ -8,11 +8,15 @@ const eachCore = async (
   fileRelative: string,
   configs?: Configs
 ): Promise<boolean> => {
-  if (typeof configs?.[type] !== 'function') return true;
+  if (typeof configs?.[type] !== 'function') {
+    return true;
+  }
 
   const cb = configs[type];
   /* c8 ignore next */
-  if (typeof cb !== 'function') return true;
+  if (typeof cb !== 'function') {
+    return true;
+  }
 
   write(
     `    ${format('◯').dim().info()} ${format(
@@ -25,7 +29,9 @@ const eachCore = async (
   try {
     const resultCb = cb();
     /* c8 ignore next */
-    if (resultCb instanceof Promise) await resultCb;
+    if (resultCb instanceof Promise) {
+      await resultCb;
+    }
     return true;
     /* c8 ignore start */
   } catch (error) {
@@ -40,7 +46,7 @@ const eachCore = async (
     );
 
     if (error instanceof Error) {
-      write(format(`      ├─ Message:`).fail());
+      write(format('      ├─ Message:').fail());
       write(format(`      │ └─ ${error.message}`).fail());
     }
 
@@ -51,15 +57,17 @@ const eachCore = async (
 };
 
 export const beforeEach = async (fileRelative: string, configs?: Configs) => {
-  if (configs?.beforeEach)
+  if (configs?.beforeEach) {
     return await eachCore('beforeEach', fileRelative, configs);
+  }
 
   return true;
 };
 
 export const afterEach = async (fileRelative: string, configs?: Configs) => {
-  if (configs?.afterEach)
+  if (configs?.afterEach) {
     return await eachCore('afterEach', fileRelative, configs);
+  }
 
   return true;
 };

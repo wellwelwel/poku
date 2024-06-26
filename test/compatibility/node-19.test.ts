@@ -24,8 +24,9 @@ test(`Compatibility Tests: ${serviceName}`, async () => {
 
   const result = await compose.up();
 
-  if (!result)
+  if (!result) {
     assert.fail(`See the logs by running \`docker logs ${serviceName}\``);
+  }
 
   await dockerfile.remove();
 });

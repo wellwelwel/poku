@@ -26,11 +26,11 @@ export async function poku(
 export async function poku(
   targetPaths: string | string[],
   configs?: Configs
-): Promise<void>;
+): Promise<undefined>;
 export async function poku(
   targetPaths: string | string[],
   configs?: Configs
-): Promise<Code | void> {
+): Promise<Code | undefined> {
   let code: Code = 0;
 
   finalResults.started = new Date();
@@ -47,11 +47,15 @@ export async function poku(
 
       if (!result) {
         code = 1;
-        if (configs?.failFast) break;
+        if (configs?.failFast) {
+          break;
+        }
       }
     }
 
-    if (configs?.noExit) return code;
+    if (configs?.noExit) {
+      return code;
+    }
 
     const end = process.hrtime(start);
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
@@ -72,14 +76,18 @@ export async function poku(
     const promises = dirs.map(async (dir) => {
       const result = await runTestsParallel(dir, configs);
 
-      if (!result && configs?.failFast) throw '';
+      if (!result && configs?.failFast) {
+        throw new Error('quiet');
+      }
 
       return result;
     });
 
     const concurrency = await Promise.all(promises);
 
-    if (concurrency.some((result) => !result)) code = 1;
+    if (concurrency.some((result) => !result)) {
+      code = 1;
+    }
   } catch {
   } finally {
     const end = process.hrtime(start);
@@ -112,7 +120,9 @@ export async function poku(
     );
   }
 
-  if (configs?.noExit) return code;
+  if (configs?.noExit) {
+    return code;
+  }
 
   exit(code, configs?.quiet);
 }

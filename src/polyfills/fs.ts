@@ -18,7 +18,10 @@ export function readdir(
   return new Promise((resolve, reject) => {
     if (options?.withFileTypes) {
       nodeReaddir(path, { withFileTypes: true }, (err, entries) => {
-        if (err) return reject(err);
+        if (err) {
+          return reject(err);
+        }
+
         resolve(entries);
       });
 
@@ -26,7 +29,10 @@ export function readdir(
     }
 
     nodeReaddir(path, (err, files) => {
-      if (err) return reject(err);
+      if (err) {
+        return reject(err);
+      }
+
       resolve(files);
     });
   });
@@ -35,7 +41,10 @@ export function readdir(
 export const stat = (path: string): Promise<Stats> => {
   return new Promise((resolve, reject) => {
     nodeStat(path, (err, stats) => {
-      if (err) return reject(err);
+      if (err) {
+        return reject(err);
+      }
+
       resolve(stats);
     });
   });
@@ -47,7 +56,10 @@ export const readFile = (
 ): Promise<string> =>
   new Promise((resolve, reject) => {
     nodeReadFile(path, encoding, (err, data) => {
-      if (err) return reject(err);
+      if (err) {
+        return reject(err);
+      }
+
       resolve(data);
     });
   });

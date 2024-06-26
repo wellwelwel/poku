@@ -19,7 +19,7 @@ export const executeCLI = (args: string[]): Promise<string> =>
       shell: isWindows,
     });
 
-    let output: string = '';
+    let output = '';
 
     childProcess.stdout.on('data', (data: Buffer) => {
       output += data.toString();

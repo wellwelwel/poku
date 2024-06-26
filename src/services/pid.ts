@@ -2,10 +2,14 @@
 import { spawn } from 'node:child_process';
 import { forceArray } from '../helpers/force-array.js';
 
+const regex = {
+  sequentialSpaces: /\s+/,
+} as const;
+
 export const setPortsAndPIDs = (portOrPID: number | number[]) =>
   forceArray(portOrPID)
     .map((p) => Number(p))
-    .filter((p) => !isNaN(p));
+    .filter((p) => !Number.isNaN(p));
 
 export const populateRange = (startsAt: number, endsAt: number) => {
   const first = Number(startsAt);
@@ -53,9 +57,11 @@ export const getPIDs = {
       service.stdout.on('data', (data: Buffer) => {
         const output = data.toString().trim().split('\n');
 
-        output.forEach((pid) => {
-          if (pid) PIDs.add(Number(pid));
-        });
+        for (const pid of output) {
+          if (pid) {
+            PIDs.add(Number(pid));
+          }
+        }
       });
 
       service.on('close', () => {
@@ -79,13 +85,15 @@ export const getPIDs = {
          * (Tested against ReDos Checker)
          */
         lines.map((line) => {
-          const tokens = line.trim().split(/\s+/);
+          const tokens = line.trim().split(regex.sequentialSpaces);
           const stateIndex = tokens.indexOf('LISTENING');
 
           if (stateIndex !== -1 && tokens[stateIndex + 1]) {
             const pid = Number(tokens[stateIndex + 1]);
 
-            if (!isNaN(pid)) PIDs.add(pid);
+            if (!Number.isNaN(pid)) {
+              PIDs.add(pid);
+            }
           }
         });
       });

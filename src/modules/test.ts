@@ -30,13 +30,17 @@ export async function test(
     const beforeResult = each.before.cb();
 
     /* c8 ignore next */
-    if (beforeResult instanceof Promise) await beforeResult;
+    if (beforeResult instanceof Promise) {
+      await beforeResult;
+    }
   }
 
   if (typeof args[0] === 'string') {
     message = args[0];
     cb = args[1] as () => unknown | Promise<unknown>;
-  } else cb = args[0] as () => unknown | Promise<unknown>;
+  } else {
+    cb = args[0] as () => unknown | Promise<unknown>;
+  }
 
   if (message) {
     indentation.hasTest = true;
@@ -55,13 +59,17 @@ export async function test(
   const resultCb = cb();
 
   /* c8 ignore next */
-  if (resultCb instanceof Promise) await resultCb;
+  if (resultCb instanceof Promise) {
+    await resultCb;
+  }
   const end = hrtime(start);
 
   if (typeof each.after.cb === 'function' && each.after.test) {
     const afterResult = each.after.cb();
     /* c8 ignore next */
-    if (afterResult instanceof Promise) await afterResult;
+    if (afterResult instanceof Promise) {
+      await afterResult;
+    }
   }
 
   /* c8 ignore start */

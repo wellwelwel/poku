@@ -21,10 +21,14 @@ import type { Configs } from '../@types/poku.js';
 
 const dirs = (() => {
   const includeArg = getArg('include');
-  if (includeArg !== undefined) return includeArg.split(',');
+  if (includeArg !== undefined) {
+    return includeArg.split(',');
+  }
 
   const lastParam = getLastParam();
-  if (lastParam !== undefined) return lastParam.split(',');
+  if (lastParam !== undefined) {
+    return lastParam.split(',');
+  }
 
   return ['.'];
 })();
@@ -119,17 +123,21 @@ Promise.all(tasks).then(() => {
 
       mapTests('.', dirs, options.filter, options.exclude).then(
         (mappedTests) => {
-          Array.from(mappedTests.keys()).forEach((mappedTest) => {
+          for (const mappedTest of Array.from(mappedTests.keys())) {
             watch(mappedTest, (file, event) => {
               if (event === 'change') {
                 const filePath = normalizePath(file);
-                if (executing.has(filePath)) return;
+                if (executing.has(filePath)) {
+                  return;
+                }
 
                 executing.add(filePath);
                 resultsClear();
 
                 const tests = mappedTests.get(filePath);
-                if (!tests) return;
+                if (!tests) {
+                  return;
+                }
 
                 poku(Array.from(tests), options).then(() => {
                   setTimeout(() => {
@@ -138,14 +146,16 @@ Promise.all(tasks).then(() => {
                 });
               }
             });
-          });
+          }
         }
       );
 
-      dirs.forEach((dir) => {
+      for (const dir of dirs) {
         watch(dir, (file, event) => {
           if (event === 'change') {
-            if (executing.has(file)) return;
+            if (executing.has(file)) {
+              return;
+            }
 
             executing.add(file);
             resultsClear();
@@ -157,7 +167,7 @@ Promise.all(tasks).then(() => {
             });
           }
         });
-      });
+      }
 
       hr();
       write(

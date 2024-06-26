@@ -5,7 +5,9 @@ export const entries = (obj: { [key: string]: any }): [string, unknown][] => {
   const resArray = new Array(i);
 
   // benchmark `while` outperformed `for`
-  while (i--) resArray[i] = [ownProps[i], obj[ownProps[i]]];
+  while (i--) {
+    resArray[i] = [ownProps[i], obj[ownProps[i]]];
+  }
 
   return resArray;
 };

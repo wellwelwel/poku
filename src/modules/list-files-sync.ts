@@ -11,6 +11,11 @@ import { escapeRegExp, sanitizePath } from './list-files.js';
 
 const isDir = (fullPath: string) => statSync(fullPath).isDirectory();
 
+const regex = {
+  defaultFilter: /\.(test|spec)\./i,
+  staticExclude: /node_modules|^.git/,
+};
+
 const envFilter = env.FILTER?.trim()
   ? new RegExp(escapeRegExp(env.FILTER), 'i')
   : null;
@@ -21,13 +26,12 @@ const listFiles = (
   configs?: Configs
 ) => {
   const currentFiles = readdirSync(sanitizePath(dirPath));
-  const defaultRegExp = /\.(test|spec)\./i;
   const filter: RegExp =
     (envFilter
       ? envFilter
       : configs?.filter instanceof RegExp
         ? configs.filter
-        : defaultRegExp) || defaultRegExp;
+        : regex.defaultFilter) || regex.defaultFilter;
 
   const exclude: Configs['exclude'] = configs?.exclude
     ? Array.isArray(configs.exclude)
@@ -38,11 +42,18 @@ const listFiles = (
   for (const file of currentFiles) {
     const fullPath = sanitizePath(path.join(dirPath, file));
 
-    if (/node_modules/.test(fullPath)) continue;
-    if (exclude && exclude.some((regex) => regex.test(fullPath))) continue;
+    if (regex.staticExclude.test(fullPath)) {
+      continue;
+    }
+    if (exclude?.some((regex) => regex.test(fullPath))) {
+      continue;
+    }
 
-    if (isDir(fullPath)) listFiles(fullPath, files, configs);
-    else if (filter.test(fullPath)) files.push(fullPath);
+    if (isDir(fullPath)) {
+      listFiles(fullPath, files, configs);
+    } else if (filter.test(fullPath)) {
+      files.push(fullPath);
+    }
   }
 
   return files;

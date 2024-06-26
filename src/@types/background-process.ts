@@ -1,5 +1,5 @@
-import { Runner } from './runner.js';
-import { Configs } from './poku.js';
+import type { Runner } from './runner.js';
+import type { Configs } from './poku.js';
 
 type BackgroundProcessOptions = {
   /**

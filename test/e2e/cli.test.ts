@@ -5,7 +5,9 @@ import { getRuntime } from '../../src/helpers/get-runtime.js';
 
 const runtime = getRuntime();
 
-if (runtime === 'deno' && !isProduction) process.exit(0);
+if (runtime === 'deno' && !isProduction) {
+  process.exit(0);
+}
 
 test('Poku Test Runner: CLI', async () => {
   const output = await executeCLI([
