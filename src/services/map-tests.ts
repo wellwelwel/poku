@@ -53,7 +53,7 @@ export const findMatchingFiles = (
     for (const fileWithExt of srcFilesWithExt) {
       const normalizedFileWithExt = normalizePath(fileWithExt);
 
-      if (normalizedFileWithExt.includes(normalizedSrcFile)) {
+      if (normalizedFileWithExt.indexOf(normalizedSrcFile) !== -1) {
         matchingFiles.add(fileWithExt);
       }
     }
@@ -141,8 +141,8 @@ const createImportMap = async (
 
         /* c8 ignore start */
         if (
-          content.includes(relativePath.replace(regex.extFilter, '')) ||
-          content.includes(normalizedSrcFile)
+          content.indexOf(relativePath.replace(regex.extFilter, '')) !== -1 ||
+          content.indexOf(normalizedSrcFile) !== -1
         ) {
           if (!importMap.has(normalizedSrcFile)) {
             importMap.set(normalizedSrcFile, new Set());

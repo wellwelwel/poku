@@ -24,7 +24,7 @@ jobs:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
 
-      - name: ➕ Actions - Setup NodeJS
+      - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'

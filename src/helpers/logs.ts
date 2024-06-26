@@ -1,7 +1,8 @@
-/* c8 ignore start */
-import { stdout } from 'node:process';
+/* c8 ignore next */
 import type { Configs } from '../@types/poku.js';
+/* c8 ignore next */
 import type { Formatter } from './format.js';
+import { stdout } from 'node:process';
 
 const regex = {
   newLine: /\n/,
@@ -16,6 +17,7 @@ export const isDebug = (configs?: Configs): boolean => Boolean(configs?.debug);
 export const write = (data: string | Uint8Array | Formatter) =>
   stdout.write(`${String(data)}\n`);
 
+/* c8 ignore next */ // c8 bug
 export const printOutput = (options: {
   output: string;
   result: boolean;
@@ -31,7 +33,7 @@ export const printOutput = (options: {
     debug || !result
       ? splittedOutput
       : splittedOutput.filter((current) => {
-          if (current.includes('Exited with code')) {
+          if (current.indexOf('Exited with code') !== -1) {
             return false;
           }
           return regex.ansi.test(JSON.stringify(current)) || current === '';
@@ -46,4 +48,3 @@ export const printOutput = (options: {
 
   write(mappedOutputs.join('\n'));
 };
-/* c8 ignore stop */

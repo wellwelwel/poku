@@ -75,6 +75,9 @@
       "include": ["src/polyfills/**/**"],
       "linter": {
         "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          },
           "suspicious": {
             "noExplicitAny": "off"
           }
@@ -85,6 +88,9 @@
       "include": ["src/index.ts"],
       "linter": {
         "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          },
           "performance": {
             "noBarrelFile": "off"
           }

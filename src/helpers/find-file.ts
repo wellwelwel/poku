@@ -1,6 +1,7 @@
-/* c8 ignore start */
+/* c8 ignore next */ // c8 bug
 const regex = /at\s(\/.+|file:.+)|^(\s+)at\smodule\scode\s\((\/.+|file:.+)\)/i;
 
+/* c8 ignore next */ // c8 bug
 export const findFile = (error: Error) => {
   const stackLines = error.stack?.split('\n') || [];
 
@@ -9,7 +10,7 @@ export const findFile = (error: Error) => {
   const basePath = 'poku/lib/';
 
   for (const line of stackLines) {
-    if (!line.includes(basePath)) {
+    if (line.indexOf(basePath) === -1) {
       const match = line.match(regex);
 
       // Node and Deno
@@ -28,4 +29,3 @@ export const findFile = (error: Error) => {
 
   return file;
 };
-/* c8 ignore stop */

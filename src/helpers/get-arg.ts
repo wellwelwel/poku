@@ -1,4 +1,4 @@
-/* c8 ignore start */
+/* c8 ignore next */ // c8 bug
 import { argv } from 'node:process';
 
 const [, , ...processArgs] = argv;
@@ -17,9 +17,13 @@ const regexQuotes = /''|""/;
  * command --arg      # undefined
  * ```
  */
-export const getArg = (arg: string, prefix = '--'): string | undefined => {
+export const getArg = (
+  arg: string,
+  prefix = '--',
+  baseArgs = processArgs
+): string | undefined => {
   const argPattern = `${prefix}${arg}=`;
-  const argValue = processArgs.find((a) => a.startsWith(argPattern));
+  const argValue = baseArgs.find((a) => a.startsWith(argPattern));
 
   if (!argValue) {
     return undefined;
@@ -40,10 +44,14 @@ export const getArg = (arg: string, prefix = '--'): string | undefined => {
  * command        # false
  * ```
  */
-export const hasArg = (arg: string, prefix = '--'): boolean => {
+export const hasArg = (
+  arg: string,
+  prefix = '--',
+  baseArgs = processArgs
+): boolean => {
   const argPattern = `${prefix}${arg}`;
 
-  return processArgs.some((a) => a.startsWith(argPattern));
+  return baseArgs.some((a) => a.startsWith(argPattern));
 };
 
 /**
@@ -58,8 +66,11 @@ export const hasArg = (arg: string, prefix = '--'): boolean => {
  * command --arg                    # undefined
  * ```
  */
-export const getLastParam = (prefix = '--'): string | undefined => {
-  const lastArg = processArgs[processArgs.length - 1];
+export const getLastParam = (
+  prefix = '--',
+  baseArgs = processArgs
+): string | undefined => {
+  const lastArg = baseArgs[baseArgs.length - 1];
 
   if (!lastArg || lastArg.startsWith(prefix)) {
     return undefined;
@@ -68,25 +79,31 @@ export const getLastParam = (prefix = '--'): string | undefined => {
   return lastArg;
 };
 
-export const argToArray = (arg: string, prefix = '--') => {
-  const hasArgument = hasArg(arg);
+/* c8 ignore next */ // c8 bug
+export const argToArray = (
+  arg: string,
+  prefix = '--',
+  baseArgs = processArgs
+) => {
+  const hasArgument = hasArg(arg, prefix, baseArgs);
   if (!hasArgument) {
     return undefined;
   }
 
-  const argValue = getArg(arg, prefix);
+  const argValue = getArg(arg, prefix, baseArgs);
 
   if (hasArgument && !argValue) {
     return [];
   }
 
+  /* c8 ignore start */ // Type safe
   if (!argValue) {
     return undefined;
   }
+  /* c8 ignore stop */
 
   return argValue
     .split(',')
     .map((a) => a.trim())
     .filter((a) => a);
 };
-/* c8 ignore stop */

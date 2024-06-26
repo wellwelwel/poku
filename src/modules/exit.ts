@@ -1,9 +1,9 @@
-/* c8 ignore start */
+/* c8 ignore start */ // This module is entirely process-based
+import type { Code } from '../@types/code.js';
 import process from 'node:process';
 import { hr } from '../helpers/hr.js';
 import { results } from '../configs/poku.js';
 import { format } from '../helpers/format.js';
-import type { Code } from '../@types/code.js';
 import { write } from '../helpers/logs.js';
 import { fileResults, finalResults } from '../configs/files.js';
 import { setTime, toSecs } from '../helpers/time.js';

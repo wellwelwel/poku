@@ -1,9 +1,11 @@
 /* c8 ignore start */
-import { version } from 'node:process';
 import type { Configs } from '../@types/poku.js';
+import { version } from 'node:process';
 
 declare const Deno: unknown;
 declare const Bun: unknown;
+
+const regex = /v(\d+)\./;
 
 export const supportedPlatforms: readonly Configs['platform'][] = [
   'node',
@@ -33,17 +35,22 @@ export const getRuntime = (
     return configs.platform;
   }
 
+  /* c8 ignore start */
   if (typeof Deno !== 'undefined') {
     return 'deno';
   }
+  /* c8 ignore stop */
 
+  /* c8 ignore start */
   if (typeof Bun !== 'undefined') {
     return 'bun';
   }
+  /* c8 ignore stop */
 
   return 'node';
 };
 
+/* c8 ignore start */
 export const nodeVersion =
-  getRuntime() === 'node' ? Number(version.match(/v(\d+)\./)?.[1]) : undefined;
+  getRuntime() === 'node' ? Number(version.match(regex)?.[1]) : undefined;
 /* c8 ignore stop */

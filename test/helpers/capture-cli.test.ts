@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { spawn } from 'node:child_process';
+import { spawn, type SpawnOptionsWithoutStdio } from 'node:child_process';
 import { isWindows, runner } from '../../src/helpers/runner.js';
 
 // `/_.ts`: Simulate TypeScript file for Deno
@@ -40,5 +40,37 @@ export const executeCLI = (args: string[]): Promise<string> =>
         console.log(output);
         reject(`Process exited with code ${code}`);
       }
+    });
+  });
+
+export const inspectCLI = (
+  command: string,
+  options?: SpawnOptionsWithoutStdio
+): Promise<{ stdout: string; stderr: string; exitCode: number }> =>
+  new Promise((resolve, reject) => {
+    const [cmd, ...args] = command.split(' ');
+
+    const childProcess = spawn(cmd, args, {
+      shell: isWindows,
+      ...options,
+    });
+
+    let stdout = '';
+    let stderr = '';
+
+    childProcess.stdout.on('data', (data: Buffer) => {
+      stdout += data.toString();
+    });
+
+    childProcess.stderr.on('data', (data: Buffer) => {
+      stderr += data.toString();
+    });
+
+    childProcess.on('error', (error: Error) => {
+      reject({ error: error.message, stdout, stderr, exitCode: 1 });
+    });
+
+    childProcess.on('close', (code: number) => {
+      resolve({ stdout, stderr, exitCode: code });
     });
   });
