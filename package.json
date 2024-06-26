@@ -44,7 +44,7 @@
     "docker:deno": "docker compose -f test/docker/playground/deno/docker-compose.yml up --build",
     "clear": "shx rm -rf lib ci coverage",
     "prebuild": "npm run clear",
-    "build": "tsc && shx rm -rf lib/@types && tsc -p tsconfig.types.json && tsc -p tsconfig.test.json",
+    "build": "tsc && tsc -p tsconfig.test.json",
     "postbuild": "tsx tools/compatibility/node.ts && shx cp fixtures/server/package.json ci/fixtures/server/package.json && npm run build:deno && shx chmod +x lib/bin/index.js",
     "build:deno": "esbuild src/polyfills/deno.mts --outfile=lib/polyfills/deno.mjs --format=esm",
     "eslint:checker": "eslint . --ext .js,.ts",
