@@ -1,9 +1,9 @@
-/* c8 ignore start */
+/* c8 ignore start */ // Multi-platform
+import type { Configs } from '../@types/poku.js';
+import type { Runner } from '../@types/runner.js';
 import { platform } from 'node:process';
 import { extname } from 'node:path';
 import { getRuntime } from './get-runtime.js';
-import type { Configs } from '../@types/poku.js';
-import type { Runner } from '../@types/runner.js';
 
 export const isWindows = platform === 'win32';
 
@@ -40,7 +40,7 @@ export const runner = (filename: string, configs?: Configs): string[] => {
   }
 
   // Node.js
-  return extname(filename) === '.ts'
+  return ['.ts', '.mts', '.cts'].includes(extname(filename))
     ? [isWindows ? 'npx.cmd' : 'npx', 'tsx']
     : ['node'];
 };
