@@ -26,12 +26,12 @@ jobs:
       - name: ➕ Actions - Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest
+          bun-version: 'latest'
 
       - name: ➕ Actions - Setup Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: latest
+          deno-version: 'v1.x'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
@@ -63,10 +63,20 @@ jobs:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
 
-      - name: ➕ Actions - Setup NodeJS
+      - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+
+      - name: ➕ Actions - Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: ➕ Actions - Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: 'v1.x'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
@@ -98,10 +108,20 @@ jobs:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
 
-      - name: ➕ Actions - Setup NodeJS
+      - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+
+      - name: ➕ Actions - Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: ➕ Actions - Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: 'v1.x'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
@@ -133,10 +153,20 @@ jobs:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
 
-      - name: ➕ Actions - Setup NodeJS
+      - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+
+      - name: ➕ Actions - Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: ➕ Actions - Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: 'v1.x'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
