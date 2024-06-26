@@ -44,7 +44,6 @@
       },
       "suspicious": {
         "all": true,
-        "noAsyncPromiseExecutor": "off",
         "noEmptyBlockStatements": "off",
         "noConsoleLog": "off"
       },

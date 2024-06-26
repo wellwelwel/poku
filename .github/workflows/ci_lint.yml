@@ -33,6 +33,9 @@ jobs:
       - name: 📦 Installing Dependencies
         run: npm ci
 
+      - name: 🤹🏻‍♀️ Biome Check
+        run: npm run biome:check
+
       - name: 🤹🏻‍♀️ ESLint Check
         run: npm run eslint:check
 
