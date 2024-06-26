@@ -2,6 +2,7 @@
 import { argv } from 'node:process';
 
 const [, , ...processArgs] = argv;
+const regexQuotes = /''|""/;
 
 /**
  * Gets the value of an argument.
@@ -20,9 +21,11 @@ export const getArg = (arg: string, prefix = '--'): string | undefined => {
   const argPattern = `${prefix}${arg}=`;
   const argValue = processArgs.find((a) => a.startsWith(argPattern));
 
-  if (!argValue) return undefined;
+  if (!argValue) {
+    return undefined;
+  }
 
-  return argValue.slice(argPattern.length).replace(/''|""/, '');
+  return argValue.slice(argPattern.length).replace(regexQuotes, '');
 };
 
 /**
@@ -58,19 +61,28 @@ export const hasArg = (arg: string, prefix = '--'): boolean => {
 export const getLastParam = (prefix = '--'): string | undefined => {
   const lastArg = processArgs[processArgs.length - 1];
 
-  if (!lastArg || lastArg.startsWith(prefix)) return undefined;
+  if (!lastArg || lastArg.startsWith(prefix)) {
+    return undefined;
+  }
 
   return lastArg;
 };
 
 export const argToArray = (arg: string, prefix = '--') => {
   const hasArgument = hasArg(arg);
-  if (!hasArgument) return undefined;
+  if (!hasArgument) {
+    return undefined;
+  }
 
   const argValue = getArg(arg, prefix);
 
-  if (hasArgument && !argValue) return [];
-  if (!argValue) return undefined;
+  if (hasArgument && !argValue) {
+    return [];
+  }
+
+  if (!argValue) {
+    return undefined;
+  }
 
   return argValue
     .split(',')

@@ -5,6 +5,7 @@
   "compilerOptions": {
     "outDir": "ci",
     "declaration": false,
+    "allowJs": true,
     "declarationDir": null
   }
 }

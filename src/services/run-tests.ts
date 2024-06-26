@@ -1,4 +1,7 @@
-/* c8 ignore next */
+/* c8 ignore start */ // c8 bug (incompatibility) =>
+/**
+ * This service is strictly tested, but these tests use deep child process for it
+ */
 import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime } from 'node:process';
 import { join, relative, sep } from 'node:path';
@@ -64,17 +67,14 @@ export const runTests = async (
     } else {
       ++results.fail;
 
-      /* c8 ignore start */
       if (showLogs) {
         write(
           `${indentation.test}${format('✘').fail()} ${log}${format(` › ${total}ms`).fail().dim()}${nextLine}`
         );
       }
-      /* c8 ignore stop */
 
       passed = false;
 
-      /* c8 ignore start */
       if (configs?.failFast) {
         hr();
         write(
@@ -82,7 +82,6 @@ export const runTests = async (
         );
         break;
       }
-      /* c8 ignore stop */
     }
   }
 
@@ -101,29 +100,34 @@ export const runTestsParallel = async (
   const concurrencyLimit = configs?.concurrency || 0;
   const concurrencyResults: (boolean | undefined)[][] = [];
 
-  if (concurrencyLimit > 0)
+  if (concurrencyLimit > 0) {
     for (let i = 0; i < files.length; i += concurrencyLimit) {
       filesByConcurrency.push(files.slice(i, i + concurrencyLimit));
     }
-  else filesByConcurrency.push(files);
+  } else {
+    filesByConcurrency.push(files);
+  }
 
   try {
     for (const fileGroup of filesByConcurrency) {
       const promises = fileGroup.map(async (filePath) => {
-        if (configs?.failFast && results.fail > 0) return;
+        if (configs?.failFast && results.fail > 0) {
+          return;
+        }
 
         const testPassed = await runTestFile(filePath, configs);
 
-        /* c8 ignore start */
         if (!testPassed) {
           ++results.fail;
 
-          if (configs?.failFast)
-            throw `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`;
+          if (configs?.failFast) {
+            throw new Error(
+              `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
+            );
+          }
 
           return false;
         }
-        /* c8 ignore stop */
 
         ++results.success;
         return true;
@@ -134,12 +138,10 @@ export const runTestsParallel = async (
     }
 
     return concurrencyResults.every((group) => group.every((result) => result));
-    /* c8 ignore start */
   } catch (error) {
     hr();
-    console.error(error);
+    error instanceof Error && console.error(error.message);
 
     return false;
   }
-  /* c8 ignore stop */
 };

@@ -1,4 +1,4 @@
 import process from 'node:process';
 
-console.log(123);
+console.log('Failure Fixture');
 process.exit(1);

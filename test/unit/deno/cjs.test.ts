@@ -6,7 +6,9 @@ import { getRuntime } from '../../../src/helpers/get-runtime.js';
 
 const runtime = getRuntime();
 
-if (runtime !== 'deno') process.exit(0);
+if (runtime !== 'deno') {
+  process.exit(0);
+}
 
 test('Deno Compatibility', async () => {
   const FILE = './fixtures/deno/require.cjs';
@@ -18,7 +20,7 @@ test('Deno Compatibility', async () => {
 
   const denoProcess = spawn(command, args, { env });
 
-  let output: string = '';
+  let output = '';
 
   denoProcess.stdout.on('data', (data) => {
     output += String(data);

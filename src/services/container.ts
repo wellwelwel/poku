@@ -85,7 +85,9 @@ export class DockerContainer {
   public async build() {
     const args: string[] = ['build'];
 
-    if (this.cache === false) args.push('--no-cache');
+    if (this.cache === false) {
+      args.push('--no-cache');
+    }
 
     await runDockerCommand(
       'docker',
@@ -102,12 +104,17 @@ export class DockerContainer {
     args.push(this.detach !== false ? '-d' : '--init');
     args.push(...['--name', this.containerName]);
 
-    this.ports.forEach((port) => args.push(...['-p', port]));
-    this.environments.forEach((environment) =>
-      args.push(...['-e', environment])
-    );
+    for (const port of this.ports) {
+      args.push(...['-p', port]);
+    }
 
-    if (this.envFile) args.push(...['--env-file', this.envFile]);
+    for (const environment of this.environments) {
+      args.push(...['-e', environment]);
+    }
+
+    if (this.envFile) {
+      args.push(...['--env-file', this.envFile]);
+    }
 
     return await runDockerCommand(
       'docker',
@@ -178,15 +185,23 @@ export class DockerCompose {
   public async up() {
     const args: string[] = ['-f', this.file];
 
-    if (this.envFile) args.push(...['--env-file', this.envFile]);
-    if (this.projectName) args.push(...['-p', this.projectName]);
+    if (this.envFile) {
+      args.push(...['--env-file', this.envFile]);
+    }
+    if (this.projectName) {
+      args.push(...['-p', this.projectName]);
+    }
 
     args.push('up');
     /* c8 ignore next */
     args.push(this.detach !== false ? '-d' : '--abort-on-container-exit');
 
-    if (this.build) args.push('--build');
-    if (this.serviceName) args.push(this.serviceName);
+    if (this.build) {
+      args.push('--build');
+    }
+    if (this.serviceName) {
+      args.push(this.serviceName);
+    }
 
     return await runDockerCommand(
       'docker-compose',
@@ -199,8 +214,12 @@ export class DockerCompose {
   public async down() {
     const args: string[] = ['-f', this.file];
 
-    if (this.envFile) args.push(...['--env-file', this.envFile]);
-    if (this.projectName) args.push(...['-p', this.projectName]);
+    if (this.envFile) {
+      args.push(...['--env-file', this.envFile]);
+    }
+    if (this.projectName) {
+      args.push(...['-p', this.projectName]);
+    }
 
     return await runDockerCommand(
       'docker-compose',

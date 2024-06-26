@@ -67,7 +67,9 @@ const backgroundProcess = (
               ['bun', 'deno'].includes(String(options?.runner))
             ) {
               process.kill(PID);
-            } else process.kill(-PID, 'SIGKILL');
+            } else {
+              process.kill(-PID, 'SIGKILL');
+            }
 
             if (port && ['bun', 'deno'].includes(runtime)) {
               setTimeout(async () => {
@@ -80,10 +82,8 @@ const backgroundProcess = (
               return;
             }
           } catch {
-            {
-              resolve(undefined);
-              return;
-            }
+            resolve(undefined);
+            return;
           }
         });
 
@@ -141,7 +141,9 @@ const backgroundProcess = (
 
       /* c8 ignore start */
       service.on('close', (code) => {
-        if (code !== 0) reject(`Service exited with code ${code}`);
+        if (code !== 0) {
+          reject(`Service exited with code ${code}`);
+        }
       });
       /* c8 ignore stop */
 

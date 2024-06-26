@@ -1,5 +1,5 @@
 /* c8 ignore next */
-import {
+import type {
   DockerComposeConfigs,
   DockerfileConfigs,
 } from '../@types/container.js';

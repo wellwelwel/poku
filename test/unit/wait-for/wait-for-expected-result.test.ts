@@ -144,7 +144,7 @@ test('Wait For Expected Result', async () => {
 
     assert.doesNotReject(
       () =>
-        waitForExpectedResult(() => new Error(''), new Error(''), {
+        waitForExpectedResult(() => new Error('Some'), new Error('Some'), {
           timeout: 100,
         }),
       'Error'

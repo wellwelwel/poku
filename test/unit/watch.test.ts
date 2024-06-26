@@ -9,7 +9,9 @@ import { getRuntime, nodeVersion } from '../../src/helpers/get-runtime.js';
 import { watch } from '../../src/services/watch.js';
 import type { WatchCallback } from '../../src/@types/watch.js';
 
-if (nodeVersion && nodeVersion < 10) process.exit(0);
+if (nodeVersion && nodeVersion < 10) {
+  process.exit(0);
+}
 
 const runtime = getRuntime();
 
@@ -79,8 +81,12 @@ describe('Watcher Service', async () => {
   });
 
   await it('should watch for new files in directory', async () => {
-    if (runtime === 'bun') return;
-    if (runtime === 'deno') return;
+    if (runtime === 'bun') {
+      return;
+    }
+    if (runtime === 'deno') {
+      return;
+    }
 
     callbackResults = [];
 
@@ -135,8 +141,9 @@ describe('Watcher Service', async () => {
   });
 
   await it('should watch for changes in subdirectories', async () => {
-    if (runtime === 'bun') return;
-    if (runtime === 'deno') return;
+    if (runtime === 'bun' || runtime === 'deno') {
+      return;
+    }
 
     callbackResults = [];
     const watcher = await watch(tmpDir, callback);
@@ -173,8 +180,12 @@ describe('Watcher Service', async () => {
   });
 
   await it('should watch for changes in nested subdirectories', async () => {
-    if (runtime === 'bun') return;
-    if (runtime === 'deno') return;
+    if (runtime === 'bun') {
+      return;
+    }
+    if (runtime === 'deno') {
+      return;
+    }
 
     callbackResults = [];
     const watcher = await watch(tmpDir, callback);
@@ -212,7 +223,9 @@ describe('Watcher Service', async () => {
   });
 
   await it('should watch a single file directly', async () => {
-    if (runtime === 'bun') return;
+    if (runtime === 'bun') {
+      return;
+    }
 
     callbackResults = [];
     const filePath = path.join(tmpDir, 'file1.test.js');

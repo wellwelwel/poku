@@ -263,9 +263,11 @@ async function doesNotReject(
         typeof errorOrMessage === 'function' ||
         errorOrMessage instanceof RegExp ||
         typeof errorOrMessage === 'object'
-      )
+      ) {
         await nodeAssert.doesNotReject(block, errorOrMessage, message);
-      else await nodeAssert.doesNotReject(block, message);
+      } else {
+        await nodeAssert.doesNotReject(block, message);
+      }
     },
     {
       message: typeof errorOrMessage === 'string' ? errorOrMessage : message,

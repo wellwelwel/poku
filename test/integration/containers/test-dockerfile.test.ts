@@ -10,7 +10,9 @@ import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
 import { isWindows } from '../../../src/helpers/runner.js';
 
 // External error: no matching manifest for windows/amd64
-if (isWindows) process.exit(0);
+if (isWindows) {
+  process.exit(0);
+}
 
 const hasDocker = (() => {
   try {

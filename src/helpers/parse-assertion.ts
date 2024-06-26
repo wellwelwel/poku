@@ -13,6 +13,7 @@ import { nodeVersion } from './get-runtime.js';
 import { write } from './logs.js';
 
 const cwd = processCWD();
+const regexFile = /file:(\/\/)?/;
 
 export const parseResultType = (type?: unknown): string => {
   const recurse = (value: unknown): unknown => {
@@ -22,26 +23,33 @@ export const parseResultType = (type?: unknown): string => {
       typeof value === 'bigint' ||
       typeof value === 'symbol' ||
       value instanceof RegExp
-    )
+    ) {
       return String(value);
+    }
 
-    if (Array.isArray(value)) return value.map(recurse);
-    if (value instanceof Set) return Array.from(value).map(recurse);
+    if (Array.isArray(value)) {
+      return value.map(recurse);
+    }
+    if (value instanceof Set) {
+      return Array.from(value).map(recurse);
+    }
     /* c8 ignore start */
-    if (value instanceof Map)
+    if (value instanceof Map) {
       return recurse(
         !nodeVersion || nodeVersion >= 12
           ? Object.fromEntries(value)
           : fromEntries(value)
       );
+    }
     /* c8 ignore stop */
 
     /* c8 ignore start */
     if (value !== null && typeof value === 'object') {
-      if (!nodeVersion || nodeVersion >= 12)
+      if (!nodeVersion || nodeVersion >= 12) {
         return Object.fromEntries(
           Object.entries(value).map(([key, val]) => [key, recurse(val)])
         );
+      }
 
       return fromEntries(
         entries(value).map(([key, val]) => [key, recurse(val)])
@@ -65,25 +73,38 @@ export const parseAssertion = async (
   const FILE = env.FILE;
   let preIdentation = '';
 
-  if (indentation.hasDescribe || indentation.hasTest) preIdentation += '  ';
-  if (indentation.hasIt) preIdentation += '  ';
+  if (indentation.hasDescribe || indentation.hasTest) {
+    preIdentation += '  ';
+  }
+
+  if (indentation.hasIt) {
+    preIdentation += '  ';
+  }
 
   try {
     if (typeof each.before.cb === 'function' && each.before.assert) {
       const beforeResult = each.before.cb();
-      /* c8 ignore next */
-      if (beforeResult instanceof Promise) await beforeResult;
-      /* c8 ignore next */
+
+      /* c8 ignore start */
+      if (beforeResult instanceof Promise) {
+        await beforeResult;
+      }
+      /* c8 ignore stop */
     }
 
     const cbResult = cb();
-    if (cbResult instanceof Promise) await cbResult;
+    if (cbResult instanceof Promise) {
+      await cbResult;
+    }
 
     if (typeof each.after.cb === 'function' && each.after.assert) {
       const afterResult = each.after.cb();
-      /* c8 ignore next */
-      if (afterResult instanceof Promise) await afterResult;
-      /* c8 ignore next */
+
+      /* c8 ignore start */
+      if (afterResult instanceof Promise) {
+        await afterResult;
+      }
+      /* c8 ignore stop */
     }
 
     if (typeof options.message === 'string') {
@@ -103,16 +124,18 @@ export const parseAssertion = async (
   } catch (error) {
     if (error instanceof assert.AssertionError) {
       const { code, actual, expected, operator } = error;
-      const absoultePath = findFile(error).replace(/file:(\/\/)?/, '');
+      const absoultePath = findFile(error).replace(regexFile, '');
       const file = path.relative(path.resolve(cwd), absoultePath);
 
-      let message: string = '';
+      let message = '';
 
-      if (typeof options.message === 'string') message = options.message;
-      else if (options.message instanceof Error)
+      if (typeof options.message === 'string') {
+        message = options.message;
+      } else if (options.message instanceof Error) {
         message = options.message.message;
-      else if (typeof options.defaultMessage === 'string')
+      } else if (typeof options.defaultMessage === 'string') {
         message = options.defaultMessage;
+      }
 
       const finalMessage =
         message?.trim().length > 0
@@ -136,16 +159,18 @@ export const parseAssertion = async (
         write(
           format(`${preIdentation}  ${options?.actual || 'Actual'}:`).dim()
         );
-        splitActual.forEach((line) =>
-          write(`${preIdentation}  ${format(line).fail().bold()}`)
-        );
+
+        for (const line of splitActual) {
+          write(`${preIdentation}  ${format(line).fail().bold()}`);
+        }
 
         write(
           `\n${preIdentation}  ${format(`${options?.expected || 'Expected'}:`).dim()}`
         );
-        splitExpected.forEach((line) =>
-          write(`${preIdentation}  ${format(line).success().bold()}`)
-        );
+
+        for (const line of splitExpected) {
+          write(`${preIdentation}  ${format(line).success().bold()}`);
+        }
       }
 
       if (options.throw) {

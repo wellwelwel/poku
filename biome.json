@@ -1,0 +1,95 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
+  "files": {
+    "ignore": [
+      "node_modules",
+      "lib",
+      "ci",
+      "coverage",
+      "website",
+      "fixtures",
+      "benchmark"
+    ]
+  },
+  "organizeImports": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "all": true,
+      "complexity": {
+        "all": true,
+        "noExcessiveCognitiveComplexity": "off"
+      },
+      "a11y": {
+        "all": true
+      },
+      "correctness": {
+        "all": true,
+        "noNodejsModules": "off"
+      },
+      "nursery": {
+        "all": true,
+        "useImportRestrictions": "off",
+        "noConsole": "off",
+        "noMisplacedAssertion": "off"
+      },
+      "performance": {
+        "all": true
+      },
+      "security": {
+        "all": true
+      },
+      "suspicious": {
+        "all": true,
+        "noAsyncPromiseExecutor": "off",
+        "noEmptyBlockStatements": "off",
+        "noConsoleLog": "off"
+      },
+      "style": {
+        "all": true,
+        "noNonNullAssertion": "off",
+        "useNamingConvention": "off",
+        "useNodeAssertStrict": "off",
+        "noNamespaceImport": "off",
+        "useForOf": "off"
+      }
+    }
+  },
+  "javascript": {
+    "globals": ["BufferEncoding"]
+  },
+  "overrides": [
+    {
+      "include": ["test", "tools"],
+      "linter": {
+        "rules": {
+          "nursery": {
+            "useTopLevelRegex": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["src/polyfills"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["src/index.ts"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noBarrelFile": "off"
+          }
+        }
+      }
+    }
+  ]
+}

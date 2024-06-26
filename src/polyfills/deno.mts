@@ -7,7 +7,9 @@ import process from 'node:process';
 import { resolve, normalize } from 'node:path';
 
 const file = process.env?.FILE;
-if (!file) process.exit(1);
+if (!file) {
+  process.exit(1);
+}
 
 const cwd = process.cwd();
 const targetPath = resolve(cwd, '');

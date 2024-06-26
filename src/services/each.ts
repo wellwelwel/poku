@@ -8,12 +8,21 @@ const eachCore = async (
   fileRelative: string,
   configs?: Configs
 ): Promise<boolean> => {
-  if (typeof configs?.[type] !== 'function') return true;
+  /* c8 ignore start */
+  if (typeof configs?.[type] !== 'function') {
+    return true;
+  }
+  /* c8 ignore stop */
 
   const cb = configs[type];
-  /* c8 ignore next */
-  if (typeof cb !== 'function') return true;
 
+  /* c8 ignore start */
+  if (typeof cb !== 'function') {
+    return true;
+  }
+  /* c8 ignore stop */
+
+  /* c8 ignore start */
   write(
     `    ${format('◯').dim().info()} ${format(
       `${cb}: ${cb.name || 'anonymous function'}`
@@ -21,11 +30,17 @@ const eachCore = async (
       .dim()
       .italic()}`
   );
+  /* c8 ignore stop */
 
   try {
     const resultCb = cb();
-    /* c8 ignore next */
-    if (resultCb instanceof Promise) await resultCb;
+
+    /* c8 ignore start */
+    if (resultCb instanceof Promise) {
+      await resultCb;
+    }
+    /* c8 ignore stop */
+
     return true;
     /* c8 ignore start */
   } catch (error) {
@@ -40,26 +55,28 @@ const eachCore = async (
     );
 
     if (error instanceof Error) {
-      write(format(`      ├─ Message:`).fail());
+      write(format('      ├─ Message:').fail());
       write(format(`      │ └─ ${error.message}`).fail());
     }
 
     return false;
   }
   /* c8 ignore stop */
-  /* c8 ignore next */ // c8 bug
 };
 
 export const beforeEach = async (fileRelative: string, configs?: Configs) => {
-  if (configs?.beforeEach)
+  if (configs?.beforeEach) {
     return await eachCore('beforeEach', fileRelative, configs);
+  }
 
   return true;
 };
 
+/* c8 ignore next */ // c8 bug
 export const afterEach = async (fileRelative: string, configs?: Configs) => {
-  if (configs?.afterEach)
+  if (configs?.afterEach) {
     return await eachCore('afterEach', fileRelative, configs);
+  }
 
   return true;
 };

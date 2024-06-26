@@ -34,7 +34,9 @@ export const beforeEach = (
   options?.immediate && callback();
 
   each.before.cb = () => {
-    if (each.before.status) callback();
+    if (each.before.status) {
+      callback();
+    }
   };
 
   const pause = () => {
@@ -84,7 +86,9 @@ export const afterEach = (
     typeof options?.assert === 'boolean' ? options.assert : false;
 
   each.after.cb = () => {
-    if (each.after.status) callback();
+    if (each.after.status) {
+      callback();
+    }
   };
 
   const pause = () => {

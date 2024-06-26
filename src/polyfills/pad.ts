@@ -6,13 +6,15 @@ export const padStart = (
   targetLength: number,
   padString: string
 ): string => {
-  padString = !padString ? ' ' : String(padString);
+  const defaultPad = padString ? String(padString) : ' ';
 
-  if (str.length >= targetLength) return str;
+  if (str.length >= targetLength) {
+    return str;
+  }
 
   const paddingLength = targetLength - str.length;
-  let fullPadString = padString.repeat(
-    Math.ceil(paddingLength / padString.length)
+  let fullPadString = defaultPad.repeat(
+    Math.ceil(paddingLength / defaultPad.length)
   );
 
   fullPadString = fullPadString.slice(0, paddingLength);

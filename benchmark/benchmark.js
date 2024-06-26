@@ -21,7 +21,9 @@ const test = () => {
   };
 
   for (const [name, result] of results) {
-    if (name === 'Poku (Local)') continue;
+    if (name === 'Poku (Local)') {
+      continue;
+    }
 
     const expectedRatio = tolerancesPerTester[name];
     const actualRatio = pokuResult.opsPerSec / result.opsPerSec;
@@ -71,7 +73,9 @@ suite
 
     console.log(`\n🚀 Fastest is \x1b[1m${fatest}\x1b[0m\n`);
 
-    if (!/^Poku/.test(fatest)) process.exit(1);
+    if (!/^Poku/.test(fatest)) {
+      process.exit(1);
+    }
 
     test();
   })

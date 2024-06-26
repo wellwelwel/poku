@@ -4,15 +4,24 @@ import { env } from 'node:process';
 import { sep, join } from 'node:path';
 import { readdir, stat as fsStat } from '../polyfills/fs.js';
 
+const regex = {
+  sep: /[/\\]+/g,
+  pathLevel: /(\.\.(\/|\\|$))+/g,
+  unusualChars: /[<>|^?*]+/g,
+  absolutePath: /^[/\\]/,
+  safeRegExp: /[.*{}[\]\\]/g,
+  defaultFilter: /\.(test|spec)\./i,
+} as const;
+
 export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
   const sanitizedPath = input
-    .replace(/[/\\]+/g, sep) // adapting slashes according to OS
-    .replace(/(\.\.(\/|\\|$))+/g, '') // ensure the current path level
-    .replace(/[<>|^?*]+/g, ''); // removing unusual path characters
+    .replace(regex.sep, sep) // adapting slashes according to OS
+    .replace(regex.pathLevel, '') // ensure the current path level
+    .replace(regex.unusualChars, ''); // removing unusual path characters
 
   // Preventing absolute path access
   return ensureTarget
-    ? sanitizedPath.replace(/^[/\\]/, `.${sep}`)
+    ? sanitizedPath.replace(regex.absolutePath, `.${sep}`)
     : sanitizedPath;
 };
 
@@ -23,7 +32,7 @@ export const isFile = async (fullPath: string) =>
 
 /* c8 ignore start */
 export const escapeRegExp = (string: string) =>
-  string.replace(/[.*{}[\]\\]/g, '\\$&');
+  string.replace(regex.safeRegExp, '\\$&');
 /* c8 ignore stop */
 
 /* c8 ignore start */
@@ -38,14 +47,13 @@ export const getAllFiles = async (
   configs?: Configs
 ): Promise<Set<string>> => {
   const currentFiles = await readdir(sanitizePath(dirPath));
-  const defaultRegExp = /\.(test|spec)\./i;
   /* c8 ignore start */
   const filter: RegExp =
     (envFilter
       ? envFilter
       : configs?.filter instanceof RegExp
         ? configs.filter
-        : defaultRegExp) || defaultRegExp;
+        : regex.defaultFilter) || regex.defaultFilter;
 
   const exclude: Configs['exclude'] = configs?.exclude
     ? Array.isArray(configs.exclude)
@@ -63,19 +71,28 @@ export const getAllFiles = async (
       if (
         fullPath.indexOf('node_modules') !== -1 ||
         fullPath.indexOf('.git') === 0
-      )
+      ) {
         return;
+      }
       /* c8 ignore stop */
 
       if (exclude) {
         for (let i = 0; i < exclude.length; i++) {
-          /* c8 ignore next */
-          if (exclude[i].test(fullPath)) return;
+          /* c8 ignore start */
+          if (exclude[i].test(fullPath)) {
+            return;
+          }
+          /* c8 ignore stop */
         }
       }
 
-      if (filter.test(fullPath)) return files.add(fullPath);
-      if (stat.isDirectory()) await getAllFiles(fullPath, files, configs);
+      if (filter.test(fullPath)) {
+        return files.add(fullPath);
+      }
+
+      if (stat.isDirectory()) {
+        await getAllFiles(fullPath, files, configs);
+      }
     })
   );
 

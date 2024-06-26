@@ -26,7 +26,7 @@ const checkPort = (port: number, host: string): Promise<boolean> =>
 export const sleep = (milliseconds: number): Promise<void> => {
   /* c8 ignore start */
   if (!Number.isInteger(milliseconds)) {
-    throw new Error(`Milliseconds must be an integer.`);
+    throw new Error('Milliseconds must be an integer.');
   }
   /* c8 ignore stop */
 
@@ -70,14 +70,16 @@ export const waitForExpectedResult = async (
     const result = await callback();
 
     if (typeof expectedResult === 'function') {
-      if (typeof result === 'function' && result.name === expectedResult.name)
+      if (typeof result === 'function' && result.name === expectedResult.name) {
         break;
+      }
     } else if (typeof expectedResult === 'symbol') {
       if (
         typeof result === 'symbol' &&
         String(result) === String(expectedResult)
-      )
+      ) {
         break;
+      }
     } else {
       try {
         options?.strict
@@ -90,7 +92,7 @@ export const waitForExpectedResult = async (
 
     /* c8 ignore start */
     if (Date.now() - startTime >= timeout) {
-      throw new Error(`Timeout`);
+      throw new Error('Timeout');
     }
     /* c8 ignore stop */
 

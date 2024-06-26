@@ -9,3 +9,4 @@ node_modules
 /.temp
 /test-src
 /test-tests
+/test-before-and-after-each.json

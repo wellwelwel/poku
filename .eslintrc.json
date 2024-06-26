@@ -34,11 +34,13 @@
         "ignoreRegExpLiterals": true
       }
     ],
+    "prefer-regex-literals": "error",
     "eol-last": ["error", "always"],
     "import/no-default-export": "error",
     "eqeqeq": [2, "always"],
     "no-var": 2,
     "block-scoped-var": 2,
+    "curly": 2,
     "no-async-promise-executor": "off",
     "no-bitwise": [2, { "allow": ["~"] }],
     "no-duplicate-imports": [2, { "includeExports": true }],
@@ -71,30 +73,10 @@
       "files": ["*.ts"],
       "rules": {
         "@typescript-eslint/semi": ["error", "always"],
-        "@typescript-eslint/quotes": [
-          "error",
-          "single",
-          { "avoidEscape": true, "allowTemplateLiterals": true }
-        ],
         "@typescript-eslint/no-empty-function": [
           "error",
           { "allow": ["arrowFunctions"] }
         ]
-      }
-    },
-    {
-      "files": ["*.js"],
-      "parserOptions": {
-        "project": null
-      },
-      "rules": {
-        "semi": ["error", "always"],
-        "quotes": [
-          "error",
-          "single",
-          { "avoidEscape": true, "allowTemplateLiterals": true }
-        ],
-        "no-unused-vars": 2
       }
     }
   ],

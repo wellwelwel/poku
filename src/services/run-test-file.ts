@@ -50,8 +50,11 @@ export const runTestFile = (
     const start = hrtime();
     let end: ReturnType<typeof hrtime>;
 
-    /* c8 ignore next */
-    if (!(await beforeEach(fileRelative, configs))) return false;
+    /* c8 ignore start */
+    if (!(await beforeEach(fileRelative, configs))) {
+      return false;
+    }
+    /* c8 ignore stop */
 
     // Export spawn helper is not an option
     const child = spawn(runtime, runtimeArguments, {
@@ -73,20 +76,27 @@ export const runTestFile = (
 
       const result = code === 0;
 
-      if (showLogs)
+      if (showLogs) {
         printOutput({
           output,
           result,
           configs,
         });
+      }
 
-      /* c8 ignore next */
-      if (!(await afterEach(fileRelative, configs))) return false;
+      /* c8 ignore start */
+      if (!(await afterEach(fileRelative, configs))) {
+        return false;
+      }
+      /* c8 ignore stop */
 
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
-      if (result) fileResults.success.set(fileRelative, total);
-      else fileResults.fail.set(fileRelative, total);
+      if (result) {
+        fileResults.success.set(fileRelative, total);
+      } else {
+        fileResults.fail.set(fileRelative, total);
+      }
 
       resolve(result);
     });

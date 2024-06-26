@@ -11,7 +11,9 @@ export const runner = (filename: string, configs?: Configs): string[] => {
   const runtime = getRuntime(configs);
 
   // Bun
-  if (runtime === 'bun') return ['bun'];
+  if (runtime === 'bun') {
+    return ['bun'];
+  }
 
   // Deno
   if (runtime === 'deno') {
@@ -45,16 +47,24 @@ export const runner = (filename: string, configs?: Configs): string[] => {
 
 export const scriptRunner = (runner: Runner): string[] => {
   // Bun
-  if (runner === 'bun') return ['bun', 'run'];
+  if (runner === 'bun') {
+    return ['bun', 'run'];
+  }
 
   // Deno
-  if (runner === 'deno') return ['deno', 'task'];
+  if (runner === 'deno') {
+    return ['deno', 'task'];
+  }
 
   // Yarn
-  if (runner === 'yarn') return ['yarn'];
+  if (runner === 'yarn') {
+    return ['yarn'];
+  }
 
   // PNPM
-  if (runner === 'pnpm') return ['pnpm', 'run'];
+  if (runner === 'pnpm') {
+    return ['pnpm', 'run'];
+  }
 
   // Node.js
   return [isWindows ? 'npm.cmd' : 'npm', 'run'];

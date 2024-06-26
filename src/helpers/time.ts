@@ -10,7 +10,7 @@ export const setTime = (date: Date): string => {
 };
 
 export const toSecs = (milliseconds: string): string => {
-  const ms = parseFloat(milliseconds);
+  const ms = Number.parseFloat(milliseconds);
   const seconds = (ms / 1000).toFixed(2);
 
   return seconds;

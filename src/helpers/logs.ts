@@ -3,6 +3,11 @@ import { stdout } from 'node:process';
 import type { Configs } from '../@types/poku.js';
 import type { Formatter } from './format.js';
 
+const regex = {
+  newLine: /\n/,
+  ansi: /u001b\[0m|\n/i,
+} as const;
+
 export const isQuiet = (configs?: Configs): boolean =>
   typeof configs?.quiet === 'boolean' && Boolean(configs?.quiet);
 
@@ -20,20 +25,22 @@ export const printOutput = (options: {
 
   const debug = isDebug(configs);
   const pad = configs?.parallel ? '  ' : '    ';
-  const splittedOutput = output.split(/\n/);
+  const splittedOutput = output.split(regex.newLine);
 
   const outputs = (
     debug || !result
       ? splittedOutput
       : splittedOutput.filter((current) => {
-          if (current.includes('Exited with code')) return false;
-          return (
-            /u001b\[0m|\n/i.test(JSON.stringify(current)) || current === ''
-          );
+          if (current.includes('Exited with code')) {
+            return false;
+          }
+          return regex.ansi.test(JSON.stringify(current)) || current === '';
         })
   ).filter((line) => line?.trim().length > 0);
 
-  if (outputs.length === 0) return;
+  if (outputs.length === 0) {
+    return;
+  }
 
   const mappedOutputs = outputs.map((current) => `${pad}${current}`);
 
