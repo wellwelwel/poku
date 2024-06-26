@@ -53,10 +53,11 @@ class Watcher {
   }
 
   private async watchDirectory(dir: string) {
-    /* c8 ignore next */
+    /* c8 ignore start */
     if (this.dirWatchers.has(dir)) {
       return;
     }
+    /* c8 ignore stop */
 
     const watcher = nodeWatch(dir, async (_, filename) => {
       if (filename) {
