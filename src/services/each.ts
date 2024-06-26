@@ -22,6 +22,7 @@ const eachCore = async (
   }
   /* c8 ignore stop */
 
+  /* c8 ignore start */
   write(
     `    ${format('◯').dim().info()} ${format(
       `${cb}: ${cb.name || 'anonymous function'}`
@@ -29,6 +30,7 @@ const eachCore = async (
       .dim()
       .italic()}`
   );
+  /* c8 ignore stop */
 
   try {
     const resultCb = cb();
@@ -70,6 +72,7 @@ export const beforeEach = async (fileRelative: string, configs?: Configs) => {
   return true;
 };
 
+/* c8 ignore next */ // c8 bug
 export const afterEach = async (fileRelative: string, configs?: Configs) => {
   if (configs?.afterEach) {
     return await eachCore('afterEach', fileRelative, configs);
