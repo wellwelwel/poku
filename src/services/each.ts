@@ -42,7 +42,6 @@ const eachCore = async (
     /* c8 ignore stop */
 
     return true;
-    /* c8 ignore start */
   } catch (error) {
     write(
       format(`    ✘ ${type} callback failed ${format(`› ${cb}`).dim()}`)
@@ -61,7 +60,6 @@ const eachCore = async (
 
     return false;
   }
-  /* c8 ignore stop */
 };
 
 export const beforeEach = async (fileRelative: string, configs?: Configs) => {

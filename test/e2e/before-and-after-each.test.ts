@@ -7,7 +7,10 @@ import { assert } from '../../src/modules/assert.js';
 test(async () => {
   const prepareService = () => new Promise((resolve) => resolve(undefined));
   const resetService = () => new Promise((resolve) => resolve(undefined));
-  // const crashIt = () => new Promise((_, reject) => reject("Let's crash it"));
+  const crashIt = () => new Promise((_, reject) => reject("Let's crash it"));
+  const crashItAgain = () => {
+    throw new Error("Let's crash it");
+  };
 
   await describe('Before and After Each: direct methods', async () => {
     await it(async () => {
@@ -18,7 +21,7 @@ test(async () => {
         afterEach: resetService,
       });
 
-      assert.equal(
+      assert.strictEqual(
         code,
         0,
         'beforeEach and afterEach hooks with successful path'
@@ -33,7 +36,11 @@ test(async () => {
         afterEach: resetService,
       });
 
-      assert.equal(code, 1, 'beforeEach and afterEach hooks with failing path');
+      assert.strictEqual(
+        code,
+        1,
+        'beforeEach and afterEach hooks with failing path'
+      );
     });
   });
 
@@ -46,7 +53,7 @@ test(async () => {
         afterEach: () => resetService(),
       });
 
-      assert.equal(
+      assert.strictEqual(
         code,
         0,
         'beforeEach and afterEach hooks with successful path'
@@ -61,7 +68,11 @@ test(async () => {
         afterEach: () => resetService(),
       });
 
-      assert.equal(code, 1, 'beforeEach and afterEach hooks with failing path');
+      assert.strictEqual(
+        code,
+        1,
+        'beforeEach and afterEach hooks with failing path'
+      );
     });
   });
 
@@ -74,7 +85,7 @@ test(async () => {
         afterEach: async () => await resetService(),
       });
 
-      assert.equal(
+      assert.strictEqual(
         code,
         0,
         'beforeEach and afterEach hooks with successful path'
@@ -89,7 +100,11 @@ test(async () => {
         afterEach: async () => await resetService(),
       });
 
-      assert.equal(code, 1, 'beforeEach and afterEach hooks with failing path');
+      assert.strictEqual(
+        code,
+        1,
+        'beforeEach and afterEach hooks with failing path'
+      );
     });
   });
 
@@ -102,7 +117,7 @@ test(async () => {
         afterEach: () => true,
       });
 
-      assert.equal(
+      assert.strictEqual(
         code,
         0,
         'beforeEach and afterEach hooks with successful path'
@@ -117,7 +132,11 @@ test(async () => {
         afterEach: () => true,
       });
 
-      assert.equal(code, 1, 'beforeEach and afterEach hooks with failing path');
+      assert.strictEqual(
+        code,
+        1,
+        'beforeEach and afterEach hooks with failing path'
+      );
     });
   });
 
@@ -136,7 +155,7 @@ test(async () => {
         },
       });
 
-      assert.equal(
+      assert.strictEqual(
         code,
         0,
         'beforeEach and afterEach hooks with successful path'
@@ -157,7 +176,69 @@ test(async () => {
         },
       });
 
-      assert.equal(code, 1, 'beforeEach and afterEach hooks with failing path');
+      assert.strictEqual(
+        code,
+        1,
+        'beforeEach and afterEach hooks with failing path'
+      );
+    });
+  });
+
+  await describe('Before and After Each: Failure', async () => {
+    await it(async () => {
+      const code = await poku('./fixtures/success', {
+        noExit: true,
+        quiet: true,
+        beforeEach: crashIt,
+        afterEach: resetService,
+      });
+
+      assert.strictEqual(
+        code,
+        1,
+        'Rejects beforeEach hook with successful path'
+      );
+    });
+
+    await it(async () => {
+      const code = await poku('./fixtures/success', {
+        noExit: true,
+        quiet: true,
+        beforeEach: prepareService,
+        afterEach: crashIt,
+      });
+
+      assert.strictEqual(
+        code,
+        1,
+        'Rejects afterEach hook with successful path'
+      );
+    });
+
+    await it(async () => {
+      const code = await poku('./fixtures/success', {
+        noExit: true,
+        quiet: true,
+        beforeEach: crashItAgain,
+        afterEach: resetService,
+      });
+
+      assert.strictEqual(
+        code,
+        1,
+        'Throws beforeEach hook with successful path'
+      );
+    });
+
+    await it(async () => {
+      const code = await poku('./fixtures/success', {
+        noExit: true,
+        quiet: true,
+        beforeEach: prepareService,
+        afterEach: crashItAgain,
+      });
+
+      assert.strictEqual(code, 1, 'Throws afterEach hook with successful path');
     });
   });
 });
