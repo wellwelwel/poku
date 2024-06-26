@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.20.1](https://github.com/wellwelwel/poku/compare/v1.20.0...v1.20.1) (2024-06-26)
+
+
+### Bug Fixes
+
+* **beforeEach and afterEach:** end with the proper exit code ([#471](https://github.com/wellwelwel/poku/issues/471)) ([716cf5c](https://github.com/wellwelwel/poku/commit/716cf5c82c460b1f0411bdc72f2fda356ee7f621))
+* recognize `.mts` and `.cts` extensions as TS files ([#474](https://github.com/wellwelwel/poku/issues/474)) ([c073ed3](https://github.com/wellwelwel/poku/commit/c073ed365d3998c2ca373976af946a3cf6dbfa89))
+
 ## [1.20.0](https://github.com/wellwelwel/poku/compare/v1.19.0...v1.20.0) (2024-06-25)
 
 
