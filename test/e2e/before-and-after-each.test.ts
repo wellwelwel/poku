@@ -145,11 +145,9 @@ test(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
         quiet: true,
-        // biome-ignore lint/complexity/useArrowFunction: <test>
         beforeEach: function () {
           return;
         },
-        // biome-ignore lint/complexity/useArrowFunction: <test>
         afterEach: function () {
           return;
         },
@@ -166,11 +164,9 @@ test(async () => {
       const code = await poku('./fixtures/fail', {
         noExit: true,
         quiet: true,
-        // biome-ignore lint/complexity/useArrowFunction: <test>
         beforeEach: function () {
           return;
         },
-        // biome-ignore lint/complexity/useArrowFunction: <test>
         afterEach: function () {
           return;
         },
