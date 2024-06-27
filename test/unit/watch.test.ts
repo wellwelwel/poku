@@ -7,6 +7,7 @@ import { beforeEach, afterEach } from '../../src/modules/each.js';
 import { assert } from '../../src/modules/assert.js';
 import { getRuntime, nodeVersion } from '../../src/helpers/get-runtime.js';
 import { watch } from '../../src/services/watch.js';
+import { sleep } from '../../src/modules/wait-for.js';
 import type { WatchCallback } from '../../src/@types/watch.js';
 
 if (nodeVersion && nodeVersion < 10) {
@@ -14,13 +15,14 @@ if (nodeVersion && nodeVersion < 10) {
 }
 
 const runtime = getRuntime();
-
 const tmpDir = path.resolve('.', '.temp');
+const humanDelay = 750;
 
 const createTempDir = () => {
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir, { recursive: true });
   }
+
   fs.writeFileSync(path.join(tmpDir, 'file1.test.js'), 'export default {};');
   fs.writeFileSync(path.join(tmpDir, 'file2.test.js'), 'export default {};');
 };
@@ -54,37 +56,28 @@ describe('Watcher Service', async () => {
 
     fs.writeFileSync(filePath, 'export default {};');
 
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        fs.writeFileSync(filePath, 'export default { updated: true };'); // update
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
 
-    return await new Promise((resolve) => {
-      setTimeout(() => {
-        assert(
-          callbackResults.length > 0,
-          'Callback should be called on file change'
-        );
-        assert(
-          callbackResults.some(
-            (result) => result.file === filePath && result.event === 'change'
-          ),
-          'Callback should capture the correct file and event type'
-        );
+    fs.writeFileSync(filePath, 'export default { updated: true };'); // update
 
-        watcher.stop();
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
+
+    assert(
+      callbackResults.length > 0,
+      'Callback should be called on file change'
+    );
+    assert(
+      callbackResults.some(
+        (result) => result.file === filePath && result.event === 'change'
+      ),
+      'Callback should capture the correct file and event type'
+    );
+
+    watcher.stop();
   });
 
   await it('should watch for new files in directory', async () => {
-    if (runtime === 'bun') {
-      return;
-    }
-    if (runtime === 'deno') {
+    if (runtime === 'deno' || runtime === 'bun') {
       return;
     }
 
@@ -95,30 +88,24 @@ describe('Watcher Service', async () => {
 
     fs.writeFileSync(newFilePath, ''); // create (empty)
 
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        fs.writeFileSync(newFilePath, 'export default {};'); // update
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
 
-    return await new Promise((resolve) => {
-      setTimeout(() => {
-        assert(
-          callbackResults.length > 0,
-          'Callback should be called on new file creation'
-        );
-        assert(
-          callbackResults.some(
-            (result) => result.file === newFilePath && result.event === 'change'
-          ),
-          'Callback should capture the correct file and event type'
-        );
+    fs.writeFileSync(newFilePath, 'export default {};'); // update
 
-        watcher.stop();
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
+
+    assert(
+      callbackResults.length > 0,
+      'Callback should be called on new file creation'
+    );
+    assert(
+      callbackResults.some(
+        (result) => result.file === newFilePath && result.event === 'change'
+      ),
+      'Callback should capture the correct file and event type'
+    );
+
+    watcher.stop();
   });
 
   await it('should stop watching files', async () => {
@@ -128,20 +115,17 @@ describe('Watcher Service', async () => {
     const filePath = path.join(tmpDir, 'file1.test.js');
     fs.writeFileSync(filePath, 'export default { stopped: true };');
 
-    return await new Promise((resolve) => {
-      setTimeout(() => {
-        assert.strictEqual(
-          callbackResults.length,
-          0,
-          'Callback should not be called after watcher is stopped'
-        );
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
+
+    assert.strictEqual(
+      callbackResults.length,
+      0,
+      'Callback should not be called after watcher is stopped'
+    );
   });
 
   await it('should watch for changes in subdirectories', async () => {
-    if (runtime === 'bun' || runtime === 'deno') {
+    if (runtime === 'deno' || runtime === 'bun') {
       return;
     }
 
@@ -151,39 +135,33 @@ describe('Watcher Service', async () => {
     const newFilePath = path.join(subDirPath, 'file4.test.js');
 
     fs.mkdirSync(subDirPath);
+
+    await sleep(humanDelay);
+
     fs.writeFileSync(newFilePath, ''); // create (empty)
 
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        fs.writeFileSync(newFilePath, 'export default {};'); // update
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        assert(
-          callbackResults.length > 0,
-          'Callback should be called on new directory creation'
-        );
-        assert(
-          callbackResults.some(
-            (result) => result.file === newFilePath && result.event === 'change'
-          ),
-          'Callback should capture the correct file and event type'
-        );
+    fs.writeFileSync(newFilePath, 'export default {};'); // update
 
-        watcher.stop();
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
+
+    assert(
+      callbackResults.length > 0,
+      'Callback should be called on new directory creation'
+    );
+    assert(
+      callbackResults.some(
+        (result) => result.file === newFilePath && result.event === 'change'
+      ),
+      'Callback should capture the correct file and event type'
+    );
+
+    watcher.stop();
   });
 
   await it('should watch for changes in nested subdirectories', async () => {
     if (runtime === 'bun') {
-      return;
-    }
-    if (runtime === 'deno') {
       return;
     }
 
@@ -192,34 +170,33 @@ describe('Watcher Service', async () => {
     const nestedSubDirPath = path.join(tmpDir, 'subdir', 'nestedsubdir');
     const newNestedFilePath = path.join(nestedSubDirPath, 'file5.test.js');
 
+    await sleep(humanDelay);
+
     fs.mkdirSync(nestedSubDirPath, { recursive: true });
+
+    await sleep(humanDelay);
+
     fs.writeFileSync(newNestedFilePath, '');
 
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        fs.writeFileSync(newNestedFilePath, 'export default {};'); // update
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
 
-    return await new Promise((resolve) => {
-      setTimeout(() => {
-        assert(
-          callbackResults.length > 0,
-          'Callback should be called on new nested directory creation'
-        );
-        assert(
-          callbackResults.some(
-            (result) =>
-              result.file === newNestedFilePath && result.event === 'change'
-          ),
-          'Callback should capture the correct file and event type'
-        );
+    fs.writeFileSync(newNestedFilePath, 'export default {};'); // update
 
-        watcher.stop();
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
+
+    assert(
+      callbackResults.length > 0,
+      'Callback should be called on new nested directory creation'
+    );
+    assert(
+      callbackResults.some(
+        (result) =>
+          result.file === newNestedFilePath && result.event === 'change'
+      ),
+      'Callback should capture the correct file and event type'
+    );
+
+    watcher.stop();
   });
 
   await it('should watch a single file directly', async () => {
@@ -234,29 +211,23 @@ describe('Watcher Service', async () => {
 
     const watcher = await watch(filePath, callback);
 
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        fs.writeFileSync(filePath, 'export default {};');
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
 
-    return await new Promise((resolve) => {
-      setTimeout(() => {
-        assert(
-          callbackResults.length > 0,
-          'Callback should be called on direct file change'
-        );
-        assert(
-          callbackResults.some(
-            (result) => result.file === filePath && result.event === 'change'
-          ),
-          'Callback should capture the correct file and event type'
-        );
+    fs.writeFileSync(filePath, 'export default {};');
 
-        watcher.stop();
-        resolve(undefined);
-      }, 750);
-    });
+    await sleep(humanDelay);
+
+    assert(
+      callbackResults.length > 0,
+      'Callback should be called on direct file change'
+    );
+    assert(
+      callbackResults.some(
+        (result) => result.file === filePath && result.event === 'change'
+      ),
+      'Callback should capture the correct file and event type'
+    );
+
+    watcher.stop();
   });
 });
