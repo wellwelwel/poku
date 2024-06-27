@@ -54,7 +54,6 @@ test('Assert: Parse Result Type', async () => {
 
   assert(
     /function/.test(
-      // biome-ignore lint/complexity/useArrowFunction: <test>
       parseResultType(function () {
         return;
       })
@@ -63,7 +62,6 @@ test('Assert: Parse Result Type', async () => {
   );
   assert(
     /function/.test(
-      // biome-ignore lint/complexity/useArrowFunction: <test>
       parseResultType(function (a: number) {
         return a;
       })
@@ -72,7 +70,6 @@ test('Assert: Parse Result Type', async () => {
   );
   assert(
     /function/.test(
-      // biome-ignore lint/complexity/useArrowFunction: <test>
       parseResultType(function (a: number, b: number) {
         return a + b;
       })
