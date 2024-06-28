@@ -1,14 +1,11 @@
-/* c8 ignore next */
-import type { DescribeOptions } from '../@types/describe.js';
+/* c8 ignore next */ // Types
+import type { DescribeOptions } from '../../@types/describe.js';
 import { hrtime, env } from 'node:process';
-import { format } from '../helpers/format.js';
-import { write } from '../helpers/logs.js';
-import { indentation } from '../configs/indentation.js';
+import { format } from '../../services/format.js';
+import { Write } from '../../services/write.js';
+import { indentation } from '../../configs/indentation.js';
 
-/* c8 ignore start */ // c8 bug
-/**
- * On **Poku**, `describe` also can be used just as a pretty `console.log` to title your test suites in the terminal.
- */
+/** On **Poku**, `describe` also can be used just as a pretty `console.log` to title your test suites in the terminal */
 export async function describe(
   title: string,
   cb: () => Promise<unknown>
@@ -17,11 +14,11 @@ export function describe(title: string, cb: () => unknown): void;
 export async function describe(cb: () => Promise<unknown>): Promise<void>;
 export function describe(cb: () => unknown): unknown;
 export function describe(title: string, options?: DescribeOptions): void;
+/* c8 ignore next */ // ?
 export async function describe(
   arg1: string | (() => unknown | Promise<unknown>),
   arg2?: (() => unknown | Promise<unknown>) | DescribeOptions
 ): Promise<void> {
-  /* c8 ignore stop */
   let title: string | undefined;
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;
@@ -46,13 +43,14 @@ export async function describe(
     indentation.hasDescribe = true;
 
     const { background, icon } = options || {};
-    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : /* c8 ignore next */ title).dim() : format(title).bold() || ''}`;
+    /* c8 ignore next */
+    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold() || ''}`;
     const noBackground = !background;
 
     if (noBackground) {
-      write(format(message).bold());
+      Write.log(format(message).bold());
     } else {
-      write(
+      Write.log(
         format(` ${message} `).bg(
           typeof background === 'string' ? background : 'grey'
         )
@@ -67,17 +65,17 @@ export async function describe(
   const start = hrtime();
   const resultCb = cb();
 
-  /* c8 ignore next */
   if (resultCb instanceof Promise) {
     await resultCb;
   }
+
   const end = hrtime(start);
 
   if (title) {
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
     indentation.hasDescribe = false;
-    write(
+    Write.log(
       `${format(`● ${title}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
     );
   }

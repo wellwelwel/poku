@@ -1,9 +1,9 @@
 import process from 'node:process';
-import { describe } from '../../src/modules/describe.js';
-import { it } from '../../src/modules/it.js';
-import { assert } from '../../src/modules/assert.js';
+import { describe } from '../../src/modules/helpers/describe.js';
+import { it } from '../../src/modules/helpers/it.js';
+import { assert } from '../../src/modules/essentials/assert.js';
 import { runTestFile } from '../../src/services/run-test-file.js';
-import { getRuntime } from '../../src/helpers/get-runtime.js';
+import { getRuntime } from '../../src/parsers/get-runtime.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const ext = getRuntime() === 'deno' ? 'ts' : isProduction ? 'js' : 'ts';

@@ -6,6 +6,7 @@ const results = new Map();
 
 const exec = (command) => {
   try {
+    // execSync(command, { stdio: 'inherit' });
     execSync(command, { stdio: 'ignore' });
   } catch {}
 };
@@ -54,7 +55,7 @@ suite
     exec('./node_modules/poku/lib/bin/index.js --parallel ./test/poku');
   })
   .add('Poku (Local)  ', () => {
-    exec('../lib/bin/index.js --parallel ./test/poku');
+    exec('../lib/bin/index.js --parallel ./test/poku-local');
   })
   .on('cycle', (event) => {
     const name = event.target.name.trim();

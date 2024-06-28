@@ -1,12 +1,12 @@
-import { describe } from '../../src/modules/describe.js';
-import { it } from '../../src/modules/it.js';
-import { assert } from '../../src/modules/assert.js';
+import { describe } from '../../src/modules/helpers/describe.js';
+import { it } from '../../src/modules/helpers/it.js';
+import { assert } from '../../src/modules/essentials/assert.js';
 import {
   getArg,
   hasArg,
   getLastParam,
   argToArray,
-} from '../../src/helpers/get-arg.js';
+} from '../../src/parsers/get-arg.js';
 
 describe('CLI Argument Handling Functions', async () => {
   await it('should get argument value', () => {

@@ -1,4 +1,4 @@
-/* c8 ignore next */ // c8 bug
+/* c8 ignore next */ // ?
 import { argv } from 'node:process';
 
 const [, , ...processArgs] = argv;
@@ -79,7 +79,7 @@ export const getLastParam = (
   return lastArg;
 };
 
-/* c8 ignore next */ // c8 bug
+/* c8 ignore next */ // ?
 export const argToArray = (
   arg: string,
   prefix = '--',
@@ -92,15 +92,9 @@ export const argToArray = (
 
   const argValue = getArg(arg, prefix, baseArgs);
 
-  if (hasArgument && !argValue) {
+  if (!argValue) {
     return [];
   }
-
-  /* c8 ignore start */ // Type safe
-  if (!argValue) {
-    return undefined;
-  }
-  /* c8 ignore stop */
 
   return argValue
     .split(',')

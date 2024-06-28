@@ -1,8 +1,8 @@
 import process from 'node:process';
 import { execSync } from 'node:child_process';
-import { describe } from '../../src/modules/describe.js';
-import { it } from '../../src/modules/it.js';
-import { assert } from '../../src/modules/assert.js';
+import { describe } from '../../src/modules/helpers/describe.js';
+import { it } from '../../src/modules/helpers/it.js';
+import { assert } from '../../src/modules/essentials/assert.js';
 import { isProduction, inspectCLI } from '../helpers/capture-cli.test.js';
 
 if (isProduction) {

@@ -1,8 +1,7 @@
-/* c8 ignore start */ // This method will be removed in a future release to use `list-files.ts` instead
 import { env } from 'node:process';
 import { readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
-import type { Configs } from '../@types/list-files.js';
+import type { Configs } from '../../@types/list-files.js';
 import { escapeRegExp, sanitizePath } from './list-files.js';
 
 const isDir = (fullPath: string) => statSync(fullPath).isDirectory();
@@ -57,4 +56,3 @@ const listFiles = (
 
 export const publicListFiles = (targetDir: string, configs?: Configs) =>
   listFiles(sanitizePath(targetDir), [], configs);
-/* c8 ignore stop */

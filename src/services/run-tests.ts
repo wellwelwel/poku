@@ -1,21 +1,18 @@
-/* c8 ignore start */ // c8 bug (incompatibility)
-/**
- * This service is strictly tested, but these tests use deep child process for it
- */
+/* c8 ignore start */ // Types
 import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime } from 'node:process';
 import { join, relative, sep } from 'node:path';
-import { runner } from '../helpers/runner.js';
+import { runner } from '../parsers/get-runner.js';
 import { indentation } from '../configs/indentation.js';
 import {
   isFile as IS_FILE,
   listFiles,
   sanitizePath,
-} from '../modules/list-files.js';
-import { hr } from '../helpers/hr.js';
-import { format } from '../helpers/format.js';
+} from '../modules/helpers/list-files.js';
+import { Write } from '../services/write.js';
+import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
-import { isQuiet, write } from '../helpers/logs.js';
+import { isQuiet } from '../parsers/output.js';
 import { results } from '../configs/poku.js';
 
 const cwd = processCWD();
@@ -36,8 +33,8 @@ export const runTests = async (
   let passed = true;
 
   if (showLogs) {
-    hr();
-    write(
+    Write.hr();
+    Write.log(
       `${format(isFile ? 'File:' : 'Directory:').bold()} ${format(`.${sep}${currentDir}`).underline()}\n`
     );
   }
@@ -61,14 +58,15 @@ export const runTests = async (
       ++results.success;
 
       showLogs &&
-        write(
+        Write.log(
           `${indentation.test}${format('✔').success()} ${log}${format(` › ${total}ms`).success().dim()}${nextLine}`
         );
+      /* c8 ignore start */
     } else {
       ++results.fail;
 
       if (showLogs) {
-        write(
+        Write.log(
           `${indentation.test}${format('✘').fail()} ${log}${format(` › ${total}ms`).fail().dim()}${nextLine}`
         );
       }
@@ -76,18 +74,20 @@ export const runTests = async (
       passed = false;
 
       if (configs?.failFast) {
-        hr();
-        write(
+        Write.hr();
+        Write.log(
           `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
         );
         break;
       }
     }
+    /* c8 ignore stop */
   }
 
   return passed;
 };
 
+/* c8 ignore next */ // ?
 export const runTestsParallel = async (
   dir: string,
   configs?: Configs
@@ -111,12 +111,14 @@ export const runTestsParallel = async (
   try {
     for (const fileGroup of filesByConcurrency) {
       const promises = fileGroup.map(async (filePath) => {
+        /* c8 ignore next 3 */
         if (configs?.failFast && results.fail > 0) {
           return;
         }
 
         const testPassed = await runTestFile(filePath, configs);
 
+        /* c8 ignore start */
         if (!testPassed) {
           ++results.fail;
 
@@ -128,6 +130,7 @@ export const runTestsParallel = async (
 
           return false;
         }
+        /* c8 ignore false */
 
         ++results.success;
         return true;
@@ -138,10 +141,12 @@ export const runTestsParallel = async (
     }
 
     return concurrencyResults.every((group) => group.every((result) => result));
+    /* c8 ignore start */
   } catch (error) {
-    hr();
+    Write.hr();
     error instanceof Error && console.error(error.message);
 
     return false;
   }
+  /* c8 ignore stop */
 };

@@ -1,6 +1,6 @@
-import { test } from '../../../src/modules/test.js';
-import { assert } from '../../../src/modules/assert.js';
-import { sleep } from '../../../src/modules/wait-for.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { sleep } from '../../../src/modules/helpers/wait-for.js';
 
 test('Sleep "mini" helper', async () => {
   const startTime = Date.now();

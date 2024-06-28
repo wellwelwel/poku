@@ -1,73 +1,21 @@
-/* c8 ignore next */
-import type { ParseAssertionOptions } from '../@types/assert.js';
+/* c8 ignore next */ // Types
+import type { ProcessAssertionOptions } from '../@types/assert.js';
 import { cwd as processCWD, env, exit } from 'node:process';
 import path from 'node:path';
-import assert from 'node:assert';
-import { format } from './format.js';
-import { hr } from './hr.js';
-import { findFile } from './find-file.js';
+import { AssertionError } from 'node:assert';
+import { findFile } from '../parsers/find-file-from-stack.js';
+import { parseResultType } from '../parsers/assert.js';
 import { each } from '../configs/each.js';
 import { indentation } from '../configs/indentation.js';
-import { fromEntries, entries } from '../polyfills/object.js';
-import { nodeVersion } from './get-runtime.js';
-import { write } from './logs.js';
+import { format } from './format.js';
+import { Write } from './write.js';
 
 const cwd = processCWD();
 const regexFile = /file:(\/\/)?/;
 
-export const parseResultType = (type?: unknown): string => {
-  const recurse = (value: unknown): unknown => {
-    if (
-      typeof value === 'undefined' ||
-      typeof value === 'function' ||
-      typeof value === 'bigint' ||
-      typeof value === 'symbol' ||
-      value instanceof RegExp
-    ) {
-      return String(value);
-    }
-
-    if (Array.isArray(value)) {
-      return value.map(recurse);
-    }
-    if (value instanceof Set) {
-      return Array.from(value).map(recurse);
-    }
-    /* c8 ignore start */
-    if (value instanceof Map) {
-      return recurse(
-        !nodeVersion || nodeVersion >= 12
-          ? Object.fromEntries(value)
-          : fromEntries(value)
-      );
-    }
-    /* c8 ignore stop */
-
-    /* c8 ignore start */
-    if (value !== null && typeof value === 'object') {
-      if (!nodeVersion || nodeVersion >= 12) {
-        return Object.fromEntries(
-          Object.entries(value).map(([key, val]) => [key, recurse(val)])
-        );
-      }
-
-      return fromEntries(
-        entries(value).map(([key, val]) => [key, recurse(val)])
-      );
-    }
-    /* c8 ignore stop */
-
-    return value;
-  };
-
-  const result = recurse(type);
-
-  return typeof result === 'string' ? result : JSON.stringify(result, null, 2);
-};
-
-export const parseAssertion = async (
+export const processAssert = async (
   cb: () => void | Promise<void>,
-  options: ParseAssertionOptions
+  options: ProcessAssertionOptions
 ) => {
   const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
   const FILE = env.FILE;
@@ -85,14 +33,15 @@ export const parseAssertion = async (
     if (typeof each.before.cb === 'function' && each.before.assert) {
       const beforeResult = each.before.cb();
 
-      /* c8 ignore start */
+      /* c8 ignore next 3 */
       if (beforeResult instanceof Promise) {
         await beforeResult;
       }
-      /* c8 ignore stop */
     }
 
     const cbResult = cb();
+
+    /* c8 ignore next 3 */
     if (cbResult instanceof Promise) {
       await cbResult;
     }
@@ -100,11 +49,10 @@ export const parseAssertion = async (
     if (typeof each.after.cb === 'function' && each.after.assert) {
       const afterResult = each.after.cb();
 
-      /* c8 ignore start */
+      /* c8 ignore next 3 */
       if (afterResult instanceof Promise) {
         await afterResult;
       }
-      /* c8 ignore stop */
     }
 
     if (typeof options.message === 'string') {
@@ -112,17 +60,16 @@ export const parseAssertion = async (
         isPoku &&
         !indentation.hasDescribe &&
         !indentation.hasIt &&
-        /* c8 ignore next */ // c8 bug?
+        /* c8 ignore next 2 */
         !indentation.hasTest
-          ? /* c8 ignore next */
-            `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
+          ? `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
           : `${preIdentation}${format(`✔ ${options.message}`).success().bold()}`;
 
-      write(message);
+      Write.log(message);
     }
     /* c8 ignore start */
   } catch (error) {
-    if (error instanceof assert.AssertionError) {
+    if (error instanceof AssertionError) {
       const { code, actual, expected, operator } = error;
       const absoultePath = findFile(error).replace(regexFile, '');
       const file = path.relative(path.resolve(cwd), absoultePath);
@@ -142,40 +89,41 @@ export const parseAssertion = async (
           ? format(`✘ ${message}`).fail().bold()
           : format('✘ No Message').fail().bold();
 
-      write(
+      Write.log(
         isPoku
           ? `${preIdentation}${finalMessage} ${format(`› ${FILE}`).fail().dim()}`
           : `${preIdentation}${finalMessage}`
       );
 
-      file && write(`${format(`${preIdentation}      File`).dim()} ${file}`);
-      write(`${format(`${preIdentation}      Code`).dim()} ${code}`);
-      write(`${format(`${preIdentation}  Operator`).dim()} ${operator}\n`);
+      file &&
+        Write.log(`${format(`${preIdentation}      File`).dim()} ${file}`);
+      Write.log(`${format(`${preIdentation}      Code`).dim()} ${code}`);
+      Write.log(`${format(`${preIdentation}  Operator`).dim()} ${operator}\n`);
 
       if (!options?.hideDiff) {
         const splitActual = parseResultType(actual).split('\n');
         const splitExpected = parseResultType(expected).split('\n');
 
-        write(
+        Write.log(
           format(`${preIdentation}  ${options?.actual || 'Actual'}:`).dim()
         );
 
         for (const line of splitActual) {
-          write(`${preIdentation}  ${format(line).fail().bold()}`);
+          Write.log(`${preIdentation}  ${format(line).fail().bold()}`);
         }
 
-        write(
+        Write.log(
           `\n${preIdentation}  ${format(`${options?.expected || 'Expected'}:`).dim()}`
         );
 
         for (const line of splitExpected) {
-          write(`${preIdentation}  ${format(line).success().bold()}`);
+          Write.log(`${preIdentation}  ${format(line).success().bold()}`);
         }
       }
 
       if (options.throw) {
         console.error(error);
-        hr();
+        Write.hr();
       }
 
       exit(1);

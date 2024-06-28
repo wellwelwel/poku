@@ -1,4 +1,4 @@
-export type ParseAssertionOptions = {
+export type ProcessAssertionOptions = {
   message?: string | Error;
   defaultMessage?: string;
   actual?: string;

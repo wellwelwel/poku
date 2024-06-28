@@ -1,27 +1,19 @@
-/* c8 ignore next */
+/* c8 ignore next 5 */ // Types
 import type {
   End,
   StartScriptOptions,
   StartServiceOptions,
-} from '../@types/background-process.js';
+} from '../../@types/background-process.js';
 import process from 'node:process';
 import { spawn } from 'node:child_process';
-import { isWindows, runner, scriptRunner } from '../helpers/runner.js';
+import { isWindows, runner, scriptRunner } from '../../parsers/get-runner.js';
 import { normalize } from 'node:path';
 import { sanitizePath } from './list-files.js';
-import { kill } from './processes.js';
-import { write } from '../helpers/logs.js';
+import { kill } from './kill.js';
+import { Write } from '../../services/write.js';
 
 const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
   new Map();
-
-/* c8 ignore start */
-process.once('SIGINT', async () => {
-  for (const { end, port } of runningProcesses.values()) {
-    await end(port);
-  }
-});
-/* c8 ignore stop */
 
 const backgroundProcess = (
   runtime: string,
@@ -35,16 +27,13 @@ const backgroundProcess = (
 
       const service = spawn(runtime, args, {
         stdio: ['inherit', 'pipe', 'pipe'],
-        /* c8 ignore next */
-        shell: isWindows,
-        /* c8 ignore next */
-        cwd: options?.cwd ? sanitizePath(normalize(options.cwd)) : undefined,
         env: process.env,
-        /* c8 ignore next */
-        detached: !isWindows,
-        /* c8 ignore next */
-        windowsHide: isWindows,
         timeout: options?.timeout,
+        /* c8 ignore next 4 */
+        cwd: options?.cwd ? sanitizePath(normalize(options.cwd)) : undefined,
+        shell: isWindows,
+        detached: !isWindows,
+        windowsHide: isWindows,
       });
 
       const PID = service.pid!;
@@ -86,11 +75,10 @@ const backgroundProcess = (
             return;
           }
         });
-
-      runningProcesses.set(PID, { end, port: portBackup });
       /* c8 ignore stop */
 
-      /* c8 ignore start */
+      runningProcesses.set(PID, { end, port: portBackup });
+
       service.stdout.on('data', (data: Buffer) => {
         if (!isResolved && typeof options?.startAfter !== 'number') {
           const stringData = JSON.stringify(String(data));
@@ -107,9 +95,9 @@ const backgroundProcess = (
           }
         }
 
-        options?.verbose && write(data);
+        /* c8 ignore next */
+        options?.verbose && Write.log(data);
       });
-      /* c8 ignore stop */
 
       /* c8 ignore start */
       service.stderr.on('data', (data: Buffer) => {
@@ -128,24 +116,20 @@ const backgroundProcess = (
           }
         }
 
-        options?.verbose && write(data);
+        options?.verbose && Write.log(data);
       });
-      /* c8 ignore stop */
 
-      /* c8 ignore start */
       service.on('error', (err) => {
         end(portBackup);
         reject(`Service failed to start: ${err}`);
       });
       /* c8 ignore stop */
 
-      /* c8 ignore start */
       service.on('close', (code) => {
         if (code !== 0) {
           reject(`Service exited with code ${code}`);
         }
       });
-      /* c8 ignore stop */
 
       /* c8 ignore start */
       const timeout = setTimeout(() => {
@@ -166,16 +150,11 @@ const backgroundProcess = (
           }
         }, options.startAfter);
       }
-      /* c8 ignore next */ // c8 bug
+      /* c8 ignore next */
     } catch {}
   });
 
-/**
- *
- * Starts a file in a background process
- *
- * Useful for servers, APIs, etc.
- */
+/** Starts a file in a background process (useful for servers, APIs, etc.) */
 export const startService = async (
   file: string,
   options?: StartServiceOptions
@@ -192,20 +171,18 @@ export const startService = async (
   );
 };
 
-/* c8 ignore start */ // c8 bug
 /**
  *
- * Starts a script (package.json) or task (deno.json) in a background process
+ * Starts a script (package.json) or task (deno.json) in a background process (useful for servers, APIs, etc.).
+ *
+ * ---
  *
  * By default, it uses **npm**, but you can costumize it using the `runner` option.
- *
- * Useful for servers, APIs, etc.
  */
 export const startScript = async (
   script: string,
   options?: StartScriptOptions
 ): Promise<{ end: End }> => {
-  /* c8 ignore stop */
   /* c8 ignore next */
   const runner = options?.runner || 'npm';
   const runtimeOptions = scriptRunner(runner);
@@ -217,3 +194,10 @@ export const startScript = async (
     runner,
   });
 };
+
+/* c8 ignore start */ // Process
+process.once('SIGINT', async () => {
+  for (const { end, port } of runningProcesses.values()) {
+    await end(port);
+  }
+});

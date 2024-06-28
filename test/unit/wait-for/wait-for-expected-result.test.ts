@@ -1,7 +1,7 @@
-import { test } from '../../../src/modules/test.js';
-import { assert } from '../../../src/modules/assert.js';
-import { waitForExpectedResult } from '../../../src/modules/wait-for.js';
-import { getRuntime } from '../../../src/helpers/get-runtime.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { waitForExpectedResult } from '../../../src/modules/helpers/wait-for.js';
+import { getRuntime } from '../../../src/parsers/get-runtime.js';
 
 test('Wait For Expected Result', async () => {
   const runtime = getRuntime();

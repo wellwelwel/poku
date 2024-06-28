@@ -1,6 +1,6 @@
 import process from 'node:process';
 import { spawn, type SpawnOptionsWithoutStdio } from 'node:child_process';
-import { isWindows, runner } from '../../src/helpers/runner.js';
+import { isWindows, runner } from '../../src/parsers/get-runner.js';
 
 // `/_.ts`: Simulate TypeScript file for Deno
 const currentFile = typeof __filename === 'string' ? __filename : '/_.ts';

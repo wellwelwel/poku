@@ -1,13 +1,13 @@
 import process from 'node:process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { it } from '../../src/modules/it.js';
-import { describe } from '../../src/modules/describe.js';
-import { beforeEach, afterEach } from '../../src/modules/each.js';
-import { assert } from '../../src/modules/assert.js';
-import { getRuntime, nodeVersion } from '../../src/helpers/get-runtime.js';
+import { it } from '../../src/modules/helpers/it.js';
+import { describe } from '../../src/modules/helpers/describe.js';
+import { beforeEach, afterEach } from '../../src/modules/helpers/each.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import { getRuntime, nodeVersion } from '../../src/parsers/get-runtime.js';
 import { watch } from '../../src/services/watch.js';
-import { sleep } from '../../src/modules/wait-for.js';
+import { sleep } from '../../src/modules/helpers/wait-for.js';
 import type { WatchCallback } from '../../src/@types/watch.js';
 
 if (nodeVersion && nodeVersion < 10) {

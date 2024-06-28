@@ -1,6 +1,6 @@
-import { assert } from '../../src/modules/assert.js';
-import { test } from '../../src/modules/test.js';
-import { format, getLargestStringLength } from '../../src/helpers/format.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import { test } from '../../src/modules/helpers/test.js';
+import { format, getLargestStringLength } from '../../src/services/format.js';
 
 test('Format', () => {
   assert.strictEqual(

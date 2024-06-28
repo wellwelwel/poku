@@ -1,12 +1,15 @@
-import { test } from '../../src/modules/test.js';
-import { describe } from '../../src/modules/describe.js';
-import { it } from '../../src/modules/it.js';
-import { assert } from '../../src/modules/assert.js';
-import { startScript, startService } from '../../src/modules/create-service.js';
+import { test } from '../../src/modules/helpers/test.js';
+import { describe } from '../../src/modules/helpers/describe.js';
+import { it } from '../../src/modules/helpers/it.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import {
+  startScript,
+  startService,
+} from '../../src/modules/helpers/create-service.js';
 import { legacyFetch } from '../helpers/legacy-fetch.test.js';
 import { ext, isProduction } from '../helpers/capture-cli.test.js';
-import { getRuntime } from '../../src/helpers/get-runtime.js';
-import { waitForPort } from '../../src/modules/wait-for.js';
+import { getRuntime } from '../../src/parsers/get-runtime.js';
+import { waitForPort } from '../../src/modules/helpers/wait-for.js';
 
 test(async () => {
   const runtime = getRuntime();

@@ -1,6 +1,6 @@
-import { test } from '../../../src/modules/test.js';
-import { assert } from '../../../src/modules/assert.js';
-import { beforeEach, afterEach } from '../../../src/modules/each.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { beforeEach, afterEach } from '../../../src/modules/helpers/each.js';
 
 let counter = 0;
 

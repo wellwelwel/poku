@@ -1,7 +1,7 @@
-/* c8 ignore next */ // c8 bug
+/* c8 ignore next */ // ?
 import { relative, dirname } from 'node:path';
 import { stat, readFile } from '../polyfills/fs.js';
-import { listFiles } from '../modules/list-files.js';
+import { listFiles } from '../modules/helpers/list-files.js';
 
 const importMap = new Map<string, Set<string>>();
 const processedFiles = new Set<string>();
@@ -62,7 +62,6 @@ export const findMatchingFiles = (
   return matchingFiles;
 };
 
-/* c8 ignore start */
 const collectTestFiles = async (
   testPaths: string[],
   testFilter?: RegExp,
@@ -85,6 +84,8 @@ const collectTestFiles = async (
     if (stat.isFile() && regex.extFilter.test(testPath)) {
       return [testPath];
     }
+
+    /* c8 ignore next */
     return [];
   });
 
@@ -92,7 +93,6 @@ const collectTestFiles = async (
 
   return new Set(nestedTestFiles.flat());
 };
-/* c8 ignore stop */
 
 /* c8 ignore start */
 const processDeepImports = async (
@@ -114,13 +114,13 @@ const processDeepImports = async (
       importMap.set(deepImport, new Set());
     }
 
-    importMap.get(deepImport)?.add(normalizePath(testFile));
-
+    importMap.get(deepImport)!.add(normalizePath(testFile));
     await processDeepImports(deepImport, testFile, intersectedSrcFiles);
   }
 };
 /* c8 ignore stop */
 
+/* c8 ignore start */
 const createImportMap = async (
   allTestFiles: Set<string>,
   allSrcFiles: Set<string>
@@ -139,7 +139,6 @@ const createImportMap = async (
         );
         const normalizedSrcFile = normalizePath(srcFile);
 
-        /* c8 ignore start */
         if (
           content.indexOf(relativePath.replace(regex.extFilter, '')) !== -1 ||
           content.indexOf(normalizedSrcFile) !== -1
@@ -151,13 +150,13 @@ const createImportMap = async (
 
           await processDeepImports(srcFile, testFile, intersectedSrcFiles);
         }
-        /* c8 ignore stop */
       }
     })
   );
 };
+/* c8 ignore stop */
 
-/* c8 ignore next */ // c8 bug
+/* c8 ignore next */ // ?
 export const mapTests = async (
   srcDir: string,
   testPaths: string[],

@@ -3,8 +3,7 @@
   "version": "1.20.1",
   "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno, and you at the same time.",
   "license": "MIT",
-  "type": "commonjs",
-  "main": "./lib/index.js",
+  "main": "./lib/modules/index.js",
   "bin": {
     "poku": "./lib/bin/index.js"
   },
@@ -33,10 +32,7 @@
     "test:bun:parallel": "bun src/bin/index.ts --platform=bun --parallel --include=test/unit,test/integration,test/e2e",
     "test:deno:sequential": "tsx src/bin/index.ts --platform=deno --deno-allow=all --deno-cjs --include=ci/test/unit,ci/test/integration,ci/test/e2e",
     "test:deno:parallel": "tsx src/bin/index.ts --platform=deno --deno-allow=all --deno-cjs --parallel --include=ci/test/unit,ci/test/integration,ci/test/e2e",
-    "test:c8:sequential": "c8 tsx src/bin/index.ts --include=test/unit,test/integration,test/e2e",
-    "test:c8:parallel": "c8 tsx src/bin/index.ts --parallel --include=test/unit,test/integration,test/e2e",
-    "test:c8:sequential:options": "c8 tsx src/bin/index.ts --platform=node --fast-fail --debug --exclude=\".bak\" --kill-port=4000 --kill-range=\"4000-4001\" --include=test/unit,test/integration,test/e2e --filter=\".test.|.spec.\"",
-    "test:c8:parallel:options": "c8 tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=\".bak\" --kill-port=4000 --kill-range=\"4000-4001\" --include=test/unit,test/integration,test/e2e --filter=\".test.|.spec.\"",
+    "test:c8": "c8 tsx test/c8.test.ts",
     "test:ci": "tsx test/ci.test.ts",
     "test:ci:node": "FILTER='node-' npm run test:ci",
     "test:ci:bun": "FILTER='bun-' npm run test:ci",

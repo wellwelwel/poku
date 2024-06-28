@@ -1,4 +1,4 @@
-import { test } from '../../../src/modules/test.js';
+import { test } from '../../../src/modules/helpers/test.js';
 
 test('Testing "test" method', async () => {
   test(() => {});

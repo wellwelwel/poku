@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  sequential:
+  linux:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
-    name: Linux (Sequential)
+    name: Linux
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -44,146 +44,11 @@ jobs:
         run: npm ci
 
       - name: 🧪 Checking for Coverage
-        run: npm run test:c8:sequential
+        run: npm run test:c8
 
       - name: ☔️ Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: linux-sequential
-          name: codecov-umbrella-linux-sequential
-
-  sequential-options:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    strategy:
-      fail-fast: false
-    name: Linux (Sequential & Options)
-    steps:
-      - name: ➕ Actions - Checkout
-        uses: actions/checkout@v4
-
-      - name: ➕ Actions - Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-
-      - name: ➕ Actions - Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: 'latest'
-
-      - name: ➕ Actions - Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: 'v1.x'
-
-      - name: ➕ Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: npm-linux-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-linux-
-
-      - name: 📦 Installing Dependencies
-        run: npm ci
-
-      - name: 🧪 Checking for Coverage
-        run: npm run test:c8:sequential:options
-
-      - name: ☔️ Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: linux-sequential-options
-          name: codecov-umbrella-linux-sequential-options
-
-  parallel:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    strategy:
-      fail-fast: false
-    name: Linux (Parallel)
-    steps:
-      - name: ➕ Actions - Checkout
-        uses: actions/checkout@v4
-
-      - name: ➕ Actions - Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-
-      - name: ➕ Actions - Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: 'latest'
-
-      - name: ➕ Actions - Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: 'v1.x'
-
-      - name: ➕ Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: npm-linux-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-linux-
-
-      - name: 📦 Installing Dependencies
-        run: npm ci
-
-      - name: 🧪 Checking for Coverage
-        run: npm run test:c8:parallel
-
-      - name: ☔️ Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: linux-parallel
-          name: codecov-umbrella-linux-parallel
-
-  parallel-options:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    strategy:
-      fail-fast: false
-    name: Linux (Parallel & Options)
-    steps:
-      - name: ➕ Actions - Checkout
-        uses: actions/checkout@v4
-
-      - name: ➕ Actions - Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-
-      - name: ➕ Actions - Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: 'latest'
-
-      - name: ➕ Actions - Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: 'v1.x'
-
-      - name: ➕ Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: npm-linux-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-linux-
-
-      - name: 📦 Installing Dependencies
-        run: npm ci
-
-      - name: 🧪 Checking for Coverage
-        run: npm run test:c8:parallel:options
-
-      - name: ☔️ Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: linux-parallel-options
-          name: codecov-umbrella-linux-parallel-options
+          flags: linux
+          name: codecov-umbrella-linux

@@ -1,9 +1,9 @@
 import { createServer, type Server } from 'node:http';
-import { test } from '../../../src/modules/test.js';
-import { it } from '../../../src/modules/it.js';
-import { assert } from '../../../src/modules/assert.js';
-import { waitForPort } from '../../../src/modules/wait-for.js';
-import { kill } from '../../../src/modules/processes.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { it } from '../../../src/modules/helpers/it.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
+import { kill } from '../../../src/modules/helpers/kill.js';
 
 const startServer = (port: number): Promise<Server> =>
   new Promise((resolve) => {

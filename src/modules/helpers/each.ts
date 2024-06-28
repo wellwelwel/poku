@@ -1,21 +1,17 @@
-/* c8 ignore next */
-import type { Control, EachOptions } from '../@types/each.js';
-import { each } from '../configs/each.js';
+/* c8 ignore next */ // Types
+import type { Control, EachOptions } from '../../@types/each.js';
+import { each } from '../../configs/each.js';
 
 /**
- * - ✅ Handling **global** and **external** services (_preparing a database, for example_)
- * - ✅ It's made for **exclusive use** in combination with **Poku**'s **`assert`** methods
- * - ⚠️ Although `beforeEach` accepts local variables changes by using the `imediate` option, it's strongly discouraged ([_use a mock instead_](https://poku.io/docs/category/mock))
+ * Handle **global states** and **external** services before each `test` or `it`.
  *
  * ---
  *
- * ### Available methos:
- *
  * ```ts
- * import { assert, beforeEach } from 'poku';
+ * import { beforeEach } from 'poku';
  *
  * const before = beforeEach(() => {
- *   // preparing an external or global state
+ *   // prepare
  * };
  *
  * before.pause();
@@ -54,21 +50,16 @@ export const beforeEach = (
   return { pause, continue: continueFunc, reset };
 };
 
-/* c8 ignore start */ // c8 bug
 /**
- * - ✅ Handling **global** and **external** services (_preparing a database, for example_)
- * - ✅ It's made for **exclusive use** in combination with **Poku**'s **`assert`** methods
- * - ⚠️ Although `afterEach` accepts local variables changes, it's strongly discouraged ([_use a mock instead_](https://poku.io/docs/category/mock))
+ * Handle **global states** and **external** services after each `test` or `it`.
  *
  * ---
  *
- * ### Available methos:
- *
  * ```ts
- * import { assert, afterEach } from 'poku';
+ * import { afterEach } from 'poku';
  *
  * const after = afterEach(() => {
- *   // cleanup an external or global state
+ *   // cleanup
  * };
  *
  * after.pause();
@@ -76,11 +67,11 @@ export const beforeEach = (
  * after.reset();
  * ```
  */
+/* c8 ignore next */ // ?
 export const afterEach = (
   callback: () => unknown,
   options?: Omit<EachOptions, 'immediate'>
 ): Control => {
-  /* c8 ignore stop */
   each.after.test = typeof options?.test === 'boolean' ? options.test : true;
   each.after.assert =
     typeof options?.assert === 'boolean' ? options.assert : false;
