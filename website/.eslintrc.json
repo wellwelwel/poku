@@ -1,12 +1,10 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "import", "react", "react-hooks"],
+  "plugins": ["@typescript-eslint", "react", "react-hooks"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
     "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
     "plugin:@docusaurus/recommended"
@@ -19,8 +17,6 @@
     }
   },
   "rules": {
-    "import/no-cycle": ["error", { "maxDepth": "∞" }],
-    "import/no-unresolved": ["error", { "ignore": ["^@docusaurus/"] }],
     "no-restricted-syntax": [
       "error",
       {
@@ -77,19 +73,9 @@
       "files": ["*.ts", "*.tsx"],
       "rules": {
         "@typescript-eslint/semi": ["error", "always"],
-        "@typescript-eslint/quotes": [
-          "error",
-          "single",
-          { "avoidEscape": true, "allowTemplateLiterals": true }
-        ],
         "@typescript-eslint/no-empty-function": [
           "error",
           { "allow": ["arrowFunctions"] }
-        ],
-        "@typescript-eslint/indent": [
-          "error",
-          2,
-          { "offsetTernaryExpressions": true }
         ]
       }
     },
@@ -111,20 +97,11 @@
     {
       "files": ["static/**/*"],
       "rules": {
-        "import/no-unresolved": "off",
         "@typescript-eslint/no-var-requires": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "no-unused-vars": "off",
         "no-bitwise": "off"
       }
     }
-  ],
-  "settings": {
-    "import/resolver": {
-      "typescript": {
-        "alwaysTryTypes": true,
-        "extensions": [".js", ".ts", "*.jsx", ".tsx"]
-      }
-    }
-  }
+  ]
 }
