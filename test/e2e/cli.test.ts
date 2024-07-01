@@ -1,7 +1,7 @@
-import { test } from '../../src/modules/test.js';
-import { assert } from '../../src/modules/assert.js';
+import { test } from '../../src/modules/helpers/test.js';
+import { assert } from '../../src/modules/essentials/assert.js';
 import { executeCLI, ext, isProduction } from '../helpers/capture-cli.test.js';
-import { getRuntime } from '../../src/helpers/get-runtime.js';
+import { getRuntime } from '../../src/parsers/get-runtime.js';
 
 const runtime = getRuntime();
 

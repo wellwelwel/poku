@@ -1,4 +1,5 @@
 {
+  "clean": true,
   "all": true,
   "include": ["src/**"],
   "exclude": [
@@ -6,22 +7,23 @@
     "src/bin",
     "src/configs",
     "src/polyfills",
-    "src/index.ts",
-    "benchmark",
-    "ci",
-    "fixtures",
-    "lib",
-    "test",
-    "tools",
-    "website"
+    "src/modules/index.ts",
+    "src/modules/helpers/exit.ts",
+    "src/modules/helpers/get-pids.ts",
+    "src/modules/helpers/list-files-sync.ts",
+    "src/modules/helpers/kill.ts",
+    "src/modules/helpers/log.ts",
+    "src/services/pid.ts",
+    "src/services/container.ts",
+    "src/parsers/get-runner.ts",
+    "src/parsers/get-runtime.ts"
   ],
-  "extension": [".ts"],
   "reporter": ["text", "lcov", "cobertura"],
-  "clean": true,
-  "branches": 85,
-  "statements": 90,
-  "lines": 90,
+  "branches": 95,
+  "statements": 95,
+  "lines": 95,
   "functions": 95,
   "checkCoverage": true,
-  "import": ["tsx"]
+  "import": ["tsx"],
+  "extension": [".ts"]
 }

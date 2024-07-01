@@ -1,13 +1,11 @@
-/* c8 ignore next */
 import type {
   DockerComposeConfigs,
   DockerfileConfigs,
 } from '../@types/container.js';
-/* c8 ignore next */ // c8 bug
 import { spawn, type SpawnOptionsWithoutStdio } from 'node:child_process';
-import { write } from '../helpers/logs.js';
-import { isWindows } from '../helpers/runner.js';
-import { sanitizePath } from '../modules/list-files.js';
+import { Write } from '../services/write.js';
+import { isWindows } from '../parsers/get-runner.js';
+import { sanitizePath } from '../modules/helpers/list-files.js';
 
 const runDockerCommand = (
   command: string,
@@ -21,22 +19,18 @@ const runDockerCommand = (
       shell: isWindows,
     });
 
-    /* c8 ignore start */
     if (verbose) {
-      dockerProcess.stdout.on('data', write);
-      dockerProcess.stderr.on('data', write);
+      dockerProcess.stdout.on('data', Write.log);
+      dockerProcess.stderr.on('data', Write.log);
     }
-    /* c8 ignore stop */
 
     dockerProcess.on('close', (code) => {
       resolve(code === 0);
     });
 
-    /* c8 ignore start */
     dockerProcess.on('error', () => {
       resolve(false);
     });
-    /* c8 ignore stop */
   });
 };
 
@@ -77,7 +71,6 @@ export class DockerContainer {
     this.environments = environments || [];
     this.envFile = envFile;
     this.detach = detach;
-    /* c8 ignore next */
     this.cwd = cwd ? sanitizePath(cwd) : undefined;
     this.verbose = verbose;
   }
@@ -100,7 +93,6 @@ export class DockerContainer {
   public async start() {
     const args: string[] = ['run'];
 
-    /* c8 ignore next */
     args.push(this.detach !== false ? '-d' : '--init');
     args.push(...['--name', this.containerName]);
 
@@ -177,7 +169,6 @@ export class DockerCompose {
     this.envFile = envFile;
     this.projectName = projectName;
     this.detach = detach;
-    /* c8 ignore next */
     this.cwd = cwd ? sanitizePath(cwd) : undefined;
     this.verbose = verbose;
   }
@@ -193,7 +184,6 @@ export class DockerCompose {
     }
 
     args.push('up');
-    /* c8 ignore next */
     args.push(this.detach !== false ? '-d' : '--abort-on-container-exit');
 
     if (this.build) {
@@ -228,5 +218,4 @@ export class DockerCompose {
       this.verbose
     );
   }
-  /* c8 ignore next */ // c8 bug
 }

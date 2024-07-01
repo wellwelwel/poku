@@ -1,7 +1,7 @@
-import { test } from '../../src/modules/test.js';
-import { assert } from '../../src/modules/assert.js';
-import { parseResultType } from '../../src/helpers/parse-assertion.js';
-import { nodeVersion } from '../../src/helpers/get-runtime.js';
+import { test } from '../../src/modules/helpers/test.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import { parseResultType } from '../../src/parsers/assert.js';
+import { nodeVersion } from '../../src/parsers/get-runtime.js';
 
 test('Assert: Parse Result Type', async () => {
   assert.deepStrictEqual(

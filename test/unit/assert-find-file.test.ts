@@ -1,6 +1,6 @@
-import { test } from '../../src/modules/test.js';
-import { assert } from '../../src/modules/assert.js';
-import { findFile } from '../../src/helpers/find-file.js';
+import { test } from '../../src/modules/helpers/test.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import { findFile } from '../../src/parsers/find-file-from-stack.js';
 
 const setStack = (stack?: string): Error => {
   const error = new Error('Test error');

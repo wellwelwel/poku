@@ -1,13 +1,13 @@
 import { execSync } from 'node:child_process';
-import { describe } from '../../../src/modules/describe.js';
-import { it } from '../../../src/modules/it.js';
-import { assert } from '../../../src/modules/assert.js';
-import { write } from '../../../src/helpers/logs.js';
-import { format } from '../../../src/helpers/format.js';
-import { docker } from '../../../src/modules/container.js';
-import { waitForPort } from '../../../src/modules/wait-for.js';
+import { describe } from '../../../src/modules/helpers/describe.js';
+import { it } from '../../../src/modules/helpers/it.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { Write } from '../../../src/services/write.js';
+import { format } from '../../../src/services/format.js';
+import { docker } from '../../../src/modules/helpers/container.js';
+import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
-import { isWindows } from '../../../src/helpers/runner.js';
+import { isWindows } from '../../../src/parsers/get-runner.js';
 
 // External error: no matching manifest for windows/amd64
 if (isWindows) {
@@ -25,7 +25,7 @@ const hasDocker = (() => {
 
 describe('Docker Service', async () => {
   if (!hasDocker) {
-    write(format('  ℹ Skipping: Docker not found').success().bold());
+    Write.log(format('  ℹ Skipping: Docker not found').success().bold());
     return;
   }
 
@@ -46,7 +46,7 @@ describe('Docker Service', async () => {
     await dockerfile.build();
     await dockerfile.start();
 
-    await waitForPort(6000, { delay: 100, timeout: 120000 });
+    await waitForPort(6000, { delay: 100, timeout: 150000 });
 
     const res = await legacyFetch('localhost', 6000);
 

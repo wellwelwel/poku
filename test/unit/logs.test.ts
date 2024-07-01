@@ -1,13 +1,9 @@
 import process from 'node:process';
-import { describe } from '../../src/modules/describe.js';
-import { it } from '../../src/modules/it.js';
-import { assert } from '../../src/modules/assert.js';
-import {
-  isQuiet,
-  isDebug,
-  write,
-  printOutput,
-} from '../../src/helpers/logs.js';
+import { describe } from '../../src/modules/helpers/describe.js';
+import { it } from '../../src/modules/helpers/it.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import { isQuiet, isDebug, parserOutput } from '../../src/parsers/output.js';
+import { Write } from '../../src/services/write.js';
 
 describe('Helper functions in logs.js', () => {
   it('should return true if configs.quiet is true', () => {
@@ -58,7 +54,7 @@ describe('Helper functions in logs.js', () => {
       return true;
     };
 
-    write('Test message');
+    Write.log('Test message');
     assert.strictEqual(
       capturedOutput,
       'Test message\n',
@@ -71,71 +67,46 @@ describe('Helper functions in logs.js', () => {
 
 describe('Helper functions in logs.js', () => {
   it('should print output correctly with debug on', () => {
-    let capturedOutput = '';
-    const originalWrite = process.stdout.write;
-    process.stdout.write = (data: string) => {
-      capturedOutput += data;
-      return true;
-    };
-
     const options = {
       output: 'Line1\nLine2\nLine3',
       result: true,
       configs: { debug: true },
     };
-    printOutput(options);
-    assert.strictEqual(
-      capturedOutput,
-      '    Line1\n    Line2\n    Line3\n',
-      'printOutput should print all lines with padding'
-    );
 
-    process.stdout.write = originalWrite;
+    const capturedOutput = parserOutput(options);
+
+    assert.strictEqual(
+      JSON.stringify(capturedOutput),
+      JSON.stringify(['    Line1', '    Line2', '    Line3']),
+      'parserOutput should print all lines with padding'
+    );
   });
 
   it('should filter and print output correctly with debug off', () => {
-    let capturedOutput = '';
-    const originalWrite = process.stdout.write;
-    process.stdout.write = (data: string) => {
-      capturedOutput += data;
-      return true;
-    };
-
     const options = {
       output: 'Line1\n\x1b[0mLine2\x1b[0m\nExited with code',
       result: true,
       configs: { debug: false },
     };
-    printOutput(options);
+    const capturedOutput = parserOutput(options);
     assert.strictEqual(
-      capturedOutput,
-      '    \x1b[0mLine2\x1b[0m\n',
-      'printOutput should filter lines correctly and print with padding'
+      JSON.stringify(capturedOutput),
+      JSON.stringify(['    \x1b[0mLine2\x1b[0m']),
+      'parserOutput should filter lines correctly and print with padding'
     );
-
-    process.stdout.write = originalWrite;
   });
 
   it('should return early if outputs length is 0', () => {
-    let capturedOutput = '';
-    const originalWrite = process.stdout.write;
-    process.stdout.write = (data: string) => {
-      capturedOutput += data;
-      return true;
-    };
-
     const options = {
       output: '',
       result: true,
       configs: { debug: false },
     };
-    printOutput(options);
+    const capturedOutput = parserOutput(options);
     assert.strictEqual(
       capturedOutput,
-      '',
-      'printOutput should not print anything if outputs length is 0'
+      undefined,
+      'parserOutput should not print anything if outputs length is 0'
     );
-
-    process.stdout.write = originalWrite;
   });
 });

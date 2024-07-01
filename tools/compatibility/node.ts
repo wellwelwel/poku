@@ -1,5 +1,5 @@
 import { promises as fs } from 'node:fs';
-import { listFiles } from '../../src/modules/list-files.js';
+import { listFiles } from '../../src/modules/helpers/list-files.js';
 
 const ensureNodeCompatibility = async (path: string) => {
   const files = await listFiles(path, {

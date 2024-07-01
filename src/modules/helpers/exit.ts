@@ -1,12 +1,10 @@
-/* c8 ignore start */ // This module is entirely process-based
-import type { Code } from '../@types/code.js';
+import type { Code } from '../../@types/code.js';
 import process from 'node:process';
-import { hr } from '../helpers/hr.js';
-import { results } from '../configs/poku.js';
-import { format } from '../helpers/format.js';
-import { write } from '../helpers/logs.js';
-import { fileResults, finalResults } from '../configs/files.js';
-import { setTime, toSecs } from '../helpers/time.js';
+import { results } from '../../configs/poku.js';
+import { format } from '../../services/format.js';
+import { Write } from '../../services/write.js';
+import { fileResults, finalResults } from '../../configs/files.js';
+import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 
 export const exit = (code: Code, quiet?: boolean) => {
   const isPoku = results.success > 0 || results.fail > 0;
@@ -14,24 +12,24 @@ export const exit = (code: Code, quiet?: boolean) => {
   !quiet &&
     process.on('exit', (code) => {
       if (isPoku) {
-        hr();
-        write(
-          `    ${format(`Start at › ${format(`${setTime(finalResults.started)}`).bold()}`).dim()}`
+        Write.hr();
+        Write.log(
+          `    ${format(`Start at › ${format(`${parseTime(finalResults.started)}`).bold()}`).dim()}`
         );
-        write(
-          `    ${format('Duration ›').dim()} ${format(`${finalResults.time}ms`).bold().dim()} ${format(`(±${toSecs(finalResults.time)} seconds)`).dim()}`
+        Write.log(
+          `    ${format('Duration ›').dim()} ${format(`${finalResults.time}ms`).bold().dim()} ${format(`(±${parseTimeToSecs(finalResults.time)} seconds)`).dim()}`
         );
-        write(
+        Write.log(
           `  ${format(`Test Files › ${format(String(fileResults.success.size + fileResults.fail.size)).bold()}`).dim()}`
         );
-        hr();
-        write(
+        Write.hr();
+        Write.log(
           `${format(` PASS › ${results.success} `).bg('green')} ${format(` FAIL › ${results.fail} `).bg(results.fail === 0 ? 'grey' : 'red')}`
         );
-        hr();
+        Write.hr();
       }
 
-      write(
+      Write.log(
         `${format('Exited with code').dim()} ${format(String(code)).bold()[code === 0 ? 'success' : 'fail']()}\n`
       );
     });
@@ -48,4 +46,3 @@ process.on('uncaughtException', (err) => {
   console.error('uncaughtException', err);
   process.exit(1);
 });
-/* c8 ignore stop */

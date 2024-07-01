@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { nodeVersion, getRuntime } from '../../../src/helpers/get-runtime.js';
+import { nodeVersion, getRuntime } from '../../../src/parsers/get-runtime.js';
 
 if (nodeVersion && nodeVersion < 16) {
   process.exit(0);
@@ -7,9 +7,9 @@ if (nodeVersion && nodeVersion < 16) {
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { test } from '../../../src/modules/test.js';
-import { poku } from '../../../src/modules/poku.js';
-import { assert } from '../../../src/modules/assert.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { poku } from '../../../src/modules/essentials/poku.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
 
 const runtime = getRuntime();
 

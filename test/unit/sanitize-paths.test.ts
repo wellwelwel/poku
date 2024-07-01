@@ -1,7 +1,7 @@
 import { sep } from 'node:path';
-import { assert } from '../../src/modules/assert.js';
-import { sanitizePath } from '../../src/modules/list-files.js';
-import { test } from '../../src/modules/test.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import { sanitizePath } from '../../src/modules/helpers/list-files.js';
+import { test } from '../../src/modules/helpers/test.js';
 
 test('Sanitize paths', () => {
   assert.strictEqual(

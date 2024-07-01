@@ -1,6 +1,6 @@
-import { test } from '../../../src/modules/test.js';
-import { describe } from '../../../src/modules/describe.js';
-import { it } from '../../../src/modules/it.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { describe } from '../../../src/modules/helpers/describe.js';
+import { it } from '../../../src/modules/helpers/it.js';
 
 test('Testing "it" method', () => {
   describe(async () => {

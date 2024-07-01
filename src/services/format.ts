@@ -1,4 +1,4 @@
-/* c8 ignore next */
+/* c8 ignore next */ // ?
 import { padStart } from '../polyfills/pad.js';
 
 export const backgroundColor = {
@@ -90,6 +90,6 @@ export class Formatter {
 
 export const format = (text: string) => Formatter.create(text);
 
-/* c8 ignore next */
+/* c8 ignore next */ // ?
 export const getLargestStringLength = (arr: string[]): number =>
   arr.reduce((max, current) => Math.max(max, current.length), 0);

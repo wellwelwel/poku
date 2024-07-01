@@ -1,23 +1,22 @@
 #! /usr/bin/env node
 
+import type { Configs } from '../@types/poku.js';
 import process from 'node:process';
-import { escapeRegExp } from '../modules/list-files.js';
+import { escapeRegExp } from '../modules/helpers/list-files.js';
 import {
   getArg,
   getLastParam,
   hasArg,
   argToArray,
-} from '../helpers/get-arg.js';
+} from '../parsers/get-arg.js';
 import { fileResults } from '../configs/files.js';
-import { platformIsValid } from '../helpers/get-runtime.js';
-import { format } from '../helpers/format.js';
-import { write } from '../helpers/logs.js';
-import { hr } from '../helpers/hr.js';
+import { platformIsValid } from '../parsers/get-runtime.js';
+import { format } from '../services/format.js';
+import { kill } from '../modules/helpers/kill.js';
 import { mapTests, normalizePath } from '../services/map-tests.js';
 import { watch } from '../services/watch.js';
-import { onSigint, poku } from '../modules/poku.js';
-import { kill } from '../modules/processes.js';
-import type { Configs } from '../@types/poku.js';
+import { onSigint, poku } from '../modules/essentials/poku.js';
+import { Write } from '../services/write.js';
 
 const dirs = (() => {
   const includeArg = getArg('include');
@@ -98,12 +97,12 @@ const options: Configs = {
 };
 
 if (debug) {
-  hr();
-  write(`${format(' Debug Enabled ').bg('brightBlue')}\n`);
-  write(`${format('…').info().italic()} ${format('Paths').bold()}`);
+  Write.hr();
+  Write.log(`${format(' Debug Enabled ').bg('brightBlue')}\n`);
+  Write.log(`${format('…').info().italic()} ${format('Paths').bold()}`);
   console.table(dirs);
-  write('\n');
-  write(`${format('…').info().italic()} ${format('Options').bold()}`);
+  Write.log('\n');
+  Write.log(`${format('…').info().italic()} ${format('Options').bold()}`);
   console.dir(options, { depth: null, colors: true });
 }
 
@@ -169,8 +168,8 @@ Promise.all(tasks).then(() => {
         });
       }
 
-      hr();
-      write(
+      Write.hr();
+      Write.log(
         `${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`
       );
     }

@@ -1,9 +1,9 @@
-/* c8 ignore next */
+/* c8 ignore next 2 */ // Types
 import type { WatchCallback } from '../@types/watch.js';
 import { watch as nodeWatch, type FSWatcher } from 'node:fs';
 import { join } from 'node:path';
 import { readdir, stat } from '../polyfills/fs.js';
-import { listFiles } from '../modules/list-files.js';
+import { listFiles } from '../modules/helpers/list-files.js';
 
 class Watcher {
   private rootDir: string;
@@ -18,21 +18,19 @@ class Watcher {
   }
 
   private watchFile(filePath: string) {
-    /* c8 ignore start */
+    /* c8 ignore next 3 */
     if (this.fileWatchers.has(filePath)) {
       return;
     }
-    /* c8 ignore stop */
 
     const watcher = nodeWatch(filePath, (eventType) => {
       this.callback(filePath, eventType);
     });
 
-    /* c8 ignore start */
+    /* c8 ignore next 3 */
     watcher.on('error', () => {
       return;
     });
-    /* c8 ignore stop */
 
     this.fileWatchers.set(filePath, watcher);
   }
@@ -53,11 +51,10 @@ class Watcher {
   }
 
   private async watchDirectory(dir: string) {
-    /* c8 ignore start */
+    /* c8 ignore next 3 */
     if (this.dirWatchers.has(dir)) {
       return;
     }
-    /* c8 ignore stop */
 
     const watcher = nodeWatch(dir, async (_, filename) => {
       if (filename) {
@@ -71,17 +68,15 @@ class Watcher {
           if (stats.isDirectory()) {
             await this.watchDirectory(fullPath);
           }
-          /* c8 ignore start */
+          /* c8 ignore next */
         } catch {}
-        /* c8 ignore stop */
       }
     });
 
-    /* c8 ignore start */
+    /* c8 ignore next 3 */
     watcher.on('error', () => {
       return;
     });
-    /* c8 ignore stop */
 
     this.dirWatchers.set(dir, watcher);
 
@@ -107,9 +102,8 @@ class Watcher {
       } else {
         this.watchFile(this.rootDir);
       }
-      /* c8 ignore start */
+      /* c8 ignore next */
     } catch {}
-    /* c8 ignore stop */ // c8 bug
   }
 
   public stop() {
@@ -123,10 +117,9 @@ class Watcher {
       this.dirWatchers.delete(dirPath);
     }
   }
-  /* c8 ignore next */ // c8 bug
 }
 
-/* c8 ignore next */ // c8 bug
+/* c8 ignore next */ // ?
 export const watch = async (path: string, callback: WatchCallback) => {
   const watcher = new Watcher(path, callback);
 

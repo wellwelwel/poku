@@ -1,8 +1,8 @@
-import { test } from '../../src/modules/test.js';
-import { describe } from '../../src/modules/describe.js';
-import { it } from '../../src/modules/it.js';
-import { poku } from '../../src/modules/poku.js';
-import { assert } from '../../src/modules/assert.js';
+import { test } from '../../src/modules/helpers/test.js';
+import { describe } from '../../src/modules/helpers/describe.js';
+import { it } from '../../src/modules/helpers/it.js';
+import { poku } from '../../src/modules/essentials/poku.js';
+import { assert } from '../../src/modules/essentials/assert.js';
 
 test(async () => {
   const prepareService = () => new Promise((resolve) => resolve(undefined));

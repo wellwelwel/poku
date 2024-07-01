@@ -1,4 +1,4 @@
-import * as index from '../../src/index.js';
+import * as index from '../../src/modules/index.js';
 
 index.test('Import Suite', () => {
   index.assert.ok(index.poku, 'Importing poku method');

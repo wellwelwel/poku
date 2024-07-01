@@ -1,11 +1,9 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "import", "prettier"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
     "prettier"
   ],
   "parserOptions": {
@@ -13,12 +11,11 @@
     "sourceType": "module"
   },
   "rules": {
-    "import/no-cycle": ["error", { "maxDepth": "∞" }],
     "prettier/prettier": "error",
     "no-restricted-syntax": [
       "error",
       {
-        "selector": "ImportDeclaration[source.value=/^\\./][source.value!=/\\.(js(on(c)?)?|ts|(s)?css|svg|ico)$/]",
+        "selector": "ImportDeclaration[source.value=/^\\./][source.value!=/\\.(js(on(c)?)?|ts)$/]",
         "message": "Local imports must have the explicit extension"
       }
     ],
@@ -36,7 +33,6 @@
     ],
     "prefer-regex-literals": "error",
     "eol-last": ["error", "always"],
-    "import/no-default-export": "error",
     "eqeqeq": [2, "always"],
     "no-var": 2,
     "block-scoped-var": 2,
@@ -85,13 +81,5 @@
         "@typescript-eslint/no-explicit-any": "off"
       }
     }
-  ],
-  "settings": {
-    "import/resolver": {
-      "typescript": {
-        "alwaysTryTypes": true,
-        "extensions": [".js", ".ts"]
-      }
-    }
-  }
+  ]
 }

@@ -1,23 +1,24 @@
-/* c8 ignore next */
+/* c8 ignore next */ // Types
 import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime, env } from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
 import { indentation } from '../configs/indentation.js';
 import { fileResults } from '../configs/files.js';
-import { isWindows, runner } from '../helpers/runner.js';
-import { format } from '../helpers/format.js';
-import { isQuiet, printOutput, write } from '../helpers/logs.js';
+import { isWindows, runner } from '../parsers/get-runner.js';
+import { format } from './format.js';
+import { isQuiet, parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
+import { Write } from './write.js';
 
 const cwd = processCWD();
 
-/* c8 ignore next */ // c8 bug
+/* c8 ignore next */ // ?
 export const runTestFile = async (
   filePath: string,
   configs?: Configs
 ): Promise<boolean> => {
-  /* c8 ignore start */ // multi-platform
+  /* c8 ignore start */
   const runtimeOptions = runner(filePath, configs);
   const runtime = runtimeOptions.shift()!;
   const runtimeArguments = [
@@ -41,7 +42,7 @@ export const runTestFile = async (
 
   if (!configs?.parallel) {
     showLogs &&
-      write(
+      Write.log(
         `${indentation.test}${format('●').info().dim()} ${format(fileRelative).dim()}`
       );
   }
@@ -49,16 +50,14 @@ export const runTestFile = async (
   const start = hrtime();
   let end: ReturnType<typeof hrtime>;
 
-  /* c8 ignore start */
+  /* c8 ignore next 3 */
   if (!(await beforeEach(fileRelative, configs))) {
     return false;
   }
-  /* c8 ignore stop */
 
   return new Promise((resolve) => {
     const child = spawn(runtime, runtimeArguments, {
       stdio: ['inherit', 'pipe', 'pipe'],
-      /* c8 ignore next */
       shell: isWindows,
       env: {
         ...env,
@@ -75,19 +74,20 @@ export const runTestFile = async (
       const result = code === 0;
 
       if (showLogs) {
-        printOutput({
+        const mappedOutputs = parserOutput({
           output,
           result,
           configs,
         });
+
+        mappedOutputs && Write.log(mappedOutputs.join('\n'));
       }
 
-      /* c8 ignore start */
+      /* c8 ignore next 4 */
       if (!(await afterEach(fileRelative, configs))) {
         resolve(false);
         return;
       }
-      /* c8 ignore stop */
 
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 

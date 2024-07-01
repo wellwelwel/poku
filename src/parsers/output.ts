@@ -1,8 +1,5 @@
-/* c8 ignore next */
+/* c8 ignore next */ // Types
 import type { Configs } from '../@types/poku.js';
-/* c8 ignore next */
-import type { Formatter } from './format.js';
-import { stdout } from 'node:process';
 
 const regex = {
   newLine: /\n/,
@@ -12,13 +9,11 @@ const regex = {
 export const isQuiet = (configs?: Configs): boolean =>
   typeof configs?.quiet === 'boolean' && Boolean(configs?.quiet);
 
+/* c8 ignore next */
 export const isDebug = (configs?: Configs): boolean => Boolean(configs?.debug);
 
-export const write = (data: string | Uint8Array | Formatter) =>
-  stdout.write(`${String(data)}\n`);
-
-/* c8 ignore next */ // c8 bug
-export const printOutput = (options: {
+/* c8 ignore next */ // ?
+export const parserOutput = (options: {
   output: string;
   result: boolean;
   configs?: Configs;
@@ -44,7 +39,5 @@ export const printOutput = (options: {
     return;
   }
 
-  const mappedOutputs = outputs.map((current) => `${pad}${current}`);
-
-  write(mappedOutputs.join('\n'));
+  return outputs.map((current) => `${pad}${current}`);
 };

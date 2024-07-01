@@ -1,14 +1,14 @@
-/* c8 ignore next */
-import type { ParseAssertionOptions } from '../@types/assert.js';
+/* c8 ignore next */ // Types
+import type { ProcessAssertionOptions } from '../../@types/assert.js';
 import * as nodeAssert from 'node:assert';
-import { parseAssertion } from '../helpers/parse-assertion.js';
-import { nodeVersion } from '../helpers/get-runtime.js';
+import { processAssert } from '../../services/assert.js';
+import { nodeVersion } from '../../parsers/get-runtime.js';
 
 const ok = (
   value: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(
+  processAssert(
     () => {
       nodeAssert.ok(value);
     },
@@ -19,9 +19,9 @@ const ok = (
 const equal = (
   actual: unknown,
   expected: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(
+  processAssert(
     () => {
       nodeAssert.equal(actual, expected);
     },
@@ -32,25 +32,25 @@ const equal = (
 const deepEqual = (
   actual: unknown,
   expected: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(() => nodeAssert.deepEqual(actual, expected), { message });
+  processAssert(() => nodeAssert.deepEqual(actual, expected), { message });
 };
 
 const strictEqual = (
   actual: unknown,
   expected: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(() => nodeAssert.strictEqual(actual, expected), { message });
+  processAssert(() => nodeAssert.strictEqual(actual, expected), { message });
 };
 
 const deepStrictEqual = (
   actual: unknown,
   expected: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(() => nodeAssert.deepStrictEqual(actual, expected), {
+  processAssert(() => nodeAssert.deepStrictEqual(actual, expected), {
     message,
   });
 };
@@ -58,9 +58,9 @@ const deepStrictEqual = (
 const notEqual = (
   actual: unknown,
   expected: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(() => nodeAssert.notEqual(actual, expected), {
+  processAssert(() => nodeAssert.notEqual(actual, expected), {
     message,
   });
 };
@@ -68,17 +68,17 @@ const notEqual = (
 const notDeepEqual = (
   actual: unknown,
   expected: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(() => nodeAssert.notDeepEqual(actual, expected), { message });
+  processAssert(() => nodeAssert.notDeepEqual(actual, expected), { message });
 };
 
 const notStrictEqual = (
   actual: unknown,
   expected: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(() => nodeAssert.notStrictEqual(actual, expected), {
+  processAssert(() => nodeAssert.notStrictEqual(actual, expected), {
     message,
   });
 };
@@ -86,18 +86,18 @@ const notStrictEqual = (
 const notDeepStrictEqual = (
   actual: unknown,
   expected: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(() => nodeAssert.notDeepStrictEqual(actual, expected), {
+  processAssert(() => nodeAssert.notDeepStrictEqual(actual, expected), {
     message,
   });
 };
 
 const ifError = (
   value: unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
-  parseAssertion(
+  processAssert(
     () => {
       nodeAssert.ifError(value);
     },
@@ -111,8 +111,8 @@ const ifError = (
 };
 
 /* c8 ignore start */
-const fail = (message?: ParseAssertionOptions['message']): void => {
-  parseAssertion(
+const fail = (message?: ProcessAssertionOptions['message']): void => {
+  processAssert(
     () => {
       nodeAssert.fail(message);
     },
@@ -127,21 +127,21 @@ const fail = (message?: ParseAssertionOptions['message']): void => {
 
 function doesNotThrow(
   block: () => unknown,
-  message?: string | ParseAssertionOptions['message']
+  message?: string | ProcessAssertionOptions['message']
 ): void;
 function doesNotThrow(
   block: () => unknown,
   error: nodeAssert.AssertPredicate,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void;
 function doesNotThrow(
   block: () => unknown,
   errorOrMessage?:
     | nodeAssert.AssertPredicate
-    | ParseAssertionOptions['message'],
-  message?: ParseAssertionOptions['message']
+    | ProcessAssertionOptions['message'],
+  message?: ProcessAssertionOptions['message']
 ): void {
-  parseAssertion(
+  processAssert(
     () => {
       if (
         typeof errorOrMessage === 'function' ||
@@ -166,26 +166,26 @@ function doesNotThrow(
 
 function throws(
   block: () => unknown,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void;
 function throws(
   block: () => unknown,
   error: nodeAssert.AssertPredicate,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void;
 function throws(
   block: () => unknown,
   errorOrMessage?:
     | nodeAssert.AssertPredicate
-    | ParseAssertionOptions['message'],
-  message?: ParseAssertionOptions['message']
+    | ProcessAssertionOptions['message'],
+  message?: ProcessAssertionOptions['message']
 ): void {
   if (
     typeof errorOrMessage === 'function' ||
     errorOrMessage instanceof RegExp ||
     typeof errorOrMessage === 'object'
   ) {
-    parseAssertion(() => nodeAssert.throws(block, errorOrMessage), {
+    processAssert(() => nodeAssert.throws(block, errorOrMessage), {
       message,
       defaultMessage: 'Expected function to throw',
       hideDiff: true,
@@ -194,7 +194,7 @@ function throws(
     const msg =
       typeof errorOrMessage !== 'undefined' ? errorOrMessage : message;
 
-    parseAssertion(() => nodeAssert.throws(block, message), {
+    processAssert(() => nodeAssert.throws(block, message), {
       message: msg,
       defaultMessage: 'Expected function to throw',
       hideDiff: true,
@@ -204,21 +204,21 @@ function throws(
 
 function rejects(
   block: (() => Promise<unknown>) | Promise<unknown>,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): Promise<void>;
 function rejects(
   block: (() => Promise<unknown>) | Promise<unknown>,
   error: nodeAssert.AssertPredicate,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): Promise<void>;
 async function rejects(
   block: (() => Promise<unknown>) | Promise<unknown>,
   errorOrMessage?:
     | nodeAssert.AssertPredicate
-    | ParseAssertionOptions['message'],
-  message?: ParseAssertionOptions['message']
+    | ProcessAssertionOptions['message'],
+  message?: ProcessAssertionOptions['message']
 ): Promise<void> {
-  await parseAssertion(
+  await processAssert(
     async () => {
       if (
         typeof errorOrMessage === 'function' ||
@@ -243,21 +243,21 @@ async function rejects(
 
 function doesNotReject(
   block: (() => Promise<unknown>) | Promise<unknown>,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): Promise<void>;
 function doesNotReject(
   block: (() => Promise<unknown>) | Promise<unknown>,
   error: nodeAssert.AssertPredicate,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): Promise<void>;
 async function doesNotReject(
   block: (() => Promise<unknown>) | Promise<unknown>,
   errorOrMessage?:
     | nodeAssert.AssertPredicate
-    | ParseAssertionOptions['message'],
-  message?: ParseAssertionOptions['message']
+    | ProcessAssertionOptions['message'],
+  message?: ProcessAssertionOptions['message']
 ): Promise<void> {
-  await parseAssertion(
+  await processAssert(
     async () => {
       if (
         typeof errorOrMessage === 'function' ||
@@ -278,46 +278,44 @@ async function doesNotReject(
   );
 }
 
-/* c8 ignore start */
 const match = (
   value: string,
   regExp: RegExp,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
+  /* c8 ignore next 3 */
   if (typeof nodeVersion === 'number' && nodeVersion < 12) {
     throw new Error('match is available from Node.js 12 or higher');
   }
 
-  parseAssertion(() => nodeAssert?.match(value, regExp), {
+  processAssert(() => nodeAssert?.match(value, regExp), {
     message,
     actual: 'Value',
     expected: 'RegExp',
     defaultMessage: 'Value should match regExp',
   });
 };
-/* c8 ignore stop */
 
-/* c8 ignore start */
 const doesNotMatch = (
   value: string,
   regExp: RegExp,
-  message?: ParseAssertionOptions['message']
+  message?: ProcessAssertionOptions['message']
 ): void => {
+  /* c8 ignore next 3 */
   if (typeof nodeVersion === 'number' && nodeVersion < 12) {
     throw new Error('doesNotMatch is available from Node.js 12 or higher');
   }
 
-  parseAssertion(() => nodeAssert.doesNotMatch(value, regExp), {
+  processAssert(() => nodeAssert.doesNotMatch(value, regExp), {
     message,
     actual: 'Value',
     expected: 'RegExp',
     defaultMessage: 'Value should not match regExp',
   });
 };
-/* c8 ignore stop */
 
 export const assert = Object.assign(
-  (value: unknown, message?: ParseAssertionOptions['message']) =>
+  (value: unknown, message?: ProcessAssertionOptions['message']) =>
     ok(value, message),
   {
     ok,
@@ -338,5 +336,5 @@ export const assert = Object.assign(
     fail,
     rejects,
   }
-  /* c8 ignore next */ // c8 bug
+  /* c8 ignore next */ // ?
 );

@@ -1,4 +1,3 @@
-/* c8 ignore start */ // This module is entirely process-based
 import { spawn } from 'node:child_process';
 
 const regex = {
@@ -79,10 +78,6 @@ export const getPIDs = {
         const output = data.toString().trim();
         const lines = output.trim().split('\n');
 
-        /**
-         * TODO: Chack line for "/:\d+\s+\w+\s+\d+\s+(\d+)/" regex match to safe support multiple Windows versions
-         * (Tested against ReDos Checker)
-         */
         lines.map((line) => {
           const tokens = line.trim().split(regex.sequentialSpaces);
           const stateIndex = tokens.indexOf('LISTENING');
@@ -102,4 +97,3 @@ export const getPIDs = {
       });
     }),
 };
-/* c8 ignore stop */

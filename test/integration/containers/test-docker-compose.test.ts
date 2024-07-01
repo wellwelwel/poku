@@ -1,13 +1,13 @@
 import { execSync } from 'node:child_process';
-import { describe } from '../../../src/modules/describe.js';
-import { it } from '../../../src/modules/it.js';
-import { assert } from '../../../src/modules/assert.js';
-import { write } from '../../../src/helpers/logs.js';
-import { format } from '../../../src/helpers/format.js';
-import { docker } from '../../../src/modules/container.js';
+import { describe } from '../../../src/modules/helpers/describe.js';
+import { it } from '../../../src/modules/helpers/it.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { Write } from '../../../src/services/write.js';
+import { format } from '../../../src/services/format.js';
+import { docker } from '../../../src/modules/helpers/container.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
-import { isWindows } from '../../../src/helpers/runner.js';
-import { waitForPort } from '../../../src/modules/wait-for.js';
+import { isWindows } from '../../../src/parsers/get-runner.js';
+import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
 
 // External error: no matching manifest for windows/amd64
 if (isWindows) {
@@ -25,7 +25,9 @@ const hasDockerCompose = (() => {
 
 describe('Docker Compose Service', async () => {
   if (!hasDockerCompose) {
-    write(format('  ℹ Skipping: Docker Compose not found').success().bold());
+    Write.log(
+      format('  ℹ Skipping: Docker Compose not found').success().bold()
+    );
     return;
   }
 
@@ -40,7 +42,7 @@ describe('Docker Compose Service', async () => {
     });
 
     await compose.up();
-    await waitForPort(6001, { delay: 100, timeout: 120000 });
+    await waitForPort(6001, { delay: 100, timeout: 150000 });
 
     const res = await legacyFetch('localhost', 6001);
 
@@ -61,7 +63,7 @@ describe('Docker Compose Service', async () => {
     });
 
     await compose.up();
-    await waitForPort(6001, { delay: 100, timeout: 120000 });
+    await waitForPort(6001, { delay: 100, timeout: 150000 });
 
     const res = await legacyFetch('localhost', 6001);
 

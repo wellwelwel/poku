@@ -1,6 +1,6 @@
-import { test } from '../../src/modules/test.js';
-import { assert } from '../../src/modules/assert.js';
-import { docker } from '../../src/modules/container.js';
+import { test } from '../../src/modules/helpers/test.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import { docker } from '../../src/modules/helpers/container.js';
 
 const projectName = 'poku';
 const serviceName = 'bun-canary';

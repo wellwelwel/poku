@@ -1,6 +1,6 @@
-import { test } from '../../../src/modules/test.js';
-import { assert } from '../../../src/modules/assert.js';
-import { runner } from '../../../src/helpers/runner.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { runner } from '../../../src/parsers/get-runner.js';
 
 test('Deno Permissions (Allow)', () => {
   assert.deepStrictEqual(

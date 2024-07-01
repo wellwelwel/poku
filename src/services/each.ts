@@ -1,29 +1,27 @@
-/* c8 ignore next */
+/* c8 ignore next */ // Types
 import type { Configs } from '../@types/poku.js';
-import { format } from '../helpers/format.js';
-import { write } from '../helpers/logs.js';
+import { format } from './format.js';
+import { Write } from '../services/write.js';
 
 const eachCore = async (
   type: keyof Required<Pick<Configs, 'beforeEach' | 'afterEach'>>,
   fileRelative: string,
   configs?: Configs
 ): Promise<boolean> => {
-  /* c8 ignore start */
+  /* c8 ignore next 3 */
   if (typeof configs?.[type] !== 'function') {
     return true;
   }
-  /* c8 ignore stop */
 
   const cb = configs[type];
 
-  /* c8 ignore start */
+  /* c8 ignore next 3 */
   if (typeof cb !== 'function') {
     return true;
   }
-  /* c8 ignore stop */
 
   /* c8 ignore start */
-  write(
+  Write.log(
     `    ${format('◯').dim().info()} ${format(
       `${cb}: ${cb.name || 'anonymous function'}`
     )
@@ -35,27 +33,25 @@ const eachCore = async (
   try {
     const resultCb = cb();
 
-    /* c8 ignore start */
     if (resultCb instanceof Promise) {
       await resultCb;
     }
-    /* c8 ignore stop */
 
     return true;
   } catch (error) {
-    write(
+    Write.log(
       format(`    ✘ ${type} callback failed ${format(`› ${cb}`).dim()}`)
         .fail()
         .bold()
     );
-    write(format(`      ├─ Who's trying to run this ${type}?`).fail());
-    write(
+    Write.log(format(`      ├─ Who's trying to run this ${type}?`).fail());
+    Write.log(
       format(`      │ └─ ${format(fileRelative).fail().underline()}`).fail()
     );
 
     if (error instanceof Error) {
-      write(format('      ├─ Message:').fail());
-      write(format(`      │ └─ ${error.message}`).fail());
+      Write.log(format('      ├─ Message:').fail());
+      Write.log(format(`      │ └─ ${error.message}`).fail());
     }
 
     return false;
@@ -70,7 +66,7 @@ export const beforeEach = async (fileRelative: string, configs?: Configs) => {
   return true;
 };
 
-/* c8 ignore next */ // c8 bug
+/* c8 ignore next */ // ?
 export const afterEach = async (fileRelative: string, configs?: Configs) => {
   if (configs?.afterEach) {
     return await eachCore('afterEach', fileRelative, configs);

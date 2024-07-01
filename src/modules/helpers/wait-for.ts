@@ -1,8 +1,8 @@
-/* c8 ignore next */
+/* c8 ignore next */ // Types
 import type {
   WaitForExpectedResultOptions,
   WaitForPortOptions,
-} from '../@types/wait-for.js';
+} from '../../@types/wait-for.js';
 import { createConnection } from 'node:net';
 import { deepEqual, deepStrictEqual } from 'node:assert';
 
@@ -15,25 +15,22 @@ const checkPort = (port: number, host: string): Promise<boolean> =>
       resolve(true);
     });
 
-    /* c8 ignore start */
     client.on('error', () => {
       resolve(false);
     });
-    /* c8 ignore stop */
   });
 
 /** Wait until the defined milliseconds. */
 export const sleep = (milliseconds: number): Promise<void> => {
-  /* c8 ignore start */
+  /* c8 ignore next 3 */
   if (!Number.isInteger(milliseconds)) {
     throw new Error('Milliseconds must be an integer.');
   }
-  /* c8 ignore stop */
 
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-/** Wait until a result is equal the expected value */
+/** Wait until a result is equal the expected value. */
 export const waitForExpectedResult = async (
   callback: () => unknown | Promise<unknown>,
   expectedResult: unknown,
@@ -86,15 +83,12 @@ export const waitForExpectedResult = async (
           ? deepStrictEqual(result, expectedResult)
           : deepEqual(result, expectedResult);
         break;
-        /* c8 ignore next */
       } catch {}
     }
 
-    /* c8 ignore start */
     if (Date.now() - startTime >= timeout) {
       throw new Error('Timeout');
     }
-    /* c8 ignore stop */
 
     await sleep(interval);
   }
@@ -102,20 +96,17 @@ export const waitForExpectedResult = async (
   await sleep(delay);
 };
 
-/* c8 ignore start */ // c8 bug
+/* c8 ignore next 2 */ // ?
 /** Wait until the defined port is active. */
 export const waitForPort = async (
   port: number,
   options?: WaitForPortOptions
 ): Promise<void> => {
-  /* c8 ignore stop */
   const host = options?.host || 'localhost';
 
-  /* c8 ignore start */
   if (!Number.isInteger(port)) {
     throw new Error('Port must be an integer.');
   }
-  /* c8 ignore stop */
 
   await waitForExpectedResult(
     async () => await checkPort(port, host),
