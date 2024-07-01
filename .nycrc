@@ -17,10 +17,13 @@
     "src/parsers/get-runner.ts",
     "src/parsers/get-runtime.ts"
   ],
-  "reporter": ["lcovonly", "text"],
+  "reporter": ["text", "lcov", "cobertura"],
   "branches": 95,
   "statements": 95,
   "lines": 95,
   "functions": 95,
-  "exclude-after-remap": true
+  "exclude-after-remap": true,
+  "checkCoverage": true,
+  "import": ["tsx"],
+  "extension": [".ts"]
 }
