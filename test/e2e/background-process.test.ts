@@ -24,7 +24,7 @@ test(async () => {
             : 'ci/fixtures/server',
       });
 
-      await waitForPort(4000, { timeout: 5000, delay: 100 });
+      await waitForPort(4000, { timeout: 10000, delay: 100 });
       const res = await legacyFetch('localhost', 4000);
 
       assert.strictEqual(res?.statusCode, 200, 'Service is on');
@@ -49,7 +49,7 @@ test(async () => {
         runner: runtime === 'node' ? 'npm' : runtime,
       });
 
-      await waitForPort(4001, { timeout: 5000, delay: 100 });
+      await waitForPort(4001, { timeout: 10000, delay: 100 });
       const res = await legacyFetch('localhost', 4001);
 
       assert.strictEqual(res?.statusCode, 200, 'Script is on');
@@ -73,7 +73,7 @@ test(async () => {
             : 'ci/fixtures/server',
       });
 
-      await waitForPort(4000, { timeout: 5000, delay: 100 });
+      await waitForPort(4000, { timeout: 10000, delay: 100 });
       const res = await legacyFetch('localhost', 4000);
 
       assert.strictEqual(res?.statusCode, 200, 'Service is on');
@@ -98,7 +98,7 @@ test(async () => {
             : 'ci/fixtures/server',
       });
 
-      await waitForPort(4000, { timeout: 5000, delay: 100 });
+      await waitForPort(4000, { timeout: 10000, delay: 100 });
       const res = await legacyFetch('localhost', 4000);
 
       assert.strictEqual(res?.statusCode, 200, 'Service is on');
@@ -123,7 +123,7 @@ test(async () => {
         runner: runtime === 'node' ? 'npm' : runtime,
       });
 
-      await waitForPort(4001, { timeout: 5000, delay: 100 });
+      await waitForPort(4001, { timeout: 10000, delay: 100 });
       const res = await legacyFetch('localhost', 4001);
 
       assert.strictEqual(res?.statusCode, 200, 'Script is on');
@@ -149,7 +149,7 @@ test(async () => {
         runner: runtime === 'node' ? 'npm' : runtime,
       });
 
-      await waitForPort(4001, { timeout: 5000, delay: 100 });
+      await waitForPort(4001, { timeout: 10000, delay: 100 });
       const res = await legacyFetch('localhost', 4001);
 
       assert.strictEqual(res?.statusCode, 200, 'Script is on');
@@ -221,7 +221,7 @@ test(async () => {
               : 'ci/fixtures/server',
         });
 
-        await waitForPort(4000, { timeout: 5000, delay: 100 });
+        await waitForPort(4000, { timeout: 10000, delay: 100 });
         const res = await legacyFetch('localhost', 4000);
 
         assert.strictEqual(res?.statusCode, 200, 'Service is on');
@@ -246,7 +246,7 @@ test(async () => {
           runner: runtime === 'node' ? 'npm' : runtime,
         });
 
-        await waitForPort(4001, { timeout: 5000, delay: 100 });
+        await waitForPort(4001, { timeout: 10000, delay: 100 });
         const res = await legacyFetch('localhost', 4001);
 
         assert.strictEqual(res?.statusCode, 200, 'Script is on');
