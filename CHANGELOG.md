@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.20.2](https://github.com/wellwelwel/poku/compare/v1.20.1...v1.20.2) (2024-07-01)
+
+
+### Bug Fixes
+
+* **beforeEach and afterEach:** show proper callback name ([#490](https://github.com/wellwelwel/poku/issues/490)) ([812744d](https://github.com/wellwelwel/poku/commit/812744d8fe2e7b74380d02a47966ea69df671e60))
+* **logs:** respect `quiet` option ([#492](https://github.com/wellwelwel/poku/issues/492)) ([aabb1b3](https://github.com/wellwelwel/poku/commit/aabb1b36105415512e9aaf02ad1c418dad6d4dc0))
+
 ## [1.20.1](https://github.com/wellwelwel/poku/compare/v1.20.0...v1.20.1) (2024-06-26)
 
 
