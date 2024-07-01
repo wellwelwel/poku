@@ -16,7 +16,7 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
-        quiet: true,
+
         beforeEach: prepareService,
         afterEach: resetService,
       });
@@ -31,7 +31,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/fail', {
         noExit: true,
-        quiet: true,
         beforeEach: prepareService,
         afterEach: resetService,
       });
@@ -48,7 +47,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
-        quiet: true,
         beforeEach: () => prepareService(),
         afterEach: () => resetService(),
       });
@@ -63,7 +61,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/fail', {
         noExit: true,
-        quiet: true,
         beforeEach: () => prepareService(),
         afterEach: () => resetService(),
       });
@@ -80,7 +77,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
-        quiet: true,
         beforeEach: async () => await prepareService(),
         afterEach: async () => await resetService(),
       });
@@ -95,7 +91,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/fail', {
         noExit: true,
-        quiet: true,
         beforeEach: async () => await prepareService(),
         afterEach: async () => await resetService(),
       });
@@ -112,7 +107,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
-        quiet: true,
         beforeEach: () => true,
         afterEach: () => true,
       });
@@ -127,7 +121,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/fail', {
         noExit: true,
-        quiet: true,
         beforeEach: () => true,
         afterEach: () => true,
       });
@@ -144,7 +137,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
-        quiet: true,
         beforeEach: function () {
           return;
         },
@@ -163,7 +155,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/fail', {
         noExit: true,
-        quiet: true,
         beforeEach: function () {
           return;
         },
@@ -184,7 +175,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
-        quiet: true,
         beforeEach: crashIt,
         afterEach: resetService,
       });
@@ -199,7 +189,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
-        quiet: true,
         beforeEach: prepareService,
         afterEach: crashIt,
       });
@@ -214,7 +203,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
-        quiet: true,
         beforeEach: crashItAgain,
         afterEach: resetService,
       });
@@ -229,7 +217,6 @@ test(async () => {
     await it(async () => {
       const code = await poku('./fixtures/success', {
         noExit: true,
-        quiet: true,
         beforeEach: prepareService,
         afterEach: crashItAgain,
       });

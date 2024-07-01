@@ -2,6 +2,7 @@
 import type { Configs } from '../@types/poku.js';
 import { format } from './format.js';
 import { Write } from '../services/write.js';
+import { isQuiet } from '../parsers/output.js';
 
 const eachCore = async (
   type: keyof Required<Pick<Configs, 'beforeEach' | 'afterEach'>>,
@@ -14,33 +15,37 @@ const eachCore = async (
   }
 
   const cb = configs[type];
+  const showLogs = !isQuiet(configs);
 
   const cbName = cb.name !== type ? cb.name : 'anonymous function';
 
-  Write.log(
-    `    ${format('◯').dim().info()} ${format(`${type}: ${cbName}`)
-      .dim()
-      .italic()}`
-  );
+  showLogs &&
+    Write.log(
+      `    ${format('◯').dim().info()} ${format(`${type}: ${cbName}`)
+        .dim()
+        .italic()}`
+    );
 
   try {
     await cb();
 
     return true;
   } catch (error) {
-    Write.log(
-      format(`    ✘ ${type} callback failed ${format(`› ${cbName}`).dim()}`)
-        .fail()
-        .bold()
-    );
-    Write.log(format(`      ├─ Who's trying to run this ${type}?`).fail());
-    Write.log(
-      format(`      │ └─ ${format(fileRelative).fail().underline()}`).fail()
-    );
+    if (showLogs) {
+      Write.log(
+        format(`    ✘ ${type} callback failed ${format(`› ${cbName}`).dim()}`)
+          .fail()
+          .bold()
+      );
+      Write.log(format(`      ├─ Who's trying to run this ${type}?`).fail());
+      Write.log(
+        format(`      │ └─ ${format(fileRelative).fail().underline()}`).fail()
+      );
 
-    if (error instanceof Error) {
-      Write.log(format('      ├─ Message:').fail());
-      Write.log(format(`      │ └─ ${error.message}`).fail());
+      if (error instanceof Error) {
+        Write.log(format('      ├─ Message:').fail());
+        Write.log(format(`      │ └─ ${error.message}`).fail());
+      }
     }
 
     return false;

@@ -74,13 +74,17 @@ export const runTests = async (
       passed = false;
 
       if (configs?.failFast) {
-        Write.hr();
-        Write.log(
-          `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
-        );
+        if (showLogs) {
+          Write.hr();
+          Write.log(
+            `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
+          );
+        }
+
         break;
       }
     }
+
     /* c8 ignore stop */
   }
 
@@ -99,6 +103,7 @@ export const runTestsParallel = async (
   const filesByConcurrency: string[][] = [];
   const concurrencyLimit = configs?.concurrency || 0;
   const concurrencyResults: (boolean | undefined)[][] = [];
+  const showLogs = !isQuiet(configs);
 
   if (concurrencyLimit > 0) {
     for (let i = 0; i < files.length; i += concurrencyLimit) {
@@ -143,8 +148,10 @@ export const runTestsParallel = async (
     return concurrencyResults.every((group) => group.every((result) => result));
     /* c8 ignore start */
   } catch (error) {
-    Write.hr();
-    error instanceof Error && console.error(error.message);
+    if (showLogs) {
+      Write.hr();
+      error instanceof Error && console.error(error.message);
+    }
 
     return false;
   }
