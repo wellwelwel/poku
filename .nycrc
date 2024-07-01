@@ -14,6 +14,7 @@
     "src/modules/helpers/kill.ts",
     "src/modules/helpers/log.ts",
     "src/services/pid.ts",
+    "src/services/container.ts",
     "src/parsers/get-runner.ts",
     "src/parsers/get-runtime.ts"
   ],
@@ -22,7 +23,6 @@
   "statements": 95,
   "lines": 95,
   "functions": 95,
-  "exclude-after-remap": true,
   "checkCoverage": true,
   "import": ["tsx"],
   "extension": [".ts"]

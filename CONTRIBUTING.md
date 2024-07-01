@@ -96,12 +96,6 @@ Methods that vary according to **Node.js** version, platform or OS aren't tested
 
 ```sh
 npm run test:c8:sequential
-npm run test:c8:sequential:options
-```
-
-```sh
-npm run test:c8:parallel
-npm run test:c8:parallel:options
 ```
 
 ### Compatibility Per Platform (Docker)

@@ -2,8 +2,8 @@
   "name": "poku",
   "version": "1.20.1",
   "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno, and you at the same time.",
-  "license": "MIT",
   "main": "./lib/modules/index.js",
+  "license": "MIT",
   "bin": {
     "poku": "./lib/bin/index.js"
   },
@@ -20,7 +20,10 @@
     "lib"
   ],
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=6.0.0",
+    "bun": ">=1.0.0",
+    "deno": ">=1.30.0",
+    "typescript": ">=5.0.2"
   },
   "scripts": {
     "test": "npm run test:parallel && npm run test:sequential",
@@ -79,6 +82,7 @@
     "assertion",
     "testing",
     "node",
+    "nodejs",
     "bun",
     "deno",
     "typescript",
@@ -86,7 +90,10 @@
     "concurrent",
     "concurrency",
     "parallel",
+    "parallelism",
     "sequential",
+    "queue",
+    "queuing",
     "run",
     "cli",
     "unit",
@@ -122,6 +129,12 @@
     "cjs",
     "esmodules",
     "esm",
-    "poku"
+    "mjs",
+    "expect",
+    "framework",
+    "tool",
+    "runtime",
+    "poku",
+    "pokujs"
   ]
 }

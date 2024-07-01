@@ -1,4 +1,3 @@
-/* c8 ignore next 4 */ // Types
 import type {
   DockerComposeConfigs,
   DockerfileConfigs,
@@ -20,7 +19,6 @@ const runDockerCommand = (
       shell: isWindows,
     });
 
-    /* c8 ignore next 4 */
     if (verbose) {
       dockerProcess.stdout.on('data', Write.log);
       dockerProcess.stderr.on('data', Write.log);
@@ -30,7 +28,6 @@ const runDockerCommand = (
       resolve(code === 0);
     });
 
-    /* c8 ignore next 3 */
     dockerProcess.on('error', () => {
       resolve(false);
     });
@@ -96,7 +93,6 @@ export class DockerContainer {
   public async start() {
     const args: string[] = ['run'];
 
-    /* c8 ignore next */
     args.push(this.detach !== false ? '-d' : '--init');
     args.push(...['--name', this.containerName]);
 
@@ -173,7 +169,6 @@ export class DockerCompose {
     this.envFile = envFile;
     this.projectName = projectName;
     this.detach = detach;
-    /* c8 ignore next */
     this.cwd = cwd ? sanitizePath(cwd) : undefined;
     this.verbose = verbose;
   }
@@ -189,7 +184,6 @@ export class DockerCompose {
     }
 
     args.push('up');
-    /* c8 ignore next */
     args.push(this.detach !== false ? '-d' : '--abort-on-container-exit');
 
     if (this.build) {
@@ -224,5 +218,4 @@ export class DockerCompose {
       this.verbose
     );
   }
-  /* c8 ignore next */ // ?
 }
