@@ -3,7 +3,6 @@ import { Toaster } from 'sonner';
 import { Github, Heart, Package2 } from 'lucide-react';
 import Link from '@docusaurus/Link';
 import Head from '@docusaurus/Head';
-// eslint-disable-next-line import/no-unresolved
 import Heading from '@theme/Heading';
 import { ConfettiButton } from '@site/src/components/Confetti';
 
