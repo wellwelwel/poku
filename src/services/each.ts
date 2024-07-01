@@ -15,32 +15,21 @@ const eachCore = async (
 
   const cb = configs[type];
 
-  /* c8 ignore next 3 */
-  if (typeof cb !== 'function') {
-    return true;
-  }
+  const cbName = cb.name !== type ? cb.name : 'anonymous function';
 
-  /* c8 ignore start */
   Write.log(
-    `    ${format('◯').dim().info()} ${format(
-      `${cb}: ${cb.name || 'anonymous function'}`
-    )
+    `    ${format('◯').dim().info()} ${format(`${type}: ${cbName}`)
       .dim()
       .italic()}`
   );
-  /* c8 ignore stop */
 
   try {
-    const resultCb = cb();
-
-    if (resultCb instanceof Promise) {
-      await resultCb;
-    }
+    await cb();
 
     return true;
   } catch (error) {
     Write.log(
-      format(`    ✘ ${type} callback failed ${format(`› ${cb}`).dim()}`)
+      format(`    ✘ ${type} callback failed ${format(`› ${cbName}`).dim()}`)
         .fail()
         .bold()
     );
