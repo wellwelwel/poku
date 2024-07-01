@@ -73,7 +73,7 @@ export const runTests = async (
 
       passed = false;
 
-      if (configs?.failFast) {
+      if (showLogs && configs?.failFast) {
         Write.hr();
         Write.log(
           `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
@@ -99,6 +99,7 @@ export const runTestsParallel = async (
   const filesByConcurrency: string[][] = [];
   const concurrencyLimit = configs?.concurrency || 0;
   const concurrencyResults: (boolean | undefined)[][] = [];
+  const showLogs = !isQuiet(configs);
 
   if (concurrencyLimit > 0) {
     for (let i = 0; i < files.length; i += concurrencyLimit) {
@@ -122,7 +123,7 @@ export const runTestsParallel = async (
         if (!testPassed) {
           ++results.fail;
 
-          if (configs?.failFast) {
+          if (showLogs && configs?.failFast) {
             throw new Error(
               `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
             );
