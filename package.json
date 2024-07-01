@@ -96,6 +96,7 @@
     "queuing",
     "run",
     "cli",
+    "cli-app",
     "unit",
     "integration",
     "e2e",
@@ -133,6 +134,7 @@
     "expect",
     "framework",
     "tool",
+    "tools",
     "runtime",
     "poku",
     "pokujs"
