@@ -30,7 +30,7 @@
     "clsx": "^2.1.1",
     "docusaurus-plugin-sass": "^0.2.5",
     "dotenv": "^16.4.5",
-    "lucide-react": "^0.397.0",
+    "lucide-react": "^0.399.0",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
     "react-confetti": "^6.1.0",
@@ -43,7 +43,7 @@
     "@docusaurus/module-type-aliases": "^3.4.0",
     "@docusaurus/tsconfig": "^3.4.0",
     "@docusaurus/types": "^3.4.0",
-    "@types/bun": "^1.1.5",
+    "@types/bun": "^1.1.6",
     "@types/node": "^20.14.9",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.14.1",
@@ -57,7 +57,7 @@
     "poku": "^1.20.1",
     "prettier": "^3.3.2",
     "svps": "^2.3.0",
-    "tsx": "^4.15.7",
+    "tsx": "^4.16.0",
     "typescript": "^5.5.2"
   },
   "browserslist": {

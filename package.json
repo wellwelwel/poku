@@ -62,7 +62,7 @@
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.14.1",
     "c8": "^10.1.2",
-    "esbuild": "^0.21.5",
+    "esbuild": "^0.22.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -71,7 +71,7 @@
     "packages-update": "^2.0.0",
     "prettier": "^3.3.2",
     "shx": "^0.3.4",
-    "tsx": "4.15.7",
+    "tsx": "4.16.0",
     "typescript": "^5.5.2"
   },
   "keywords": [
