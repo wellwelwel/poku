@@ -52,8 +52,6 @@
     "build:deno": "esbuild src/polyfills/deno.mts --outfile=lib/polyfills/deno.mjs --format=esm",
     "lint:check": "npx @biomejs/biome lint && npx @biomejs/biome format",
     "lint:fix": "npx @biomejs/biome lint --write && npx @biomejs/biome format --write",
-    "prettier:check": "prettier --check .",
-    "prettier:fix": "prettier --write .github/workflows/*.yml .",
     "update": "pu minor && npm i && npm audit fix",
     "postupdate": "npm run lint:fix",
     "benchmark": "cd benchmark && npm ci && npm start"
