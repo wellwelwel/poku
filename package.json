@@ -17,9 +17,11 @@
     "url": "https://github.com/wellwelwel/poku/issues"
   },
   "author": "https://github.com/wellwelwel",
-  "files": [
-    "lib"
-  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/wellwelwel"
+  },
+  "files": ["lib"],
   "engines": {
     "node": ">=6.0.0",
     "bun": ">=1.0.0",
@@ -48,25 +50,18 @@
     "build": "tsc && tsc -p tsconfig.test.json",
     "postbuild": "tsx tools/compatibility/node.ts && shx cp fixtures/server/package.json ci/fixtures/server/package.json && npm run build:deno && shx chmod +x lib/bin/index.js",
     "build:deno": "esbuild src/polyfills/deno.mts --outfile=lib/polyfills/deno.mjs --format=esm",
-    "eslint:check": "eslint . --ext .js,.ts",
-    "eslint:fix": "eslint . --fix --config .eslintrc.json",
-    "lint:check": "npm run eslint:check && npm run prettier:check",
-    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
-    "prettier:check": "prettier --check .",
-    "prettier:fix": "prettier --write .github/workflows/*.yml .",
+    "lint:check": "npx @biomejs/biome lint && npx @biomejs/biome format",
+    "lint:fix": "npx @biomejs/biome lint --write && npx @biomejs/biome format --write",
     "update": "pu minor && npm i && npm audit fix",
     "postupdate": "npm run lint:fix",
     "benchmark": "cd benchmark && npm ci && npm start"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@types/node": "^20.14.9",
-    "@typescript-eslint/eslint-plugin": "^7.14.1",
-    "@typescript-eslint/parser": "^7.14.1",
     "c8": "^10.1.2",
     "esbuild": "^0.22.0",
-    "eslint": "^8.57.0",
     "packages-update": "^2.0.0",
-    "prettier": "^3.3.2",
     "shx": "^0.3.4",
     "tsx": "4.16.0",
     "typescript": "^5.5.2"
@@ -93,7 +88,6 @@
     "queuing",
     "run",
     "cli",
-    "cli-app",
     "unit",
     "integration",
     "e2e",
@@ -131,7 +125,6 @@
     "expect",
     "framework",
     "tool",
-    "tools",
     "runtime",
     "poku",
     "pokujs"

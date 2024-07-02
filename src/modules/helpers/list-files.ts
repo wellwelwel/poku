@@ -67,8 +67,8 @@ export const getAllFiles = async (
       }
 
       if (exclude) {
-        for (let i = 0; i < exclude.length; i++) {
-          if (exclude[i].test(fullPath)) {
+        for (const pattern of exclude) {
+          if (pattern.test(fullPath)) {
             return;
           }
         }

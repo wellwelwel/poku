@@ -118,7 +118,10 @@ const listenStdin = (input: Buffer | string) => {
   }
 
   if (String(input).trim() === 'rs') {
-    watchers.forEach((watcher) => watcher.stop());
+    for (const watcher of watchers) {
+      watcher.stop();
+    }
+
     watchers.clear();
     resultsClear();
     startTests();
