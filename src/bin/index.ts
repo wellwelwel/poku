@@ -14,7 +14,7 @@ import { platformIsValid } from '../parsers/get-runtime.js';
 import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
 import { mapTests, normalizePath } from '../services/map-tests.js';
-import { watch } from '../services/watch.js';
+import { watch, type Watcher } from '../services/watch.js';
 import { onSigint, poku } from '../modules/essentials/poku.js';
 import { Write } from '../services/write.js';
 
@@ -106,72 +106,96 @@ if (debug) {
   console.dir(options, { depth: null, colors: true });
 }
 
-Promise.all(tasks).then(() => {
-  poku(dirs, options).then(() => {
-    if (watchMode) {
-      const executing = new Set<string>();
-      const interval = Number(getArg('watch-interval')) || 1500;
+const resultsClear = () => {
+  fileResults.success.clear();
+  fileResults.fail.clear();
+};
 
-      const resultsClear = () => {
-        fileResults.success.clear();
-        fileResults.fail.clear();
-      };
+const startTests = () => {
+  resultsClear();
 
-      process.removeListener('SIGINT', onSigint);
-      resultsClear();
+  Promise.all(tasks).then(() => {
+    poku(dirs, options).then(() => {
+      if (watchMode) {
+        const executing = new Set<string>();
+        const interval = Number(getArg('watch-interval')) || 1500;
+        const watchers: Set<Watcher> = new Set();
 
-      mapTests('.', dirs, options.filter, options.exclude).then(
-        (mappedTests) => {
-          for (const mappedTest of Array.from(mappedTests.keys())) {
-            watch(mappedTest, (file, event) => {
-              if (event === 'change') {
-                const filePath = normalizePath(file);
-                if (executing.has(filePath)) {
-                  return;
-                }
-
-                executing.add(filePath);
-                resultsClear();
-
-                const tests = mappedTests.get(filePath);
-                if (!tests) {
-                  return;
-                }
-
-                poku(Array.from(tests), options).then(() => {
-                  setTimeout(() => {
-                    executing.delete(filePath);
-                  }, interval);
-                });
-              }
-            });
+        const listenStdin = (input: Buffer | string) => {
+          if (String(input).trim() === 'rs') {
+            watchers.forEach((watcher) => watcher.stop());
+            watchers.clear();
+            startTests();
           }
-        }
-      );
+        };
 
-      for (const dir of dirs) {
-        watch(dir, (file, event) => {
-          if (event === 'change') {
-            if (executing.has(file)) {
-              return;
+        process.removeListener('SIGINT', onSigint);
+        process.removeListener('data', listenStdin);
+        resultsClear();
+
+        mapTests('.', dirs, options.filter, options.exclude).then(
+          (mappedTests) => {
+            for (const mappedTest of Array.from(mappedTests.keys())) {
+              const currentWatcher = watch(mappedTest, (file, event) => {
+                if (event === 'change') {
+                  const filePath = normalizePath(file);
+                  if (executing.has(filePath)) {
+                    return;
+                  }
+
+                  executing.add(filePath);
+                  resultsClear();
+
+                  const tests = mappedTests.get(filePath);
+                  if (!tests) {
+                    return;
+                  }
+
+                  poku(Array.from(tests), options).then(() => {
+                    setTimeout(() => {
+                      executing.delete(filePath);
+                    }, interval);
+                  });
+                }
+              });
+
+              currentWatcher.then((watcher) => watchers.add(watcher));
             }
-
-            executing.add(file);
-            resultsClear();
-
-            poku(file, options).then(() => {
-              setTimeout(() => {
-                executing.delete(file);
-              }, interval);
-            });
           }
-        });
-      }
+        );
 
-      Write.hr();
-      Write.log(
-        `${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`
-      );
-    }
+        for (const dir of dirs) {
+          const currentWatcher = watch(dir, (file, event) => {
+            if (event === 'change') {
+              if (executing.has(file)) {
+                return;
+              }
+
+              executing.add(file);
+              resultsClear();
+
+              poku(file, options).then(() => {
+                setTimeout(() => {
+                  executing.delete(file);
+                }, interval);
+              });
+            }
+          });
+
+          currentWatcher.then((watcher) => watchers.add(watcher));
+        }
+
+        Write.hr();
+        Write.log(
+          `${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`
+        );
+
+        process.stdin.setEncoding('utf-8');
+
+        process.stdin.on('data', listenStdin);
+      }
+    });
   });
-});
+};
+
+startTests();
