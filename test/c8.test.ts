@@ -2,13 +2,11 @@ import { poku, test, describe, it, assert } from '../src/modules/index.js';
 import { isWindows } from '../src/parsers/get-runner.js';
 import { inspectCLI } from './helpers/capture-cli.test.js';
 
-console.log('\n😴 It will be really slow (press "Ctrl + C" twice to cancel)\n');
-
 test(async () => {
   await describe('CLI', async () => {
-    await it('Sequential (Unit)', async () => {
+    await it('Sequential (Just Touch)', async () => {
       const results = await inspectCLI(
-        'npx tsx src/bin/index.ts --platform=node --include=test/unit'
+        'npx tsx src/bin/index.ts --platform=node --include=test/integration/import.test.ts'
       );
 
       console.log(results.stdout);
@@ -17,9 +15,9 @@ test(async () => {
       assert.strictEqual(results.exitCode, 0, 'Passed');
     });
 
-    await it('Parallel (Unit)', async () => {
+    await it('Parallel (Just Touch)', async () => {
       const results = await inspectCLI(
-        'npx tsx src/bin/index.ts --platform=node --parallel --include=test/unit'
+        'npx tsx src/bin/index.ts --platform=node --parallel --include=test/integration/import.test.ts'
       );
 
       console.log(results.stdout);
@@ -28,11 +26,38 @@ test(async () => {
       assert.strictEqual(results.exitCode, 0, 'Passed');
     });
 
-    await it('Parallel + Unit + Options', async () => {
+    await it('Parallel (FILTER Env)', async () => {
+      const results = await inspectCLI(
+        'npx tsx src/bin/index.ts --platform=node --parallel --include=test/integration',
+        {
+          env: { ...process.env, FILTER: 'import' },
+        }
+      );
+
+      console.log(results.stdout);
+      console.log(results.stderr);
+
+      assert.strictEqual(results.exitCode, 0, 'Passed');
+    });
+
+    await it('Sequential + Options (Just Touch)', async () => {
       const results = await inspectCLI(
         isWindows
-          ? 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" --include=test/unit --filter=".test.|.spec."'
-          : 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 --include=test/unit --filter=.test.|.spec.'
+          ? 'npx tsx src/bin/index.ts --concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" --include=test/integration/import.test.ts --filter=".test.|.spec."'
+          : 'npx tsx src/bin/index.ts --concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 --include=test/integration/import.test.ts --filter=.test.|.spec.'
+      );
+
+      console.log(results.stdout);
+      console.log(results.stderr);
+
+      assert.strictEqual(results.exitCode, 0, 'Passed');
+    });
+
+    await it('Parallel + Options (Just Touch)', async () => {
+      const results = await inspectCLI(
+        isWindows
+          ? 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" --include=test/integration/import.test.ts --filter=".test.|.spec."'
+          : 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 --include=test/integration/import.test.ts --filter=.test.|.spec.'
       );
 
       console.log(results.stdout);
@@ -43,16 +68,7 @@ test(async () => {
   });
 
   await describe('API', async () => {
-    await it('Sequential (Unit)', async () => {
-      const exitCode = await poku(['test/unit'], {
-        platform: 'node',
-        noExit: true,
-      });
-
-      assert.strictEqual(exitCode, 0, 'Passed');
-    });
-
-    await it('Sequential (File)', async () => {
+    await it('Sequential (Single Input)', async () => {
       const exitCode = await poku('test/integration/import.test.ts', {
         platform: 'node',
         noExit: true,
@@ -61,7 +77,7 @@ test(async () => {
       assert.strictEqual(exitCode, 0, 'Passed');
     });
 
-    await it('Parallel (File)', async () => {
+    await it('Parallel (Single Input)', async () => {
       const exitCode = await poku('test/integration/import.test.ts', {
         platform: 'node',
         parallel: true,
@@ -71,17 +87,29 @@ test(async () => {
       assert.strictEqual(exitCode, 0, 'Passed');
     });
 
-    await it('Parallel (Unit)', async () => {
-      const exitCode = await poku(['test/unit'], {
+    await it('Unit (Exclude as Regex)', async () => {
+      const exitCode = await poku('test/unit', {
         platform: 'node',
         parallel: true,
+        exclude: /watch|map-tests/,
         noExit: true,
       });
 
       assert.strictEqual(exitCode, 0, 'Passed');
     });
 
-    await it('Parallel + All + Options', async () => {
+    await it('Unit (Exclude as Array of Regex)', async () => {
+      const exitCode = await poku('test/unit', {
+        platform: 'node',
+        parallel: true,
+        exclude: [/watch/, /map-tests/],
+        noExit: true,
+      });
+
+      assert.strictEqual(exitCode, 0, 'Passed');
+    });
+
+    await it('Parallel + Unit + Integration + E2E + Options', async () => {
       const exitCode = await poku(
         ['test/unit', 'test/integration', 'test/e2e'],
         {
@@ -89,7 +117,6 @@ test(async () => {
           parallel: true,
           debug: true,
           concurrency: 4,
-          exclude: [/import.test/],
           filter: /\.(test|spec)\./,
           failFast: true,
           noExit: true,

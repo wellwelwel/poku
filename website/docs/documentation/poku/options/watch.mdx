@@ -22,21 +22,33 @@ npx poku --watch --watch-interval=1500
 
 <hr />
 
+:::tip
+
+Quickly reset and rerun all tests by typing <kbd>rs</kbd> on the console, followed by <kbd>Enter</kbd>.
+
+- This will clean and repopulate all the directories and files to be watched.
+- It's not possible to use it while the tests are running.
+
+:::
+
+<hr />
+
+:::info
+
+If it's not possible to determine which test file depends on the changed source file, no test will be run.
+
+:::
+
+<hr />
+
 :::note
 
-Currently, the deep dependency search doesn't consider line-breaking imports, for example:
+❌ Dynamic paths are not supported:
 
 ```ts
-import {
-  moduleA,
-  moduleB,
-  moduleC,
-  moduleD,
-  moduleE,
-  moduleF,
-} from './some.js';
-```
+const dynamicPath = './some-file.js';
 
-- See [**#499**](https://github.com/wellwelwel/poku/issues/449).
+await import(dynamicPath);
+```
 
 :::

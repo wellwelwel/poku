@@ -30,7 +30,6 @@ export const isFile = async (fullPath: string) =>
 export const escapeRegExp = (string: string) =>
   string.replace(regex.safeRegExp, '\\$&');
 
-/* c8 ignore next 3 */
 const envFilter = env.FILTER?.trim()
   ? new RegExp(escapeRegExp(env.FILTER), 'i')
   : undefined;
@@ -42,7 +41,6 @@ export const getAllFiles = async (
 ): Promise<Set<string>> => {
   const currentFiles = await readdir(sanitizePath(dirPath));
 
-  /* c8 ignore next 3 */
   const filter: RegExp = envFilter
     ? envFilter
     : configs?.filter instanceof RegExp

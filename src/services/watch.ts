@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { readdir, stat } from '../polyfills/fs.js';
 import { listFiles } from '../modules/helpers/list-files.js';
 
-class Watcher {
+export class Watcher {
   private rootDir: string;
   private files: string[] = [];
   private fileWatchers: Map<string, FSWatcher> = new Map();
