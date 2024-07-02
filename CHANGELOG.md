@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/wellwelwel/poku/compare/v1.20.2...v1.21.0) (2024-07-02)
+
+
+### Features
+
+* **watch:** reset and rerun all tests by entering `rs` ([#493](https://github.com/wellwelwel/poku/issues/493)) ([8a27789](https://github.com/wellwelwel/poku/commit/8a27789459955250549d47a7d9deb3ffdcd557e9))
+
 ## [1.20.2](https://github.com/wellwelwel/poku/compare/v1.20.1...v1.20.2) (2024-07-01)
 
 
