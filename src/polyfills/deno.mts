@@ -1,9 +1,5 @@
-/**
- * Allows testing CJS files with `require` and `exports` in Deno.
- */
-
-import { createRequire } from 'node:module';
 import process from 'node:process';
+import { createRequire } from 'node:module';
 import { resolve, normalize } from 'node:path';
 
 const file = process.env?.FILE;
@@ -16,6 +12,6 @@ const targetPath = resolve(cwd, '');
 const filePath = resolve(targetPath, file!);
 
 globalThis.require = createRequire(targetPath);
-globalThis.exports = {};
+globalThis.exports = Object.create(null);
 
 require(normalize(filePath));
