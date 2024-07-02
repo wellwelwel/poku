@@ -1,0 +1,120 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
+  "files": {
+    "include": ["**/**"],
+    "ignore": [
+      "node_modules",
+      "lib",
+      "ci",
+      "coverage",
+      "website",
+      "fixtures",
+      "benchmark"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "indentStyle": "space",
+    "lineEnding": "lf"
+  },
+  "organizeImports": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "all": true,
+      "complexity": {
+        "all": true,
+        "noExcessiveCognitiveComplexity": "off"
+      },
+      "a11y": {
+        "all": true
+      },
+      "correctness": {
+        "all": true,
+        "noNodejsModules": "off"
+      },
+      "nursery": {
+        "all": true,
+        "useImportRestrictions": "off",
+        "noConsole": "off",
+        "noMisplacedAssertion": "off"
+      },
+      "performance": {
+        "all": true
+      },
+      "security": {
+        "all": true
+      },
+      "suspicious": {
+        "all": true,
+        "noEmptyBlockStatements": "off",
+        "noConsoleLog": "off"
+      },
+      "style": {
+        "all": true,
+        "noNonNullAssertion": "off",
+        "useNamingConvention": "off",
+        "useNodeAssertStrict": "off",
+        "noNamespaceImport": "off"
+      }
+    }
+  },
+  "javascript": {
+    "globals": ["BufferEncoding"],
+    "formatter": {
+      "enabled": true,
+      "semicolons": "always",
+      "quoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "es5",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "arrowParentheses": "always",
+      "lineEnding": "lf"
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": true
+    }
+  },
+  "overrides": [
+    {
+      "include": ["test", "tools"],
+      "linter": {
+        "rules": {
+          "nursery": {
+            "useTopLevelRegex": "off"
+          },
+          "complexity": {
+            "useArrowFunction": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["src/polyfills/**/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["src/modules/index.ts"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noBarrelFile": "off"
+          }
+        }
+      }
+    }
+  ]
+}

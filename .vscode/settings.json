@@ -1,13 +1,23 @@
 {
+  "deno.enable": false,
   "editor.trimAutoWhitespace": true,
   "editor.indentSize": 2,
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "files.trimTrailingWhitespace": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll": "explicit"
   },
-  "eslint.validate": ["ts"],
-  "deno.enable": false
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  }
 }
