@@ -91,7 +91,7 @@ test(async () => {
       const exitCode = await poku('test/unit', {
         platform: 'node',
         parallel: true,
-        exclude: /watch|wait|map-tests/,
+        exclude: /watch|map-tests/,
         noExit: true,
       });
 
@@ -102,7 +102,7 @@ test(async () => {
       const exitCode = await poku('test/unit', {
         platform: 'node',
         parallel: true,
-        exclude: [/watch/, /wait/, /map-tests/],
+        exclude: [/watch/, /map-tests/],
         noExit: true,
       });
 
