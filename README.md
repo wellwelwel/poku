@@ -246,5 +246,5 @@ Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/
 [coverage-url]: https://app.codecov.io/github/wellwelwel/poku
 [downloads-image]: https://img.shields.io/npm/dt/poku.svg?logo=npm&logoColor=white&color=1e90ff
 [downloads-url]: https://www.npmjs.com/package/poku
-[license-url]: https://licenses.dev/npm/poku
-[license-image]: https://licenses.dev/b/npm/poku
+[license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
+[license-image]: https://img.shields.io/npm/l/poku?maxAge=2592000&color=9c88ff
