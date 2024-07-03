@@ -6,7 +6,6 @@
     @include flex(row, center, flex-start);
     gap: 7.5px;
     margin: 0;
-    // word-break: keep-all;
     opacity: 0;
     animation: 0.25s run-poku 0.025s cubic-bezier(0.64, -0.14, 0.44, 1.36)
       forwards;
@@ -20,7 +19,6 @@
     & > span,
     & > a {
       color: #fff;
-      // white-space: nowrap;
 
       &.v-center {
         @include flex(row, center, flex-start);
@@ -103,5 +101,16 @@ html[data-theme='dark'] {
         color: #fff;
       }
     }
+  }
+}
+
+@keyframes run-poku {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

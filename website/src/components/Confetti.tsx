@@ -3,7 +3,11 @@ import React, { useState, useRef } from 'react';
 import Confetti from 'react-confetti';
 import { toast } from 'sonner';
 
-export const ConfettiButton: React.FC = () => {
+type ConfettiButtonOptions = {
+  toCopy: string;
+};
+
+export const ConfettiButton: React.FC<ConfettiButtonOptions> = ({ toCopy }) => {
   const [showConfetti, setShowConfetti] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -20,7 +24,7 @@ export const ConfettiButton: React.FC = () => {
 
   const handleClick = () => {
     setShowConfetti(false);
-    copyToClipboard('npm i -D poku');
+    copyToClipboard(toCopy);
 
     setTimeout(() => {
       setShowConfetti(true);
@@ -29,6 +33,7 @@ export const ConfettiButton: React.FC = () => {
 
   return (
     <>
+      {toCopy}{' '}
       {showConfetti && (
         <Confetti
           numberOfPieces={100}
