@@ -1,5 +1,5 @@
 <div align="center">
-<img width="125" height="125" alt="Logo" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/poku.svg">
+<img height="170" alt="Poku's Logo" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/poku.svg">
 
 # Poku
 

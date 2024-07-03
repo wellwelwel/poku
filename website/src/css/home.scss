@@ -2,17 +2,11 @@
 
 #__docusaurus {
   & > main#home {
-    position: fixed;
     @include flex(column, center, flex-start);
     width: 100%;
     min-height: 100vh;
     min-height: 100dvh;
-    background-image: url('@site/static/img/bg-home.jpg');
-    background-size: cover;
-    background-position: right top;
-    background-size: 150% 150%;
-    animation: bg-animation 45s ease infinite;
-    overflow: hidden;
+    background-color: rgba(15, 23, 42, 0.75);
 
     ::selection {
       background-color: rgba(60, 0, 255, 0.25);
@@ -20,6 +14,18 @@
 
     ::-webkit-scrollbar {
       display: none !important;
+    }
+
+    &::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -2;
+      background-image: url('@site/static/img/bg.svg');
+      opacity: 0.75;
     }
 
     &::after {
@@ -30,26 +36,16 @@
       bottom: 0;
       right: 0;
       z-index: -1;
-      opacity: 0.75;
-      background-image: linear-gradient(
-        to bottom right,
-        #242743,
-        #0088ff,
-        #8800ff,
-        #0088ff,
-        #8800ff,
-        #242743,
-        #0088ff
+      background: radial-gradient(
+        50% 50% at 50% 50%,
+        rgba(16, 16, 19, 0) 24.885627815315313%,
+        rgb(16, 16, 19) 100%
       );
-      background-size: 400% 400%;
-      animation: bg-animation2 15s ease infinite;
     }
 
     & > .container {
       @include flex(column, center, flex-start);
       width: 100%;
-      max-height: 100vh;
-      max-height: 100dvh;
       margin: 0;
       padding: 0;
       color: #fff;
@@ -60,12 +56,74 @@
         justify-content: flex-start;
       }
 
+      & > header {
+        @include flex(row, center, space-between);
+        width: 100%;
+        padding: 15px 25px;
+        font-family: 'Montserrat', sans-serif;
+
+        menu {
+          @include flex(row, center, flex-start);
+          gap: 15px;
+          margin: 0;
+          padding: 0;
+
+          a {
+            @include flex(row, center, flex-start);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.25s;
+
+            svg {
+              min-width: 18px;
+              min-height: 18px;
+              fill: #fff;
+              stroke: #fff;
+              opacity: 0.5;
+              transition:
+                opacity 0.25s,
+                fill 0.25s,
+                stroke 0.025s;
+            }
+
+            &:hover {
+              color: #ff84df;
+
+              svg {
+                opacity: 1;
+                stroke: #ff84df;
+                fill: #ff84df;
+              }
+            }
+
+            @media (max-width: 420px) {
+              &.hide-mobile {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
       #this-is-poku {
         @include flex(column, center, center);
         width: 100%;
         min-height: 100vh;
         min-height: 100dvh;
-        padding: 50px 25px;
+        padding: 75px 25px;
+
+        &,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button {
+          font-family: 'Montserrat', sans-serif;
+          font-optical-sizing: auto;
+          margin-bottom: 0;
+        }
 
         @media (max-width: 720px) {
           justify-content: flex-start;
@@ -77,289 +135,267 @@
 
         & > h1 {
           width: 100%;
-          margin-bottom: 50px;
-          font-size: 72px;
+          padding: 50px 0;
+          font-size: 60px;
           text-align: center;
-          font-family: 'Montserrat', sans-serif;
-          font-optical-sizing: auto;
-          font-weight: 800;
+          font-weight: 700;
           font-style: normal;
           font-variation-settings: 'wdth' 100;
           text-shadow: 2px 2px 1px #242743ab;
-          opacity: 0;
-          animation: fade-in 0.25s ease-in-out forwards;
 
           @media (max-width: 720px) {
-            font-size: 52px;
+            font-size: 50px;
           }
 
-          span {
-            &.sm {
-              font-size: 56px;
-
-              @media (max-width: 720px) {
-                font-size: 36px;
-              }
-            }
-
-            &.md {
-              font-size: 62px;
-
-              @media (max-width: 720px) {
-                font-size: 42px;
-              }
-            }
-
-            &.lg {
-              font-size: 68px;
-
-              @media (max-width: 720px) {
-                font-size: 48px;
-              }
-            }
-          }
-
-          .logo {
-            width: 52px;
-            height: 52px;
-            margin-left: 5px;
-            transform: translateY(3px);
-            filter: drop-shadow(2px 2px 1px #242743ab);
-
-            @media (max-width: 720px) {
-              width: 38px;
-              height: 38px;
-            }
-
-            path {
-              fill: #fff !important;
-              stroke: #fff !important;
-            }
+          .typing {
+            animation-name: color-title;
+            animation-duration: 25s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
           }
         }
 
-        & > section {
-          @include flex(column, center, center);
-          gap: 75px;
-          width: 100%;
-
-          & > .content {
-            position: relative;
-            @include flex(row, center, center);
-            gap: 25px;
-            width: 100%;
-
-            @media (max-width: 720px) {
-              flex-direction: column;
-            }
-
-            & > .logo {
-              height: 100%;
-              width: 100%;
-              max-height: 256px;
-              max-width: 256px;
-              filter: drop-shadow(2px 0 20px #2e0b4d8a);
-              opacity: 0;
-              animation: fade-in 0.5s ease-in-out forwards;
-            }
-          }
-
-          & > footer {
-            @include flex(column, center, center);
-            gap: 25px;
-            width: 100%;
-            max-width: 400px;
-
-            & > small {
-              width: 100%;
-              text-align: center;
-              text-shadow: 1px 1px 1px #13152dab;
-              font-family: 'Montserrat', sans-serif;
-              font-size: 15px;
-              font-style: italic;
-              opacity: 0;
-              animation: fade-in 0.5s cubic-bezier(0.64, -0.14, 0.44, 1.36)
-                forwards;
-              animation-delay: 0.75s;
-
-              code {
-                background-color: rgba(255, 255, 255, 0.1);
-                border: none;
-                padding-inline: 5px;
-                font-weight: 600;
-              }
-
-              a {
-                color: #fff;
-                font-weight: 600;
-              }
-
-              & > svg {
-                filter: drop-shadow(1px 1px 1px #13152dab);
-
-                path {
-                  stroke: #ffd6e7 !important;
-                  fill: #ffd6e7 !important;
-                }
-              }
-            }
-
-            .custom-code-block {
-              position: relative;
-              @include flex(row, center, space-between);
-              width: 100%;
-              padding: 15px 20px;
-              border-radius: 10px;
-              box-shadow: inset 1px 1px 5px 1px #150e208d;
-              background-color: #2d105c;
-              font-family: Monaco, monospace;
-              font-size: 14px;
-              color: #c7b7ff;
-              text-shadow: 2px 2px 2px #13152dab;
-              user-select: all;
-              opacity: 0;
-              animation: fade-in 0.5s cubic-bezier(0.64, -0.14, 0.44, 1.36)
-                forwards;
-              animation-delay: 1s;
-
-              button {
-                background-color: transparent;
-                border: none;
-                cursor: pointer;
-
-                svg {
-                  stroke: #9374ff;
-                  transition: stroke 0.25s;
-                }
-
-                &:hover {
-                  svg {
-                    stroke: #fff;
-                  }
-                }
-              }
-            }
-
-            & > a {
-              @include flex(row, center, center);
-              gap: 10px;
-              width: 100%;
-              padding: 15px 25px;
-              border-radius: 20px;
-              box-shadow: 1px 1px 5px 1px #150e208d;
-              background-color: #fff;
-              text-align: center;
-              font-size: 20px;
-              font-weight: bold;
-              color: #4a2885;
-              transition:
-                background-color 0.25s,
-                box-shadow 0.15s;
-              opacity: 0;
-              animation: fade-in 0.5s cubic-bezier(0.64, -0.14, 0.44, 1.36)
-                forwards;
-              animation-delay: 1.15s;
-
-              svg {
-                min-width: 24px;
-                min-height: 24px;
-                filter: hue-rotate(25deg);
-              }
-
-              &:hover {
-                box-shadow: 2px 2px 15px #150e208d;
-                background-color: #f2f0ff;
-                text-decoration: none;
-              }
-            }
-          }
-        }
-
-        & > small {
-          @include flex(row, center, center);
-          gap: 10px;
-          margin-top: 25px;
-          opacity: 0;
-          animation: fade-in 0.15s ease-in forwards;
-          animation-delay: 1s;
-
-          @media (max-height: 890px) {
-            padding-bottom: 25px;
-          }
+        & > div {
+          @include flex(column, center, flex-start);
+          gap: 25px;
+          padding: 50px;
 
           a {
-            @include flex(row, center, center);
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            transition: background-color 0.25s;
+            @include flex(row, center, space-between);
+            gap: 10px;
+            width: max-content;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            text-decoration: none;
+            text-transform: uppercase;
+            color: #fff;
+            animation-name: bg-start;
+            animation-duration: 25s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            cursor: pointer;
 
             svg {
-              stroke: #fff;
+              width: 18px;
+              height: 18px;
             }
 
             &:hover {
-              background-color: #ffffff25;
+              background-color: #ff73da !important;
+            }
+          }
+        }
+
+        & > nav {
+          @include flex(row, stretch, center, wrap);
+          gap: 15px;
+          width: 100%;
+
+          section {
+            @include flex(column, flex-start, stretch);
+            width: 480px;
+            max-width: 100%;
+            border-radius: 15px;
+            background-color: #1e263b;
+            padding: 15px 20px;
+            box-shadow: 2.5px 2.5px 5px #00000069;
+
+            h2,
+            h3 {
+              @include flex(row, flex-end, space-between);
+              gap: 15px;
+              width: 100%;
+              padding-bottom: 10px;
+              margin-bottom: 10px;
+              border-bottom: 2px dashed #ffffff10;
+              font-size: 16px;
+              color: #d5daea;
+
+              span {
+                em {
+                  font-weight: 400;
+                  color: #98a1bc;
+                }
+              }
+
+              svg {
+                width: 80px;
+                min-width: 80px;
+                filter: drop-shadow(2.5px 2.5px 2.5px #00000025);
+              }
+            }
+
+            h3 {
+              svg {
+                width: 70px;
+                min-width: 70px;
+              }
+            }
+
+            & > div {
+              flex-grow: 1;
+              font-size: 14px;
+              font-weight: 300;
+              font-family: var(--ifm-font-family-base);
+
+              p {
+                color: #98a1bc;
+              }
+            }
+
+            button,
+            a {
+              font-size: 14px;
+              animation-name: color-title;
+              animation-duration: 25s;
+              animation-timing-function: ease-in-out;
+              animation-iteration-count: infinite;
+            }
+
+            button {
+              background-color: unset;
+              border: none;
+              cursor: pointer;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+
+        & > h2 {
+          padding: 50px;
+
+          span {
+            &.feat {
+              color: #ff84df;
+            }
+          }
+        }
+
+        & > menu {
+          @include flex(row, stretch, center, wrap);
+          gap: 30px 15px;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+
+          section {
+            @include flex(column, flex-start, stretch);
+            width: 480px;
+            max-width: 100%;
+
+            h3 {
+              font-size: 16px;
+              color: #d5daea;
+              padding-bottom: 10px;
+            }
+          }
+        }
+      }
+
+      & > footer {
+        @include flex(column, center, flex-start);
+        gap: 5px;
+        width: 100%;
+        font-size: 13px;
+        margin-bottom: 50px;
+
+        h4 {
+          @include flex(row, center, flex-start);
+          gap: 10px;
+
+          svg {
+            width: 18px;
+            stroke: #ff84df;
+          }
+        }
+
+        p {
+          color: #98a1bc;
+          margin: 0;
+        }
+
+        a {
+          animation-name: color-title;
+          animation-duration: 25s;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+        }
+      }
+
+      .custom-code-block {
+        position: relative;
+        @include flex(row, center, space-between);
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: inset 1px 1px 5px 1px #150e208d;
+        background-color: #1e263b;
+        font-family: Monaco, monospace;
+        font-size: 13px;
+        text-shadow: 2px 2px 2px #13152dab;
+        user-select: all;
+        color: #98a1bc;
+
+        button {
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+
+          svg {
+            animation-name: color-title;
+            animation-duration: 25s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            transition: stroke 0.25s;
+          }
+
+          &:hover {
+            svg {
+              stroke: #fff;
             }
           }
         }
       }
     }
   }
+}
 
-  @keyframes bg-animation {
-    0% {
-      background-position: 50% 0%;
-    }
-    25% {
-      background-position: 51% 50%;
-    }
-    50% {
-      background-position: 50% 100%;
-    }
-    75% {
-      background-position: 49% 50%;
-    }
-    100% {
-      background-position: 50% 0%;
-    }
+@keyframes color-title {
+  0% {
+    color: #4891ff;
   }
-
-  @keyframes bg-animation2 {
-    0% {
-      background-position: 0% 50%;
-    }
-    25% {
-      background-position: 50% 51%;
-    }
-    50% {
-      background-position: 100% 51%;
-    }
-    75% {
-      background-position: 50% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
+  25% {
+    color: #c26cff;
   }
-
-  @keyframes run-poku {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  50% {
+    color: #4891ff;
   }
+  75% {
+    color: #c26cff;
+  }
+  100% {
+    color: #4891ff;
+  }
+}
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+@keyframes bg-start {
+  0% {
+    background-color: #4891ff;
+  }
+  25% {
+    background-color: #c26cff;
+  }
+  50% {
+    background-color: #4891ff;
+  }
+  75% {
+    background-color: #c26cff;
+  }
+  100% {
+    background-color: #4891ff;
   }
 }
