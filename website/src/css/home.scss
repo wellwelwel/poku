@@ -25,7 +25,7 @@
       right: 0;
       z-index: -2;
       background-image: url('@site/static/img/bg.svg');
-      opacity: 0.75;
+      opacity: 0.5;
     }
 
     &::after {
@@ -48,7 +48,6 @@
       width: 100%;
       margin: 0;
       padding: 0;
-      color: #fff;
       overflow-y: auto;
       overflow-x: hidden;
 
@@ -80,6 +79,7 @@
               fill: #fff;
               stroke: #fff;
               opacity: 0.5;
+              filter: grayscale(1);
               transition:
                 opacity 0.25s,
                 fill 0.25s,
@@ -90,6 +90,7 @@
               color: #ff84df;
 
               svg {
+                filter: none;
                 opacity: 1;
                 stroke: #ff84df;
                 fill: #ff84df;
@@ -142,9 +143,18 @@
           font-style: normal;
           font-variation-settings: 'wdth' 100;
           text-shadow: 2px 2px 1px #242743ab;
+          color: #fff;
 
-          @media (max-width: 720px) {
+          @media (max-width: 920px) {
             font-size: 50px;
+          }
+
+          @media (max-width: 760px) {
+            max-width: 480px;
+          }
+
+          @media (max-width: 440px) {
+            font-size: 36px;
           }
 
           .typing {
@@ -160,6 +170,22 @@
           gap: 25px;
           padding: 50px;
 
+          small {
+            @include flex(row, center, center);
+            gap: 5px;
+            text-align: center;
+
+            svg {
+              width: 20px;
+              height: 20px;
+              stroke-width: 1.5px;
+              animation-name: color-title;
+              animation-duration: 25s;
+              animation-timing-function: ease-in-out;
+              animation-iteration-count: infinite;
+            }
+          }
+
           a {
             @include flex(row, center, space-between);
             gap: 10px;
@@ -169,6 +195,7 @@
             font-size: 14px;
             text-decoration: none;
             text-transform: uppercase;
+            text-shadow: 1px 1px 1px #24274356;
             color: #fff;
             animation-name: bg-start;
             animation-duration: 25s;
@@ -179,6 +206,7 @@
             svg {
               width: 18px;
               height: 18px;
+              filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.25));
             }
 
             &:hover {
@@ -187,9 +215,26 @@
           }
         }
 
+        & > p {
+          width: calc(25px + 480px * 2);
+          max-width: 100%;
+          margin: 0;
+          font-size: 14px;
+          font-weight: 500;
+          font-family: var(--ifm-font-family-base);
+          text-align: left;
+
+          a {
+            animation-name: color-title;
+            animation-duration: 25s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+          }
+        }
+
         & > nav {
           @include flex(row, stretch, center, wrap);
-          gap: 15px;
+          gap: 35px 25px;
           width: 100%;
 
           section {
@@ -197,22 +242,26 @@
             width: 480px;
             max-width: 100%;
             border-radius: 15px;
-            background-color: #1e263b;
+            background-color: rgba(30, 38, 59, 0.35);
+            backdrop-filter: blur(2px);
             padding: 15px 20px;
-            box-shadow: 2.5px 2.5px 5px #00000069;
+            box-shadow: 1.5px 1.5px 7.5px #00000069;
 
             h2,
             h3 {
+              position: relative;
               @include flex(row, flex-end, space-between);
-              gap: 15px;
               width: 100%;
               padding-bottom: 10px;
               margin-bottom: 10px;
               border-bottom: 2px dashed #ffffff10;
+              text-align: left;
               font-size: 16px;
               color: #d5daea;
 
               span {
+                padding-right: 60px;
+
                 em {
                   font-weight: 400;
                   color: #98a1bc;
@@ -220,16 +269,30 @@
               }
 
               svg {
-                width: 80px;
-                min-width: 80px;
+                width: 50px;
+                min-width: 50px;
                 filter: drop-shadow(2.5px 2.5px 2.5px #00000025);
+              }
+
+              &.float {
+                margin-top: 40px;
+
+                svg {
+                  position: absolute;
+                  top: -70px;
+                  right: -25px;
+                  width: 80px;
+                  min-width: 80px;
+                  filter: drop-shadow(2.5px 2.5px 2.5px #00000025);
+                }
               }
             }
 
             h3 {
               svg {
-                width: 70px;
-                min-width: 70px;
+                padding: 10px;
+                width: 72px;
+                min-width: 72px;
               }
             }
 
@@ -241,43 +304,54 @@
 
               p {
                 color: #98a1bc;
+
+                svg {
+                  height: 14px;
+                  transform: translate(-3.5px, 1px);
+                }
               }
             }
 
-            button,
             a {
               font-size: 14px;
               animation-name: color-title;
               animation-duration: 25s;
               animation-timing-function: ease-in-out;
               animation-iteration-count: infinite;
-            }
 
-            button {
-              background-color: unset;
-              border: none;
-              cursor: pointer;
-
-              &:hover {
-                text-decoration: underline;
+              svg {
+                transform: translateY(3px);
+                height: 16px;
               }
             }
           }
         }
 
         & > h2 {
-          padding: 50px;
+          padding: 25px 0;
+          margin-top: 50px;
+          text-align: left;
+          width: calc(25px + 480px * 2);
+          max-width: 100%;
+
+          @media (max-width: 1034px) {
+            width: 480px;
+          }
 
           span {
             &.feat {
               color: #ff84df;
             }
           }
+
+          &:first-of-type {
+            margin-top: 25px;
+          }
         }
 
         & > menu {
           @include flex(row, stretch, center, wrap);
-          gap: 30px 15px;
+          gap: 35px 25px;
           width: 100%;
           margin: 0;
           padding: 0;
@@ -288,9 +362,24 @@
             max-width: 100%;
 
             h3 {
+              @include flex(row, center, flex-start);
+              width: 100%;
               font-size: 16px;
               color: #d5daea;
               padding-bottom: 10px;
+
+              svg {
+                height: 24px;
+                fill: #435a8a96 !important;
+
+                path {
+                  fill: #435a8a96 !important;
+                }
+
+                & + svg {
+                  margin-left: 10px;
+                }
+              }
             }
           }
         }
@@ -301,6 +390,7 @@
         gap: 5px;
         width: 100%;
         font-size: 13px;
+        margin-top: 50px;
         margin-bottom: 50px;
 
         h4 {
@@ -332,8 +422,8 @@
         width: 100%;
         padding: 15px 20px;
         border-radius: 10px;
-        box-shadow: inset 1px 1px 5px 1px #150e208d;
-        background-color: #1e263b;
+        box-shadow: 2.5px 2.5px 5px #00000037;
+        background-color: #1e263bbf;
         font-family: Monaco, monospace;
         font-size: 13px;
         text-shadow: 2px 2px 2px #13152dab;

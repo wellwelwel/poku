@@ -3,15 +3,27 @@ import Head from '@docusaurus/Head';
 import Heading from '@theme/Heading';
 import { ReactTyped } from 'react-typed';
 import { ConfettiButton } from '@site/src/components/Confetti';
-import { Album, Github, Heart } from 'lucide-react';
+import {
+  Album,
+  DatabaseZap,
+  Github,
+  Heart,
+  HeartHandshake,
+  Notebook,
+  PiggyBank,
+  Plus,
+} from 'lucide-react';
 import Junior from '@site/static/img/junior.svg';
 import MidLevel from '@site/static/img/mid-level.svg';
 import Senior from '@site/static/img/senior.svg';
 import Maintainer from '@site/static/img/maintainer.svg';
-import MySQL from '@site/static/img/mysql.svg';
 import Silhouette from '@site/static/img/silhouette-darker.svg';
 import SilhouetteOriginal from '@site/static/img/silhouette.svg';
 import NPM from '@site/static/img/npm.svg';
+import NodeJS from '@site/static/img/node-js.svg';
+import TypeScript from '@site/static/img/typescript.svg';
+import Bun from '@site/static/img/bun.svg';
+import Deno from '@site/static/img/deno.svg';
 
 // Asserts
 import '@site/src/css/home.scss';
@@ -87,18 +99,32 @@ const Home = () => {
               .
             </Heading>
             <div>
-              <small>
-                <strong>Poku</strong> is and always will be{' '}
-                <strong>free</strong> and <strong>open-source</strong>.
-              </small>
               <Link to='/docs#quickstart'>
                 Start Here
                 <Album />
               </Link>
+              <small>
+                <span>
+                  <strong>Poku</strong> is and always will be{' '}
+                  <strong>free</strong> and <strong>open-source</strong>
+                </span>
+                <HeartHandshake />
+              </small>
             </div>
+
+            <Heading as='h2'>🐷 What's Poku?</Heading>
+            <p>
+              A cross-platform test runner that{' '}
+              <Link to='/docs/philosophy#javascript-essence-for-tests-'>
+                brings the <strong>JavaScript</strong> essence back to testing
+              </Link>
+              .
+            </p>
+
+            <Heading as='h2'>⚡️ Quick Tutorials</Heading>
             <nav>
               <section>
-                <Heading as='h2'>
+                <Heading as='h2' className='float'>
                   <span>
                     Beginner <em>(aka Junior)</em>
                   </span>
@@ -112,47 +138,28 @@ const Home = () => {
                   </p>
                 </div>
                 <Link to='/docs/roadmaps/beginner'>
-                  Beginner Assertion Tutorial 🧑🏻‍🎓
+                  <Notebook /> Beginner Assertion Tutorial
                 </Link>
               </section>
               <section>
-                <Heading as='h2'>
+                <Heading as='h2' className='float'>
                   Mid Level
                   <MidLevel />
                 </Heading>
                 <div>
                   <p>
                     Organize your tests using <strong>test</strong>,{' '}
-                    <strong>describe</strong>, and/or <strong>it</strong>.
+                    <strong>describe</strong>, and/or <strong>it</strong> and
+                    see how simple it is to create <em>TDD</em> and <em>BDD</em>{' '}
+                    approaches with <strong>Poku</strong>.
                   </p>
                 </div>
                 <Link to='/docs/roadmaps/mid-level'>
-                  Tutorial on How to Organize Your Tests 🧙🏻
+                  <Notebook /> (Beta) Organizing Tests and Good Practices
                 </Link>
               </section>
               <section>
-                <Heading as='h2'>
-                  <span>
-                    Package <em>/</em> Library Maintainer
-                  </span>
-                  <Maintainer />
-                </Heading>
-                <div>
-                  <p>
-                    Since <strong>Poku</strong> bings the{' '}
-                    <Link to='/docs/philosophy#javascript-essence-for-tests-'>
-                      native <strong>JavaScript</strong> syntax for testing
-                    </Link>
-                    , it's possible to run the same test suite for{' '}
-                    <strong>Node.js</strong>, <strong>Bun</strong>, and{' '}
-                    <strong>Deno</strong> to ensure that your package is
-                    compatible with the necessary platforms.
-                  </p>
-                </div>
-                <Link>(Soon) Cross-Platform Tutorial 🔧</Link>
-              </section>
-              <section>
-                <Heading as='h2'>
+                <Heading as='h2' className='float'>
                   <span>
                     Expert <em>(aka Senior)</em>
                   </span>
@@ -160,31 +167,54 @@ const Home = () => {
                 </Heading>
                 <div>
                   <p>
-                    Feel right at home and see how simple it is to create{' '}
-                    <em>TDD</em> and <em>BDD</em> approaches with{' '}
-                    <strong>Poku</strong>, plus mocks with <strong>Poku</strong>{' '}
-                    +{' '}
-                    <Link to='https://github.com/testdouble/quibble'>
-                      <strong>quibble</strong>
-                    </Link>{' '}
-                    and how to start your <em>APIs</em>, servers, services, and
-                    containers in the background ☕️
+                    See how simple it's to handle your <em>APIs</em>, servers,
+                    services, ports, processes, and even containers in the
+                    background, plus mocks, coverage and <em>end-to-end</em>{' '}
+                    tests.
                   </p>
                 </div>
                 <Link>
-                  (Soon) Tutorial on Handling Processes and Services 🔬
+                  <Notebook /> (Soon) Tutorial on Handling Processes and
+                  Services
+                </Link>
+              </section>
+              <section>
+                <Heading as='h2' className='float'>
+                  <span>
+                    Library <em>and</em> Package Maintainer
+                  </span>
+                  <Maintainer />
+                </Heading>
+                <div>
+                  <p>
+                    Run the exact same test suite for <strong>Node.js</strong>,{' '}
+                    <strong>Bun</strong>, and <strong>Deno</strong> (including
+                    different versions) to ensure that your package is
+                    compatible with the platforms you want.
+                  </p>
+                  <p>
+                    There's no problem if your project is <strong>CJS</strong>,{' '}
+                    <strong>ESM</strong> or <strong>TypeScript</strong>.
+                  </p>
+                </div>
+                <Link>
+                  <Notebook /> (Soon) Cross-Platform Tutorial
                 </Link>
               </section>
             </nav>
 
-            <Heading as='h2'>Who uses Poku?</Heading>
+            <Heading as='h2'>👥 Who uses Poku?</Heading>
             <nav>
               <section>
                 <Heading as='h3'>
                   <span>
                     MySQL2 <em>(node-mysql2)</em>
                   </span>
-                  <MySQL />
+                  <DatabaseZap
+                    width={65}
+                    height={65}
+                    stroke='rgb(45, 62, 95)'
+                  />
                 </Heading>
                 <div>
                   <p>
@@ -193,7 +223,7 @@ const Home = () => {
                       <strong>MySQL2</strong>
                     </Link>{' '}
                     test suite, the first open-source project to adopt{' '}
-                    <strong>Poku</strong> 💙
+                    <strong>Poku</strong> <Heart />
                   </p>
                   <p>
                     <Link to='https://github.com/sidorares/node-mysql2'>
@@ -204,20 +234,6 @@ const Home = () => {
                     having tests at the same time in <strong>CommonJS</strong>{' '}
                     and <strong>ES Modules</strong>, plus requiring different
                     versions of all platforms.
-                  </p>
-                  <p>
-                    <Link to='https://github.com/sidorares/node-mysql2'>
-                      <img
-                        src='https://img.shields.io/github/stars/sidorares/node-mysql2?style=social'
-                        alt='MySQL2 Stars'
-                      />
-                    </Link>{' '}
-                    <Link to='https://www.npmjs.com/package/mysql2'>
-                      <img
-                        src='https://img.shields.io/npm/dm/mysql2?style=social'
-                        alt='NPM Downloads'
-                      />
-                    </Link>
                   </p>
                 </div>
               </section>
@@ -230,48 +246,62 @@ const Home = () => {
                 </Heading>
                 <div>
                   <p>
-                    <strong>Poku</strong> uses itself to test itself 🐷
+                    After all,{' '}
+                    <strong>
+                      <Link to='https://github.com/wellwelwel/poku'>Poku</Link>
+                    </strong>{' '}
+                    uses itself to test itself <PiggyBank />
                   </p>
                   <p>
-                    The tests guarantee 100% coverage whenever possible and are
-                    run with <strong>TypeScript</strong> without the need for
-                    compilation.
+                    The tests are run with <strong>TypeScript</strong> without
+                    the need for compilation.
                   </p>
                   <p>
-                    <strong>Poku</strong> is intended to be fully compatible
-                    from <strong>Node.js</strong> <code>v8.10.0</code> onwards
-                    (although it is fully tested from <strong>Node.js</strong>{' '}
-                    <code>v6.x.x</code> onwards), <strong>Deno</strong>{' '}
-                    <code>v1.x.x</code>, and <strong>Bun</strong>{' '}
-                    <code>v1.x.x</code>.
+                    It's intended to be fully compatible from{' '}
+                    <strong>Node.js</strong> <code>v8.x</code>,{' '}
+                    <strong>Deno</strong> <code>v1.x</code>, and{' '}
+                    <strong>Bun</strong> <code>v1.x</code> onwards.
                   </p>
                 </div>
               </section>
             </nav>
             <Heading as='h2'>
-              And who knows? <span className='feat'>You could be next</span> ⬇️
+              ⬇️ You Can <span className='feat'>Be Next</span>
             </Heading>
             <menu>
               <section>
-                <Heading as='h3'>Node.js</Heading>
+                <Heading as='h3' title='Installing Poku with Node.js'>
+                  <NodeJS aria-label="Node.js's Logo" />
+                </Heading>
                 <div className='custom-code-block'>
                   <ConfettiButton toCopy='npm i -D poku' />
                 </div>
               </section>
               <section>
-                <Heading as='h3'>Node.js + TypesScript</Heading>
+                <Heading
+                  as='h3'
+                  title='Installing Poku with Node.js + TypeScript'
+                >
+                  <NodeJS aria-label="Node.js's Logo" />
+                  <Plus stroke='#435a8a96' />
+                  <TypeScript aria-label="TypeScript's Logo" />
+                </Heading>
                 <div className='custom-code-block'>
                   <ConfettiButton toCopy='npm i -D poku tsx' />
                 </div>
               </section>
               <section>
-                <Heading as='h3'>Bun</Heading>
+                <Heading as='h3' title='Installing Poku with Bun'>
+                  <Bun aria-label="Bun's Logo" />
+                </Heading>
                 <div className='custom-code-block'>
                   <ConfettiButton toCopy='bun add -d poku' />
                 </div>
               </section>
               <section>
-                <Heading as='h3'>Deno</Heading>
+                <Heading as='h3' title='Installing Poku with Deno'>
+                  <Deno aria-label="Deno's Logo" />
+                </Heading>
                 <div className='custom-code-block'>
                   <ConfettiButton toCopy='deno add npm:poku' />
                 </div>
