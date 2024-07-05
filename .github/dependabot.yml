@@ -4,8 +4,8 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
   - package-ecosystem: 'npm'
     directory: '/website'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
