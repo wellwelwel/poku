@@ -55,52 +55,17 @@ Enjoying **Poku**? [Consider giving him a star](https://github.com/wellwelwel/po
 
 <hr />
 
-## Why does Poku exist?
-
-**Poku** can show you how simple testing can be 🌱
-
-<div className='features black'>
-  <div className='p'>
-    <Success />
-    <span>Auto detect **ESM**, **CJS**, and **Typescript** files</span>
-  </div>
-  <div className='p'>
-    <Success />
-    <span>Run the same test suite for **Node.js**, **Bun**, and **Deno**</span>
-  </div>
-  <div className='p'>
-    <Success />
-    <span>Instantly re-run related tests in `watch` mode</span>
-  </div>
-  <div className='p'>
-    <Success />
-    <span>Run **CJS** _(**CommonJS**)_ files directly with **Deno**</span>
-  </div>
-  <div className='p'>
-    <Success />
-    <span>
-      Write tests with the same [Native **JavaScript**
-      Syntax](/docs/philosophy#javascript-essence-for-tests-)
-    </span>
-  </div>
-  <div className='p'>
-    <Success />
-    <span>**Poku** brings human-friendly testing, assertion, and outputs</span>
-  </div>
-</div>
-
-<br />
-
 ### Recommended Roadmap 🧑🏻‍🎓
 
-> 🔬 Start by seeing how to use [assert](/docs/documentation/assert). <br />
-> 🧪 Then learn how to use [poku](/docs/category/-poku) to run all your test files at once. <br />
-> 🧑🏻‍🔬 Need to test an API? Check the [startService](/docs/documentation/helpers/startService) and [startScript](/docs/documentation/helpers/startScript). <br />
-> 🐳 Need to mount and unmount containers before/after tests? Check the [dockerfile](/docs/documentation/helpers/containers#dockerfile) and [compose](/docs/documentation/helpers/containers#compose). <br />
-> 🐋 Also, need to check tests inside a container? Check the [dockerfile](/docs/documentation/helpers/containers#dockerfile) and [compose](/docs/documentation/helpers/containers#compose) too. <br />
-> 🧙🏻 So, just if you want to, go deeper into learning about **Poku**. <br />
->
-> 🩵 Take Your Time
+🔬 Start by seeing [how to use assert](/docs/tutorials/beginner). <br />
+🧪 Then learn how to use [poku](/docs/documentation/poku/include-files) to run all your test files at once.
+
+🧑🏻‍🔬 Need to test an API? Check the [startService](/docs/documentation/helpers/startService) and [startScript](/docs/documentation/helpers/startScript). <br />
+🐳 Need to mount and unmount containers before/after tests? Check the [dockerfile](/docs/documentation/helpers/containers#dockerfile) and [compose](/docs/documentation/helpers/containers#compose). <br />
+🐋 Also, need to check tests inside a container? Check the [dockerfile](/docs/documentation/helpers/containers#dockerfile) and [compose](/docs/documentation/helpers/containers#compose) too. <br />
+🧙🏻 So, just if you want to, go deeper into learning about **Poku**. <br />
+
+🩵 Take Your Time
 
 - [**Compare Poku with the Most Popular Test Runners 🧪**](/docs/comparing)
 
@@ -200,24 +165,35 @@ deno run npm:poku
 ### Helpers
 
 - [**test**](/docs/documentation/helpers/test), [**describe**](/docs/documentation/helpers/describe) and [**it**](/docs/documentation/helpers/it) _(organize, group, and isolate tests)_
-- [**watch**](/docs/documentation/poku/options/watch) _(watch for changes and re-run related test files)_
 - [**beforeEach**](/docs/category/-before-and-after-each) and [**afterEach**](/docs/category/-before-and-after-each) _(hooks for test setup and teardown)_
 - [**docker**](/docs/documentation/helpers/containers) _(build, start, compose, stop, remove, and test containers)_
 - [**startScript**](/docs/documentation/helpers/startScript) _(run **package.json** scripts in background)_
 - [**startService**](/docs/documentation/helpers/startService) _(run files in background)_
 - [**kill**](/docs/documentation/helpers/processes/kill) _(terminate ports, port ranges, and PIDs)_
 - [**waitForPort**](/docs/documentation/helpers/processes/wait-for-port) _(wait for specified ports to become active)_
-- [**waitForExpectedResult**](/docs/documentation/helpers/processes/wait-for-expected-result)_(retry until an expected result or times out)_
+- [**waitForExpectedResult**](/docs/documentation/helpers/processes/wait-for-expected-result) _(retry until an expected result or times out)_
 - [**getPIDs**](/docs/documentation/helpers/processes/get-pids) _(debug processes IDs using ports and port ranges)_
-- _and much more_ 👇🏻
 
-[**See the complete documentation**](/docs/category/documentation).
+### Common Options
+
+- [**watch**](/docs/documentation/poku/options/watch) _(watch for changes and re-run related test files)_
+- [**parallel**](/docs/documentation/poku/options/parallel) _(run tests in parallel)_
+- [**debug**](/docs/documentation/poku/options/debug) _(shows all logs)_
+
+> _And much more_ 👇🏻
 
 <hr />
 
 ## Documentation
 
 > Initially, the [**documentation**](/docs/category/documentation) and [**examples**](/docs/category/examples) are based on **Node.js** and **ESM** usage, but you can use all the options normally for both **Bun** and **Deno**, including **CJS**.
+
+<hr />
+
+## Common Issues
+
+- [Avoiding conflicts in environments with multiple platforms installed](/docs/tutorials/cross-platform#recommendations).
+- [Properly running asynchronous tests on the same file](/docs/examples/promises).
 
 <hr />
 

@@ -73,31 +73,64 @@ describe('My Test', async () => {
 
 **Poku** doesn't use a global state, allowing you to use it how and where you want:
 
-```sh
-# Node.js + Poku
+<Tabs>
+  <TabItem default value='Node.js + Poku'>
+
+```bash
 npx poku test.js
+```
 
-# Node.js
-node test.js
+  </TabItem>
+  <TabItem default value='Bun + Poku'>
 
-# Bun + Poku
+```bash
 bunx poku test.js
+```
 
-# Bun
-bun test.js
+  </TabItem>
+  <TabItem default value='Deno + Poku'>
 
-# Deno + Poku
+```bash
 deno run npm:poku test.js
+```
 
-# Deno
+  </TabItem>
+  <TabItem default value='Node.js'>
+
+```bash
+node test.js
+```
+
+  </TabItem>
+  <TabItem default value='Bun'>
+
+```bash
+bun test.js
+```
+
+  </TabItem>
+  <TabItem default value='Deno'>
+
+```bash
 deno run test.js
+```
 
-# Yarn + Poku
+  </TabItem>
+  <TabItem default value='Yarn + Poku'>
+
+```bash
 yarn poku test.js
+```
 
-# pnpm + Poku
+  </TabItem>
+  <TabItem default value='pnpm + Poku'>
+
+```bash
 pnpm poku test.js
 ```
+
+  </TabItem>
+</Tabs>
 
 - Same idea for **TypeScript**.
 
