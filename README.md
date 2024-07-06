@@ -14,7 +14,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ---
 
-🐷 [Website](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📒 [Documentation](https://poku.io/docs/category/documentation)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [Examples](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [Quick Tutorials](https://poku.io/docs/tutorials)
+🐷 [Website](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📒 [Documentation](https://poku.io/docs/category/documentation)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [Examples](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [Quick Tutorials](https://poku.io/docs/category/quick-tutorials)
 
 </div>
 
@@ -22,7 +22,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ## Why does Poku exist?
 
-💡 **Poku** makes testing easy and brings the [native **JavaScript** syntax back to tests](https://poku.io/docs/philosophy), letting you to write tests intuitively — _just like in real **JavaScript** code_.
+💡 **Poku** makes testing easy and brings the [native **JavaScript** syntax back to tests](https://poku.io/docs/philosophy#javascript-essence-for-tests-), letting you to write tests intuitively — _just like in real **JavaScript** code_.
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No configurations<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
@@ -181,13 +181,13 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 ### Tutorials
 
-**Poku** offers _mini-lessons_ for different users needs in the [**Quick Tutorials**](https://poku.io/docs/tutorials) section.
+**Poku** offers _mini-lessons_ for different users needs in the [**Quick Tutorials**](https://poku.io/docs/category/quick-tutorials) section.
 
 ---
 
 ### Common Issues
 
-- [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/roadmaps/cross-platform#recommendations).
+- [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
 
 ---
@@ -257,4 +257,3 @@ Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/
 [node-version-url]: https://github.com/nodejs/node
 [bun-version-url]: https://github.com/oven-sh/bun
 [deno-version-url]: https://github.com/denoland/deno
-[typescript-url]: https://github.com/microsoft/TypeScript
