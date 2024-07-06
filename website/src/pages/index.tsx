@@ -99,7 +99,7 @@ const Home = () => {
               .
             </Heading>
             <div>
-              <Link to='/docs#quickstart'>
+              <Link to='/docs'>
                 Start Here
                 <Album />
               </Link>
@@ -137,13 +137,15 @@ const Home = () => {
                     using <code>npx poku</code>.
                   </p>
                 </div>
-                <Link to='/docs/roadmaps/beginner'>
+                <Link to='/docs/tutorials/beginner'>
                   <Notebook /> Beginner Assertion Tutorial
                 </Link>
               </section>
               <section>
                 <Heading as='h2' className='float'>
-                  Mid Level
+                  <span>
+                    Mid Level <em>(Intermediary)</em>
+                  </span>
                   <MidLevel />
                 </Heading>
                 <div>
@@ -154,8 +156,8 @@ const Home = () => {
                     approaches with <strong>Poku</strong>.
                   </p>
                 </div>
-                <Link to='/docs/roadmaps/mid-level'>
-                  <Notebook /> (Beta) Organizing Tests and Good Practices
+                <Link to='/docs/tutorials/good-practices'>
+                  <Notebook /> Organizing Tests and Good Practices
                 </Link>
               </section>
               <section>
@@ -197,8 +199,8 @@ const Home = () => {
                     <strong>ESM</strong> or <strong>TypeScript</strong>.
                   </p>
                 </div>
-                <Link>
-                  <Notebook /> (Soon) Cross-Platform Tutorial
+                <Link to='/docs/tutorials/cross-platform'>
+                  <Notebook /> Testing Across Platforms
                 </Link>
               </section>
             </nav>

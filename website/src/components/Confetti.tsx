@@ -52,7 +52,12 @@ export const ConfettiButton: React.FC<ConfettiButtonOptions> = ({ toCopy }) => {
           }}
         />
       )}
-      <button ref={buttonRef} onClick={handleClick}>
+      <button
+        ref={buttonRef}
+        onClick={handleClick}
+        aria-label='Copy'
+        title='Copy'
+      >
         <Copy />
       </button>
     </>
