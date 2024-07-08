@@ -21,9 +21,7 @@
     "type": "github",
     "url": "https://github.com/sponsors/wellwelwel"
   },
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "engines": {
     "node": ">=6.0.0",
     "bun": ">=1.0.0",
