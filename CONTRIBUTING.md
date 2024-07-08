@@ -92,11 +92,15 @@ npm run test:deno:parallel    # Test with the locally installed Deno version
 
 ### Coverage
 
-Methods that vary according to **Node.js** version, platform or OS aren't tested against the coverage rate.
+The coverage target is **95%**.
 
 ```sh
 npm run test:c8:sequential
 ```
+
+> [!tip]
+>
+> Don't be intimidated by high coverage, methods that vary according to platform, platform versions, _OS_ and processes _(`process.exit`, `process.once`, etc.)_ aren't tested against the coverage rate 🙋🏻‍♂️
 
 ### Compatibility Per Platform (Docker)
 

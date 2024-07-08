@@ -111,7 +111,7 @@ const ifError = (
 };
 
 /* c8 ignore start */
-const fail = (message?: ProcessAssertionOptions['message']): void => {
+const fail = (message?: ProcessAssertionOptions['message']): never => {
   processAssert(
     () => {
       nodeAssert.fail(message);
@@ -122,6 +122,8 @@ const fail = (message?: ProcessAssertionOptions['message']): void => {
       hideDiff: true,
     }
   );
+
+  process.exit(1);
 };
 /* c8 ignore stop */
 

@@ -119,7 +119,7 @@ const ifError = async (
 /* c8 ignore start */
 const fail = async (
   message?: ProcessAssertionOptions['message']
-): Promise<void> => {
+): Promise<never> => {
   await processAssert(
     () => {
       nodeAssert.fail(message);
@@ -130,6 +130,8 @@ const fail = async (
       hideDiff: true,
     }
   );
+
+  process.exit(1);
 };
 /* c8 ignore stop */
 

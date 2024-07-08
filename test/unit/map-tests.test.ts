@@ -1,8 +1,8 @@
-import process from 'node:process';
 import { nodeVersion } from '../../src/parsers/get-runtime.js';
+import { skip } from '../../src/modules/helpers/skip.js';
 
 if (nodeVersion && nodeVersion < 14) {
-  process.exit(0);
+  skip();
 }
 
 import { join } from 'node:path';

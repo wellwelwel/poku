@@ -62,7 +62,6 @@ export const waitForExpectedResult = async (
 
   const startTime = Date.now();
 
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     const result = await callback();
 

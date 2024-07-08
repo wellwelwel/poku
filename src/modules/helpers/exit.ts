@@ -24,7 +24,7 @@ export const exit = (code: Code, quiet?: boolean) => {
         );
         Write.hr();
         Write.log(
-          `${format(` PASS › ${results.success} `).bg('green')} ${format(` FAIL › ${results.fail} `).bg(results.fail === 0 ? 'grey' : 'red')}`
+          `${format(` PASS › ${results.success - results.skipped} `).bg('green')} ${format(` FAIL › ${results.fail} `).bg(results.fail === 0 ? 'grey' : 'red')} ${results.skipped > 0 ? format(` SKIPPED › ${results.skipped} `).bg(results.skipped === 0 ? 'grey' : 'blue') : ''}`
         );
         Write.hr();
       }

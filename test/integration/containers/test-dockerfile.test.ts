@@ -2,16 +2,14 @@ import { execSync } from 'node:child_process';
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
-import { Write } from '../../../src/services/write.js';
-import { format } from '../../../src/services/format.js';
 import { docker } from '../../../src/modules/helpers/container.js';
 import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
 import { isWindows } from '../../../src/parsers/get-runner.js';
+import { skip } from '../../../src/modules/helpers/skip.js';
 
-// External error: no matching manifest for windows/amd64
 if (isWindows) {
-  process.exit(0);
+  skip('External error: no matching manifest for windows/amd64');
 }
 
 const hasDocker = (() => {
@@ -25,8 +23,7 @@ const hasDocker = (() => {
 
 describe('Docker Service', async () => {
   if (!hasDocker) {
-    Write.log(format('  ℹ Skipping: Docker not found').success().bold());
-    return;
+    skip('Docker not found');
   }
 
   await it('Using custom configs', async () => {

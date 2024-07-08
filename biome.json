@@ -41,7 +41,8 @@
         "all": true,
         "useImportRestrictions": "off",
         "noConsole": "off",
-        "noMisplacedAssertion": "off"
+        "noMisplacedAssertion": "off",
+        "useImportExtensions": "error"
       },
       "performance": {
         "all": true

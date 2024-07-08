@@ -2,11 +2,12 @@ import { test } from '../../src/modules/helpers/test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { executeCLI, ext, isProduction } from '../helpers/capture-cli.test.js';
 import { getRuntime } from '../../src/parsers/get-runtime.js';
+import { skip } from '../../src/modules/helpers/skip.js';
 
 const runtime = getRuntime();
 
 if (runtime === 'deno' && !isProduction) {
-  process.exit(0);
+  skip();
 }
 
 test('Poku Test Runner: CLI', async () => {
