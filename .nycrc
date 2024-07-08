@@ -13,6 +13,7 @@
     "src/modules/helpers/list-files-sync.ts",
     "src/modules/helpers/kill.ts",
     "src/modules/helpers/log.ts",
+    "src/modules/helpers/skip.ts",
     "src/services/pid.ts",
     "src/services/container.ts",
     "src/parsers/get-runner.ts",

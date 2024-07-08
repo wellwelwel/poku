@@ -1,4 +1,3 @@
-import process from 'node:process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { it } from '../../src/modules/helpers/it.js';
@@ -8,10 +7,11 @@ import { assert } from '../../src/modules/essentials/assert.js';
 import { getRuntime, nodeVersion } from '../../src/parsers/get-runtime.js';
 import { watch } from '../../src/services/watch.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
+import { skip } from '../../src/modules/helpers/skip.js';
 import type { WatchCallback } from '../../src/@types/watch.js';
 
 if (nodeVersion && nodeVersion < 10) {
-  process.exit(0);
+  skip('rmSync is available from Node.js 10 onwards');
 }
 
 const runtime = getRuntime();

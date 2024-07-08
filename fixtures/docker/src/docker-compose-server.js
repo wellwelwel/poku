@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const http = require('node:http');
 
 const server = http.createServer((_, res) => {

@@ -1,12 +1,12 @@
-import process from 'node:process';
 import { execSync } from 'node:child_process';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { isProduction, inspectCLI } from '../helpers/capture-cli.test.js';
+import { skip } from '../../src/modules/helpers/skip.js';
 
 if (isProduction) {
-  process.exit(0);
+  skip();
 }
 
 const hasNode = (() => {

@@ -1,0 +1,51 @@
+---
+sidebar_position: 4
+---
+
+# ⏭️ skip
+
+You can skip tests when necessary, for example, tests that don't match a specific platform version or
+
+```ts
+import { skip } from 'poku';
+
+skip();
+```
+
+You can also pass a optional message to `skip` method:
+
+```ts
+import { skip } from 'poku';
+
+skip('Skipping for some reason');
+```
+
+:::important
+This will skip the entire file and it's recommended to be used at the top of the test file.
+:::
+
+## Examples
+
+Imagine that a specific test doesn't work on a specific _OS_:
+
+```ts
+import { test, skip } from 'poku';
+// highlight-start
+import { platform } from 'node:process';
+
+const isWindows = platform === 'win32';
+
+// highlight-end
+if (isWindows) skip('Skipping due to incompatibility with Windows');
+
+// Runs tests normally on other operating systems
+// highlight-start
+test(() => {
+  // ...
+});
+// highlight-end
+```
+
+:::note
+Skipped tests are considered successful tests.
+:::

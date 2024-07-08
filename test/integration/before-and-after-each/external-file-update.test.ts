@@ -1,8 +1,8 @@
-import process from 'node:process';
 import { nodeVersion, getRuntime } from '../../../src/parsers/get-runtime.js';
+import { skip } from '../../../src/modules/helpers/skip.js';
 
 if (nodeVersion && nodeVersion < 16) {
-  process.exit(0);
+  skip();
 }
 
 import fs from 'node:fs';
@@ -14,7 +14,7 @@ import { assert } from '../../../src/modules/essentials/assert.js';
 const runtime = getRuntime();
 
 if (runtime === 'deno') {
-  process.exit(0);
+  skip();
 }
 
 const jsonFilePath = path.resolve('./test-before-and-after-each.json');

@@ -2,12 +2,13 @@ import process from 'node:process';
 import { spawn } from 'node:child_process';
 import { test } from '../../../src/modules/helpers/test.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
+import { skip } from '../../../src/modules/helpers/skip.js';
 import { getRuntime } from '../../../src/parsers/get-runtime.js';
 
 const runtime = getRuntime();
 
 if (runtime !== 'deno') {
-  process.exit(0);
+  skip('Skipping for non-Deno platforms');
 }
 
 test('Deno Compatibility', async () => {
