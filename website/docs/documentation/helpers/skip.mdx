@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # ⏭️ skip
 
-You can skip tests when necessary, for example, tests that don't match a specific platform version or
+You can skip tests when necessary:
 
 ```ts
 import { skip } from 'poku';
@@ -12,7 +12,7 @@ import { skip } from 'poku';
 skip();
 ```
 
-You can also pass a optional message to `skip` method:
+You can also pass an optional message to `skip` method:
 
 ```ts
 import { skip } from 'poku';
@@ -23,6 +23,8 @@ skip('Skipping for some reason');
 :::important
 This will skip the entire file and it's recommended to be used at the top of the test file.
 :::
+
+---
 
 ## Examples
 
