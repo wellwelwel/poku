@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.0](https://github.com/wellwelwel/poku/compare/v1.21.0...v1.22.0) (2024-07-08)
+
+
+### Features
+
+* **skip:** allow to skip tests ([#523](https://github.com/wellwelwel/poku/issues/523)) ([fccfb0d](https://github.com/wellwelwel/poku/commit/fccfb0d59bfd8d25d1af46fbbb705f219c2cb821))
+
 ## [1.21.0](https://github.com/wellwelwel/poku/compare/v1.20.2...v1.21.0) (2024-07-02)
 
 
