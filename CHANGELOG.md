@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/wellwelwel/poku/compare/v1.22.0...v1.23.0) (2024-07-09)
+
+
+### Features
+
+* add out-of-box support for `.env` files ([#527](https://github.com/wellwelwel/poku/issues/527)) ([4ef3ecf](https://github.com/wellwelwel/poku/commit/4ef3ecfbd3810365abf8c36418155749356b787d))
+
 ## [1.22.0](https://github.com/wellwelwel/poku/compare/v1.21.0...v1.22.0) (2024-07-08)
 
 
