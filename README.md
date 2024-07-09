@@ -10,11 +10,11 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 [![License](https://img.shields.io/npm/l/poku?maxAge=2592000&color=9c88ff)](https://github.com/wellwelwel/poku/blob/main/LICENSE)<br />
 [![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=white)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
 [![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=white)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
-[![GitHub Workflow Status (Windows)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&label=&branch=main&logo=windows&logoColor=white)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-windows.yml?query=branch%3Amain)
+[![GitHub Workflow Status (Windows)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&label=&branch=main&logo=iterm2&logoColor=white)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-windows.yml?query=branch%3Amain)
 
 ---
 
-🐷 [Website](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📒 [Documentation](https://poku.io/docs/category/documentation)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [Examples](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [Quick Tutorials](https://poku.io/docs/category/quick-tutorials)
+🐷 [Website](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📘 [Documentation](https://poku.io/docs/category/documentation)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [Examples](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [Quick Tutorials](https://poku.io/docs/category/quick-tutorials)
 
 </div>
 
@@ -22,35 +22,32 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ## Why does Poku exist?
 
-💡 **Poku** makes testing easy and brings the [native **JavaScript** syntax back to tests](https://poku.io/docs/philosophy#javascript-essence-for-tests-), letting you to write tests intuitively — _just like in real **JavaScript** code_.
+💡 **Poku** makes testing easy and brings the [native **JavaScript** syntax back to tests](https://poku.io/docs/philosophy#javascript-essence-for-tests-), letting you to write tests intuitively.
 
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> No configurations<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> _No configurations_<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the same test suite for [**Node.js**][node-version-url], [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
 
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easier and Less Verbose<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> [**Node.js**][node-version-url] familiar **API**<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Instantly re-run related tests in `watch` mode<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> _Easier and Less Verbose_<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CJS** (**CommonJS**) files directly with [**Deno**][deno-version-url]<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **containers**, **servers**, **services**, **processes**, and **ports**<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **containers**, **servers**, **processes**, and **ports**<br />
 
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Safety and Reliability<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> _Safety and Reliability_<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Performant** and **lightweight**<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Compatible with **coverage** tools
 
 ---
 
 ## Quickstart
 
-### Install
+### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Install
 
 <table>
 <tr>
-<td><blockquote><b>Node.js</b</blockquote></td>
-<td><blockquote><b>TypeScript + Node.js</b</blockquote></td>
-<td><blockquote><b>Bun</b</blockquote></td>
-<td><blockquote><b>Deno</b</blockquote></td>
+<td><blockquote><i>Node.js</i></blockquote></td>
+<td><blockquote><i>TypeScript (Node.js)</i></blockquote></td>
+<td><blockquote><i>Bun</i></blockquote></td>
+<td><blockquote><i>Deno</i></blockquote></td>
 </tr>
 <tr>
 <td width="400">
@@ -84,7 +81,9 @@ deno add npm:poku
 </tr>
 </table>
 
-### Test
+---
+
+### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Test
 
 <table>
 <tr>
@@ -105,13 +104,15 @@ assert(true, 'Poku will describe it 🐷');
 </tr>
 </table>
 
-### Run
+---
+
+### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run
 
 <table>
 <tr>
-<td><blockquote><b>Node.js (and TypeScript)</b</blockquote></td>
-<td><blockquote><b>Bun</b</blockquote></td>
-<td><blockquote><b>Deno</b</blockquote></td>
+<td><blockquote><i>Node.js (and TypeScript)</i></blockquote></td>
+<td><blockquote><i>Bun</i></blockquote></td>
+<td><blockquote><i>Deno</i></blockquote></td>
 </tr>
 <tr>
 <td width="400">
@@ -138,37 +139,100 @@ deno run npm:poku
 </tr>
 </table>
 
-> Try the flag `--parallel` to run tests in parallel.
-
-- That's it 🎉
-
 ---
 
-## Available Methods
+## Features
 
 ### Essentials
 
-- [**poku**](https://poku.io/docs/category/-poku) _(test runner)_
-- [**assert**](https://poku.io/docs/documentation/assert) _(test assertion)_
+<table>
+  <tr>
+    <th width="250">Name</th>
+    <th width="800">Description</th>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/category/-poku">poku</a></td>
+    <td>🧪 Test runner.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/assert">assert</a></td>
+    <td>🔬 Test assertion  <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i>.</td>
+  </tr>
+</table>
 
 ### Helpers
 
-- [**test**](https://poku.io/docs/documentation/helpers/test), [**describe**](https://poku.io/docs/documentation/helpers/describe) and [**it**](https://poku.io/docs/documentation/helpers/it) _(organize, group, and isolate tests)_
-- [**beforeEach**](https://poku.io/docs/category/-before-and-after-each) and [**afterEach**](https://poku.io/docs/category/-before-and-after-each) _(hooks for test setup and teardown)_
-- [**docker**](https://poku.io/docs/documentation/helpers/containers) _(build, start, compose, stop, remove, and test containers)_
-- [**startScript**](https://poku.io/docs/documentation/helpers/startScript) _(run **package.json** scripts in background)_
-- [**startService**](https://poku.io/docs/documentation/helpers/startService) _(run files in background)_
-- [**kill**](https://poku.io/docs/documentation/helpers/processes/kill) _(terminate ports, port ranges, and PIDs)_
-- [**waitForPort**](https://poku.io/docs/documentation/helpers/processes/wait-for-port) _(wait for specified ports to become active)_
-- [**waitForExpectedResult**](https://poku.io/docs/documentation/helpers/processes/wait-for-expected-result) _(retry until an expected result or times out)_
-- [**getPIDs**](https://poku.io/docs/documentation/helpers/processes/get-pids) _(debug processes IDs using ports and port ranges)_
+<table>
+  <tr>
+    <th width="250">Name</th>
+    <th width="800">Description</th>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/test">test</a> • <a href="https://poku.io/docs/documentation/helpers/describe">describe</a> • <a href="https://poku.io/docs/documentation/helpers/it">it</a></td>
+    <td>🤹🏻‍♀️ Organize, group, and isolate tests.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/env">envFile</a></td>
+    <td>⚙️ Process an environment file <i>(out-of-box)</i>.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/category/-before-and-after-each">beforeEach</a> • <a href="https://poku.io/docs/category/-before-and-after-each">afterEach</a></td>
+    <td>🃏 Hooks for test setup and teardown.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/startScript">startScript</a></td>
+    <td>🌐 Run package.json scripts in background.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/startService">startService</a></td>
+    <td>🌐 Run files in background.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/containers">docker</a></td>
+    <td>🐳 Build, start, compose, stop, remove, and test containers.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/processes/kill">kill</a></td>
+    <td>🔌 Terminate ports, port ranges, and PIDs.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/processes/wait-for-port">waitForPort</a></td>
+    <td>😴 Wait for specified ports to become active.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/processes/wait-for-expected-result">waitForExpectedResult</a></td>
+    <td>🥱 Retry until an expected result or times out.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/skip">skip</a></td>
+    <td>⏭️ Skip tests when necessary.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/processes/get-pids">getPIDs</a></td>
+    <td>🕵🏻 Debug processes IDs using ports and port ranges.</td>
+  </tr>
+</table>
 
 ### Common Options
 
-- [**env**](https://poku.io/docs/documentation/helpers/env) _(process an environment file)_
-- [**watch**](https://poku.io/docs/documentation/poku/options/watch) _(watch for changes and re-run related test files)_
-- [**parallel**](https://poku.io/docs/documentation/poku/options/parallel) _(run tests in parallel)_
-- [**debug**](https://poku.io/docs/documentation/poku/options/debug) _(shows all logs)_
+<table>
+  <tr>
+    <th width="250">Name</th>
+    <th width="800">Description</th>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
+    <td>🍿 Watch for changes and re-run related test files.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/poku/options/parallel">parallel</a></td>
+    <td>🏃🏻‍♀️ Run tests in parallel.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/poku/options/debug">debug</a></td>
+    <td>🕵🏻 Shows all logs.</td>
+  </tr>
+</table>
 
 > _and much more_ 👇🏻
 

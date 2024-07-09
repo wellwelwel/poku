@@ -22,7 +22,7 @@ import '@site/src/css/features.scss';
 [ci-osx-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain
 [ci-osx-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&style=flat&label=&branch=main&logo=apple&logoColor=white
 [ci-windows-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain
-[ci-windows-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&style=flat&label=&branch=main&logo=windows&logoColor=white
+[ci-windows-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&style=flat&label=&branch=main&logo=iterm2&logoColor=white
 [ql-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain
 [ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&style=flat&label=&branch=main&logo=github&logoColor=white
 [coverage-image]: https://img.shields.io/codecov/c/github/wellwelwel/poku
@@ -155,43 +155,19 @@ deno run npm:poku
 
 <hr />
 
-## Available Methods
-
-### Essentials
-
-- [**poku**](/docs/category/-poku) _(test runner)_
-- [**assert**](/docs/documentation/assert) _(test assertion)_
-
-### Helpers
-
-- [**test**](/docs/documentation/helpers/test), [**describe**](/docs/documentation/helpers/describe) and [**it**](/docs/documentation/helpers/it) _(organize, group, and isolate tests)_
-- [**beforeEach**](/docs/category/-before-and-after-each) and [**afterEach**](/docs/category/-before-and-after-each) _(hooks for test setup and teardown)_
-- [**docker**](/docs/documentation/helpers/containers) _(build, start, compose, stop, remove, and test containers)_
-- [**startScript**](/docs/documentation/helpers/startScript) _(run **package.json** scripts in background)_
-- [**startService**](/docs/documentation/helpers/startService) _(run files in background)_
-- [**kill**](/docs/documentation/helpers/processes/kill) _(terminate ports, port ranges, and PIDs)_
-- [**waitForPort**](/docs/documentation/helpers/processes/wait-for-port) _(wait for specified ports to become active)_
-- [**waitForExpectedResult**](/docs/documentation/helpers/processes/wait-for-expected-result) _(retry until an expected result or times out)_
-- [**getPIDs**](/docs/documentation/helpers/processes/get-pids) _(debug processes IDs using ports and port ranges)_
-
-### Common Options
-
-- [**env**](/docs/documentation/helpers/env) _(process an environment file)_
-- [**watch**](/docs/documentation/poku/options/watch) _(watch for changes and re-run related test files)_
-- [**parallel**](/docs/documentation/poku/options/parallel) _(run tests in parallel)_
-- [**debug**](/docs/documentation/poku/options/debug) _(shows all logs)_
-
-> _And much more_ 👇🏻
-
-<hr />
-
 ## Documentation
 
 > Initially, the [**documentation**](/docs/category/documentation) and [**examples**](/docs/category/examples) are based on **Node.js** and **ESM** usage, but you can use all the options normally for both **Bun** and **Deno**, including **CJS**.
 
 <hr />
 
-## Common Issues
+### Tutorials
+
+**Poku** offers _mini-lessons_ for different users needs in the [**Quick Tutorials**](https://poku.io/docs/category/quick-tutorials) section.
+
+<hr />
+
+### Common Issues
 
 - [Avoiding conflicts in environments with multiple platforms installed](/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](/docs/examples/promises).
