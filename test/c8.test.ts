@@ -1,3 +1,4 @@
+import { env } from 'node:process';
 import { poku, test, describe, it, assert } from '../src/modules/index.js';
 import { isWindows } from '../src/parsers/get-runner.js';
 import { inspectCLI } from './helpers/capture-cli.test.js';
@@ -58,6 +59,25 @@ test(async () => {
         isWindows
           ? 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" --include=test/integration/import.test.ts --filter=".test.|.spec."'
           : 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 --include=test/integration/import.test.ts --filter=.test.|.spec.'
+      );
+
+      console.log(results.stdout);
+      console.log(results.stderr);
+
+      assert.strictEqual(results.exitCode, 0, 'Passed');
+    });
+
+    await it('Parallel + Options (CLI Env Variables Propagation)', async () => {
+      const results = await inspectCLI(
+        isWindows
+          ? 'npx tsx src/bin/index.ts --include=test/integration/env --env-file="fixtures/.env.test"'
+          : 'npx tsx src/bin/index.ts --include=test/integration/env --env-file=fixtures/.env.test',
+        {
+          env: {
+            ...env,
+            MY_VAR: 'Poku',
+          },
+        }
       );
 
       console.log(results.stdout);
