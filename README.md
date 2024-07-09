@@ -165,6 +165,7 @@ deno run npm:poku
 
 ### Common Options
 
+- [**env**](https://poku.io/docs/documentation/helpers/env) _(process an environment file)_
 - [**watch**](https://poku.io/docs/documentation/poku/options/watch) _(watch for changes and re-run related test files)_
 - [**parallel**](https://poku.io/docs/documentation/poku/options/parallel) _(run tests in parallel)_
 - [**debug**](https://poku.io/docs/documentation/poku/options/debug) _(shows all logs)_
