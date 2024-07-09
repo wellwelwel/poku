@@ -13,7 +13,7 @@ import { fileResults } from '../configs/files.js';
 import { platformIsValid } from '../parsers/get-runtime.js';
 import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
-import { setEnv } from '../modules/helpers/env.js';
+import { envFile } from '../modules/helpers/env.js';
 import { mapTests, normalizePath } from '../services/map-tests.js';
 import { watch, type Watcher } from '../services/watch.js';
 import { onSigint, poku } from '../modules/essentials/poku.js';
@@ -82,9 +82,9 @@ if (killPID) {
 }
 
 if (hasEnvFile) {
-  const envFile = getArg('env-file');
+  const envFilePath = getArg('env-file');
 
-  tasks.push(setEnv(envFile));
+  tasks.push(envFile(envFilePath));
 }
 
 const options: Configs = {

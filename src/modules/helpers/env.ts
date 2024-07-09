@@ -12,7 +12,7 @@ const regex = {
 };
 
 /** Reads an environment file and sets the environment variables. */
-export const setEnv = async (filePath = '.env') => {
+export const envFile = async (filePath = '.env') => {
   /* c8 ignore stop */
   const mapEnv = new Map<string, string>();
   const env = await readFile(sanitizePath(filePath), 'utf8');
