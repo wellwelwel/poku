@@ -78,8 +78,6 @@
     "deno",
     "typescript",
     "tsx",
-    "parallel",
-    "sequential",
     "run",
     "cli",
     "unit",
@@ -98,7 +96,6 @@
     "tap",
     "tape",
     "karma",
-    "urun",
     "supertest",
     "dotenv",
     "filter",
@@ -116,11 +113,9 @@
     "esmodules",
     "esm",
     "mjs",
-    "expect",
     "framework",
     "tool",
     "runtime",
-    "poku",
-    "pokujs"
+    "poku"
   ]
 }
