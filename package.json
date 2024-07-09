@@ -1,6 +1,6 @@
 {
   "name": "poku",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno, and you at the same time.",
   "main": "./lib/modules/index.js",
   "license": "MIT",
@@ -21,7 +21,9 @@
     "type": "github",
     "url": "https://github.com/sponsors/wellwelwel"
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "engines": {
     "node": ">=6.0.0",
     "bun": ">=1.0.0",
