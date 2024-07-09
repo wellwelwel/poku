@@ -144,7 +144,7 @@ const Home = () => {
               <section>
                 <Heading as='h2' className='float'>
                   <span>
-                    Mid Level <em>(Intermediary)</em>
+                    Intermediary
                   </span>
                   <MidLevel />
                 </Heading>
@@ -183,7 +183,7 @@ const Home = () => {
               <section>
                 <Heading as='h2' className='float'>
                   <span>
-                    Library <em>and</em> Package Maintainer
+                    Library <em>/</em> Package Maintainer
                   </span>
                   <Maintainer />
                 </Heading>
@@ -193,10 +193,6 @@ const Home = () => {
                     <strong>Bun</strong>, and <strong>Deno</strong> (including
                     different versions) to ensure that your package is
                     compatible with the platforms you want.
-                  </p>
-                  <p>
-                    There's no problem if your project is <strong>CJS</strong>,{' '}
-                    <strong>ESM</strong> or <strong>TypeScript</strong>.
                   </p>
                 </div>
                 <Link to='/docs/tutorials/cross-platform'>

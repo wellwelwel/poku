@@ -13,6 +13,7 @@ import { fileResults } from '../configs/files.js';
 import { platformIsValid } from '../parsers/get-runtime.js';
 import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
+import { setEnv } from '../modules/helpers/env.js';
 import { mapTests, normalizePath } from '../services/map-tests.js';
 import { watch, type Watcher } from '../services/watch.js';
 import { onSigint, poku } from '../modules/essentials/poku.js';
@@ -51,6 +52,7 @@ const quiet = hasArg('quiet');
 const debug = hasArg('debug');
 const failFast = hasArg('fail-fast');
 const watchMode = hasArg('watch');
+const hasEnvFile = hasArg('env-file');
 
 const concurrency = parallel
   ? Number(getArg('concurrency')) || undefined
@@ -77,6 +79,12 @@ if (killRange) {
 if (killPID) {
   const PIDs = killPID.split(',').map(Number);
   tasks.push(kill.pid(PIDs));
+}
+
+if (hasEnvFile) {
+  const envFile = getArg('env-file');
+
+  tasks.push(setEnv(envFile));
 }
 
 const options: Configs = {
