@@ -117,6 +117,7 @@ npm run test:ci:deno  # All Deno versions from 1+
 ```
 
 - You may prefer to use **GitHub Actions** for compatibility testing.
+- For **Windows** users, it's recommended to use [**wsl**](https://learn.microsoft.com/en-us/windows/wsl/install).
 
 ### Compatibility (All Platforms — Docker)
 
@@ -131,6 +132,7 @@ npm run test:ci
 ```
 
 - You may prefer to use **GitHub Actions** for compatibility testing.
+- For **Windows** users, it's recommended to use [**wsl**](https://learn.microsoft.com/en-us/windows/wsl/install).
 
 ---
 
