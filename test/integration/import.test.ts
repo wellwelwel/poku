@@ -1,8 +1,16 @@
+import { skip } from '../../src/modules/helpers/skip.js';
+import { nodeVersion } from '../../src/parsers/get-runtime.js';
+
+if (nodeVersion && nodeVersion < 16) {
+  skip('Strict method is available from Node.js 16');
+}
+
 import * as index from '../../src/modules/index.js';
 
 index.test('Import Suite', () => {
   index.assert.ok(index.poku, 'Importing poku method');
   index.assert.ok(index.assert, 'Importing assert method');
+  index.assert.ok(index.strict, 'Importing strict method');
 
   index.assert.ok(index.envFile, 'Importing envFile method');
   index.assert.ok(index.startService, 'Importing startService method');

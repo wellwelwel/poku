@@ -156,7 +156,11 @@ deno run npm:poku
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/assert">assert</a></td>
-    <td>🔬 Test assertion  <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i>.</td>
+    <td>🔍 Test assertion <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i>.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/assert">strict</a></td>
+    <td>🔬 Strict test assertion <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i>.</td>
   </tr>
 </table>
 
@@ -254,7 +258,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 - [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
-- [Migrating to version **2.x**](https://github.com/wellwelwel/poku/issues/533)
+- [Migrating to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
 
 ---
 
