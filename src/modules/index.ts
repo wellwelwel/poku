@@ -1,5 +1,6 @@
 export { poku } from './essentials/poku.js';
 export { assert } from './essentials/assert.js';
+export { strict } from './essentials/strict.js';
 export { test } from './helpers/test.js';
 export { describe } from './helpers/describe.js';
 export { it } from './helpers/it.js';
