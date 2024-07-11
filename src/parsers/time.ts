@@ -1,10 +1,7 @@
-/* c8 ignore next */ // ?
-import { padStart } from '../polyfills/pad.js';
-
 export const parseTime = (date: Date): string => {
-  const hours = padStart(date.getHours().toString(), 2, '0');
-  const minutes = padStart(date.getMinutes().toString(), 2, '0');
-  const seconds = padStart(date.getSeconds().toString(), 2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
 
   return `${hours}:${minutes}:${seconds}`;
 };

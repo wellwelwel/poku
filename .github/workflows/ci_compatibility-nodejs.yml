@@ -13,8 +13,6 @@ jobs:
       matrix:
         node-version:
           [
-            '06',
-            '07',
             '08',
             '09',
             '10',
