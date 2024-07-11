@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.0.0](https://github.com/wellwelwel/poku/compare/v1.23.0...v2.0.0) (2024-07-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop `beforeEach` and `afterEach` support for each `assert` ([#539](https://github.com/wellwelwel/poku/issues/539))
+* drop `assertPromise` helper ([#538](https://github.com/wellwelwel/poku/issues/538))
+* change `listFiles` helper from sync to async ([#537](https://github.com/wellwelwel/poku/issues/537))
+* drop deprecated methods and options ([#536](https://github.com/wellwelwel/poku/issues/536))
+* drop support for Node.js 6 and 7 ([#534](https://github.com/wellwelwel/poku/issues/534))
+
+### Features
+
+* support for `strict` assertions ([#541](https://github.com/wellwelwel/poku/issues/541)) ([68dae82](https://github.com/wellwelwel/poku/commit/68dae82e9783b367e2b59622386c3a878d4b8d37))
+
+
+### Miscellaneous Chores
+
+* change `listFiles` helper from sync to async ([#537](https://github.com/wellwelwel/poku/issues/537)) ([945c4fb](https://github.com/wellwelwel/poku/commit/945c4fb82ee2a05f8ec1234a82d79876c36ebe55))
+* drop `assertPromise` helper ([#538](https://github.com/wellwelwel/poku/issues/538)) ([954ca1b](https://github.com/wellwelwel/poku/commit/954ca1bc7e661f6e45834030546abefd10d92857))
+* drop `beforeEach` and `afterEach` support for each `assert` ([#539](https://github.com/wellwelwel/poku/issues/539)) ([a8455a7](https://github.com/wellwelwel/poku/commit/a8455a7a1ca708f285533001442a0ce11a233285))
+* drop deprecated methods and options ([#536](https://github.com/wellwelwel/poku/issues/536)) ([ae6ff4b](https://github.com/wellwelwel/poku/commit/ae6ff4b702bc03685cefc8a6e2ae019437c79b0e))
+* drop support for Node.js 6 and 7 ([#534](https://github.com/wellwelwel/poku/issues/534)) ([a11b1b4](https://github.com/wellwelwel/poku/commit/a11b1b4e47b60fc3cbffe5e8c18c75f78c9e871f))
+
 ## [1.23.0](https://github.com/wellwelwel/poku/compare/v1.22.0...v1.23.0) (2024-07-09)
 
 
