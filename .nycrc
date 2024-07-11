@@ -12,7 +12,6 @@
     "src/modules/helpers/exit.ts",
     "src/modules/helpers/get-pids.ts",
     "src/modules/helpers/kill.ts",
-    "src/modules/helpers/list-files-sync.ts",
     "src/modules/helpers/log.ts",
     "src/modules/helpers/skip.ts",
     "src/services/container.ts",
