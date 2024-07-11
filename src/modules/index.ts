@@ -18,7 +18,6 @@ export { getPIDs } from './helpers/get-pids.js';
 export { exit } from './helpers/exit.js';
 export { log } from './helpers/log.js';
 export { listFiles } from './helpers/list-files.js';
-export { assertPromise } from './helpers/assert-promise.js';
 export type { Code } from '../@types/code.js';
 export type { Configs } from '../@types/poku.js';
 export type {

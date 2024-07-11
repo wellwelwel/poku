@@ -5,7 +5,6 @@ index.test('Import Suite', () => {
   index.assert.ok(index.assert, 'Importing assert method');
 
   index.assert.ok(index.envFile, 'Importing envFile method');
-  index.assert.ok(index.assertPromise, 'Importing assertPromise method');
   index.assert.ok(index.startService, 'Importing startService method');
   index.assert.ok(index.startScript, 'Importing startScript method');
   index.assert.ok(index.docker, 'Importing docker method');
