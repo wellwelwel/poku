@@ -1,6 +1,4 @@
 /* c8 ignore next */ // ?
-import { padStart } from '../polyfills/pad.js';
-
 export const backgroundColor = {
   white: 7,
   black: 40,
@@ -33,7 +31,7 @@ export class Formatter {
 
   counter(current: number, total: number, pad = '0') {
     const totalDigits = String(total).length;
-    const formattedCounter = padStart(String(current), totalDigits, pad);
+    const formattedCounter = String(current).padStart(totalDigits, pad);
     this.parts += formattedCounter;
     return this;
   }

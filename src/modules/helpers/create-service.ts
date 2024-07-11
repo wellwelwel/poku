@@ -1,4 +1,3 @@
-/* c8 ignore next 5 */ // Types
 import type {
   End,
   StartScriptOptions,
@@ -29,7 +28,6 @@ const backgroundProcess = (
         stdio: ['inherit', 'pipe', 'pipe'],
         env: process.env,
         timeout: options?.timeout,
-        /* c8 ignore next 4 */
         cwd: options?.cwd ? sanitizePath(normalize(options.cwd)) : undefined,
         shell: isWindows,
         detached: !isWindows,
@@ -40,7 +38,6 @@ const backgroundProcess = (
 
       let portBackup: number | undefined;
 
-      /* c8 ignore start */
       const end: End = (port) =>
         new Promise((resolve) => {
           try {
@@ -75,7 +72,6 @@ const backgroundProcess = (
             return;
           }
         });
-      /* c8 ignore stop */
 
       runningProcesses.set(PID, { end, port: portBackup });
 
@@ -95,11 +91,9 @@ const backgroundProcess = (
           }
         }
 
-        /* c8 ignore next */
         options?.verbose && Write.log(data);
       });
 
-      /* c8 ignore start */
       service.stderr.on('data', (data: Buffer) => {
         if (!isResolved && typeof options?.startAfter !== 'number') {
           const stringData = JSON.stringify(String(data));
@@ -123,7 +117,6 @@ const backgroundProcess = (
         end(portBackup);
         reject(`Service failed to start: ${err}`);
       });
-      /* c8 ignore stop */
 
       service.on('close', (code) => {
         if (code !== 0) {
@@ -131,14 +124,12 @@ const backgroundProcess = (
         }
       });
 
-      /* c8 ignore start */
       const timeout = setTimeout(() => {
         if (!isResolved) {
           end(portBackup);
           reject(`createService: Timeout\nFile: ${file}`);
         }
       }, options?.timeout || 60000);
-      /* c8 ignore stop */
 
       if (typeof options?.startAfter === 'number') {
         setTimeout(() => {
@@ -150,7 +141,6 @@ const backgroundProcess = (
           }
         }, options.startAfter);
       }
-      /* c8 ignore next */
     } catch {}
   });
 
@@ -183,7 +173,6 @@ export const startScript = async (
   script: string,
   options?: StartScriptOptions
 ): Promise<{ end: End }> => {
-  /* c8 ignore next */
   const runner = options?.runner || 'npm';
   const runtimeOptions = scriptRunner(runner);
   const runtime = runtimeOptions.shift()!;
@@ -195,7 +184,6 @@ export const startScript = async (
   });
 };
 
-/* c8 ignore start */ // Process
 process.once('SIGINT', async () => {
   for (const { end, port } of runningProcesses.values()) {
     await end(port);

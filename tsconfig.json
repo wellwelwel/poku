@@ -2,8 +2,8 @@
   "include": ["src"],
   "exclude": ["test", "tools", "src/@types", "src/polyfills/deno.mts"],
   "compilerOptions": {
-    "target": "ES2016",
-    "lib": ["ES2016"],
+    "target": "ES2018",
+    "lib": ["ES2018"],
     "module": "CommonJS",
     "moduleResolution": "Node",
     "outDir": "lib",
