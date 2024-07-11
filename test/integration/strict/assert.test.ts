@@ -9,7 +9,7 @@ import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it.js';
 import { strict as assert } from '../../../src/modules/essentials/strict.js';
 
-describe('Assert Suite', async () => {
+describe('Strict Suite', async () => {
   it(() => {
     assert(true, 'ok (default) with true');
     assert(1, 'ok (default) with 1');

@@ -258,7 +258,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 - [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
-- [Migrating to version **2.x**](https://github.com/wellwelwel/poku/issues/533)
+- [Migrating to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
 
 ---
 
