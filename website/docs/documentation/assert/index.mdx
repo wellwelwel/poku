@@ -26,10 +26,21 @@ It supports both [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
 
 _But only if you want to, of course._
 
+Default assertions:
+
 ```diff
 - import assert from 'node:assert';
 + import { assert } from 'poku';
 ```
+
+Strict assertions:
+
+```diff
+- import assert from 'node:assert/strict';
++ import { strict } from 'poku';
+```
+
+- `strict` method is available for **Node.js 16** onwards, **Bun**, and **Deno**.
 
 ```ts
 assert(true, "It's true 🧪");
@@ -44,10 +55,15 @@ Your **Poku** is waiting for you 🐷✨
 
 <hr />
 
+📘 To learn about assertions, see the quick tutorial: [From a basic assertion test to its execution](/docs/tutorials/beginner).
+
+<hr />
+
 ## Available Methods
 
 ```ts
 import { assert } from 'poku';
+// import { strict as assert } from 'poku';
 ```
 
 > You can combine promise **assert** with beforeEach and afterEach helpers.

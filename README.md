@@ -156,7 +156,11 @@ deno run npm:poku
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/assert">assert</a></td>
-    <td>🔬 Test assertion  <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i>.</td>
+    <td>🔍 Test assertion <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i>.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/assert">strict</a></td>
+    <td>🔬 Strict test assertion <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i>.</td>
   </tr>
 </table>
 
