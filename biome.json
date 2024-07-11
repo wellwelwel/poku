@@ -12,13 +12,6 @@
       "benchmark"
     ]
   },
-  "formatter": {
-    "enabled": true,
-    "indentWidth": 2,
-    "lineWidth": 80,
-    "indentStyle": "space",
-    "lineEnding": "lf"
-  },
   "organizeImports": {
     "enabled": false
   },
@@ -65,23 +58,7 @@
     }
   },
   "javascript": {
-    "globals": ["BufferEncoding"],
-    "formatter": {
-      "enabled": true,
-      "semicolons": "always",
-      "quoteStyle": "single",
-      "quoteProperties": "asNeeded",
-      "trailingCommas": "es5",
-      "bracketSpacing": true,
-      "bracketSameLine": false,
-      "arrowParentheses": "always",
-      "lineEnding": "lf"
-    }
-  },
-  "json": {
-    "formatter": {
-      "enabled": true
-    }
+    "globals": ["BufferEncoding"]
   },
   "overrides": [
     {

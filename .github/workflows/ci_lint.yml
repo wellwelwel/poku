@@ -33,5 +33,5 @@ jobs:
       - name: 📦 Installing Dependencies
         run: npm ci
 
-      - name: 🤹🏻‍♀️ Biome Check
+      - name: 🤹🏻‍♀️ Biome + Prettier Check
         run: npm run lint:check
