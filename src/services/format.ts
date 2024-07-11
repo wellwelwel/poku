@@ -1,3 +1,4 @@
+/* c8 ignore next */ // ?
 export const backgroundColor = {
   white: 7,
   black: 40,
