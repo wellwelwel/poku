@@ -16,24 +16,6 @@ export type Configs = {
    */
   noExit?: boolean;
   /**
-   * @deprecated
-   * Customize `stdout` options.
-   */
-  log?: {
-    /**
-     * @deprecated
-     *
-     * @default false
-     */
-    success?: boolean;
-    /**
-     * @deprecated
-     *
-     * @default true
-     */
-    fail?: boolean;
-  };
-  /**
    * This option overwrites all `log` settings.
    *
    * @default false

@@ -6,9 +6,4 @@ export type DescribeOptions = {
    * @default "☰"
    */
   icon?: string;
-  /** @deprecated */
-  pad?: boolean;
-  /**
-   * @default "grey"
-   */
 };
