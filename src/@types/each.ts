@@ -6,13 +6,9 @@ export type Control = {
 
 export type EachConfigs = {
   status: boolean;
-  assert?: boolean;
-  test?: boolean;
   cb?: () => unknown | Promise<unknown>;
 };
 
 export type EachOptions = {
   immediate?: boolean;
-  test?: boolean;
-  assert?: boolean;
 };

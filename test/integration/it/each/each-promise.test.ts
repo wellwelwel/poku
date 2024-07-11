@@ -10,7 +10,7 @@ const asyncPreIncrement = async () =>
 
 const beforeEachHelper = beforeEach(asyncPreIncrement, { immediate: true });
 
-const afterEachHelper = afterEach(asyncPreIncrement, {});
+const afterEachHelper = afterEach(asyncPreIncrement);
 
 describe('Asynchronous Before and After Each Suite (it)', () => {
   it(() => assert.equal(counter, 2, 'Counter should be 2 after beforeEach'));

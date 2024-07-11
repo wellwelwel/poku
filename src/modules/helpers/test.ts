@@ -25,7 +25,7 @@ export async function test(
   const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
   const FILE = env.FILE;
 
-  if (typeof each.before.cb === 'function' && each.before.test) {
+  if (typeof each.before.cb === 'function') {
     const beforeResult = each.before.cb();
 
     /* c8 ignore next 3 */
@@ -63,7 +63,7 @@ export async function test(
 
   const end = hrtime(start);
 
-  if (typeof each.after.cb === 'function' && each.after.test) {
+  if (typeof each.after.cb === 'function') {
     const afterResult = each.after.cb();
 
     /* c8 ignore next 3 */

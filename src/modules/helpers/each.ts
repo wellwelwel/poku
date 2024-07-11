@@ -23,10 +23,6 @@ export const beforeEach = (
   callback: () => unknown,
   options?: EachOptions
 ): Control => {
-  each.before.test = typeof options?.test === 'boolean' ? options.test : true;
-  each.before.assert =
-    typeof options?.assert === 'boolean' ? options.assert : false;
-
   options?.immediate && callback();
 
   each.before.cb = () => {
@@ -68,14 +64,7 @@ export const beforeEach = (
  * ```
  */
 /* c8 ignore next */ // ?
-export const afterEach = (
-  callback: () => unknown,
-  options?: Omit<EachOptions, 'immediate'>
-): Control => {
-  each.after.test = typeof options?.test === 'boolean' ? options.test : true;
-  each.after.assert =
-    typeof options?.assert === 'boolean' ? options.assert : false;
-
+export const afterEach = (callback: () => unknown): Control => {
   each.after.cb = () => {
     if (each.after.status) {
       callback();
