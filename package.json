@@ -21,7 +21,9 @@
     "type": "github",
     "url": "https://github.com/sponsors/wellwelwel"
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "engines": {
     "node": ">=8.17.0",
     "bun": ">=1.0.0",
@@ -51,8 +53,10 @@
     "postbuild": "tsx tools/compatibility/node.ts && cp fixtures/server/package.json ci/fixtures/server/package.json && npm run build:deno && chmod +x lib/bin/index.js",
     "build:deno": "tsc -p tsconfig.mjs.json",
     "postbuild:deno": "tsx tools/build/check-deno-polyfill.ts",
-    "lint:check": "npx @biomejs/biome lint && npx @biomejs/biome format",
-    "lint:fix": "npx @biomejs/biome lint --write && npx @biomejs/biome format --write",
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write .github/workflows/*.yml .",
+    "lint:check": "npx @biomejs/biome lint && npm run prettier:check",
+    "lint:fix": "npx @biomejs/biome lint --write && npm run prettier:fix",
     "update": "pu minor && npm i && npm audit fix",
     "postupdate": "npm run lint:fix",
     "benchmark": "cd benchmark && npm ci && npm start"
@@ -62,6 +66,7 @@
     "@types/node": "^20.14.10",
     "c8": "^10.1.2",
     "packages-update": "^2.0.0",
+    "prettier": "^3.3.2",
     "tsx": "4.16.2",
     "typescript": "^5.5.3"
   },
