@@ -5,7 +5,6 @@ import path from 'node:path';
 import { AssertionError } from 'node:assert';
 import { findFile } from '../parsers/find-file-from-stack.js';
 import { parseResultType } from '../parsers/assert.js';
-import { each } from '../configs/each.js';
 import { indentation } from '../configs/indentation.js';
 import { format } from './format.js';
 import { Write } from './write.js';
@@ -30,29 +29,11 @@ export const processAssert = async (
   }
 
   try {
-    if (typeof each.before.cb === 'function' && each.before.assert) {
-      const beforeResult = each.before.cb();
-
-      /* c8 ignore next 3 */
-      if (beforeResult instanceof Promise) {
-        await beforeResult;
-      }
-    }
-
     const cbResult = cb();
 
     /* c8 ignore next 3 */
     if (cbResult instanceof Promise) {
       await cbResult;
-    }
-
-    if (typeof each.after.cb === 'function' && each.after.assert) {
-      const afterResult = each.after.cb();
-
-      /* c8 ignore next 3 */
-      if (afterResult instanceof Promise) {
-        await afterResult;
-      }
     }
 
     if (typeof options.message === 'string') {

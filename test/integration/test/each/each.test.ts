@@ -6,7 +6,7 @@ test('Before and After Each Suite (test)', () => {
   let counter = 0;
 
   const beforeEachHelper = beforeEach(() => ++counter, { immediate: true });
-  const afterEachHelper = afterEach(() => ++counter, {});
+  const afterEachHelper = afterEach(() => ++counter);
 
   test(() =>
     assert.equal(counter, 2, 'Counter should be 2 after immediate beforeEach')

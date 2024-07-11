@@ -14,7 +14,7 @@ const beforeEachHelper = beforeEach(
 
 const afterEachHelper = afterEach(() => {
   ++counter;
-}, {});
+});
 
 describe('Before and After Each Suite (it)', () => {
   it(() =>
