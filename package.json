@@ -66,7 +66,7 @@
     "@types/node": "^20.14.10",
     "c8": "^10.1.2",
     "packages-update": "^2.0.0",
-    "prettier": "^3.3.2",
+    "prettier": "^3.3.3",
     "tsx": "4.16.2",
     "typescript": "^5.5.3"
   },
