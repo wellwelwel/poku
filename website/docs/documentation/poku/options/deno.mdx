@@ -117,7 +117,7 @@ npx poku --deno-cjs='.js,.cjs'
 ### API
 
 ```ts
-poku('./test', {
+await poku('./test', {
   deno: {
     cjs: true,
   },
@@ -125,7 +125,7 @@ poku('./test', {
 ```
 
 ```ts
-poku('./test', {
+await poku('./test', {
   deno: {
     cjs: ['.js', '.cjs' /* ... */],
   },

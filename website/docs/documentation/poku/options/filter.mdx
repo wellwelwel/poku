@@ -76,7 +76,7 @@ FILTER='unit' npm run tests
  * Testing all `*.test.*` files.
  */
 
-poku('./test', {
+await poku('./test', {
   filter: /\.test\./,
 });
 ```
@@ -86,7 +86,7 @@ poku('./test', {
  * Testing all `ts`, `js`, `mts` and `mjs` files
  */
 
-poku('./test', {
+await poku('./test', {
   filter: /\.(m)?(j|t)s$/,
   // filter: /\.(js|ts|mjs|mts)$/,
 });

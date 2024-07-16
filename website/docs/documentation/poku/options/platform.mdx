@@ -36,7 +36,7 @@ deno run npm:poku  --platform=node  ./test
  * @default 'node'
  */
 
-poku('...', {
+await poku('./test', {
   platform: 'node',
 });
 ```
@@ -46,7 +46,7 @@ poku('...', {
  * Force Bun
  */
 
-poku('...', {
+await poku('./test', {
   platform: 'bun',
 });
 ```
@@ -56,7 +56,7 @@ poku('...', {
  * Force Deno
  */
 
-poku('...', {
+await poku('./test', {
   platform: 'deno',
 });
 ```

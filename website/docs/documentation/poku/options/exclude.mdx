@@ -27,7 +27,7 @@ npx poku --exclude='some-file-or-dir|other-file-or-dir' ./test
  * Excluding  directories from tests
  */
 
-poku('./test', {
+await poku('./test', {
   exclude: /\/(helpers|tools)\//,
 });
 ```
@@ -37,7 +37,7 @@ poku('./test', {
  * Excluding  directories from tests
  */
 
-poku('./test', {
+await poku('./test', {
   exclude: [/\/helpers\//, /\/tools\//],
 });
 ```
@@ -47,7 +47,7 @@ poku('./test', {
  * Excluding specific files from tests
  */
 
-poku('./test', {
+await poku('./test', {
   exclude: /(index|common).test.ts/,
 });
 ```
@@ -57,7 +57,7 @@ poku('./test', {
  * Excluding specific files from tests
  */
 
-poku('./test', {
+await poku('./test', {
   exclude: [/index.test.ts/, /common.test.ts/],
 });
 ```
@@ -67,7 +67,7 @@ poku('./test', {
  * Excluding directories and files from tests
  */
 
-poku('./test', {
+await poku('./test', {
   exclude: /\/(helpers|tools)\/|(index|common).test.ts/,
 });
 ```
@@ -77,7 +77,7 @@ poku('./test', {
  * Excluding directories and files from tests
  */
 
-poku('./test', {
+await poku('./test', {
   exclude: [/\/helpers\//, /\/tools\//, /index.test.ts/, /common.test.ts/],
 });
 ```
