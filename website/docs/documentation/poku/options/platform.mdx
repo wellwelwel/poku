@@ -4,15 +4,30 @@ sidebar_position: 3
 
 # `platform`
 
-> `poku(targetPaths: string | string[], configs?: Configs)`
->
-> `platform: "node" | "bun" | "deno"`
-
-> _Since **1.2.0**_
-
 By default, **Poku** tries to identify the platform automatically, but you can set it manually:
 
-## API (_in-code_)
+## CLI
+
+```bash
+# Common usage
+
+npx      poku      --platform=node  ./test
+bun      poku      --platform=bun   ./test
+deno run npm:poku  --platform=deno  ./test
+```
+
+```bash
+# Custom usage
+## E.g., when you're developing using a platform, but maintain compatibility with others
+
+npx      poku      --platform=bun   ./test
+bun      poku      --platform=deno  ./test
+deno run npm:poku  --platform=node  ./test
+
+# ...
+```
+
+## API
 
 ```ts
 /**
@@ -44,27 +59,6 @@ poku('...', {
 poku('...', {
   platform: 'deno',
 });
-```
-
-## CLI
-
-```bash
-# Normal
-
-npx      poku      --platform=node  ./test
-bun      poku      --platform=bun   ./test
-deno run npm:poku  --platform=deno  ./test
-```
-
-```bash
-# Custom
-# When you're developing using a platform, but maintain compatibility with others
-
-npx      poku      --platform=bun   ./test
-bun      poku      --platform=deno  ./test
-deno run npm:poku  --platform=node  ./test
-
-# ...
 ```
 
 :::tip

@@ -4,9 +4,7 @@ sidebar_position: 1
 
 # 📦 Include Directories and Files
 
-> `poku(targetPaths: string | string[])`
->
-> By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it using the [`filter`](/docs/documentation/poku/options/filter) option.
+By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it using the [`filter`](/docs/documentation/poku/options/filter) option.
 
 ## CLI
 
@@ -38,8 +36,6 @@ It's not possible to run tests in the `.git` and `node_modules` directories.
 
 ### By setting the directories as the last argument
 
-> _Since **1.3.0**_
-
 ```bash
 npx poku targetPath
 ```
@@ -68,7 +64,9 @@ npx poku --include='./'
 
 <hr />
 
-## API (_in-code_)
+## API
+
+> `poku(targetPaths: string | string[])`
 
 ```ts
 await poku('targetPath');
@@ -81,3 +79,17 @@ await poku(['targetPathA', 'targetPathB']);
 ```ts
 await poku('./');
 ```
+
+<blockquote>
+
+Then, run the file directly with the preferred platform, for example:
+
+```bash
+node test/run.test.js
+```
+
+```bash
+npx tsx test/run.test.ts
+```
+
+</blockquote>

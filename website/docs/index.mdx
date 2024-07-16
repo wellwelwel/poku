@@ -9,65 +9,44 @@ import { FAQ } from '@site/src/components/FAQ';
 import { useColorMode } from '@docusaurus/theme-common';
 import Link from '@docusaurus/Link';
 import Success from '@site/static/img/success.svg';
+import Poku from '@site/static/img/poku.svg';
 import '@site/src/css/features.scss';
-
-[node-version-url]: https://github.com/nodejs/node
-[bun-version-url]: https://github.com/oven-sh/bun
-[deno-version-url]: https://github.com/denoland/deno
-[typescript-url]: https://github.com/microsoft/TypeScript
-[npm-image]: https://img.shields.io/npm/v/poku.svg?color=70a1ff&logo=npm&logoColor=white
-[npm-url]: https://npmjs.com/package/poku
-[ci-linux-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain
-[ci-linux-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&style=flat&label=&branch=main&logo=ubuntu&logoColor=white
-[ci-osx-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain
-[ci-osx-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&style=flat&label=&branch=main&logo=apple&logoColor=white
-[ci-windows-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain
-[ci-windows-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&style=flat&label=&branch=main&logo=iterm2&logoColor=white
-[ql-url]: https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain
-[ql-image]: https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&style=flat&label=&branch=main&logo=github&logoColor=white
-[coverage-image]: https://img.shields.io/codecov/c/github/wellwelwel/poku
-[coverage-url]: https://app.codecov.io/github/wellwelwel/poku
-[downloads-image]: https://img.shields.io/npm/dt/poku.svg?&logo=npm&logoColor=white&color=1e90ff
-[downloads-url]: https://www.npmjs.com/package/poku
-[license-url]: https://github.com/wellwelwel/poku/blob/main/LICENSE
-[license-image]: https://img.shields.io/npm/l/poku?maxAge=2592000&color=9c88ff
 
 <div className='title-section'>
 <aside>
 
 # Getting Started
 
-**Poku** makes testing easy for [**Node.js**][node-version-url], [**Bun**][bun-version-url], [**Deno**][deno-version-url] and **you** at the same time.
+[![NPM Downloads](https://img.shields.io/npm/v/poku.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
+[![NPM Downloads](https://img.shields.io/npm/dt/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
+[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://app.codecov.io/github/wellwelwel/poku)<br />
+[![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
+[![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
+[![GitHub Workflow Status (Windows)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&label=&branch=main&logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5XaW5kb3dzIDExPC90aXRsZT48cGF0aCBmaWxsPSIjODg5N2E5IiBkPSJNMTI2IDEuNjM3bC02NyA5LjgzNHY0OS44MzFsNjctLjUzNHpNMS42NDcgNjYuNzA5bC4wMDMgNDIuNDA0IDUwLjc5MSA2Ljk4My0uMDQtNDkuMDU3em01Ni44Mi42OGwuMDk0IDQ5LjQ2NSA2Ny4zNzYgOS41MDkuMDE2LTU4Ljg2M3pNMS42MSAxOS4yOTdsLjA0NyA0Mi4zODMgNTAuNzkxLS4yODktLjAyMy00OS4wMTZ6Ij48L3BhdGg+PC9zdmc+&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-windows.yml?query=branch%3Amain)
 
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][downloads-url]
-[![Coverage][coverage-image]][coverage-url]
-[![License][license-image]][license-url]<br />
-[![GitHub Workflow Status (with event)][ci-linux-image]][ci-linux-url]
-[![GitHub Workflow Status (with event)][ci-osx-image]][ci-osx-url]
-[![GitHub Workflow Status (with event)][ci-windows-image]][ci-windows-url]
-
-Enjoying **Poku**? [Consider giving him a star](https://github.com/wellwelwel/poku) ⭐️
+**Poku** makes testing easy for **Node.js**, **Bun**, **Deno** and **you** at the same time.<br />
+Enjoying **Poku**? [Give him a star to show your support](https://github.com/wellwelwel/poku) ⭐️
 
 </aside>
-
+<aside>
+  <Poku className='logo' height='180' />
+</aside>
 </div>
 
 <hr />
 
-### Recommended Roadmap 🧑🏻‍🎓
+### 🧑🏻‍🎓 Recommended Roadmap
 
-🔬 Start by seeing [how to use assert](/docs/tutorials/beginner). <br />
-🧪 Then learn how to use [poku](/docs/documentation/poku/include-files) to run all your test files at once.
+1. [Install **Poku**](/docs#install). <br />
+2. See [how to use **assertions**](/docs/tutorials/beginner). <br />
+3. Then learn how to use [**poku**](/docs/documentation/poku/include-files) to **run all your test files** at once.
 
-🧑🏻‍🔬 Need to test an API? Check the [startService](/docs/documentation/helpers/startService) and [startScript](/docs/documentation/helpers/startScript). <br />
-🐳 Need to mount and unmount containers before/after tests? Check the [dockerfile](/docs/documentation/helpers/containers#dockerfile) and [compose](/docs/documentation/helpers/containers#compose). <br />
-🐋 Also, need to check tests inside a container? Check the [dockerfile](/docs/documentation/helpers/containers#dockerfile) and [compose](/docs/documentation/helpers/containers#compose) too. <br />
-🧙🏻 So, just if you want to, go deeper into learning about **Poku**. <br />
-
-🩵 Take Your Time
-
-- [**Compare Poku with the Most Popular Test Runners 🧪**](/docs/comparing)
+> 🧑🏻‍🔬 Need to test an _API_? Check the [startService](/docs/documentation/helpers/startService) and [startScript](/docs/documentation/helpers/startScript). <br />
+> 🚪 Need to handle processes and ports? Check the [kill](/docs/documentation/helpers/processes/kill) and [waitForPort](/docs/documentation/helpers/processes/wait-for-port). <br />
+> 🐳 Need to mount and unmount containers before/after tests? Check the [dockerfile](/docs/documentation/helpers/containers#dockerfile) and [compose](/docs/documentation/helpers/containers#compose). <br />
+> 🧠 Here's a [quick example covering the main difference across common test runners](/docs/examples/promises).
+>
+> 🔍 Use the site search to make it easier.
 
 <hr />
 
@@ -157,13 +136,7 @@ deno run npm:poku
 
 ## Documentation
 
-> Initially, the [**documentation**](/docs/category/documentation) and [**examples**](/docs/category/examples) are based on **Node.js** and **ESM** usage, but you can use all the options normally for both **Bun** and **Deno**, including **CJS**.
-
-<hr />
-
-### Tutorials
-
-**Poku** offers _mini-lessons_ for different users needs in the [**Quick Tutorials**](https://poku.io/docs/category/quick-tutorials) section.
+> Initially the [**documentation**](/docs/category/documentation), [**examples**](/docs/category/examples), and [**quick tutorials**](/docs/category/quick-tutorials) are based on **Node.js** and **ESM** usage, but you can use all the options normally for both **Bun** and **Deno**, including **CJS**.
 
 <hr />
 
@@ -171,37 +144,24 @@ deno run npm:poku
 
 - [Avoiding conflicts in environments with multiple platforms installed](/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](/docs/examples/promises).
-- [Migrating to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
-
-<hr />
-
-## Contributing
-
-See the [**Contributing Guide**](https://github.com/wellwelwel/poku/blob/main/CONTRIBUTING.md) and please follow our [**Code of Conduct**](https://github.com/wellwelwel/poku/blob/main/CODE_OF_CONDUCT.md) 🚀
+- [Migrating from version **1.x** to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
 
 <hr />
 
 ## Security Policy
 
-[![GitHub Workflow Status (with event)][ql-image]][ql-url]
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f8a5c2)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
 
 Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
 
 <hr />
 
-### Limitations
-
-- Although it has no external dependencies, **Poku** is not _all-in-one_, so it doesn't have features such as _mocks_, _spies_, _coverage reports_, etc., where you can use your favorite packages or native solutions.
-- **Poku** community is gradually building up.
-
-<hr />
-
 ## Acknowledgements
 
-[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku?color=9c88ff)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 <a
-  href='https://github.com/wellwelwel/poku/graphs/contributors'
+  href='https://opencollective.com/poku/contributors.svg?button=false'
   target='_blank'
   rel='noopener noreferrer'
   style={{ textDecoration: 'none', color: 'inherit' }}
@@ -217,4 +177,5 @@ Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/
 
 ## License
 
-**Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).
+**Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).<br />
+Copyright © 2024-present [Weslley Araújo](https://github.com/wellwelwel) and **Poku** [contributors](https://github.com/wellwelwel/poku/graphs/contributors).

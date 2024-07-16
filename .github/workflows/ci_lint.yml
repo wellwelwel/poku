@@ -34,4 +34,4 @@ jobs:
         run: npm ci
 
       - name: 🤹🏻‍♀️ Biome + Prettier Check
-        run: npm run lint:check
+        run: npm run lint

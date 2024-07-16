@@ -4,17 +4,19 @@ tags: [processes, ports, debug]
 
 # Seaching PIDs
 
+Returns processes IDs used by the specified ports and port ranges.
+
 ## getPIDs
 
 Returns all processes IDs used by the specified ports.
 
 > `getPIDs(port: number | number[])`
->
-> _Since **1.11.0**_
 
 - Requires `lsof` for **Unix** and `netstat` for **Windows**.
 
 ```ts
+import { getPIDs } from 'poku';
+
 await getPIDs(4000);
 ```
 
@@ -29,12 +31,12 @@ await getPIDs([4000, 4001]);
 Returns all processes IDs used by the specified port range.
 
 > `getPIDs.range(startsAt: number, endsAt: number)`
->
-> _Since **1.11.0**_
 
 - Requires `lsof` for **Unix** and `netstat` for **Windows**.
 
 ```ts
+import { getPIDs } from 'poku';
+
 await getPIDs.range(4000, 4100);
 ```
 
@@ -42,7 +44,7 @@ await getPIDs.range(4000, 4100);
 
 :::tip
 
-If your environment doesn't include `lsof`:
+If your environment doesn't include `lsof` by default:
 
 **macOS (Homebrew)**
 

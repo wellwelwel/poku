@@ -4,22 +4,18 @@ sidebar_position: 7
 
 # `failFast`
 
-> `poku(targetPaths: string | string[], configs?: Configs)`
->
-> `failFast: boolean`
-
-By setting `failFast` to `true`, **Poku** will stop the tests at the first failure.
-
-## API (_in-code_)
-
-```ts
-poku(['...'], {
-  failFast: true,
-});
-```
+By using `failFast`, **Poku** will stop the tests at the first failure.
 
 ## CLI
 
 ```bash
 npx poku --fail-fast ./test
+```
+
+## API
+
+```ts
+poku('./test', {
+  failFast: true,
+});
 ```

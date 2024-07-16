@@ -4,75 +4,7 @@ sidebar_position: 4
 
 # `exclude`
 
-> `poku(targetPaths: string | string[], configs?: Configs)`
->
-> `exclude: RegExp | RegExp[]`
-
 Exclude by path using Regex to match only the files that should be performed.
-
-> _Since **1.2.0**_
-
-## API (_in-code_)
-
-```ts
-/**
- * Excluding  directories from tests
- */
-
-poku(['...'], {
-  exclude: /\/(helpers|tools)\//,
-});
-```
-
-```ts
-/**
- * Excluding  directories from tests
- */
-
-poku(['...'], {
-  exclude: [/\/helpers\//, /\/tools\//],
-});
-```
-
-```ts
-/**
- * Excluding specific files from tests
- */
-
-poku(['...'], {
-  exclude: /(index|common).test.ts/,
-});
-```
-
-```ts
-/**
- * Excluding specific files from tests
- */
-
-poku(['...'], {
-  exclude: [/index.test.ts/, /common.test.ts/],
-});
-```
-
-```ts
-/**
- * Excluding directories and files from tests
- */
-
-poku(['...'], {
-  exclude: /\/(helpers|tools)\/|(index|common).test.ts/,
-});
-```
-
-```ts
-/**
- * Excluding directories and files from tests
- */
-
-poku(['...'], {
-  exclude: [/\/helpers\//, /\/tools\//, /index.test.ts/, /common.test.ts/],
-});
-```
 
 ## CLI
 
@@ -86,4 +18,66 @@ npx poku --exclude='some-file-or-dir' ./test
 # Excluding directories and files from tests
 
 npx poku --exclude='some-file-or-dir|other-file-or-dir' ./test
+```
+
+## API
+
+```ts
+/**
+ * Excluding  directories from tests
+ */
+
+poku('./test', {
+  exclude: /\/(helpers|tools)\//,
+});
+```
+
+```ts
+/**
+ * Excluding  directories from tests
+ */
+
+poku('./test', {
+  exclude: [/\/helpers\//, /\/tools\//],
+});
+```
+
+```ts
+/**
+ * Excluding specific files from tests
+ */
+
+poku('./test', {
+  exclude: /(index|common).test.ts/,
+});
+```
+
+```ts
+/**
+ * Excluding specific files from tests
+ */
+
+poku('./test', {
+  exclude: [/index.test.ts/, /common.test.ts/],
+});
+```
+
+```ts
+/**
+ * Excluding directories and files from tests
+ */
+
+poku('./test', {
+  exclude: /\/(helpers|tools)\/|(index|common).test.ts/,
+});
+```
+
+```ts
+/**
+ * Excluding directories and files from tests
+ */
+
+poku('./test', {
+  exclude: [/\/helpers\//, /\/tools\//, /index.test.ts/, /common.test.ts/],
+});
 ```
