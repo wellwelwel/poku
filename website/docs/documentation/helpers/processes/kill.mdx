@@ -10,24 +10,10 @@ Terminates the specified ports, port ranges and process IDs.
 ## kill.port
 
 > `kill.port(port: number | number[])`
->
-> _Since **1.11.0**_
 
 Terminates the specified ports.
 
 - Requires `lsof` for **Unix** and `netstat` for **Windows**.
-
-### API (_in-code_)
-
-```ts
-await kill.port(4000);
-```
-
-Also, terminating multiple ports:
-
-```ts
-await kill.port([4000, 4001]);
-```
 
 ### CLI
 
@@ -43,23 +29,29 @@ Also, terminating multiple ports:
 npx poku --kill-port="4000,4001" targetPath
 ```
 
+### API
+
+```ts
+import { kill } from 'poku';
+
+await kill.port(4000);
+```
+
+Also, terminating multiple ports:
+
+```ts
+await kill.port([4000, 4001]);
+```
+
 ---
 
 ## kill.range
 
 > `kill.range(startsAt: number, endsAt: number)`
->
-> _Since **1.11.0**_
 
 Terminates the specified port range.
 
 - Requires `lsof` for **Unix** and `netstat` for **Windows**.
-
-### API (_in-code_)
-
-```ts
-await kill.range(4000, 4100);
-```
 
 ### CLI
 
@@ -75,27 +67,21 @@ Also, terminating multiple port ranges:
 npx poku --kill-range="4000-4100,5000-5100" targetPath
 ```
 
+### API
+
+```ts
+import { kill } from 'poku';
+
+await kill.range(4000, 4100);
+```
+
 ---
 
 ## kill.pid
 
 > `kill.pid(PID: number | number[])`
->
-> _Since **1.11.0**_
 
 Terminates the specified processes.
-
-### API (_in-code_)
-
-```ts
-await kill.pid(100);
-```
-
-Also, terminating multiple processes:
-
-```ts
-await kill.pid([100, 200]);
-```
 
 ### CLI
 
@@ -111,11 +97,25 @@ Also, terminating multiple processes:
 npx poku --kill-pid="100,200" targetPath
 ```
 
+### API
+
+```ts
+import { kill } from 'poku';
+
+await kill.pid(100);
+```
+
+Also, terminating multiple processes:
+
+```ts
+await kill.pid([100, 200]);
+```
+
 ---
 
 :::tip
 
-If your environment doesn't include `lsof`:
+If your environment doesn't include `lsof` by default:
 
 **macOS (Homebrew)**
 

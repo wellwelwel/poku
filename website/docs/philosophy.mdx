@@ -7,7 +7,18 @@ import TabItem from '@theme/TabItem';
 
 <hr />
 
+## Priorities
+
+- Cross-platform compatibility (**Node**, **Bun**, and **Deno**).
+- **Node.js** familiar usage.
+- Accessibility for beginners.
+- All functionalities must be documented and have at least a minimum example of use.
+
+<hr />
+
 ## JavaScript Essence for Tests 💡
+
+> The **JavaScript**'s native syntax for tests is what makes it possible to use **Poku** on multiple platforms.
 
 Imagine you want to execute asynchronous functions, where one runs after the other, and display a message at the beginning and end of the execution:
 
@@ -258,11 +269,11 @@ Why? Because it follows the same principle as **Poku**: zero configurations for 
 
 Several projects still use or support legacy versions. The requirement for legacy versions isn't a strict rule and can change with major releases due to specific features that may require polyfills and impact performance directly.
 
-That's why the limit chosen was **Node.js** version `6.x.x`.
+That's why the limit chosen was **Node.js** version `8.x.x`.
 
 ### Current Polyfills
 
-- `fs`: callback to async methods
+- `fs`: _promisify_ callback methods
 - `Object`: `entries` and `fromEntries` (used only when not available natively)
 - Support for direct runs for **CommonJS** on **Deno**
 
@@ -276,16 +287,27 @@ That's why the limit chosen was **Node.js** version `6.x.x`.
 
 Although not a priority, there are plans to integrate the following features into **Poku**:
 
-- **Mock** (**CJS** and **ESM**)
+- **Stub**
+- **Mock**
 - **Spies**
 
-> See **mock** examples for both [**CJS**](/docs/examples/mock/cjs) and [**ESM**](/docs/examples/mock/esm) using **Poku** + [**quiblle**](https://github.com/testdouble/quibble).
+> See **mock** examples for both [**CJS**](/docs/examples/mock/cjs) and [**ESM**](/docs/examples/mock/esm) using **Poku** + [**quibble**](https://github.com/testdouble/quibble).
+
+<hr />
+
+## Versioning 🏷️
+
+They aren't considered breaking changes:
+
+- Formatting and style changes to outputs.
+- New functionalities that depend from a specific platform version.
+- If a feature is no longer useful due to a new approach.
 
 <hr />
 
 ## Which Poku doesn't Pretend to be 🤚🏻
 
-- A replacement for other test runners
+- A replacement for native test runners
   - Try and use **Poku** as an alternative 🐷
 - The lightest or the fastest
   - Although these points are taken into consideration, the main aim is to maintain a balance between good practices.

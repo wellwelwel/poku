@@ -10,8 +10,6 @@ import { FAQ } from '@site/src/components/FAQ';
 A minimal _API_ to assist tests that require containers or tests that run inside containers.
 
 > This helper assumes that you already have a basic understanding of how **Docker** works.
->
-> Since **v1.19.0**
 
 ## docker
 
@@ -234,7 +232,7 @@ Tests performed inside a container (**Dockerfile**), returning the output, stopp
 
 Starts a container before the entire test suite and stops it on finishing:
 
-> **Poku** **API _(in-code)_** usage.
+> **Poku** _API_ example.
 
 ```ts
 import { poku, docker, exit } from 'poku';

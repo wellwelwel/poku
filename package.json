@@ -53,10 +53,8 @@
     "postbuild": "tsx tools/compatibility/node.ts && cp fixtures/server/package.json ci/fixtures/server/package.json && npm run build:deno && chmod +x lib/bin/index.js",
     "build:deno": "tsc -p tsconfig.mjs.json",
     "postbuild:deno": "tsx tools/build/check-deno-polyfill.ts",
-    "prettier:check": "prettier --check .",
-    "prettier:fix": "prettier --write .github/workflows/*.yml .",
-    "lint:check": "npx @biomejs/biome lint && npm run prettier:check",
-    "lint:fix": "npx @biomejs/biome lint --write && npm run prettier:fix",
+    "lint": "npx @biomejs/biome lint && prettier --check .",
+    "lint:fix": "npx @biomejs/biome lint --write && prettier --write .github/workflows/*.yml .",
     "update": "pu minor && npm i && npm audit fix",
     "postupdate": "npm run lint:fix",
     "benchmark": "cd benchmark && npm ci && npm start"

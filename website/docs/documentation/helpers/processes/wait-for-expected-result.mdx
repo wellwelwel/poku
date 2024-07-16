@@ -103,7 +103,7 @@ await waitForExpectedResult(async () => {
 
 Waiting for a database connection from a container before to run the entire test suite and stops it on finishing:
 
-> **Poku** **API _(in-code)_** usage.
+> **Poku** _API_ example.
 
 ```ts
 import { poku, docker, waitForExpectedResult, exit } from 'poku';
@@ -135,9 +135,19 @@ await compose.down();
 exit(result);
 ```
 
+<blockquote>
+
+Then:
+
 ```sh
-node run.test.mjs
+node run.test.js
 ```
+
+```sh
+npx tsx run.test.ts
+```
+
+</blockquote>
 
 :::tip
 [See an example using **Dockerfile**.](/docs/documentation/helpers/containers#dockerfile)

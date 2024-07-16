@@ -31,7 +31,7 @@ jobs:
         run: cd website && npm ci
 
       - name: Lint Checking
-        run: cd website && npm run lintcheck
+        run: cd website && npm run lint
 
       - name: Checking Types
         run: cd website && npm run typecheck

@@ -4,24 +4,20 @@ sidebar_position: 8
 
 # `concurrency`
 
-> `poku(targetPaths: string | string[], configs?: Configs)`
->
-> `concurrency: number`
-
 When using `parallel` option, use `concurrency` to limit the number of tests running concurrently.<br />
 The default value is `0` (no limit).
-
-## API (_in-code_)
-
-```ts
-poku(['...'], {
-  parallel: true,
-  concurrency: 4,
-});
-```
 
 ## CLI
 
 ```bash
-npx poku --parallel --concurrency="4" ./test
+npx poku --parallel --concurrency=4 ./test
+```
+
+## API
+
+```ts
+await poku('./test', {
+  parallel: true,
+  concurrency: 4,
+});
 ```

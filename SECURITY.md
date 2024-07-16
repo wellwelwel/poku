@@ -33,7 +33,8 @@ Currently, security updates will be applied to the following versions of **Poku*
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.x.x   | :white_check_mark: |
+| 2.x.x   | :white_check_mark: |
+| 1.x.x   | :x:                |
 | 0.x.x   | :x:                |
 
 ---
@@ -44,10 +45,8 @@ Currently, security updates will be applied to the following versions of **Poku*
 - Include steps to reproduce the vulnerability, and if possible, a patch or workaround.
 - Include the specific version of **Poku** you are using.
 
-Please report it privately: https://github.com/wellwelwel/poku/security/advisories.
+**Reporting:**
 
-- Once the issue has been resolved, you will be attributed a part of the report.
+- https://github.com/wellwelwel/poku/security/advisories
 
----
-
-Let's keeping **Poku** safe 🐷
+> Once the issue has been resolved, you will be attributed a part of the report.

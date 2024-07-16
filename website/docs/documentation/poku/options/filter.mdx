@@ -4,39 +4,16 @@ sidebar_position: 2
 
 # `filter`
 
-> `poku(targetPaths: string | string[], configs?: Configs)`
->
-> `filter: RegExp`
-
 Filter by path using **Regex** to match only the files that should be performed. <br />
 By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it using the `filter` option.
 
-## API (_in-code_)
-
-```ts
-/**
- * @default
- *
- * Testing all `*.test.*` files.
- */
-
-poku(['...'], {
-  filter: /\.test\./,
-});
-```
-
-```ts
-/**
- * Testing all `ts`, `js`, `mts` and `mjs` files
- */
-
-poku(['...'], {
-  filter: /\.(m)?(j|t)s$/,
-  // filter: /\.(js|ts|mjs|mts)$/,
-});
-```
-
 ## CLI
+
+```bash
+# Default
+
+npx poku --filter='.test.|.spec.' ./test
+```
 
 ```bash
 # Testing only a specific file
@@ -45,7 +22,7 @@ npx poku --filter='some-file' ./test
 ```
 
 ```bash
-# Testing only a specific file
+# Testing only specific files
 
 npx poku --filter='some-file|other-file' ./test
 ```
@@ -56,7 +33,13 @@ npx poku --filter='some-file|other-file' ./test
 npx poku --filter='unit' ./test
 ```
 
-## Environment Variable
+```bash
+# Testing only paths that contains "unit" by using Poku as a NPM script
+
+npm run tests -- --filter='unit'
+```
+
+### Environment Variable
 
 By using `FILTER` from **Environment Variable**, it will overwrite the `filter` option.
 
@@ -67,7 +50,7 @@ FILTER='some-file' npx poku ./test
 ```
 
 ```bash
-# Testing only a specific file
+# Testing only specific files
 
 FILTER='some-file|other-file' npx poku ./test
 ```
@@ -82,4 +65,29 @@ FILTER='unit' npx poku ./test
 # Testing only paths that contains "unit" by using Poku as a NPM script
 
 FILTER='unit' npm run tests
+```
+
+## API
+
+```ts
+/**
+ * @default
+ *
+ * Testing all `*.test.*` files.
+ */
+
+await poku('./test', {
+  filter: /\.test\./,
+});
+```
+
+```ts
+/**
+ * Testing all `ts`, `js`, `mts` and `mjs` files
+ */
+
+await poku('./test', {
+  filter: /\.(m)?(j|t)s$/,
+  // filter: /\.(js|ts|mjs|mts)$/,
+});
 ```

@@ -5,16 +5,16 @@
 
 Enjoying **Poku**? Give him a star to show your support 🌟
 
-[![NPM Downloads](https://img.shields.io/npm/dt/poku.svg?logo=npm&logoColor=white&color=1e90ff)](https://www.npmjs.com/package/poku)
-[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku)](https://app.codecov.io/github/wellwelwel/poku)
-[![License](https://img.shields.io/npm/l/poku?maxAge=2592000&color=9c88ff)](https://github.com/wellwelwel/poku/blob/main/LICENSE)<br />
-[![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=white)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
-[![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=white)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
-[![GitHub Workflow Status (Windows)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&label=&branch=main&logo=iterm2&logoColor=white)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-windows.yml?query=branch%3Amain)
+[![NPM Downloads](https://img.shields.io/npm/v/poku.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
+[![NPM Downloads](https://img.shields.io/npm/dt/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
+[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://app.codecov.io/github/wellwelwel/poku)<br />
+[![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
+[![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
+[![GitHub Workflow Status (Windows)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&label=&branch=main&logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5XaW5kb3dzIDExPC90aXRsZT48cGF0aCBmaWxsPSIjODg5N2E5IiBkPSJNMTI2IDEuNjM3bC02NyA5LjgzNHY0OS44MzFsNjctLjUzNHpNMS42NDcgNjYuNzA5bC4wMDMgNDIuNDA0IDUwLjc5MSA2Ljk4My0uMDQtNDkuMDU3em01Ni44Mi42OGwuMDk0IDQ5LjQ2NSA2Ny4zNzYgOS41MDkuMDE2LTU4Ljg2M3pNMS42MSAxOS4yOTdsLjA0NyA0Mi4zODMgNTAuNzkxLS4yODktLjAyMy00OS4wMTZ6Ij48L3BhdGg+PC9zdmc+&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-windows.yml?query=branch%3Amain)
 
 ---
 
-🐷 [Website](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📘 [Documentation](https://poku.io/docs/category/documentation)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [Examples](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [Quick Tutorials](https://poku.io/docs/category/quick-tutorials)
+🐷 [Website](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📘 [Documentation](https://poku.io/docs/category/documentation)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [Examples](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [Tutorials](https://poku.io/docs/category/quick-tutorials)
 
 </div>
 
@@ -22,19 +22,18 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ## Why does Poku exist?
 
-💡 **Poku** makes testing easy and brings the [native **JavaScript** syntax back to tests](https://poku.io/docs/philosophy#javascript-essence-for-tests-), letting you to write tests intuitively.
+💡 **Poku** is a cross-platform test runner that brings the [**JavaScript** essence back to testing](https://poku.io/docs/philosophy#javascript-essence-for-tests-).
 
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> _No configurations_<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the same test suite for [**Node.js**][node-version-url], [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the same test suite for [**Node.js**][node-version-url], [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> _Easier and Less Verbose_<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CJS** (**CommonJS**) files directly with [**Deno**][deno-version-url]<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **containers**, **servers**, **processes**, and **ports**<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **processes**, **ports**, and **containers**<br />
 
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> _Safety and Reliability_<br />
 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Performant** and **lightweight**<br />
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Performant** and **lightweight**
 
 ---
 
@@ -143,16 +142,12 @@ deno run npm:poku
 
 ## Features
 
-### Essentials
+### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Essentials
 
 <table>
   <tr>
-    <th width="250">Name</th>
-    <th width="800">Description</th>
-  </tr>
-  <tr>
-    <td><a href="https://poku.io/docs/category/-poku">poku</a></td>
-    <td>🧪 Test runner.</td>
+    <td width="250"><a href="https://poku.io/docs/category/-poku">poku</a></td>
+    <td width="800">🧪 Test runner.</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/assert">assert</a></td>
@@ -164,16 +159,12 @@ deno run npm:poku
   </tr>
 </table>
 
-### Helpers
+### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Helpers
 
 <table>
   <tr>
-    <th width="250">Name</th>
-    <th width="800">Description</th>
-  </tr>
-  <tr>
-    <td><a href="https://poku.io/docs/documentation/helpers/test">test</a> • <a href="https://poku.io/docs/documentation/helpers/describe">describe</a> • <a href="https://poku.io/docs/documentation/helpers/it">it</a></td>
-    <td>🤹🏻‍♀️ Organize, group, and isolate tests.</td>
+    <td width="250"><a href="https://poku.io/docs/documentation/helpers/test">test</a> • <a href="https://poku.io/docs/documentation/helpers/describe">describe</a> • <a href="https://poku.io/docs/documentation/helpers/it">it</a></td>
+    <td width="800">🤹🏻‍♀️ Organize, group, and isolate tests.</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/env">envFile</a></td>
@@ -217,16 +208,12 @@ deno run npm:poku
   </tr>
 </table>
 
-### Common Options
+### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Common Options
 
 <table>
   <tr>
-    <th width="250">Name</th>
-    <th width="800">Description</th>
-  </tr>
-  <tr>
-    <td><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
-    <td>🍿 Watch for changes and re-run related test files.</td>
+    <td width="250"><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
+    <td width="800">🍿 Watch for changes and re-run related test files.</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/poku/options/parallel">parallel</a></td>
@@ -258,21 +245,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 - [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
-- [Migrating to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
-
----
-
-## Contributing
-
-See the [**Contributing Guide**](https://github.com/wellwelwel/poku/blob/main/CONTRIBUTING.md) and please follow our [**Code of Conduct**](https://github.com/wellwelwel/poku/blob/main/CODE_OF_CONDUCT.md) 🚀
-
----
-
-## Security Policy
-
-[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
-
-Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
+- [Migrating from version **1.x** to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
 
 ---
 
@@ -282,9 +255,9 @@ Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/
 
 **Poku** is [continuously tested](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) to ensure the following expectations for basic usage:
 
-- **~4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
-- **~3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
-- **~1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
+- \>=**4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
+- \>=**3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
+- \>=**1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
 
 > You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
 
@@ -302,27 +275,32 @@ Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/
 
 ---
 
-### Limitations
+## Security Policy
 
-- Although it has no external dependencies, **Poku** is not _all-in-one_, so it doesn't have integrated features such as _mocks_, _spies_, _coverage reports_, etc., where you can use your favorite packages or native solutions.
-  - See a [mock example](https://poku.io/docs/category/mock).
-- **Poku** doesn't render components (such as **Angular**, **React**, etc.).
-  - See an [_end-to-end_ test example](https://poku.io/docs/examples/browser/react).
-- Our community is gradually building up.
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f8a5c2)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
+
+Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
+
+---
+
+## Contributing
+
+See the [**Contributing Guide**](https://github.com/wellwelwel/poku/blob/main/CONTRIBUTING.md) and please follow our [**Code of Conduct**](https://github.com/wellwelwel/poku/blob/main/CODE_OF_CONDUCT.md) 🚀
 
 ---
 
 ## Acknowledgements
 
-[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku)](https://github.com/wellwelwel/poku/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku?color=9c88ff)](https://github.com/wellwelwel/poku/graphs/contributors)
 
-[![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)](https://github.com/wellwelwel/poku/graphs/contributors)
+[![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)](https://opencollective.com/poku/contributors.svg?button=false)
 
 ---
 
 ## License
 
-**Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).
+**Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).<br />
+Copyright © 2024-present [Weslley Araújo](https://github.com/wellwelwel) and **Poku** [contributors](https://github.com/wellwelwel/poku/graphs/contributors).
 
 [node-version-url]: https://github.com/nodejs/node
 [bun-version-url]: https://github.com/oven-sh/bun

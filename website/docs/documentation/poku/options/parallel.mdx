@@ -4,33 +4,7 @@ sidebar_position: 1
 
 # `parallel`
 
-> `poku(targetPaths: string | string[], configs?: Configs)`
->
-> `parallel: boolean`
-
-## API (_in-code_)
-
-```ts
-/**
- * @default
- *
- * Sequential mode
- */
-
-poku(['...'], {
-  parallel: false,
-});
-```
-
-```ts
-/**
- * Parallel mode
- */
-
-poku(['...'], {
-  parallel: true,
-});
-```
+Run the tests files in parallel.
 
 ## CLI
 
@@ -39,3 +13,17 @@ poku(['...'], {
 
 npx poku --parallel ./test
 ```
+
+## API
+
+```ts
+await poku('./test', {
+  parallel: true,
+});
+```
+
+<hr />
+
+:::tip
+See also the [`concurrency`](/docs/documentation/poku/options/concurrency) option.
+:::

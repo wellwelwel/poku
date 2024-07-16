@@ -4,43 +4,13 @@ sidebar_position: 98
 
 # `deno`
 
-## `allow`
+Exclusive options for **Deno** platform.
 
-> `poku(targetPaths: string | string[], configs?: Configs)`
->
-> `allow: string[]`
+## `allow`
 
 Change permissions for **Deno**.
 
 By default **Poku** uses `--allow-run`, `--allow-env`, `--allow-read`, `allow-hrtime` and `--allow-net`.
-
-### API (_in-code_)
-
-```ts
-poku(['...'], {
-  deno: {
-    allow: ['read', 'run' /* ... */],
-  },
-});
-```
-
-```ts
-poku(['...'], {
-  deno: {
-    allow: ['read=file.js', 'run' /* ... */],
-  },
-});
-```
-
-Clear all permissions:
-
-```ts
-poku(['...'], {
-  deno: {
-    allow: [],
-  },
-});
-```
 
 ### CLI
 
@@ -58,33 +28,39 @@ Clear all permissions:
 npx poku --deno-allow=''
 ```
 
+### API
+
+```ts
+poku('./test', {
+  deno: {
+    allow: ['read', 'run' /* ... */],
+  },
+});
+```
+
+```ts
+poku('./test', {
+  deno: {
+    allow: ['read=file.js', 'run' /* ... */],
+  },
+});
+```
+
+Clear all permissions:
+
+```ts
+poku('./test', {
+  deno: {
+    allow: [],
+  },
+});
+```
+
 <hr />
 
 ## `deny`
 
-> `poku(targetPaths: string | string[], configs?: Configs)`
->
-> `deny: string[]`
-
 Change permissions for **Deno**.
-
-### API (_in-code_)
-
-```ts
-poku(['...'], {
-  deno: {
-    deny: ['write', 'sys' /* ... */],
-  },
-});
-```
-
-```ts
-poku(['...'], {
-  deno: {
-    deny: ['env=HOME', 'write' /* ... */],
-  },
-});
-```
 
 ### CLI
 
@@ -94,6 +70,24 @@ npx poku --deno-deny='write, sys'
 
 ```bash
 npx poku --deno-deny='env=HOME, write'
+```
+
+### API
+
+```ts
+poku('./test', {
+  deno: {
+    deny: ['write', 'sys' /* ... */],
+  },
+});
+```
+
+```ts
+poku('./test', {
+  deno: {
+    deny: ['env=HOME', 'write' /* ... */],
+  },
+});
 ```
 
 <hr />
@@ -110,24 +104,6 @@ It's a great feature to test if a project created primarily in **Node.js** or **
 
 To run **CommonJS** with **Deno**, you can use:
 
-### API (_in-code_)
-
-```ts
-poku(['...'], {
-  deno: {
-    cjs: true,
-  },
-});
-```
-
-```ts
-poku(['...'], {
-  deno: {
-    cjs: ['.js', '.cjs' /* ... */],
-  },
-});
-```
-
 ### CLI
 
 ```bash
@@ -136,4 +112,22 @@ npx poku --deno-cjs
 
 ```bash
 npx poku --deno-cjs='.js,.cjs'
+```
+
+### API
+
+```ts
+await poku('./test', {
+  deno: {
+    cjs: true,
+  },
+});
+```
+
+```ts
+await poku('./test', {
+  deno: {
+    cjs: ['.js', '.cjs' /* ... */],
+  },
+});
 ```
