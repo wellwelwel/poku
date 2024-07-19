@@ -6,8 +6,8 @@ const results = new Map();
 
 const exec = (command) => {
   try {
-    // execSync(command, { stdio: 'inherit' });
-    execSync(command, { stdio: 'ignore' });
+    execSync(command, { stdio: 'inherit' });
+    // execSync(command, { stdio: 'ignore' });
   } catch {}
 };
 
