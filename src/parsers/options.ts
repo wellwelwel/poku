@@ -19,9 +19,7 @@ export const getConfigs = async (customPath?: string): Promise<ConfigFile> => {
       const configsFile = await readFile(filePath, 'utf-8');
 
       return JSON.parse(configsFile);
-    } catch {
-      return {};
-    }
+    } catch {}
   }
 
   return {};
