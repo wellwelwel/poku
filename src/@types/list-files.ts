@@ -2,7 +2,7 @@ export type Configs = {
   /**
    * Filter by path to match only the files that should be performed.
    *
-   * @default /\.test\./i
+   * @default /\.(test|spec)\./i
    */
   filter?: RegExp;
   /**
