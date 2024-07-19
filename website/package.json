@@ -18,7 +18,7 @@
     "test:unit": "poku --parallel test/unit",
     "test": "npm run typecheck && npm run lint && npm run test:unit && npm run clear && npm run build",
     "update": "pu minor && npm i && npm audit fix",
-    "postupdate": "npm run lint",
+    "postupdate": "npm run lint:fix",
     "deploy": "tsx deploy/upload.ts"
   },
   "dependencies": {
