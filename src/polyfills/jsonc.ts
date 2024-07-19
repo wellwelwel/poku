@@ -3,58 +3,59 @@
  */
 class JsoncProcessor {
   toJSON(content: string): string {
-    const lines = content.split('\n');
-    const resultLines: string[] = [];
-
+    const length = content.length;
     let inBlockComment = false;
     let inString = false;
+    let skipChar = false;
+    let result = '';
 
-    for (const line of lines) {
-      let newLine = '';
+    for (let i = 0; i < length; i++) {
+      const char = content[i];
 
-      for (let i = 0; i < line.length; i++) {
-        if (inBlockComment) {
-          if (line[i] === '*' && line[i + 1] === '/') {
-            inBlockComment = false;
-            i++;
-          }
+      if (skipChar) {
+        skipChar = false;
+        continue;
+      }
 
-          continue;
+      if (inBlockComment) {
+        if (char === '*' && content[i + 1] === '/') {
+          inBlockComment = false;
+          skipChar = true;
         }
+        continue;
+      }
 
-        if (inString) {
-          if (line[i] === '"' && line[i - 1] !== '\\') {
-            inString = false;
-          }
-          newLine += line[i];
-          continue;
+      if (inString) {
+        if (char === '"' && content[i - 1] !== '\\') {
+          inString = false;
         }
+        result += char;
+        continue;
+      }
 
-        if (line[i] === '"') {
-          inString = true;
-          newLine += line[i];
-          continue;
-        }
+      if (char === '"') {
+        inString = true;
+        result += char;
+        continue;
+      }
 
-        if (line[i] === '/' && line[i + 1] === '*') {
-          inBlockComment = true;
+      if (char === '/' && content[i + 1] === '*') {
+        inBlockComment = true;
+        skipChar = true;
+        continue;
+      }
+
+      if (char === '/' && content[i + 1] === '/') {
+        while (i < length && content[i] !== '\n') {
           i++;
-          continue;
         }
-
-        if (line[i] === '/' && line[i + 1] === '/') {
-          break;
-        }
-
-        newLine += line[i];
+        continue;
       }
 
-      if (newLine.trim().length > 0) {
-        resultLines.push(newLine.trim());
-      }
+      result += char;
     }
 
-    return resultLines.join('');
+    return result;
   }
 
   parse(text: string) {
