@@ -1,9 +1,10 @@
 /**
- * Adapted from: https://github.com/wellwelwel/jsonc.min
+ * Adapted from https://github.com/wellwelwel/jsonc.min
  */
 class JsoncProcessor {
   toJSON(content: string): string {
     const length = content.length;
+
     let inBlockComment = false;
     let inString = false;
     let skipChar = false;
@@ -22,6 +23,7 @@ class JsoncProcessor {
           inBlockComment = false;
           skipChar = true;
         }
+
         continue;
       }
 
@@ -29,6 +31,7 @@ class JsoncProcessor {
         if (char === '"' && content[i - 1] !== '\\') {
           inString = false;
         }
+
         result += char;
         continue;
       }
@@ -49,6 +52,7 @@ class JsoncProcessor {
         while (i < length && content[i] !== '\n') {
           i++;
         }
+
         continue;
       }
 
@@ -58,7 +62,7 @@ class JsoncProcessor {
     return result;
   }
 
-  parse(text: string) {
+  parse<T = unknown>(text: string): T {
     const cleanContent = this.toJSON(text);
 
     return JSON.parse(cleanContent);
