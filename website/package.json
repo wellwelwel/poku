@@ -13,13 +13,13 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "lint": "npx prettier --check . && eslint . --ext .ts,.tsx",
-    "lint:fix": "npx prettier --write . && eslint . --fix",
-    "test:unit": "npx poku --parallel test/unit",
+    "lint": "prettier --check . && eslint . --ext .ts,.tsx",
+    "lint:fix": "prettier --write . && eslint . --fix",
+    "test:unit": "poku --parallel test/unit",
     "test": "npm run typecheck && npm run lint && npm run test:unit && npm run clear && npm run build",
-    "update": "npx pu minor && npm i && npm audit fix",
+    "update": "pu minor && npm i && npm audit fix",
     "postupdate": "npm run lint:fix",
-    "deploy": "npx tsx deploy/upload.ts"
+    "deploy": "tsx deploy/upload.ts"
   },
   "dependencies": {
     "@docusaurus/core": "^3.4.0",
