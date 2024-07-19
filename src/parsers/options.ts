@@ -3,6 +3,7 @@ import type { ConfigFile } from '../@types/poku.js';
 import { cwd } from 'node:process';
 import { join } from 'node:path';
 import { readFile } from '../polyfills/fs.js';
+import { JSONC } from '../polyfills/jsonc.js';
 
 const processCWD = cwd();
 
@@ -18,7 +19,7 @@ export const getConfigs = async (customPath?: string): Promise<ConfigFile> => {
     try {
       const configsFile = await readFile(filePath, 'utf-8');
 
-      return JSON.parse(configsFile);
+      return JSONC.parse(configsFile);
     } catch {}
   }
 
