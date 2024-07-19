@@ -121,8 +121,8 @@ deno run npm:poku
 
 <table>
   <tr>
-    <td width="270"><a href="https://poku.io/docs/category/-poku">poku</a></td>
-    <td width="780">🧪 Test runner.</td>
+    <td width="280"><a href="https://poku.io/docs/category/-poku">poku</a></td>
+    <td width="770">🧪 Test runner.</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/assert">assert</a></td>
@@ -187,8 +187,8 @@ deno run npm:poku
 
 <table>
   <tr>
-    <td width="270"><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
-    <td width="780">🍿 Watch for changes and re-run related test files.</td>
+    <td width="280"><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
+    <td width="770">🍿 Watch for changes and re-run related test files.</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/poku/options/parallel">parallel</a></td>
