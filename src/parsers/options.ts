@@ -1,18 +1,13 @@
-import type { Configs } from '../@types/poku.js';
+/* c8 ignore next */ // Types
+import type { ConfigFile } from '../@types/poku.js';
 import { cwd } from 'node:process';
 import { join } from 'node:path';
 import { readFile } from '../polyfills/fs.js';
 
 const processCWD = cwd();
 
-export const getConfigs = async (
-  customPath?: string
-): Promise<
-  { include?: string | string[]; filter?: string; exclude?: string } & Omit<
-    Configs,
-    'beforeEach' | 'afterEach' | 'noExit' | 'filter' | 'exclude'
-  >
-> => {
+/* c8 ignore next */ // ?
+export const getConfigs = async (customPath?: string): Promise<ConfigFile> => {
   const expectedFiles = customPath
     ? [customPath]
     : ['poku.json', '.pokurc', 'poku.jsonc', '.pokurc.json', '.pokurc.jsonc'];
