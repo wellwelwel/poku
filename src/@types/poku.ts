@@ -87,13 +87,29 @@ export type FinalResults = {
   started: Date;
 };
 
-export type ConfigFile = {
+type cliConfigs = {
+  /** By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it. */
   include?: string | string[];
+  /** Reads an environment file and sets the environment variables. */
+  envFile?: string;
+  /** Terminates the specified ports, port ranges and process IDs. */
+  kill?: {
+    /** Terminates the specified ports before running the test suite. */
+    port?: [number];
+    /** Terminates the specified port range before running the test suite. */
+    range?: [number, number][];
+    /** Terminates the specified processes before running the test suite. */
+    pid?: [number];
+  };
+};
+
+export type ConfigJSONFile = {
   filter?: string;
   exclude?: string;
-} & Omit<Configs, 'beforeEach' | 'afterEach' | 'noExit' | 'filter' | 'exclude'>;
+} & Omit<
+  Configs,
+  'beforeEach' | 'afterEach' | 'noExit' | 'filter' | 'exclude'
+> &
+  cliConfigs;
 
-export type ConfigModuleFile = {
-  filter?: RegExp;
-  exclude?: RegExp;
-} & Omit<ConfigFile, 'filter' | 'exclude'>;
+export type ConfigFile = Omit<Configs, 'noExit'> & cliConfigs;
