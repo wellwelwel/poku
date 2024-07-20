@@ -25,14 +25,12 @@ import { getConfigs } from '../parsers/options.js';
       return includeArg.split(',');
     }
 
-    const lastParam = getPaths();
-    if (lastParam !== undefined) {
-      return lastParam;
-    }
-
-    return defaultConfigs?.include
-      ? Array.prototype.concat(defaultConfigs?.include)
-      : ['.'];
+    return (
+      getPaths() ??
+      (defaultConfigs?.include
+        ? Array.prototype.concat(defaultConfigs?.include)
+        : ['.'])
+    );
   })();
   const platform = getArg('platform');
   const filter = getArg('filter') ?? defaultConfigs?.filter;

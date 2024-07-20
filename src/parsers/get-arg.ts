@@ -33,13 +33,20 @@ export const getPaths = (
   prefix = '--',
   baseArgs = processArgs
 ): string[] | undefined => {
-  const paths = baseArgs
-    .filter((arg) => !arg.startsWith(prefix))
-    .flatMap((arg) => arg.split(','));
+  let hasPaths = false;
+  const paths: string[] = [];
 
-  console.log(paths);
+  for (const arg of baseArgs) {
+    if (!arg.startsWith(prefix)) {
+      hasPaths = true;
+      const parts = arg.split(',');
+      for (const part of parts) {
+        paths.push(part);
+      }
+    }
+  }
 
-  return paths.length > 0 ? paths : undefined;
+  return hasPaths ? paths : undefined;
 };
 
 /* c8 ignore next */ // ?
