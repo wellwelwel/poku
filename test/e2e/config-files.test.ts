@@ -9,49 +9,9 @@ if (isProduction) {
 }
 
 describe('Test Runtimes/Platforms + Extensions', async () => {
-  await it('poku.jsonc', async () => {
-    const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: 'fixtures/config-files/jsonc',
-    });
-
-    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
-    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
-  });
-
-  await it('.pokurc (JSONC)', async () => {
-    const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: 'fixtures/config-files/jsonc-no-ext',
-    });
-
-    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
-    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
-  });
-
   await it('.pokurc.jsonc', async () => {
     const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
       cwd: 'fixtures/config-files/jsonc-rc',
-    });
-
-    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
-    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
-  });
-
-  await it('poku.json', async () => {
-    const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: 'fixtures/config-files/json',
-    });
-
-    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
-    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
-  });
-
-  await it('.pokurc (JSON)', async () => {
-    const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: 'fixtures/config-files/json-no-ext',
     });
 
     assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
@@ -82,26 +42,6 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
     assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
   });
 
-  await it('poku.js', async () => {
-    const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: 'fixtures/config-files/poku-js',
-    });
-
-    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
-    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
-  });
-
-  await it('poku.cjs', async () => {
-    const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: 'fixtures/config-files/poku-cjs',
-    });
-
-    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
-    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
-  });
-
   await it('poku.config.js', async () => {
     const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
       cwd: 'fixtures/config-files/poku-config-js',
@@ -115,26 +55,6 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   await it('poku.config.cjs', async () => {
     const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
       cwd: 'fixtures/config-files/poku-config-cjs',
-    });
-
-    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
-    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
-  });
-
-  await it('.pokurc.js', async () => {
-    const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: 'fixtures/config-files/poku-rc-js',
-    });
-
-    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
-    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
-  });
-
-  await it('.pokurc.cjs', async () => {
-    const output = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: 'fixtures/config-files/poku-rc-cjs',
     });
 
     assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');

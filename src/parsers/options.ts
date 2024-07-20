@@ -14,17 +14,10 @@ export const getConfigs = async (
   const expectedFiles = customPath
     ? [customPath]
     : new Set([
-        'poku.js',
-        'poku.cjs',
         'poku.config.js',
         'poku.config.cjs',
-        '.pokurc.js',
-        '.pokurc.cjs',
-        'poku.json',
-        'poku.jsonc',
         '.pokurc.json',
         '.pokurc.jsonc',
-        '.pokurc',
       ]);
 
   for (const file of expectedFiles) {
