@@ -4,19 +4,6 @@ import { argv } from 'node:process';
 const [, , ...processArgs] = argv;
 const regexQuotes = /''|""/;
 
-/**
- * Gets the value of an argument.
- *
- * ---
- *
- * CLI arguments examples:
- *
- * ```sh
- * command --arg=some # 'some'
- * command --arg=""   # ''
- * command --arg      # undefined
- * ```
- */
 export const getArg = (
   arg: string,
   prefix = '--',
@@ -32,18 +19,6 @@ export const getArg = (
   return argValue.slice(argPattern.length).replace(regexQuotes, '');
 };
 
-/**
- * Checks if an argument exists.
- *
- * ---
- *
- * CLI arguments examples:
- *
- * ```sh
- * command --arg  # true
- * command        # false
- * ```
- */
 export const hasArg = (
   arg: string,
   prefix = '--',
@@ -54,29 +29,24 @@ export const hasArg = (
   return baseArgs.some((a) => a.startsWith(argPattern));
 };
 
-/**
- * Gets the last param/value.
- *
- * CLI arguments examples:
- *
- * ```sh
- * command --arg --arg2=some value  # 'value'
- * command value                    # 'value'
- * command                          # undefined
- * command --arg                    # undefined
- * ```
- */
-export const getLastParam = (
+export const getPaths = (
   prefix = '--',
   baseArgs = processArgs
-): string | undefined => {
-  const lastArg = baseArgs[baseArgs.length - 1];
+): string[] | undefined => {
+  let hasPaths = false;
+  const paths: string[] = [];
 
-  if (!lastArg || lastArg.startsWith(prefix)) {
-    return undefined;
+  for (const arg of baseArgs) {
+    if (!arg.startsWith(prefix)) {
+      hasPaths = true;
+      const parts = arg.split(',');
+      for (const part of parts) {
+        paths.push(part);
+      }
+    }
   }
 
-  return lastArg;
+  return hasPaths ? paths : undefined;
 };
 
 /* c8 ignore next */ // ?

@@ -21,17 +21,6 @@ details {
   }
 }
 
-[data-theme='light'] {
-  details {
-    &.faq {
-      --docusaurus-details-decoration-color: var(--ifm-color-primary);
-      --faq-background: #f8fcff;
-      --faq-border-color: var(--ifm-color-primary);
-      --faq-code-border-color: #add2eb;
-    }
-  }
-}
-
 [data-theme='dark'] {
   details {
     &.faq {

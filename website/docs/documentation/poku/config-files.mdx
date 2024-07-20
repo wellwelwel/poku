@@ -2,15 +2,32 @@
 sidebar_position: 2
 ---
 
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
 # ⚙️ Config Files
 
 By default, **Poku** comes with the most common usage pre-set, but you can configure it as you want.
 
-:::danger
-Unreleased _(work in progress)_.
-:::
+<History
+  records={[
+    {
+      version: '2.1.0',
+      changes: [
+        <>
+          support for config files (<code>js</code> and <code>cjs</code>)
+        </>,
+        <>
+          support for config files (<code>json</code> and <code>jsonc</code>)
+        </>,
+      ],
+    },
+  ]}
+/>
 
 ## JavaScript
+
+<Stability level={2} message={'Recommended: supports functions and regex.'} />
 
 Create a `poku.js` (or `poku.cjs` when using `"type": "module"` in your _package.json_) in your project's root directory, for example:
 
@@ -89,6 +106,10 @@ Create a `poku.json` (or `poku.jsonc`) in your project's root directory, for exa
 - All options are optional.
 - [See details of all the options](/docs/category/-options).
 
+:::
+
+:::note
+Shares the same limitations as _CLI_ flags.
 :::
 
 <hr />

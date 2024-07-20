@@ -2,11 +2,32 @@
 sidebar_position: 1
 ---
 
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
 # 📦 Include Directories and Files
 
 By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it using the [`filter`](/docs/documentation/poku/options/filter) option.
 
 ## CLI
+
+<History
+  records={[
+    {
+      version: '2.1.0',
+      changes: [
+        <>Support for multiple paths in any order.</>,
+        <>
+          Deprecate <code>--include</code> flag.
+        </>,
+        <>
+          Maintains retroactive support for multiple comma-separated paths to
+          avoid breaking changes.
+        </>,
+      ],
+    },
+  ]}
+/>
 
 ### Common usage
 
@@ -41,26 +62,19 @@ npx poku targetPath
 ```
 
 ```bash
-npx poku targetPathA,targetPathB
+npx poku targetPathA targetPathB
 ```
 
 <hr />
 
-### By using `--include` flag
+### `--include`
 
-Using the `--include` flag, you can use it in any order:
-
-```bash
-npx poku --include='targetPath'
-```
-
-```bash
-npx poku --include='targetPathA,targetPathB'
-```
-
-```bash
-npx poku --include='./'
-```
+<Stability
+  level={0}
+  message={
+    "It's now possible to pass multiple paths in any order since v2.1.0."
+  }
+/>
 
 <hr />
 
