@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.0](https://github.com/wellwelwel/poku/compare/v2.0.0...v2.1.0) (2024-07-20)
+
+
+### Features
+
+* **cli:** support for multiple paths in any position ([#562](https://github.com/wellwelwel/poku/issues/562)) ([5ff880b](https://github.com/wellwelwel/poku/commit/5ff880b0014e4ec62d5a1660079fc7f8a4172e2a))
+* support for config files (`js` and `cjs`) ([#560](https://github.com/wellwelwel/poku/issues/560)) ([368f396](https://github.com/wellwelwel/poku/commit/368f3965bf5482d940b9ab2220c92e8b3b15e754))
+* support for config files (`json` and `jsonc`) ([#557](https://github.com/wellwelwel/poku/issues/557)) ([e954336](https://github.com/wellwelwel/poku/commit/e954336b33dae7f8765e667f193020c3d8f2099c))
+
 ## [2.0.0](https://github.com/wellwelwel/poku/compare/v1.23.0...v2.0.0) (2024-07-11)
 
 
