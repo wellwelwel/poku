@@ -92,3 +92,8 @@ export type ConfigFile = {
   filter?: string;
   exclude?: string;
 } & Omit<Configs, 'beforeEach' | 'afterEach' | 'noExit' | 'filter' | 'exclude'>;
+
+export type ConfigModuleFile = {
+  filter?: RegExp;
+  exclude?: RegExp;
+} & Omit<ConfigFile, 'filter' | 'exclude'>;
