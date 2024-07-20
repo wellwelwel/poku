@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import { Stability } from '@site/src/components/Stability';
+
 # 📦 Include Directories and Files
 
 By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it using the [`filter`](/docs/documentation/poku/options/filter) option.
@@ -47,6 +49,8 @@ npx poku targetPathA,targetPathB
 <hr />
 
 ### By using `--include` flag
+
+<Stability level={0} />
 
 Using the `--include` flag, you can use it in any order:
 
