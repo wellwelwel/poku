@@ -86,3 +86,9 @@ export type FinalResults = {
   time: string;
   started: Date;
 };
+
+export type ConfigFile = {
+  include?: string | string[];
+  filter?: string;
+  exclude?: string;
+} & Omit<Configs, 'beforeEach' | 'afterEach' | 'noExit' | 'filter' | 'exclude'>;

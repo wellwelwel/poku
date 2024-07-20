@@ -24,16 +24,12 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 💡 **Poku** is a cross-platform test runner that brings the [**JavaScript** essence back to testing](https://poku.io/docs/philosophy#javascript-essence-for-tests-).
 
+</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
+</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Performant** and **lightweight**<br />
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CommonJS** files directly with [**Deno**][deno-version-url]<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the same test suite for [**Node.js**][node-version-url], [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
-
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> _Easier and Less Verbose_<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CJS** (**CommonJS**) files directly with [**Deno**][deno-version-url]<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **processes**, **ports**, and **containers**<br />
-
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> _Safety and Reliability_<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Performant** and **lightweight**
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **processes**, **ports**, and **containers**<br />
 
 ---
 
@@ -41,44 +37,19 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Install
 
-<table>
-<tr>
-<td><blockquote><i>Node.js</i></blockquote></td>
-<td><blockquote><i>TypeScript (Node.js)</i></blockquote></td>
-<td><blockquote><i>Bun</i></blockquote></td>
-<td><blockquote><i>Deno</i></blockquote></td>
-</tr>
-<tr>
-<td width="400">
-
 ```bash
+# Node.js
 npm i -D poku
-```
 
-</td>
-<td width="400">
-
-```bash
+# TypeScript (Node.js)
 npm i -D poku tsx
-```
 
-</td>
-<td width="400">
-
-```bash
+# Bun
 bun add -d poku
-```
 
-</td>
-<td width="400">
-
-```bash
+# Deno
 deno add npm:poku
 ```
-
-</td>
-</tr>
-</table>
 
 ---
 
@@ -146,8 +117,8 @@ deno run npm:poku
 
 <table>
   <tr>
-    <td width="250"><a href="https://poku.io/docs/category/-poku">poku</a></td>
-    <td width="800">🧪 Test runner.</td>
+    <td width="280"><a href="https://poku.io/docs/category/-poku">poku</a></td>
+    <td width="770">🧪 Test runner.</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/assert">assert</a></td>
@@ -212,8 +183,8 @@ deno run npm:poku
 
 <table>
   <tr>
-    <td width="250"><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
-    <td width="800">🍿 Watch for changes and re-run related test files.</td>
+    <td width="280"><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
+    <td width="770">🍿 Watch for changes and re-run related test files.</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/poku/options/parallel">parallel</a></td>
@@ -222,6 +193,10 @@ deno run npm:poku
   <tr>
     <td><a href="https://poku.io/docs/documentation/poku/options/debug">debug</a></td>
     <td>🕵🏻 Shows all logs.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/poku/config-files">config</a></td>
+    <td>⚙️ Customize your Poku options in a config file.</td>
   </tr>
 </table>
 
@@ -277,7 +252,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 ## Security Policy
 
-[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f8a5c2)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f368e0)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
 
 Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
 

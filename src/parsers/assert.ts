@@ -42,10 +42,10 @@ export const parseResultType = (type?: unknown): string => {
         entries(value).map(([key, val]) => [key, recurse(val)])
       );
     }
+    /* c8 ignore stop */
 
     return value;
   };
-  /* c8 ignore stop */
 
   const result = recurse(type);
 

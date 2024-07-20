@@ -5,6 +5,8 @@
 /build
 /.svps
 .env
+/static/schemas/*.json
+/static/schemas/*.jsonc
 
 # Generated files
 .docusaurus

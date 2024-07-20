@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Options",
+  "description": "The options that is contained inside the file `poku.json`",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "description": "A field for the [JSON schema](https://json-schema.org/) specification",
+      "type": ["string", "null"]
+    },
+    "include": {
+      "type": ["string", "array"],
+      "items": {
+        "type": "string"
+      },
+      "description": "Specify the path(s) to include in the configuration.\nhttps://poku.io/docs/documentation/poku/include-files",
+      "default": "."
+    },
+    "parallel": {
+      "type": "boolean",
+      "description": "Determines the mode of test execution.\nhttps://poku.io/docs/documentation/poku/options/parallel",
+      "default": false
+    },
+    "filter": {
+      "type": "string",
+      "description": "Filter by path to match only the files that should be performed.\nhttps://poku.io/docs/documentation/poku/options/filter",
+      "default": ".test.|.spec."
+    },
+    "exclude": {
+      "type": "string",
+      "description": "Exclude by path to match only the files that should be performed.\nhttps://poku.io/docs/documentation/poku/options/exclude"
+    },
+    "debug": {
+      "type": "boolean",
+      "description": "This option overwrites all `log` settings.\nhttps://poku.io/docs/documentation/poku/options/debug",
+      "default": false
+    },
+    "quiet": {
+      "type": "boolean",
+      "description": "This option overwrites the `debug` settings.\nhttps://poku.io/docs/documentation/poku/options/quiet",
+      "default": false
+    },
+    "concurrency": {
+      "type": "number",
+      "description": "Limits the number of tests running concurrently.\nhttps://poku.io/docs/documentation/poku/options/concurrency",
+      "default": 0
+    },
+    "failFast": {
+      "type": "boolean",
+      "description": "Stops the tests at the first failure.\nhttps://poku.io/docs/documentation/poku/options/fail-fast",
+      "default": false
+    },
+    "platform": {
+      "type": "string",
+      "description": "Determines the platform for test execution.\nhttps://poku.io/docs/documentation/poku/options/platform",
+      "default": "node",
+      "enum": ["node", "bun", "deno"]
+    },
+    "deno": {
+      "type": "object",
+      "description": "Exclusive options for Deno platform.\nhttps://poku.io/docs/documentation/poku/options/deno",
+      "properties": {
+        "allow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Allow list for Deno permissions.\nhttps://poku.io/docs/documentation/poku/options/deno#allow"
+        },
+        "deny": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Deny list for Deno permissions.\nhttps://poku.io/docs/documentation/poku/options/deno#deny"
+        },
+        "cjs": {
+          "type": ["boolean", "array"],
+          "items": {
+            "type": "string"
+          },
+          "description": "CommonJS compatibility for Deno.\nhttps://poku.io/docs/documentation/poku/options/deno#cjs"
+        }
+      },
+      "additionalProperties": false,
+      "required": []
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}
