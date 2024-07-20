@@ -32,7 +32,7 @@ serve({
       const { pathname } = new URL(req.url);
       const filePath = `${publicDir}${pathname}`;
 
-      const asset = file(filePath) || file('schemas');
+      const asset = file(filePath) || pathname.includes('schemas');
       const isAsset = await asset.exists();
 
       if (isAsset) {
