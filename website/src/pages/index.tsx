@@ -143,7 +143,7 @@ const Home = () => {
               </section>
               <section>
                 <Heading as='h2' className='float'>
-                  <span>Intermediary</span>
+                  <span>Mid Level</span>
                   <MidLevel />
                 </Heading>
                 <div>
