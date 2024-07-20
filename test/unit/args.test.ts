@@ -1,7 +1,12 @@
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
 import { assert } from '../../src/modules/essentials/assert.js';
-import { getArg, hasArg, argToArray } from '../../src/parsers/get-arg.js';
+import {
+  getArg,
+  hasArg,
+  argToArray,
+  getPaths,
+} from '../../src/parsers/get-arg.js';
 
 describe('CLI Argument Handling Functions', async () => {
   await it('should get argument value', () => {
@@ -52,5 +57,55 @@ describe('CLI Argument Handling Functions', async () => {
     const args: string[] = [];
     const result = argToArray('array', '--', args);
     assert.strictEqual(result, undefined, 'Argument should be undefined');
+  });
+
+  await it('should return paths without prefix arguments', () => {
+    const args = ['--arg=value', 'path1', 'path2'];
+    const result = getPaths('--', args);
+    assert.deepStrictEqual(
+      result,
+      ['path1', 'path2'],
+      'Should return ["path1", "path2"]'
+    );
+  });
+
+  await it('should split paths by comma', () => {
+    const args = ['path1,path2,path3'];
+    const result = getPaths('--', args);
+    assert.deepStrictEqual(
+      result,
+      ['path1', 'path2', 'path3'],
+      'Should split paths by comma'
+    );
+  });
+
+  await it('should return undefined if no paths provided', () => {
+    const args = ['--arg=value'];
+    const result = getPaths('--', args);
+    assert.strictEqual(
+      result,
+      undefined,
+      'Should return undefined if no paths'
+    );
+  });
+
+  await it('should handle mixed arguments with and without prefix', () => {
+    const args = ['--arg=value', 'path1', '--another=value', 'path2,path3'];
+    const result = getPaths('--', args);
+    assert.deepStrictEqual(
+      result,
+      ['path1', 'path2', 'path3'],
+      'Should return ["path1", "path2", "path3"]'
+    );
+  });
+
+  await it('should handle empty array', () => {
+    const args: string[] = [];
+    const result = getPaths('--', args);
+    assert.strictEqual(
+      result,
+      undefined,
+      'Should return undefined for empty array'
+    );
   });
 });

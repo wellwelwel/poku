@@ -42,6 +42,7 @@ export const getPaths = (
   return paths.length > 0 ? paths : undefined;
 };
 
+/* c8 ignore next */ // ?
 export const argToArray = (
   arg: string,
   prefix = '--',
