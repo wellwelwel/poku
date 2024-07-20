@@ -11,7 +11,7 @@ const processCWD = cwd();
 export const getConfigs = async (customPath?: string): Promise<ConfigFile> => {
   const expectedFiles = customPath
     ? [customPath]
-    : ['poku.json', '.pokurc', 'poku.jsonc', '.pokurc.json', '.pokurc.jsonc'];
+    : ['poku.json', 'poku.jsonc', '.pokurc.json', '.pokurc.jsonc', '.pokurc'];
 
   for (const file of expectedFiles) {
     const filePath = join(processCWD, file);
