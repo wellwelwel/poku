@@ -106,8 +106,10 @@ import { getConfigs } from '../parsers/options.js';
       : platformIsValid(defaultConfigs?.platform)
         ? defaultConfigs?.platform
         : undefined,
-    filter: filter ? new RegExp(escapeRegExp(filter)) : undefined,
-    exclude: exclude ? new RegExp(escapeRegExp(exclude)) : undefined,
+    filter:
+      typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
+    exclude:
+      typeof exclude === 'string' ? new RegExp(escapeRegExp(exclude)) : exclude,
     parallel,
     concurrency,
     quiet,
