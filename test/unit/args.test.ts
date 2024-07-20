@@ -1,12 +1,7 @@
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
 import { assert } from '../../src/modules/essentials/assert.js';
-import {
-  getArg,
-  hasArg,
-  getLastParam,
-  argToArray,
-} from '../../src/parsers/get-arg.js';
+import { getArg, hasArg, argToArray } from '../../src/parsers/get-arg.js';
 
 describe('CLI Argument Handling Functions', async () => {
   await it('should get argument value', () => {
@@ -31,18 +26,6 @@ describe('CLI Argument Handling Functions', async () => {
     const args = ['--anotherArg'];
     const result = hasArg('checkArg', '--', args);
     assert.strictEqual(result, false, 'Argument should not exist');
-  });
-
-  await it('should get the last parameter', () => {
-    const args = ['value'];
-    const result = getLastParam('--', args);
-    assert.strictEqual(result, 'value', 'Last parameter should be "value"');
-  });
-
-  await it('should return undefined for last parameter if none provided', () => {
-    const args: string[] = [];
-    const result = getLastParam('--', args);
-    assert.strictEqual(result, undefined, 'Last parameter should be undefined');
   });
 
   await it('should convert argument to array', () => {

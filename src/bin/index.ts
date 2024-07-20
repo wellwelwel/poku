@@ -3,12 +3,7 @@
 import type { Configs } from '../@types/poku.js';
 import process from 'node:process';
 import { escapeRegExp } from '../modules/helpers/list-files.js';
-import {
-  getArg,
-  getLastParam,
-  hasArg,
-  argToArray,
-} from '../parsers/get-arg.js';
+import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
 import { fileResults } from '../configs/files.js';
 import { platformIsValid } from '../parsers/get-runtime.js';
 import { format } from '../services/format.js';
@@ -30,9 +25,9 @@ import { getConfigs } from '../parsers/options.js';
       return includeArg.split(',');
     }
 
-    const lastParam = getLastParam();
+    const lastParam = getPaths();
     if (lastParam !== undefined) {
-      return lastParam.split(',');
+      return lastParam;
     }
 
     return defaultConfigs?.include
