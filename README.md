@@ -194,6 +194,10 @@ deno run npm:poku
     <td><a href="https://poku.io/docs/documentation/poku/options/debug">debug</a></td>
     <td>🕵🏻 Shows all logs.</td>
   </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/poku/config-files">config</a></td>
+    <td>⚙️ Customize your Poku options in a config file.</td>
+  </tr>
 </table>
 
 > _and much more_ 👇🏻

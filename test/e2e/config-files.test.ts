@@ -71,7 +71,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
 
   await it('Custom', async () => {
     const output = await inspectCLI(
-      'npx tsx ../../../src/bin/index.ts --config-file=custom.json',
+      'npx tsx ../../../src/bin/index.ts --config=custom.json',
       {
         cwd: 'fixtures/config-files/custom-file',
       }

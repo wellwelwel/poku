@@ -20,22 +20,30 @@
   }
 }
 
-[data-theme='light'] {
-  table {
-    thead {
-      background-color: #e3e3f1;
+table {
+  thead {
+    background-color: #09090b;
+
+    th {
+      border-color: #363663;
     }
 
-    tbody {
-      tr:nth-child(2n) {
-        background-color: #ededf7;
-      }
+    tr {
+      border-bottom-color: #363663;
+    }
+  }
 
-      td {
-        svg {
-          stroke: var(--ifm-color-primary);
-        }
-      }
+  tbody {
+    td {
+      border-color: #363663;
+    }
+
+    tr:nth-child(1n) {
+      background-color: #161627;
+    }
+
+    tr:nth-child(2n) {
+      background-color: #10101c;
     }
   }
 }

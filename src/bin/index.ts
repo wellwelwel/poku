@@ -21,7 +21,7 @@ import { Write } from '../services/write.js';
 import { getConfigs } from '../parsers/options.js';
 
 (async () => {
-  const configFile = getArg('config-file');
+  const configFile = getArg('config');
   const defaultConfigs = await getConfigs(configFile);
 
   const dirs: string[] = (() => {
