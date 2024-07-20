@@ -50,6 +50,48 @@
       "description": "Stops the tests at the first failure.\nhttps://poku.io/docs/documentation/poku/options/fail-fast",
       "default": false
     },
+    "envFile": {
+      "type": "string",
+      "description": "Reads an environment file and sets the environment variables.\nhttps://poku.io/docs/documentation/helpers/env",
+      "default": ".env"
+    },
+    "kill": {
+      "description": "Terminates the specified ports, port ranges and process IDs.\nhttp://localhost:3000/docs/documentation/helpers/processes/kill",
+      "type": "object",
+      "properties": {
+        "port": {
+          "description": "Terminates the specified ports before running the test suite.\nhttp://localhost:3000/docs/documentation/helpers/processes/kill#killport",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "range": {
+          "description": "Terminates the specified port range before running the test suite.\nhttp://localhost:3000/docs/documentation/helpers/processes/kill#killrange",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "pid": {
+          "description": "Terminates the specified processes before running the test suite.\nhttp://localhost:3000/docs/documentation/helpers/processes/kill#killpid",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
     "platform": {
       "type": "string",
       "description": "Determines the platform for test execution.\nhttps://poku.io/docs/documentation/poku/options/platform",

@@ -1,5 +1,5 @@
 /* c8 ignore next */ // Types
-import type { ConfigFile, ConfigModuleFile } from '../@types/poku.js';
+import type { ConfigFile, ConfigJSONFile } from '../@types/poku.js';
 import { cwd } from 'node:process';
 import { normalize, join } from 'node:path';
 import { readFile } from '../polyfills/fs.js';
@@ -10,7 +10,7 @@ const processCWD = cwd();
 /* c8 ignore next */ // ?
 export const getConfigs = async (
   customPath?: string
-): Promise<ConfigFile | ConfigModuleFile> => {
+): Promise<ConfigFile | ConfigJSONFile> => {
   const expectedFiles = customPath
     ? [customPath]
     : new Set([
@@ -26,11 +26,11 @@ export const getConfigs = async (
     try {
       if (filePath.endsWith('.js') || filePath.endsWith('.cjs')) {
         /* c8 ignore next */ // ?
-        return (await import(normalize(filePath))) as ConfigModuleFile;
+        return (await import(normalize(filePath))) as ConfigFile;
       }
 
       const configsFile = await readFile(filePath, 'utf-8');
-      return JSONC.parse<ConfigFile>(configsFile);
+      return JSONC.parse<ConfigJSONFile>(configsFile);
     } catch {}
   }
 

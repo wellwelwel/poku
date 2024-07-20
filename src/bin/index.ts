@@ -72,13 +72,17 @@ import { getConfigs } from '../parsers/options.js';
 
   const tasks: Promise<unknown>[] = [];
 
-  if (killPort) {
-    const ports = killPort.split(',').map(Number);
+  if (killPort || defaultConfigs?.kill?.port) {
+    const ports =
+      killPort?.split(',').map(Number) || defaultConfigs?.kill?.port || [];
     tasks.push(kill.port(ports));
   }
 
-  if (killRange) {
-    const ranges = killRange.split(',');
+  if (killRange || defaultConfigs?.kill?.range) {
+    const ranges =
+      killRange?.split(',') ||
+      defaultConfigs?.kill?.range?.map((range) => `${range[0]}-${range[1]}`) ||
+      [];
 
     for (const range of ranges) {
       const ports = range.split('-').map(Number);
@@ -88,14 +92,15 @@ import { getConfigs } from '../parsers/options.js';
     }
   }
 
-  if (killPID) {
-    const PIDs = killPID.split(',').map(Number);
+  if (killPID || defaultConfigs?.kill?.pid) {
+    const PIDs =
+      killPID?.split(',').map(Number) || defaultConfigs?.kill?.pid || [];
 
     tasks.push(kill.pid(PIDs));
   }
 
-  if (hasEnvFile) {
-    const envFilePath = getArg('env-file');
+  if (hasEnvFile || defaultConfigs?.envFile) {
+    const envFilePath = getArg('env-file') ?? defaultConfigs?.envFile;
 
     tasks.push(envFile(envFilePath));
   }
@@ -121,6 +126,10 @@ import { getConfigs } from '../parsers/options.js';
       cjs: denoCJS,
     },
     noExit: watchMode,
+    beforeEach:
+      'beforeEach' in defaultConfigs ? defaultConfigs.beforeEach : undefined,
+    afterEach:
+      'afterEach' in defaultConfigs ? defaultConfigs.afterEach : undefined,
   };
 
   if (debug || defaultConfigs?.debug) {

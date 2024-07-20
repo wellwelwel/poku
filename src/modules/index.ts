@@ -1,4 +1,4 @@
-import type { ConfigModuleFile } from '../@types/poku.js';
+import type { ConfigFile } from '../@types/poku.js';
 
 export { poku } from './essentials/poku.js';
 export { assert } from './essentials/assert.js';
@@ -22,10 +22,6 @@ export { exit } from './helpers/exit.js';
 export { log } from './helpers/log.js';
 export { listFiles } from './helpers/list-files.js';
 
-/** 🐷 Auxiliary function to define the `poku` configurations */
-export const defineConfig = (options: ConfigModuleFile): ConfigModuleFile =>
-  options;
-
 export type { Code } from '../@types/code.js';
 export type { Configs } from '../@types/poku.js';
 export type {
@@ -41,3 +37,6 @@ export type {
   WaitForPortOptions,
 } from '../@types/wait-for.js';
 export type { Configs as ListFilesConfigs } from '../@types/list-files.js';
+
+/** 🐷 Auxiliary function to define the `poku` configurations */
+export const defineConfig = (options: ConfigFile) => options;
