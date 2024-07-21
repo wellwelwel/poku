@@ -16,7 +16,7 @@ By opening a **Pull Request**, please describe the proposed solution and what it
 
 ## Developing
 
-### Environment
+### ⚙️ Environment
 
 You will need these tools installed on your system:
 
@@ -34,21 +34,36 @@ Then run `npm ci` to clean install the node modules.
 
 > Please, do not change the _package-lock.json_.
 
-### Fixes
+### 🔧 Fixes
 
 Where possible, provide an error test case that the fix covers.
 
-### Features
+### ❇️ Features
 
 It's better to discuss an **API** before actually start implementing it. You can open an [**Issue on Github**](https://github.com/wellwelwel/poku/issues/new), so we can discuss the **API** design implementation ideas.
 
 > Please ensure test cases to cover new features.
 
+### 📘 Documentation
+
+Check if there is an existing section or feel free to create a new one. You can find the wesite source code at [./website](https://github.com/wellwelwel/poku/tree/main/website).
+
+<blockquote>
+
+Before commiting, consider to run:
+
+```sh
+cd website
+npm run lint:fix
+```
+
+</blockquote>
+
 ---
 
 ## Testing
 
-### General (recommended)
+### 👩🏻‍🏭 General (recommended)
 
 #### Sequential and Parallel
 
@@ -90,7 +105,7 @@ npm run test:deno:parallel    # Test with the locally installed Deno version
 >
 > - Same for **Bun** and **Deno**.
 
-### Coverage
+### ☔️ Coverage
 
 The coverage target is **95%**.
 
@@ -102,7 +117,7 @@ npm run test:c8:sequential
 >
 > Don't be intimidated by high coverage, methods that vary according to platform, platform versions, _OS_ and processes _(`process.exit`, `process.once`, etc.)_ aren't tested against the coverage rate 🙋🏻‍♂️
 
-### Compatibility Per Platform (Docker)
+### 🐳 Compatibility Per Platform (Docker)
 
 > ⚠️ Testing using **Docker** can require a considerable local storage.
 
@@ -119,7 +134,7 @@ npm run test:ci:deno  # All Deno versions from 1+
 - You may prefer to use **GitHub Actions** for compatibility testing.
 - For **Windows** users, it's recommended to use [**wsl**](https://learn.microsoft.com/en-us/windows/wsl/install).
 
-### Compatibility (All Platforms — Docker)
+### 🐋 Compatibility (All Platforms — Docker)
 
 > ⚠️ Slow and heavy
 
@@ -136,7 +151,7 @@ npm run test:ci
 
 ---
 
-### Lint
+### 👔 Lint
 
 ```sh
 npm run lint
