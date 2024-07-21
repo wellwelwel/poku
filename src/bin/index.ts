@@ -16,17 +16,17 @@ import { Write } from '../services/write.js';
 import { getConfigs } from '../parsers/options.js';
 
 (async () => {
-  const configFile = getArg('config');
+  const configFile = getArg('config') || getArg('c', '-');
   const defaultConfigs = await getConfigs(configFile);
 
   const dirs: string[] = (() => {
-    const includeArg = getArg('include');
+    const includeArg = getArg('include'); // deprecated
     if (includeArg !== undefined) {
       return includeArg.split(',');
     }
 
     return (
-      getPaths() ??
+      getPaths('-') ??
       (defaultConfigs?.include
         ? Array.prototype.concat(defaultConfigs?.include)
         : ['.'])
@@ -47,11 +47,12 @@ import { getConfigs } from '../parsers/options.js';
       .filter((a) => a) ||
     hasArg('deno-cjs') ||
     defaultConfigs?.deno?.cjs;
-  const parallel = hasArg('parallel') || defaultConfigs?.parallel;
-  const quiet = hasArg('quiet') || defaultConfigs?.quiet;
-  const debug = hasArg('debug') || defaultConfigs?.debug;
+  const parallel =
+    hasArg('parallel') || hasArg('p', '-') || defaultConfigs?.parallel;
+  const quiet = hasArg('quiet') || hasArg('q', '-') || defaultConfigs?.quiet;
+  const debug = hasArg('debug') || hasArg('d', '-') || defaultConfigs?.debug;
   const failFast = hasArg('fail-fast') || defaultConfigs?.failFast;
-  const watchMode = hasArg('watch');
+  const watchMode = hasArg('watch') || hasArg('w', '-');
   const hasEnvFile = hasArg('env-file');
   const concurrency = (() => {
     if (!(parallel || defaultConfigs?.parallel)) {
@@ -101,9 +102,15 @@ import { getConfigs } from '../parsers/options.js';
   const options: Configs = {
     platform: platformIsValid(platform)
       ? platform
-      : platformIsValid(defaultConfigs?.platform)
-        ? defaultConfigs?.platform
-        : undefined,
+      : hasArg('node')
+        ? 'node'
+        : hasArg('bun')
+          ? 'bun'
+          : hasArg('deno')
+            ? 'deno'
+            : platformIsValid(defaultConfigs?.platform)
+              ? defaultConfigs?.platform
+              : undefined,
     filter:
       typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
     exclude:
