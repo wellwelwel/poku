@@ -2,9 +2,24 @@
 sidebar_position: 9
 ---
 
+import { History } from '@site/src/components/History';
+
 # `watch`
 
 Watches the events on tests and files that contains tests (after running all the tests), re-running the tests files that are updated for each new event.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Support for <code>-w</code> short flag.
+        </>,
+      ],
+    },
+  ]}
+/>
 
 ## CLI
 
@@ -19,6 +34,8 @@ You can use the flag `--watch-interval` to set a custom interval for `watch` eve
 ```bash
 npx poku --watch --watch-interval=1500
 ```
+
+- Short flag: `-w`.
 
 <hr />
 

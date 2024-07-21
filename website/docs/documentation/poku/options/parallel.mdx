@@ -2,9 +2,24 @@
 sidebar_position: 1
 ---
 
+import { History } from '@site/src/components/History';
+
 # `parallel`
 
 Run the tests files in parallel.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Support for <code>-p</code> short flag.
+        </>,
+      ],
+    },
+  ]}
+/>
 
 ## CLI
 
@@ -13,6 +28,8 @@ Run the tests files in parallel.
 
 npx poku --parallel ./test
 ```
+
+- Short flag: `-p`.
 
 ## API
 

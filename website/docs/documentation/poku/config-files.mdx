@@ -12,13 +12,21 @@ By default, **Poku** comes with the most common usage pre-set, but you can confi
 <History
   records={[
     {
+      version: '2.2.0',
+      changes: [
+        <>
+          Support for <code>-c</code> short flag.
+        </>,
+      ],
+    },
+    {
       version: '2.1.0',
       changes: [
         <>
-          support for config files (<code>js</code> and <code>cjs</code>)
+          Support for config files (<code>js</code> and <code>cjs</code>).
         </>,
         <>
-          support for config files (<code>json</code> and <code>jsonc</code>)
+          Support for config files (<code>json</code> and <code>jsonc</code>).
         </>,
       ],
     },
@@ -27,9 +35,21 @@ By default, **Poku** comes with the most common usage pre-set, but you can confi
 
 ## JavaScript
 
-<Stability level={2} message={'Recommended: supports functions and regex.'} />
+<Stability
+  level={2}
+  message={
+    <>
+      <div>
+        <strong>Pos:</strong> Supports functions and regex.
+      </div>
+      <div>
+        <strong>Cons:</strong> Needs to be an CommonJS file.
+      </div>
+    </>
+  }
+/>
 
-Create a `poku.js` (or `poku.cjs` when using `"type": "module"` in your _package.json_) in your project's root directory, for example:
+Create a `poku.config.js` (or `poku.config.cjs` when using `"type": "module"` in your _package.json_) in your project's root directory, for example:
 
 ```js
 const { defineConfig } = require('poku');
@@ -66,6 +86,21 @@ module.exports = defineConfig({
 ```
 
 ## JSON and JSONC
+
+<Stability
+  level={2}
+  message={
+    <>
+      <div>
+        <strong>Pos:</strong> Universal file for both CommonJS, ES Modules and
+        TypeScript.
+      </div>
+      <div>
+        <strong>Cons:</strong> Doesn't support functions and regex.
+      </div>
+    </>
+  }
+/>
 
 Create a `poku.json` (or `poku.jsonc`) in your project's root directory, for example:
 
@@ -145,3 +180,5 @@ npx poku --config='my-file.jsonc'
 ```sh
 npx poku --config='my-file'
 ```
+
+- Short flag: `-c`.
