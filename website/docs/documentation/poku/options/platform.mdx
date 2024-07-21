@@ -3,9 +3,25 @@ sidebar_position: 3
 tags: [require, import, loader]
 ---
 
+import { History } from '@site/src/components/History';
+
 # `platform`
 
-By default, **Poku** tries to identify the platform automatically, but you can set it manually:
+By default, **Poku** tries to identify the platform automatically, but you can set it manually.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Support for <code>--node</code>, <code>--bun</code>, and{' '}
+          <code>--deno</code> alternative flags.
+        </>,
+      ],
+    },
+  ]}
+/>
 
 ## CLI
 
@@ -27,6 +43,9 @@ deno run npm:poku  --platform=node  ./test
 
 # ...
 ```
+
+- Alternative flags: `--node`, `--bun`, and `--deno`.
+  - It's only possible to use one per command.
 
 ## API
 

@@ -35,13 +35,13 @@ npx poku
 - It tries to identify the platform or run it in **Node.js** by default.
 
 ```sh
-npx poku --platform=bun
+npx poku --bun
 ```
 
 - It calls **Poku** through **Node.js**, but runs all the tests using **Bun**.
 
 ```sh
-npx poku --platform=deno
+npx poku --deno
 ```
 
 - It calls **Poku** through **Node.js**, but runs all the tests using **Deno**.
@@ -62,19 +62,19 @@ It's important to note that the **Poku** runtime is different from the test runt
 To avoid conflicts in environments with multiple platforms installed (**Node.js** + **Bun**, **Deno** + **Bun**. etc.), see the following examples:
 
 ```sh
-npx poku --platform=node
+npx poku --node
 ```
 
 - It runs **Poku** through **Node.js** and ensures that all tests are run with **Node.js** (or **tsx** for **TypeScript** tests).
 
 ```sh
-bun poku --platform=bun
+bun poku --bun
 ```
 
 - It runs **Poku** through **Bun** and ensures that all tests are run with **Bun**.
 
 ```sh
-deno run npm:poku --platform=deno
+deno run npm:poku --deno
 ```
 
 - It runs **Poku** through **Deno** and ensures that all tests are run with **Deno**.
@@ -92,19 +92,19 @@ For **TypeScript** users, there's no need to install **tsx** for **Bun** and **D
 #### All files as CommonJS
 
 ```sh
-deno run npm:poku --platform=deno --deno-cjs
+deno run npm:poku --deno --deno-cjs
 ```
 
 #### A specific extension as CommonJS
 
 ```sh
-deno run npm:poku --platform=deno --deno-cjs='.cjs'
+deno run npm:poku --deno --deno-cjs='.cjs'
 ```
 
 #### Multiple extensions as CommonJS
 
 ```sh
-deno run npm:poku --platform=deno --deno-cjs='.cjs,.js'
+deno run npm:poku --deno --deno-cjs='.cjs,.js'
 ```
 
 <hr />
