@@ -1,0 +1,182 @@
+---
+title: Como começar
+description: 🐷 Poku facilita os testes para Node.js, Bun, Deno e você ao mesmo tempo.
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { FAQ } from '@site/src/components/FAQ';
+import { useColorMode } from '@docusaurus/theme-common';
+import Link from '@docusaurus/Link';
+import Success from '@site/static/img/success.svg';
+import Poku from '@site/static/img/poku.svg';
+import '@site/src/css/features.scss';
+
+<div className='title-section'>
+<aside>
+
+# Como começar
+
+[![NPM Downloads](https://img.shields.io/npm/v/poku.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
+[![NPM Downloads](https://img.shields.io/npm/dt/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
+[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://app.codecov.io/github/wellwelwel/poku)<br />
+[![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
+[![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
+[![GitHub Workflow Status (Windows)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&label=&branch=main&logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5XaW5kb3dzIDExPC90aXRsZT48cGF0aCBmaWxsPSIjODg5N2E5IiBkPSJNMTI2IDEuNjM3bC02NyA5LjgzNHY0OS44MzFsNjctLjUzNHpNMS42NDcgNjYuNzA5bC4wMDMgNDIuNDA0IDUwLjc5MSA2Ljk4My0uMDQtNDkuMDU3em01Ni44Mi42OGwuMDk0IDQ5LjQ2NSA2Ny4zNzYgOS41MDkuMDE2LTU4Ljg2M3pNMS42MSAxOS4yOTdsLjA0NyA0Mi4zODMgNTAuNzkxLS4yODktLjAyMy00OS4wMTZ6Ij48L3BhdGg+PC9zdmc+&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-windows.yml?query=branch%3Amain)
+
+**Poku** facilita os testes para Node.js, Bun, Deno e você ao mesmo tempo.<br />
+Curtindo **Poku**? [Dê a ele uma estrela para mostrar seu apoio](https://github.com/wellwelwel/poku) ⭐️
+
+</aside>
+<aside>
+  <Poku className='logo' height='180' />
+</aside>
+</div>
+
+<hr />
+
+### 🧑🏻‍🎓 Guia Recomendado
+
+1. [Instale o **Poku**](/docs#install). <br />
+2. Veja [como usar **asserções**](/docs/tutorials/beginner). <br />
+3. Em seguida, aprenda a usar o [**poku**](/docs/documentation/poku/include-files) para **executar todos os seus arquivos de teste** de uma só vez.
+
+> 🧑🏻‍🔬 Precisa testar uma _API_? Verifique o [startService](/docs/documentation/helpers/startService) e o [startScript](/docs/documentation/helpers/startScript). <br />
+> 🚪 Precisa lidar com processos e portas? Verifique o [kill](/docs/documentation/helpers/processes/kill) e o [waitForPort](/docs/documentation/helpers/processes/wait-for-port). <br />
+> 🐳 Precisa montar e desmontar contêineres antes e depois dos testes? Verifique o [dockerfile](/docs/documentation/helpers/containers#dockerfile) e o [compose](/docs/documentation/helpers/containers#compose). <br />
+> 🧠 Aqui está um [rápido exemplo que abrange a principal diferença entre os executores de teste mais comuns](/docs/examples/promises).
+>
+> 🔍 Utilze a pesquisa do site para facilitar.
+
+<hr />
+
+## Início rápido
+
+### **Instalação**
+
+<Tabs>
+  <TabItem default value='Node.js'>
+
+```bash
+npm i -D poku
+```
+
+  </TabItem>
+  <TabItem  value='TypeScript (Node.js)'>
+
+```bash
+npm i -D poku tsx
+```
+
+  </TabItem>
+  <TabItem  value='Bun'>
+
+```bash
+bun add -d poku
+```
+
+  </TabItem>
+  <TabItem  value='Deno'>
+
+```bash
+deno add npm:poku
+```
+
+  </TabItem>
+</Tabs>
+
+### **Teste**
+
+<Tabs>
+  <TabItem default value='test/file.test.mjs'>
+
+```ts
+import { assert } from 'poku';
+
+assert(true, 'Poku will describe it 🐷');
+```
+
+  </TabItem>
+</Tabs>
+
+- Altere de `.mjs` para `.js` definindo `"type": "module"` em seu _package.json_.
+- Observe que esses exemplos usam [**ESM**](/docs/examples/cjs-esm), mas você também pode usar [**CJS**](/docs/examples/cjs-esm).
+
+### **Execução**
+
+<Tabs>
+  <TabItem default value='Node.js and TypeScript (Node.js)'>
+
+```bash
+npx poku
+```
+
+  </TabItem>
+  <TabItem  value='Bun'>
+
+```bash
+bunx poku
+```
+
+  </TabItem>
+  <TabItem  value='Deno'>
+
+```bash
+deno run npm:poku
+```
+
+  </TabItem>
+</Tabs>
+
+> Experimente a flag `--parallel` para executar testes em paralelo.
+
+- **Isso é tudo** 🎉
+
+<hr />
+
+## Documentação
+
+> Inicialmente, a [**documentação**](/docs/category/documentation), os [**exemplos**](/docs/category/examples), e o [**início rápido**](/docs/category/quick-tutorials) são baseados em **Node.js** e no uso de **ESM**, mas você pode usar todas as opções normalmente para **Bun** e **Deno**, incluindo **CJS**.
+
+<hr />
+
+### Problemas comuns
+
+- [Prevenção de conflitos em ambientes com múltiplas plataformas instaladas](/docs/tutorials/cross-platform#recommendations).
+- [Execução adequada de testes assíncronos no mesmo arquivo](/docs/examples/promises).
+- [Migração da versão **1.x** para a versão **2.x**](https://github.com/wellwelwel/poku/issues/533).
+
+<hr />
+
+## Política de segurança
+
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f368e0)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
+
+Verifique o arquivo [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
+
+<hr />
+
+## Reconhecimentos
+
+[![Contribuidores](https://img.shields.io/github/contributors/wellwelwel/poku?color=9c88ff)](https://github.com/wellwelwel/poku/graphs/contributors)
+
+<a
+  href='https://opencollective.com/poku/contributors.svg?button=false'
+  target='_blank'
+  rel='noopener noreferrer'
+  style={{ textDecoration: 'none', color: 'inherit' }}
+>
+  <img
+    src='https://opencollective.com/poku/contributors.svg?width=890&button=false'
+    alt='Contribuidores'
+    style={{ maxWidth: '100%' }}
+  />
+</a>
+
+<hr />
+
+## Licença
+
+**Poku** está sob a [**Licença do MIT**](https://github.com/wellwelwel/poku/blob/main/LICENSE).<br />
+Copyright © 2024-presente [Weslley Araújo](https://github.com/wellwelwel) e **Poku** [Contribuidores](https://github.com/wellwelwel/poku/graphs/contributors).
