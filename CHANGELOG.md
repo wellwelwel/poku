@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/wellwelwel/poku/compare/v2.1.0...v2.2.0) (2024-07-22)
+
+
+### Features
+
+* support for short and alternative flags ([#568](https://github.com/wellwelwel/poku/issues/568)) ([ee1800f](https://github.com/wellwelwel/poku/commit/ee1800f8f177937cc2f3ddc12ad15c43eda1c26f))
+
+
+### Bug Fixes
+
+* typings of `it()` and `test()` helpers ([#582](https://github.com/wellwelwel/poku/issues/582)) ([babd214](https://github.com/wellwelwel/poku/commit/babd21475b663fb66bc512a21a1b38d79c278f69))
+
 ## [2.1.0](https://github.com/wellwelwel/poku/compare/v2.0.0...v2.1.0) (2024-07-20)
 
 
