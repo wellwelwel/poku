@@ -9,7 +9,7 @@ export async function test(
   message: string,
   cb: () => Promise<unknown>
 ): Promise<void>;
-export async function test(message: string, cb: () => unknown): Promise<void>;
+export function test(message: string, cb: () => unknown): void;
 export async function test(cb: () => Promise<unknown>): Promise<void>;
 export function test(cb: () => unknown): void;
 /* c8 ignore next */ // ?
