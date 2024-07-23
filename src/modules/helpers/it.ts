@@ -25,14 +25,6 @@ export async function it(
   const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
   const FILE = env.FILE;
 
-  if (typeof each.before.cb === 'function') {
-    const beforeResult = each.before.cb();
-
-    if (beforeResult instanceof Promise) {
-      await beforeResult;
-    }
-  }
-
   if (typeof args[0] === 'string') {
     message = args[0];
     cb = args[1] as () => unknown | Promise<unknown>;
@@ -40,17 +32,24 @@ export async function it(
     cb = args[0] as () => unknown | Promise<unknown>;
   }
 
-  /* c8 ignore start */
   if (message) {
     indentation.hasIt = true;
 
     Write.log(
+      /* c8 ignore next 2 */
       isPoku && !indentation.hasDescribe
         ? `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
         : `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
     );
   }
-  /* c8 ignore stop */
+
+  if (typeof each.before.cb === 'function') {
+    const beforeResult = each.before.cb();
+
+    if (beforeResult instanceof Promise) {
+      await beforeResult;
+    }
+  }
 
   const start = hrtime();
   const resultCb = cb();
@@ -63,6 +62,8 @@ export async function it(
 
   if (typeof each.after.cb === 'function') {
     const afterResult = each.after.cb();
+
+    console.log(afterResult);
 
     if (afterResult instanceof Promise) {
       await afterResult;
