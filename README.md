@@ -243,9 +243,9 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)
 
-- [~**300x** lighter than **Vitest**](https://pkg-size.dev/vitest)
-- [~**170x** lighter than **Jest**](https://pkg-size.dev/jest)
-- [~**40x** lighter than **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
+- [~**230x** lighter than **Vitest**](https://pkg-size.dev/vitest)
+- [~**130x** lighter than **Jest**](https://pkg-size.dev/jest)
+- [~**30x** lighter than **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
 
 > **Poku** size is highly significant in development to ensure cost-saving **CI** that require servers that charge for storage and usage.
 
