@@ -27,7 +27,7 @@ export const beforeEach = (
 
   each.before.cb = () => {
     if (each.before.status) {
-      callback();
+      return callback();
     }
   };
 
@@ -67,7 +67,7 @@ export const beforeEach = (
 export const afterEach = (callback: () => unknown): Control => {
   each.after.cb = () => {
     if (each.after.status) {
-      callback();
+      return callback();
     }
   };
 
