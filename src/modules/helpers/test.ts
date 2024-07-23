@@ -36,9 +36,9 @@ export async function test(
     indentation.hasTest = true;
 
     Write.log(
-      /* c8 ignore next 2 */
       isPoku
-        ? format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()
+        ? /* c8 ignore next 2 */
+          format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()
         : format(`◌ ${message}`).dim()
     );
   }

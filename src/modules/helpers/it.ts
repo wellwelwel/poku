@@ -36,9 +36,9 @@ export async function it(
     indentation.hasIt = true;
 
     Write.log(
-      /* c8 ignore next 2 */
       isPoku && !indentation.hasDescribe
-        ? `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
+        ? /* c8 ignore next 2 */
+          `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
         : `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
     );
   }
@@ -62,8 +62,6 @@ export async function it(
 
   if (typeof each.after.cb === 'function') {
     const afterResult = each.after.cb();
-
-    console.log(afterResult);
 
     if (afterResult instanceof Promise) {
       await afterResult;
