@@ -116,14 +116,12 @@ export const runTestsParallel = async (
   try {
     for (const fileGroup of filesByConcurrency) {
       const promises = fileGroup.map(async (filePath) => {
-        /* c8 ignore next 3 */
         if (configs?.failFast && results.fail > 0) {
           return;
         }
 
         const testPassed = await runTestFile(filePath, configs);
 
-        /* c8 ignore start */
         if (!testPassed) {
           ++results.fail;
 
@@ -135,7 +133,6 @@ export const runTestsParallel = async (
 
           return false;
         }
-        /* c8 ignore false */
 
         ++results.success;
         return true;

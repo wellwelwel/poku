@@ -85,7 +85,6 @@ const collectTestFiles = async (
       return [testPath];
     }
 
-    /* c8 ignore next */
     return [];
   });
 
@@ -94,8 +93,7 @@ const collectTestFiles = async (
   return new Set(nestedTestFiles.flat());
 };
 
-/* c8 ignore start */
-const processDeepImports = async (
+export const processDeepImports = async (
   srcFile: string,
   testFile: string,
   intersectedSrcFiles: Set<string>
@@ -118,10 +116,8 @@ const processDeepImports = async (
     await processDeepImports(deepImport, testFile, intersectedSrcFiles);
   }
 };
-/* c8 ignore stop */
 
-/* c8 ignore start */
-const createImportMap = async (
+export const createImportMap = async (
   allTestFiles: Set<string>,
   allSrcFiles: Set<string>
 ) => {
@@ -154,7 +150,6 @@ const createImportMap = async (
     })
   );
 };
-/* c8 ignore stop */
 
 /* c8 ignore next */ // ?
 export const mapTests = async (

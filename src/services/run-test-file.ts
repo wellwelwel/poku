@@ -50,7 +50,6 @@ export const runTestFile = async (
   const start = hrtime();
   let end: ReturnType<typeof hrtime>;
 
-  /* c8 ignore next 3 */
   if (!(await beforeEach(fileRelative, configs))) {
     return false;
   }
@@ -83,7 +82,6 @@ export const runTestFile = async (
         mappedOutputs && Write.log(mappedOutputs.join('\n'));
       }
 
-      /* c8 ignore next 4 */
       if (!(await afterEach(fileRelative, configs))) {
         resolve(false);
         return;

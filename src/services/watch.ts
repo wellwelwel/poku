@@ -18,7 +18,6 @@ export class Watcher {
   }
 
   private watchFile(filePath: string) {
-    /* c8 ignore next 3 */
     if (this.fileWatchers.has(filePath)) {
       return;
     }
@@ -51,7 +50,6 @@ export class Watcher {
   }
 
   private async watchDirectory(dir: string) {
-    /* c8 ignore next 3 */
     if (this.dirWatchers.has(dir)) {
       return;
     }
