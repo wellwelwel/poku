@@ -22,7 +22,7 @@ export const parseResultType = (type?: unknown): string => {
       return Array.from(value).map(recurse);
     }
 
-    /* c8 ignore start */ // Vary versions
+    /* c8 ignore start */
     if (value instanceof Map) {
       return recurse(
         !nodeVersion || nodeVersion >= 12

@@ -36,7 +36,6 @@ export async function poku(
 
   const start = process.hrtime();
   const prepareDirs = Array.prototype.concat(targetPaths);
-  /* c8 ignore next */ // TODO: Allow users to pass cwd for monorepo improvements
   const dirs = prepareDirs.length > 0 ? prepareDirs : ['.'];
   const showLogs = !isQuiet(configs);
 
@@ -45,7 +44,6 @@ export async function poku(
     for (const dir of dirs) {
       const result = await runTests(dir, configs);
 
-      /* c8 ignore next 6 */
       if (!result) {
         code = 1;
         if (configs?.failFast) {
@@ -70,7 +68,6 @@ export async function poku(
   // Parallel
   if (showLogs) {
     Write.hr();
-    /* c8 ignore next */ // ?
     Write.log(`${format('Running the Test Suite in Parallel').bold()}\n`);
   }
 
@@ -78,7 +75,6 @@ export async function poku(
     const promises = dirs.map(async (dir) => {
       const result = await runTestsParallel(dir, configs);
 
-      /* c8 ignore next 3 */
       if (!result && configs?.failFast) {
         throw new Error('quiet');
       }
@@ -88,11 +84,9 @@ export async function poku(
 
     const concurrency = await Promise.all(promises);
 
-    /* c8 ignore next 3 */
     if (concurrency.some((result) => !result)) {
       code = 1;
     }
-    /* c8 ignore next */
   } catch {
   } finally {
     const end = process.hrtime(start);
@@ -114,7 +108,6 @@ export async function poku(
     );
   }
 
-  /* c8 ignore start */
   if (showLogs && fileResults.fail.size > 0) {
     Write.log(
       Array.from(fileResults.fail)
@@ -125,7 +118,6 @@ export async function poku(
         .join('\n')
     );
   }
-  /* c8 ignore stop */
 
   if (configs?.noExit) {
     return code;

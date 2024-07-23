@@ -34,7 +34,6 @@ export const processAssert = async (
   try {
     const cbResult = cb();
 
-    /* c8 ignore next 3 */
     if (cbResult instanceof Promise) {
       await cbResult;
     }

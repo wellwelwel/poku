@@ -9,7 +9,6 @@ const eachCore = async (
   fileRelative: string,
   configs?: Configs
 ): Promise<boolean> => {
-  /* c8 ignore next 3 */
   if (typeof configs?.[type] !== 'function') {
     return true;
   }

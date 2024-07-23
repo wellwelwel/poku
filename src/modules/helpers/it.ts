@@ -28,7 +28,6 @@ export async function it(
   if (typeof each.before.cb === 'function') {
     const beforeResult = each.before.cb();
 
-    /* c8 ignore next 3 */
     if (beforeResult instanceof Promise) {
       await beforeResult;
     }
@@ -56,7 +55,6 @@ export async function it(
   const start = hrtime();
   const resultCb = cb();
 
-  /* c8 ignore next 3 */
   if (resultCb instanceof Promise) {
     await resultCb;
   }
@@ -66,7 +64,6 @@ export async function it(
   if (typeof each.after.cb === 'function') {
     const afterResult = each.after.cb();
 
-    /* c8 ignore next 3 */
     if (afterResult instanceof Promise) {
       await afterResult;
     }

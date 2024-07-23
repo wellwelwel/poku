@@ -11,7 +11,6 @@ const regex = {
 export const isQuiet = (configs?: Configs): boolean =>
   typeof configs?.quiet === 'boolean' && Boolean(configs?.quiet);
 
-/* c8 ignore next */
 export const isDebug = (configs?: Configs): boolean => Boolean(configs?.debug);
 
 /* c8 ignore next */ // ?
