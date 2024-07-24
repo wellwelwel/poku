@@ -25,14 +25,6 @@ export async function test(
   const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
   const FILE = env.FILE;
 
-  if (typeof each.before.cb === 'function') {
-    const beforeResult = each.before.cb();
-
-    if (beforeResult instanceof Promise) {
-      await beforeResult;
-    }
-  }
-
   if (typeof args[0] === 'string') {
     message = args[0];
     cb = args[1] as () => unknown | Promise<unknown>;
@@ -40,17 +32,24 @@ export async function test(
     cb = args[0] as () => unknown | Promise<unknown>;
   }
 
-  /* c8 ignore start */
   if (message) {
     indentation.hasTest = true;
 
     Write.log(
       isPoku
-        ? format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()
+        ? /* c8 ignore next 2 */
+          format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()
         : format(`◌ ${message}`).dim()
     );
   }
-  /* c8 ignore stop */
+
+  if (typeof each.before.cb === 'function') {
+    const beforeResult = each.before.cb();
+
+    if (beforeResult instanceof Promise) {
+      await beforeResult;
+    }
+  }
 
   const start = hrtime();
   const resultCb = cb();
