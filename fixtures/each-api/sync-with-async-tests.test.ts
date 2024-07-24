@@ -8,13 +8,11 @@ import {
   sleep,
 } from '../../src/modules/index.js';
 
-const clearFixture = async () => {
-  await sleep(250);
+const clearFixture = () => {
   log('  - Cleaning');
 };
 
-const writeFixture = async () => {
-  await sleep(250);
+const writeFixture = () => {
   log('  - Writing');
 };
 
@@ -23,18 +21,18 @@ const toTest = async (message: string) => {
   return message;
 };
 
-beforeEach(async () => {
+beforeEach(() => {
   log('- before beforeEach writeFixture');
 
-  await writeFixture();
+  writeFixture();
 
   log('- after beforeEach writeFixture');
 });
 
-afterEach(async () => {
+afterEach(() => {
   log('- before afterEach clearFixture');
 
-  await clearFixture();
+  clearFixture();
 
   log('- after afterEach clearFixture');
 });

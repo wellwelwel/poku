@@ -35,7 +35,7 @@ afterEach(() => {
   log('- after afterEach clearFixture');
 });
 
-describe('', () => {
+describe(() => {
   test('first test', () => {
     log('  before first test');
 
