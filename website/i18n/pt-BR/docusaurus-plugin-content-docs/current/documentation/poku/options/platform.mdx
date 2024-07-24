@@ -1,0 +1,86 @@
+---
+sidebar_position: 3
+tags: [require, import, loader]
+---
+
+import { History } from '@site/src/components/History';
+
+# `platform`
+
+Por padrão, o **Poku** tenta identificar a plataforma automaticamente, mas você pode defini-la manualmente.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Suporte para as flags alternativas <code>--node</code>, <code>--bun</code>, e{' '}
+          <code>--deno</code>.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+```bash
+# Uso comum
+
+npx      poku      --platform=node  ./test
+bun      poku      --platform=bun   ./test
+deno run npm:poku  --platform=deno  ./test
+```
+
+```bash
+# Uso comum
+## Por exemplo, quando você está desenvolvendo usando uma plataforma, mas mantém compatibilidade com outras.
+
+npx      poku      --platform=bun   ./test
+bun      poku      --platform=deno  ./test
+deno run npm:poku  --platform=node  ./test
+
+# ...
+```
+
+- Flags alternativas: `--node`, `--bun`, e `--deno`.
+  - Só é possível utilizar uma por comando.
+
+## API
+
+```ts
+/**
+ * Força o Node.js (ou tsx para TypeScript)
+ *
+ * @default 'node'
+ */
+
+await poku('./test', {
+  platform: 'node',
+});
+```
+
+```ts
+/**
+ * Força o Bun
+ */
+
+await poku('./test', {
+  platform: 'bun',
+});
+```
+
+```ts
+/**
+ * Força o Deno
+ */
+
+await poku('./test', {
+  platform: 'deno',
+});
+```
+
+:::tip
+Útil quando há mais de uma plataforma comum instalada.
+:::
