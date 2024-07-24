@@ -1,0 +1,94 @@
+---
+sidebar_position: 2
+tags: [grep]
+---
+
+# `filter`
+
+Filtra por caminho usando **Regex** para corresponder apenas aos arquivos que devem ser executados. <br />
+Por padrão, o **Poku** procura os arquivos _`.test.`_ e `.spec.`, mas você pode customizá-lo usando a opção `filter`.
+
+## CLI
+
+```bash
+# Padrão
+
+npx poku --filter='.test.|.spec.' ./test
+```
+
+```bash
+# Testa apenas um arquivo específico
+
+npx poku --filter='some-file' ./test
+```
+
+```bash
+# Testa apenas arquivos específicos
+
+npx poku --filter='some-file|other-file' ./test
+```
+
+```bash
+# Testa apenas caminhos que contenham “unit”
+
+npx poku --filter='unit' ./test
+```
+
+```bash
+# Testa somente os caminhos que contêm “unit” usando o Poku como um script NPM
+
+npm run tests -- --filter='unit'
+```
+
+### Variável de Ambiente
+
+Ao usar o  `FILTER` da **Variável de Ambiente**, ele substituirá a opção `filter`.
+
+```bash
+# Testa apenas um arquivo específico
+
+FILTER='some-file' npx poku ./test
+```
+
+```bash
+# Testa apenas arquivos específicos
+
+FILTER='some-file|other-file' npx poku ./test
+```
+
+```bash
+# Testa apenas caminhos que contenham “unit”
+
+FILTER='unit' npx poku ./test
+```
+
+```bash
+# Testa somente os caminhos que contêm “unit” usando o Poku como um script NPM
+
+FILTER='unit' npm run tests
+```
+
+## API
+
+```ts
+/**
+ * @default
+ *
+ * Testa todos os arquivos `*.test.*`.
+ */
+
+await poku('./test', {
+  filter: /\.test\./,
+});
+```
+
+```ts
+/**
+ * Testa todos os arquivos `ts`, `js`, `mts` e `mjs`
+ */
+
+await poku('./test', {
+  filter: /\.(m)?(j|t)s$/,
+  // filter: /\.(js|ts|mjs|mts)$/,
+});
+```
