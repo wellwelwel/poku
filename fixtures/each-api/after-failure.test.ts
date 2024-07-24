@@ -45,6 +45,8 @@ afterEach(async () => {
 });
 
 describe(async () => {
+  await writeFixture();
+
   await test('first test', async () => {
     log('  before first test');
 
