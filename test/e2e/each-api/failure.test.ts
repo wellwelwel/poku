@@ -17,10 +17,8 @@ describe('Testing afterEach execution after a test failure', async () => {
       }
     );
 
-    if (results.exitCode !== 0) {
-      console.log(results.stdout);
-      console.log(results.stderr);
-    }
+    console.log(results.stdout);
+    console.log(results.stderr);
 
     assert.strictEqual(results.exitCode, 0, 'Exit Code needs to be 0');
   });

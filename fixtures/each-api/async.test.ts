@@ -1,4 +1,3 @@
-import { readFile, writeFile, rm, mkdir } from 'node:fs/promises';
 import {
   beforeEach,
   afterEach,
@@ -6,25 +5,21 @@ import {
   test,
   describe,
   assert,
+  sleep,
 } from '../../src/modules/index.js';
 
-const testDir = '../../.temp';
-const testFile = `${testDir}/each-hook`;
-
 const clearFixture = async () => {
-  await rm(testFile);
-  await rm(testDir, { recursive: true, force: true });
+  await sleep(250);
   log('  - Cleaning');
 };
 
 const writeFixture = async () => {
-  await mkdir(testDir);
-  await writeFile(testFile, 'test', 'utf-8');
+  await sleep(250);
   log('  - Writing');
 };
 
 const toTest = async (message: string) => {
-  await readFile(testFile, 'utf-8');
+  await sleep(500);
   return message;
 };
 
