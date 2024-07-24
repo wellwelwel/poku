@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/wellwelwel/poku/compare/v2.2.0...v2.2.1) (2024-07-24)
+
+
+### Bug Fixes
+
+* async execution order for `each` helper API ([#588](https://github.com/wellwelwel/poku/issues/588)) ([fb92892](https://github.com/wellwelwel/poku/commit/fb92892b6a9075568ecc3605fbcd50e36fee5653))
+
 ## [2.2.0](https://github.com/wellwelwel/poku/compare/v2.1.0...v2.2.0) (2024-07-22)
 
 
