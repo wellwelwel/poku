@@ -3,44 +3,56 @@ import {
   afterEach,
   log,
   test,
+  describe,
   assert,
+  sleep,
 } from '../../src/modules/index.js';
 
-const clearFixture = () => log('  - Cleaning');
-const writeFixture = () => log('  - Writing');
+const clearFixture = async () => {
+  await sleep(250);
+  log('  - Cleaning');
+};
 
-beforeEach(() => {
+const writeFixture = async () => {
+  await sleep(250);
+  log('  - Writing');
+};
+
+const toTest = async (message: string) => {
+  await sleep(500);
+  return message;
+};
+
+beforeEach(async () => {
   log('- before beforeEach writeFixture');
 
-  writeFixture();
+  await writeFixture();
 
   log('- after beforeEach writeFixture');
-
-  return true;
 });
 
-afterEach(() => {
+afterEach(async () => {
   log('- before afterEach clearFixture');
 
-  clearFixture();
+  await clearFixture();
 
   log('- after afterEach clearFixture');
-
-  return true;
 });
 
-test('first test', () => {
-  log('  before first test');
+describe('', async () => {
+  await test('first test', async () => {
+    log('  before first test');
 
-  assert(true, 'first test');
+    assert(true, await toTest('first test'));
 
-  log('  after first test');
-});
+    log('  after first test');
+  });
 
-test('second test', () => {
-  log('  before second test');
+  await test('second test', async () => {
+    log('  before second test');
 
-  assert(true, 'second test');
+    assert(true, await toTest('second test'));
 
-  log('  after second test');
+    log('  after second test');
+  });
 });
