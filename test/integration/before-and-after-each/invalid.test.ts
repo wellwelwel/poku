@@ -1,17 +1,11 @@
-import { nodeVersion, getRuntime } from '../../../src/parsers/get-runtime.js';
+import { isProduction } from '../../helpers/capture-cli.test.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
-
-if (nodeVersion && nodeVersion < 16) {
-  skip();
-}
 
 import { test } from '../../../src/modules/helpers/test.js';
 import { poku } from '../../../src/modules/essentials/poku.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 
-const runtime = getRuntime();
-
-if (runtime === 'deno') {
+if (isProduction) {
   skip();
 }
 
