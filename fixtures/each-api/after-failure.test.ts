@@ -12,9 +12,11 @@ const testDir = '../../.temp';
 const testFile = `${testDir}/each-hook`;
 
 const clearFixture = async () => {
-  await rm(testFile);
-  await rm(testDir, { recursive: true, force: true });
-  log('  - Cleaning');
+  try {
+    await rm(testFile);
+    await rm(testDir, { recursive: true, force: true });
+    log('  - Cleaning');
+  } catch {}
 };
 
 const writeFixture = async () => {
@@ -45,7 +47,7 @@ afterEach(async () => {
 });
 
 describe(async () => {
-  await writeFixture();
+  await clearFixture();
 
   await test('first test', async () => {
     log('  before first test');
@@ -55,11 +57,12 @@ describe(async () => {
     log('  after first test');
   });
 
-  await test('second test', async () => {
-    log('  before second test');
+  await writeFixture();
+  await test('Force failure', async () => {
+    log('  before first test');
 
-    assert(true, await toTest('second test'));
+    assert(true, await toTest('first test'));
 
-    log('  after second test');
+    log('  after first test');
   });
 });

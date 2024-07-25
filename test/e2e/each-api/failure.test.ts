@@ -3,6 +3,7 @@ import { it } from '../../../src/modules/helpers/it.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { inspectCLI, isProduction } from '../../helpers/capture-cli.test.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
+import { statSync } from 'node:fs';
 
 if (isProduction) {
   skip();
@@ -17,9 +18,7 @@ describe('Testing afterEach execution after a test failure', async () => {
       }
     );
 
-    console.log(results.stdout);
-    console.log(results.stderr);
-
-    assert.strictEqual(results.exitCode, 0, 'Exit Code needs to be 0');
+    assert.strictEqual(results.exitCode, 1, 'Exit Code needs to be 1');
+    assert.throws(() => statSync('./.temp'));
   });
 });

@@ -23,7 +23,7 @@ export const processAssert = async (
   const FILE = env.FILE;
   let preIdentation = '';
 
-  if (indentation.hasDescribe || indentation.hasTest) {
+  if (indentation.hasDescribe) {
     preIdentation += '  ';
   }
 
@@ -40,12 +40,9 @@ export const processAssert = async (
 
     if (typeof options.message === 'string') {
       const message =
-        isPoku &&
-        !indentation.hasDescribe &&
-        !indentation.hasIt &&
-        /* c8 ignore next 2 */
-        !indentation.hasTest
-          ? `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
+        isPoku && !indentation.hasDescribe && !indentation.hasIt
+          ? /* c8 ignore next 2 */
+            `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
           : `${preIdentation}${format(`✔ ${options.message}`).success().bold()}`;
 
       Write.log(message);
