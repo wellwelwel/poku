@@ -50,8 +50,8 @@ export const processAssert = async (
   } catch (error) {
     if (error instanceof AssertionError) {
       const { code, actual, expected, operator } = error;
-      const absoultePath = findFile(error).replace(regexFile, '');
-      const file = path.relative(path.resolve(cwd), absoultePath);
+      const absolutePath = findFile(error).replace(regexFile, '');
+      const file = path.relative(path.resolve(cwd), absolutePath);
 
       let message = '';
 
@@ -66,7 +66,7 @@ export const processAssert = async (
       const finalMessage =
         message?.trim().length > 0
           ? format(`✘ ${message}`).fail().bold()
-          : format('✘ No Message').fail().bold();
+          : format('✘ Assertion Error').fail().bold();
 
       Write.log(
         isPoku
