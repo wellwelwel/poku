@@ -25,8 +25,7 @@ export const getConfigs = async (
 
     try {
       if (filePath.endsWith('.js') || filePath.endsWith('.cjs')) {
-        /* c8 ignore next */ // ?
-        return (await import(normalize(filePath))) as ConfigFile;
+        return require(`file://${normalize(filePath)}`);
       }
 
       const configsFile = await readFile(filePath, 'utf-8');
