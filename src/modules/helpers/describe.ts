@@ -43,7 +43,6 @@ export async function describe(
     indentation.hasDescribe = true;
 
     const { background, icon } = options || {};
-    /* c8 ignore next */
     const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold() || ''}`;
     const noBackground = !background;
 

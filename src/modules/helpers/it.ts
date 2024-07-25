@@ -38,8 +38,7 @@ export async function it(
 
       Write.log(
         isPoku && !indentation.hasDescribe
-          ? /* c8 ignore next 2 */
-            `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
+          ? `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
           : `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
       );
     }

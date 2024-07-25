@@ -8,7 +8,7 @@ import {
   assert,
 } from '../../src/modules/index.js';
 
-const testDir = '../../.temp';
+const testDir = '../../.temp2';
 const testFile = `${testDir}/each-hook`;
 
 const clearFixture = async () => {

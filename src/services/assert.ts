@@ -41,8 +41,7 @@ export const processAssert = async (
     if (typeof options.message === 'string') {
       const message =
         isPoku && !indentation.hasDescribe && !indentation.hasIt
-          ? /* c8 ignore next 2 */
-            `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
+          ? `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
           : `${preIdentation}${format(`✔ ${options.message}`).success().bold()}`;
 
       Write.log(message);
@@ -112,7 +111,6 @@ export const processAssert = async (
     // Non-assertion errors
     throw error;
   }
-  /* c8 ignore stop */
 };
 
 /* c8 ignore next */ // ?

@@ -19,6 +19,6 @@ describe('Testing afterEach execution after a test failure', async () => {
     );
 
     assert.strictEqual(results.exitCode, 1, 'Exit Code needs to be 1');
-    assert.throws(() => statSync('./.temp'));
+    assert.throws(() => statSync('./.temp2'));
   });
 });

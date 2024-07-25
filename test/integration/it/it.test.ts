@@ -31,3 +31,6 @@ test('Testing "it" method', () => {
   it('it without describe', async () =>
     await new Promise((resolve) => resolve(undefined)));
 });
+
+it('it without scope', async () =>
+  await new Promise((resolve) => resolve(undefined)));
