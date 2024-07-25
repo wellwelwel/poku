@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.2](https://github.com/wellwelwel/poku/compare/v2.2.1...v2.2.2) (2024-07-25)
+
+
+### Bug Fixes
+
+* ensure `afterEach` execution after a test failure ([#598](https://github.com/wellwelwel/poku/issues/598)) ([e6654c4](https://github.com/wellwelwel/poku/commit/e6654c410eaf2e7a564c58dfe8766fe3f6859e20))
+* **Windows:** ensure configuration file loading (`js` and `cjs`) ([#602](https://github.com/wellwelwel/poku/issues/602)) ([2d53660](https://github.com/wellwelwel/poku/commit/2d53660244582407e6e8cdb1329057ef91d9535c))
+
 ## [2.2.1](https://github.com/wellwelwel/poku/compare/v2.2.0...v2.2.1) (2024-07-24)
 
 
