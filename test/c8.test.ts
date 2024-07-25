@@ -2,8 +2,22 @@ import { env } from 'node:process';
 import { poku, test, describe, it, assert } from '../src/modules/index.js';
 import { isWindows } from '../src/parsers/get-runner.js';
 import { inspectCLI } from './helpers/capture-cli.test.js';
+import { rmSync } from 'node:fs';
 
 test(async () => {
+  const toRemove = [
+    '/.temp',
+    '/test-src',
+    '/test-tests',
+    '/test-before-and-after-each.json',
+  ];
+
+  for (const path of toRemove) {
+    try {
+      rmSync(path, { force: true, recursive: true });
+    } catch {}
+  }
+
   await describe('CLI', async () => {
     await it('Sequential (Just Touch)', async () => {
       const results = await inspectCLI(

@@ -43,6 +43,7 @@ describe('Testing ', async () => {
       const actual = results.stdout.split('\n');
 
       if (results.exitCode !== 0) {
+        console.log(results.stdout);
         console.log(results.stderr);
       }
 
