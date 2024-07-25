@@ -34,7 +34,7 @@ export async function it(
     }
 
     if (message) {
-      indentation.hasIt = true;
+      indentation.hasItOrTest = true;
 
       Write.log(
         isPoku && !indentation.hasDescribe
@@ -71,13 +71,13 @@ export async function it(
     if (message) {
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
-      indentation.hasIt = false;
+      indentation.hasItOrTest = false;
       Write.log(
         `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
       );
     }
   } catch (error) {
-    indentation.hasIt = false;
+    indentation.hasItOrTest = false;
 
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();
