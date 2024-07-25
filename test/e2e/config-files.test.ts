@@ -74,4 +74,30 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
     assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
     assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
   });
+
+  await it('Custom (CJS)', async () => {
+    const output = await inspectCLI(
+      'npx tsx ../../../src/bin/index.ts --config=custom.cjs',
+      {
+        cwd: 'fixtures/config-files/custom-cjs-file',
+      }
+    );
+
+    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
+    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
+    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
+  });
+
+  await it('Missing (JS)', async () => {
+    const output = await inspectCLI(
+      'npx tsx ../../../src/bin/index.ts --config=missing.js',
+      {
+        cwd: 'fixtures/config-files/custom-js-file',
+      }
+    );
+
+    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
+    assert(/PASS › 1/.test(output.stdout), 'CLI needs to fail 1');
+    assert(!/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
+  });
 });
