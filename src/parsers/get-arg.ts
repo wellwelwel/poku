@@ -1,4 +1,3 @@
-/* c8 ignore next */ // ?
 import { argv } from 'node:process';
 
 const [, , ...processArgs] = argv;
@@ -49,7 +48,6 @@ export const getPaths = (
   return hasPaths ? paths : undefined;
 };
 
-/* c8 ignore next */ // ?
 export const argToArray = (
   arg: string,
   prefix = '--',

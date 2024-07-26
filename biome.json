@@ -9,7 +9,8 @@
       "coverage",
       "website",
       "fixtures",
-      "benchmark"
+      "benchmark",
+      "fixtures/sintax"
     ]
   },
   "organizeImports": {

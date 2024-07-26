@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "include": ["test", "src", "fixtures"],
-  "exclude": ["tools"],
+  "exclude": ["tools", "fixtures/sintax/invalid-file.js"],
   "compilerOptions": {
     "outDir": "ci",
     "declaration": false,

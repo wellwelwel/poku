@@ -1,4 +1,3 @@
-/* c8 ignore next */ // ?
 export const backgroundColor = {
   white: 7,
   black: 40,
@@ -88,6 +87,5 @@ export class Formatter {
 
 export const format = (text: string) => Formatter.create(text);
 
-/* c8 ignore next */ // ?
 export const getLargestStringLength = (arr: string[]): number =>
   arr.reduce((max, current) => Math.max(max, current.length), 0);

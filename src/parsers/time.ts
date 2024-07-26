@@ -1,4 +1,3 @@
-/* c8 ignore next */ // ?
 export const parseTime = (date: Date): string => {
   const hours = date.getHours().toString().padStart(2, '0');
   const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -7,7 +6,6 @@ export const parseTime = (date: Date): string => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-/* c8 ignore next */ // ?
 export const parseTimeToSecs = (milliseconds: string): string => {
   const ms = Number.parseFloat(milliseconds);
   const seconds = (ms / 1000).toFixed(2);

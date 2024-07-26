@@ -1,4 +1,3 @@
-/* c8 ignore next 3 */ // Types
 import type { ProcessAssertionOptions } from '../@types/assert.js';
 import type assert from 'node:assert';
 import type { AssertPredicate } from 'node:assert';
@@ -46,7 +45,6 @@ export const processAssert = async (
 
       Write.log(message);
     }
-    /* c8 ignore start */
   } catch (error) {
     if (error instanceof AssertionError) {
       const { code, actual, expected, operator } = error;
@@ -113,7 +111,6 @@ export const processAssert = async (
   }
 };
 
-/* c8 ignore next */ // ?
 export const createAssert = (nodeAssert: typeof assert) => {
   const ok = (
     value: unknown,
@@ -221,7 +218,6 @@ export const createAssert = (nodeAssert: typeof assert) => {
     );
   };
 
-  /* c8 ignore start */
   const fail = (message?: ProcessAssertionOptions['message']): never => {
     processAssert(
       () => {
@@ -236,7 +232,6 @@ export const createAssert = (nodeAssert: typeof assert) => {
 
     process.exit(1);
   };
-  /* c8 ignore stop */
 
   function doesNotThrow(
     block: () => unknown,

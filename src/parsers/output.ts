@@ -1,4 +1,3 @@
-/* c8 ignore next */ // Types
 import type { Configs } from '../@types/poku.js';
 import { results } from '../configs/poku.js';
 
@@ -13,7 +12,6 @@ export const isQuiet = (configs?: Configs): boolean =>
 
 export const isDebug = (configs?: Configs): boolean => Boolean(configs?.debug);
 
-/* c8 ignore next */ // ?
 export const parserOutput = (options: {
   output: string;
   result: boolean;

@@ -1,4 +1,3 @@
-/* c8 ignore next */ // Types
 import type { ConfigFile, ConfigJSONFile } from '../@types/poku.js';
 import { cwd } from 'node:process';
 import { normalize, join } from 'node:path';
@@ -7,7 +6,6 @@ import { JSONC } from '../polyfills/jsonc.js';
 
 const processCWD = cwd();
 
-/* c8 ignore next */ // ?
 export const getConfigs = async (
   customPath?: string
 ): Promise<ConfigFile | ConfigJSONFile> => {

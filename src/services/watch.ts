@@ -1,4 +1,3 @@
-/* c8 ignore next 2 */ // Types
 import type { WatchCallback } from '../@types/watch.js';
 import { watch as nodeWatch, type FSWatcher } from 'node:fs';
 import { join } from 'node:path';
@@ -117,7 +116,6 @@ export class Watcher {
   }
 }
 
-/* c8 ignore next */ // ?
 export const watch = async (path: string, callback: WatchCallback) => {
   const watcher = new Watcher(path, callback);
 

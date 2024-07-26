@@ -1,4 +1,3 @@
-/* c8 ignore next */ // ?
 import { relative, dirname } from 'node:path';
 import { stat, readFile } from '../polyfills/fs.js';
 import { listFiles } from '../modules/helpers/list-files.js';
@@ -151,7 +150,6 @@ export const createImportMap = async (
   );
 };
 
-/* c8 ignore next */ // ?
 export const mapTests = async (
   srcDir: string,
   testPaths: string[],
