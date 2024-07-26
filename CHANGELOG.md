@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.3](https://github.com/wellwelwel/poku/compare/v2.2.2...v2.2.3) (2024-07-26)
+
+
+### Bug Fixes
+
+* prevent 100% CPU usage in large-scale test suites ([#606](https://github.com/wellwelwel/poku/issues/606)) ([382631b](https://github.com/wellwelwel/poku/commit/382631b13b37bf467d202b502ec54dacd51e32db))
+
 ## [2.2.2](https://github.com/wellwelwel/poku/compare/v2.2.1...v2.2.2) (2024-07-25)
 
 
