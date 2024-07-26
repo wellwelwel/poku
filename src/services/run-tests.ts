@@ -14,6 +14,7 @@ import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
 import { isQuiet } from '../parsers/output.js';
 import { results } from '../configs/poku.js';
+import { availableParallelism } from '../polyfills/cpus.js';
 
 const cwd = processCWD();
 
@@ -101,7 +102,7 @@ export const runTestsParallel = async (
     ? [sanitizePath(dir)]
     : await listFiles(testDir, configs);
   const filesByConcurrency: string[][] = [];
-  const concurrencyLimit = configs?.concurrency || 0;
+  const concurrencyLimit = configs?.concurrency ?? availableParallelism();
   const concurrencyResults: (boolean | undefined)[][] = [];
   const showLogs = !isQuiet(configs);
 
