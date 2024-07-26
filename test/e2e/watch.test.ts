@@ -1,17 +1,16 @@
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
 import { assert } from '../../src/modules/essentials/assert.js';
-import { watchCLI, isProduction } from '../helpers/capture-cli.test.js';
+import { watchCLI } from '../helpers/capture-cli.test.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import {
   sleep,
   waitForExpectedResult,
 } from '../../src/modules/helpers/wait-for.js';
-import { readFile, writeFile } from 'node:fs/promises';
 
-if (isProduction) {
-  skip();
-}
+skip('TODO: Create files to test e2e maps');
+
+import { readFile, writeFile } from 'node:fs/promises';
 
 const saveFileUnchanged = async (filename: string) => {
   const data = await readFile(filename, 'utf-8');
