@@ -1,7 +1,5 @@
-/* c8 ignore next */ // ?
 const regex = /at\s(\/.+|file:.+)|^(\s+)at\smodule\scode\s\((\/.+|file:.+)\)/i;
 
-/* c8 ignore next */ // ?
 export const findFile = (error: Error) => {
   const stackLines = error.stack?.split('\n') || [];
 

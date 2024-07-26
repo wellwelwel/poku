@@ -1,4 +1,3 @@
-/* c8 ignore next */ // ?
 import { hrtime, env } from 'node:process';
 import { each } from '../../configs/each.js';
 import { indentation } from '../../configs/indentation.js';
@@ -12,7 +11,6 @@ export async function it(
 export function it(message: string, cb: () => unknown): void;
 export async function it(cb: () => Promise<unknown>): Promise<void>;
 export function it(cb: () => unknown): void;
-/* c8 ignore next */ // ?
 export async function it(
   ...args: [
     string | (() => unknown | Promise<unknown>),
@@ -37,7 +35,7 @@ export async function it(
       indentation.hasItOrTest = true;
 
       Write.log(
-        isPoku && !indentation.hasDescribe
+        isPoku
           ? `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
           : `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
       );

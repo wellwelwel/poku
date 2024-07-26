@@ -1,4 +1,3 @@
-/* c8 ignore next */ // ?
 export const removeComments = (input: string) => {
   let output = '';
   let quoteChar = '';
@@ -27,7 +26,6 @@ export const removeComments = (input: string) => {
   return output.trim();
 };
 
-/* c8 ignore net */ // ?
 export const parseEnvLine = (line: string) => {
   const index = line.indexOf('=');
 
@@ -44,7 +42,6 @@ export const parseEnvLine = (line: string) => {
   return { arg, value };
 };
 
-/* c8 ignore next */ // ?
 export const resolveEnvVariables = (str: string, env: typeof process.env) => {
   let result = '';
   let i = 0;

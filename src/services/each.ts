@@ -1,4 +1,3 @@
-/* c8 ignore next */ // Types
 import type { Configs } from '../@types/poku.js';
 import { format } from './format.js';
 import { Write } from '../services/write.js';
@@ -59,7 +58,6 @@ export const beforeEach = async (fileRelative: string, configs?: Configs) => {
   return true;
 };
 
-/* c8 ignore next */ // ?
 export const afterEach = async (fileRelative: string, configs?: Configs) => {
   if (configs?.afterEach) {
     return await eachCore('afterEach', fileRelative, configs);

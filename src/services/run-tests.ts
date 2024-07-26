@@ -1,4 +1,3 @@
-/* c8 ignore start */ // Types
 import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime } from 'node:process';
 import { join, relative, sep } from 'node:path';
@@ -62,7 +61,6 @@ export const runTests = async (
         Write.log(
           `${indentation.test}${format('✔').success()} ${log}${format(` › ${total}ms`).success().dim()}${nextLine}`
         );
-      /* c8 ignore start */
     } else {
       ++results.fail;
 
@@ -85,14 +83,11 @@ export const runTests = async (
         break;
       }
     }
-
-    /* c8 ignore stop */
   }
 
   return passed;
 };
 
-/* c8 ignore next */ // ?
 export const runTestsParallel = async (
   dir: string,
   configs?: Configs
@@ -117,10 +112,6 @@ export const runTestsParallel = async (
   try {
     for (const fileGroup of filesByConcurrency) {
       const promises = fileGroup.map(async (filePath) => {
-        if (configs?.failFast && results.fail > 0) {
-          return;
-        }
-
         const testPassed = await runTestFile(filePath, configs);
 
         if (!testPassed) {
@@ -144,7 +135,6 @@ export const runTestsParallel = async (
     }
 
     return concurrencyResults.every((group) => group.every((result) => result));
-    /* c8 ignore start */
   } catch (error) {
     if (showLogs) {
       Write.hr();
@@ -153,5 +143,4 @@ export const runTestsParallel = async (
 
     return false;
   }
-  /* c8 ignore stop */
 };

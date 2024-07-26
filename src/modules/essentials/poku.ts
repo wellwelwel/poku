@@ -1,4 +1,3 @@
-/* c8 ignore next 2 */ // Types
 import type { Code } from '../../@types/code.js';
 import type { Configs } from '../../@types/poku.js';
 import process from 'node:process';

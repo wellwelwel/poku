@@ -1,4 +1,3 @@
-/* c8 ignore next */ // Types
 import type { Configs } from '../../@types/list-files.js';
 import { env } from 'node:process';
 import { sep, join } from 'node:path';
@@ -87,7 +86,6 @@ export const getAllFiles = async (
   return files;
 };
 
-/* c8 ignore next */ // ?
 export const listFiles = async (
   targetDir: string,
   configs?: Configs

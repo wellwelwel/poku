@@ -1,0 +1,1 @@
+const: 123 = teste;

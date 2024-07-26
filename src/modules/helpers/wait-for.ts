@@ -1,4 +1,3 @@
-/* c8 ignore next */ // Types
 import type {
   WaitForExpectedResultOptions,
   WaitForPortOptions,
@@ -95,7 +94,6 @@ export const waitForExpectedResult = async (
   await sleep(delay);
 };
 
-/* c8 ignore next 2 */ // ?
 /** Wait until the defined port is active. */
 export const waitForPort = async (
   port: number,

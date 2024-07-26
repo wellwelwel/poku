@@ -174,7 +174,7 @@ export class DockerCompose {
   }
 
   public async up() {
-    const args: string[] = ['-f', this.file];
+    const args: string[] = ['compose', '-f', this.file];
 
     if (this.envFile) {
       args.push(...['--env-file', this.envFile]);
@@ -194,7 +194,7 @@ export class DockerCompose {
     }
 
     return await runDockerCommand(
-      'docker-compose',
+      'docker',
       args,
       { cwd: this.cwd },
       this.verbose
@@ -212,8 +212,8 @@ export class DockerCompose {
     }
 
     return await runDockerCommand(
-      'docker-compose',
-      [...args, 'down'],
+      'docker',
+      ['compose', ...args, 'down'],
       { cwd: this.cwd },
       this.verbose
     );

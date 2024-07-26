@@ -1,8 +1,6 @@
-/* c8 ignore next */ // ?
 import { fromEntries, entries } from '../polyfills/object.js';
 import { nodeVersion } from './get-runtime.js';
 
-/* c8 ignore next */ // ?
 export const parseResultType = (type?: unknown): string => {
   const recurse = (value: unknown): unknown => {
     if (

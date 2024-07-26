@@ -19,7 +19,7 @@
     "src/parsers/get-runtime.ts",
     "src/services/pid.ts"
   ],
-  "reporter": ["text", "lcov", "cobertura"],
+  "reporter": ["v8", "codecov", "console-details"],
   "branches": 95,
   "statements": 95,
   "lines": 95,

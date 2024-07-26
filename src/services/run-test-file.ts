@@ -1,4 +1,3 @@
-/* c8 ignore next */ // Types
 import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime, env } from 'node:process';
 import { relative } from 'node:path';
@@ -13,23 +12,21 @@ import { Write } from './write.js';
 
 const cwd = processCWD();
 
-/* c8 ignore next */ // ?
 export const runTestFile = async (
   filePath: string,
   configs?: Configs
 ): Promise<boolean> => {
-  /* c8 ignore start */
   const runtimeOptions = runner(filePath, configs);
   const runtime = runtimeOptions.shift()!;
   const runtimeArguments = [
     ...runtimeOptions,
+    /* c8 ignore next 5 */
     configs?.deno?.cjs === true ||
     (Array.isArray(configs?.deno?.cjs) &&
       configs.deno.cjs.some((ext) => filePath.includes(ext)))
       ? 'https://cdn.jsdelivr.net/npm/poku/lib/polyfills/deno.mjs'
       : filePath,
   ];
-  /* c8 ignore stop */
 
   const fileRelative = relative(cwd, filePath);
   const showLogs = !isQuiet(configs);

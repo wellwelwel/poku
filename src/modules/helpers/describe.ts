@@ -1,11 +1,9 @@
-/* c8 ignore next */ // Types
 import type { DescribeOptions } from '../../@types/describe.js';
 import { hrtime, env } from 'node:process';
 import { format } from '../../services/format.js';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
 
-/** On **Poku**, `describe` also can be used just as a pretty `console.log` to title your test suites in the terminal */
 export async function describe(
   title: string,
   cb: () => Promise<unknown>
@@ -14,7 +12,6 @@ export function describe(title: string, cb: () => unknown): void;
 export async function describe(cb: () => Promise<unknown>): Promise<void>;
 export function describe(cb: () => unknown): unknown;
 export function describe(title: string, options?: DescribeOptions): void;
-/* c8 ignore next */ // ?
 export async function describe(
   arg1: string | (() => unknown | Promise<unknown>),
   arg2?: (() => unknown | Promise<unknown>) | DescribeOptions
@@ -43,7 +40,7 @@ export async function describe(
     indentation.hasDescribe = true;
 
     const { background, icon } = options || {};
-    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold() || ''}`;
+    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold()}`;
     const noBackground = !background;
 
     if (noBackground) {
