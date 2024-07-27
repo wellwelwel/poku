@@ -9,6 +9,7 @@
     "src/@types", // Typings exports only
     "src/polyfills", // They involve compatibility between older versions of platforms or assist in cross-platform compatibility
     "src/modules/helpers/create-service.ts", // Varies of platform (Node.js, Bun, and Deno)
+    "src/modules/helpers/container.ts", // On macOS, the memory consumption and installation time plus the processing required cause constant failures due to timeouts or resource limit usage.
     "src/modules/helpers/get-pids.ts", // 100% Process-based
     "src/modules/helpers/kill.ts", // 100% Process-based
     "src/services/container.ts", // On macOS, the memory consumption and installation time plus the processing required cause constant failures due to timeouts or resource limit usage.
