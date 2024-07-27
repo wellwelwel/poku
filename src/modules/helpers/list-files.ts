@@ -57,7 +57,6 @@ export const getAllFiles = async (
       const fullPath = join(dirPath, file);
       const stat = await fsStat(fullPath);
 
-      /* c8 ignore next 6 */
       if (
         fullPath.indexOf('node_modules') !== -1 ||
         fullPath.indexOf('.git') === 0

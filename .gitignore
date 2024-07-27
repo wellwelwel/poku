@@ -11,3 +11,4 @@ node_modules
 /test-src
 /test-tests
 /test-before-and-after-each.json
+.nycrc.json
