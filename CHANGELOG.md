@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2.4](https://github.com/wellwelwel/poku/compare/v2.2.3...v2.2.4) (2024-07-27)
+
+
+### Bug Fixes
+
+* always use half of available parallelism ([#611](https://github.com/wellwelwel/poku/issues/611)) ([4c3f289](https://github.com/wellwelwel/poku/commit/4c3f289c1977b05e6d8e784a804b9f5319c3ec2d))
+* **cli:** ensure `filter` and `exclude` when expanding glob from shell ([de9d817](https://github.com/wellwelwel/poku/commit/de9d8171a181f9bd6dc0806321a7f1a029b1fd0b))
+* **output:** always list files at the end of a test run ([#616](https://github.com/wellwelwel/poku/issues/616)) ([bd47ed4](https://github.com/wellwelwel/poku/commit/bd47ed432bf71c0004bd6445bbf547eeecd1e97a))
+
 ## [2.2.3](https://github.com/wellwelwel/poku/compare/v2.2.2...v2.2.3) (2024-07-26)
 
 
