@@ -5,5 +5,5 @@ import {
 
 export const availableParallelism = (): number =>
   typeof nodeAvailableParallelism === 'function'
-    ? Math.floor(nodeAvailableParallelism() / 2)
+    ? nodeAvailableParallelism()
     : (cpus()?.length ?? 1);

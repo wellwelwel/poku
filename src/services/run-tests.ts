@@ -97,7 +97,8 @@ export const runTestsParallel = async (
     ? [sanitizePath(dir)]
     : await listFiles(testDir, configs);
   const filesByConcurrency: string[][] = [];
-  const concurrencyLimit = configs?.concurrency ?? availableParallelism();
+  const concurrencyLimit =
+    configs?.concurrency ?? Math.floor(availableParallelism() / 2);
   const concurrencyResults: (boolean | undefined)[][] = [];
   const showLogs = !isQuiet(configs);
 
