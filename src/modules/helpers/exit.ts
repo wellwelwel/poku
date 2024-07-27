@@ -37,11 +37,13 @@ export const exit = (code: Code, quiet?: boolean) => {
   process.exit(code === 0 ? 0 : 1);
 };
 
+/* c8 ignore next 4 */ // Unknown external error
 process.on('unhandledRejection', (reason) => {
   console.error('unhandledRejection', reason);
   process.exit(1);
 });
 
+/* c8 ignore next 4 */ // Unknown external error
 process.on('uncaughtException', (err) => {
   console.error('uncaughtException', err);
   process.exit(1);
