@@ -31,4 +31,4 @@ The choice not to consider these topics in the coverage comes from the fact that
 >
 > If you don't agree with any of these not covered topics, please feel free to comment. I'm totally open to discussions and opinions.
 >
-> - In disagreements, please see and discuss through [issue#578](https://github.com/wellwelwel/poku/issues/578).
+> - In disagreements, please see and discuss through [discussion#613](https://github.com/wellwelwel/poku/discussions/613).
