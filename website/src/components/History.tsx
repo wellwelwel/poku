@@ -1,6 +1,7 @@
 import { FC, JSX } from 'react';
 import Details from '@theme/Details';
 import { FileClock as HistoryIcon } from 'lucide-react';
+import Translate from '@docusaurus/Translate';
 
 export type HistoryRecords = {
   /** **Examples:**
@@ -64,7 +65,12 @@ export const History: FC<HistoryProps> = ({ records, open }) => {
       open={open}
       summary={
         <summary>
-          <HistoryIcon /> History
+          <HistoryIcon />
+          <Translate
+           id="history.component.title"
+          >
+            History
+          </Translate>
         </summary>
       }
       className='history'
@@ -72,8 +78,20 @@ export const History: FC<HistoryProps> = ({ records, open }) => {
       <table>
         <thead>
           <tr>
-            <th>Version</th>
-            <th>Changes</th>
+            <th>
+              <Translate
+              id="history.component.version"
+              >
+                Version
+              </Translate>
+            </th>
+            <th>
+              <Translate
+              id="history.component.changes"
+              >
+                Changes
+              </Translate>
+            </th>
           </tr>
         </thead>
         <tbody>
