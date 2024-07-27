@@ -169,7 +169,7 @@ export class DockerCompose {
     this.envFile = envFile;
     this.projectName = projectName;
     this.detach = detach;
-    this.cwd = cwd ? sanitizePath(cwd) : undefined;
+    this.cwd = cwd ? sanitizePath(cwd) /* c8 ignore next */ : undefined;
     this.verbose = verbose;
   }
 

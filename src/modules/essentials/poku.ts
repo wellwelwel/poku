@@ -9,12 +9,12 @@ import { isQuiet } from '../../parsers/output.js';
 import { fileResults, finalResults } from '../../configs/files.js';
 import { indentation } from '../../configs/indentation.js';
 
-/* c8 ignore next 3 */
+/* c8 ignore next 3 */ // Process-based
 export const onSigint = () => {
   process.stdout.write('\u001B[?25h');
 };
 
-/* c8 ignore next */
+/* c8 ignore next */ // Process-based
 process.once('SIGINT', onSigint);
 
 export async function poku(

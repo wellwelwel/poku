@@ -20,7 +20,7 @@ export const runTestFile = async (
   const runtime = runtimeOptions.shift()!;
   const runtimeArguments = [
     ...runtimeOptions,
-    /* c8 ignore next 5 */
+    /* c8 ignore next 5 */ // Varies Platform
     configs?.deno?.cjs === true ||
     (Array.isArray(configs?.deno?.cjs) &&
       configs.deno.cjs.some((ext) => filePath.includes(ext)))
@@ -95,7 +95,7 @@ export const runTestFile = async (
       resolve(result);
     });
 
-    /* c8 ignore start */
+    /* c8 ignore next 10 */ // Unknown external error
     child.on('error', (err) => {
       end = hrtime(start);
 
@@ -106,6 +106,5 @@ export const runTestFile = async (
 
       resolve(false);
     });
-    /* c8 ignore stop */
   });
 };

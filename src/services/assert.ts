@@ -106,7 +106,7 @@ export const processAssert = async (
       exit(1);
     }
 
-    // Non-assertion errors
+    /* c8 ignore next */ // Unknown external error
     throw error;
   }
 };
@@ -383,7 +383,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     regExp: RegExp,
     message?: ProcessAssertionOptions['message']
   ): void => {
-    /* c8 ignore next 3 */
+    /* c8 ignore next 3 */ // Platform version
     if (typeof nodeVersion === 'number' && nodeVersion < 12) {
       throw new Error('match is available from Node.js 12 or higher');
     }
@@ -401,7 +401,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     regExp: RegExp,
     message?: ProcessAssertionOptions['message']
   ): void => {
-    /* c8 ignore next 3 */
+    /* c8 ignore next 3 */ // Platform version
     if (typeof nodeVersion === 'number' && nodeVersion < 12) {
       throw new Error('doesNotMatch is available from Node.js 12 or higher');
     }

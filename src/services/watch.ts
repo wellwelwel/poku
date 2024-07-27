@@ -25,11 +25,6 @@ export class Watcher {
       this.callback(filePath, eventType);
     });
 
-    /* c8 ignore next 3 */
-    watcher.on('error', () => {
-      return;
-    });
-
     this.fileWatchers.set(filePath, watcher);
   }
 
@@ -65,14 +60,8 @@ export class Watcher {
           if (stats.isDirectory()) {
             await this.watchDirectory(fullPath);
           }
-          /* c8 ignore next */
         } catch {}
       }
-    });
-
-    /* c8 ignore next 3 */
-    watcher.on('error', () => {
-      return;
     });
 
     this.dirWatchers.set(dir, watcher);
@@ -99,7 +88,6 @@ export class Watcher {
       } else {
         this.watchFile(this.rootDir);
       }
-      /* c8 ignore next */
     } catch {}
   }
 
