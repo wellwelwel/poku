@@ -6,4 +6,4 @@ import {
 export const availableParallelism = (): number =>
   typeof nodeAvailableParallelism === 'function'
     ? nodeAvailableParallelism()
-    : (cpus()?.length ?? 1);
+    : (cpus()?.length ?? 0);
