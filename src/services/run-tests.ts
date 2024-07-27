@@ -3,11 +3,7 @@ import { cwd as processCWD, hrtime } from 'node:process';
 import { join, relative, sep } from 'node:path';
 import { runner } from '../parsers/get-runner.js';
 import { indentation } from '../configs/indentation.js';
-import {
-  isFile as IS_FILE,
-  listFiles,
-  sanitizePath,
-} from '../modules/helpers/list-files.js';
+import { isFile as IS_FILE, listFiles } from '../modules/helpers/list-files.js';
 import { Write } from '../services/write.js';
 import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
@@ -24,15 +20,13 @@ export const runTests = async (
   const testDir = join(cwd, dir);
   const currentDir = relative(cwd, testDir);
   const isFile = await IS_FILE(testDir);
-  const files = isFile
-    ? [sanitizePath(testDir)]
-    : await listFiles(testDir, configs);
+  const files = await listFiles(testDir, configs);
   const totalTests = files.length;
   const showLogs = !isQuiet(configs);
 
   let passed = true;
 
-  if (showLogs) {
+  if (showLogs && files.length > 0) {
     Write.hr();
     Write.log(
       `${format(isFile ? 'File:' : 'Directory:').bold()} ${format(`.${sep}${currentDir}`).underline()}\n`
@@ -93,9 +87,7 @@ export const runTestsParallel = async (
   configs?: Configs
 ): Promise<boolean> => {
   const testDir = join(cwd, dir);
-  const files = (await IS_FILE(dir))
-    ? [sanitizePath(dir)]
-    : await listFiles(testDir, configs);
+  const files = await listFiles(testDir, configs);
   const filesByConcurrency: string[][] = [];
   const concurrencyLimit =
     configs?.concurrency ?? Math.max(Math.floor(availableParallelism() / 2), 1);

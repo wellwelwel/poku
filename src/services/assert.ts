@@ -106,7 +106,7 @@ export const processAssert = async (
       exit(1);
     }
 
-    /* c8 ignore next */ // Unknown external error
+    /* c8 ignore next 2 */ // Unknown external error
     throw error;
   }
 };

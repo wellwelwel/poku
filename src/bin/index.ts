@@ -4,7 +4,7 @@ import type { Configs } from '../@types/poku.js';
 import process from 'node:process';
 import { escapeRegExp } from '../modules/helpers/list-files.js';
 import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
-import { fileResults } from '../configs/files.js';
+import { fileResults, states } from '../configs/files.js';
 import { platformIsValid } from '../parsers/get-runtime.js';
 import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
@@ -63,6 +63,10 @@ import { getConfigs } from '../parsers/options.js';
 
     return Number.isNaN(value) ? defaultConfigs?.concurrency : value;
   })();
+
+  if (dirs.length === 1) {
+    states.isSinglePath = true;
+  }
 
   const tasks: Promise<unknown>[] = [];
 

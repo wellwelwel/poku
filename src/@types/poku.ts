@@ -87,6 +87,10 @@ export type FinalResults = {
   started: Date;
 };
 
+export type States = {
+  isSinglePath?: boolean;
+};
+
 type cliConfigs = {
   /** By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it. */
   include?: string | string[];
