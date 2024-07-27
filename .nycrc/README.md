@@ -1,5 +1,9 @@
 # ☔️ Coverage
 
+<a href="https://app.codecov.io/gh/wellwelwel/poku">
+  <img alt="Codecov" src="https://img.shields.io/codecov/c/github/wellwelwel/poku?logo=codecov">
+</a>
+
 ## Specific cases and approaches don't generate coverage reports properly
 
 ### Different behaviors due to platform versions
@@ -25,7 +29,7 @@ The choice not to consider these topics in the coverage comes from the fact that
 
 > Similarly, there are specific tests for **Bun** and **Deno** that don't generate coverage reports.
 
-- In order to keep the minimum possible number of coverage instructions within the code, I have concentrated the cases of impossible coverage in individual files.
+- In order to keep the minimum possible number of coverage instructions within the code, I have concentrated the cases of unfeasible coverage in individual files.
 
 > [!NOTE]
 >
