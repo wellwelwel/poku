@@ -4,10 +4,9 @@ import process from 'node:process';
 import { runTests, runTestsParallel } from '../../services/run-tests.js';
 import { Write } from '../../services/write.js';
 import { exit } from '../helpers/exit.js';
-import { format } from '../../services/format.js';
+import { format, showTestResults } from '../../services/format.js';
 import { isQuiet } from '../../parsers/output.js';
-import { fileResults, finalResults } from '../../configs/files.js';
-import { indentation } from '../../configs/indentation.js';
+import { finalResults } from '../../configs/files.js';
 
 /* c8 ignore next 3 */ // Process-based
 export const onSigint = () => {
@@ -60,6 +59,8 @@ export async function poku(
 
     finalResults.time = total;
 
+    showLogs && showTestResults();
+
     exit(code, configs?.quiet);
     return;
   }
@@ -94,29 +95,7 @@ export async function poku(
     finalResults.time = total;
   }
 
-  showLogs && Write.hr();
-
-  if (showLogs && fileResults.success.size > 0) {
-    Write.log(
-      Array.from(fileResults.success)
-        .map(
-          ([file, time]) =>
-            `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${time}ms`).success()}`).dim()}`
-        )
-        .join('\n')
-    );
-  }
-
-  if (showLogs && fileResults.fail.size > 0) {
-    Write.log(
-      Array.from(fileResults.fail)
-        .map(
-          ([file, time]) =>
-            `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time}ms`).fail()}`).dim()}`
-        )
-        .join('\n')
-    );
-  }
+  showLogs && showTestResults();
 
   if (configs?.noExit) {
     return code;
