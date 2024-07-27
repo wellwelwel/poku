@@ -35,6 +35,12 @@ npx poku
 - It tries to identify the platform or run it in **Node.js** by default.
 
 ```sh
+npx poku --node
+```
+
+- It calls **Poku** through **Node.js**, but runs all the tests using **Node.js**.
+
+```sh
 npx poku --bun
 ```
 
@@ -68,7 +74,7 @@ npx poku --node
 - It runs **Poku** through **Node.js** and ensures that all tests are run with **Node.js** (or **tsx** for **TypeScript** tests).
 
 ```sh
-bun poku --bun
+bunx poku --bun
 ```
 
 - It runs **Poku** through **Bun** and ensures that all tests are run with **Bun**.

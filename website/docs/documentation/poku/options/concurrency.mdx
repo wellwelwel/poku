@@ -4,9 +4,9 @@ sidebar_position: 8
 
 # `concurrency`
 
-When using `parallel` option, use `concurrency` to limit the number of tests running concurrently.<br />
-The default value is half of the available cores. When available, the `os.availableParallelism()` method is used. Otherwise Poku looks at the `os.cpus().length` or sets the value to `1`.<br />
-To allow unlimited parallelism set the value to `0`.
+When using `parallel` option, use `concurrency` to limit the number of tests running concurrently.
+
+The default value is half of the available cores or, when available, the `os.availableParallelism()` method is used. Otherwise **Poku** looks at the `os.cpus().length` or sets the value to `1`.
 
 ## CLI
 
@@ -22,3 +22,9 @@ await poku('./test', {
   concurrency: 4,
 });
 ```
+
+<hr />
+
+:::tip
+To allow unlimited parallelism set the value to `0`.
+:::
