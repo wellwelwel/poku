@@ -67,6 +67,30 @@ npx poku targetPathA targetPathB
 
 <hr />
 
+### By extending Glob patterns from shell
+
+You can also extend **Glob patterns** with `npx`, `bun`, `yarn`, etc.
+
+For example, by running all the unit tests of a _monorepo_:
+
+```sh
+npx poku ./packages/**/test/unit
+```
+
+Now, listing all `.js` files instead of the default `.test.|.spec.`:
+
+```sh
+npx poku --filter='.js' ./packages/**/test/unit
+```
+
+Also, by bypassing the filter:
+
+```sh
+npx poku --filter='' ./packages/**/test/unit/*.js
+```
+
+<hr />
+
 ### `--include`
 
 <Stability
