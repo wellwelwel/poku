@@ -115,7 +115,7 @@ const Home = () => {
             <Heading as='h2'>🐷 What's Poku?</Heading>
             <p>
               A cross-platform test runner that{' '}
-              <Link to='/docs/philosophy'>
+              <Link to='/docs/philosophy#javascript-essence-for-tests-'>
                 brings the <strong>JavaScript</strong> essence back to testing
               </Link>
               .

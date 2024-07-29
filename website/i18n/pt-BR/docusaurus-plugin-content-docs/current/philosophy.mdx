@@ -1,5 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Heading from '@theme/Heading';
 
 # Filosofia
 
@@ -7,7 +8,7 @@ A filosofia do **Poku** se concentra na simplicidade e na eficiência, removendo
 
 <hr />
 
-## Essência do JavaScript para testes 💡
+<Heading as='h2' id="javascript-essence-for-tests-">Essência do JavaScript para testes 💡</Heading>
 
 > A sintaxe nativa do **JavaScript** para testes é o que torna possível usar o **Poku** em várias plataformas.
 
@@ -39,6 +40,7 @@ describe('Meu Teste', { concurrency: 1 }, () => {
     console.log('Finalizado');
   });
 
+  // Testes assíncronos, mas eles serão executados sequencialmente mesmo sem o uso do `await`
   it(async () => {
     // teste assíncrono
   });
@@ -49,7 +51,7 @@ describe('Meu Teste', { concurrency: 1 }, () => {
 });
 ```
 
-Além disso, não é possível executá-lo como `node test.js` devido a avaliações, estado global ou transformações de teste, sendo necessário rodar seu teste usando o executor de teste.
+Além disso, não é possível executá-lo como `node test.js` devido a _evaluations_, estado global ou transformações de testes, sendo necessário rodar seu teste usando o executor de teste.
 
 O **Poku** traz de volta a essência do **JavaScript** aos testes:
 
