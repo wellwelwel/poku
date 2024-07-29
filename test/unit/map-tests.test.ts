@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { test } from '../../src/modules/helpers/test.js';
 import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it.js';
+import { it } from '../../src/modules/helpers/it/core.js';
 import { beforeEach, afterEach } from '../../src/modules/helpers/each.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import {

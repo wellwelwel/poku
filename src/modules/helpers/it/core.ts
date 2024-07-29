@@ -1,17 +1,17 @@
 import { hrtime, env } from 'node:process';
-import { each } from '../../configs/each.js';
-import { indentation } from '../../configs/indentation.js';
-import { format } from '../../services/format.js';
-import { Write } from '../../services/write.js';
+import { each } from '../../../configs/each.js';
+import { indentation } from '../../../configs/indentation.js';
+import { format } from '../../../services/format.js';
+import { Write } from '../../../services/write.js';
 
-export async function it(
+async function itCore(
   message: string,
   cb: () => Promise<unknown>
 ): Promise<void>;
-export function it(message: string, cb: () => unknown): void;
-export async function it(cb: () => Promise<unknown>): Promise<void>;
-export function it(cb: () => unknown): void;
-export async function it(
+function itCore(message: string, cb: () => unknown): void;
+async function itCore(cb: () => Promise<unknown>): Promise<void>;
+function itCore(cb: () => unknown): void;
+async function itCore(
   ...args: [
     string | (() => unknown | Promise<unknown>),
     (() => unknown | Promise<unknown>)?,
@@ -88,3 +88,5 @@ export async function it(
     throw error;
   }
 }
+
+export const it = Object.assign(itCore, {});

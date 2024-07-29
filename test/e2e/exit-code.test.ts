@@ -1,5 +1,5 @@
 import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it.js';
+import { it } from '../../src/modules/helpers/it/core.js';
 import { poku } from '../../src/modules/essentials/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 

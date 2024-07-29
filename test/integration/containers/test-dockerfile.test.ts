@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
 import { describe } from '../../../src/modules/helpers/describe.js';
-import { it } from '../../../src/modules/helpers/it.js';
+import { it } from '../../../src/modules/helpers/it/core.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { docker } from '../../../src/modules/helpers/container.js';
 import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
