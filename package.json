@@ -62,10 +62,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@types/node": "^20.14.12",
+    "@types/node": "^20.14.13",
     "c8": "^10.1.2",
     "jsonc.min": "^1.0.0",
-    "monocart-coverage-reports": "^2.9.3",
+    "monocart-coverage-reports": "^2.10.0",
     "packages-update": "^2.0.0",
     "prettier": "^3.3.3",
     "tsx": "4.16.2",
