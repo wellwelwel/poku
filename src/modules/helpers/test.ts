@@ -1,3 +1,3 @@
-import { it } from './it.js';
+import { it } from './it/core.js';
 
 export const test = it;

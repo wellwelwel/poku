@@ -1,6 +1,6 @@
 import { createServer, type Server } from 'node:http';
 import { test } from '../../../src/modules/helpers/test.js';
-import { it } from '../../../src/modules/helpers/it.js';
+import { it } from '../../../src/modules/helpers/it/core.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
 import { kill } from '../../../src/modules/helpers/kill.js';
