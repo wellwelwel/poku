@@ -17,23 +17,23 @@ const sidebars: SidebarsConfig = {
           label: '🐷 Poku',
           collapsed: false,
           link: {
-            type: "generated-index"
+            type: 'generated-index',
           },
           items: [
             {
               type: 'doc',
-              id: 'documentation/poku/include-files'
+              id: 'documentation/poku/include-files',
             },
             {
               type: 'doc',
-              id: 'documentation/poku/config-files'
+              id: 'documentation/poku/config-files',
             },
             {
               type: 'category',
               label: '🧩 Opções',
               collapsed: true,
               link: {
-                type: "generated-index"
+                type: 'generated-index',
               },
               items: [
                 'documentation/poku/options/parallel',
@@ -53,42 +53,42 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: 'doc',
-          id: 'documentation/assert/index'
+          id: 'documentation/assert/index',
         },
         {
           type: 'category',
-          label: "⚡️ Helpers",
+          label: '⚡️ Helpers',
           collapsed: false,
           link: {
-            type: "generated-index"
+            type: 'generated-index',
           },
           items: [
             {
               type: 'doc',
-              id: 'documentation/helpers/test'
+              id: 'documentation/helpers/test',
             },
             {
               type: 'doc',
-              id: 'documentation/helpers/describe'
+              id: 'documentation/helpers/describe',
             },
             {
               type: 'doc',
-              id: 'documentation/helpers/it'
+              id: 'documentation/helpers/it',
             },
             {
               type: 'doc',
-              id: 'documentation/helpers/env'
+              id: 'documentation/helpers/env',
             },
             {
               type: 'doc',
-              id: 'documentation/helpers/skip'
+              id: 'documentation/helpers/skip',
             },
             {
               type: 'category',
               label: '🧙🏻 Before and After Each',
               collapsed: true,
               link: {
-                type: "generated-index"
+                type: 'generated-index',
               },
               items: [
                 'documentation/helpers/before-after-each/per-file',
@@ -97,22 +97,22 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: 'doc',
-              id: 'documentation/helpers/containers'
+              id: 'documentation/helpers/containers',
             },
             {
               type: 'doc',
-              id: 'documentation/helpers/startScript'
+              id: 'documentation/helpers/startScript',
             },
             {
               type: 'doc',
-              id: 'documentation/helpers/startService'
+              id: 'documentation/helpers/startService',
             },
             {
               type: 'category',
-              label: "🚪 Processes",
+              label: '🚪 Processes',
               collapsed: true,
               link: {
-                type: "generated-index"
+                type: 'generated-index',
               },
               items: [
                 'documentation/helpers/processes/kill',
@@ -123,15 +123,15 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: 'doc',
-              id: 'documentation/helpers/list-files'
+              id: 'documentation/helpers/list-files',
             },
             {
               type: 'doc',
-              id: 'documentation/helpers/log'
+              id: 'documentation/helpers/log',
             },
-          ]
+          ],
         },
-        ],
+      ],
     },
     {
       type: 'category',
