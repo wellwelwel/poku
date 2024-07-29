@@ -1,0 +1,186 @@
+---
+sidebar_position: 2
+---
+
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
+# ⚙️ Arquivos de configuração
+
+Por padrão, o **Poku** vem com as configurações de uso mais comuns predefinidas, mas você pode ajustá-las como desejar.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Suporte para a flag curta <code>-c</code>.
+        </>,
+      ],
+    },
+    {
+      version: '2.1.0',
+      changes: [
+        <>
+          Suporte para arquivos de configuração (<code>js</code> e{' '}
+          <code>cjs</code>).
+        </>,
+        <>
+          Suporte para arquivos de configuração (<code>json</code> e{' '}
+          <code>jsonc</code>).
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## JavaScript
+
+<Stability
+  level={2}
+  message={
+    <>
+      <div>
+        <strong>Prós:</strong> Suporta funções e regex.
+      </div>
+      <div>
+        <strong>Contras:</strong> Precisa ser um arquivo CommonJS.
+      </div>
+    </>
+  }
+/>
+
+Crie um arquivo `poku.config.js` (ou `poku.config.cjs` quando estiver usando `"type": "module"` no seu _package.json_) no diretório raiz do seu projeto, por exemplo:
+
+```js
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  include: ['.'],
+  parallel: false,
+  debug: false,
+  filter: /\.(test.|.spec)\./,
+  exclude: [], // regex
+  failFast: false,
+  concurrency: 0, // Sem limite
+  quiet: false,
+  envFile: '.env',
+  kill: {
+    port: [3000],
+    range: [
+      [3000, 3003],
+      [4000, 4002],
+    ],
+    pid: [612],
+  },
+  platform: 'node', // "node", "bun" and "deno"
+  deno: {
+    allow: ['run', 'env', 'read', 'hrtime', 'net'],
+    deny: [], // O mesmo que allow
+    cjs: ['.js', '.cjs'], // extensões específicas
+    // "cjs": true // todas as extensões
+    // "cjs": false // sem polyfill
+  },
+  beforeEach: () => true, // Antes de cada arquivo de teste
+  afterEach: () => true, // Depois de cada arquivo de teste
+});
+```
+
+## JSON and JSONC
+
+<Stability
+  level={2}
+  message={
+    <>
+      <div>
+        <strong>Prós:</strong> Arquivo universal para CommonJS, ES Modules e
+        TypeScript.
+      </div>
+      <div>
+        <strong>Contras:</strong> Não suporta funções e regex.
+      </div>
+    </>
+  }
+/>
+
+Criei um arquivo `.pokurc.json` (ou `.pokurc.jsonc`) no diretório raiz do seu projeto, por exemplo:
+
+```js
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "include": ["."],
+  "parallel": false,
+  "debug": false,
+  "filter": ".test.|.spec.", // regex como string
+  "exclude": "", // regex como string
+  "failFast": false,
+  "concurrency": 0, // Sem limite
+  "quiet": false,
+  "envFile": ".env",
+  "kill": {
+    "port": [3000],
+    "range": [
+      [3000, 3003],
+      [4000, 4002],
+    ],
+    "pid": [612],
+  },
+  "platform": "node", // "node", "bun" and "deno"
+  "deno": {
+    "allow": ["run", "env", "read", "hrtime", "net"],
+    "deny": [], // O mesmo que allow
+    "cjs": [".js", ".cjs"], // extensões específicas
+    // "cjs": true // todas as extensões
+    // "cjs": false // sem polyfill
+  }
+}
+```
+
+:::tip
+
+- A propriedade `$schema` permite sugestões inteligentes no _JSON_ para te ajudar a personalizar o **Poku**.
+- Todas as opções são opcionais.
+- [Veja os detalhes de todas as opções](/docs/category/-options).
+
+:::
+
+:::note
+Compartilha as mesmas limitações das flags do _CLI_.
+:::
+
+<hr />
+
+## Arquivos de Configuração Padrão
+
+> Em ordem de prioridade.
+
+- `poku.config.js`,
+- `poku.config.cjs`,
+- `.pokurc.json`
+- `.pokurc.jsonc`
+
+:::note
+
+- Usar uma configuração duplicada via CLI irá sobrescrever a opção no arquivo de configuração.
+- Se houver múltiplos arquivos de configuração no mesmo diretório, Poku irá procurar — e usará — apenas um.
+
+:::
+
+<hr />
+
+## Arquivo Personalizado
+
+```sh
+npx poku --config='meu-arquivo.json'
+```
+
+```sh
+npx poku --config='meu-arquivo.jsonc'
+```
+
+```sh
+npx poku --config='meu-arquivo'
+```
+
+- Flag curta: `-c`.
