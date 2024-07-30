@@ -1,0 +1,22 @@
+---
+sidebar_position: 7
+tags: [bail]
+---
+
+# `failFast`
+
+Utilizando o `failFast`, o **Poku** irá parar os testes na primeira falha.
+
+## CLI
+
+```bash
+npx poku --fail-fast ./test
+```
+
+## API
+
+```ts
+await poku('./test', {
+  failFast: true,
+});
+```
