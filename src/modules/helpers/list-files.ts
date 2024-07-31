@@ -70,7 +70,7 @@ export const getAllFiles = async (
 
       if (
         fullPath.indexOf('node_modules') !== -1 ||
-        fullPath.indexOf('.git') === 0
+        fullPath.indexOf('.git/') !== -1
       ) {
         return;
       }
