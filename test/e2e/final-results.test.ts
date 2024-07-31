@@ -24,7 +24,7 @@ describe('Final Results', async () => {
       cwd: './fixtures/final-results/todo',
     });
 
-    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 0');
+    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
     assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
     assert.match(results.stdout, /TODO › 1/, 'Needs to todo 1');
   });
@@ -34,8 +34,19 @@ describe('Final Results', async () => {
       cwd: './fixtures/final-results/skip-and-todo',
     });
 
-    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 0');
+    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
     assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
+    assert.match(results.stdout, /SKIP › 1/, 'Needs to todo 1');
+    assert.match(results.stdout, /TODO › 1/, 'Needs to todo 1');
+  });
+
+  await it('Skip + Todo + Failure', async () => {
+    const results = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
+      cwd: './fixtures/final-results/skip-todo-and-failure',
+    });
+
+    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
+    assert.match(results.stdout, /FAIL › 1/, 'Needs to fail 1');
     assert.match(results.stdout, /SKIP › 1/, 'Needs to todo 1');
     assert.match(results.stdout, /TODO › 1/, 'Needs to todo 1');
   });
