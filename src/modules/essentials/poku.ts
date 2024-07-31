@@ -8,13 +8,13 @@ import { format, showTestResults } from '../../services/format.js';
 import { isQuiet } from '../../parsers/output.js';
 import { finalResults } from '../../configs/files.js';
 
-/* c8 ignore next 3 */ // Process-based
+/* c8 ignore start */ // Process-based
 export const onSigint = () => {
   process.stdout.write('\u001B[?25h');
 };
 
-/* c8 ignore next */ // Process-based
 process.once('SIGINT', onSigint);
+/* c8 ignore stop */
 
 export async function poku(
   targetPaths: string | string[],
@@ -33,8 +33,7 @@ export async function poku(
   finalResults.started = new Date();
 
   const start = process.hrtime();
-  const prepareDirs = Array.prototype.concat(targetPaths);
-  const dirs = prepareDirs.length > 0 ? prepareDirs : ['.'];
+  const dirs = Array.prototype.concat(targetPaths);
   const showLogs = !isQuiet(configs);
 
   // Sequential
@@ -62,7 +61,6 @@ export async function poku(
     showLogs && showTestResults();
 
     exit(code, configs?.quiet);
-    return;
   }
 
   // Parallel
