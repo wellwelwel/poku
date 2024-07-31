@@ -1,0 +1,53 @@
+---
+sidebar_position: 4
+---
+
+# ⏭️ skip
+
+Você pode pular testes quando necessário:
+
+```ts
+import { skip } from 'poku';
+
+skip();
+```
+
+Você também pode passar uma mensagem opcional para o método `skip`:
+
+```ts
+import { skip } from 'poku';
+
+skip('Pulando por algum motivo');
+```
+
+:::important
+Isto pulará o arquivo inteiro e é recomendável usá-lo no início do arquivo de teste.
+:::
+
+---
+
+## Exemplos
+
+Imagine que um teste específico não funcione em um _SO_ específico:
+
+```ts
+import { test, skip } from 'poku';
+// destaca-início
+import { platform } from 'node:process';
+
+const isWindows = platform === 'win32';
+
+// destaca-fim
+if (isWindows) skip('Pulando devido à incompatibilidade com o Windows');
+
+// Executa testes normalmente em outros sistemas operacionais
+// destaca-início
+test(() => {
+  // ...
+});
+// destaca-fim
+```
+
+:::note
+Testes pulados são considerados testes bem-sucedidos.
+:::
