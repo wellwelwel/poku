@@ -1,0 +1,115 @@
+---
+sidebar_position: 1
+tags: [boilerplate, tdd, bdd]
+---
+
+# 🧪 test
+
+> `test(mensagem: string, cb: () => void)` | `test(cb: () => void)`
+
+`test` é um auxiliar para o ajudar em casos como:
+
+- Usar [`beforeEach` e `afterEach`](/docs/documentation/helpers/before-after-each/in-code) para cada `test` realizado
+- Isolar ou agrupar seus testes no mesmo arquivo
+- Executar testes no mesmo arquivo em paralelo
+
+## Uso Básico
+
+### Isolando escopos
+
+```ts
+import { test, assert } from 'poku';
+
+test(() => {
+  const minhaVar = 'a';
+
+  assert.strictEqual(minhaVar, 'a', 'Meu primeiro auxiliar de teste');
+});
+
+test(() => {
+  const minhaVar = 'b';
+
+  assert.strictEqual(minhaVar, 'b', 'Meu segundo auxiliar de teste');
+});
+```
+
+### Agrupando testes
+
+```ts
+import { test, assert } from 'poku';
+
+test(() => {
+  assert.equal(1 + 1, 2, '1 + 1 deve ser 2');
+  assert.equal(2 + 2, 4, '2 + 2 deve ser 4');
+});
+```
+
+```ts
+import { test, assert } from 'poku';
+
+test('Testes de soma', () => {
+  assert.equal(1 + 1, 2);
+  assert.equal(2 + 2, 4);
+});
+```
+
+```ts
+import { test, assert } from 'poku';
+
+test('Testes de soma', () => {
+  assert.equal(1 + 1, 2, '1 + 1 deve ser 2');
+  assert.equal(2 + 2, 4, '2 + 2 deve ser 4');
+});
+```
+
+### Aguardando promessas
+
+```ts
+import { test } from 'poku';
+
+await test(async () => {
+  // faça o que quiser
+});
+
+await test(async () => {
+  // faça o que quiser
+});
+```
+
+### Executando em paralelo
+
+```ts
+import { test } from 'poku';
+
+test(async () => {
+  // faça o que quiser
+});
+
+test(async () => {
+  // faça o que quiser
+});
+```
+
+### Aguardando múltiplas promessas
+
+```ts
+import { test } from 'poku';
+
+// faça algo antes
+
+await Promise.all([
+  test(async () => {
+    // faça o que quiser
+  }),
+
+  test(async () => {
+    // faça o que quiser
+  }),
+]);
+
+// faça algo depois
+```
+
+:::tip
+Você pode pensar nisso como `beforeAll` e `afterAll`.
+:::
