@@ -2,7 +2,7 @@ import { exit, env } from 'node:process';
 import { Write } from '../../services/write.js';
 import { format } from '../../services/format.js';
 
-export const skip = (message?: string) => {
+export const skip = (message = 'Skipping') => {
   const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
   const FILE = env.FILE;
 
@@ -10,8 +10,8 @@ export const skip = (message?: string) => {
     Write.log(
       format(
         isPoku
-          ? `ℹ ${message} ${format('›').dim()} ${format(`${FILE}`).italic().gray().dim()}`
-          : `ℹ ${message}`
+          ? `◯ ${message} ${format('›').dim()} ${format(`${FILE}`).italic().gray().dim()}`
+          : `◯ ${message}`
       )
         .info()
         .bold()
