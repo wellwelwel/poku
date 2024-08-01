@@ -6,7 +6,7 @@ sidebar_position: 8
 
 When using `parallel` option, use `concurrency` to limit the number of tests running concurrently.
 
-The default value is half of the available cores or, when available, the `os.availableParallelism()` method is used. Otherwise **Poku** looks at the `os.cpus().length` or sets the value to `1`.
+The default value is the number of available cores (or `os.availableParallelism()` if available) minus `1`. In **watch mode**, it uses half the number of available cores (or `os.availableParallelism()` if available).
 
 ## CLI
 
@@ -26,5 +26,5 @@ await poku('./test', {
 <hr />
 
 :::tip
-To allow unlimited parallelism set the value to `0`.
+To allow unlimited parallelism, set the value to `0`.
 :::

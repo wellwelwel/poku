@@ -14,6 +14,7 @@ import { watch, type Watcher } from '../services/watch.js';
 import { onSigint, poku } from '../modules/essentials/poku.js';
 import { Write } from '../services/write.js';
 import { getConfigs } from '../parsers/options.js';
+import { availableParallelism } from '../polyfills/cpus.js';
 
 (async () => {
   const configFile = getArg('config') || getArg('c', '-');
@@ -215,7 +216,12 @@ import { getConfigs } from '../parsers/options.js';
                         return;
                       }
 
-                      poku(Array.from(tests), options).then(() => {
+                      poku(Array.from(tests), {
+                        ...options,
+                        concurrency:
+                          concurrency ??
+                          Math.max(Math.floor(availableParallelism() / 2), 1),
+                      }).then(() => {
                         setTimeout(() => {
                           executing.delete(filePath);
                         }, interval);
