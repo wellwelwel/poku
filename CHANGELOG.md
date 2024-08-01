@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/wellwelwel/poku/compare/v2.2.4...v2.3.0) (2024-08-01)
+
+
+### Features
+
+* add `.todo` helper for `describe`, `it`, and `test` ([#633](https://github.com/wellwelwel/poku/issues/633)) ([526112c](https://github.com/wellwelwel/poku/commit/526112c26fa028895487004101dc66f0fd72837e))
+
+
+### Performance Improvements
+
+* improve concurrency defaults (inspired by Jest definitions) ([#637](https://github.com/wellwelwel/poku/issues/637)) ([ab01530](https://github.com/wellwelwel/poku/commit/ab01530df977afac0ca737a32db8edfa44568f7f))
+
 ## [2.2.4](https://github.com/wellwelwel/poku/compare/v2.2.3...v2.2.4) (2024-07-27)
 
 
