@@ -13,7 +13,7 @@
       "items": {
         "type": "string"
       },
-      "description": "Specify the path(s) to include in the configuration.\nhttps://poku.io/docs/documentation/poku/include-files",
+      "description": "Specify the path(s) to include in the configuration. Doesn't support glob patterns.\nhttps://poku.io/docs/documentation/poku/include-files",
       "default": "."
     },
     "parallel": {

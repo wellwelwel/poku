@@ -45,6 +45,12 @@ npx poku --parallel
 
 - Run all tests in parallel.
 
+```bash
+npx poku ./test
+```
+
+- Run all tests in `./test` directory.
+
 :::tip
 You can pass both directories and files.
 :::
@@ -55,11 +61,7 @@ It's not possible to run tests in the `.git` and `node_modules` directories.
 
 <hr />
 
-### By setting the directories as the last argument
-
-```bash
-npx poku targetPath
-```
+### By setting multiple paths
 
 ```bash
 npx poku targetPathA targetPathB

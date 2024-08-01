@@ -3,6 +3,7 @@ import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { format } from '../../../services/format.js';
 import { Write } from '../../../services/write.js';
+import { todo } from './todo.js';
 
 async function itCore(
   message: string,
@@ -89,4 +90,6 @@ async function itCore(
   }
 }
 
-export const it = Object.assign(itCore, {});
+export const it = Object.assign(itCore, {
+  todo,
+});

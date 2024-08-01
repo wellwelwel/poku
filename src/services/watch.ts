@@ -77,18 +77,16 @@ export class Watcher {
   }
 
   public async start() {
-    try {
-      const stats = await stat(this.rootDir);
+    const stats = await stat(this.rootDir);
 
-      if (stats.isDirectory()) {
-        this.files = await listFiles(this.rootDir);
+    if (stats.isDirectory()) {
+      this.files = await listFiles(this.rootDir);
 
-        this.watchFiles(this.files);
-        await this.watchDirectory(this.rootDir);
-      } else {
-        this.watchFile(this.rootDir);
-      }
-    } catch {}
+      this.watchFiles(this.files);
+      await this.watchDirectory(this.rootDir);
+    } else {
+      this.watchFile(this.rootDir);
+    }
   }
 
   public stop() {

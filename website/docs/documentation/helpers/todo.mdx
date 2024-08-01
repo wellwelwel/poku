@@ -1,0 +1,61 @@
+---
+sidebar_position: 10
+tags: [boilerplate]
+---
+
+# 📋 todo
+
+`.todo` is an extended helper for `describe`, `it`, and `test` to assist you plan future tests.
+
+## Basic Usage
+
+### Simple message
+
+```ts
+import { describe, it, test } from 'poku';
+
+describe.todo('todo: Upcoming test');
+
+it.todo('todo: Upcoming test');
+
+test.todo('todo: Upcoming test');
+```
+
+- There is no difference between the features.
+
+Also in internal contexts:
+
+```ts
+import { describe, it } from 'poku';
+
+describe(() => {
+  it.todo('todo: Upcoming test');
+
+  it('Real test', () => {
+    /* ... */
+  });
+});
+```
+
+### Ignoring a callback
+
+This can be useful when you already have an idea or prototype of what you want to test, but you don't want the test to actually run.<br />
+It can also be useful for tests that have unexpectedly stopped working due to some external event, requiring further attention.
+
+```ts
+import { describe, it } from 'poku';
+
+describe.todo('todo: Upcoming test', () => {
+  it(async () => {
+    process.exit(1);
+  });
+});
+```
+
+- The method received by `todo` and everything inside it will be completely ignored.
+
+<hr />
+
+:::note
+When using `beforeEach` or `afterEach`, they will not be triggered by tests with `.todo`.
+:::

@@ -6,8 +6,35 @@ import { Write } from '../../services/write.js';
 import { fileResults, finalResults } from '../../configs/files.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 
-export const exit = (code: Code, quiet?: boolean) => {
+export const exit = (code: Code, quiet?: boolean): never => {
   const isPoku = results.success > 0 || results.fail > 0;
+  const success = ` PASS › ${results.success - results.skip || 0} `;
+  const failure = ` FAIL › ${results.fail} `;
+  const skips = ` SKIP › ${results.skip} `;
+  const plans = ` TODO › ${results.todo} `;
+  const inline = results.skip === 0 || results.todo === 0;
+
+  let message = '';
+
+  if (inline) {
+    message += `${format(success).bg('green')} ${format(failure).bg(results.fail === 0 ? 'grey' : 'brightRed')}`;
+
+    if (results.skip) {
+      message += ` ${format(skips).bg('brightBlue')}`;
+    }
+
+    if (results.todo) {
+      message += ` ${format(plans).bg('brightBlue')}`;
+    }
+  } else {
+    message += `${format(success).success().bold()}\n`;
+    message +=
+      results.fail === 0
+        ? format(`${failure}\n`).bold()
+        : `${format(failure).fail().bold()}\n`;
+    message += `${format(skips).info().bold()}\n`;
+    message += `${format(plans).info().bold()}`;
+  }
 
   !quiet &&
     process.on('exit', (code) => {
@@ -23,9 +50,7 @@ export const exit = (code: Code, quiet?: boolean) => {
           `  ${format(`Test Files › ${format(String(fileResults.success.size + fileResults.fail.size)).bold()}`).dim()}`
         );
         Write.hr();
-        Write.log(
-          `${format(` PASS › ${results.success - results.skipped} `).bg('green')} ${format(` FAIL › ${results.fail} `).bg(results.fail === 0 ? 'grey' : 'red')} ${results.skipped > 0 ? format(` SKIPPED › ${results.skipped} `).bg(results.skipped === 0 ? 'grey' : 'blue') : ''}`
-        );
+        Write.log(message);
         Write.hr();
       }
 

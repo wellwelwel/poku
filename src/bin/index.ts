@@ -20,7 +20,8 @@ import { getConfigs } from '../parsers/options.js';
   const defaultConfigs = await getConfigs(configFile);
 
   const dirs: string[] = (() => {
-    const includeArg = getArg('include'); // deprecated
+    /* c8 ignore next 4 */ // Deprecated
+    const includeArg = getArg('include');
     if (includeArg !== undefined) {
       return includeArg.split(',');
     }
@@ -38,6 +39,7 @@ import { getConfigs } from '../parsers/options.js';
   const killPort = getArg('kill-port');
   const killRange = getArg('kill-range');
   const killPID = getArg('kill-pid');
+  /* c8 ignore start */ // Deno
   const denoAllow = argToArray('deno-allow') ?? defaultConfigs?.deno?.allow;
   const denoDeny = argToArray('deno-deny') ?? defaultConfigs?.deno?.deny;
   const denoCJS =
@@ -47,6 +49,7 @@ import { getConfigs } from '../parsers/options.js';
       .filter((a) => a) ||
     hasArg('deno-cjs') ||
     defaultConfigs?.deno?.cjs;
+  /* c8 ignore stop */
   const parallel =
     hasArg('parallel') || hasArg('p', '-') || defaultConfigs?.parallel;
   const quiet = hasArg('quiet') || hasArg('q', '-') || defaultConfigs?.quiet;
@@ -70,6 +73,7 @@ import { getConfigs } from '../parsers/options.js';
 
   const tasks: Promise<unknown>[] = [];
 
+  /* c8 ignore start */ // Process-based
   if (killPort || defaultConfigs?.kill?.port) {
     const ports =
       killPort?.split(',').map(Number) || defaultConfigs?.kill?.port || [];
@@ -96,6 +100,7 @@ import { getConfigs } from '../parsers/options.js';
 
     tasks.push(kill.pid(PIDs));
   }
+  /* c8 ignore stop */
 
   if (hasEnvFile || defaultConfigs?.envFile) {
     const envFilePath = getArg('env-file') ?? defaultConfigs?.envFile;
@@ -104,6 +109,7 @@ import { getConfigs } from '../parsers/options.js';
   }
 
   const options: Configs = {
+    /* c8 ignore next 11 */ // Varies Platform
     platform: platformIsValid(platform)
       ? platform
       : hasArg('node')
@@ -152,6 +158,7 @@ import { getConfigs } from '../parsers/options.js';
 
   let isRunning = false;
 
+  /* c8 ignore start */ // Process-based
   const listenStdin = (input: Buffer | string) => {
     if (isRunning || executing.size > 0) {
       return;
@@ -167,6 +174,7 @@ import { getConfigs } from '../parsers/options.js';
       startTests();
     }
   };
+  /* c8 ignore stop */
 
   const resultsClear = () => {
     fileResults.success.clear();
@@ -184,6 +192,7 @@ import { getConfigs } from '../parsers/options.js';
       poku(dirs, options)
         .then(() => {
           if (watchMode) {
+            /* c8 ignore next 2 */ // Process-based
             process.stdin.removeListener('data', listenStdin);
             process.removeListener('SIGINT', onSigint);
             resultsClear();
@@ -245,6 +254,7 @@ import { getConfigs } from '../parsers/options.js';
               `${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`
             );
 
+            /* c8 ignore next 2 */ // Process-based
             process.stdin.setEncoding('utf-8');
             process.stdin.on('data', listenStdin);
           }
