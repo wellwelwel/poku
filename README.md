@@ -39,7 +39,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 <table>
 <tr>
-<td width="300">
+<td width="225">
 
 ```bash
 # Node.js
@@ -47,7 +47,7 @@ npm i -D poku
 ```
 
 </td>
-<td width="300">
+<td width="225">
 
 ```bash
 # TypeScript (Node.js)
@@ -55,7 +55,7 @@ npm i -D poku tsx
 ```
 
 </td>
-<td width="300">
+<td width="225">
 
 ```bash
 # Bun
@@ -63,7 +63,7 @@ bun add -d poku
 ```
 
 </td>
-<td width="300">
+<td width="225">
 
 ```bash
 # Deno (optional)
