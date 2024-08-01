@@ -90,7 +90,7 @@ export const runTestsParallel = async (
   const files = await listFiles(testDir, configs);
   const filesByConcurrency: string[][] = [];
   const concurrencyLimit =
-    configs?.concurrency ?? Math.max(Math.floor(availableParallelism() / 2), 1);
+    configs?.concurrency ?? Math.max(availableParallelism() - 1, 1);
   const concurrencyResults: (boolean | undefined)[][] = [];
   const showLogs = !isQuiet(configs);
 
