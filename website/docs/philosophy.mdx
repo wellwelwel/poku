@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # Philosophy
 
-**Poku**'s philosophy focuses on simplicity and efficiency, removing complexities and boilerplate to make testing accessible for the simplest to the most complex projects.
+**Poku**'s philosophy consists of simplicity and efficiency, removing complexities and boilerplate requirements to make testing accessible for the simplest to the most complex projects.
 
 <hr />
 
@@ -291,9 +291,11 @@ Although not a priority, there are plans to integrate the following features int
 
 They aren't considered breaking changes:
 
-- Formatting and style changes to outputs.
-- New functionalities that depend from a specific platform version.
-- If a feature is no longer useful due to a new approach.
+- Formatting and style changes to outputs _(including reporters — soon)_.
+- New functionalities that depend from a specific platform version:
+  - As long as it doesn't affect basic usability.
+  - E.g., when using **Node.js** previous to `v15.x.x`, the `strict` method isn't available.
+- If a feature is no longer useful due to a new approach _(as long as it doesn't affect the end user)_.
 - _JSON_ intellisense schema changes _(config files)_.
 
 <hr />
@@ -306,5 +308,5 @@ They aren't considered breaking changes:
   - Although these points are taken into consideration, the main aim is to maintain a balance between good practices.
 
 :::danger
-Note that **Poku** has a different way of being used, inspired entirely by the essence of native JavaScript, which can be both an advantage and a disadvantage for those who are used to the traditional _hooks_ of other test runners.
+Note that **Poku** has a different way of being used, inspired entirely by the essence of native **JavaScript**, which can be both an advantage and a disadvantage for those who are used to the traditional _hooks_ of other test runners.
 :::

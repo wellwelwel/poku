@@ -43,7 +43,7 @@ By default, **Poku** comes with the most common usage pre-set, but you can confi
         <strong>Pros:</strong> Supports functions and regex.
       </div>
       <div>
-        <strong>Cons:</strong> Needs to be an CommonJS file.
+        <strong>Cons:</strong> Needs to be a CommonJS file.
       </div>
     </>
   }
@@ -55,7 +55,7 @@ Create a `poku.config.js` (or `poku.config.cjs` when using `"type": "module"` in
 const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
-  include: ['.'],
+  include: ['.'], // Doesn't support glob patterns
   parallel: false,
   debug: false,
   filter: /\.(test.|.spec)\./,
@@ -107,7 +107,7 @@ Create a `.pokurc.json` (or `.pokurc.jsonc`) in your project's root directory, f
 ```js
 {
   "$schema": "https://poku.io/schemas/configs.json",
-  "include": ["."],
+  "include": ["."], // Doesn't support glob patterns
   "parallel": false,
   "debug": false,
   "filter": ".test.|.spec.", // regex as string

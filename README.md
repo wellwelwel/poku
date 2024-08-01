@@ -29,7 +29,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CommonJS** files directly with [**Deno**][deno-version-url]<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the **same test suite** for [**Node.js**][node-version-url], [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **processes**, **ports**, and **containers** ✨
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
 
 ---
 
@@ -37,19 +37,42 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Install
 
+<table>
+<tr>
+<td width="300">
+
 ```bash
 # Node.js
 npm i -D poku
+```
 
+</td>
+<td width="300">
+
+```bash
 # TypeScript (Node.js)
 npm i -D poku tsx
+```
 
+</td>
+<td width="300">
+
+```bash
 # Bun
 bun add -d poku
+```
 
-# Deno
+</td>
+<td width="300">
+
+```bash
+# Deno (optional)
 deno add npm:poku
 ```
+
+</td>
+</tr>
+</table>
 
 ---
 
@@ -220,8 +243,8 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 - [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
-- [Migrating from version **1.x** to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
 - [Using **Poku** without installing on **Deno** and alternatives to **JSR**](https://github.com/wellwelwel/poku/discussions/565).
+- [Migrating from version **1.x** to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
 
 ---
 
