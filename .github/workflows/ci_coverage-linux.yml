@@ -40,6 +40,11 @@ jobs:
           key: npm-linux-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-linux-
 
+      - name: 🧬 Debug
+        run: |
+          docker --version
+          docker compose version
+
       - name: 📦 Installing Dependencies
         run: npm ci
 
