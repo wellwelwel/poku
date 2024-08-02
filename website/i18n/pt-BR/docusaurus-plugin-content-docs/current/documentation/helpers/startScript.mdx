@@ -1,0 +1,168 @@
+---
+sidebar_position: 7
+tags: [background, server, service, package.json, scripts]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { FAQ } from '@site/src/components/FAQ';
+import Success from '@site/static/img/success.svg';
+
+# 🔁 Start Script
+
+Execute seus scripts do `package.json` em um processo em segundo plano e teste-os 🧑🏻‍🔬
+
+> startScript(caminhoDoArquivo: string, opções?: startScriptOptions);
+
+O `startScript` executa um script diretamente do seu `package.json` ou `deno.json` e o mantém em execução em um processo em segundo plano até que você o libere.
+
+<div className='features black'>
+  <div className='p'>
+    <Success />
+    <span>
+      Bastante útil para testar seu
+      [**NextJS**](https://github.com/vercel/next.js),
+      [**NuxtJS**](https://github.com/nuxt/nuxt),
+      [**nodemon**](https://github.com/remy/nodemon) e todos os apps do projeto 🚀
+    </span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>Permite **cookies** persistam (_ou não_) 🍪</span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>
+      O **Poku** permite que você utilize o cliente HTTP que quiser, como o
+      [**Axios**](https://github.com/axios/axios), o fetch nativo e outros ✨
+    </span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>
+      Não é necessário adicionar plugins externos para algo tão simples, basta executá-lo como está 🌱
+    </span>
+  </div>
+  <div className='p'>
+    <Success />
+    <span>
+      Pare de alterar seu código devido às regras do teste, você criou seu código, não o
+      **Poku** 🩵
+    </span>
+  </div>
+</div>
+
+<hr />
+
+[Veja exemplos práticos usando **fetch**, **Axios**, uma **sessão persistente** e mais](/docs/examples/local-server).
+
+<hr />
+
+## Boas Práticas 👮🏽
+
+### ✅ Sinalize o status "pronto"
+
+Quando possível, defina uma saída do console para indicar que o serviço está pronto. <br />
+Isso irá permitir que você evite execuções prematuras e vazamentos de porta.
+
+### ✅ Defina um tempo limite
+
+Definindo um tempo limite, você evita processos indefinidos que não concluem nem com sucesso nem com falha.
+
+### ✅ Encerre seu serviço quando o trabalho estiver concluído
+
+Você não precisa necessariamente encerrar seu serviço em segundo plano como a última linha do teste, se ele não estiver mais em uso.
+
+```ts
+import { startScript } from 'poku';
+
+const server = await startScript('start', {
+  /**
+   * Espere pelo "ready" na saída do console
+   */
+  startAfter: 'ready',
+
+  /**
+   * Por padrão, o `timeout` é `60000` (1 minuto) tanto para sucesso quanto para falha
+   */
+  timeout: 60000,
+});
+
+await server.end();
+```
+
+:::tip
+
+Você pode passar uma porta para `end` para forçar o término do subprocesso em segundo plano para o **Bun** e o **Deno**.
+
+ℹ️ Para usar a porta em `end`, você irá precisar do `lsof` para **Unix** ou `netstat` para **Windows**.
+
+:::
+
+:::info
+Se você estiver enfrentando problemas ao usar esse recurso com o **Bun**, consulte [**oven-sh/bun#11055**](https://github.com/oven-sh/bun/issues/11055) ao usar o método `end` passando uma porta ou [**oven-sh/bun#7441**](https://github.com/oven-sh/bun/issues/7441) para subprocessos não concluídos.
+:::
+
+<FAQ title='Oh não! Eu quebrei, e agora? 🤡'>
+
+Liberação de uma porta que está vazando:
+
+```bash
+lsof -i :PORT
+```
+
+- Substitua `PORT` pelo número da porta que você está investigando.
+
+Em seguida, use o `PID` retornado com o comando `kill`:
+
+```bash
+kill -9 PID
+```
+
+- Substitua `PID` pelo ID do processo atual que você encontrou usando o comando `lsof`.
+
+</FAQ>
+
+<hr />
+
+## Opções Disponíveis
+
+```ts
+type StartScriptOptions = {
+  /**
+   * - Por padrão, Isso será resolvido na primeira saída do console
+   * - Definindo uma string: ele aguardará uma string específica na saída do console para resolver
+   * - Definindo um número: ele aguardará o tempo em milissegundos para resolver
+   *
+   * ---
+   *
+   * ℹ️ `startAfter` é sensível a maiúsculas e minúsculas.
+   *
+   * ---
+   *
+   * @default undefined
+   */
+  startAfter?: string | number;
+  /**
+   * Encerra o serviço sem sucesso nem falha após:
+   * @default 60000
+   */
+  timeout?: number;
+  /**
+   * Exibe a saída do serviço
+   */
+  verbose?: boolean;
+  /**
+   * Especifique um caminho de destino para iniciar o processo
+   *
+   * @default "./"
+   */
+  cwd?: string | undefined;
+  /**
+   * Por padrão, o Poku usará o `npm`. Altere conforme desejar.
+   */
+  runner?: 'npm' | 'bun' | 'deno' | 'yarn' | 'pnpm';
+};
+
+type End = (port?: number | number[]) => Promise<void>;
+```
