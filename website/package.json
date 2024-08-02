@@ -32,7 +32,7 @@
     "docusaurus-plugin-sass": "^0.2.5",
     "dotenv": "^16.4.5",
     "jsonc.min": "^1.0.0",
-    "lucide-react": "^0.418.0",
+    "lucide-react": "^0.419.0",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
     "react-confetti": "^6.1.0",
@@ -55,10 +55,10 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.9",
     "packages-update": "^2.0.0",
-    "poku": "^2.2.4",
+    "poku": "^2.3.0",
     "prettier": "^3.3.3",
     "svps": "^2.3.0",
-    "tsx": "^4.16.3",
+    "tsx": "^4.16.5",
     "typescript": "^5.5.4"
   },
   "browserslist": {
