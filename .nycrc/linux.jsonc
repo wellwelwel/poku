@@ -1,5 +1,5 @@
 /**
- *  Global setttings
+ *  Linux setttings
  *
  * In addition to the ./README.md in this directory, each deleted file explains the reason for its deletion.
  * Please note that excluded files aren't ignored, but that the coverage report can't be properly generated.
@@ -8,12 +8,14 @@
   "exclude": [
     "src/@types", // Typings exports only
     "src/polyfills", // They involve compatibility between older versions of platforms or assist in cross-platform compatibility
+    "src/modules/helpers/container.ts", // Unexpectedly, GitHub Actions started refusing a simple connection (`node:http`), not directly related to the container test (this test isn't skipped locally)
     "src/modules/helpers/create-service.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/modules/helpers/get-pids.ts", // 100% Process-based
     "src/modules/helpers/kill.ts", // 100% Process-based
     "src/parsers/get-runner.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/parsers/get-runtime.ts", // Varies of platform (Node.js, Bun, and Deno)
+    "src/services/container.ts", // Unexpectedly, GitHub Actions started refusing a simple connection (`node:http`), not directly related to the container test (this test isn't skipped locally)
     "src/services/pid.ts", // 100% Process-based
-    "src/bin" // TODO: Remove after expose `inpectCLI` and `watchCLI` methods.
+    "src/bin" // TODO: Remove after expose `inpectCLI` and `watchCLI` methods
   ]
 }

@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process';
+import { env } from 'node:process';
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
@@ -11,6 +12,10 @@ import { kill } from '../../../src/modules/helpers/kill.js';
 
 if (isWindows) {
   skip('External error: no matching manifest for windows/amd64');
+}
+
+if (env.GITHUB_ACTIONS) {
+  skip();
 }
 
 const hasDocker = (() => {
@@ -33,7 +38,7 @@ describe('Docker Service', async () => {
     const dockerfile = docker.dockerfile({
       tagName: 'poku-test-dockerfile',
       containerName: 'poku-test-dockerfile-server',
-      ports: ['127.0.0.1:6053:6053'],
+      ports: ['6053:6053'],
       file: 'fixtures/docker/Dockerfile',
       context: 'fixtures/docker',
       environments: ['NODE_ENV=production'],
