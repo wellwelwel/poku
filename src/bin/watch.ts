@@ -7,6 +7,7 @@ import type { Configs } from '../@types/poku.js';
 import { format } from '../services/format.js';
 import { getArg } from '../parsers/get-arg.js';
 import { fileResults } from '../configs/files.js';
+import { availableParallelism } from '../polyfills/cpus.js';
 
 export const startWatch = async (dirs: string[], options: Configs) => {
   let isRunning = false;
@@ -68,7 +69,13 @@ export const startWatch = async (dirs: string[], options: Configs) => {
           return;
         }
 
-        await poku(Array.from(tests), options);
+        await poku(Array.from(tests), {
+          ...options,
+          concurrency:
+            options.concurrency ??
+            Math.max(Math.floor(availableParallelism() / 2), 1),
+        });
+
         setTimeout(() => {
           executing.delete(filePath);
           setIsRunning(false);
