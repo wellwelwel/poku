@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.0](https://github.com/wellwelwel/poku/compare/v2.3.0...v2.4.0) (2024-08-03)
+
+
+### Features
+
+* add `--list-files` command line option ([#645](https://github.com/wellwelwel/poku/issues/645)) ([49f6291](https://github.com/wellwelwel/poku/commit/49f62919efab319a8aaeca1f240d64cf85c2e1b6))
+* add `--version` command line option ([#643](https://github.com/wellwelwel/poku/issues/643)) ([7051913](https://github.com/wellwelwel/poku/commit/7051913abb40c0fa4b53832d5395b32777784a8b))
+* allow multiple args and types to `log` helper ([#646](https://github.com/wellwelwel/poku/issues/646)) ([8f2b6c4](https://github.com/wellwelwel/poku/commit/8f2b6c40325eb7274b902e92f64039d59d83fbf7))
+
 ## [2.3.0](https://github.com/wellwelwel/poku/compare/v2.2.4...v2.3.0) (2024-08-01)
 
 
