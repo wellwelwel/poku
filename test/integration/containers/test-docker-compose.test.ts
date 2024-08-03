@@ -27,7 +27,7 @@ describe('Docker Compose Service', async () => {
     skip('Docker Compose not found');
   }
 
-  await kill.port(6001);
+  await kill.port(6054);
 
   await it('Using all configs', async () => {
     const compose = docker.compose({
@@ -40,9 +40,9 @@ describe('Docker Compose Service', async () => {
     });
 
     await compose.up();
-    await waitForPort(6001, { delay: 250, timeout: 150000 });
+    await waitForPort(6054, { delay: 250, timeout: 150000 });
 
-    const res = await legacyFetch('localhost', 6001);
+    const res = await legacyFetch('localhost', 6054);
 
     await compose.down();
 
@@ -61,9 +61,9 @@ describe('Docker Compose Service', async () => {
     });
 
     await compose.up();
-    await waitForPort(6001, { delay: 250, timeout: 150000 });
+    await waitForPort(6054, { delay: 250, timeout: 150000 });
 
-    const res = await legacyFetch('localhost', 6001);
+    const res = await legacyFetch('localhost', 6054);
 
     await compose.down();
 

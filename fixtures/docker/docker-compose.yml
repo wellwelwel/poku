@@ -6,6 +6,6 @@ services:
       context: .
       dockerfile: compose.Dockerfile
     ports:
-      - '127.0.0.1:6001:6001'
+      - '127.0.0.1:6054:6054'
     environment:
       NODE_ENV: production

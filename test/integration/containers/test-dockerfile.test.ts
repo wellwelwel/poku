@@ -27,13 +27,13 @@ describe('Docker Service', async () => {
     skip('Docker not found');
   }
 
-  await kill.port(6000);
+  await kill.port(6053);
 
   await it('Using custom configs', async () => {
     const dockerfile = docker.dockerfile({
       tagName: 'poku-test-dockerfile',
       containerName: 'poku-test-dockerfile-server',
-      ports: ['127.0.0.1:6000:6000'],
+      ports: ['127.0.0.1:6053:6053'],
       file: 'fixtures/docker/Dockerfile',
       context: 'fixtures/docker',
       environments: ['NODE_ENV=production'],
@@ -46,9 +46,9 @@ describe('Docker Service', async () => {
     await dockerfile.build();
     await dockerfile.start();
 
-    await waitForPort(6000, { delay: 250, timeout: 150000 });
+    await waitForPort(6053, { delay: 250, timeout: 150000 });
 
-    const res = await legacyFetch('localhost', 6000);
+    const res = await legacyFetch('localhost', 6053);
 
     await dockerfile.stop();
     await dockerfile.remove();
