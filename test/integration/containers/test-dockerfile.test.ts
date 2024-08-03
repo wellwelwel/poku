@@ -7,6 +7,7 @@ import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
 import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
 import { isWindows } from '../../../src/parsers/get-runner.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
+import { kill } from '../../../src/modules/helpers/kill.js';
 
 if (isWindows) {
   skip('External error: no matching manifest for windows/amd64');
@@ -26,6 +27,8 @@ describe('Docker Service', async () => {
     skip('Docker not found');
   }
 
+  await kill.port(6000);
+
   await it('Using custom configs', async () => {
     const dockerfile = docker.dockerfile({
       tagName: 'poku-test-dockerfile',
@@ -43,7 +46,7 @@ describe('Docker Service', async () => {
     await dockerfile.build();
     await dockerfile.start();
 
-    await waitForPort(6000, { delay: 500, timeout: 150000 });
+    await waitForPort(6000, { delay: 250, timeout: 150000 });
 
     const res = await legacyFetch('localhost', 6000);
 
