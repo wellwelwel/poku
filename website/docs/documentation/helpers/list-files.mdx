@@ -1,6 +1,54 @@
+import { History } from '@site/src/components/History';
+
 # 🗄️ List Files
 
-Returns all files in a directory, independent of their depth.
+Returns all files in a directory (independent of their depth) or the file itself.
+
+<History
+  records={[
+    {
+      version: '2.4.0',
+      changes: [<>Support for CLI usage.</>],
+    },
+  ]}
+/>
+
+## CLI
+
+Displays all the files returned in the terminal, without running the tests.
+
+```sh
+npx poku --list-files
+```
+
+```sh
+npx poku ./test --list-files
+```
+
+```sh
+npx poku ./packages/**/test --list-files
+```
+
+```sh
+npx poku ./test/unit ./test/e2e --list-files
+```
+
+- You can use the `--filter` and `--exclude` flags and include multiple paths.
+
+:::note
+
+The files returned by `--list-files` don't reflect the paths displayed by `--debug`:
+
+- **`--debug`:** the paths to be searched for.
+- **`--list-files`:** the paths found.
+
+:::
+
+:::tip
+If you pass flags apart from `--filter` and `--exclude`, they will be ignored.
+:::
+
+## API
 
 > `listFiles(targetDir: string, configs?: ListFilesConfigs)`
 
