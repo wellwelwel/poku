@@ -33,7 +33,7 @@ describe('Docker Service', async () => {
     const dockerfile = docker.dockerfile({
       tagName: 'poku-test-dockerfile',
       containerName: 'poku-test-dockerfile-server',
-      ports: ['127.0.0.1:6053:6053'],
+      ports: ['6053:6053'],
       file: 'fixtures/docker/Dockerfile',
       context: 'fixtures/docker',
       environments: ['NODE_ENV=production'],
