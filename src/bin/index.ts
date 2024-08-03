@@ -74,6 +74,37 @@ import { getConfigs } from '../parsers/options.js';
     states.isSinglePath = true;
   }
 
+  if (hasArg('list-files')) {
+    const { listFiles } = require('../modules/helpers/list-files.js');
+
+    let total = 0;
+
+    Write.hr();
+
+    for (const dir of dirs) {
+      const files: string[] = await listFiles(dir, {
+        filter:
+          typeof filter === 'string'
+            ? new RegExp(escapeRegExp(filter))
+            : filter,
+        exclude:
+          typeof exclude === 'string'
+            ? new RegExp(escapeRegExp(exclude))
+            : exclude,
+      });
+
+      total += files.length;
+
+      Write.log(files.map((file) => `${format('-').dim()} ${file}`).join('\n'));
+    }
+
+    Write.hr();
+    Write.log(`Total test files: ${format(String(total)).bold()}`);
+    Write.hr();
+
+    return;
+  }
+
   const tasks: Promise<unknown>[] = [];
 
   /* c8 ignore start */ // Process-based
