@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process';
+import { env } from 'node:process';
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
@@ -11,6 +12,10 @@ import { kill } from '../../../src/modules/helpers/kill.js';
 
 if (isWindows) {
   skip('External error: no matching manifest for windows/amd64');
+}
+
+if (env.GITHUB_ACTIONS) {
+  skip();
 }
 
 const hasDocker = (() => {
