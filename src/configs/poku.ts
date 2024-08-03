@@ -4,3 +4,5 @@ export const results = {
   skip: 0,
   todo: 0,
 };
+
+export const VERSION = '';

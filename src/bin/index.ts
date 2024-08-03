@@ -1,25 +1,27 @@
 #! /usr/bin/env node
 
 import type { Configs } from '../@types/poku.js';
-import process from 'node:process';
 import { escapeRegExp } from '../modules/helpers/list-files.js';
 import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
-import { fileResults, states } from '../configs/files.js';
+import { states } from '../configs/files.js';
 import { platformIsValid } from '../parsers/get-runtime.js';
 import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
 import { envFile } from '../modules/helpers/env.js';
-import { mapTests, normalizePath } from '../services/map-tests.js';
-import { watch, type Watcher } from '../services/watch.js';
-import { onSigint, poku } from '../modules/essentials/poku.js';
+import { poku } from '../modules/essentials/poku.js';
 import { Write } from '../services/write.js';
 import { getConfigs } from '../parsers/options.js';
-import { availableParallelism } from '../polyfills/cpus.js';
 
 (async () => {
+  if (hasArg('version') || hasArg('v', '-')) {
+    const { VERSION } = require('../configs/poku.js');
+
+    Write.log(VERSION);
+    return;
+  }
+
   const configFile = getArg('config') || getArg('c', '-');
   const defaultConfigs = await getConfigs(configFile);
-
   const dirs: string[] = (() => {
     /* c8 ignore next 4 */ // Deprecated
     const includeArg = getArg('include');
@@ -153,123 +155,12 @@ import { availableParallelism } from '../polyfills/cpus.js';
     console.dir(options, { depth: null, colors: true });
   }
 
-  const watchers: Set<Watcher> = new Set();
-  const executing = new Set<string>();
-  const interval = Number(getArg('watch-interval')) || 1500;
+  await Promise.all(tasks);
+  await poku(dirs, options);
 
-  let isRunning = false;
+  if (watchMode) {
+    const { startWatch } = require('./watch.js');
 
-  /* c8 ignore start */ // Process-based
-  const listenStdin = (input: Buffer | string) => {
-    if (isRunning || executing.size > 0) {
-      return;
-    }
-
-    if (String(input).trim() === 'rs') {
-      for (const watcher of watchers) {
-        watcher.stop();
-      }
-
-      watchers.clear();
-      resultsClear();
-      startTests();
-    }
-  };
-  /* c8 ignore stop */
-
-  const resultsClear = () => {
-    fileResults.success.clear();
-    fileResults.fail.clear();
-  };
-
-  const startTests = () => {
-    if (isRunning || executing.size > 0) {
-      return;
-    }
-
-    isRunning = true;
-
-    Promise.all(tasks).then(() => {
-      poku(dirs, options)
-        .then(() => {
-          if (watchMode) {
-            /* c8 ignore next 2 */ // Process-based
-            process.stdin.removeListener('data', listenStdin);
-            process.removeListener('SIGINT', onSigint);
-            resultsClear();
-
-            mapTests('.', dirs, options.filter, options.exclude).then(
-              (mappedTests) => {
-                for (const mappedTest of Array.from(mappedTests.keys())) {
-                  const currentWatcher = watch(mappedTest, (file, event) => {
-                    if (event === 'change') {
-                      const filePath = normalizePath(file);
-                      if (executing.has(filePath)) {
-                        return;
-                      }
-
-                      executing.add(filePath);
-                      resultsClear();
-
-                      const tests = mappedTests.get(filePath);
-                      if (!tests) {
-                        return;
-                      }
-
-                      poku(Array.from(tests), {
-                        ...options,
-                        concurrency:
-                          concurrency ??
-                          Math.max(Math.floor(availableParallelism() / 2), 1),
-                      }).then(() => {
-                        setTimeout(() => {
-                          executing.delete(filePath);
-                        }, interval);
-                      });
-                    }
-                  });
-
-                  currentWatcher.then((watcher) => watchers.add(watcher));
-                }
-              }
-            );
-
-            for (const dir of dirs) {
-              const currentWatcher = watch(dir, (file, event) => {
-                if (event === 'change') {
-                  if (executing.has(file)) {
-                    return;
-                  }
-
-                  executing.add(file);
-                  resultsClear();
-
-                  poku(file, options).then(() => {
-                    setTimeout(() => {
-                      executing.delete(file);
-                    }, interval);
-                  });
-                }
-              });
-
-              currentWatcher.then((watcher) => watchers.add(watcher));
-            }
-
-            Write.hr();
-            Write.log(
-              `${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`
-            );
-
-            /* c8 ignore next 2 */ // Process-based
-            process.stdin.setEncoding('utf-8');
-            process.stdin.on('data', listenStdin);
-          }
-        })
-        .finally(() => {
-          isRunning = false;
-        });
-    });
-  };
-
-  startTests();
+    await startWatch(dirs, options);
+  }
 })();

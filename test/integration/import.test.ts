@@ -33,4 +33,8 @@ index.test('Import Suite', () => {
   index.assert.ok(index.waitForPort, 'Importing waitForPort helper');
   index.assert.ok(index.exit, 'Importing exit helper');
   index.assert.ok(index.listFiles, 'Importing listFiles helper');
+  index.assert.ok(
+    typeof index.version === 'string',
+    'Importing listFiles helper'
+  );
 });
