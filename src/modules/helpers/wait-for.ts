@@ -1,4 +1,3 @@
-/* c8 ignore next */ // Types
 import type {
   WaitForExpectedResultOptions,
   WaitForPortOptions,
@@ -22,7 +21,6 @@ const checkPort = (port: number, host: string): Promise<boolean> =>
 
 /** Wait until the defined milliseconds. */
 export const sleep = (milliseconds: number): Promise<void> => {
-  /* c8 ignore next 3 */
   if (!Number.isInteger(milliseconds)) {
     throw new Error('Milliseconds must be an integer.');
   }
@@ -40,7 +38,6 @@ export const waitForExpectedResult = async (
   const interval = options?.interval || 100;
   const timeout = options?.timeout || 60000;
 
-  /* c8 ignore start */
   if (typeof callback !== 'function') {
     throw new Error('Callback must be a function.');
   }
@@ -56,7 +53,6 @@ export const waitForExpectedResult = async (
   if (!Number.isInteger(delay)) {
     throw new Error('Delay must be an integer.');
   }
-  /* c8 ignore stop */
 
   await sleep(delay);
 
@@ -95,7 +91,6 @@ export const waitForExpectedResult = async (
   await sleep(delay);
 };
 
-/* c8 ignore next 2 */ // ?
 /** Wait until the defined port is active. */
 export const waitForPort = async (
   port: number,

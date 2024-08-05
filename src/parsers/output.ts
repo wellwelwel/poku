@@ -1,20 +1,18 @@
-/* c8 ignore next */ // Types
 import type { Configs } from '../@types/poku.js';
 import { results } from '../configs/poku.js';
 
 const regex = {
   newLine: /\n/,
   ansi: /u001b\[0m|\n/i,
-  skipped: /^"\\u001b\[94m\\u001b\[1mℹ/i,
+  skip: /\\u001b\[94m\\u001b\[1m◯/i,
+  todo: /\\u001b\[96m\\u001b\[1m●/i,
 } as const;
 
 export const isQuiet = (configs?: Configs): boolean =>
   typeof configs?.quiet === 'boolean' && Boolean(configs?.quiet);
 
-/* c8 ignore next */
 export const isDebug = (configs?: Configs): boolean => Boolean(configs?.debug);
 
-/* c8 ignore next */ // ?
 export const parserOutput = (options: {
   output: string;
   result: boolean;
@@ -23,8 +21,12 @@ export const parserOutput = (options: {
   const { output, result, configs } = options;
   const normalizedOutput = JSON.stringify(output);
 
-  if (regex.skipped.test(normalizedOutput)) {
-    ++results.skipped;
+  if (regex.skip.test(normalizedOutput)) {
+    ++results.skip;
+  }
+
+  if (regex.todo.test(normalizedOutput)) {
+    ++results.todo;
   }
 
   const debug = isDebug(configs);

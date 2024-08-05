@@ -1,8 +1,14 @@
 import { test } from '../../src/modules/helpers/test.js';
 import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it.js';
+import { it } from '../../src/modules/helpers/it/core.js';
 import { poku } from '../../src/modules/essentials/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
+import { isProduction } from '../helpers/capture-cli.test.js';
+import { skip } from '../../src/modules/helpers/skip.js';
+
+if (isProduction) {
+  skip();
+}
 
 test(async () => {
   const prepareService = () => new Promise((resolve) => resolve(undefined));

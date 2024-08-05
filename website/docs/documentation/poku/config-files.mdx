@@ -40,10 +40,10 @@ By default, **Poku** comes with the most common usage pre-set, but you can confi
   message={
     <>
       <div>
-        <strong>Pos:</strong> Supports functions and regex.
+        <strong>Pros:</strong> Supports functions and regex.
       </div>
       <div>
-        <strong>Cons:</strong> Needs to be an CommonJS file.
+        <strong>Cons:</strong> Needs to be a CommonJS file.
       </div>
     </>
   }
@@ -55,7 +55,7 @@ Create a `poku.config.js` (or `poku.config.cjs` when using `"type": "module"` in
 const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
-  include: ['.'],
+  include: ['.'], // Doesn't support glob patterns
   parallel: false,
   debug: false,
   filter: /\.(test.|.spec)\./,
@@ -92,7 +92,7 @@ module.exports = defineConfig({
   message={
     <>
       <div>
-        <strong>Pos:</strong> Universal file for both CommonJS, ES Modules and
+        <strong>Pros:</strong> Universal file for both CommonJS, ES Modules and
         TypeScript.
       </div>
       <div>
@@ -102,12 +102,12 @@ module.exports = defineConfig({
   }
 />
 
-Create a `poku.json` (or `poku.jsonc`) in your project's root directory, for example:
+Create a `.pokurc.json` (or `.pokurc.jsonc`) in your project's root directory, for example:
 
 ```js
 {
   "$schema": "https://poku.io/schemas/configs.json",
-  "include": ["."],
+  "include": ["."], // Doesn't support glob patterns
   "parallel": false,
   "debug": false,
   "filter": ".test.|.spec.", // regex as string
@@ -137,7 +137,7 @@ Create a `poku.json` (or `poku.jsonc`) in your project's root directory, for exa
 
 :::tip
 
-- The `$schema` property allows an _JSON_ intelisense to assist you customize **Poku**.
+- The `$schema` property allows an _JSON_ intellisense to assist you customize **Poku**.
 - All options are optional.
 - [See details of all the options](/docs/category/-options).
 

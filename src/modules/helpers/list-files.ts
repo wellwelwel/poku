@@ -1,8 +1,8 @@
-/* c8 ignore next */ // Types
 import type { Configs } from '../../@types/list-files.js';
 import { env } from 'node:process';
 import { sep, join } from 'node:path';
 import { readdir, stat as fsStat } from '../../polyfills/fs.js';
+import { states } from '../../configs/files.js';
 
 const regex = {
   sep: /[/\\]+/g,
@@ -39,7 +39,17 @@ export const getAllFiles = async (
   files: Set<string> = new Set(),
   configs?: Configs
 ): Promise<Set<string>> => {
-  const currentFiles = await readdir(sanitizePath(dirPath));
+  let isFullPath = false;
+
+  const currentFiles = await (async () => {
+    if (await isFile(dirPath)) {
+      isFullPath = true;
+
+      return Array.prototype.concat(sanitizePath(dirPath));
+    }
+
+    return await readdir(sanitizePath(dirPath));
+  })();
 
   const filter: RegExp = envFilter
     ? envFilter
@@ -55,15 +65,18 @@ export const getAllFiles = async (
 
   await Promise.all(
     currentFiles.map(async (file) => {
-      const fullPath = join(dirPath, file);
+      const fullPath = isFullPath ? dirPath : join(dirPath, file);
       const stat = await fsStat(fullPath);
 
-      /* c8 ignore next 6 */
       if (
         fullPath.indexOf('node_modules') !== -1 ||
-        fullPath.indexOf('.git') === 0
+        fullPath.indexOf('.git/') !== -1
       ) {
         return;
+      }
+
+      if (isFullPath && states?.isSinglePath) {
+        return files.add(fullPath);
       }
 
       if (exclude) {
@@ -87,7 +100,6 @@ export const getAllFiles = async (
   return files;
 };
 
-/* c8 ignore next */ // ?
 export const listFiles = async (
   targetDir: string,
   configs?: Configs

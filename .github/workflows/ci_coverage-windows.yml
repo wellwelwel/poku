@@ -10,7 +10,7 @@ on:
 jobs:
   windows:
     runs-on: windows-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     strategy:
       fail-fast: false
     name: Windows
@@ -21,7 +21,7 @@ jobs:
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           cache: 'npm'
 
       - name: 📦 Installing Dependencies

@@ -1,4 +1,3 @@
-/* c8 ignore next 3 */ // Types
 import type { ProcessAssertionOptions } from '../@types/assert.js';
 import type assert from 'node:assert';
 import type { AssertPredicate } from 'node:assert';
@@ -23,40 +22,34 @@ export const processAssert = async (
   const FILE = env.FILE;
   let preIdentation = '';
 
-  if (indentation.hasDescribe || indentation.hasTest) {
+  if (indentation.hasDescribe) {
     preIdentation += '  ';
   }
 
-  if (indentation.hasIt) {
+  if (indentation.hasItOrTest) {
     preIdentation += '  ';
   }
 
   try {
     const cbResult = cb();
 
-    /* c8 ignore next 3 */
     if (cbResult instanceof Promise) {
       await cbResult;
     }
 
     if (typeof options.message === 'string') {
       const message =
-        isPoku &&
-        !indentation.hasDescribe &&
-        !indentation.hasIt &&
-        /* c8 ignore next 2 */
-        !indentation.hasTest
+        isPoku && !indentation.hasDescribe && !indentation.hasItOrTest
           ? `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
           : `${preIdentation}${format(`✔ ${options.message}`).success().bold()}`;
 
       Write.log(message);
     }
-    /* c8 ignore start */
   } catch (error) {
     if (error instanceof AssertionError) {
       const { code, actual, expected, operator } = error;
-      const absoultePath = findFile(error).replace(regexFile, '');
-      const file = path.relative(path.resolve(cwd), absoultePath);
+      const absolutePath = findFile(error).replace(regexFile, '');
+      const file = path.relative(path.resolve(cwd), absolutePath);
 
       let message = '';
 
@@ -71,7 +64,7 @@ export const processAssert = async (
       const finalMessage =
         message?.trim().length > 0
           ? format(`✘ ${message}`).fail().bold()
-          : format('✘ No Message').fail().bold();
+          : format('✘ Assertion Error').fail().bold();
 
       Write.log(
         isPoku
@@ -113,13 +106,11 @@ export const processAssert = async (
       exit(1);
     }
 
-    // Non-assertion errors
+    /* c8 ignore next 2 */ // Unknown external error
     throw error;
   }
-  /* c8 ignore stop */
 };
 
-/* c8 ignore next */ // ?
 export const createAssert = (nodeAssert: typeof assert) => {
   const ok = (
     value: unknown,
@@ -227,7 +218,6 @@ export const createAssert = (nodeAssert: typeof assert) => {
     );
   };
 
-  /* c8 ignore start */
   const fail = (message?: ProcessAssertionOptions['message']): never => {
     processAssert(
       () => {
@@ -242,7 +232,6 @@ export const createAssert = (nodeAssert: typeof assert) => {
 
     process.exit(1);
   };
-  /* c8 ignore stop */
 
   function doesNotThrow(
     block: () => unknown,
@@ -394,7 +383,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     regExp: RegExp,
     message?: ProcessAssertionOptions['message']
   ): void => {
-    /* c8 ignore next 3 */
+    /* c8 ignore next 3 */ // Platform version
     if (typeof nodeVersion === 'number' && nodeVersion < 12) {
       throw new Error('match is available from Node.js 12 or higher');
     }
@@ -412,7 +401,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     regExp: RegExp,
     message?: ProcessAssertionOptions['message']
   ): void => {
-    /* c8 ignore next 3 */
+    /* c8 ignore next 3 */ // Platform version
     if (typeof nodeVersion === 'number' && nodeVersion < 12) {
       throw new Error('doesNotMatch is available from Node.js 12 or higher');
     }

@@ -1,4 +1,3 @@
-/* c8 ignore start */ // ?
 import { readFile } from '../../polyfills/fs.js';
 import { sanitizePath } from './list-files.js';
 import {
@@ -13,7 +12,6 @@ const regex = {
 
 /** Reads an environment file and sets the environment variables. */
 export const envFile = async (filePath = '.env') => {
-  /* c8 ignore stop */
   const mapEnv = new Map<string, string>();
   const env = await readFile(sanitizePath(filePath), 'utf8');
   const lines = env

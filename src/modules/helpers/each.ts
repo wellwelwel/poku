@@ -1,4 +1,3 @@
-/* c8 ignore next */ // Types
 import type { Control, EachOptions } from '../../@types/each.js';
 import { each } from '../../configs/each.js';
 
@@ -27,7 +26,7 @@ export const beforeEach = (
 
   each.before.cb = () => {
     if (each.before.status) {
-      callback();
+      return callback();
     }
   };
 
@@ -63,11 +62,10 @@ export const beforeEach = (
  * after.reset();
  * ```
  */
-/* c8 ignore next */ // ?
 export const afterEach = (callback: () => unknown): Control => {
   each.after.cb = () => {
     if (each.after.status) {
-      callback();
+      return callback();
     }
   };
 

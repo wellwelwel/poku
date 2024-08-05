@@ -1,5 +1,57 @@
 # Changelog
 
+## [2.4.0](https://github.com/wellwelwel/poku/compare/v2.3.0...v2.4.0) (2024-08-03)
+
+
+### Features
+
+* add `--list-files` command line option ([#645](https://github.com/wellwelwel/poku/issues/645)) ([49f6291](https://github.com/wellwelwel/poku/commit/49f62919efab319a8aaeca1f240d64cf85c2e1b6))
+* add `--version` command line option ([#643](https://github.com/wellwelwel/poku/issues/643)) ([7051913](https://github.com/wellwelwel/poku/commit/7051913abb40c0fa4b53832d5395b32777784a8b))
+* allow multiple args and types to `log` helper ([#646](https://github.com/wellwelwel/poku/issues/646)) ([8f2b6c4](https://github.com/wellwelwel/poku/commit/8f2b6c40325eb7274b902e92f64039d59d83fbf7))
+
+## [2.3.0](https://github.com/wellwelwel/poku/compare/v2.2.4...v2.3.0) (2024-08-01)
+
+
+### Features
+
+* add `.todo` helper for `describe`, `it`, and `test` ([#633](https://github.com/wellwelwel/poku/issues/633)) ([526112c](https://github.com/wellwelwel/poku/commit/526112c26fa028895487004101dc66f0fd72837e))
+
+
+### Performance Improvements
+
+* improve concurrency defaults (inspired by Jest definitions) ([#637](https://github.com/wellwelwel/poku/issues/637)) ([ab01530](https://github.com/wellwelwel/poku/commit/ab01530df977afac0ca737a32db8edfa44568f7f))
+
+## [2.2.4](https://github.com/wellwelwel/poku/compare/v2.2.3...v2.2.4) (2024-07-27)
+
+
+### Bug Fixes
+
+* always use half of available parallelism ([#611](https://github.com/wellwelwel/poku/issues/611)) ([4c3f289](https://github.com/wellwelwel/poku/commit/4c3f289c1977b05e6d8e784a804b9f5319c3ec2d))
+* **cli:** ensure `filter` and `exclude` when expanding glob from shell ([de9d817](https://github.com/wellwelwel/poku/commit/de9d8171a181f9bd6dc0806321a7f1a029b1fd0b))
+* **output:** always list files at the end of a test run ([#616](https://github.com/wellwelwel/poku/issues/616)) ([bd47ed4](https://github.com/wellwelwel/poku/commit/bd47ed432bf71c0004bd6445bbf547eeecd1e97a))
+
+## [2.2.3](https://github.com/wellwelwel/poku/compare/v2.2.2...v2.2.3) (2024-07-26)
+
+
+### Bug Fixes
+
+* prevent 100% CPU usage in large-scale test suites ([#606](https://github.com/wellwelwel/poku/issues/606)) ([382631b](https://github.com/wellwelwel/poku/commit/382631b13b37bf467d202b502ec54dacd51e32db))
+
+## [2.2.2](https://github.com/wellwelwel/poku/compare/v2.2.1...v2.2.2) (2024-07-25)
+
+
+### Bug Fixes
+
+* ensure `afterEach` execution after a test failure ([#598](https://github.com/wellwelwel/poku/issues/598)) ([e6654c4](https://github.com/wellwelwel/poku/commit/e6654c410eaf2e7a564c58dfe8766fe3f6859e20))
+* **Windows:** ensure configuration file loading (`js` and `cjs`) ([#602](https://github.com/wellwelwel/poku/issues/602)) ([2d53660](https://github.com/wellwelwel/poku/commit/2d53660244582407e6e8cdb1329057ef91d9535c))
+
+## [2.2.1](https://github.com/wellwelwel/poku/compare/v2.2.0...v2.2.1) (2024-07-24)
+
+
+### Bug Fixes
+
+* async execution order for `each` helper API ([#588](https://github.com/wellwelwel/poku/issues/588)) ([fb92892](https://github.com/wellwelwel/poku/commit/fb92892b6a9075568ecc3605fbcd50e36fee5653))
+
 ## [2.2.0](https://github.com/wellwelwel/poku/compare/v2.1.0...v2.2.0) (2024-07-22)
 
 

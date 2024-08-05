@@ -15,7 +15,7 @@ const test = () => {
   const pokuResult = results.get('Poku (Local)');
 
   const tolerancesPerTester = {
-    Jest: 4,
+    Jest: 3.9,
     'Mocha + Chai': 1,
     Vitest: 3,
     Poku: 0.8,

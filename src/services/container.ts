@@ -169,12 +169,12 @@ export class DockerCompose {
     this.envFile = envFile;
     this.projectName = projectName;
     this.detach = detach;
-    this.cwd = cwd ? sanitizePath(cwd) : undefined;
+    this.cwd = cwd ? sanitizePath(cwd) /* c8 ignore next */ : undefined;
     this.verbose = verbose;
   }
 
   public async up() {
-    const args: string[] = ['-f', this.file];
+    const args: string[] = ['compose', '-f', this.file];
 
     if (this.envFile) {
       args.push(...['--env-file', this.envFile]);
@@ -194,7 +194,7 @@ export class DockerCompose {
     }
 
     return await runDockerCommand(
-      'docker-compose',
+      'docker',
       args,
       { cwd: this.cwd },
       this.verbose
@@ -212,8 +212,8 @@ export class DockerCompose {
     }
 
     return await runDockerCommand(
-      'docker-compose',
-      [...args, 'down'],
+      'docker',
+      ['compose', ...args, 'down'],
       { cwd: this.cwd },
       this.verbose
     );

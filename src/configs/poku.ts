@@ -1,5 +1,8 @@
 export const results = {
   success: 0,
   fail: 0,
-  skipped: 0,
+  skip: 0,
+  todo: 0,
 };
+
+export const VERSION = '';

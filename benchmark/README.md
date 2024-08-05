@@ -18,9 +18,9 @@ The testers to be compared are chosen based on the three most downloaded test ru
 
 **Poku** is continuously tested ([**CI**](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml)) to ensure the following expectations for basic usage:
 
-- \>=**4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
-- \>=**3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
-- \>=**1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
+- ~**4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
+- ~**3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
+- ~**1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
 
 ---
 

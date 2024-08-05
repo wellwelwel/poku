@@ -1,6 +1,6 @@
 import process from 'node:process';
 import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it.js';
+import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { runTestFile } from '../../src/services/run-test-file.js';
 import { getRuntime } from '../../src/parsers/get-runtime.js';

@@ -1,6 +1,6 @@
 import { test } from '../../../src/modules/helpers/test.js';
 
-test('Testing "test" method', async () => {
+test('Testing "test" overloads', async () => {
   test(() => {});
   test(() => true);
   test(() => false);

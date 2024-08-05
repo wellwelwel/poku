@@ -2,12 +2,26 @@ import { env } from 'node:process';
 import { poku, test, describe, it, assert } from '../src/modules/index.js';
 import { isWindows } from '../src/parsers/get-runner.js';
 import { inspectCLI } from './helpers/capture-cli.test.js';
+import { rmSync } from 'node:fs';
 
 test(async () => {
+  const toRemove = [
+    '/.temp',
+    '/test-src',
+    '/test-tests',
+    '/test-before-and-after-each.json',
+  ];
+
+  for (const path of toRemove) {
+    try {
+      rmSync(path, { force: true, recursive: true });
+    } catch {}
+  }
+
   await describe('CLI', async () => {
     await it('Sequential (Just Touch)', async () => {
       const results = await inspectCLI(
-        'npx tsx src/bin/index.ts --platform=node --include=test/integration/import.test.ts'
+        'npx tsx src/bin/index.ts --platform=node test/integration/import.test.ts'
       );
 
       console.log(results.stdout);
@@ -18,7 +32,7 @@ test(async () => {
 
     await it('Parallel (Just Touch)', async () => {
       const results = await inspectCLI(
-        'npx tsx src/bin/index.ts --platform=node --parallel --include=test/integration/import.test.ts'
+        'npx tsx src/bin/index.ts --platform=node --parallel test/integration/import.test.ts'
       );
 
       console.log(results.stdout);
@@ -29,7 +43,7 @@ test(async () => {
 
     await it('Parallel (FILTER Env)', async () => {
       const results = await inspectCLI(
-        'npx tsx src/bin/index.ts --platform=node --parallel --include=test/integration',
+        'npx tsx src/bin/index.ts --platform=node --parallel test/integration',
         {
           env: { ...process.env, FILTER: 'import' },
         }
@@ -44,8 +58,8 @@ test(async () => {
     await it('Sequential + Options (Just Touch)', async () => {
       const results = await inspectCLI(
         isWindows
-          ? 'npx tsx src/bin/index.ts --concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" --include=test/integration/import.test.ts --filter=".test.|.spec."'
-          : 'npx tsx src/bin/index.ts --concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 --include=test/integration/import.test.ts --filter=.test.|.spec.'
+          ? 'npx tsx src/bin/index.ts --concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
+          : 'npx tsx src/bin/index.ts --concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
       );
 
       console.log(results.stdout);
@@ -57,8 +71,8 @@ test(async () => {
     await it('Parallel + Options (Just Touch)', async () => {
       const results = await inspectCLI(
         isWindows
-          ? 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" --include=test/integration/import.test.ts --filter=".test.|.spec."'
-          : 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 --include=test/integration/import.test.ts --filter=.test.|.spec.'
+          ? 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
+          : 'npx tsx src/bin/index.ts --parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
       );
 
       console.log(results.stdout);
@@ -70,8 +84,8 @@ test(async () => {
     await it('Parallel + Options (CLI Env Variables Propagation)', async () => {
       const results = await inspectCLI(
         isWindows
-          ? 'npx tsx src/bin/index.ts --include=test/integration/env --env-file="fixtures/.env.test"'
-          : 'npx tsx src/bin/index.ts --include=test/integration/env --env-file=fixtures/.env.test',
+          ? 'npx tsx src/bin/index.ts test/integration/env --env-file="fixtures/.env.test"'
+          : 'npx tsx src/bin/index.ts test/integration/env --env-file=fixtures/.env.test',
         {
           env: {
             ...env,

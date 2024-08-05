@@ -1,4 +1,3 @@
-/* c8 ignore next 2 */ // Types
 import type { WatchCallback } from '../@types/watch.js';
 import { watch as nodeWatch, type FSWatcher } from 'node:fs';
 import { join } from 'node:path';
@@ -18,18 +17,12 @@ export class Watcher {
   }
 
   private watchFile(filePath: string) {
-    /* c8 ignore next 3 */
     if (this.fileWatchers.has(filePath)) {
       return;
     }
 
     const watcher = nodeWatch(filePath, (eventType) => {
       this.callback(filePath, eventType);
-    });
-
-    /* c8 ignore next 3 */
-    watcher.on('error', () => {
-      return;
     });
 
     this.fileWatchers.set(filePath, watcher);
@@ -51,7 +44,6 @@ export class Watcher {
   }
 
   private async watchDirectory(dir: string) {
-    /* c8 ignore next 3 */
     if (this.dirWatchers.has(dir)) {
       return;
     }
@@ -68,14 +60,8 @@ export class Watcher {
           if (stats.isDirectory()) {
             await this.watchDirectory(fullPath);
           }
-          /* c8 ignore next */
         } catch {}
       }
-    });
-
-    /* c8 ignore next 3 */
-    watcher.on('error', () => {
-      return;
     });
 
     this.dirWatchers.set(dir, watcher);
@@ -91,19 +77,16 @@ export class Watcher {
   }
 
   public async start() {
-    try {
-      const stats = await stat(this.rootDir);
+    const stats = await stat(this.rootDir);
 
-      if (stats.isDirectory()) {
-        this.files = await listFiles(this.rootDir);
+    if (stats.isDirectory()) {
+      this.files = await listFiles(this.rootDir);
 
-        this.watchFiles(this.files);
-        await this.watchDirectory(this.rootDir);
-      } else {
-        this.watchFile(this.rootDir);
-      }
-      /* c8 ignore next */
-    } catch {}
+      this.watchFiles(this.files);
+      await this.watchDirectory(this.rootDir);
+    } else {
+      this.watchFile(this.rootDir);
+    }
   }
 
   public stop() {
@@ -119,7 +102,6 @@ export class Watcher {
   }
 }
 
-/* c8 ignore next */ // ?
 export const watch = async (path: string, callback: WatchCallback) => {
   const watcher = new Watcher(path, callback);
 

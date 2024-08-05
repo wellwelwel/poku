@@ -1,21 +1,19 @@
-/* c8 ignore next */ // Types
 import type { DescribeOptions } from '../../@types/describe.js';
 import { hrtime, env } from 'node:process';
 import { format } from '../../services/format.js';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
+import { todo } from './it/todo.js';
 
-/** On **Poku**, `describe` also can be used just as a pretty `console.log` to title your test suites in the terminal */
-export async function describe(
+async function describeCore(
   title: string,
   cb: () => Promise<unknown>
 ): Promise<void>;
-export function describe(title: string, cb: () => unknown): void;
-export async function describe(cb: () => Promise<unknown>): Promise<void>;
-export function describe(cb: () => unknown): unknown;
-export function describe(title: string, options?: DescribeOptions): void;
-/* c8 ignore next */ // ?
-export async function describe(
+function describeCore(title: string, cb: () => unknown): void;
+async function describeCore(cb: () => Promise<unknown>): Promise<void>;
+function describeCore(cb: () => unknown): unknown;
+function describeCore(title: string, options?: DescribeOptions): void;
+async function describeCore(
   arg1: string | (() => unknown | Promise<unknown>),
   arg2?: (() => unknown | Promise<unknown>) | DescribeOptions
 ): Promise<void> {
@@ -43,8 +41,7 @@ export async function describe(
     indentation.hasDescribe = true;
 
     const { background, icon } = options || {};
-    /* c8 ignore next */
-    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold() || ''}`;
+    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold()}`;
     const noBackground = !background;
 
     if (noBackground) {
@@ -80,3 +77,7 @@ export async function describe(
     );
   }
 }
+
+export const describe = Object.assign(describeCore, {
+  todo,
+});

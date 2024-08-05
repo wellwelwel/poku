@@ -1,8 +1,6 @@
-/* c8 ignore next */ // ?
 import { fromEntries, entries } from '../polyfills/object.js';
 import { nodeVersion } from './get-runtime.js';
 
-/* c8 ignore next */ // ?
 export const parseResultType = (type?: unknown): string => {
   const recurse = (value: unknown): unknown => {
     if (
@@ -22,7 +20,7 @@ export const parseResultType = (type?: unknown): string => {
       return Array.from(value).map(recurse);
     }
 
-    /* c8 ignore start */ // Vary versions
+    /* c8 ignore start */ // Platform version
     if (value instanceof Map) {
       return recurse(
         !nodeVersion || nodeVersion >= 12

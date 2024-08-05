@@ -12,6 +12,10 @@ import MidLevel from '@site/static/img/mid-level.svg';
 
 The use of [native **JavaScript** syntax in tests](/docs/philosophy#javascript-essence-for-tests-) is one of the major differences between **Poku** and other test runners, which is what makes it possible to use it on multiple platforms.
 
+:::tip
+It's not necessary to use `await` for tests that aren't asynchronous.
+:::
+
 Here are some examples of sequential and concurrent tests in the same file plus how to perform an action after all the tests have been completed:
 
 ### Running async tests in the same file in parallel
@@ -131,6 +135,10 @@ For multiple asynchronous `describe` or `test`, you can also use `await` to run 
 :::
 
 <hr />
+
+:::danger Be careful
+When using asynchronous `beforeEach` or `afterEach`, it's necessary to use `await` even if the `test` or `it` helpers doesn't have any asynchronous events.
+:::
 
 :::note
 If you find any typos, feel free to open a **Pull Request** correcting them.

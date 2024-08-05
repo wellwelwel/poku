@@ -1,5 +1,5 @@
 ---
-title: Good Practices
+title: 🪴 Good Practices
 description: Organizing tests for different needs, requirements and approaches.
 tags: [assert, assertion, test, describe, it, tutorial, roadmap]
 sidebar_position: 1
@@ -12,7 +12,7 @@ import MidLevel from '@site/static/img/mid-level.svg';
 <div className='title-section'>
 <aside>
 
-# Good Practices
+# 🪴 Good Practices
 
 - Organizing tests for different needs, requirements and approaches.
 
@@ -150,14 +150,21 @@ You are free to choose to use `describe` + `it`, or `test` + `describe`, or `tes
 - `assert`
 - `test`
 - `test` + `assert`
-- `describe`
-- `describe` + `assert`
 - `it`
 - `it` + `assert`
+- `describe`
+- `describe` + `assert`
 - `describe` + `it`
 - `describe` + `it` + `assert`
 - `describe` + `assert` + `it` + `assert`
+- `describe` + `test`
+- `describe` + `test` + `assert`
+- `describe` + `assert` + `test` + `assert`
 
+:::
+
+:::danger Be careful
+Avoid coupling `test` and `it` when using hooks such as `beforeEach` (e.g., `test + test`, `it + it`, `test + it`, etc.).
 :::
 
 <hr />

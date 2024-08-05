@@ -1,26 +1,30 @@
 #! /usr/bin/env node
 
 import type { Configs } from '../@types/poku.js';
-import process from 'node:process';
 import { escapeRegExp } from '../modules/helpers/list-files.js';
 import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
-import { fileResults } from '../configs/files.js';
+import { states } from '../configs/files.js';
 import { platformIsValid } from '../parsers/get-runtime.js';
 import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
 import { envFile } from '../modules/helpers/env.js';
-import { mapTests, normalizePath } from '../services/map-tests.js';
-import { watch, type Watcher } from '../services/watch.js';
-import { onSigint, poku } from '../modules/essentials/poku.js';
+import { poku } from '../modules/essentials/poku.js';
 import { Write } from '../services/write.js';
 import { getConfigs } from '../parsers/options.js';
 
 (async () => {
+  if (hasArg('version') || hasArg('v', '-')) {
+    const { VERSION } = require('../configs/poku.js');
+
+    Write.log(VERSION);
+    return;
+  }
+
   const configFile = getArg('config') || getArg('c', '-');
   const defaultConfigs = await getConfigs(configFile);
-
   const dirs: string[] = (() => {
-    const includeArg = getArg('include'); // deprecated
+    /* c8 ignore next 4 */ // Deprecated
+    const includeArg = getArg('include');
     if (includeArg !== undefined) {
       return includeArg.split(',');
     }
@@ -38,6 +42,7 @@ import { getConfigs } from '../parsers/options.js';
   const killPort = getArg('kill-port');
   const killRange = getArg('kill-range');
   const killPID = getArg('kill-pid');
+  /* c8 ignore start */ // Deno
   const denoAllow = argToArray('deno-allow') ?? defaultConfigs?.deno?.allow;
   const denoDeny = argToArray('deno-deny') ?? defaultConfigs?.deno?.deny;
   const denoCJS =
@@ -47,6 +52,7 @@ import { getConfigs } from '../parsers/options.js';
       .filter((a) => a) ||
     hasArg('deno-cjs') ||
     defaultConfigs?.deno?.cjs;
+  /* c8 ignore stop */
   const parallel =
     hasArg('parallel') || hasArg('p', '-') || defaultConfigs?.parallel;
   const quiet = hasArg('quiet') || hasArg('q', '-') || defaultConfigs?.quiet;
@@ -64,8 +70,44 @@ import { getConfigs } from '../parsers/options.js';
     return Number.isNaN(value) ? defaultConfigs?.concurrency : value;
   })();
 
+  if (dirs.length === 1) {
+    states.isSinglePath = true;
+  }
+
+  if (hasArg('list-files')) {
+    const { listFiles } = require('../modules/helpers/list-files.js');
+
+    let total = 0;
+
+    Write.hr();
+
+    for (const dir of dirs) {
+      const files: string[] = await listFiles(dir, {
+        filter:
+          typeof filter === 'string'
+            ? new RegExp(escapeRegExp(filter))
+            : filter,
+        exclude:
+          typeof exclude === 'string'
+            ? new RegExp(escapeRegExp(exclude))
+            : exclude,
+      });
+
+      total += files.length;
+
+      Write.log(files.map((file) => `${format('-').dim()} ${file}`).join('\n'));
+    }
+
+    Write.hr();
+    Write.log(`Total test files: ${format(String(total)).bold()}`);
+    Write.hr();
+
+    return;
+  }
+
   const tasks: Promise<unknown>[] = [];
 
+  /* c8 ignore start */ // Process-based
   if (killPort || defaultConfigs?.kill?.port) {
     const ports =
       killPort?.split(',').map(Number) || defaultConfigs?.kill?.port || [];
@@ -92,6 +134,7 @@ import { getConfigs } from '../parsers/options.js';
 
     tasks.push(kill.pid(PIDs));
   }
+  /* c8 ignore stop */
 
   if (hasEnvFile || defaultConfigs?.envFile) {
     const envFilePath = getArg('env-file') ?? defaultConfigs?.envFile;
@@ -100,6 +143,7 @@ import { getConfigs } from '../parsers/options.js';
   }
 
   const options: Configs = {
+    /* c8 ignore next 11 */ // Varies Platform
     platform: platformIsValid(platform)
       ? platform
       : hasArg('node')
@@ -142,114 +186,12 @@ import { getConfigs } from '../parsers/options.js';
     console.dir(options, { depth: null, colors: true });
   }
 
-  const watchers: Set<Watcher> = new Set();
-  const executing = new Set<string>();
-  const interval = Number(getArg('watch-interval')) || 1500;
+  await Promise.all(tasks);
+  await poku(dirs, options);
 
-  let isRunning = false;
+  if (watchMode) {
+    const { startWatch } = require('./watch.js');
 
-  const listenStdin = (input: Buffer | string) => {
-    if (isRunning || executing.size > 0) {
-      return;
-    }
-
-    if (String(input).trim() === 'rs') {
-      for (const watcher of watchers) {
-        watcher.stop();
-      }
-
-      watchers.clear();
-      resultsClear();
-      startTests();
-    }
-  };
-
-  const resultsClear = () => {
-    fileResults.success.clear();
-    fileResults.fail.clear();
-  };
-
-  const startTests = () => {
-    if (isRunning || executing.size > 0) {
-      return;
-    }
-
-    isRunning = true;
-
-    Promise.all(tasks).then(() => {
-      poku(dirs, options)
-        .then(() => {
-          if (watchMode) {
-            process.stdin.removeListener('data', listenStdin);
-            process.removeListener('SIGINT', onSigint);
-            resultsClear();
-
-            mapTests('.', dirs, options.filter, options.exclude).then(
-              (mappedTests) => {
-                for (const mappedTest of Array.from(mappedTests.keys())) {
-                  const currentWatcher = watch(mappedTest, (file, event) => {
-                    if (event === 'change') {
-                      const filePath = normalizePath(file);
-                      if (executing.has(filePath)) {
-                        return;
-                      }
-
-                      executing.add(filePath);
-                      resultsClear();
-
-                      const tests = mappedTests.get(filePath);
-                      if (!tests) {
-                        return;
-                      }
-
-                      poku(Array.from(tests), options).then(() => {
-                        setTimeout(() => {
-                          executing.delete(filePath);
-                        }, interval);
-                      });
-                    }
-                  });
-
-                  currentWatcher.then((watcher) => watchers.add(watcher));
-                }
-              }
-            );
-
-            for (const dir of dirs) {
-              const currentWatcher = watch(dir, (file, event) => {
-                if (event === 'change') {
-                  if (executing.has(file)) {
-                    return;
-                  }
-
-                  executing.add(file);
-                  resultsClear();
-
-                  poku(file, options).then(() => {
-                    setTimeout(() => {
-                      executing.delete(file);
-                    }, interval);
-                  });
-                }
-              });
-
-              currentWatcher.then((watcher) => watchers.add(watcher));
-            }
-
-            Write.hr();
-            Write.log(
-              `${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`
-            );
-
-            process.stdin.setEncoding('utf-8');
-            process.stdin.on('data', listenStdin);
-          }
-        })
-        .finally(() => {
-          isRunning = false;
-        });
-    });
-  };
-
-  startTests();
+    await startWatch(dirs, options);
+  }
 })();

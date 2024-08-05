@@ -1,22 +1,20 @@
-/* c8 ignore next 2 */ // Types
 import type { Code } from '../../@types/code.js';
 import type { Configs } from '../../@types/poku.js';
 import process from 'node:process';
 import { runTests, runTestsParallel } from '../../services/run-tests.js';
 import { Write } from '../../services/write.js';
 import { exit } from '../helpers/exit.js';
-import { format } from '../../services/format.js';
+import { format, showTestResults } from '../../services/format.js';
 import { isQuiet } from '../../parsers/output.js';
-import { fileResults, finalResults } from '../../configs/files.js';
-import { indentation } from '../../configs/indentation.js';
+import { finalResults } from '../../configs/files.js';
 
-/* c8 ignore next 3 */
+/* c8 ignore start */ // Process-based
 export const onSigint = () => {
   process.stdout.write('\u001B[?25h');
 };
 
-/* c8 ignore next */
 process.once('SIGINT', onSigint);
+/* c8 ignore stop */
 
 export async function poku(
   targetPaths: string | string[],
@@ -35,9 +33,7 @@ export async function poku(
   finalResults.started = new Date();
 
   const start = process.hrtime();
-  const prepareDirs = Array.prototype.concat(targetPaths);
-  /* c8 ignore next */ // TODO: Allow users to pass cwd for monorepo improvements
-  const dirs = prepareDirs.length > 0 ? prepareDirs : ['.'];
+  const dirs = Array.prototype.concat(targetPaths);
   const showLogs = !isQuiet(configs);
 
   // Sequential
@@ -45,7 +41,6 @@ export async function poku(
     for (const dir of dirs) {
       const result = await runTests(dir, configs);
 
-      /* c8 ignore next 6 */
       if (!result) {
         code = 1;
         if (configs?.failFast) {
@@ -63,14 +58,14 @@ export async function poku(
 
     finalResults.time = total;
 
+    showLogs && showTestResults();
+
     exit(code, configs?.quiet);
-    return;
   }
 
   // Parallel
   if (showLogs) {
     Write.hr();
-    /* c8 ignore next */ // ?
     Write.log(`${format('Running the Test Suite in Parallel').bold()}\n`);
   }
 
@@ -78,7 +73,6 @@ export async function poku(
     const promises = dirs.map(async (dir) => {
       const result = await runTestsParallel(dir, configs);
 
-      /* c8 ignore next 3 */
       if (!result && configs?.failFast) {
         throw new Error('quiet');
       }
@@ -88,11 +82,9 @@ export async function poku(
 
     const concurrency = await Promise.all(promises);
 
-    /* c8 ignore next 3 */
     if (concurrency.some((result) => !result)) {
       code = 1;
     }
-    /* c8 ignore next */
   } catch {
   } finally {
     const end = process.hrtime(start);
@@ -101,31 +93,7 @@ export async function poku(
     finalResults.time = total;
   }
 
-  showLogs && Write.hr();
-
-  if (showLogs && fileResults.success.size > 0) {
-    Write.log(
-      Array.from(fileResults.success)
-        .map(
-          ([file, time]) =>
-            `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${time}ms`).success()}`).dim()}`
-        )
-        .join('\n')
-    );
-  }
-
-  /* c8 ignore start */
-  if (showLogs && fileResults.fail.size > 0) {
-    Write.log(
-      Array.from(fileResults.fail)
-        .map(
-          ([file, time]) =>
-            `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time}ms`).fail()}`).dim()}`
-        )
-        .join('\n')
-    );
-  }
-  /* c8 ignore stop */
+  showLogs && showTestResults();
 
   if (configs?.noExit) {
     return code;

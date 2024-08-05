@@ -12,6 +12,7 @@ index.test('Import Suite', () => {
   index.assert.ok(index.assert, 'Importing assert method');
   index.assert.ok(index.strict, 'Importing strict method');
 
+  index.assert.ok(index.defineConfig, 'Importing defineConfig method');
   index.assert.ok(index.envFile, 'Importing envFile method');
   index.assert.ok(index.startService, 'Importing startService method');
   index.assert.ok(index.startScript, 'Importing startScript method');
@@ -32,4 +33,8 @@ index.test('Import Suite', () => {
   index.assert.ok(index.waitForPort, 'Importing waitForPort helper');
   index.assert.ok(index.exit, 'Importing exit helper');
   index.assert.ok(index.listFiles, 'Importing listFiles helper');
+  index.assert.ok(
+    typeof index.version === 'string',
+    'Importing listFiles helper'
+  );
 });

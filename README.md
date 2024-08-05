@@ -7,7 +7,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 [![NPM Downloads](https://img.shields.io/npm/v/poku.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
 [![NPM Downloads](https://img.shields.io/npm/dt/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
-[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://app.codecov.io/github/wellwelwel/poku)<br />
+[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://github.com/wellwelwel/poku/tree/main/.nycrc)<br />
 [![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
 [![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
 [![GitHub Workflow Status (Windows)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&label=&branch=main&logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5XaW5kb3dzIDExPC90aXRsZT48cGF0aCBmaWxsPSIjODg5N2E5IiBkPSJNMTI2IDEuNjM3bC02NyA5LjgzNHY0OS44MzFsNjctLjUzNHpNMS42NDcgNjYuNzA5bC4wMDMgNDIuNDA0IDUwLjc5MSA2Ljk4My0uMDQtNDkuMDU3em01Ni44Mi42OGwuMDk0IDQ5LjQ2NSA2Ny4zNzYgOS41MDkuMDE2LTU4Ljg2M3pNMS42MSAxOS4yOTdsLjA0NyA0Mi4zODMgNTAuNzkxLS4yODktLjAyMy00OS4wMTZ6Ij48L3BhdGg+PC9zdmc+&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-windows.yml?query=branch%3Amain)
@@ -29,7 +29,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CommonJS** files directly with [**Deno**][deno-version-url]<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the **same test suite** for [**Node.js**][node-version-url], [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **processes**, **ports**, and **containers** ✨
+<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
 
 ---
 
@@ -37,19 +37,42 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Install
 
+<table>
+<tr>
+<td width="225">
+
 ```bash
 # Node.js
 npm i -D poku
+```
 
+</td>
+<td width="225">
+
+```bash
 # TypeScript (Node.js)
 npm i -D poku tsx
+```
 
+</td>
+<td width="225">
+
+```bash
 # Bun
 bun add -d poku
+```
 
-# Deno
+</td>
+<td width="225">
+
+```bash
+# Deno (optional)
 deno add npm:poku
 ```
+
+</td>
+</tr>
+</table>
 
 ---
 
@@ -220,8 +243,8 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 - [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
+- [Using **Poku** without installing on **Deno** and alternatives to **JSR**](https://github.com/wellwelwel/poku/discussions/565).
 - [Migrating from version **1.x** to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
-- [Using **Poku** with **Deno** and approaches to **JSR**](https://github.com/wellwelwel/poku/discussions/565).
 
 ---
 
@@ -231,9 +254,9 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 **Poku** is [continuously tested](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) to ensure the following expectations for basic usage:
 
-- \>=**4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
-- \>=**3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
-- \>=**1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
+- ~**4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
+- ~**3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
+- ~**1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
 
 > You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
 
@@ -243,9 +266,9 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)
 
-- [~**300x** lighter than **Vitest**](https://pkg-size.dev/vitest)
-- [~**170x** lighter than **Jest**](https://pkg-size.dev/jest)
-- [~**40x** lighter than **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
+- [~**230x** lighter than **Vitest**](https://pkg-size.dev/vitest)
+- [~**130x** lighter than **Jest**](https://pkg-size.dev/jest)
+- [~**30x** lighter than **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
 
 > **Poku** size is highly significant in development to ensure cost-saving **CI** that require servers that charge for storage and usage.
 

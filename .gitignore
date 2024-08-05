@@ -7,6 +7,8 @@ node_modules
 .env
 .nyc_output
 /.temp
+/.temp2
 /test-src
 /test-tests
 /test-before-and-after-each.json
+.nycrc.json

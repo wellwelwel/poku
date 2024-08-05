@@ -1,6 +1,12 @@
 {
   "include": ["src"],
-  "exclude": ["test", "tools", "src/@types", "src/polyfills/deno.mts"],
+  "exclude": [
+    "test",
+    "tools",
+    "src/@types",
+    "src/polyfills/deno.mts",
+    "fixtures/sintax/invalid-file.js"
+  ],
   "compilerOptions": {
     "target": "ES2018",
     "lib": ["ES2018"],

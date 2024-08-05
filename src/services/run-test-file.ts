@@ -1,4 +1,3 @@
-/* c8 ignore next */ // Types
 import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime, env } from 'node:process';
 import { relative } from 'node:path';
@@ -13,23 +12,21 @@ import { Write } from './write.js';
 
 const cwd = processCWD();
 
-/* c8 ignore next */ // ?
 export const runTestFile = async (
   filePath: string,
   configs?: Configs
 ): Promise<boolean> => {
-  /* c8 ignore start */
   const runtimeOptions = runner(filePath, configs);
   const runtime = runtimeOptions.shift()!;
   const runtimeArguments = [
     ...runtimeOptions,
+    /* c8 ignore next 5 */ // Varies Platform
     configs?.deno?.cjs === true ||
     (Array.isArray(configs?.deno?.cjs) &&
       configs.deno.cjs.some((ext) => filePath.includes(ext)))
       ? 'https://cdn.jsdelivr.net/npm/poku/lib/polyfills/deno.mjs'
       : filePath,
   ];
-  /* c8 ignore stop */
 
   const fileRelative = relative(cwd, filePath);
   const showLogs = !isQuiet(configs);
@@ -50,7 +47,6 @@ export const runTestFile = async (
   const start = hrtime();
   let end: ReturnType<typeof hrtime>;
 
-  /* c8 ignore next 3 */
   if (!(await beforeEach(fileRelative, configs))) {
     return false;
   }
@@ -83,7 +79,6 @@ export const runTestFile = async (
         mappedOutputs && Write.log(mappedOutputs.join('\n'));
       }
 
-      /* c8 ignore next 4 */
       if (!(await afterEach(fileRelative, configs))) {
         resolve(false);
         return;
@@ -100,7 +95,7 @@ export const runTestFile = async (
       resolve(result);
     });
 
-    /* c8 ignore start */
+    /* c8 ignore next 10 */ // Unknown external error
     child.on('error', (err) => {
       end = hrtime(start);
 
@@ -111,6 +106,5 @@ export const runTestFile = async (
 
       resolve(false);
     });
-    /* c8 ignore stop */
   });
 };

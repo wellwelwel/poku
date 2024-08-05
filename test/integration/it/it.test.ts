@@ -1,8 +1,8 @@
 import { test } from '../../../src/modules/helpers/test.js';
 import { describe } from '../../../src/modules/helpers/describe.js';
-import { it } from '../../../src/modules/helpers/it.js';
+import { it } from '../../../src/modules/helpers/it/core.js';
 
-test('Testing "it" method', () => {
+test('Testing "it" overloads', () => {
   describe(async () => {
     it(() => {});
     it(() => true);
@@ -31,3 +31,6 @@ test('Testing "it" method', () => {
   it('it without describe', async () =>
     await new Promise((resolve) => resolve(undefined)));
 });
+
+it('it without scope', async () =>
+  await new Promise((resolve) => resolve(undefined)));

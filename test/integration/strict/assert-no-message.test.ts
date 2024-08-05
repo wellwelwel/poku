@@ -6,7 +6,7 @@ if (nodeVersion && nodeVersion < 16) {
 }
 
 import { describe } from '../../../src/modules/helpers/describe.js';
-import { it } from '../../../src/modules/helpers/it.js';
+import { it } from '../../../src/modules/helpers/it/core.js';
 import { strict as assert } from '../../../src/modules/essentials/strict.js';
 
 describe('Strict Suite (No Message)', () => {

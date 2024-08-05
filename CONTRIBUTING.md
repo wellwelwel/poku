@@ -48,13 +48,23 @@ It's better to discuss an **API** before actually start implementing it. You can
 
 Check if there is an existing section or feel free to create a new one. You can find the wesite source code at [./website](https://github.com/wellwelwel/poku/tree/main/website).
 
+- Feel free to open PRs fixing typos or adding support for other languages 🤝
+
 <blockquote>
 
 Before commiting, consider to run:
 
 ```sh
 cd website
+
+# Installing dependencies
+npm ci
+
+# Fixing lint rules
 npm run lint:fix
+
+# Testing
+npm run test
 ```
 
 </blockquote>

@@ -1,19 +1,15 @@
-/* c8 ignore start */ // Types
 import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime } from 'node:process';
 import { join, relative, sep } from 'node:path';
 import { runner } from '../parsers/get-runner.js';
 import { indentation } from '../configs/indentation.js';
-import {
-  isFile as IS_FILE,
-  listFiles,
-  sanitizePath,
-} from '../modules/helpers/list-files.js';
+import { isFile as IS_FILE, listFiles } from '../modules/helpers/list-files.js';
 import { Write } from '../services/write.js';
 import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
 import { isQuiet } from '../parsers/output.js';
 import { results } from '../configs/poku.js';
+import { availableParallelism } from '../polyfills/cpus.js';
 
 const cwd = processCWD();
 
@@ -24,15 +20,13 @@ export const runTests = async (
   const testDir = join(cwd, dir);
   const currentDir = relative(cwd, testDir);
   const isFile = await IS_FILE(testDir);
-  const files = isFile
-    ? [sanitizePath(testDir)]
-    : await listFiles(testDir, configs);
+  const files = await listFiles(testDir, configs);
   const totalTests = files.length;
   const showLogs = !isQuiet(configs);
 
   let passed = true;
 
-  if (showLogs) {
+  if (showLogs && files.length > 0) {
     Write.hr();
     Write.log(
       `${format(isFile ? 'File:' : 'Directory:').bold()} ${format(`.${sep}${currentDir}`).underline()}\n`
@@ -61,7 +55,6 @@ export const runTests = async (
         Write.log(
           `${indentation.test}${format('✔').success()} ${log}${format(` › ${total}ms`).success().dim()}${nextLine}`
         );
-      /* c8 ignore start */
     } else {
       ++results.fail;
 
@@ -84,24 +77,20 @@ export const runTests = async (
         break;
       }
     }
-
-    /* c8 ignore stop */
   }
 
   return passed;
 };
 
-/* c8 ignore next */ // ?
 export const runTestsParallel = async (
   dir: string,
   configs?: Configs
 ): Promise<boolean> => {
   const testDir = join(cwd, dir);
-  const files = (await IS_FILE(dir))
-    ? [sanitizePath(dir)]
-    : await listFiles(testDir, configs);
+  const files = await listFiles(testDir, configs);
   const filesByConcurrency: string[][] = [];
-  const concurrencyLimit = configs?.concurrency || 0;
+  const concurrencyLimit =
+    configs?.concurrency ?? Math.max(availableParallelism() - 1, 1);
   const concurrencyResults: (boolean | undefined)[][] = [];
   const showLogs = !isQuiet(configs);
 
@@ -116,14 +105,8 @@ export const runTestsParallel = async (
   try {
     for (const fileGroup of filesByConcurrency) {
       const promises = fileGroup.map(async (filePath) => {
-        /* c8 ignore next 3 */
-        if (configs?.failFast && results.fail > 0) {
-          return;
-        }
-
         const testPassed = await runTestFile(filePath, configs);
 
-        /* c8 ignore start */
         if (!testPassed) {
           ++results.fail;
 
@@ -135,7 +118,6 @@ export const runTestsParallel = async (
 
           return false;
         }
-        /* c8 ignore false */
 
         ++results.success;
         return true;
@@ -146,7 +128,6 @@ export const runTestsParallel = async (
     }
 
     return concurrencyResults.every((group) => group.every((result) => result));
-    /* c8 ignore start */
   } catch (error) {
     if (showLogs) {
       Write.hr();
@@ -155,5 +136,4 @@ export const runTestsParallel = async (
 
     return false;
   }
-  /* c8 ignore stop */
 };

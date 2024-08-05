@@ -1,5 +1,5 @@
 import { describe } from '../../../../src/modules/helpers/describe.js';
-import { it } from '../../../../src/modules/helpers/it.js';
+import { it } from '../../../../src/modules/helpers/it/core.js';
 import { assert } from '../../../../src/modules/essentials/assert.js';
 import { beforeEach, afterEach } from '../../../../src/modules/helpers/each.js';
 
@@ -12,9 +12,12 @@ const beforeEachHelper = beforeEach(asyncPreIncrement, { immediate: true });
 
 const afterEachHelper = afterEach(asyncPreIncrement);
 
-describe('Asynchronous Before and After Each Suite (it)', () => {
-  it(() => assert.equal(counter, 2, 'Counter should be 2 after beforeEach'));
-  it(() =>
+describe('Asynchronous Before and After Each Suite (it)', async () => {
+  await it(() =>
+    assert.equal(counter, 2, 'Counter should be 2 after beforeEach')
+  );
+
+  await it(() =>
     assert.equal(counter, 4, 'Counter should be 4 after before/afterEach')
   );
 
@@ -27,13 +30,16 @@ describe('Asynchronous Before and After Each Suite (it)', () => {
   afterEachHelper.continue();
   beforeEachHelper.continue();
 
-  it(() => assert.equal(counter, 6, 'Counter should be 6 after resuming'));
-  it(() =>
+  await it(() =>
+    assert.equal(counter, 6, 'Counter should be 6 after resuming')
+  );
+
+  await it(() =>
     assert.equal(counter, 8, 'Counter should be 8 after before/afterEach')
   );
 
   beforeEachHelper.reset();
   afterEachHelper.reset();
 
-  it(() => assert.equal(counter, 9, 'Counter should be 9 after reset'));
+  await it(() => assert.equal(counter, 9, 'Counter should be 9 after reset'));
 });

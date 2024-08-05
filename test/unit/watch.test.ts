@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { it } from '../../src/modules/helpers/it.js';
+import { it } from '../../src/modules/helpers/it/core.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { beforeEach, afterEach } from '../../src/modules/helpers/each.js';
 import { assert } from '../../src/modules/essentials/assert.js';
