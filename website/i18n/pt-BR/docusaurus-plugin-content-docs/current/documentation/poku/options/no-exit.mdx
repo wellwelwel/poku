@@ -1,0 +1,49 @@
+---
+sidebar_position: 99
+---
+
+# `noExit`
+
+Definindo `noExit` como `true`, o **Poku** não irá encerrar o processo e irá retornar o código de saída (`0` ou `1`).<br />
+Você pode combinar essa opção com o método `exit` do **Poku** ou apenas usar o resultado, por exemplo: `process.exit(code)`.
+
+## API
+
+```ts
+import { poku, exit } from 'poku';
+
+const unit = await poku('test/unit', {
+  noExit: true,
+  parallel: true,
+  quiet: true,
+});
+
+// Faça algo
+
+const integration = await poku('test/integration', {
+  noExit: true,
+  quiet: true,
+});
+
+// Faça algo mais
+
+const code = unit === 0 && integration === 0 ? 0 : 1;
+
+// Faça algo mais novamente
+
+exit(code);
+```
+
+<blockquote>
+
+Em seguida, execute o arquivo diretamente com a plataforma de sua escolha, por exemplo:
+
+```bash
+node test/run.test.js
+```
+
+```bash
+npx tsx test/run.test.ts
+```
+
+</blockquote>

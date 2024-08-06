@@ -1,0 +1,71 @@
+---
+sidebar_position: 9
+---
+
+import { History } from '@site/src/components/History';
+
+# `watch`
+
+Observa os eventos nos testes e arquivos que contêm testes (após executar todos os testes), reexecutando os arquivos de teste que são atualizados para cada novo evento.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Suporte para a flag curta <code>-w</code>.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+```bash
+npx poku --watch
+```
+
+Você pode utilizar a flag `--watch-interval` para definir um intervalo para os eventos de `watch` em milissegundos:
+
+> O padrão é `1500`
+
+```bash
+npx poku --watch --watch-interval=1500
+```
+
+- Flag curta: `-w`.
+
+<hr />
+
+:::tip
+
+Rapidamente redefina e reexecute todos os testes digitando <kbd>rs</kbd> no console, seguido de <kbd>Enter</kbd>.
+
+- Isso irá limpar e repopular todos os diretórios e arquivos a serem observados.
+- Não é possível utilizá-lo enquanto os testes estão em execução.
+
+:::
+
+<hr />
+
+:::info
+
+Se não for possível determinar qual arquivo de teste depende do arquivo de origem alterado, nenhum teste será executado.
+
+:::
+
+<hr />
+
+:::note
+
+❌ Caminhos dinâmicos não são suportados:
+
+```ts
+const dynamicPath = './algum-arquivo.js';
+
+await import(dynamicPath);
+```
+
+:::
