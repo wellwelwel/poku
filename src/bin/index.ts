@@ -77,29 +77,33 @@ import { getConfigs } from '../parsers/options.js';
   if (hasArg('list-files')) {
     const { listFiles } = require('../modules/helpers/list-files.js');
 
-    let total = 0;
+    const files: string[] = [];
 
     Write.hr();
 
     for (const dir of dirs) {
-      const files: string[] = await listFiles(dir, {
-        filter:
-          typeof filter === 'string'
-            ? new RegExp(escapeRegExp(filter))
-            : filter,
-        exclude:
-          typeof exclude === 'string'
-            ? new RegExp(escapeRegExp(exclude))
-            : exclude,
-      });
-
-      total += files.length;
-
-      Write.log(files.map((file) => `${format('-').dim()} ${file}`).join('\n'));
+      files.push(
+        ...(await listFiles(dir, {
+          filter:
+            typeof filter === 'string'
+              ? new RegExp(escapeRegExp(filter))
+              : filter,
+          exclude:
+            typeof exclude === 'string'
+              ? new RegExp(escapeRegExp(exclude))
+              : exclude,
+        }))
+      );
     }
 
+    Write.log(
+      files
+        .sort()
+        .map((file) => `${format('-').dim()} ${file}`)
+        .join('\n')
+    );
     Write.hr();
-    Write.log(`Total test files: ${format(String(total)).bold()}`);
+    Write.log(`Total test files: ${format(String(files.length)).bold()}`);
     Write.hr();
 
     return;
