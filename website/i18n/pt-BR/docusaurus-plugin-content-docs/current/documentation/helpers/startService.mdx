@@ -1,6 +1,6 @@
 ---
-sidebar_position: 7
-tags: [background, server, service, package.json, scripts]
+sidebar_position: 8
+tags: [background, server, service]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,25 +8,15 @@ import TabItem from '@theme/TabItem';
 import { FAQ } from '@site/src/components/FAQ';
 import Success from '@site/static/img/success.svg';
 
-# 🔁 Start Script
+# 🔁 Start Service
 
-Execute seus scripts do `package.json` em um processo em segundo plano e teste-os 🧑🏻‍🔬
+Execute seus serviços em um processo em segundo plano e teste-o 🧑🏻‍🔬
 
-> startScript(caminhoDoArquivo: string, opções?: startScriptOptions);
+> startService(caminhoDoArquivo: string, opções?: StartServiceOptions);
 
-O `startScript` executa um script diretamente do seu `package.json` ou `deno.json` e o mantém em execução em um processo em segundo plano até que você o libere.
+O `startService` executa um arquivo diretamente e mantém-o em execução em um processo em segundo plano até que você o libere.
 
 <div className='features black'>
-  <div className='p'>
-    <Success />
-    <span>
-      Bastante útil para testar seu
-      [**NextJS**](https://github.com/vercel/next.js),
-      [**NuxtJS**](https://github.com/nuxt/nuxt),
-      [**nodemon**](https://github.com/remy/nodemon) e todos os apps do projeto
-      🚀
-    </span>
-  </div>
   <div className='p'>
     <Success />
     <span>Permite que **cookies** persistam (_ou não_) 🍪</span>
@@ -41,8 +31,8 @@ O `startScript` executa um script diretamente do seu `package.json` ou `deno.jso
   <div className='p'>
     <Success />
     <span>
-      Não é necessário adicionar plugins externos para algo tão simples, basta
-      executá-lo como está 🌱
+      não é necessário exportar seu app, server ou qualquer serviço, basta
+      executá-lo como está 🚀
     </span>
   </div>
   <div className='p'>
@@ -76,9 +66,9 @@ Definindo um tempo limite, você evita processos indefinidos que não concluem n
 Você não precisa necessariamente encerrar seu serviço em segundo plano como a última linha do teste, se ele não estiver mais em uso.
 
 ```ts
-import { startScript } from 'poku';
+import { startService } from 'poku';
 
-const server = await startScript('start', {
+const server = await startService('server.js', {
   /**
    * Espere pelo "ready" na saída do console
    */
@@ -130,7 +120,7 @@ kill -9 PID
 ## Opções Disponíveis
 
 ```ts
-type StartScriptOptions = {
+type StartServiceOptions = {
   /**
    * - Por padrão, será resolvido na primeira saída do console
    * - Definindo uma string: ele aguardará uma string específica na saída do console para resolver
@@ -161,9 +151,9 @@ type StartScriptOptions = {
    */
   cwd?: string | undefined;
   /**
-   * Por padrão, o Poku usará o `npm`. Altere conforme desejar.
+   * Por padrão, o Poku tentará identificar a plataforma atual, mas você pode especificá-la manualmente
    */
-  runner?: 'npm' | 'bun' | 'deno' | 'yarn' | 'pnpm';
+  platform?: 'node' | 'bun' | 'deno';
 };
 
 type End = (port?: number | number[]) => Promise<void>;
