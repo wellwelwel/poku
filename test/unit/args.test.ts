@@ -8,32 +8,32 @@ import {
   getPaths,
 } from '../../src/parsers/get-arg.js';
 
-describe('CLI Argument Handling Functions', async () => {
-  await it('should get argument value', () => {
+describe('CLI Argument Handling Functions', () => {
+  it('should get argument value', () => {
     const args = ['--arg=value'];
     const result = getArg('arg', '--', args);
     assert.strictEqual(result, 'value', 'Argument value should be "value"');
   });
 
-  await it('should return undefined for missing argument value', () => {
+  it('should return undefined for missing argument value', () => {
     const args = ['--arg'];
     const result = getArg('arg', '--', args);
     assert.strictEqual(result, undefined, 'Argument value should be undefined');
   });
 
-  await it('should check if argument exists', () => {
+  it('should check if argument exists', () => {
     const args = ['--checkArg'];
     const result = hasArg('checkArg', '--', args);
     assert.strictEqual(result, true, 'Argument should exist');
   });
 
-  await it('should check if argument does not exist', () => {
+  it('should check if argument does not exist', () => {
     const args = ['--anotherArg'];
     const result = hasArg('checkArg', '--', args);
     assert.strictEqual(result, false, 'Argument should not exist');
   });
 
-  await it('should convert argument to array', () => {
+  it('should convert argument to array', () => {
     const args = ['--array=1,2,3'];
     const result = argToArray('array', '--', args);
     assert.deepStrictEqual(
@@ -43,7 +43,7 @@ describe('CLI Argument Handling Functions', async () => {
     );
   });
 
-  await it('should return empty array for argument without value', () => {
+  it('should return empty array for argument without value', () => {
     const args = ['--array'];
     const result = argToArray('array', '--', args);
     assert.deepStrictEqual(
@@ -53,13 +53,13 @@ describe('CLI Argument Handling Functions', async () => {
     );
   });
 
-  await it('should return undefined for non-existing argument to array', () => {
+  it('should return undefined for non-existing argument to array', () => {
     const args: string[] = [];
     const result = argToArray('array', '--', args);
     assert.strictEqual(result, undefined, 'Argument should be undefined');
   });
 
-  await it('should return paths without prefix arguments', () => {
+  it('should return paths without prefix arguments', () => {
     const args = ['--arg=value', 'path1', 'path2'];
     const result = getPaths('--', args);
     assert.deepStrictEqual(
@@ -69,7 +69,7 @@ describe('CLI Argument Handling Functions', async () => {
     );
   });
 
-  await it('should split paths by comma', () => {
+  it('should split paths by comma', () => {
     const args = ['path1,path2,path3'];
     const result = getPaths('--', args);
     assert.deepStrictEqual(
@@ -79,7 +79,7 @@ describe('CLI Argument Handling Functions', async () => {
     );
   });
 
-  await it('should return undefined if no paths provided', () => {
+  it('should return undefined if no paths provided', () => {
     const args = ['--arg=value'];
     const result = getPaths('--', args);
     assert.strictEqual(
@@ -89,7 +89,7 @@ describe('CLI Argument Handling Functions', async () => {
     );
   });
 
-  await it('should handle mixed arguments with and without prefix', () => {
+  it('should handle mixed arguments with and without prefix', () => {
     const args = ['--arg=value', 'path1', '--another=value', 'path2,path3'];
     const result = getPaths('--', args);
     assert.deepStrictEqual(
@@ -99,7 +99,7 @@ describe('CLI Argument Handling Functions', async () => {
     );
   });
 
-  await it('should handle empty array', () => {
+  it('should handle empty array', () => {
     const args: string[] = [];
     const result = getPaths('--', args);
     assert.strictEqual(
