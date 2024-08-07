@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1](https://github.com/wellwelwel/poku/compare/v2.4.0...v2.4.1) (2024-08-06)
+
+
+### Bug Fixes
+
+* sort list of the file paths emitted by `--list-files` ([#657](https://github.com/wellwelwel/poku/issues/657)) ([2b0528a](https://github.com/wellwelwel/poku/commit/2b0528a773bb252faf2884c942f599d97a015109))
+
 ## [2.4.0](https://github.com/wellwelwel/poku/compare/v2.3.0...v2.4.0) (2024-08-03)
 
 
