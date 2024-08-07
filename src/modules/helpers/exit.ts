@@ -5,8 +5,9 @@ import { format } from '../../services/format.js';
 import { Write } from '../../services/write.js';
 import { fileResults, finalResults } from '../../configs/files.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
+import { AssertionError } from 'node:assert';
 
-export const exit = (code: Code, quiet?: boolean): never => {
+export const exit = (code: Code, quiet?: boolean) => {
   const isPoku = results.success > 0 || results.fail > 0;
   const success = ` PASS › ${results.success - results.skip || 0} `;
   const failure = ` FAIL › ${results.fail} `;
@@ -59,17 +60,23 @@ export const exit = (code: Code, quiet?: boolean): never => {
       );
     });
 
-  process.exit(code === 0 ? 0 : 1);
+  process.exitCode = code === 0 ? 0 : 1;
 };
 
-/* c8 ignore next 4 */ // Unknown external error
-process.on('unhandledRejection', (reason) => {
-  console.error('unhandledRejection', reason);
-  process.exit(1);
+/* c8 ignore start */ // Unknown external error
+process.on('unhandledRejection', (err) => {
+  if (!(err instanceof AssertionError)) {
+    console.error('unhandledRejection', err);
+  }
+
+  process.exitCode = 1;
 });
 
-/* c8 ignore next 4 */ // Unknown external error
 process.on('uncaughtException', (err) => {
-  console.error('uncaughtException', err);
-  process.exit(1);
+  if (!(err instanceof AssertionError)) {
+    console.error('uncaughtException', err);
+  }
+
+  process.exitCode = 1;
 });
+/* c8 ignore stop */
