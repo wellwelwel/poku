@@ -270,7 +270,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 - [~**130x** lighter than **Jest**](https://pkg-size.dev/jest)
 - [~**30x** lighter than **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
 
-> **Poku** size is highly significant in development to ensure cost-saving **CI** that require servers that charge for storage and usage.
+> **Poku** size ensures _cost-saving_ **CI** for services that charge for storage and usage.
 
 ---
 
