@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.3](https://github.com/wellwelwel/poku/compare/v2.4.2...v2.4.3) (2024-08-08)
+
+
+### Bug Fixes
+
+* **Deno:** fix `process` interoperability after `v2.4.2` ([#664](https://github.com/wellwelwel/poku/issues/664)) ([0eb5b9f](https://github.com/wellwelwel/poku/commit/0eb5b9fcb89ccb95e4c3269fc83bd7caee4c6774))
+
 ## [2.4.2](https://github.com/wellwelwel/poku/compare/v2.4.1...v2.4.2) (2024-08-08)
 
 
