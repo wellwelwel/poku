@@ -1,8 +1,8 @@
-import type { ProcessAssertionOptions } from '../../@types/assert.js';
+import type { ProcessAssertionOptions } from '../@types/assert.js';
 import type assert from 'node:assert';
 import type { AssertPredicate } from 'node:assert';
-import { nodeVersion } from '../../parsers/get-runtime.js';
-import { processAssert, processAsyncAssert } from '../../services/assert.js';
+import { nodeVersion } from '../parsers/get-runtime.js';
+import { processAssert, processAsyncAssert } from '../services/assert.js';
 
 export const createAssert = (nodeAssert: typeof assert) => {
   const ok = (
