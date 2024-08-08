@@ -61,6 +61,7 @@ export async function poku(
     showLogs && showTestResults();
 
     exit(code, configs?.quiet);
+    return;
   }
 
   // Parallel
