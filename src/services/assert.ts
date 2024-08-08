@@ -1,20 +1,20 @@
 import type { ProcessAssertionOptions } from '../@types/assert.js';
 import { AssertionError } from 'node:assert';
-import process, { cwd as processCWD, env } from 'node:process';
+import process from 'node:process';
 import path from 'node:path';
 import { findFile } from '../parsers/find-file-from-stack.js';
 import { parseResultType } from '../parsers/assert.js';
-
 import { indentation } from '../configs/indentation.js';
 import { format } from './format.js';
 import { Write } from './write.js';
 
-const cwd = processCWD();
+const cwd = process.cwd();
 const regexFile = /file:(\/\/)?/;
 
 const assertProcessor = () => {
-  const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
-  const FILE = env.FILE;
+  const isPoku =
+    typeof process.env?.FILE === 'string' && process.env?.FILE.length > 0;
+  const FILE = process.env.FILE;
 
   let preIdentation = '';
 
