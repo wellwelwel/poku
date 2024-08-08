@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.2](https://github.com/wellwelwel/poku/compare/v2.4.1...v2.4.2) (2024-08-08)
+
+
+### Bug Fixes
+
+* prevent premature exit after an assertion failure ([#662](https://github.com/wellwelwel/poku/issues/662)) ([32161bb](https://github.com/wellwelwel/poku/commit/32161bb51da9b3e43394a54529b70cd1b45b9f58))
+* prevent premature exit of test suite ([46d068a](https://github.com/wellwelwel/poku/commit/46d068a07358e98946573216af7b8f66dd38c305))
+* prevent premature exit of test suites ([#660](https://github.com/wellwelwel/poku/issues/660)) ([46d068a](https://github.com/wellwelwel/poku/commit/46d068a07358e98946573216af7b8f66dd38c305))
+
 ## [2.4.1](https://github.com/wellwelwel/poku/compare/v2.4.0...v2.4.1) (2024-08-06)
 
 
