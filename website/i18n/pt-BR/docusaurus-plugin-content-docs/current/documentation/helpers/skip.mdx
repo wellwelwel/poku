@@ -32,20 +32,20 @@ Imagine que um teste específico não funcione em um _SO_ específico:
 
 ```ts
 import { test, skip } from 'poku';
-// destaca-início
+// highlight-start
 import { platform } from 'node:process';
 
 const isWindows = platform === 'win32';
 
-// destaca-fim
+// highlight-end
 if (isWindows) skip('Pulando devido à incompatibilidade com o Windows');
 
 // Executa testes normalmente em outros sistemas operacionais
-// destaca-início
+// highlight-start
 test(() => {
   // ...
 });
-// destaca-fim
+// highlight-end
 ```
 
 :::note

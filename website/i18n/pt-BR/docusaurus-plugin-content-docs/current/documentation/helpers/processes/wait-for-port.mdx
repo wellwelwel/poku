@@ -87,24 +87,24 @@ await Promise.all([
 ```ts
 import { docker, waitForPort } from 'poku';
 
-// destaca-início
+// highlight-start
 const compose = docker.compose();
 
 await compose.up();
-// destaca-fim
+// highlight-end
 await waitForPort(3000, { delay: 100 });
 
-// destaca-início
+// highlight-start
 const res = await fetch('http://localhost:3000');
-// destaca-fim
+// highlight-end
 
 /**
  * Os testes vêm aqui 🧪
  */
 
-// destaca-início
+// highlight-start
 await compose.down();
-// destaca-fim
+// highlight-end
 ```
 
 <hr />
