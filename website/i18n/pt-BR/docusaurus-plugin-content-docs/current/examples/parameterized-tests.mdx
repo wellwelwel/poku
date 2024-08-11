@@ -1,0 +1,82 @@
+---
+tags: [examples, promise, tutorial, parameterized, parametrized]
+sidebar_position: 0.5
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import MidLevel from '@site/static/img/mid-level.svg';
+
+# Testes parametrizados
+
+Testes parametrizados permite que você execute a mesma lógica de teste com diferentes entradas e resultados esperados. Isso ajuda a testar em vários cenários sem escrever testes repetitivos.
+
+Por exemplo:
+
+```ts
+import { assert, test } from 'poku';
+
+const casosDeTeste = [
+  {
+    esperado: true,
+    entrada: { name: 'Alice', role: 'admin' },
+    casoDeTeste: 'é admin',
+  },
+  {
+    esperado: false,
+    entrada: { name: 'Bob', role: 'user' },
+    casoDeTeste: 'não é admin',
+  },
+];
+
+const isAdmin = (user) => user.role === 'admin';
+
+for (const { esperado, entrada, casoDeTeste } of casosDeTeste) {
+  test(casoDeTeste, () => {
+    const atual = isAdmin(entrada);
+
+    assert.strictEqual(atual, esperado);
+  });
+}
+```
+
+## Usando promesas
+
+Lidando com operações assíncronas sequencialmente dentro de testes parametrizados usando promesas:
+
+```ts
+import { assert, test } from 'poku';
+
+const casosDeTeste = [
+  {
+    esperado: true,
+    entrada: { name: 'Alice', role: 'admin' },
+    casoDeTeste: 'é admin',
+  },
+  {
+    esperado: false,
+    entrada: { name: 'Bob', role: 'user' },
+    casoDeTeste: 'não é admin',
+  },
+];
+
+const isAdmin = (user) => Promise.resolve(user.role === 'admin');
+
+for (const { esperado, entrada, casoDeTeste } of casosDeTeste) {
+  await test(casoDeTeste, async () => {
+    const atual = await isAdmin(entrada);
+
+    assert.strictEqual(atual, esperado);
+  });
+}
+```
+
+:::tip
+Para executar operações assíncronas em paralelo, simplesmente remova `await` de `test` ou `it`.
+:::
+
+<hr />
+
+:::info
+Esses exemplos foram baseados [nesse comentário](https://github.com/wellwelwel/poku/issues/566#issuecomment-2241496155).
+:::
