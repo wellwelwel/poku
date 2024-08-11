@@ -102,7 +102,7 @@ export const getLargestStringLength = (arr: string[]): number =>
 export const showTestResults = () => {
   Write.hr();
 
-  if (fileResults.success.size > 0) {
+  if (fileResults.success.size > 0 && fileResults.fail.size === 0) {
     Write.log(
       Array.from(fileResults.success)
         .map(
@@ -111,6 +111,8 @@ export const showTestResults = () => {
         )
         .join('\n')
     );
+
+    return;
   }
 
   if (fileResults.fail.size > 0) {
