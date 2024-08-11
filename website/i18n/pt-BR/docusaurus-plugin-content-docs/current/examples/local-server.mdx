@@ -1,0 +1,200 @@
+---
+sidebar_position: 1
+tags: [background, server, service, package.json, scripts, supertest]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { FAQ } from '@site/src/components/FAQ';
+
+# Servidor Local
+
+Vamos criar um servidor simples:
+
+<Tabs>
+  <TabItem default value='server.js (Node.js)'>
+
+```js
+// highlight-start
+import { createServer } from 'node:http';
+
+createServer((_, res) => {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ name: 'Poku' }));
+}).listen(4000, () => console.log('pronto'));
+
+// highlight-end
+```
+
+  </TabItem>
+  <TabItem default value='server.js (Bun)'>
+
+```js
+// highlight-start
+Bun.serve({
+  port: 4000,
+  fetch: () =>
+    new Response(JSON.stringify({ name: 'Poku' }), {
+      headers: { 'Content-Type': 'application/json' },
+    }),
+});
+
+console.log('pronto');
+// highlight-end
+```
+
+  </TabItem>
+  <TabItem default value='server.js (Deno)'>
+
+```ts
+// highlight-start
+Deno.serve({
+  port: 4000,
+  handler: () =>
+    new Response(JSON.stringify({ name: 'Poku' }), {
+      headers: { 'Content-Type': 'application/json' },
+    }),
+  onListen: () => console.log('pronto'),
+});
+// highlight-end
+```
+
+  </TabItem>
+</Tabs>
+
+E agora, teste-o:
+
+<Tabs>
+  <TabItem default value='test/server.test.js'>
+
+```js
+import { assert, startService } from 'poku';
+
+const server = await startService('server.js', {
+  // Aguarde pelo "pronto" na saída do console
+  startAfter: 'pronto',
+});
+
+// Use a biblioteca de requisições que preferir
+// highlight-start
+const res = await fetch('http://localhost:4000');
+const data = await res.json();
+// highlight-end
+
+assert.strictEqual(res.status, 200, 'O servidor está ativo');
+assert.deepStrictEqual(data, { name: 'Poku' }, 'O Poku está aqui');
+
+server.end();
+```
+
+  </TabItem>
+</Tabs>
+
+<FAQ title='Precisa testar usando uma sessão consistente? 🍪'>
+
+**Apenas faça isso** 🚀
+
+Aqui está um exemplo usando [**Axios**](https://github.com/axios/axios):
+
+```js
+import { assert, startService } from 'poku';
+// highlight-start
+import axios from 'axios';
+import axiosCookieJarSupport from 'axios-cookiejar-support';
+import { CookieJar } from 'tough-cookie';
+
+// highlight-end
+const server = await startService('server.js');
+
+// highlight-start
+axiosCookieJarSupport(axios);
+
+const cookieJar = new CookieJar();
+
+export const api = axios.create({
+  withCredentials: true,
+  jar: cookieJar,
+});
+
+const { data } = await api.get('http://localhost:4000');
+// highlight-end
+
+assert.deepStrictEqual(data, { name: 'Poku' }, 'O Poku está aqui');
+```
+
+</FAQ>
+
+:::tip
+
+- **Biblioteca de requisições:** Você pode usar [**Axios**](https://github.com/axios/axios), [**Node Fetch**](https://github.com/node-fetch/node-fetch) ou qualquer outro que quiser 💙
+- **Servidor:** Você pode usar qualquer servidor que quiser, como [**Express**](https://github.com/expressjs/express), [**Koa**](https://github.com/koajs/koa), etc.
+- [**NextJS**](https://github.com/vercel/next.js), [**ViteJS**](https://github.com/vitejs/vite), [**nodemon**](https://github.com/remy/nodemon) e mais? Veja abaixo 👇🏻
+
+:::
+
+<hr />
+
+Você também pode iniciar seu servidor usando o `startScript`.
+
+<Tabs>
+  <TabItem default value='test/server.test.js'>
+
+```js
+import { assert, startScript } from 'poku';
+
+const server = await startScript('start', {
+  // Aguarde pelo "pronto" na saída do console
+  startAfter: 'pronto',
+});
+
+// Use a biblioteca de requisições que você preferir.
+// highlight-start
+const res = await fetch('http://localhost:4000');
+const data = await res.json();
+// highlight-end
+
+assert.strictEqual(res.status, 200, 'O servidor está ativo');
+assert.deepStrictEqual(data, { name: 'Poku' }, 'O Poku está aqui');
+
+server.end();
+```
+
+  </TabItem>
+  <TabItem default value='package.json (Node.js)'>
+
+```json
+{
+  "script": {
+    "start": "node server.js"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value='package.json (Bun)'>
+
+```json
+{
+  "script": {
+    "start": "bun server.js"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value='deno.json (Deno)'>
+
+```json
+{
+  "tasks": {
+    "start": "deno run --allow-net server.js"
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+:::tip
+Usando o `startScript`, você pode executar [**NextJS**](https://github.com/vercel/next.js), [**SvelteJS**](https://github.com/sveltejs/svelte), [**nodemon**](https://github.com/remy/nodemon) e todos os scripts que você sempre usou 🐷
+:::
