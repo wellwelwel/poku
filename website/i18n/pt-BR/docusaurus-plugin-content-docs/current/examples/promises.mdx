@@ -1,0 +1,144 @@
+---
+tags: [examples, promise, beforeAll, afterAll, tutorial, roadmap]
+sidebar_position: 0
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import MidLevel from '@site/static/img/mid-level.svg';
+
+# Promesas
+
+O uso da [sintaxe nativa **JavaScript** nos testes](/docs/philosophy#javascript-essence-for-tests-) é uma das principais diferenças entre o **Poku** e outros executores de testes, o que possibilita seu uso em várias plataformas.
+
+:::tip
+Não é necessário usar `await` para testes que não são assíncronos.
+:::
+
+Aqui estão alguns exemplos de testes sequenciais e concorrentes no mesmo arquivo, além de como realizar uma ação após todos os testes terem sido concluídos:
+
+### Executando testes assíncronos no mesmo arquivo em paralelo
+
+```js
+import { test, assert, sleep } from 'poku';
+
+test(async () => {
+  const atual = 1;
+  const esperado = 1;
+
+  await sleep(2000);
+
+  assert.strictEqual(atual, esperado);
+});
+
+test(async () => {
+  const atual = 2;
+  const esperado = 2;
+
+  await sleep(1000);
+
+  assert.strictEqual(atual, esperado);
+});
+```
+
+<hr />
+
+### Executando testes assíncronos no mesmo arquivo sequencialmente (aguardando nível superior)
+
+```js
+import { test, assert, sleep } from 'poku';
+
+await test(async () => {
+  const atual = 1;
+  const esperado = 1;
+
+  await sleep(2000);
+
+  assert.strictEqual(atual, esperado);
+});
+
+await test(async () => {
+  const atual = 2;
+  const esperado = 2;
+
+  await sleep(1000);
+
+  assert.strictEqual(atual, esperado);
+});
+```
+
+<hr />
+
+### Executando testes assíncronos no mesmo arquivo sequencialmente
+
+```js
+import { describe, it, assert, sleep } from 'poku';
+
+describe(async () => {
+  await it(async () => {
+    const atual = 1;
+    const esperado = 1;
+
+    await sleep(2000);
+
+    assert.strictEqual(atual, esperado);
+  });
+
+  await it(async () => {
+    const atual = 2;
+    const esperado = 2;
+
+    await sleep(1000);
+
+    assert.strictEqual(atual, esperado);
+  });
+});
+```
+
+<hr />
+
+## Aguarando todos os testes serem executados para realizar uma ação posterior
+
+```js
+import { describe, it, assert, sleep } from 'poku';
+
+describe(async () => {
+  console.log('Imprimindo isso antes de todos os testes 🏃🏻‍♀️');
+
+  await Promise.all([
+    test(async () => {
+      const atual = 1;
+      const esperado = 1;
+
+      await sleep(2000);
+
+      assert.strictEqual(atual, esperado);
+    }),
+
+    test(async () => {
+      const atual = 2;
+      const esperado = 2;
+
+      await sleep(1000);
+
+      assert.strictEqual(atual, esperado);
+    }),
+  ]);
+
+  console.log('Imprimindo isso depois de todos os testes 😴');
+});
+```
+
+:::tip
+Para múltiplos `describe` ou `test` assíncronos, você também pode usar `await` para executá-los sequencialmente.
+:::
+
+<hr />
+
+:::danger Be careful
+Ao usar `beforeEach` and `afterEach` assíncronos, é necessário usar `await` mesmo que os auxiliares `test` ou `it` não tenham eventos assíncronos.
+:::
+
+:::note
+Se você encontrar algum erro de digitação, sinta-se à vontande para abrir um **Pull Request** corrigindo-o.
+:::
