@@ -21,7 +21,7 @@ import { createServer } from 'node:http';
 createServer((_, res) => {
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({ name: 'Poku' }));
-}).listen(4000, () => console.log('pronto'));
+}).listen(4000, () => console.log('ready'));
 
 // highlight-end
 ```
