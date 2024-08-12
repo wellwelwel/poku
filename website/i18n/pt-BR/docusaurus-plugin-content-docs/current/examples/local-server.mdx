@@ -72,7 +72,7 @@ import { assert, startService } from 'poku';
 
 const server = await startService('server.js', {
   // Aguarde pelo "ready" na saída do console
-  startAfter: 'pronto',
+  startAfter: 'ready',
 });
 
 // Use a biblioteca de requisições que preferir
