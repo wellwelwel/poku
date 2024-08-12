@@ -54,7 +54,7 @@ Deno.serve({
     new Response(JSON.stringify({ name: 'Poku' }), {
       headers: { 'Content-Type': 'application/json' },
     }),
-  onListen: () => console.log('pronto'),
+  onListen: () => console.log('ready'),
 });
 // highlight-end
 ```
