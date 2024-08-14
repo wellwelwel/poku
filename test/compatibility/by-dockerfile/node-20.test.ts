@@ -1,26 +1,29 @@
-// import { test } from '../../../src/modules/helpers/test.js';
-// import { assert } from '../../../src/modules/essentials/assert.js';
-// import { docker } from '../../../src/modules/helpers/container.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { docker } from '../../../src/modules/helpers/container.js';
+import { skip } from '../../../src/modules/index.js';
 
-// const serviceName = 'node-20';
+skip("It's just an example 📘");
 
-// test(`Compatibility Tests: ${serviceName}`, async () => {
-//   const dockerfile = docker.dockerfile({
-//     detach: false,
-//     containerName: serviceName,
-//     tagName: serviceName,
-//     file: 'test/__docker__/node/20.Dockerfile',
-//     environments: ['NODE_ENV=build'],
-//   });
+const serviceName = 'node-20';
 
-//   await dockerfile.remove();
-//   await dockerfile.build();
+test(`Compatibility Tests: ${serviceName}`, async () => {
+  const dockerfile = docker.dockerfile({
+    detach: false,
+    containerName: serviceName,
+    tagName: serviceName,
+    file: 'test/__docker__/node/20.Dockerfile',
+    environments: ['NODE_ENV=build'],
+  });
 
-//   const result = await dockerfile.start();
+  await dockerfile.remove();
+  await dockerfile.build();
 
-//   if (!result) {
-//     assert.fail(`See the logs by running \`docker logs ${serviceName}\``);
-//   }
+  const result = await dockerfile.start();
 
-//   await dockerfile.remove();
-// });
+  if (!result) {
+    assert.fail(`See the logs by running \`docker logs ${serviceName}\``);
+  }
+
+  await dockerfile.remove();
+});
