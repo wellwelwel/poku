@@ -1,5 +1,5 @@
 import type { Configs } from '../@types/poku.js';
-import { cwd as processCWD, hrtime } from 'node:process';
+import process from 'node:process';
 import { join, relative, sep } from 'node:path';
 import { runner } from '../parsers/get-runner.js';
 import { indentation } from '../configs/indentation.js';
@@ -11,7 +11,7 @@ import { isQuiet } from '../parsers/output.js';
 import { results } from '../configs/poku.js';
 import { availableParallelism } from '../polyfills/cpus.js';
 
-const cwd = processCWD();
+const cwd = process.cwd();
 
 export const runTests = async (
   dir: string,
@@ -37,9 +37,9 @@ export const runTests = async (
     const filePath = files[i];
     const fileRelative = relative(cwd, filePath);
 
-    const start = hrtime();
+    const start = process.hrtime();
     const testPassed = await runTestFile(filePath, configs);
-    const end = hrtime(start);
+    const end = process.hrtime(start);
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
     const testNumber = i + 1;
@@ -67,6 +67,8 @@ export const runTests = async (
       passed = false;
 
       if (configs?.failFast) {
+        process.exitCode = 1;
+
         if (showLogs) {
           Write.hr();
           Write.log(
@@ -111,6 +113,8 @@ export const runTestsParallel = async (
           ++results.fail;
 
           if (configs?.failFast) {
+            process.exitCode = 1;
+
             throw new Error(
               `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
             );

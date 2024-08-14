@@ -52,8 +52,8 @@ test(async () => {
     await it('Sequential + Options (Just Touch)', async () => {
       const results = await inspectPoku(
         isWindows
-          ? '--concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
-          : '--concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
+          ? '--concurrency=4 --platform=node --fail-fast --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
+          : '--concurrency=4 --platform=node --fail-fast --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
       );
 
       console.log(results.stdout);
@@ -65,8 +65,8 @@ test(async () => {
     await it('Parallel + Options (Just Touch)', async () => {
       const results = await inspectPoku(
         isWindows
-          ? '--parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
-          : '--parallel --concurrency=4 --platform=node --fast-fail --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
+          ? '--parallel --concurrency=4 --platform=node --fail-fast --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
+          : '--parallel --concurrency=4 --platform=node --fail-fast --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
       );
 
       console.log(results.stdout);
@@ -111,6 +111,7 @@ test(async () => {
       const exitCode = await poku('test/unit', {
         platform: 'node',
         parallel: true,
+        concurrency: 4,
         exclude: [/watch/, /map-tests/],
         noExit: true,
       });
@@ -125,7 +126,6 @@ test(async () => {
           platform: 'node',
           parallel: true,
           debug: true,
-          concurrency: 4,
           filter: /\.(test|spec)\./,
           failFast: true,
           noExit: true,
