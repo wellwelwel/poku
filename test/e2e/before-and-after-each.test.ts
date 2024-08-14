@@ -1,14 +1,15 @@
+import { nodeVersion } from '../../src/parsers/get-runtime.js';
+import { skip } from '../../src/modules/helpers/skip.js';
+
+if (nodeVersion && nodeVersion < 16) {
+  skip();
+}
+
 import { test } from '../../src/modules/helpers/test.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { poku } from '../../src/modules/essentials/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
-import { isProduction } from '../helpers/capture-cli.test.js';
-import { skip } from '../../src/modules/helpers/skip.js';
-
-if (isProduction) {
-  skip();
-}
 
 test(async () => {
   const prepareService = () => new Promise((resolve) => resolve(undefined));
@@ -20,9 +21,8 @@ test(async () => {
 
   await describe('Before and After Each: direct methods', async () => {
     await it(async () => {
-      const code = await poku('./fixtures/success', {
+      const code = await poku('./test/__fixtures__/e2e/success', {
         noExit: true,
-
         beforeEach: prepareService,
         afterEach: resetService,
       });
@@ -35,7 +35,7 @@ test(async () => {
     });
 
     await it(async () => {
-      const code = await poku('./fixtures/fail', {
+      const code = await poku('./test/__fixtures__/e2e/fail', {
         noExit: true,
         beforeEach: prepareService,
         afterEach: resetService,
@@ -51,7 +51,7 @@ test(async () => {
 
   await describe('Before and After Each: called methods', async () => {
     await it(async () => {
-      const code = await poku('./fixtures/success', {
+      const code = await poku('./test/__fixtures__/e2e/success', {
         noExit: true,
         beforeEach: () => prepareService(),
         afterEach: () => resetService(),
@@ -65,7 +65,7 @@ test(async () => {
     });
 
     await it(async () => {
-      const code = await poku('./fixtures/fail', {
+      const code = await poku('./test/__fixtures__/e2e/fail', {
         noExit: true,
         beforeEach: () => prepareService(),
         afterEach: () => resetService(),
@@ -81,7 +81,7 @@ test(async () => {
 
   await describe('Before and After Each: await called methods', async () => {
     await it(async () => {
-      const code = await poku('./fixtures/success', {
+      const code = await poku('./test/__fixtures__/e2e/success', {
         noExit: true,
         beforeEach: async () => await prepareService(),
         afterEach: async () => await resetService(),
@@ -95,7 +95,7 @@ test(async () => {
     });
 
     await it(async () => {
-      const code = await poku('./fixtures/fail', {
+      const code = await poku('./test/__fixtures__/e2e/fail', {
         noExit: true,
         beforeEach: async () => await prepareService(),
         afterEach: async () => await resetService(),
@@ -111,7 +111,7 @@ test(async () => {
 
   await describe('Before and After Each: anonymous methods', async () => {
     await it(async () => {
-      const code = await poku('./fixtures/success', {
+      const code = await poku('./test/__fixtures__/e2e/success', {
         noExit: true,
         beforeEach: () => true,
         afterEach: () => true,
@@ -125,7 +125,7 @@ test(async () => {
     });
 
     await it(async () => {
-      const code = await poku('./fixtures/fail', {
+      const code = await poku('./test/__fixtures__/e2e/fail', {
         noExit: true,
         beforeEach: () => true,
         afterEach: () => true,
@@ -141,7 +141,7 @@ test(async () => {
 
   await describe('Before and After Each: anonymous methods (function)', async () => {
     await it(async () => {
-      const code = await poku('./fixtures/success', {
+      const code = await poku('./test/__fixtures__/e2e/success', {
         noExit: true,
         beforeEach: function () {
           return;
@@ -159,7 +159,7 @@ test(async () => {
     });
 
     await it(async () => {
-      const code = await poku('./fixtures/fail', {
+      const code = await poku('./test/__fixtures__/e2e/fail', {
         noExit: true,
         beforeEach: function () {
           return;
@@ -179,7 +179,7 @@ test(async () => {
 
   await describe('Before and After Each: Failure', async () => {
     await it(async () => {
-      const code = await poku('./fixtures/success', {
+      const code = await poku('./test/__fixtures__/e2e/success', {
         noExit: true,
         beforeEach: crashIt,
         afterEach: resetService,
@@ -193,7 +193,7 @@ test(async () => {
     });
 
     await it(async () => {
-      const code = await poku('./fixtures/success', {
+      const code = await poku('./test/__fixtures__/e2e/success', {
         noExit: true,
         beforeEach: prepareService,
         afterEach: crashIt,
@@ -207,7 +207,7 @@ test(async () => {
     });
 
     await it(async () => {
-      const code = await poku('./fixtures/success', {
+      const code = await poku('./test/__fixtures__/e2e/success', {
         noExit: true,
         beforeEach: crashItAgain,
         afterEach: resetService,
@@ -221,7 +221,7 @@ test(async () => {
     });
 
     await it(async () => {
-      const code = await poku('./fixtures/success', {
+      const code = await poku('./test/__fixtures__/e2e/success', {
         noExit: true,
         beforeEach: prepareService,
         afterEach: crashItAgain,

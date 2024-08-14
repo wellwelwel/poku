@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { assert } from '../../src/modules/essentials/assert.js';
 
-const content = readFileSync('./lib/polyfills/deno.mjs', { encoding: 'utf-8' });
+const content = readFileSync('./lib/polyfills/deno.mjs', { encoding: 'utf8' });
 
 assert.match(
   content,

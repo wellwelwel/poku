@@ -6,7 +6,7 @@ import { runTests } from '../../src/services/run-tests.js';
 describe('Service: runTests', async () => {
   await Promise.all([
     it(async () => {
-      const code = await runTests('./fixtures/fail', {
+      const code = await runTests('test/__fixtures__/e2e/fail', {
         noExit: true,
         quiet: true,
       });
@@ -15,7 +15,7 @@ describe('Service: runTests', async () => {
     }),
 
     it(async () => {
-      const code = await runTests('./fixtures/success', {
+      const code = await runTests('test/__fixtures__/e2e/success', {
         noExit: true,
         quiet: true,
       });

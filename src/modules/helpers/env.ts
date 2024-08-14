@@ -1,3 +1,4 @@
+import { env as processEnv } from 'node:process';
 import { readFile } from '../../polyfills/fs.js';
 import { sanitizePath } from './list-files.js';
 import {
@@ -25,11 +26,11 @@ export const envFile = async (filePath = '.env') => {
     if (parsedLine) {
       const { arg, value } = parsedLine;
 
-      mapEnv.set(arg, value ? resolveEnvVariables(value, process.env) : value);
+      mapEnv.set(arg, value ? resolveEnvVariables(value, processEnv) : value);
     }
   }
 
   for (const [arg, value] of mapEnv) {
-    process.env[arg] = value;
+    processEnv[arg] = value;
   }
 };

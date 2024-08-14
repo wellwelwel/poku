@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deno-version: ['latest']
+        deno-version: ['v1.x', 'canary']
     name: Deno ${{ matrix.deno-version }}
     steps:
       - name: ➕ Actions - Checkout
@@ -21,6 +21,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+
+      - name: ➕ Actions - Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno-version }}
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
@@ -35,6 +40,5 @@ jobs:
       - name: 🤹🏻‍♀️ Building the Project
         run: npm run build
 
-      # Testing via Docker Official Images
       - name: 🔬 Deno ${{ matrix.deno-version }}
-        run: FILTER=deno-${{ matrix.deno-version }} npm run test:ci
+        run: npm run test:deno:parallel

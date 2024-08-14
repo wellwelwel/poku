@@ -33,7 +33,7 @@ test('Assert: Parse Result Type', async () => {
   );
   assert.deepStrictEqual(parseResultType(123), '123', 'Number');
   if (!nodeVersion || nodeVersion >= 10) {
-    const module = await import('../../fixtures/sintax/big-int.js');
+    const module = await import('../__fixtures__/unit/sintax/big-int.js');
     assert.deepStrictEqual(
       parseResultType(module.bigIntValue),
       '987456321456987456321',

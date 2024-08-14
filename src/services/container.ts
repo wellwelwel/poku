@@ -20,6 +20,8 @@ const runDockerCommand = (
     });
 
     if (verbose) {
+      dockerProcess.stdout.setEncoding('utf8');
+      dockerProcess.stderr.setEncoding('utf8');
       dockerProcess.stdout.on('data', Write.log);
       dockerProcess.stderr.on('data', Write.log);
     }

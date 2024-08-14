@@ -48,7 +48,7 @@ It's better to discuss an **API** before actually start implementing it. You can
 
 Check if there is an existing section or feel free to create a new one. You can find the wesite source code at [./website](https://github.com/wellwelwel/poku/tree/main/website).
 
-- Feel free to open PRs fixing typos or adding support for other languages 🤝
+- Feel free to open _PRs_ fixing typos or adding support for more languages 🤝
 
 <blockquote>
 
@@ -126,38 +126,8 @@ npm run test:c8:sequential
 > [!tip]
 >
 > Don't be intimidated by high coverage, methods that vary according to platform, platform versions, _OS_ and processes _(`process.exit`, `process.once`, etc.)_ aren't tested against the coverage rate 🙋🏻‍♂️
-
-### 🐳 Compatibility Per Platform (Docker)
-
-> ⚠️ Testing using **Docker** can require a considerable local storage.
-
-```sh
-npm run build # Build the Project
-```
-
-```sh
-npm run test:ci:node  # All Node.js versions from 6+
-npm run test:ci:bun   # All Bun versions from 1+
-npm run test:ci:deno  # All Deno versions from 1+
-```
-
-- You may prefer to use **GitHub Actions** for compatibility testing.
-- For **Windows** users, it's recommended to use [**wsl**](https://learn.microsoft.com/en-us/windows/wsl/install).
-
-### 🐋 Compatibility (All Platforms — Docker)
-
-> ⚠️ Slow and heavy
-
-```sh
-npm run build # Build the Project
-```
-
-```sh
-npm run test:ci
-```
-
-- You may prefer to use **GitHub Actions** for compatibility testing.
-- For **Windows** users, it's recommended to use [**wsl**](https://learn.microsoft.com/en-us/windows/wsl/install).
+>
+> See more details in [**./.nycrc**](https://github.com/wellwelwel/poku/tree/main/.nycrc).
 
 ---
 

@@ -1,7 +1,7 @@
+import { nodeVersion } from '../../src/parsers/get-runtime.js';
 import { skip } from '../../src/modules/helpers/skip.js';
-import { isProduction } from '../helpers/capture-cli.test.js';
 
-if (isProduction) {
+if (nodeVersion && nodeVersion < 16) {
   skip();
 }
 

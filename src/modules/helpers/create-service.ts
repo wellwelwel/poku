@@ -36,6 +36,9 @@ const backgroundProcess = (
 
       const PID = service.pid!;
 
+      service.stdout.setEncoding('utf8');
+      service.stderr.setEncoding('utf8');
+
       let portBackup: number | undefined;
 
       const end: End = (port) =>

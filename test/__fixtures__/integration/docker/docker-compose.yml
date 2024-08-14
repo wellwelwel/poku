@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  server:
+    container_name: poku-test-docker-compose-server
+    build:
+      context: .
+      dockerfile: compose.Dockerfile
+    ports:
+      - '6054:6054'
+    environment:
+      NODE_ENV: build

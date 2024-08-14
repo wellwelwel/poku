@@ -102,7 +102,7 @@ export const processDeepImports = async (
   }
   processedFiles.add(srcFile);
 
-  const srcContent = await readFile(srcFile, 'utf-8');
+  const srcContent = await readFile(srcFile, 'utf8');
   const deepImports = getDeepImports(srcContent);
   const matchingFiles = findMatchingFiles(deepImports, intersectedSrcFiles);
 
@@ -126,7 +126,7 @@ export const createImportMap = async (
 
   await Promise.all(
     Array.from(allTestFiles).map(async (testFile) => {
-      const content = await readFile(testFile, 'utf-8');
+      const content = await readFile(testFile, 'utf8');
 
       for (const srcFile of intersectedSrcFiles) {
         const relativePath = normalizePath(

@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        bun-version: ['latest', 'canary']
+        bun-version: ['1.1.22']
     name: Bun ${{ matrix.bun-version }}
     steps:
       - name: ➕ Actions - Checkout
@@ -21,6 +21,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+
+      - name: ➕ Actions - Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ matrix.bun-version }}
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
@@ -35,6 +40,5 @@ jobs:
       - name: 🤹🏻‍♀️ Building the Project
         run: npm run build
 
-      # Testing via Docker Official Images
       - name: 🔬 Bun ${{ matrix.bun-version }}
-        run: FILTER=bun-${{ matrix.bun-version }} npm run test:ci
+        run: npm run test:bun:parallel

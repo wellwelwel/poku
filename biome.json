@@ -3,14 +3,13 @@
   "files": {
     "include": ["**/**"],
     "ignore": [
-      "node_modules",
-      "lib",
+      "benchmark",
       "ci",
       "coverage",
-      "website",
-      "fixtures",
-      "benchmark",
-      "fixtures/sintax"
+      "lib",
+      "node_modules",
+      "test/__fixtures__",
+      "website"
     ]
   },
   "organizeImports": {

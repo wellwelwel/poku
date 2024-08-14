@@ -1,19 +1,27 @@
-import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it/core.js';
-import { assert } from '../../src/modules/essentials/assert.js';
-import { inspectCLI, isProduction } from '../helpers/capture-cli.test.js';
+import { getRuntime, nodeVersion } from '../../src/parsers/get-runtime.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (isProduction) {
+if (nodeVersion && nodeVersion < 16) {
   skip();
 }
 
+import { describe } from '../../src/modules/helpers/describe.js';
+import { it } from '../../src/modules/helpers/it/core.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
+
 describe('Failure', async () => {
   await it('Sequential', async () => {
-    const results = await inspectCLI('npx tsx ../../src/bin/index.ts', {
-      cwd: './fixtures/fail',
+    const results = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/fail',
     });
 
+    if (results.exitCode !== 1) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 1, 'Failed');
     assert.match(results.stdout, /FAIL › 5/, 'Needs to fail 5');
     assert.match(
       results.stdout,
@@ -28,10 +36,16 @@ describe('Failure', async () => {
   });
 
   await it('Parallel / Concurrent', async () => {
-    const results = await inspectCLI('npx tsx ../../src/bin/index.ts -p', {
-      cwd: './fixtures/fail',
+    const results = await inspectPoku('-p', {
+      cwd: 'test/__fixtures__/e2e/fail',
     });
 
+    if (results.exitCode !== 1) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 1, 'Failed');
     assert.match(results.stdout, /FAIL › 5/, 'Needs to fail 5');
     assert.match(
       results.stdout,
@@ -46,33 +60,38 @@ describe('Failure', async () => {
   });
 
   await it('Missing File', async () => {
-    const results = await inspectCLI(
-      'npx tsx ../../src/bin/index.ts ./foo/bar.js',
-      {
-        cwd: './fixtures/fail',
-      }
-    );
+    const results = await inspectPoku('./foo/bar.js', {
+      cwd: 'test/__fixtures__/e2e/fail',
+    });
 
+    if (results.exitCode !== 1) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 1, 'Failed');
     assert.match(results.stderr, /ENOENT/, 'Needs to show error message"');
     assert.strictEqual(results.exitCode, 1, 'Exit Code needs to be 0');
   });
 
-  await it('Wrong Sintax', async () => {
-    const results = await inspectCLI(
-      'npx tsx ../../src/bin/index.ts invalid-file.js',
-      {
-        cwd: './fixtures/sintax',
+  getRuntime() === 'node' &&
+    !isBuild &&
+    (await it('Wrong Sintax', async () => {
+      const results = await inspectPoku('invalid-file.js', {
+        cwd: 'test/__fixtures__/e2e/sintax',
+      });
+
+      if (results.exitCode !== 1) {
+        console.log(results.stdout);
+        console.log(results.stderr);
       }
-    );
 
-    // console.log(results.stdout);
-    // console.log(results.stderr);
-
-    assert.match(
-      results.stdout,
-      /SyntaxError/,
-      'Needs to show sintax error message"'
-    );
-    assert.strictEqual(results.exitCode, 1, 'Exit Code needs to be 0');
-  });
+      assert.strictEqual(results.exitCode, 1, 'Failed');
+      assert.match(
+        results.stdout,
+        /SyntaxError/,
+        'Needs to show sintax error message"'
+      );
+      assert.strictEqual(results.exitCode, 1, 'Exit Code needs to be 0');
+    }));
 });

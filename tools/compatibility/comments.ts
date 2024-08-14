@@ -3,7 +3,7 @@ import { listFiles } from '../../src/modules/helpers/list-files.js';
 
 const ensureNodeCompatibility = async (path: string) => {
   const files = await listFiles(path, {
-    filter: /\.(m)?(j|t)?s$/,
+    filter: /\.(c|m)?(j|t)?s$/,
   });
 
   console.log('Ensuring no unnecessary comments for:', files);
@@ -12,7 +12,7 @@ const ensureNodeCompatibility = async (path: string) => {
     const raw = await fs.readFile(file, 'utf8');
     const content = raw.replace(/\/\* c8.+\*\/( \/\/ .+)?( )?|\/\/ .+/gim, '');
 
-    await fs.writeFile(file, content);
+    await fs.writeFile(file, content, { encoding: 'utf8' });
   }
 };
 

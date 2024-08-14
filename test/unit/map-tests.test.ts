@@ -31,8 +31,8 @@ const removeDirSync = (dirPath: string) => {
   rmSync(dirPath, { recursive: true, force: true });
 };
 
-const testSrcDir = 'test-src';
-const testTestDir = 'test-tests';
+const testSrcDir = 'test/__fixtures__/.temp/map-tests';
+const testTestDir = 'test/__fixtures__/.temp/map-tests/test-tests';
 
 test(async () => {
   await describe('Map Tests', async () => {
@@ -42,7 +42,7 @@ test(async () => {
       createFileSync(join(testSrcDir, 'example.js'), 'export const foo = 42;');
       createFileSync(
         join(testTestDir, 'example.test.js'),
-        'import { foo } from "../test-src/example.js";'
+        'import { foo } from "../map-tests/example.js";'
       );
     });
 
@@ -56,8 +56,12 @@ test(async () => {
 
       const expected = new Map([
         [
-          normalizePath('test-src/example.js'),
-          new Set([normalizePath('test-tests/example.test.js')]),
+          normalizePath('test/__fixtures__/.temp/map-tests/example.js'),
+          new Set([
+            normalizePath(
+              'test/__fixtures__/.temp/map-tests/test-tests/example.test.js'
+            ),
+          ]),
         ],
       ]);
 
@@ -74,8 +78,12 @@ test(async () => {
 
       const expected = new Map([
         [
-          normalizePath('test-src/example.js'),
-          new Set([normalizePath('test-tests/example.test.js')]),
+          normalizePath('test/__fixtures__/.temp/map-tests/example.js'),
+          new Set([
+            normalizePath(
+              'test/__fixtures__/.temp/map-tests/test-tests/example.test.js'
+            ),
+          ]),
         ],
       ]);
 

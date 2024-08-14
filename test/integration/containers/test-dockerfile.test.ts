@@ -5,7 +5,7 @@ import { it } from '../../../src/modules/helpers/it/core.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { docker } from '../../../src/modules/helpers/container.js';
 import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
-import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
+import { legacyFetch } from '../../__utils__/legacy-fetch.test.js';
 import { isWindows } from '../../../src/parsers/get-runner.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
 import { kill } from '../../../src/modules/helpers/kill.js';
@@ -39,10 +39,10 @@ describe('Docker Service', async () => {
       tagName: 'poku-test-dockerfile',
       containerName: 'poku-test-dockerfile-server',
       ports: ['6053:6053'],
-      file: 'fixtures/docker/Dockerfile',
-      context: 'fixtures/docker',
-      environments: ['NODE_ENV=production'],
-      envFile: 'fixtures/docker/src/.some.env',
+      file: 'test/__fixtures__/integration/docker/Dockerfile',
+      context: 'test/__fixtures__/integration/docker',
+      environments: ['NODE_ENV=build'],
+      envFile: 'test/__fixtures__/integration/docker/src/.some.env',
       cache: false,
     });
 
@@ -70,7 +70,7 @@ describe('Docker Service', async () => {
     const dockerfile = docker.dockerfile({
       tagName: 'poku-test-dockerfile',
       containerName: 'poku-test-dockerfile-server',
-      cwd: 'fixtures/docker',
+      cwd: 'test/__fixtures__/integration/docker',
     });
 
     await dockerfile.remove();

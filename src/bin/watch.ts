@@ -114,6 +114,6 @@ export const startWatch = async (dirs: string[], options: Configs) => {
     `${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`
   );
 
-  process.stdin.setEncoding('utf-8');
+  process.stdin.setEncoding('utf8');
   process.stdin.on('data', listenStdin);
 };
