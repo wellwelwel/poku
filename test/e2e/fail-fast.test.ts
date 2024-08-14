@@ -5,8 +5,6 @@ import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import { nodeVersion } from '../../src/parsers/get-runtime.js';
 
-// TODO: fix exit code when using failFast
-
 if (isBuild || (nodeVersion && nodeVersion < 16)) {
   skip();
 }
@@ -22,7 +20,7 @@ describe('Fast Fast', async () => {
       console.log(results.stderr);
     }
 
-    // assert.strictEqual(results.exitCode, 1, 'Failed');
+    assert.strictEqual(results.exitCode, 1, 'Failed');
     assert.match(results.stderr, /fail-fast/, 'Fail Fast is enabled');
     assert.match(results.stdout, /FAIL › 1/, 'Needs to fail 1');
   });
@@ -37,7 +35,7 @@ describe('Fast Fast', async () => {
       console.log(results.stderr);
     }
 
-    // assert.strictEqual(results.exitCode, 1, 'Failed');
+    assert.strictEqual(results.exitCode, 1, 'Failed');
     assert.match(results.stdout, /fail-fast/, 'Fail Fast is enabled');
     assert.match(results.stdout, /FAIL › 1/, 'Needs to fail 1');
   });
