@@ -10,6 +10,11 @@ import { legacyFetch } from '../__utils__/legacy-fetch.test.js';
 import { ext } from '../__utils__/capture-cli.test.js';
 import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { waitForPort } from '../../src/modules/helpers/wait-for.js';
+import { skip } from '../../src/modules/index.js';
+
+if (getRuntime() === 'bun') {
+  skip('TODO: Check what has changed after Bun v1.1.23');
+}
 
 test(async () => {
   const runtime = getRuntime();
