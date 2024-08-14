@@ -1,8 +1,14 @@
 import { getRuntime, nodeVersion } from '../../src/parsers/get-runtime.js';
-import { skip } from '../../src/modules/helpers/skip.js';
 import { isBuild, watchCLI } from '../__utils__/capture-cli.test.js';
+import { isWindows } from '../../src/parsers/get-runner.js';
+import { skip } from '../../src/modules/helpers/skip.js';
 
-if (isBuild || (nodeVersion && nodeVersion < 10) || getRuntime() !== 'node') {
+if (
+  isBuild ||
+  (nodeVersion && nodeVersion < 10) ||
+  getRuntime() !== 'node' ||
+  isWindows
+) {
   skip();
 }
 
