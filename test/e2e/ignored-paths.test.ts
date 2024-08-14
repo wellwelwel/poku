@@ -1,7 +1,7 @@
 import { nodeVersion } from '../../src/parsers/get-runtime.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (nodeVersion && nodeVersion < 14) {
+if ((nodeVersion && nodeVersion < 14) || isWindows) {
   skip();
 }
 
@@ -11,6 +11,7 @@ import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectPoku } from '../__utils__/capture-cli.test.js';
+import { isWindows } from '../../src/parsers/get-runner.js';
 
 const base = 'test/__fixtures__/.temp/ignored-paths';
 
