@@ -4,7 +4,7 @@ import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { docker } from '../../../src/modules/helpers/container.js';
-import { legacyFetch } from '../../helpers/legacy-fetch.test.js';
+import { legacyFetch } from '../../__utils__/legacy-fetch.test.js';
 import { isWindows } from '../../../src/parsers/get-runner.js';
 import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
 import { kill } from '../../../src/modules/helpers/kill.js';
@@ -38,7 +38,7 @@ describe('Docker Compose Service', async () => {
     const compose = docker.compose({
       file: 'docker-compose.yml',
       projectName: 'poku-test-docker-compose',
-      cwd: 'fixtures/docker',
+      cwd: 'test/__fixtures__/integration/docker',
       envFile: 'src/.some.env',
       build: true,
       serviceName: 'server',
@@ -62,7 +62,7 @@ describe('Docker Compose Service', async () => {
   await it('Using default configs', async () => {
     const compose = docker.compose({
       projectName: 'poku-test-docker-compose',
-      cwd: 'fixtures/docker',
+      cwd: 'test/__fixtures__/integration/docker',
     });
 
     await compose.up();

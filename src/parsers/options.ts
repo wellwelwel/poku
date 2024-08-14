@@ -26,7 +26,7 @@ export const getConfigs = async (
         return require(`file://${normalize(filePath)}`);
       }
 
-      const configsFile = await readFile(filePath, 'utf-8');
+      const configsFile = await readFile(filePath, 'utf8');
       return JSONC.parse<ConfigJSONFile>(configsFile);
     } catch {}
   }

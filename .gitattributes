@@ -1,5 +1,5 @@
 website/** linguist-documentation
-test/docker/** linguist-vendored
+test/__docker__/** linguist-vendored
 fixtures/** linguist-vendored
 benchmark/** linguist-vendored
 src/bin/** linguist-language=TypeScript

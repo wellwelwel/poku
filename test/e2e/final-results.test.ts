@@ -1,17 +1,12 @@
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
-import { inspectCLI, isProduction } from '../helpers/capture-cli.test.js';
-import { skip } from '../../src/modules/helpers/skip.js';
-
-if (isProduction) {
-  skip();
-}
+import { inspectPoku } from '../__utils__/capture-cli.test.js';
 
 describe('Final Results', async () => {
   await it('Skip', async () => {
-    const results = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: './fixtures/final-results/skip',
+    const results = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/final-results/skip',
     });
 
     assert.match(results.stdout, /PASS › 0/, 'Needs to pass 0');
@@ -20,8 +15,8 @@ describe('Final Results', async () => {
   });
 
   await it('Todo', async () => {
-    const results = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: './fixtures/final-results/todo',
+    const results = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/final-results/todo',
     });
 
     assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
@@ -30,8 +25,8 @@ describe('Final Results', async () => {
   });
 
   await it('Skip + Todo', async () => {
-    const results = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: './fixtures/final-results/skip-and-todo',
+    const results = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/final-results/skip-and-todo',
     });
 
     assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
@@ -41,9 +36,14 @@ describe('Final Results', async () => {
   });
 
   await it('Skip + Todo + Failure', async () => {
-    const results = await inspectCLI('npx tsx ../../../src/bin/index.ts', {
-      cwd: './fixtures/final-results/skip-todo-and-failure',
+    const results = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/final-results/skip-todo-and-failure',
     });
+
+    if (results.exitCode !== 1) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
 
     assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
     assert.match(results.stdout, /FAIL › 1/, 'Needs to fail 1');

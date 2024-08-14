@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  node-08:
+    container_name: 'node-08'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/08.Dockerfile
+    environment:
+      NODE_ENV: build
+
+  node-10:
+    container_name: 'node-10'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/10.Dockerfile
+    environment:
+      NODE_ENV: build
+
+  node-12:
+    container_name: 'node-12'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/12.Dockerfile
+    environment:
+      NODE_ENV: build
+
+  node-14:
+    container_name: 'node-14'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/14.Dockerfile
+    environment:
+      NODE_ENV: build
+
+  node-16:
+    container_name: 'node-16'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/16.Dockerfile
+    environment:
+      NODE_ENV: build
+
+  node-18:
+    container_name: 'node-18'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/18.Dockerfile
+    environment:
+      NODE_ENV: build
+
+  node-20:
+    container_name: 'node-20'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/20.Dockerfile
+    environment:
+      NODE_ENV: build
+
+  node-22:
+    container_name: 'node-22'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/22.Dockerfile
+    environment:
+      NODE_ENV: build

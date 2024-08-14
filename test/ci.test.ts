@@ -4,7 +4,7 @@ import { exit } from '../src/modules/helpers/exit.js';
 import { docker } from '../src/modules/helpers/container.js';
 
 test(async () => {
-  const compose = docker.compose({ cwd: './test/docker' });
+  const compose = docker.compose({ cwd: './test/__docker__' });
 
   await compose.down();
 
@@ -12,6 +12,7 @@ test(async () => {
     parallel: true,
     debug: true,
     noExit: true,
+    platform: 'bun',
   });
 
   if (result === 0) {

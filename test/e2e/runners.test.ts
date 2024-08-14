@@ -2,10 +2,10 @@ import { execSync } from 'node:child_process';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
-import { isProduction, inspectCLI } from '../helpers/capture-cli.test.js';
+import { inspectCLI, isBuild } from '../__utils__/capture-cli.test.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (isProduction) {
+if (isBuild) {
   skip();
 }
 
@@ -40,24 +40,24 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasNode &&
     (await it('Node.js', async () => {
       const output = await inspectCLI(
-        'npx tsx src/bin/index.ts --platform=node fixtures/extensions'
+        'npx tsx src/bin/index.ts --platform=node test/__fixtures__/e2e/extensions'
       );
 
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
       assert(/PASS › 12/.test(output.stdout), 'CLI needs to pass 1');
       assert(/FAIL › 0/.test(output.stdout), 'CLI needs to fail 0');
-      assert(/node.+?\.js/.test(output.stdout), '.js => node');
-      assert(/node.+?\.cjs/.test(output.stdout), '.cjs => node');
-      assert(/node.+?\.mjs/.test(output.stdout), '.mjs => node');
-      assert(/tsx.+?\.ts/.test(output.stdout), '.ts => tsx');
-      assert(/tsx.+?\.cts/.test(output.stdout), '.cts => tsx');
-      assert(/tsx.+?\.mts/.test(output.stdout), '.mts => tsx');
+      assert(/node.+?\.js/.test(output.stdout), 'node => .js');
+      assert(/node.+?\.cjs/.test(output.stdout), 'node => .cjs');
+      assert(/node.+?\.mjs/.test(output.stdout), 'node => .mjs');
+      assert(/tsx.+?\.ts/.test(output.stdout), 'tsx => .ts');
+      assert(/tsx.+?\.cts/.test(output.stdout), 'tsx => .cts');
+      assert(/tsx.+?\.mts/.test(output.stdout), 'tsx => .mts');
     }));
 
   hasBun &&
     (await it('Bun', async () => {
       const output = await inspectCLI(
-        'bun src/bin/index.ts --platform=bun fixtures/extensions'
+        'bun src/bin/index.ts --platform=bun test/__fixtures__/e2e/extensions'
       );
 
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
@@ -74,7 +74,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasDeno &&
     (await it('Deno', async () => {
       const output = await inspectCLI(
-        'deno run --unstable-sloppy-imports --allow-read --allow-env --allow-run src/bin/index.ts --platform=deno fixtures/extensions'
+        'deno run --unstable-sloppy-imports --allow-read --allow-env --allow-run src/bin/index.ts --platform=deno test/__fixtures__/e2e/extensions'
       );
 
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');

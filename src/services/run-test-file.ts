@@ -61,6 +61,8 @@ export const runTestFile = async (
       },
     });
 
+    child.stdout.setEncoding('utf8');
+    child.stderr.setEncoding('utf8');
     child.stdout.on('data', stdOut);
     child.stderr.on('data', stdOut);
 

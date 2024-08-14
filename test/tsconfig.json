@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "../src",
+    "**/**/*.ts",
+    "**/**/*.js",
+    "**/**/*.cjs",
+    "**/**/*.mjs"
+  ],
+  "exclude": ["__fixtures__/e2e/sintax/invalid-file.js"],
+  "compilerOptions": {
+    "outDir": "../ci",
+    "declaration": false,
+    "allowJs": true,
+    "declarationDir": null
+  }
+}

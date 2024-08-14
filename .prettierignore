@@ -2,5 +2,5 @@
 /ci
 /CHANGELOG.md
 /website
-/fixtures/sintax
+/test/__fixtures__/e2e/sintax
 /.nycrc.json

@@ -6,8 +6,8 @@ import {
   startScript,
   startService,
 } from '../../src/modules/helpers/create-service.js';
-import { legacyFetch } from '../helpers/legacy-fetch.test.js';
-import { ext, isProduction } from '../helpers/capture-cli.test.js';
+import { legacyFetch } from '../__utils__/legacy-fetch.test.js';
+import { ext } from '../__utils__/capture-cli.test.js';
 import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { waitForPort } from '../../src/modules/helpers/wait-for.js';
 
@@ -18,10 +18,7 @@ test(async () => {
     await it(async () => {
       const server = await startService(`server-a.${ext}`, {
         startAfter: 'ready',
-        cwd:
-          ext === 'ts' || isProduction
-            ? 'fixtures/server'
-            : 'ci/fixtures/server',
+        cwd: 'test/__fixtures__/e2e/server',
       });
 
       await waitForPort(4000, { timeout: 10000, delay: 100 });
@@ -42,10 +39,7 @@ test(async () => {
     await it(async () => {
       const server = await startScript(`start:${ext}`, {
         startAfter: 'ready',
-        cwd:
-          ext === 'ts' || isProduction
-            ? 'fixtures/server'
-            : 'ci/fixtures/server',
+        cwd: 'test/__fixtures__/e2e/server',
         runner: runtime === 'node' ? 'npm' : runtime,
       });
 
@@ -67,10 +61,7 @@ test(async () => {
     await it(async () => {
       const server = await startService(`server-a.${ext}`, {
         startAfter: 'ready',
-        cwd:
-          ext === 'ts' || isProduction
-            ? 'fixtures/server'
-            : 'ci/fixtures/server',
+        cwd: 'test/__fixtures__/e2e/server',
       });
 
       await waitForPort(4000, { timeout: 10000, delay: 100 });
@@ -91,11 +82,8 @@ test(async () => {
     await it(async () => {
       const server = await startService(`server-a.${ext}`, {
         startAfter: 2500,
-        timeout: 5000,
-        cwd:
-          ext === 'ts' || isProduction
-            ? 'fixtures/server'
-            : 'ci/fixtures/server',
+        timeout: 10000,
+        cwd: 'test/__fixtures__/e2e/server',
       });
 
       await waitForPort(4000, { timeout: 10000, delay: 100 });
@@ -116,10 +104,7 @@ test(async () => {
     await it(async () => {
       const server = await startScript(`start:${ext}`, {
         startAfter: 'ready',
-        cwd:
-          ext === 'ts' || isProduction
-            ? 'fixtures/server'
-            : 'ci/fixtures/server',
+        cwd: 'test/__fixtures__/e2e/server',
         runner: runtime === 'node' ? 'npm' : runtime,
       });
 
@@ -141,11 +126,8 @@ test(async () => {
     await it(async () => {
       const server = await startScript(`start:${ext}`, {
         startAfter: 2500,
-        timeout: 5000,
-        cwd:
-          ext === 'ts' || isProduction
-            ? 'fixtures/server'
-            : 'ci/fixtures/server',
+        timeout: 10000,
+        cwd: 'test/__fixtures__/e2e/server',
         runner: runtime === 'node' ? 'npm' : runtime,
       });
 
@@ -166,10 +148,7 @@ test(async () => {
   await describe('Start Service (No "startAfter")', async () => {
     await it(async () => {
       const server = await startService(`server-a.${ext}`, {
-        cwd:
-          ext === 'ts' || isProduction
-            ? 'fixtures/server'
-            : 'ci/fixtures/server',
+        cwd: 'test/__fixtures__/e2e/server',
       });
 
       await waitForPort(4000, { timeout: 10000, delay: 100 });
@@ -189,10 +168,7 @@ test(async () => {
   await describe('Start Script (No "startAfter")', async () => {
     await it(async () => {
       const server = await startScript(`start:${ext}`, {
-        cwd:
-          ext === 'ts' || isProduction
-            ? 'fixtures/server'
-            : 'ci/fixtures/server',
+        cwd: 'test/__fixtures__/e2e/server',
         runner: runtime === 'node' ? 'npm' : runtime,
       });
 
@@ -215,10 +191,7 @@ test(async () => {
       await it(async () => {
         const server = await startService(`server-a.${ext}`, {
           startAfter: 'ready',
-          cwd:
-            ext === 'ts' || isProduction
-              ? 'fixtures/server'
-              : 'ci/fixtures/server',
+          cwd: 'test/__fixtures__/e2e/server',
         });
 
         await waitForPort(4000, { timeout: 10000, delay: 100 });
@@ -239,10 +212,7 @@ test(async () => {
       await it(async () => {
         const server = await startScript(`start:${ext}`, {
           startAfter: 'ready',
-          cwd:
-            ext === 'ts' || isProduction
-              ? 'fixtures/server'
-              : 'ci/fixtures/server',
+          cwd: 'test/__fixtures__/e2e/server',
           runner: runtime === 'node' ? 'npm' : runtime,
         });
 

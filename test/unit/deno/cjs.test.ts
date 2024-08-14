@@ -12,7 +12,7 @@ if (runtime !== 'deno') {
 }
 
 test('Deno Compatibility', async () => {
-  const FILE = './fixtures/deno/require.cjs';
+  const FILE = 'test/__fixtures__/integration/deno/require.cjs';
   const polyfillPath = './lib/polyfills/deno.mjs';
 
   const command = 'deno';

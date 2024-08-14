@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['08', '10', '12', '14', '16', '18', '20', 'latest']
+        node-version: ['08', '10', '12', '14', '16', '18', '20', '22']
     name: Node.js ${{ matrix.node-version }}
     steps:
       - name: ➕ Actions - Checkout
@@ -21,6 +21,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+
+      - name: ➕ Actions - Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
@@ -35,6 +40,7 @@ jobs:
       - name: 🤹🏻‍♀️ Building the Project
         run: npm run build
 
-      # Testing via Docker Official Images
       - name: 🔬 Node ${{ matrix.node-version }}
-        run: FILTER=node-${{ matrix.node-version }} npm run test:ci
+        run: npm run test:docker:node
+        env:
+          FILTER: node-${{ matrix.node-version }}
