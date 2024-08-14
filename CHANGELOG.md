@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.4.4](https://github.com/wellwelwel/poku/compare/v2.4.3...v2.4.4) (2024-08-14)
+
+
+### Bug Fixes
+
+* make output less verbose ([#668](https://github.com/wellwelwel/poku/issues/668)) ([9623aee](https://github.com/wellwelwel/poku/commit/9623aee9bdb5e332322c7c3eb804b74abce93287))
+* propagate exit code when a failure occurs with `--fail-fast` ([#682](https://github.com/wellwelwel/poku/issues/682)) ([418a6e5](https://github.com/wellwelwel/poku/commit/418a6e5a8bd5acfd3b51d03a7081b39efb806f17))
+
 ## [2.4.3](https://github.com/wellwelwel/poku/compare/v2.4.2...v2.4.3) (2024-08-08)
 
 
