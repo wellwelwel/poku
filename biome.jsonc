@@ -21,7 +21,13 @@
       "all": true,
       "complexity": {
         "all": true,
-        "noExcessiveCognitiveComplexity": "off"
+        "noExcessiveCognitiveComplexity": {
+          "level": "error",
+          "options": {
+            // TODO: better estimate complexity
+            "maxAllowedComplexity": 60
+          }
+        }
       },
       "a11y": {
         "all": true
@@ -38,15 +44,23 @@
         "useImportExtensions": "error"
       },
       "performance": {
-        "all": true
+        "all": true,
+        "noAccumulatingSpread": "error",
+        "noBarrelFile": "error",
+        "noDelete": "error",
+        "noReExportAll": "error"
       },
       "security": {
-        "all": true
+        "all": true,
+        "noGlobalEval": "error"
       },
       "suspicious": {
         "all": true,
         "noEmptyBlockStatements": "off",
-        "noConsoleLog": "off"
+        "noConsoleLog": "off",
+        "noAsyncPromiseExecutor": "error",
+        "useAwait": "error",
+        "useIsArray": "error"
       },
       "style": {
         "all": true,
