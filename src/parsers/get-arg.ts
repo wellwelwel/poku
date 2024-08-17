@@ -1,12 +1,15 @@
 import { argv } from 'node:process';
+import { toDynamicCase } from './to-dynamic-case.js';
 
 const [, , ...processArgs] = argv;
 const regexQuotes = /''|""/;
 
+const processedArgs = processArgs.map((baseArg) => toDynamicCase(baseArg));
+
 export const getArg = (
   arg: string,
   prefix = '--',
-  baseArgs = processArgs
+  baseArgs = processedArgs
 ): string | undefined => {
   const argPattern = `${prefix}${arg}=`;
   const argValue = baseArgs.find((a) => a.startsWith(argPattern));
@@ -21,7 +24,7 @@ export const getArg = (
 export const hasArg = (
   arg: string,
   prefix = '--',
-  baseArgs = processArgs
+  baseArgs = processedArgs
 ): boolean => {
   const argPattern = `${prefix}${arg}`;
 
@@ -30,7 +33,7 @@ export const hasArg = (
 
 export const getPaths = (
   prefix = '--',
-  baseArgs = processArgs
+  baseArgs = processedArgs
 ): string[] | undefined => {
   let hasPaths = false;
   const paths: string[] = [];
@@ -51,7 +54,7 @@ export const getPaths = (
 export const argToArray = (
   arg: string,
   prefix = '--',
-  baseArgs = processArgs
+  baseArgs = processedArgs
 ) => {
   const hasArgument = hasArg(arg, prefix, baseArgs);
   if (!hasArgument) {
