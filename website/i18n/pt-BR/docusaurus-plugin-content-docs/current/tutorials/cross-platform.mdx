@@ -1,0 +1,204 @@
+---
+title: 👩🏼‍🚀 Testando em Diferentes Plataformas
+description: Executando a mesma suíte de testes em diferentes plataformas.
+tags: [cross-platform, Node.js, Bun, Deno, tutorial, roadmap]
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Maintainer from '@site/static/img/maintainer.svg';
+
+<div className='title-section'>
+<aside>
+
+# 👩🏼‍🚀 Testando em Diferentes Plataformas
+
+- Executando a mesma suíte de testes em diferentes plataformas.
+
+</aside>
+  <aside>
+    <Maintainer className='logo' height='128' />
+  </aside>
+</div>
+
+<hr />
+
+## Executando testes em plataformas específicas
+
+Primeiro, vamos entender o que cada definição faz:
+
+```sh
+npx poku
+```
+
+- Tenta identificar a plataforma ou executá-la no **Node.js** por padrão.
+
+```sh
+npx poku --node
+```
+
+- Chama o **Poku** através do **Node.js** e executa todos os testes usando o **Node.js**.
+
+```sh
+npx poku --bun
+```
+
+- Chama o **Poku** através do **Node.js**, mas executa todos os testes usando o **Bun**.
+
+```sh
+npx poku --deno
+```
+
+- Chama o **Poku** através do **Node.js**, mas executa todos os testes usando o **Deno**.
+
+:::note
+É importante notar que o tempo de execução do **Poku** é diferente do tempo de execução dos testes (`node`, `npx tsx`, `bun`, ou `deno`).
+:::
+
+<hr />
+
+- Veja a seção `platform` [aqui](/docs/documentation/poku/options/platform).
+- Veja todas as flags e opções disponíveis para o comando `poku` [aqui](/docs/category/-poku).
+
+<hr />
+
+### Recomendações
+
+Para evitar conflitos em ambientes com múltiplas plataformas instaladas (**Node.js** + **Bun**, **Deno** + **Bun**. etc.), veja os exemplos a seguir:
+
+```sh
+npx poku --node
+```
+
+- Executa o **Poku** através do **Node.js** e garante que todos os testes sejam executados com **Node.js** (ou **tsx** para testes com **TypeScript**).
+
+```sh
+bunx poku --bun
+```
+
+- Executa o **Poku** através do **Bun** e garante que todos os testes sejam executados com **Bun**.
+
+```sh
+deno run npm:poku --deno
+```
+
+- Executa o **Poku** através do **Deno** e garante que todos os testes sejam executados com **Deno**.
+
+:::tip
+Para usuários de **TypeScript**, não é necessário instalar **tsx** para o **Bun** e o **Deno**, pois ambos executam **TypeScript** nativamente.
+:::
+
+<hr />
+
+### Executando CommonJS com Deno
+
+> Veja todas as opções para o **Deno** [aqui](/docs/documentation/poku/options/deno).
+
+#### Todos os arquivos como CommonJS
+
+```sh
+deno run npm:poku --deno --deno-cjs
+```
+
+#### Uma extensão específica como CommonJS
+
+```sh
+deno run npm:poku --deno --deno-cjs='.cjs'
+```
+
+#### Múltiplas extensões como CommonJS
+
+```sh
+deno run npm:poku --deno --deno-cjs='.cjs,.js'
+```
+
+<hr />
+
+## Usando a API do Poku _(conceito avançado)_
+
+Na descrição do **Poku**, você pode ler _"O Poku facilita os testes para Node.js, Bun, Deno, e você <u>ao mesmo tempo</u>."_, e é verdade:
+
+> Isso é mais para demonstrar um ponto, não uma recomendação 🙋🏻‍♂️
+
+_./test/run.test.ts_:
+
+```ts
+import { describe, it, poku, exit } from 'poku';
+
+const parallel = true;
+const noExit = true;
+
+const codes: (0 | 1)[] = [];
+
+await describe('Executando Testes em Diferentes Plataformas ao Mesmo Tempo', async () => {
+  await Promise.all([
+    it('Suíte de teste deve passar no Node.js', async () => {
+      const exitCode = await poku(['./test/unit'], {
+        platform: 'node',
+        parallel,
+        noExit,
+      });
+
+      codes.push(exitCode);
+    }),
+
+    it('Suíte de teste deve passar no Bun', async () => {
+      const exitCode = await poku(['./test/unit'], {
+        platform: 'bun',
+        parallel,
+        noExit,
+      });
+
+      codes.push(exitCode);
+    }),
+
+    it('Suíte de teste deve passar no Deno', async () => {
+      const exitCode = await poku(['./test/unit'], {
+        platform: 'deno',
+        parallel,
+        noExit,
+        deno: {
+          cjs: ['.cjs'],
+        },
+      });
+
+      codes.push(exitCode);
+    }),
+  ]);
+});
+
+const code = codes.every((code) => code === 0) ? 0 : 1;
+
+exit(code);
+```
+
+Então, escolha uma plataforma:
+
+- **Node.js** (usando **TypeScript**)
+
+```sh
+npx tsx test/run.test.ts
+```
+
+- **Bun**
+
+```sh
+bun test/run.test.ts
+```
+
+- **Deno**
+
+```sh
+deno run test/run.test.ts
+```
+
+:::tip
+Geralmente é benéfico ter um _CI_ exclusivo para cada plataforma, especialmente para garantir um melhor controle em casos de erro.
+:::
+
+<hr />
+
+:::note
+Se você encontrar algum erro de digitação, sinta-se à vontade para abrir um **Pull Request** corrigindo-o.
+:::
