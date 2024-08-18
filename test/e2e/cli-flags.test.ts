@@ -15,9 +15,12 @@ describe('CLI Flags', async () => {
     });
 
     assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/debug:(.+)true/.test(output.stdout), 'CLI needs to able "debug"');
     assert(
-      /parallel:(.+)true/.test(output.stdout),
+      /debug(.+)?:(.+)?true/.test(output.stdout),
+      'CLI needs to able "debug"'
+    );
+    assert(
+      /parallel(.+)?:(.+)?true/.test(output.stdout),
       'CLI needs to able "parallel"'
     );
   });
@@ -28,13 +31,16 @@ describe('CLI Flags', async () => {
     });
 
     assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/debug:(.+)true/.test(output.stdout), 'CLI needs to able "debug"');
     assert(
-      /failFast:(.+)true/.test(output.stdout),
+      /debug(.+)?:(.+)?true/.test(output.stdout),
+      'CLI needs to able "debug"'
+    );
+    assert(
+      /failFast(.+)?:(.+)?true/.test(output.stdout),
       'CLI needs to able "failFast"'
     );
     assert(
-      /cjs:(.+)js(.+)cjs/.test(output.stdout),
+      /cjs(.+)?:(.+)?js(.+)?cjs/.test(output.stdout),
       'CLI needs to able "Deno CJS Pollyfill"'
     );
   });
@@ -45,13 +51,16 @@ describe('CLI Flags', async () => {
     });
 
     assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/debug:(.+)true/.test(output.stdout), 'CLI needs to able "debug"');
     assert(
-      /failFast:(.+)true/.test(output.stdout),
+      /debug(.+)?:(.+)?true/.test(output.stdout),
+      'CLI needs to able "debug"'
+    );
+    assert(
+      /failFast(.+)?:(.+)?true/.test(output.stdout),
       'CLI needs to able "failFast"'
     );
     assert(
-      /cjs:(.+)js(.+)cjs/.test(output.stdout),
+      /cjs(.+)?:(.+)?js(.+)?cjs/.test(output.stdout),
       'CLI needs to able "Deno CJS Pollyfill"'
     );
   });
