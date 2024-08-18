@@ -4,7 +4,7 @@ import { toDynamicCase } from './to-dynamic-case.js';
 const [, , ...processArgs] = argv;
 const regexQuotes = /''|""/;
 
-const processedArgs = processArgs.map((baseArg) => toDynamicCase(baseArg));
+const processedArgs = processArgs.map(toDynamicCase);
 
 export const getArg = (
   arg: string,
