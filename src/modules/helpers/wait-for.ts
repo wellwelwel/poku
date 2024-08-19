@@ -10,7 +10,7 @@ const checkPort = (port: number, host: string): Promise<boolean> =>
     const client = createConnection(port, host);
 
     client.on('connect', () => {
-      client.destroy();
+      client.end();
       resolve(true);
     });
 
