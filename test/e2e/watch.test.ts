@@ -28,7 +28,7 @@ const saveFileUnchanged = async (filename: string) => {
 };
 
 describe('Watch Mode', async () => {
-  const watcher = watchCLI('--watch-interval=500', {
+  const watcher = watchCLI('--watchInterval=500', {
     cwd: 'test/__fixtures__/e2e/watch',
   });
 

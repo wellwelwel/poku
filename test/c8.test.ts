@@ -52,8 +52,8 @@ test(async () => {
     await it('Sequential + Options (Just Touch)', async () => {
       const results = await inspectPoku(
         isWindows
-          ? '--concurrency=4 --platform=node --fail-fast --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
-          : '--concurrency=4 --platform=node --fail-fast --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
+          ? '--concurrency=4 --platform=node --failFast --debug --exclude=".bak" --killPort=4000 --killRange="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
+          : '--concurrency=4 --platform=node --failFast --debug --exclude=.bak --killPort=4000 --killRange=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
       );
 
       console.log(results.stdout);
@@ -65,8 +65,8 @@ test(async () => {
     await it('Parallel + Options (Just Touch)', async () => {
       const results = await inspectPoku(
         isWindows
-          ? '--parallel --concurrency=4 --platform=node --fail-fast --debug --exclude=".bak" --kill-port=4000 --kill-range="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
-          : '--parallel --concurrency=4 --platform=node --fail-fast --debug --exclude=.bak --kill-port=4000 --kill-range=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
+          ? '--parallel --concurrency=4 --platform=node --failFast --debug --exclude=".bak" --killPort=4000 --killRange="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
+          : '--parallel --concurrency=4 --platform=node --failFast --debug --exclude=.bak --killPort=4000 --killRange=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
       );
 
       console.log(results.stdout);
