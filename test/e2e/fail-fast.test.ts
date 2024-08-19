@@ -21,7 +21,7 @@ describe('Fast Fast', async () => {
     }
 
     assert.strictEqual(results.exitCode, 1, 'Failed');
-    assert.match(results.stderr, /fail-fast/, 'Fail Fast is enabled');
+    assert.match(results.stderr, /failFast/, 'Fail Fast is enabled');
     assert.match(results.stdout, /FAIL › 1/, 'Needs to fail 1');
   });
 
@@ -36,7 +36,7 @@ describe('Fast Fast', async () => {
     }
 
     assert.strictEqual(results.exitCode, 1, 'Failed');
-    assert.match(results.stdout, /fail-fast/, 'Fail Fast is enabled');
+    assert.match(results.stdout, /failFast/, 'Fail Fast is enabled');
     assert.match(results.stdout, /FAIL › 1/, 'Needs to fail 1');
   });
 });

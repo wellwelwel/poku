@@ -18,29 +18,29 @@ Retorna todos os arquivos em um diretório (independente de sua profundidade) ou
 Exibe todos os arquivos retornados no terminal, sem executar os testes.
 
 ```sh
-npx poku --list-files
+npx poku --listFiles
 ```
 
 ```sh
-npx poku ./test --list-files
+npx poku ./test --listFiles
 ```
 
 ```sh
-npx poku ./packages/**/test --list-files
+npx poku ./packages/**/test --listFiles
 ```
 
 ```sh
-npx poku ./test/unit ./test/e2e --list-files
+npx poku ./test/unit ./test/e2e --listFiles
 ```
 
 - Você pode usar as flags `--filter` e `--exclude` e incluir múltiplos caminhos.
 
 :::note
 
-Os arquivos retornados pelo `--list-files` não refletem os caminhos exibidos pelo `--debug`:
+Os arquivos retornados pelo `--listFiles` não refletem os caminhos exibidos pelo `--debug`:
 
 - **`--debug`:** os caminhos a serem pesquisados.
-- **`--list-files`:** os caminhos encontrados.
+- **`--listFiles`:** os caminhos encontrados.
 
 :::
 

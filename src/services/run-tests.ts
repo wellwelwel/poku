@@ -72,7 +72,7 @@ export const runTests = async (
         if (showLogs) {
           Write.hr();
           Write.log(
-            `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
+            `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`
           );
         }
 
@@ -116,7 +116,7 @@ export const runTestsParallel = async (
             process.exitCode = 1;
 
             throw new Error(
-              `  ${format('ℹ').fail()} ${format('fail-fast').bold()} is enabled`
+              `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`
             );
           }
 

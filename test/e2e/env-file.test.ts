@@ -12,7 +12,7 @@ if (isBuild) {
 
 describe('.env File', async () => {
   await it('CLI Env Variables Propagation (default)', async () => {
-    const results = await inspectPoku('--env-file', {
+    const results = await inspectPoku('--envFile', {
       env: {
         ...process.env,
         MY_VAR: 'Poku',
@@ -30,7 +30,7 @@ describe('.env File', async () => {
 
   await it('CLI Env Variables Propagation (custom)', async () => {
     const results = await inspectPoku(
-      isWindows ? '--env-file=".env.test"' : '--env-file=.env.test',
+      isWindows ? '--envFile=".env.test"' : '--envFile=.env.test',
       {
         env: {
           ...process.env,
