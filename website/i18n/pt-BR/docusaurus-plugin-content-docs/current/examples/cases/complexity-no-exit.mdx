@@ -51,7 +51,11 @@ const successesCode = await poku('test/integration/successes', {
   noExit: true,
 });
 
-assert.strictEqual(0, successesCode, 'Executando Testes de Integração de Sucessos');
+assert.strictEqual(
+  0,
+  successesCode,
+  'Executando Testes de Integração de Sucessos'
+);
 
 await assert.doesNotReject(
   recreateDatabase(),
@@ -62,7 +66,11 @@ const failuresCode = await poku('test/integration/failures', {
   noExit: true,
 });
 
-assert.strictEqual(0, failuresCode, 'Executando Testes de Integração de Falhas');
+assert.strictEqual(
+  0,
+  failuresCode,
+  'Executando Testes de Integração de Falhas'
+);
 ```
 
 > Por quê comentar o código se podemos fazer melhor? 🧙🏻
