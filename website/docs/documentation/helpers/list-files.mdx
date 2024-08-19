@@ -7,6 +7,15 @@ Returns all files in a directory (independent of their depth) or the file itself
 <History
   records={[
     {
+      version: '2.5.0',
+      changes: [
+        <>
+          <strong>CLI:</strong> deprecate <code>--list-files</code> in order to{' '}
+          <code>--listFiles</code>.
+        </>,
+      ],
+    },
+    {
       version: '2.4.0',
       changes: [<>Support for CLI usage.</>],
     },
@@ -18,29 +27,29 @@ Returns all files in a directory (independent of their depth) or the file itself
 Displays all the files returned in the terminal, without running the tests.
 
 ```sh
-npx poku --list-files
+npx poku --listFiles
 ```
 
 ```sh
-npx poku ./test --list-files
+npx poku ./test --listFiles
 ```
 
 ```sh
-npx poku ./packages/**/test --list-files
+npx poku ./packages/**/test --listFiles
 ```
 
 ```sh
-npx poku ./test/unit ./test/e2e --list-files
+npx poku ./test/unit ./test/e2e --listFiles
 ```
 
 - You can use the `--filter` and `--exclude` flags and include multiple paths.
 
 :::note
 
-The files returned by `--list-files` don't reflect the paths displayed by `--debug`:
+The files returned by `--listFiles` don't reflect the paths displayed by `--debug`:
 
 - **`--debug`:** the paths to be searched for.
-- **`--list-files`:** the paths found.
+- **`--listFiles`:** the paths found.
 
 :::
 

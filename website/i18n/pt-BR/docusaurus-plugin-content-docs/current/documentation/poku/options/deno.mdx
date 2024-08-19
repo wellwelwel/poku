@@ -15,17 +15,17 @@ Por padrão, o **Poku** utiliza `--allow-run`, `--allow-env`, `--allow-read`, `a
 ### CLI
 
 ```bash
-npx poku --deno-allow='read, run'
+npx poku --denoAllow='read, run'
 ```
 
 ```bash
-npx poku --deno-allow='read=arquivo.js, run'
+npx poku --denoAllow='read=arquivo.js, run'
 ```
 
 Limpe todas as permissões:
 
 ```bash
-npx poku --deno-allow=''
+npx poku --denoAllow=''
 ```
 
 ### API
@@ -65,11 +65,11 @@ Altere as permissões para o **Deno**.
 ### CLI
 
 ```bash
-npx poku --deno-deny='write, sys'
+npx poku --denoDeny='write, sys'
 ```
 
 ```bash
-npx poku --deno-deny='env=HOME, write'
+npx poku --denoDeny='env=HOME, write'
 ```
 
 ### API
@@ -107,11 +107,11 @@ Para executar o **CommonJS** com o **Deno**, você pode usar:
 ### CLI
 
 ```bash
-npx poku --deno-cjs
+npx poku --denoCjs
 ```
 
 ```bash
-npx poku --deno-cjs='.js,.cjs'
+npx poku --denoCjs='.js,.cjs'
 ```
 
 ### API
