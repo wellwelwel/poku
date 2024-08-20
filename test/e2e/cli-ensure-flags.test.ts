@@ -17,9 +17,6 @@ describe('Enforce Option', async () => {
       cwd: 'test/__fixtures__/e2e/no-tests',
     });
 
-    console.log(output.stdout);
-    console.log(output.stderr);
-
     assert.strictEqual(output.exitCode, 1, 'Exit Code needs to be 1');
     assert(/Unrecognized flags/.test(output.stdout), 'Has unrecognized flags');
     assert(/-P/.test(output.stdout), 'Short flag: wrong case for valid option');
