@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.5.0](https://github.com/wellwelwel/poku/compare/v2.4.4...v2.5.0) (2024-08-20)
+
+
+### Features
+
+* **cli:** enforce flags validation ([#699](https://github.com/wellwelwel/poku/issues/699)) ([4477de1](https://github.com/wellwelwel/poku/commit/4477de1d8f08695485ca9b3567124780a7d9bb15))
+* **cli:** support camelCase flags (deprecate kebab-case flags) ([#688](https://github.com/wellwelwel/poku/issues/688)) ([203fb45](https://github.com/wellwelwel/poku/commit/203fb451905ddfa5210a916c460ee47802a55852))
+
+
+### Bug Fixes
+
+* **waitForPort:** ensure process exit after Bun `v1.1.23` ([#689](https://github.com/wellwelwel/poku/issues/689)) ([85b6b3b](https://github.com/wellwelwel/poku/commit/85b6b3bef2a09ae761feeea1846249fc996aa262))
+
 ## [2.4.4](https://github.com/wellwelwel/poku/compare/v2.4.3...v2.4.4) (2024-08-14)
 
 
