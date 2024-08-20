@@ -20,6 +20,7 @@ import { getConfigs } from '../parsers/options.js';
     return;
   }
 
+  const enforce = hasArg('enforce') || hasArg('x', '-');
   const configFile = getArg('config') || getArg('c', '-');
   const defaultConfigs = await getConfigs(configFile);
   const dirs: string[] = (() => {
@@ -107,6 +108,12 @@ import { getConfigs } from '../parsers/options.js';
     Write.hr();
 
     return;
+  }
+
+  if (enforce) {
+    const { checkFlags } = require('./enforce.js');
+
+    checkFlags();
   }
 
   const tasks: Promise<unknown>[] = [];
