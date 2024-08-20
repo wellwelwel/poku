@@ -17,11 +17,8 @@ jobs:
           close-pr-message: 'This PR has been closed due to inactivity for 15 days.'
           stale-issue-message: ''
           stale-pr-message: ''
-          days-before-stale: 15
+          days-before-stale: 0
           days-before-close: 15
-          stale-issue-label: 'stale'
-          stale-pr-label: 'stale'
-          remove-stale-when-updated: true
           delete-branch: false
           enable-statistics: true
-          exempt-issue-labels: 'enhancement,feature request'
+          exempt-issue-labels: 'enhancement,feature request,bug,priority'
