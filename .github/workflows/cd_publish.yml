@@ -70,3 +70,5 @@ jobs:
               workflow_id: 'cd_docs-deploy.yml',
               ref: 'main'
             });
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
