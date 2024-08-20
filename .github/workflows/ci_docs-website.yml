@@ -53,3 +53,16 @@ jobs:
           curl --fail --silent --output /dev/null http://localhost:${{ env.APP_PORT }}
         env:
           APP_PORT: 3000
+
+      # Debugging
+      - name: 🔗 Triggering — Website Publish
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'cd_docs-deploy.yml',
+              ref: 'main'
+            });
