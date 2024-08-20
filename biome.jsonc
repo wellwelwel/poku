@@ -25,7 +25,7 @@
           "level": "error",
           "options": {
             // TODO: better estimate complexity
-            "maxAllowedComplexity": 60
+            "maxAllowedComplexity": 45
           }
         }
       },
@@ -104,6 +104,16 @@
         "rules": {
           "performance": {
             "noBarrelFile": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["src/bin/index.ts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noExcessiveCognitiveComplexity": "off"
           }
         }
       }

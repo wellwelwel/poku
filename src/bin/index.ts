@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 import type { Configs } from '../@types/poku.js';
+import { argv, exit } from 'node:process';
 import { escapeRegExp } from '../modules/helpers/list-files.js';
 import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
 import { states } from '../configs/files.js';
@@ -17,9 +18,10 @@ import { getConfigs } from '../parsers/options.js';
     const { VERSION } = require('../configs/poku.js');
 
     Write.log(VERSION);
-    return;
+    exit(0);
   }
 
+  const enforce = hasArg('enforce') || hasArg('x', '-');
   const configFile = getArg('config') || getArg('c', '-');
   const defaultConfigs = await getConfigs(configFile);
   const dirs: string[] = (() => {
@@ -106,7 +108,61 @@ import { getConfigs } from '../parsers/options.js';
     Write.log(`Total test files: ${format(String(files.length)).bold()}`);
     Write.hr();
 
-    return;
+    exit(0);
+  }
+
+  if (enforce) {
+    const allowedFlags = new Set([
+      '--config',
+      '--platform',
+      '--filter',
+      '--exclude',
+      '--killPort',
+      '--killRange',
+      '--killPid',
+      '--denoAllow',
+      '--denoDeny',
+      '--denoCjs',
+      '--parallel',
+      '--enforce',
+      '--quiet',
+      '--debug',
+      '--failFast',
+      '--watch',
+      '--envFile',
+      '--concurrency',
+      '--watchInterval',
+      '--node',
+      '--bun',
+      '--deno',
+      '-c',
+      '-p',
+      '-d',
+      '-q',
+      '-w',
+      '-x',
+    ]);
+
+    const args = argv.slice(2);
+    const unrecognizedFlags: string[] = [];
+
+    for (const arg of args) {
+      const flagName = arg.split('=')[0];
+
+      if (!allowedFlags.has(flagName) && flagName.startsWith('-')) {
+        unrecognizedFlags.push(flagName);
+      }
+    }
+
+    if (unrecognizedFlags.length > 0) {
+      Write.hr();
+      Write.log(
+        `${format('Unrecognized flags:').bold()}\n\n${unrecognizedFlags.map((flag) => format(flag).fail()).join('\n')}`
+      );
+      Write.hr();
+
+      exit(1);
+    }
   }
 
   const tasks: Promise<unknown>[] = [];
