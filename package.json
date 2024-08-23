@@ -59,7 +59,7 @@
     "@biomejs/biome": "1.8.3",
     "@types/node": "^22.5.0",
     "c8": "^10.1.2",
-    "jsonc.min": "^1.0.1",
+    "jsonc.min": "^1.1.0",
     "monocart-coverage-reports": "^2.10.3",
     "packages-update": "^2.0.0",
     "prettier": "^3.3.3",
