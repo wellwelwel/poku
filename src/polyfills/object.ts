@@ -1,6 +1,6 @@
 import { nodeVersion } from '../parsers/get-runtime.js';
 
-const needsPolyfill = !nodeVersion || nodeVersion >= 12;
+const needsPolyfill = nodeVersion && nodeVersion < 12;
 
 export const entries = needsPolyfill
   ? (obj: { [key: string]: any }): [string, unknown][] => {
