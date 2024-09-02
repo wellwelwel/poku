@@ -2,9 +2,8 @@ import type { Formatter } from '../services/format.js';
 import { stdout } from 'node:process';
 
 export const Write = {
-  log: (data: string | Uint8Array | Formatter) => {
-    stdout.write(`${String(data)}\n`);
-  },
+  log: (data: string | Uint8Array | Formatter) =>
+    stdout.write(`${String(data)}\n`),
   hr: () => {
     const line = '─'.repeat(stdout.columns - 10 || 40);
 

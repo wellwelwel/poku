@@ -22,11 +22,11 @@ export const getConfigs = async (
     const filePath = join(processCWD, file);
 
     try {
-      if (filePath.endsWith('.js') || filePath.endsWith('.cjs')) {
+      if (filePath.endsWith('.js') || filePath.endsWith('.cjs'))
         return require(`file://${normalize(filePath)}`);
-      }
 
       const configsFile = await readFile(filePath, 'utf8');
+
       return JSONC.parse<ConfigJSONFile>(configsFile);
     } catch {}
   }

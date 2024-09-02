@@ -9,7 +9,7 @@ import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
 import { isQuiet } from '../parsers/output.js';
 import { results } from '../configs/poku.js';
-import { availableParallelism } from '../polyfills/cpus.js';
+import { availableParallelism } from '../polyfills/os.js';
 
 const cwd = process.cwd();
 
@@ -97,12 +97,9 @@ export const runTestsParallel = async (
   const showLogs = !isQuiet(configs);
 
   if (concurrencyLimit > 0) {
-    for (let i = 0; i < files.length; i += concurrencyLimit) {
+    for (let i = 0; i < files.length; i += concurrencyLimit)
       filesByConcurrency.push(files.slice(i, i + concurrencyLimit));
-    }
-  } else {
-    filesByConcurrency.push(files);
-  }
+  } else filesByConcurrency.push(files);
 
   try {
     for (const fileGroup of filesByConcurrency) {

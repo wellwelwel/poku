@@ -21,9 +21,7 @@ export const killPID = {
     new Promise((resolve) => {
       const service = spawn('kill', ['-9', String(Number(PID))]);
 
-      service.on('close', () => {
-        resolve(undefined);
-      });
+      service.on('close', () => resolve(undefined));
     }),
   windows: (PID: number): Promise<void> =>
     new Promise((resolve) => {
@@ -34,9 +32,7 @@ export const killPID = {
         String(Number(PID)),
       ]);
 
-      service.on('close', () => {
-        resolve(undefined);
-      });
+      service.on('close', () => resolve(undefined));
     }),
 };
 
@@ -56,15 +52,11 @@ export const getPIDs = {
         const output = data.toString().trim().split('\n');
 
         for (const pid of output) {
-          if (pid) {
-            PIDs.add(Number(pid));
-          }
+          if (pid) PIDs.add(Number(pid));
         }
       });
 
-      service.on('close', () => {
-        resolve(Array.from(PIDs));
-      });
+      service.on('close', () => resolve(Array.from(PIDs)));
     }),
   windows: (port: number): Promise<number[]> =>
     new Promise((resolve) => {
@@ -85,15 +77,11 @@ export const getPIDs = {
           if (stateIndex !== -1 && tokens[stateIndex + 1]) {
             const pid = Number(tokens[stateIndex + 1]);
 
-            if (!Number.isNaN(pid)) {
-              PIDs.add(pid);
-            }
+            if (!Number.isNaN(pid)) PIDs.add(pid);
           }
         });
       });
 
-      service.on('close', () => {
-        resolve(Array.from(PIDs));
-      });
+      service.on('close', () => resolve(Array.from(PIDs)));
     }),
 };

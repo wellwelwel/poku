@@ -25,9 +25,7 @@ export const beforeEach = (
   options?.immediate && callback();
 
   each.before.cb = () => {
-    if (each.before.status) {
-      return callback();
-    }
+    if (each.before.status) return callback();
   };
 
   const pause = () => {
@@ -64,9 +62,7 @@ export const beforeEach = (
  */
 export const afterEach = (callback: () => unknown): Control => {
   each.after.cb = () => {
-    if (each.after.status) {
-      return callback();
-    }
+    if (each.after.status) return callback();
   };
 
   const pause = () => {

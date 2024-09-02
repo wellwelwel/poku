@@ -1,26 +1,32 @@
-export const entries = (obj: { [key: string]: any }): [string, unknown][] => {
-  const ownProps = Object.keys(obj);
-  let i = ownProps.length;
-  const resArray = new Array(i);
+import { nodeVersion } from '../parsers/get-runtime.js';
 
-  // benchmark `while` outperformed `for`
-  while (i--) {
-    resArray[i] = [ownProps[i], obj[ownProps[i]]];
-  }
+const needsPolyfill = !nodeVersion || nodeVersion >= 12;
 
-  return resArray;
-};
+export const entries = needsPolyfill
+  ? (obj: { [key: string]: any }): [string, unknown][] => {
+      const ownProps = Object.keys(obj);
+      let i = ownProps.length;
+      const resArray = new Array(i);
 
-export const fromEntries = (
-  entries: [string, unknown][] | Map<string, unknown>
-): Record<string, unknown> => {
-  const mappedEntries = entries instanceof Map ? Array.from(entries) : entries;
+      while (i--) resArray[i] = [ownProps[i], obj[ownProps[i]]];
 
-  return mappedEntries.reduce(
-    (acc, [key, value]) => {
-      acc[key] = value;
-      return acc;
-    },
-    {} as Record<string, unknown>
-  );
-};
+      return resArray;
+    }
+  : Object.entries;
+
+export const fromEntries = needsPolyfill
+  ? (
+      entries: [string, unknown][] | Map<string, unknown>
+    ): Record<string, unknown> => {
+      const mappedEntries =
+        entries instanceof Map ? Array.from(entries) : entries;
+
+      return mappedEntries.reduce(
+        (acc, [key, value]) => {
+          acc[key] = value;
+          return acc;
+        },
+        {} as Record<string, unknown>
+      );
+    }
+  : Object.fromEntries;

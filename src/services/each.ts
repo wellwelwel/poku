@@ -8,13 +8,10 @@ const eachCore = async (
   fileRelative: string,
   configs?: Configs
 ): Promise<boolean> => {
-  if (typeof configs?.[type] !== 'function') {
-    return true;
-  }
+  if (typeof configs?.[type] !== 'function') return true;
 
   const cb = configs[type];
   const showLogs = !isQuiet(configs);
-
   const cbName = cb.name !== type ? cb.name : 'anonymous function';
 
   showLogs &&
@@ -51,17 +48,15 @@ const eachCore = async (
 };
 
 export const beforeEach = async (fileRelative: string, configs?: Configs) => {
-  if (configs?.beforeEach) {
+  if (configs?.beforeEach)
     return await eachCore('beforeEach', fileRelative, configs);
-  }
 
   return true;
 };
 
 export const afterEach = async (fileRelative: string, configs?: Configs) => {
-  if (configs?.afterEach) {
+  if (configs?.afterEach)
     return await eachCore('afterEach', fileRelative, configs);
-  }
 
   return true;
 };

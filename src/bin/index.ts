@@ -24,11 +24,9 @@ import { getConfigs } from '../parsers/options.js';
   const configFile = getArg('config') || getArg('c', '-');
   const defaultConfigs = await getConfigs(configFile);
   const dirs: string[] = (() => {
-    /* c8 ignore next 4 */ // Deprecated
+    /* c8 ignore next 2 */ // Deprecated
     const includeArg = getArg('include');
-    if (includeArg !== undefined) {
-      return includeArg.split(',');
-    }
+    if (includeArg !== undefined) return includeArg.split(',');
 
     return (
       getPaths('-') ??
@@ -62,18 +60,14 @@ import { getConfigs } from '../parsers/options.js';
   const watchMode = hasArg('watch') || hasArg('w', '-');
   const hasEnvFile = hasArg('envfile');
   const concurrency = (() => {
-    if (!(parallel || defaultConfigs?.parallel)) {
-      return undefined;
-    }
+    if (!(parallel || defaultConfigs?.parallel)) return;
 
     const value = Number(getArg('concurrency'));
 
     return Number.isNaN(value) ? defaultConfigs?.concurrency : value;
   })();
 
-  if (dirs.length === 1) {
-    states.isSinglePath = true;
-  }
+  if (dirs.length === 1) states.isSinglePath = true;
 
   if (hasArg('listfiles')) {
     const { listFiles } = require('../modules/helpers/list-files.js');
@@ -82,7 +76,7 @@ import { getConfigs } from '../parsers/options.js';
 
     Write.hr();
 
-    for (const dir of dirs) {
+    for (const dir of dirs)
       files.push(
         ...(await listFiles(dir, {
           filter:
@@ -95,7 +89,6 @@ import { getConfigs } from '../parsers/options.js';
               : exclude,
         }))
       );
-    }
 
     Write.log(
       files

@@ -20,13 +20,8 @@ const assertProcessor = () => {
 
   const handleSuccess = (options: ProcessAssertionOptions) => {
     if (typeof options.message === 'string') {
-      if (indentation.hasDescribe) {
-        preIdentation += '  ';
-      }
-
-      if (indentation.hasItOrTest) {
-        preIdentation += '  ';
-      }
+      if (indentation.hasDescribe) preIdentation += '  ';
+      if (indentation.hasItOrTest) preIdentation += '  ';
 
       const message =
         isPoku && !indentation.hasDescribe && !indentation.hasItOrTest
@@ -47,23 +42,16 @@ const assertProcessor = () => {
       const absolutePath = findFile(error).replace(regexFile, '');
       const file = path.relative(path.resolve(cwd), absolutePath);
 
-      if (indentation.hasDescribe) {
-        preIdentation += '  ';
-      }
-
-      if (indentation.hasItOrTest) {
-        preIdentation += '  ';
-      }
+      if (indentation.hasDescribe) preIdentation += '  ';
+      if (indentation.hasItOrTest) preIdentation += '  ';
 
       let message = '';
 
-      if (typeof options.message === 'string') {
-        message = options.message;
-      } else if (options.message instanceof Error) {
+      if (typeof options.message === 'string') message = options.message;
+      else if (options.message instanceof Error)
         message = options.message.message;
-      } else if (typeof options.defaultMessage === 'string') {
+      else if (typeof options.defaultMessage === 'string')
         message = options.defaultMessage;
-      }
 
       const finalMessage =
         message?.trim().length > 0
@@ -89,17 +77,15 @@ const assertProcessor = () => {
           format(`${preIdentation}  ${options?.actual || 'Actual'}:`).dim()
         );
 
-        for (const line of splitActual) {
+        for (const line of splitActual)
           Write.log(`${preIdentation}  ${format(line).fail().bold()}`);
-        }
 
         Write.log(
           `\n${preIdentation}  ${format(`${options?.expected || 'Expected'}:`).dim()}`
         );
 
-        for (const line of splitExpected) {
+        for (const line of splitExpected)
           Write.log(`${preIdentation}  ${format(line).success().bold()}`);
-        }
 
         preIdentation = '';
       }
@@ -109,9 +95,7 @@ const assertProcessor = () => {
         Write.hr();
       }
 
-      if (isPoku) {
-        throw error;
-      }
+      if (isPoku) throw error;
     }
 
     /* c8 ignore next */ // Unknown external error

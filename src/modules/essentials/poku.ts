@@ -9,9 +9,7 @@ import { isQuiet } from '../../parsers/output.js';
 import { finalResults } from '../../configs/files.js';
 
 /* c8 ignore start */ // Process-based
-export const onSigint = () => {
-  process.stdout.write('\u001B[?25h');
-};
+export const onSigint = () => process.stdout.write('\u001B[?25h');
 
 process.once('SIGINT', onSigint);
 /* c8 ignore stop */
@@ -43,15 +41,11 @@ export async function poku(
 
       if (!result) {
         code = 1;
-        if (configs?.failFast) {
-          break;
-        }
+        if (configs?.failFast) break;
       }
     }
 
-    if (configs?.noExit) {
-      return code;
-    }
+    if (configs?.noExit) return code;
 
     const end = process.hrtime(start);
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
@@ -73,19 +67,14 @@ export async function poku(
   try {
     const promises = dirs.map(async (dir) => {
       const result = await runTestsParallel(dir, configs);
-
-      if (!result && configs?.failFast) {
-        throw new Error('quiet');
-      }
+      if (!result && configs?.failFast) throw new Error('quiet');
 
       return result;
     });
 
     const concurrency = await Promise.all(promises);
 
-    if (concurrency.some((result) => !result)) {
-      code = 1;
-    }
+    if (concurrency.some((result) => !result)) code = 1;
   } catch {
   } finally {
     const end = process.hrtime(start);
@@ -96,9 +85,7 @@ export async function poku(
 
   showLogs && showTestResults();
 
-  if (configs?.noExit) {
-    return code;
-  }
+  if (configs?.noExit) return code;
 
   exit(code, configs?.quiet);
 }

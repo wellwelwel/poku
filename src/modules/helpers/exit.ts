@@ -20,13 +20,8 @@ export const exit = (code: Code, quiet?: boolean) => {
   if (inline) {
     message += `${format(success).bg('green')} ${format(failure).bg(results.fail === 0 ? 'grey' : 'brightRed')}`;
 
-    if (results.skip) {
-      message += ` ${format(skips).bg('brightBlue')}`;
-    }
-
-    if (results.todo) {
-      message += ` ${format(plans).bg('brightBlue')}`;
-    }
+    if (results.skip) message += ` ${format(skips).bg('brightBlue')}`;
+    if (results.todo) message += ` ${format(plans).bg('brightBlue')}`;
   } else {
     message += `${format(success).success().bold()}\n`;
     message +=
@@ -65,17 +60,14 @@ export const exit = (code: Code, quiet?: boolean) => {
 
 /* c8 ignore start */ // Unknown external error
 process.on('unhandledRejection', (err) => {
-  if (!(err instanceof AssertionError)) {
+  if (!(err instanceof AssertionError))
     console.error('unhandledRejection', err);
-  }
 
   process.exitCode = 1;
 });
 
 process.on('uncaughtException', (err) => {
-  if (!(err instanceof AssertionError)) {
-    console.error('uncaughtException', err);
-  }
+  if (!(err instanceof AssertionError)) console.error('uncaughtException', err);
 
   process.exitCode = 1;
 });

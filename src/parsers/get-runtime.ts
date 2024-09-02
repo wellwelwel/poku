@@ -20,9 +20,8 @@ export const platformIsValid = (
     supportedPlatforms.some(
       (supportedPlatform) => supportedPlatform === platform
     )
-  ) {
+  )
     return true;
-  }
 
   return false;
 };
@@ -30,17 +29,10 @@ export const platformIsValid = (
 export const getRuntime = (
   configs?: Configs
 ): (typeof supportedPlatforms)[number] => {
-  if (configs?.platform && platformIsValid(configs.platform)) {
+  if (configs?.platform && platformIsValid(configs.platform))
     return configs.platform;
-  }
-
-  if (typeof Deno !== 'undefined') {
-    return 'deno';
-  }
-
-  if (typeof Bun !== 'undefined') {
-    return 'bun';
-  }
+  if (typeof Deno !== 'undefined') return 'deno';
+  if (typeof Bun !== 'undefined') return 'bun';
 
   return 'node';
 };

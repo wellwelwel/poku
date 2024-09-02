@@ -7,7 +7,7 @@ import type { Configs } from '../@types/poku.js';
 import { format } from '../services/format.js';
 import { getArg } from '../parsers/get-arg.js';
 import { fileResults } from '../configs/files.js';
-import { availableParallelism } from '../polyfills/cpus.js';
+import { availableParallelism } from '../polyfills/os.js';
 
 export const startWatch = async (dirs: string[], options: Configs) => {
   let isRunning = false;
@@ -26,14 +26,10 @@ export const startWatch = async (dirs: string[], options: Configs) => {
   };
 
   const listenStdin = async (input: Buffer | string) => {
-    if (isRunning || executing.size > 0) {
-      return;
-    }
+    if (isRunning || executing.size > 0) return;
 
     if (String(input).trim() === 'rs') {
-      for (const watcher of watchers) {
-        watcher.stop();
-      }
+      for (const watcher of watchers) watcher.stop();
 
       watchers.clear();
       resultsClear();
@@ -56,18 +52,14 @@ export const startWatch = async (dirs: string[], options: Configs) => {
     const currentWatcher = watch(mappedTest, async (file, event) => {
       if (event === 'change') {
         const filePath = normalizePath(file);
-        if (executing.has(filePath) || isRunning || executing.size > 0) {
-          return;
-        }
+        if (executing.has(filePath) || isRunning || executing.size > 0) return;
 
         setIsRunning(true);
         executing.add(filePath);
         resultsClear();
 
         const tests = mappedTests.get(filePath);
-        if (!tests) {
-          return;
-        }
+        if (!tests) return;
 
         await poku(Array.from(tests), {
           ...options,
@@ -89,20 +81,18 @@ export const startWatch = async (dirs: string[], options: Configs) => {
   for (const dir of dirs) {
     const currentWatcher = watch(dir, (file, event) => {
       if (event === 'change') {
-        if (executing.has(file) || isRunning || executing.size > 0) {
-          return;
-        }
+        if (executing.has(file) || isRunning || executing.size > 0) return;
 
         setIsRunning(true);
         executing.add(file);
         resultsClear();
 
-        poku(file, options).then(() => {
+        poku(file, options).then(() =>
           setTimeout(() => {
             executing.delete(file);
             setIsRunning(false);
-          }, interval);
-        });
+          }, interval)
+        );
       }
     });
 
