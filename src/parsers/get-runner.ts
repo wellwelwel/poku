@@ -9,9 +9,7 @@ export const isWindows = platform === 'win32';
 export const runner = (filename: string, configs?: Configs): string[] => {
   const runtime = getRuntime(configs);
 
-  if (runtime === 'bun') {
-    return ['bun'];
-  }
+  if (runtime === 'bun') return ['bun'];
 
   if (runtime === 'deno') {
     const denoAllow = configs?.deno?.allow
@@ -42,21 +40,13 @@ export const runner = (filename: string, configs?: Configs): string[] => {
 };
 
 export const scriptRunner = (runner: Runner): string[] => {
-  if (runner === 'bun') {
-    return ['bun', 'run'];
-  }
+  const commands: Record<Runner, string[]> = {
+    npm: [isWindows ? 'npm.cmd' : 'npm', 'run'],
+    bun: ['bun', 'run'],
+    deno: ['deno', 'task'],
+    yarn: ['yarn'],
+    pnpm: ['pnpm', 'run'],
+  } as const;
 
-  if (runner === 'deno') {
-    return ['deno', 'task'];
-  }
-
-  if (runner === 'yarn') {
-    return ['yarn'];
-  }
-
-  if (runner === 'pnpm') {
-    return ['pnpm', 'run'];
-  }
-
-  return [isWindows ? 'npm.cmd' : 'npm', 'run'];
+  return commands?.[runner] ?? commands['npm' as Runner];
 };

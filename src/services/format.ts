@@ -20,6 +20,8 @@ export const backgroundColor = {
   brightCyan: 106,
 } as const;
 
+const ESC = '\x1b[';
+
 export class Formatter {
   private parts = '';
   private text: string;
@@ -28,69 +30,63 @@ export class Formatter {
     this.text = text;
   }
 
+  private code(code: string) {
+    this.parts += `${ESC}${code}m`;
+    return this;
+  }
+
   static create(text: string) {
     return new Formatter(text);
   }
 
   counter(current: number, total: number, pad = '0') {
     const totalDigits = String(total).length;
-    const formattedCounter = String(current).padStart(totalDigits, pad);
-    this.parts += formattedCounter;
+    this.parts += String(current).padStart(totalDigits, pad);
     return this;
   }
 
   dim() {
-    this.parts += '\x1b[2m';
-    return this;
+    return this.code('2');
   }
 
   bold() {
-    this.parts += '\x1b[1m';
-    return this;
+    return this.code('1');
   }
 
   underline() {
-    this.parts += '\x1b[4m';
-    return this;
+    return this.code('4');
   }
 
   info() {
-    this.parts += '\x1b[94m';
-    return this;
+    return this.code('94');
   }
 
   italic() {
-    this.parts += '\x1b[3m';
-    return this;
+    return this.code('3');
   }
 
   success() {
-    this.parts += '\x1b[32m';
-    return this;
+    return this.code('32');
   }
 
   fail() {
-    this.parts += '\x1b[91m';
-    return this;
+    return this.code('91');
   }
 
   gray() {
-    this.parts += '\x1b[90m';
-    return this;
+    return this.code('90');
   }
 
   cyan() {
-    this.parts += '\x1b[96m';
-    return this;
+    return this.code('96');
   }
 
   bg(color: keyof typeof backgroundColor) {
-    this.parts += `\x1b[${backgroundColor[color]}m\x1b[1m`;
-    return this;
+    return this.code(String(backgroundColor[color])).bold();
   }
 
   [Symbol.toPrimitive]() {
-    return `${this.parts}${this.text}\x1b[0m`;
+    return `${this.parts}${this.text}${ESC}0m`;
   }
 }
 

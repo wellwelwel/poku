@@ -26,13 +26,8 @@ const runDockerCommand = (
       dockerProcess.stderr.on('data', Write.log);
     }
 
-    dockerProcess.on('close', (code) => {
-      resolve(code === 0);
-    });
-
-    dockerProcess.on('error', () => {
-      resolve(false);
-    });
+    dockerProcess.on('close', (code) => resolve(code === 0));
+    dockerProcess.on('error', () => resolve(false));
   });
 };
 
@@ -68,9 +63,9 @@ export class DockerContainer {
     this.containerName = containerName;
     this.file = file || './Dockerfile';
     this.context = context || '.';
-    this.ports = ports || [];
+    this.ports = ports ?? [];
     this.cache = cache;
-    this.environments = environments || [];
+    this.environments = environments ?? [];
     this.envFile = envFile;
     this.detach = detach;
     this.cwd = cwd ? sanitizePath(cwd) : undefined;
@@ -80,9 +75,7 @@ export class DockerContainer {
   public async build() {
     const args: string[] = ['build'];
 
-    if (this.cache === false) {
-      args.push('--no-cache');
-    }
+    if (this.cache === false) args.push('--no-cache');
 
     await runDockerCommand(
       'docker',
@@ -98,17 +91,11 @@ export class DockerContainer {
     args.push(this.detach !== false ? '-d' : '--init');
     args.push(...['--name', this.containerName]);
 
-    for (const port of this.ports) {
-      args.push(...['-p', port]);
-    }
-
-    for (const environment of this.environments) {
+    for (const port of this.ports) args.push(...['-p', port]);
+    for (const environment of this.environments)
       args.push(...['-e', environment]);
-    }
 
-    if (this.envFile) {
-      args.push(...['--env-file', this.envFile]);
-    }
+    if (this.envFile) args.push(...['--env-file', this.envFile]);
 
     return await runDockerCommand(
       'docker',
@@ -165,35 +152,27 @@ export class DockerCompose {
       verbose,
     } = configs;
 
-    this.file = file || './docker-compose.yml';
+    this.file = file ?? './docker-compose.yml';
     this.build = build;
     this.serviceName = serviceName;
     this.envFile = envFile;
     this.projectName = projectName;
     this.detach = detach;
-    this.cwd = cwd ? sanitizePath(cwd) /* c8 ignore next */ : undefined;
+    this.cwd = cwd ? sanitizePath(cwd) : undefined;
     this.verbose = verbose;
   }
 
   public async up() {
     const args: string[] = ['compose', '-f', this.file];
 
-    if (this.envFile) {
-      args.push(...['--env-file', this.envFile]);
-    }
-    if (this.projectName) {
-      args.push(...['-p', this.projectName]);
-    }
+    if (this.envFile) args.push(...['--env-file', this.envFile]);
+    if (this.projectName) args.push(...['-p', this.projectName]);
 
     args.push('up');
     args.push(this.detach !== false ? '-d' : '--abort-on-container-exit');
 
-    if (this.build) {
-      args.push('--build');
-    }
-    if (this.serviceName) {
-      args.push(this.serviceName);
-    }
+    if (this.build) args.push('--build');
+    if (this.serviceName) args.push(this.serviceName);
 
     return await runDockerCommand(
       'docker',
@@ -206,12 +185,8 @@ export class DockerCompose {
   public async down() {
     const args: string[] = ['-f', this.file];
 
-    if (this.envFile) {
-      args.push(...['--env-file', this.envFile]);
-    }
-    if (this.projectName) {
-      args.push(...['-p', this.projectName]);
-    }
+    if (this.envFile) args.push(...['--env-file', this.envFile]);
+    if (this.projectName) args.push(...['-p', this.projectName]);
 
     return await runDockerCommand(
       'docker',

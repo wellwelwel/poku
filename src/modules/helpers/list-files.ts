@@ -44,8 +44,7 @@ export const getAllFiles = async (
   const currentFiles = await (async () => {
     if (await isFile(dirPath)) {
       isFullPath = true;
-
-      return Array.prototype.concat(sanitizePath(dirPath));
+      return [sanitizePath(dirPath)];
     }
 
     return await readdir(sanitizePath(dirPath));
@@ -71,29 +70,19 @@ export const getAllFiles = async (
       if (
         fullPath.indexOf('node_modules') !== -1 ||
         fullPath.indexOf('.git/') !== -1
-      ) {
+      )
         return;
-      }
 
-      if (isFullPath && states?.isSinglePath) {
-        return files.add(fullPath);
-      }
+      if (isFullPath && states?.isSinglePath) return files.add(fullPath);
 
-      if (exclude) {
+      if (exclude)
         for (const pattern of exclude) {
-          if (pattern.test(fullPath)) {
-            return;
-          }
+          if (pattern.test(fullPath)) return;
         }
-      }
 
-      if (filter.test(fullPath)) {
-        return files.add(fullPath);
-      }
+      if (filter.test(fullPath)) return files.add(fullPath);
 
-      if (stat.isDirectory()) {
-        await getAllFiles(fullPath, files, configs);
-      }
+      if (stat.isDirectory()) await getAllFiles(fullPath, files, configs);
     })
   );
 

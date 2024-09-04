@@ -28,9 +28,7 @@ class JsoncProcessor {
       }
 
       if (inString) {
-        if (char === '"' && content[i - 1] !== '\\') {
-          inString = false;
-        }
+        if (char === '"' && content[i - 1] !== '\\') inString = false;
 
         result += char;
         continue;
@@ -49,9 +47,7 @@ class JsoncProcessor {
       }
 
       if (char === '/' && content[i + 1] === '/') {
-        while (i < length && content[i] !== '\n') {
-          i++;
-        }
+        while (i < length && content[i] !== '\n') i++;
 
         continue;
       }

@@ -54,11 +54,9 @@ const backgroundProcess = (
             if (
               ['bun', 'deno'].includes(runtime) ||
               ['bun', 'deno'].includes(String(options?.runner))
-            ) {
+            )
               process.kill(PID);
-            } else {
-              process.kill(-PID, 'SIGKILL');
-            }
+            else process.kill(-PID, 'SIGKILL');
 
             if (port && ['bun', 'deno'].includes(runtime)) {
               setTimeout(async () => {
@@ -122,9 +120,7 @@ const backgroundProcess = (
       });
 
       service.on('close', (code) => {
-        if (code !== 0) {
-          reject(`Service exited with code ${code}`);
-        }
+        if (code !== 0) reject(`Service exited with code ${code}`);
       });
 
       const timeout = setTimeout(() => {
@@ -134,7 +130,7 @@ const backgroundProcess = (
         }
       }, options?.timeout || 60000);
 
-      if (typeof options?.startAfter === 'number') {
+      if (typeof options?.startAfter === 'number')
         setTimeout(() => {
           if (!isResolved) {
             resolve({ end });
@@ -143,7 +139,6 @@ const backgroundProcess = (
             isResolved = true;
           }
         }, options.startAfter);
-      }
     } catch {}
   });
 
@@ -170,13 +165,13 @@ export const startService = async (
  *
  * ---
  *
- * By default, it uses **npm**, but you can costumize it using the `runner` option.
+ * By default it uses **npm**, but you can costumize it using the `runner` option.
  */
 export const startScript = async (
   script: string,
   options?: StartScriptOptions
 ): Promise<{ end: End }> => {
-  const runner = options?.runner || 'npm';
+  const runner = options?.runner ?? 'npm';
   const runtimeOptions = scriptRunner(runner);
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, script];
@@ -188,7 +183,5 @@ export const startScript = async (
 };
 
 process.once('SIGINT', async () => {
-  for (const { end, port } of runningProcesses.values()) {
-    await end(port);
-  }
+  for (const { end, port } of runningProcesses.values()) await end(port);
 });

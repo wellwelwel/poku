@@ -21,9 +21,7 @@ const killPort = async (port: number | number[]): Promise<void> => {
   const PIDs = await getPIDs(port);
 
   for (const PID of PIDs) {
-    if (!PID) {
-      continue;
-    }
+    if (!PID) continue;
 
     await killPID(PID);
   }
@@ -33,9 +31,7 @@ const killRange = async (startsAt: number, endsAt: number): Promise<void> => {
   const PIDs = await getPIDs.range(startsAt, endsAt);
 
   for (const PID of PIDs) {
-    if (!PID) {
-      continue;
-    }
+    if (!PID) continue;
 
     await killPID(PID);
   }

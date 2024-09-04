@@ -8,120 +8,90 @@ export const createAssert = (nodeAssert: typeof assert) => {
   const ok = (
     value: unknown,
     message?: ProcessAssertionOptions['message']
-  ): void => {
-    processAssert(
-      () => {
-        nodeAssert.ok(value);
-      },
-      { message }
-    );
-  };
+  ): void => processAssert(() => nodeAssert.ok(value), { message });
 
   const equal = (
     actual: unknown,
     expected: unknown,
     message?: ProcessAssertionOptions['message']
   ): void => {
-    processAssert(
-      () => {
-        nodeAssert.equal(actual, expected);
-      },
-      { message }
-    );
+    processAssert(() => nodeAssert.equal(actual, expected), { message });
   };
 
   const deepEqual = (
     actual: unknown,
     expected: unknown,
     message?: ProcessAssertionOptions['message']
-  ): void => {
+  ): void =>
     processAssert(() => nodeAssert.deepEqual(actual, expected), { message });
-  };
 
   const strictEqual = (
     actual: unknown,
     expected: unknown,
     message?: ProcessAssertionOptions['message']
-  ): void => {
+  ): void =>
     processAssert(() => nodeAssert.strictEqual(actual, expected), { message });
-  };
 
   const deepStrictEqual = (
     actual: unknown,
     expected: unknown,
     message?: ProcessAssertionOptions['message']
-  ): void => {
+  ): void =>
     processAssert(() => nodeAssert.deepStrictEqual(actual, expected), {
       message,
     });
-  };
 
   const notEqual = (
     actual: unknown,
     expected: unknown,
     message?: ProcessAssertionOptions['message']
-  ): void => {
+  ): void =>
     processAssert(() => nodeAssert.notEqual(actual, expected), {
       message,
     });
-  };
 
   const notDeepEqual = (
     actual: unknown,
     expected: unknown,
     message?: ProcessAssertionOptions['message']
-  ): void => {
+  ): void =>
     processAssert(() => nodeAssert.notDeepEqual(actual, expected), { message });
-  };
 
   const notStrictEqual = (
     actual: unknown,
     expected: unknown,
     message?: ProcessAssertionOptions['message']
-  ): void => {
+  ): void =>
     processAssert(() => nodeAssert.notStrictEqual(actual, expected), {
       message,
     });
-  };
 
   const notDeepStrictEqual = (
     actual: unknown,
     expected: unknown,
     message?: ProcessAssertionOptions['message']
-  ): void => {
+  ): void =>
     processAssert(() => nodeAssert.notDeepStrictEqual(actual, expected), {
       message,
     });
-  };
 
   const ifError = (
     value: unknown,
     message?: ProcessAssertionOptions['message']
-  ): void => {
-    processAssert(
-      () => {
-        nodeAssert.ifError(value);
-      },
-      {
-        message,
-        defaultMessage: 'Expected no error, but received an error',
-        hideDiff: true,
-        throw: true,
-      }
-    );
-  };
+  ): void =>
+    processAssert(() => nodeAssert.ifError(value), {
+      message,
+      defaultMessage: 'Expected no error, but received an error',
+      hideDiff: true,
+      throw: true,
+    });
 
   const fail = (message?: ProcessAssertionOptions['message']): never => {
-    processAssert(
-      () => {
-        nodeAssert.fail(message);
-      },
-      {
-        message,
-        defaultMessage: 'Test failed intentionally',
-        hideDiff: true,
-      }
-    );
+    processAssert(() => nodeAssert.fail(message), {
+      message,
+      defaultMessage: 'Test failed intentionally',
+      hideDiff: true,
+    });
 
     process.exit(1);
   };
@@ -146,9 +116,9 @@ export const createAssert = (nodeAssert: typeof assert) => {
           typeof errorOrMessage === 'function' ||
           errorOrMessage instanceof RegExp ||
           typeof errorOrMessage === 'object'
-        ) {
+        )
           nodeAssert.doesNotThrow(block, errorOrMessage, message);
-        } else {
+        else {
           const msg =
             typeof errorOrMessage === 'string' ? errorOrMessage : message;
           nodeAssert.doesNotThrow(block, msg);
@@ -181,13 +151,13 @@ export const createAssert = (nodeAssert: typeof assert) => {
       typeof errorOrMessage === 'function' ||
       errorOrMessage instanceof RegExp ||
       typeof errorOrMessage === 'object'
-    ) {
+    )
       processAssert(() => nodeAssert.throws(block, errorOrMessage), {
         message,
         defaultMessage: 'Expected function to throw',
         hideDiff: true,
       });
-    } else {
+    else {
       const msg =
         typeof errorOrMessage !== 'undefined' ? errorOrMessage : message;
 
@@ -219,9 +189,9 @@ export const createAssert = (nodeAssert: typeof assert) => {
           typeof errorOrMessage === 'function' ||
           errorOrMessage instanceof RegExp ||
           typeof errorOrMessage === 'object'
-        ) {
+        )
           await nodeAssert.rejects(block, errorOrMessage, message);
-        } else {
+        else {
           const msg =
             typeof errorOrMessage === 'string' ? errorOrMessage : message;
           await nodeAssert.rejects(block, msg);
@@ -256,11 +226,9 @@ export const createAssert = (nodeAssert: typeof assert) => {
           typeof errorOrMessage === 'function' ||
           errorOrMessage instanceof RegExp ||
           typeof errorOrMessage === 'object'
-        ) {
+        )
           await nodeAssert.doesNotReject(block, errorOrMessage, message);
-        } else {
-          await nodeAssert.doesNotReject(block, message);
-        }
+        else await nodeAssert.doesNotReject(block, message);
       },
       {
         message: typeof errorOrMessage === 'string' ? errorOrMessage : message,
@@ -276,10 +244,9 @@ export const createAssert = (nodeAssert: typeof assert) => {
     regExp: RegExp,
     message?: ProcessAssertionOptions['message']
   ): void => {
-    /* c8 ignore next 3 */ // Platform version
-    if (typeof nodeVersion === 'number' && nodeVersion < 12) {
+    /* c8 ignore next 2 */ // Platform version
+    if (typeof nodeVersion === 'number' && nodeVersion < 12)
       throw new Error('match is available from Node.js 12 or higher');
-    }
 
     processAssert(() => nodeAssert?.match(value, regExp), {
       message,
@@ -294,10 +261,9 @@ export const createAssert = (nodeAssert: typeof assert) => {
     regExp: RegExp,
     message?: ProcessAssertionOptions['message']
   ): void => {
-    /* c8 ignore next 3 */ // Platform version
-    if (typeof nodeVersion === 'number' && nodeVersion < 12) {
+    /* c8 ignore next 2 */ // Platform version
+    if (typeof nodeVersion === 'number' && nodeVersion < 12)
       throw new Error('doesNotMatch is available from Node.js 12 or higher');
-    }
 
     processAssert(() => nodeAssert.doesNotMatch(value, regExp), {
       message,

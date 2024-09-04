@@ -28,9 +28,7 @@ async function itCore(
     if (typeof args[0] === 'string') {
       message = args[0];
       cb = args[1] as () => unknown | Promise<unknown>;
-    } else {
-      cb = args[0] as () => unknown | Promise<unknown>;
-    }
+    } else cb = args[0] as () => unknown | Promise<unknown>;
 
     if (message) {
       indentation.hasItOrTest = true;
@@ -45,45 +43,37 @@ async function itCore(
     if (typeof each.before.cb === 'function') {
       const beforeResult = each.before.cb();
 
-      if (beforeResult instanceof Promise) {
-        await beforeResult;
-      }
+      if (beforeResult instanceof Promise) await beforeResult;
     }
 
     const start = hrtime();
     const resultCb = cb();
 
-    if (resultCb instanceof Promise) {
-      await resultCb;
-    }
+    if (resultCb instanceof Promise) await resultCb;
 
     const end = hrtime(start);
 
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();
 
-      if (afterResult instanceof Promise) {
-        await afterResult;
-      }
+      if (afterResult instanceof Promise) await afterResult;
     }
 
-    if (message) {
-      const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+    if (!message) return;
 
-      indentation.hasItOrTest = false;
-      Write.log(
-        `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
-      );
-    }
+    const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+
+    indentation.hasItOrTest = false;
+    Write.log(
+      `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
+    );
   } catch (error) {
     indentation.hasItOrTest = false;
 
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();
 
-      if (afterResult instanceof Promise) {
-        await afterResult;
-      }
+      if (afterResult instanceof Promise) await afterResult;
     }
 
     throw error;

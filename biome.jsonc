@@ -67,7 +67,8 @@
         "noNonNullAssertion": "off",
         "useNamingConvention": "off",
         "useNodeAssertStrict": "off",
-        "noNamespaceImport": "off"
+        "noNamespaceImport": "off",
+        "useBlockStatements": "off"
       }
     }
   },

@@ -27,11 +27,8 @@ async function describeCore(
   if (typeof arg1 === 'string') {
     title = arg1;
 
-    if (typeof arg2 === 'function') {
-      cb = arg2;
-    } else {
-      options = arg2;
-    }
+    if (typeof arg2 === 'function') cb = arg2;
+    else options = arg2;
   } else if (typeof arg1 === 'function') {
     cb = arg1;
     options = arg2 as DescribeOptions;
@@ -40,42 +37,36 @@ async function describeCore(
   if (title) {
     indentation.hasDescribe = true;
 
-    const { background, icon } = options || {};
-    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold()}`;
+    const { background, icon } = options ?? {};
+    const message = `${cb ? format('◌').dim() : (icon ?? '☰')} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold()}`;
     const noBackground = !background;
 
-    if (noBackground) {
-      Write.log(format(message).bold());
-    } else {
+    if (noBackground) Write.log(format(message).bold());
+    else
       Write.log(
         format(` ${message} `).bg(
           typeof background === 'string' ? background : 'grey'
         )
       );
-    }
   }
 
-  if (typeof cb !== 'function') {
-    return;
-  }
+  if (typeof cb !== 'function') return;
 
   const start = hrtime();
   const resultCb = cb();
 
-  if (resultCb instanceof Promise) {
-    await resultCb;
-  }
+  if (resultCb instanceof Promise) await resultCb;
 
   const end = hrtime(start);
 
-  if (title) {
-    const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+  if (!title) return;
 
-    indentation.hasDescribe = false;
-    Write.log(
-      `${format(`● ${title}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
-    );
-  }
+  const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+
+  indentation.hasDescribe = false;
+  Write.log(
+    `${format(`● ${title}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
+  );
 }
 
 export const describe = Object.assign(describeCore, {

@@ -6,7 +6,7 @@ export const skip = (message = 'Skipping') => {
   const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
   const FILE = env.FILE;
 
-  if (message) {
+  if (message)
     Write.log(
       format(
         isPoku
@@ -16,7 +16,6 @@ export const skip = (message = 'Skipping') => {
         .info()
         .bold()
     );
-  }
 
   exit(0);
 };

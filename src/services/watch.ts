@@ -17,13 +17,11 @@ export class Watcher {
   }
 
   private watchFile(filePath: string) {
-    if (this.fileWatchers.has(filePath)) {
-      return;
-    }
+    if (this.fileWatchers.has(filePath)) return;
 
-    const watcher = nodeWatch(filePath, (eventType) => {
-      this.callback(filePath, eventType);
-    });
+    const watcher = nodeWatch(filePath, (eventType) =>
+      this.callback(filePath, eventType)
+    );
 
     this.fileWatchers.set(filePath, watcher);
   }
@@ -38,15 +36,11 @@ export class Watcher {
   private watchFiles(filePaths: string[]) {
     this.unwatchFiles();
 
-    for (const filePath of filePaths) {
-      this.watchFile(filePath);
-    }
+    for (const filePath of filePaths) this.watchFile(filePath);
   }
 
   private async watchDirectory(dir: string) {
-    if (this.dirWatchers.has(dir)) {
-      return;
-    }
+    if (this.dirWatchers.has(dir)) return;
 
     const watcher = nodeWatch(dir, async (_, filename) => {
       if (filename) {
@@ -57,9 +51,7 @@ export class Watcher {
 
         try {
           const stats = await stat(fullPath);
-          if (stats.isDirectory()) {
-            await this.watchDirectory(fullPath);
-          }
+          if (stats.isDirectory()) await this.watchDirectory(fullPath);
         } catch {}
       }
     });
@@ -69,10 +61,10 @@ export class Watcher {
     const entries = await readdir(dir, { withFileTypes: true });
 
     for (const entry of entries) {
-      if (entry.isDirectory()) {
-        const fullPath = join(dir, entry.name);
-        await this.watchDirectory(fullPath);
-      }
+      if (!entry.isDirectory()) continue;
+
+      const fullPath = join(dir, entry.name);
+      await this.watchDirectory(fullPath);
     }
   }
 
@@ -84,9 +76,11 @@ export class Watcher {
 
       this.watchFiles(this.files);
       await this.watchDirectory(this.rootDir);
-    } else {
-      this.watchFile(this.rootDir);
+
+      return;
     }
+
+    this.watchFile(this.rootDir);
   }
 
   public stop() {

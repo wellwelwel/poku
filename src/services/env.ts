@@ -9,18 +9,13 @@ export const removeComments = (input: string) => {
     if (inQuote) {
       output += char;
 
-      if (char === quoteChar && input[i - 1] !== '\\') {
-        inQuote = false;
-      }
+      if (char === quoteChar && input[i - 1] !== '\\') inQuote = false;
     } else if (char === '"' || char === "'") {
       inQuote = true;
       quoteChar = char;
       output += char;
-    } else if (char === '#') {
-      break;
-    } else {
-      output += char;
-    }
+    } else if (char === '#') break;
+    else output += char;
   }
 
   return output.trim();
@@ -29,9 +24,7 @@ export const removeComments = (input: string) => {
 export const parseEnvLine = (line: string) => {
   const index = line.indexOf('=');
 
-  if (index === -1) {
-    return null;
-  }
+  if (index === -1) return null;
 
   const arg = line.substring(0, index).trim();
   const value = line
@@ -58,7 +51,7 @@ export const resolveEnvVariables = (str: string, env: typeof process.env) => {
       }
 
       i++;
-      result += env[varName] || '';
+      result += env[varName] ?? '';
     } else {
       result += str[i];
       i++;

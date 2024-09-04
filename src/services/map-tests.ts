@@ -31,9 +31,7 @@ export const getDeepImports = (content: string): Set<string> => {
     ) {
       const path = line.match(regex.dependecy);
 
-      if (path) {
-        paths.add(normalizePath(path[1].replace(regex.extFilter, '')));
-      }
+      if (path) paths.add(normalizePath(path[1].replace(regex.extFilter, '')));
     }
   }
 
@@ -52,9 +50,8 @@ export const findMatchingFiles = (
     for (const fileWithExt of srcFilesWithExt) {
       const normalizedFileWithExt = normalizePath(fileWithExt);
 
-      if (normalizedFileWithExt.indexOf(normalizedSrcFile) !== -1) {
+      if (normalizedFileWithExt.indexOf(normalizedSrcFile) !== -1)
         matchingFiles.add(fileWithExt);
-      }
     }
   }
 
@@ -67,22 +64,18 @@ const collectTestFiles = async (
   exclude?: RegExp | RegExp[]
 ): Promise<Set<string>> => {
   const statsPromises = testPaths.map((testPath) => stat(testPath));
-
   const stats = await Promise.all(statsPromises);
 
   const listFilesPromises = stats.map((stat, index) => {
     const testPath = testPaths[index];
 
-    if (stat.isDirectory()) {
+    if (stat.isDirectory())
       return listFiles(testPath, {
         filter: testFilter,
         exclude,
       });
-    }
 
-    if (stat.isFile() && regex.extFilter.test(testPath)) {
-      return [testPath];
-    }
+    if (stat.isFile() && regex.extFilter.test(testPath)) return [testPath];
 
     return [];
   });
@@ -97,9 +90,8 @@ export const processDeepImports = async (
   testFile: string,
   intersectedSrcFiles: Set<string>
 ) => {
-  if (processedFiles.has(srcFile)) {
-    return;
-  }
+  if (processedFiles.has(srcFile)) return;
+
   processedFiles.add(srcFile);
 
   const srcContent = await readFile(srcFile, 'utf8');
@@ -107,9 +99,7 @@ export const processDeepImports = async (
   const matchingFiles = findMatchingFiles(deepImports, intersectedSrcFiles);
 
   for (const deepImport of matchingFiles) {
-    if (!importMap.has(deepImport)) {
-      importMap.set(deepImport, new Set());
-    }
+    if (!importMap.has(deepImport)) importMap.set(deepImport, new Set());
 
     importMap.get(deepImport)!.add(normalizePath(testFile));
     await processDeepImports(deepImport, testFile, intersectedSrcFiles);
@@ -138,11 +128,10 @@ export const createImportMap = async (
           content.indexOf(relativePath.replace(regex.extFilter, '')) !== -1 ||
           content.indexOf(normalizedSrcFile) !== -1
         ) {
-          if (!importMap.has(normalizedSrcFile)) {
+          if (!importMap.has(normalizedSrcFile))
             importMap.set(normalizedSrcFile, new Set());
-          }
-          importMap.get(normalizedSrcFile)?.add(normalizePath(testFile));
 
+          importMap.get(normalizedSrcFile)?.add(normalizePath(testFile));
           await processDeepImports(srcFile, testFile, intersectedSrcFiles);
         }
       }

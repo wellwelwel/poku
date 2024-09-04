@@ -40,9 +40,8 @@ export const checkFlags = () => {
   for (const arg of args) {
     const flagName = arg.split('=')[0];
 
-    if (!allowedFlags.has(flagName) && flagName.startsWith('-')) {
+    if (!allowedFlags.has(flagName) && flagName.startsWith('-'))
       unrecognizedFlags.push(flagName);
-    }
   }
 
   if (unrecognizedFlags.length > 0) {
