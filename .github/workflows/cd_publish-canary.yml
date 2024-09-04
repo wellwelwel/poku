@@ -41,14 +41,13 @@ jobs:
         run: npm run build
 
       - name: ⚙️ Git Hash
-        id: hash
         run: |
           VERSION=$(node -p "require('./package.json').version")
           SHORT_SHA=$(git rev-parse --short HEAD)
           echo "VERSION=${VERSION}-canary.${SHORT_SHA}" >> $GITHUB_ENV
 
       - name: ⬆️ Increment Canary Version
-        run: npm version prerelease --preid=canary --no-git-tag-version
+        run: npm version $VERSION --no-git-tag-version
 
       # - name: 📥 Publishing Package
       #   env:
