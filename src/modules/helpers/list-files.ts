@@ -44,8 +44,7 @@ export const getAllFiles = async (
   const currentFiles = await (async () => {
     if (await isFile(dirPath)) {
       isFullPath = true;
-
-      return Array.prototype.concat(sanitizePath(dirPath));
+      return [sanitizePath(dirPath)];
     }
 
     return await readdir(sanitizePath(dirPath));

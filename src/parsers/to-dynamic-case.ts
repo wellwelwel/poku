@@ -5,10 +5,7 @@ export const toDynamicCase = (str: string) => {
 
   const [flag, ...args] = str.slice(2).split('=');
   const dynamicCase = flag.toLowerCase().replace(regex, '');
+  const formattedArg = args.length > 0 ? `=${args.join('=')}` : '';
 
-  let processArg = `--${dynamicCase}`;
-
-  if (args.length > 0) processArg += `=${args.join('=')}`;
-
-  return processArg;
+  return `--${dynamicCase}${formattedArg}`;
 };

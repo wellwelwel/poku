@@ -2,7 +2,6 @@ import type { Configs } from '../@types/poku.js';
 import { results } from '../configs/poku.js';
 
 const regex = {
-  newLine: /\n/,
   ansi: /u001b\[0m|\n/i,
   skip: /\\u001b\[94m\\u001b\[1m◯/i,
   todo: /\\u001b\[96m\\u001b\[1m●/i,
@@ -26,7 +25,7 @@ export const parserOutput = (options: {
 
   const debug = isDebug(configs);
   const pad = configs?.parallel ? '  ' : '    ';
-  const splittedOutput = output.split(regex.newLine);
+  const splittedOutput = output.split('\n');
 
   const outputs = (
     debug || !result
