@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -32,6 +31,7 @@ jobs:
           if [[ "$MESSAGE" =~ build\(deps-dev\) ]] ||
              [[ "$MESSAGE" =~ build\(deps\) ]] ||
              [[ "$MESSAGE" =~ chore\(main\) ]] ||
+             [[ "$MESSAGE" =~ chore\(deps\) ]] ||
              [[ "$MESSAGE" =~ chore:\ update\ dependencies ]] ||
              [[ "$MESSAGE" =~ docs: ]] ||
              [[ "$MESSAGE" =~ ci: ]] ||
@@ -80,8 +80,8 @@ jobs:
         if: steps.check_commit.outputs.publish == 'true'
         run: npm version $VERSION --no-git-tag-version
 
-      # - name: 📥 Publishing Package
-      #   if: steps.check_commit.outputs.publish == 'true'
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      #   run: npm publish --tag canary --provenance
+      - name: 📥 Publishing Package
+        if: steps.check_commit.outputs.publish == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --tag canary --provenance
