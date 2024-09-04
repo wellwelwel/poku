@@ -40,21 +40,21 @@ jobs:
              [[ "$MESSAGE" =~ ci\(.*\): ]] ||
              [[ "$MESSAGE" =~ cd\(.*\): ]] ||
              [[ "$MESSAGE" =~ chore\(website\):\ update\ dependencies ]]; then
-            echo "publish=false" >> $GITHUB_ENV
+            echo "publish=false" >> $GITHUB_OUTPUT
             echo "Skip publish"
           else
-            echo "publish=true" >> $GITHUB_ENV
+            echo "publish=true" >> $GITHUB_OUTPUT
           fi
 
       - name: ➕ Actions - Setup Node.js
-        if: env.publish == 'true'
+        if: steps.check_commit.outputs.publish == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: ➕ Cache dependencies
-        if: env.publish == 'true'
+        if: steps.check_commit.outputs.publish == 'true'
         uses: actions/cache@v4
         with:
           path: ~/.npm
@@ -62,26 +62,26 @@ jobs:
           restore-keys: npm-linux-
 
       - name: 📦 Installing Dependencies
-        if: env.publish == 'true'
+        if: steps.check_commit.outputs.publish == 'true'
         run: npm ci
 
       - name: 🚀 Building Poku
-        if: env.publish == 'true'
+        if: steps.check_commit.outputs.publish == 'true'
         run: npm run build
 
       - name: ⚙️ Git Hash
-        if: env.publish == 'true'
+        if: steps.check_commit.outputs.publish == 'true'
         run: |
           VERSION=$(node -p "require('./package.json').version")
           SHORT_SHA=$(git rev-parse --short HEAD)
           echo "VERSION=${VERSION}-canary.${SHORT_SHA}" >> $GITHUB_ENV
 
       - name: ⬆️ Increment Canary Version
-        if: env.publish == 'true'
+        if: steps.check_commit.outputs.publish == 'true'
         run: npm version $VERSION --no-git-tag-version
 
       # - name: 📥 Publishing Package
-      #   if: env.publish == 'true'
+      #   if: steps.check_commit.outputs.publish == 'true'
       #   env:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       #   run: npm publish --tag canary --provenance
