@@ -22,7 +22,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: main
 
       - name: ⚙️ Check Commit Message
         run: |
@@ -66,7 +65,7 @@ jobs:
       - name: ⚙️ Git Hash
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          SHORT_SHA=$(git rev-parse --short origin/main)
+          SHORT_SHA=$(git rev-parse --short HEAD)
           echo "VERSION=${VERSION}-canary.${SHORT_SHA}" >> $GITHUB_ENV
 
       - name: ⬆️ Increment Canary Version
