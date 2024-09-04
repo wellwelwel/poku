@@ -5,6 +5,8 @@ const suite = new Benchmark.Suite();
 const results = new Map();
 
 const exec = (command) => {
+  if (global?.gc) global.gc();
+
   try {
     // execSync(command, { stdio: 'inherit' });
     execSync(command, { stdio: 'ignore' });
@@ -80,4 +82,4 @@ suite
 
     test();
   })
-  .run({ async: true });
+  .run({ async: false });
