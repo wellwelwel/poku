@@ -1,4 +1,4 @@
-name: '🚀 CD — Publish Canary'
+name: '🚀 CD — Publish'
 
 on:
   push:
@@ -40,7 +40,8 @@ jobs:
       - name: 🚀 Building Poku
         run: npm run build
 
-      - name: 🚀 Generate Canary Version with Git Hash
+      - name: ⚙️ Git Hash
+        id: hash
         run: |
           VERSION=$(node -p "require('./package.json').version")
           SHORT_SHA=$(git rev-parse --short HEAD)
