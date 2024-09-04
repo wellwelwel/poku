@@ -44,6 +44,7 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           SHORT_SHA=$(git rev-parse --short origin/main)
+          echo $SHORT_SHA
           echo "VERSION=${VERSION}-canary.${SHORT_SHA}" >> $GITHUB_ENV
 
       - name: ⬆️ Increment Canary Version
