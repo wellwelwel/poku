@@ -25,7 +25,7 @@ jobs:
 
       - name: ⚙️ Check Commit Message
         run: |
-          MESSAGE=$(git log -2 --pretty=%s)
+          MESSAGE=$(git log -1 --pretty=%s --no-merges)
           echo "Commit message: $MESSAGE"
 
           if [[ "$MESSAGE" =~ build\(deps-dev\) ]] ||
