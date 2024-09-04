@@ -29,18 +29,19 @@ jobs:
           MESSAGE=$(git log -1 --pretty=%s)
           echo "Commit message: $MESSAGE"
 
-          if [[ "$MESSAGE" =~ ^build\(deps-dev\) ]] ||
-             [[ "$MESSAGE" =~ ^build\(deps\) ]] ||
-             [[ "$MESSAGE" =~ ^chore\(main\) ]] ||
-             [[ "$MESSAGE" =~ ^chore\(website\) ]] ||
-             [[ "$MESSAGE" =~ ^chore: update dependencies ]] ||
+          if [[ "$MESSAGE" =~ ^build\\\(deps-dev\\\) ]] ||
+             [[ "$MESSAGE" =~ ^build\\\(deps\\\) ]] ||
+             [[ "$MESSAGE" =~ ^chore\\\(main\\\) ]] ||
+             [[ "$MESSAGE" =~ ^chore\\\(website\\\) ]] ||
+             [[ "$MESSAGE" =~ ^chore: update dependencies$ ]] ||
              [[ "$MESSAGE" =~ ^docs: ]] ||
              [[ "$MESSAGE" =~ ^ci: ]] ||
              [[ "$MESSAGE" =~ ^cd: ]] ||
-             [[ "$MESSAGE" =~ ^docs\(.*\): ]] ||
-             [[ "$MESSAGE" =~ ^ci\(.*\): ]] ||
-             [[ "$MESSAGE" =~ ^cd\(.*\): ]] ||
-             [[ "$MESSAGE" =~ ^chore\(website\): update dependencies$ ]]; then
+             [[ "$MESSAGE" =~ ^docs\\\(.*\\\): ]] ||
+             [[ "$MESSAGE" =~ ^ci\\\(.*\\\): ]] ||
+             [[ "$MESSAGE" =~ ^cd\\\(.*\\\): ]] ||
+             [[ "$MESSAGE" =~ ^chore\\\(website\\\): update dependencies$ ]]; then
+            echo "Commit matches ignore patterns, skipping publish."
             exit 0
           fi
 
