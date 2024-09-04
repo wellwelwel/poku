@@ -37,8 +37,8 @@ async function describeCore(
   if (title) {
     indentation.hasDescribe = true;
 
-    const { background, icon } = options || {};
-    const message = `${cb ? format('◌').dim() : icon || '☰'} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold()}`;
+    const { background, icon } = options ?? {};
+    const message = `${cb ? format('◌').dim() : (icon ?? '☰')} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold()}`;
     const noBackground = !background;
 
     if (noBackground) Write.log(format(message).bold());

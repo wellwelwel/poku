@@ -74,14 +74,14 @@ const assertProcessor = () => {
         const splitExpected = parseResultType(expected).split('\n');
 
         Write.log(
-          format(`${preIdentation}  ${options?.actual || 'Actual'}:`).dim()
+          format(`${preIdentation}  ${options?.actual ?? 'Actual'}:`).dim()
         );
 
         for (const line of splitActual)
           Write.log(`${preIdentation}  ${format(line).fail().bold()}`);
 
         Write.log(
-          `\n${preIdentation}  ${format(`${options?.expected || 'Expected'}:`).dim()}`
+          `\n${preIdentation}  ${format(`${options?.expected ?? 'Expected'}:`).dim()}`
         );
 
         for (const line of splitExpected)

@@ -51,7 +51,7 @@ export const resolveEnvVariables = (str: string, env: typeof process.env) => {
       }
 
       i++;
-      result += env[varName] || '';
+      result += env[varName] ?? '';
     } else {
       result += str[i];
       i++;

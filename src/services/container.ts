@@ -63,9 +63,9 @@ export class DockerContainer {
     this.containerName = containerName;
     this.file = file || './Dockerfile';
     this.context = context || '.';
-    this.ports = ports || [];
+    this.ports = ports ?? [];
     this.cache = cache;
-    this.environments = environments || [];
+    this.environments = environments ?? [];
     this.envFile = envFile;
     this.detach = detach;
     this.cwd = cwd ? sanitizePath(cwd) : undefined;
@@ -152,7 +152,7 @@ export class DockerCompose {
       verbose,
     } = configs;
 
-    this.file = file || './docker-compose.yml';
+    this.file = file ?? './docker-compose.yml';
     this.build = build;
     this.serviceName = serviceName;
     this.envFile = envFile;

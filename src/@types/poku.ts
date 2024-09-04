@@ -6,6 +6,8 @@ export type DenoOptions = {
   cjs?: boolean | string[];
 };
 
+export type Runtime = 'node' | 'bun' | 'deno';
+
 export type Configs = {
   /**
    * By setting `true`, **Poku** won't exit the process and will return the exit code (`0` or `1`).
@@ -38,7 +40,7 @@ export type Configs = {
    *
    * @default 'node'
    */
-  platform?: 'node' | 'bun' | 'deno';
+  platform?: Runtime;
   /**
    * Stops the tests at the first failure.
    *

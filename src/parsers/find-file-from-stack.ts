@@ -1,7 +1,7 @@
 const regex = /at\s(\/.+|file:.+)|^(\s+)at\smodule\scode\s\((\/.+|file:.+)\)/i;
 
 export const findFile = (error: Error) => {
-  const stackLines = error.stack?.split('\n') || [];
+  const stackLines = error.stack?.split('\n') ?? [];
 
   let file = '';
 

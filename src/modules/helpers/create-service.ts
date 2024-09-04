@@ -171,7 +171,7 @@ export const startScript = async (
   script: string,
   options?: StartScriptOptions
 ): Promise<{ end: End }> => {
-  const runner = options?.runner || 'npm';
+  const runner = options?.runner ?? 'npm';
   const runtimeOptions = scriptRunner(runner);
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, script];
