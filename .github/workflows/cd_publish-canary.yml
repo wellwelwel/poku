@@ -72,6 +72,7 @@ jobs:
       - name: ⚙️ Git Hash
         if: steps.check_commit.outputs.publish == 'true'
         run: |
+          npm version patch --no-git-tag-version
           VERSION=$(node -p "require('./package.json').version")
           SHORT_SHA=$(git rev-parse --short HEAD)
           echo "VERSION=${VERSION}-canary.${SHORT_SHA}" >> $GITHUB_ENV
