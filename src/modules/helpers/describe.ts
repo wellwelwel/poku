@@ -4,6 +4,7 @@ import { format } from '../../services/format.js';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
 import { todo } from './it/todo.js';
+import { skip } from './it/skip.js';
 
 async function describeCore(
   title: string,
@@ -71,4 +72,5 @@ async function describeCore(
 
 export const describe = Object.assign(describeCore, {
   todo,
+  skip,
 });

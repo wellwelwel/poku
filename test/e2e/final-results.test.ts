@@ -20,6 +20,36 @@ describe('Final Results', async () => {
     assert.match(results.stdout, /SKIP › 1/, 'Needs to skip 1');
   });
 
+  await it('Skip (it)', async () => {
+    const results = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/final-results/skip-it',
+    });
+
+    assert.match(results.stdout, /PASS › 0/, 'Needs to pass 0');
+    assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
+    assert.match(results.stdout, /SKIP › 1/, 'Needs to skip 1');
+  });
+
+  await it('Skip (describe)', async () => {
+    const results = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/final-results/skip-describe',
+    });
+
+    assert.match(results.stdout, /PASS › 0/, 'Needs to pass 0');
+    assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
+    assert.match(results.stdout, /SKIP › 1/, 'Needs to skip 1');
+  });
+
+  await it('Skip (describe + it)', async () => {
+    const results = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/final-results/skip-describe-it',
+    });
+
+    assert.match(results.stdout, /PASS › 0/, 'Needs to pass 0');
+    assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
+    assert.match(results.stdout, /SKIP › 1/, 'Needs to skip 1');
+  });
+
   await it('Todo', async () => {
     const results = await inspectPoku('', {
       cwd: 'test/__fixtures__/e2e/final-results/todo',
