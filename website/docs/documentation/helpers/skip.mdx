@@ -27,6 +27,10 @@ skip('Skipping for some reason');
 This will skip the entire file and it's recommended to be used at the top of the test file.
 :::
 
+:::note
+Skipped tests are considered successful tests and don't affect the file test count.
+:::
+
 ---
 
 ### Examples
@@ -50,10 +54,6 @@ test(() => {
 });
 // highlight-end
 ```
-
-:::note
-Skipped tests are considered successful tests.
-:::
 
 ---
 
@@ -80,3 +80,7 @@ Supports:
 - `describe.skip`
 - `it.skip`
 - `test.skip`
+
+:::note
+Skipped tests are considered successful tests and don't affect the file test count.
+:::
