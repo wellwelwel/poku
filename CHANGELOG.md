@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.6.0](https://github.com/wellwelwel/poku/compare/v2.5.0...v2.6.0) (2024-09-05)
+
+
+### Features
+
+* add `skip` modifier to `describe`, `it` and `test` methods ([#735](https://github.com/wellwelwel/poku/issues/735)) ([b756605](https://github.com/wellwelwel/poku/commit/b756605142ec2a1a22d5fe46d2f62aade2812d51))
+
+
+### Bug Fixes
+
+* improve counter output when using `skip` and `todo` ([#739](https://github.com/wellwelwel/poku/issues/739)) ([f5ac8b7](https://github.com/wellwelwel/poku/commit/f5ac8b71a2099df229cb343678a4b56c0462132e))
+
 ## [2.5.0](https://github.com/wellwelwel/poku/compare/v2.4.4...v2.5.0) (2024-08-20)
 
 
