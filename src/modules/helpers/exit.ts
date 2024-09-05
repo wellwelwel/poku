@@ -9,7 +9,7 @@ import { AssertionError } from 'node:assert';
 
 export const exit = (code: Code, quiet?: boolean) => {
   const isPoku = results.success > 0 || results.fail > 0;
-  const success = ` PASS › ${results.success - results.skip || 0} `;
+  const success = ` PASS › ${results.success} `;
   const failure = ` FAIL › ${results.fail} `;
   const skips = ` SKIP › ${results.skip} `;
   const plans = ` TODO › ${results.todo} `;

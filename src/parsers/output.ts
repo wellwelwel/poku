@@ -3,8 +3,8 @@ import { results } from '../configs/poku.js';
 
 const regex = {
   ansi: /u001b\[0m|\n/i,
-  skip: /\\u001b\[94m\\u001b\[1m◯/i,
-  todo: /\\u001b\[96m\\u001b\[1m●/i,
+  skip: /\\u001b\[94m\\u001b\[1m◯/gi,
+  todo: /\\u001b\[96m\\u001b\[1m●/gi,
 } as const;
 
 export const isQuiet = (configs?: Configs): boolean =>
@@ -20,8 +20,11 @@ export const parserOutput = (options: {
   const { output, result, configs } = options;
   const normalizedOutput = JSON.stringify(output);
 
-  if (regex.skip.test(normalizedOutput)) ++results.skip;
-  if (regex.todo.test(normalizedOutput)) ++results.todo;
+  const hasSkip = normalizedOutput.match(regex.skip);
+  if (hasSkip) results.skip += hasSkip.length;
+
+  const hasTodo = normalizedOutput.match(regex.todo);
+  if (hasTodo) results.todo += hasTodo.length;
 
   const debug = isDebug(configs);
   const pad = configs?.parallel ? '  ' : '    ';

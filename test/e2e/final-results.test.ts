@@ -15,7 +15,7 @@ describe('Final Results', async () => {
       cwd: 'test/__fixtures__/e2e/final-results/skip',
     });
 
-    assert.match(results.stdout, /PASS › 0/, 'Needs to pass 0');
+    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
     assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
     assert.match(results.stdout, /SKIP › 1/, 'Needs to skip 1');
   });
@@ -25,9 +25,9 @@ describe('Final Results', async () => {
       cwd: 'test/__fixtures__/e2e/final-results/skip-it',
     });
 
-    assert.match(results.stdout, /PASS › 0/, 'Needs to pass 0');
+    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
     assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
-    assert.match(results.stdout, /SKIP › 1/, 'Needs to skip 1');
+    assert.match(results.stdout, /SKIP › 2/, 'Needs to skip 2');
   });
 
   await it('Skip (describe)', async () => {
@@ -35,9 +35,9 @@ describe('Final Results', async () => {
       cwd: 'test/__fixtures__/e2e/final-results/skip-describe',
     });
 
-    assert.match(results.stdout, /PASS › 0/, 'Needs to pass 0');
+    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
     assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
-    assert.match(results.stdout, /SKIP › 1/, 'Needs to skip 1');
+    assert.match(results.stdout, /SKIP › 3/, 'Needs to skip 3');
   });
 
   await it('Skip (describe + it)', async () => {
@@ -45,7 +45,7 @@ describe('Final Results', async () => {
       cwd: 'test/__fixtures__/e2e/final-results/skip-describe-it',
     });
 
-    assert.match(results.stdout, /PASS › 0/, 'Needs to pass 0');
+    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
     assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
     assert.match(results.stdout, /SKIP › 1/, 'Needs to skip 1');
   });
@@ -65,7 +65,7 @@ describe('Final Results', async () => {
       cwd: 'test/__fixtures__/e2e/final-results/skip-and-todo',
     });
 
-    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
+    assert.match(results.stdout, /PASS › 2/, 'Needs to pass 2');
     assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
     assert.match(results.stdout, /SKIP › 1/, 'Needs to todo 1');
     assert.match(results.stdout, /TODO › 1/, 'Needs to todo 1');
@@ -81,7 +81,7 @@ describe('Final Results', async () => {
       console.log(results.stderr);
     }
 
-    assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
+    assert.match(results.stdout, /PASS › 2/, 'Needs to pass 2');
     assert.match(results.stdout, /FAIL › 1/, 'Needs to fail 1');
     assert.match(results.stdout, /SKIP › 1/, 'Needs to todo 1');
     assert.match(results.stdout, /TODO › 1/, 'Needs to todo 1');

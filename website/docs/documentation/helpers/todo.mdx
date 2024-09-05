@@ -1,6 +1,6 @@
 ---
 sidebar_position: 10
-tags: [boilerplate]
+tags: [modifiers, debugging]
 ---
 
 # 📋 todo
@@ -57,5 +57,8 @@ describe.todo('todo: Upcoming test', () => {
 <hr />
 
 :::note
-When using `beforeEach` or `afterEach`, they will not be triggered by tests with `.todo`.
+
+- When using `beforeEach` or `afterEach`, they will not be triggered by tests with `.todo`.
+- Skipped tests are considered successful tests and don't affect the file test count.
+
 :::
