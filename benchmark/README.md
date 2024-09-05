@@ -31,3 +31,7 @@ To run the benchmark tests, follow these steps in the `./poku` directory:
 ```sh
 npm ci && npm run build && npm run benchmark
 ```
+
+---
+
+- [Comparing **Poku** and native test runners _(discussion)_](https://github.com/wellwelwel/poku/discussions/740).

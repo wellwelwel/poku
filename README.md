@@ -258,7 +258,8 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 - ~**3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
 - ~**1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
 
-> You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
+> - You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
+> - [Comparing **Poku** and native test runners _(discussion)_](https://github.com/wellwelwel/poku/discussions/740).
 
 ---
 
