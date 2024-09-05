@@ -1,10 +1,13 @@
 ---
 sidebar_position: 4
+tags: [modifiers, debugging]
 ---
 
 # ⏭️ skip
 
-You can skip tests when necessary:
+## Skipping a test file
+
+You can skip test files when necessary:
 
 ```ts
 import { skip } from 'poku';
@@ -26,7 +29,7 @@ This will skip the entire file and it's recommended to be used at the top of the
 
 ---
 
-## Examples
+### Examples
 
 Imagine that a specific test doesn't work on a specific _OS_:
 
@@ -51,3 +54,29 @@ test(() => {
 :::note
 Skipped tests are considered successful tests.
 :::
+
+---
+
+## `describe`, `it` and `test` modifier
+
+To assist in the debugging process, you can modify your tests by temporarily skipping specific tests:
+
+```ts
+import { describe, it } from 'poku';
+
+describe(() => {
+  it('Running this', () => {
+    // I'll be executed
+  });
+
+  it.skip('Skipping for some reason', () => {
+    // I won't be executed
+  });
+});
+```
+
+Supports:
+
+- `describe.skip`
+- `it.skip`
+- `test.skip`
