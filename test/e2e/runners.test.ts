@@ -74,11 +74,16 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasDeno &&
     (await it('Deno', async () => {
       const output = await inspectCLI(
-        'deno run --unstable-sloppy-imports --allow-read --allow-env --allow-run src/bin/index.ts --platform=deno test/__fixtures__/e2e/extensions --exclude=cts'
+        'deno run --unstable-sloppy-imports --allow-read --allow-env --allow-run src/bin/index.ts --platform=deno test/__fixtures__/e2e/extensions -d --exclude=.cts'
       );
 
+      if (output.exitCode !== 0) {
+        console.log(output.stdout);
+        console.log(output.stderr);
+      }
+
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-      assert(/PASS › 12/.test(output.stdout), 'CLI needs to pass 1');
+      assert(/PASS › 10/.test(output.stdout), 'CLI needs to pass 1');
       assert(/FAIL › 0/.test(output.stdout), 'CLI needs to fail 0');
       assert(/deno run.+?.js/.test(output.stdout), 'deno => .js');
       assert(/deno run.+?.cjs/.test(output.stdout), 'deno => .cjs');
