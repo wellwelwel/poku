@@ -40,8 +40,13 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasNode &&
     (await it('Node.js', async () => {
       const output = await inspectCLI(
-        'npx tsx src/bin/index.ts --platform=node test/__fixtures__/e2e/extensions'
+        'npx tsx src/bin/index.ts --platform=node test/__fixtures__/e2e/extensions -d'
       );
+
+      if (output.exitCode !== 0) {
+        console.log(output.stdout);
+        console.log(output.stderr);
+      }
 
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
       assert(/PASS › 12/.test(output.stdout), 'CLI needs to pass 1');
@@ -57,8 +62,13 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasBun &&
     (await it('Bun', async () => {
       const output = await inspectCLI(
-        'bun src/bin/index.ts --platform=bun test/__fixtures__/e2e/extensions'
+        'bun src/bin/index.ts --platform=bun test/__fixtures__/e2e/extensions -d'
       );
+
+      if (output.exitCode !== 0) {
+        console.log(output.stdout);
+        console.log(output.stderr);
+      }
 
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
       assert(/PASS › 12/.test(output.stdout), 'CLI needs to pass 1');
