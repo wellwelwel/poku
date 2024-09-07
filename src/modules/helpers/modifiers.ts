@@ -7,7 +7,16 @@ export const todo = (message: string, _cb?: () => unknown) =>
     `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).cyan().bold()}`
   );
 
-export const skip = (message: string, _cb?: () => unknown) =>
+export function skip(message: string, _cb: () => unknown): void;
+export function skip(_cb: () => unknown): void;
+export function skip(
+  messageOrCb: string | (() => unknown),
+  _cb?: () => unknown
+) {
+  const message =
+    (typeof messageOrCb === 'string' && messageOrCb) || 'Skipping';
+
   Write.log(
     `${indentation.hasDescribe ? '  ' : ''}${format(`◯ ${message}`).info().bold()}`
   );
+}

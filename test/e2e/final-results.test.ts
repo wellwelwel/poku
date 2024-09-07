@@ -27,7 +27,9 @@ describe('Final Results', async () => {
 
     assert.match(results.stdout, /PASS › 1/, 'Needs to pass 1');
     assert.match(results.stdout, /FAIL › 0/, 'Needs to fail 0');
-    assert.match(results.stdout, /SKIP › 2/, 'Needs to skip 2');
+    assert.match(results.stdout, /SKIP › 3/, 'Needs to skip 3');
+    assert.match(results.stdout, /◯ Some skip/, 'User Messsage');
+    assert.match(results.stdout, /◯ Skipping/, 'No Messsage');
   });
 
   await it('Skip (describe)', async () => {
