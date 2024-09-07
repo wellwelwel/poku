@@ -3,8 +3,7 @@ import { hrtime, env } from 'node:process';
 import { format } from '../../services/format.js';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
-import { todo } from './modifiers/todo.js';
-import { skip } from './modifiers/skip.js';
+import { todo, skip } from './modifiers.js';
 
 async function describeCore(
   title: string,
