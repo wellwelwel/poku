@@ -8,3 +8,7 @@ it.skip('Some skip', () => {
 it.skip('Multiple skips in the same file should not be counted', () => {
   exit(1);
 });
+
+it.skip(() => {
+  exit(1);
+});
