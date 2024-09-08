@@ -65,10 +65,6 @@ jobs:
         if: steps.check_commit.outputs.publish == 'true'
         run: npm ci
 
-      - name: 🚀 Building Poku
-        if: steps.check_commit.outputs.publish == 'true'
-        run: npm run build
-
       - name: ⚙️ Git Hash
         if: steps.check_commit.outputs.publish == 'true'
         run: |
@@ -80,6 +76,10 @@ jobs:
       - name: ⬆️ Increment Canary Version
         if: steps.check_commit.outputs.publish == 'true'
         run: npm version $VERSION --no-git-tag-version
+
+      - name: 🚀 Building Poku
+        if: steps.check_commit.outputs.publish == 'true'
+        run: npm run build
 
       - name: 📥 Publishing Package
         if: steps.check_commit.outputs.publish == 'true'
