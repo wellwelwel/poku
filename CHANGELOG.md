@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.6.1](https://github.com/wellwelwel/poku/compare/v2.6.0...v2.6.1) (2024-09-09)
+
+
+### Bug Fixes
+
+* allow all combinations of `describe`, `it` and `test` to `skip` modifier ([#746](https://github.com/wellwelwel/poku/issues/746)) ([c53f3e3](https://github.com/wellwelwel/poku/commit/c53f3e3304bde40f1e85212b92d4e1209f47d10f))
+* **canary:** show correct version ([#750](https://github.com/wellwelwel/poku/issues/750)) ([6e8a583](https://github.com/wellwelwel/poku/commit/6e8a583a58ea8e555f236e81b90a0e0926768244))
+
 ## [2.6.0](https://github.com/wellwelwel/poku/compare/v2.5.0...v2.6.0) (2024-09-05)
 
 
