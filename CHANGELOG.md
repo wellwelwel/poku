@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.6.2](https://github.com/wellwelwel/poku/compare/v2.6.1...v2.6.2) (2024-09-10)
+
+
+### Bug Fixes
+
+* fix typings of `skip` modifier ([#754](https://github.com/wellwelwel/poku/issues/754)) ([d9851de](https://github.com/wellwelwel/poku/commit/d9851deff60b0369cbeb592b6d3b1001cb2381f3))
+* fix typings of `todo` modifier ([#756](https://github.com/wellwelwel/poku/issues/756)) ([3ed7e77](https://github.com/wellwelwel/poku/commit/3ed7e77b36a232a56f8111575cdb5395c756cbc6))
+
 ## [2.6.1](https://github.com/wellwelwel/poku/compare/v2.6.0...v2.6.1) (2024-09-09)
 
 
