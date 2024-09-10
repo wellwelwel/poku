@@ -25,7 +25,7 @@ export async function skip(
     `${indentation.hasDescribe ? '  ' : ''}${format(`◯ ${message}`).info().bold()}`
   );
 
-  // Type guard
+  /* c8 ignore start */ // Type guard
   if (typeof messageOrCb === 'function') {
     const isAsync = messageOrCb.constructor.name === 'AsyncFunction';
 
@@ -33,11 +33,11 @@ export async function skip(
     return;
   }
 
-  // Type guard
   if (typeof _cb === 'function') {
     const isAsync = _cb.constructor.name === 'AsyncFunction';
 
     if (isAsync) return await Promise.resolve();
     return;
   }
+  /* c8 ignore stop */
 }
