@@ -110,6 +110,16 @@
       }
     },
     {
+      "include": ["src/modules/helpers/modifiers.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "useAwait": "off"
+          }
+        }
+      }
+    },
+    {
       "include": ["src/bin/index.ts"],
       "linter": {
         "rules": {
