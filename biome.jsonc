@@ -1,123 +1,133 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
-  "files": {
-    "include": ["**/**"],
-    "ignore": [
-      "benchmark",
-      "ci",
-      "coverage",
-      "lib",
-      "node_modules",
-      "test/__fixtures__",
-      "website"
-    ]
-  },
-  "organizeImports": {
-    "enabled": false
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "all": true,
-      "complexity": {
-        "all": true,
-        "noExcessiveCognitiveComplexity": {
-          "level": "error",
-          "options": {
-            // TODO: better estimate complexity
-            "maxAllowedComplexity": 45
-          }
-        }
-      },
-      "a11y": {
-        "all": true
-      },
-      "correctness": {
-        "all": true,
-        "noNodejsModules": "off"
-      },
-      "nursery": {
-        "all": true,
-        "useImportRestrictions": "off",
-        "noConsole": "off",
-        "noMisplacedAssertion": "off",
-        "useImportExtensions": "error"
-      },
-      "performance": {
-        "all": true,
-        "noAccumulatingSpread": "error",
-        "noBarrelFile": "error",
-        "noDelete": "error",
-        "noReExportAll": "error"
-      },
-      "security": {
-        "all": true,
-        "noGlobalEval": "error"
-      },
-      "suspicious": {
-        "all": true,
-        "noEmptyBlockStatements": "off",
-        "noConsoleLog": "off",
-        "noAsyncPromiseExecutor": "error",
-        "useAwait": "error",
-        "useIsArray": "error"
-      },
-      "style": {
-        "all": true,
-        "noNonNullAssertion": "off",
-        "useNamingConvention": "off",
-        "useNodeAssertStrict": "off",
-        "noNamespaceImport": "off",
-        "useBlockStatements": "off"
-      }
-    }
-  },
-  "javascript": {
-    "globals": ["BufferEncoding"]
-  },
-  "overrides": [
-    {
-      "include": ["test", "tools"],
-      "linter": {
-        "rules": {
-          "nursery": {
-            "useTopLevelRegex": "off"
-          },
-          "complexity": {
-            "useArrowFunction": "off"
-          }
-        }
-      }
-    },
-    {
-      "include": ["src/polyfills/**/**"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noExplicitAny": "off"
-          }
-        }
-      }
-    },
-    {
-      "include": ["src/modules/index.ts"],
-      "linter": {
-        "rules": {
-          "performance": {
-            "noBarrelFile": "off"
-          }
-        }
-      }
-    },
-    {
-      "include": ["src/bin/index.ts"],
-      "linter": {
-        "rules": {
-          "complexity": {
-            "noExcessiveCognitiveComplexity": "off"
-          }
-        }
-      }
-    }
-  ]
+	"$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
+	"files": {
+		"include": ["**/**"],
+		"ignore": [
+			"benchmark",
+			"ci",
+			"coverage",
+			"lib",
+			"node_modules",
+			"test/__fixtures__",
+			"website"
+		]
+	},
+	"organizeImports": {
+		"enabled": false
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"all": true,
+			"complexity": {
+				"all": true,
+				"noExcessiveCognitiveComplexity": {
+					"level": "error",
+					"options": {
+						// TODO: better estimate complexity
+						"maxAllowedComplexity": 45
+					}
+				}
+			},
+			"a11y": {
+				"all": true
+			},
+			"correctness": {
+				"all": true,
+				"noNodejsModules": "off"
+			},
+			"nursery": {
+				"all": true,
+				"useImportRestrictions": "off",
+				"noConsole": "off",
+				"noMisplacedAssertion": "off",
+				"useImportExtensions": "error"
+			},
+			"performance": {
+				"all": true,
+				"noAccumulatingSpread": "error",
+				"noBarrelFile": "error",
+				"noDelete": "error",
+				"noReExportAll": "error"
+			},
+			"security": {
+				"all": true,
+				"noGlobalEval": "error"
+			},
+			"suspicious": {
+				"all": true,
+				"noEmptyBlockStatements": "off",
+				"noConsoleLog": "off",
+				"noAsyncPromiseExecutor": "error",
+				"useAwait": "error",
+				"useIsArray": "error"
+			},
+			"style": {
+				"all": true,
+				"noNonNullAssertion": "off",
+				"useNamingConvention": "off",
+				"useNodeAssertStrict": "off",
+				"noNamespaceImport": "off",
+				"useBlockStatements": "off"
+			}
+		}
+	},
+	"javascript": {
+		"globals": ["BufferEncoding"]
+	},
+	"overrides": [
+		{
+			"include": ["test", "tools"],
+			"linter": {
+				"rules": {
+					"nursery": {
+						"useTopLevelRegex": "off"
+					},
+					"complexity": {
+						"useArrowFunction": "off"
+					}
+				}
+			}
+		},
+		{
+			"include": ["src/polyfills/**/**"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noExplicitAny": "off"
+					}
+				}
+			}
+		},
+		{
+			"include": ["src/modules/index.ts"],
+			"linter": {
+				"rules": {
+					"performance": {
+						"noBarrelFile": "off"
+					}
+				}
+			}
+		},
+		{
+			"include": ["src/modules/helpers/modifiers.ts"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"useAwait": "off"
+					}
+				}
+			}
+		},
+		{
+			"include": ["src/bin/index.ts"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"noExcessiveCognitiveComplexity": "off"
+					}
+				}
+			}
+		}
+	]
 }
