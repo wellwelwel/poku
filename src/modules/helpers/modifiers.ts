@@ -8,7 +8,6 @@ export async function todo(
   cb?: () => Promise<unknown>
 ): Promise<void>;
 export function todo(message: string, cb?: () => unknown): void;
-// biome-ignore lint/suspicious/useAwait: <TODO explanation>
 export async function todo(
   message: string | (() => unknown) | (() => Promise<unknown>),
   _cb?: (() => unknown) | (() => Promise<unknown>)
@@ -25,13 +24,11 @@ export async function skip(
 export function skip(message: string, cb: () => unknown): void;
 export async function skip(cb: () => Promise<unknown>): Promise<void>;
 export function skip(cb: () => unknown): void;
-// biome-ignore lint/suspicious/useAwait: <TODO explanation>
 export async function skip(
   messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   _cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  const message =
-    (typeof messageOrCb === 'string' && messageOrCb) || 'Skipping';
+  const message = typeof messageOrCb === 'string' ? messageOrCb : 'Skipping';
 
   Write.log(
     `${indentation.hasDescribe ? '  ' : ''}${format(`◯ ${message}`).info().bold()}`
