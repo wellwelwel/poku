@@ -1,15 +1,18 @@
 import { skip } from '../../../src/modules/helpers/skip.js';
-import { nodeVersion } from '../../../src/parsers/get-runtime.js';
+import { getRuntime, nodeVersion } from '../../../src/parsers/get-runtime.js';
 
-if (nodeVersion && nodeVersion < 16) {
+if ((nodeVersion && nodeVersion < 16) || getRuntime() === 'deno') {
   skip('Strict method is available from Node.js 16');
 }
 
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
-import { strict as assert } from '../../../src/modules/essentials/strict.js';
 
 describe('Strict Suite', async () => {
+  const { strict: assert } = await import(
+    '../../../src/modules/essentials/strict.js'
+  );
+
   it(() => {
     assert(true, 'ok (default) with true');
     assert(1, 'ok (default) with 1');
