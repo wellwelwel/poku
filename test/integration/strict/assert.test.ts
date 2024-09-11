@@ -1,12 +1,11 @@
-import { skip } from '../../../src/modules/helpers/skip.js';
+import { describe } from '../../../src/modules/helpers/describe.js';
+import { it } from '../../../src/modules/helpers/it/core.js';
 import { getRuntime, nodeVersion } from '../../../src/parsers/get-runtime.js';
+import { skip } from '../../../src/modules/helpers/skip.js';
 
 if ((nodeVersion && nodeVersion < 16) || getRuntime() === 'deno') {
   skip('Strict method is available from Node.js 16');
 }
-
-import { describe } from '../../../src/modules/helpers/describe.js';
-import { it } from '../../../src/modules/helpers/it/core.js';
 
 describe('Strict Suite', async () => {
   const { strict: assert } = await import(
