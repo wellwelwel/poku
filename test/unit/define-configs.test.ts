@@ -1,15 +1,16 @@
-import { nodeVersion } from '../../src/parsers/get-runtime.js';
+import { test } from '../../src/modules/helpers/test.js';
+import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (nodeVersion && nodeVersion < 16) {
-  skip();
-}
+if (getRuntime() === 'deno') skip();
 
-import { assert } from '../../src/modules/essentials/assert.js';
-import { defineConfig } from '../../src/modules/index.js';
+test(async () => {
+  const { assert } = await import('../../src/modules/essentials/assert.js');
+  const { defineConfig } = await import('../../src/modules/index.js');
 
-assert.deepStrictEqual(
-  defineConfig({ debug: true }),
-  { debug: true },
-  'Reflect configs'
-);
+  assert.deepStrictEqual(
+    defineConfig({ debug: true }),
+    { debug: true },
+    'Reflect configs'
+  );
+});
