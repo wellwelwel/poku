@@ -38,7 +38,7 @@ Strict assertions:
 + import { strict as assert } from 'poku';
 ```
 
-- `strict` method is available for **Node.js 16** onwards, **Bun**, and **Deno**.
+- `strict` method is available for **Node.js 16** onwards, **Bun**, and **Deno**. If you use it on unsupported **Node.js** versions, **Poku** will use the standard `assert` instead.
 
 ```ts
 assert(true, "It's true 🧪");
