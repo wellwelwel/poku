@@ -20,6 +20,14 @@ import { getConfigs } from '../parsers/options.js';
     return;
   }
 
+  if (hasArg('help') || hasArg('h', '-')) {
+    const { help } = require('./help.js');
+
+    help();
+
+    return;
+  }
+
   const enforce = hasArg('enforce') || hasArg('x', '-');
   const configFile = getArg('config') || getArg('c', '-');
   const defaultConfigs = await getConfigs(configFile);
