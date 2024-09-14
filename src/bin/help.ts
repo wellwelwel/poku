@@ -7,9 +7,7 @@ const u = (text: string) => `${format(text).underline()}`;
 const d = (text: string) => `${format(text).dim()}`;
 
 const options = i('[--options]');
-const option = i('[--option]');
 const paths = i('[paths]');
-const path = i('[path]');
 const bullet = d('●');
 const summary: [string, string][] = [
   ['--bun', 'Enforce tests to run through Bun.'],
@@ -49,7 +47,6 @@ const header = `
 
   poku ${options} ${paths}
   poku ${paths} ${options}
-  poku ${option} ${path} ${option} ${path}
 
 › ${u(b('Ensuring platforms:'))}
 
