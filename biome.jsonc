@@ -110,7 +110,11 @@
       }
     },
     {
-      "include": ["src/modules/helpers/modifiers.ts"],
+      "include": [
+        "src/modules/helpers/modifiers.ts",
+        "src/modules/helpers/describe.ts",
+        "src/modules/helpers/it/core.ts"
+      ],
       "linter": {
         "rules": {
           "suspicious": {

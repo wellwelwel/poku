@@ -6,3 +6,5 @@ export const results = {
 };
 
 export const VERSION = '';
+
+export const deepOptions: string[] = [];
