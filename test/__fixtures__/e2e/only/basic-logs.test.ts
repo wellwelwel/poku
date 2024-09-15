@@ -33,4 +33,10 @@ describe.only('Should run', () => {
   });
 });
 
-assert.strictEqual(counter, 2);
+describe.only('Should run', () => {
+  it.only('Should run', () => {
+    counter++;
+  });
+});
+
+assert.strictEqual(counter, 3);

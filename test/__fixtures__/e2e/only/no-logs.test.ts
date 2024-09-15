@@ -33,4 +33,10 @@ describe.only(() => {
   });
 });
 
-assert.strictEqual(counter, 2);
+describe.only(() => {
+  it.only(() => {
+    counter++;
+  });
+});
+
+assert.strictEqual(counter, 3);
