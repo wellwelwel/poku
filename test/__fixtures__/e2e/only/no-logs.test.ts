@@ -1,24 +1,27 @@
-import { test } from '../../../../src/modules/helpers/test.js';
 import { assert } from '../../../../src/modules/essentials/assert.js';
 import { describe } from '../../../../src/modules/helpers/describe.js';
 import { it } from '../../../../src/modules/helpers/it/core.js';
 
 let counter = 0;
 
-test(() => {
+it(() => {
   counter++;
 });
 
-test.only(() => {
+it.only(() => {
   counter++;
 });
 
-test(() => {
+it(() => {
   counter++;
 });
 
 describe(() => {
-  test.only(() => {
+  it(() => {
+    counter++;
+  });
+
+  it.only(() => {
     counter++;
   });
 });

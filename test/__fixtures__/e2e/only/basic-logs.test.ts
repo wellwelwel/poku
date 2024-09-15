@@ -5,19 +5,23 @@ import { it } from '../../../../src/modules/helpers/it/core.js';
 
 let counter = 0;
 
-test('Should skip', () => {
+it('Should skip', () => {
   counter++;
 });
 
-test.only('Should run', () => {
+it.only('Should run', () => {
   counter++;
 });
 
-test('Should skip', () => {
+it('Should skip', () => {
   counter++;
 });
 
 describe('Should skip', () => {
+  it('Should never be called', () => {
+    counter++;
+  });
+
   test.only('Should never be called', () => {
     counter++;
   });
