@@ -70,6 +70,5 @@ export async function onlyDescribe(
 
   if (typeof messageOrCb === 'string' && cb)
     return describeBase(messageOrCb, cb);
-  if (typeof messageOrCb === 'function')
-    return describeBase(messageOrCb) as void | Promise<void>;
+  if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
 }

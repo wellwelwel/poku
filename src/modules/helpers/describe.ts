@@ -7,14 +7,6 @@ import { todo, skip, onlyDescribe } from './modifiers.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 
 export async function describeBase(
-  title: string,
-  cb: () => Promise<unknown>
-): Promise<void>;
-export function describeBase(title: string, cb: () => unknown): void;
-export async function describeBase(cb: () => Promise<unknown>): Promise<void>;
-export function describeBase(cb: () => unknown): unknown;
-export function describeBase(title: string, options?: DescribeOptions): void;
-export async function describeBase(
   arg1: string | (() => unknown | Promise<unknown>),
   arg2?: (() => unknown | Promise<unknown>) | DescribeOptions
 ): Promise<void> {
@@ -91,8 +83,7 @@ async function describeCore(
   if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
     return describeBase(messageOrCb, cbOrOptions);
 
-  if (typeof messageOrCb === 'function')
-    return describeBase(messageOrCb) as void | Promise<void>;
+  if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
 
   if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'object')
     return describeBase(messageOrCb, cbOrOptions);

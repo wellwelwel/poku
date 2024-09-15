@@ -7,13 +7,6 @@ import { todo, skip, onlyIt } from '../modifiers.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 
 export async function itBase(
-  message: string,
-  cb: () => Promise<unknown>
-): Promise<void>;
-export function itBase(message: string, cb: () => unknown): void;
-export async function itBase(cb: () => Promise<unknown>): Promise<void>;
-export function itBase(cb: () => unknown): void;
-export async function itBase(
   ...args: [
     string | (() => unknown | Promise<unknown>),
     (() => unknown | Promise<unknown>)?,
