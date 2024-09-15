@@ -21,6 +21,7 @@ export const checkFlags = () => {
     '--killPort',
     '--killRange',
     '--node',
+    '--only',
     '--parallel',
     '--platform',
     '--quiet',

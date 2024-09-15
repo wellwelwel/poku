@@ -4,6 +4,14 @@ import { format } from '../../services/format.js';
 import { itBase } from './it/core.js';
 import { describeBase } from './describe.js';
 import { hasOnly } from '../../parsers/get-arg.js';
+import { exit } from 'node:process';
+
+const forceExitOnInvalidTest = (): undefined | never => {
+  if (hasOnly) return;
+
+  Write.log(format("Can't run `.only` tests without `--only` flag").fail());
+  exit(1);
+};
 
 export function todo(message: string): void;
 export async function todo(
@@ -49,7 +57,7 @@ export async function onlyIt(
   messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  if (!hasOnly) throw new Error("Can't use `.only` without `--only`");
+  forceExitOnInvalidTest();
 
   if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
   if (typeof messageOrCb === 'function') return itBase(messageOrCb);
@@ -66,7 +74,7 @@ export async function onlyDescribe(
   messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  if (!hasOnly) throw new Error("Can't use `.only` without `--only`");
+  forceExitOnInvalidTest();
 
   if (typeof messageOrCb === 'string' && cb)
     return describeBase(messageOrCb, cb);

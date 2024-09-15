@@ -67,10 +67,7 @@ async function describeCore(
   cb: () => Promise<unknown>
 ): Promise<void>;
 function describeCore(message: string, cb: () => unknown): void;
-async function describeCore(
-  message: string,
-  options: DescribeOptions
-): Promise<void>;
+function describeCore(message: string, options: DescribeOptions): void;
 function describeCore(message: string, options?: DescribeOptions): void;
 async function describeCore(cb: () => Promise<unknown>): Promise<void>;
 function describeCore(cb: () => unknown): void;
@@ -78,17 +75,15 @@ async function describeCore(
   messageOrCb: string | (() => unknown | Promise<unknown>),
   cbOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
 ): Promise<void> {
+  if (typeof messageOrCb === 'string' && typeof cbOrOptions !== 'function')
+    return describeBase(messageOrCb, cbOrOptions);
+
   if (hasOnly) return;
 
   if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
     return describeBase(messageOrCb, cbOrOptions);
 
   if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
-
-  if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'object')
-    return describeBase(messageOrCb, cbOrOptions);
-
-  if (typeof messageOrCb === 'string') return describeBase(messageOrCb);
 }
 
 export const describe = Object.assign(describeCore, {
