@@ -62,3 +62,7 @@ export const argToArray = (
 };
 
 export const hasOnly = hasArg('only');
+
+export const hasItOnly = hasArg('itonly') || hasArg('testonly');
+
+export const hasDescribeOnly = hasArg('describeonly');

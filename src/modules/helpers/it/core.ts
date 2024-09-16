@@ -4,7 +4,7 @@ import { indentation } from '../../../configs/indentation.js';
 import { format } from '../../../services/format.js';
 import { Write } from '../../../services/write.js';
 import { todo, skip, onlyIt } from '../modifiers.js';
-import { hasOnly } from '../../../parsers/get-arg.js';
+import { hasItOnly, hasOnly } from '../../../parsers/get-arg.js';
 
 export async function itBase(
   ...args: [
@@ -85,7 +85,7 @@ async function itCore(
   messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  if (hasOnly) return;
+  if (hasOnly || hasItOnly) return;
 
   if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
   if (typeof messageOrCb === 'function') return itBase(messageOrCb);

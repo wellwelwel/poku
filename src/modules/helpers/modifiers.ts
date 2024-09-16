@@ -3,15 +3,8 @@ import { indentation } from '../../configs/indentation.js';
 import { format } from '../../services/format.js';
 import { itBase } from './it/core.js';
 import { describeBase } from './describe.js';
-import { hasOnly } from '../../parsers/get-arg.js';
+import { hasDescribeOnly, hasItOnly, hasOnly } from '../../parsers/get-arg.js';
 import { exit } from 'node:process';
-
-const forceExitOnInvalidTest = (): undefined | never => {
-  if (hasOnly) return;
-
-  Write.log(format("Can't run `.only` tests without `--only` flag").fail());
-  exit(1);
-};
 
 export function todo(message: string): void;
 export async function todo(
@@ -46,23 +39,6 @@ export async function skip(
   );
 }
 
-export async function onlyIt(
-  message: string,
-  cb: () => Promise<unknown>
-): Promise<void>;
-export function onlyIt(message: string, cb: () => unknown): void;
-export async function onlyIt(cb: () => Promise<unknown>): Promise<void>;
-export function onlyIt(cb: () => unknown): void;
-export async function onlyIt(
-  messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
-  cb?: (() => unknown) | (() => Promise<unknown>)
-): Promise<void> {
-  forceExitOnInvalidTest();
-
-  if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
-  if (typeof messageOrCb === 'function') return itBase(messageOrCb);
-}
-
 export async function onlyDescribe(
   message: string,
   cb: () => Promise<unknown>
@@ -74,9 +50,40 @@ export async function onlyDescribe(
   messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  forceExitOnInvalidTest();
+  if (!(hasOnly || hasDescribeOnly)) {
+    Write.log(
+      format(
+        "Can't run `describe.only` tests without `--only` or `--describeOnly` flags"
+      ).fail()
+    );
+    exit(1);
+  }
 
   if (typeof messageOrCb === 'string' && cb)
     return describeBase(messageOrCb, cb);
   if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
+}
+
+export async function onlyIt(
+  message: string,
+  cb: () => Promise<unknown>
+): Promise<void>;
+export function onlyIt(message: string, cb: () => unknown): void;
+export async function onlyIt(cb: () => Promise<unknown>): Promise<void>;
+export function onlyIt(cb: () => unknown): void;
+export async function onlyIt(
+  messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
+  cb?: (() => unknown) | (() => Promise<unknown>)
+): Promise<void> {
+  if (!(hasOnly || hasItOnly)) {
+    Write.log(
+      format(
+        "Can't run `it.only` and `test.only` tests without `--only`, `--itOnly` or `--testOnly` flags"
+      ).fail()
+    );
+    exit(1);
+  }
+
+  if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
+  if (typeof messageOrCb === 'function') return itBase(messageOrCb);
 }

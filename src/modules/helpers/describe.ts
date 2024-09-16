@@ -4,7 +4,7 @@ import { format } from '../../services/format.js';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
 import { todo, skip, onlyDescribe } from './modifiers.js';
-import { hasOnly } from '../../parsers/get-arg.js';
+import { hasDescribeOnly, hasOnly } from '../../parsers/get-arg.js';
 
 export async function describeBase(
   arg1: string | (() => unknown | Promise<unknown>),
@@ -78,7 +78,7 @@ async function describeCore(
   if (typeof messageOrCb === 'string' && typeof cbOrOptions !== 'function')
     return describeBase(messageOrCb, cbOrOptions);
 
-  if (hasOnly) return;
+  if (hasOnly || hasDescribeOnly) return;
 
   if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
     return describeBase(messageOrCb, cbOrOptions);
