@@ -1,6 +1,10 @@
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
 import { format } from '../../services/format.js';
+import { itBase } from './it/core.js';
+import { describeBase } from './describe.js';
+import { hasDescribeOnly, hasItOnly, hasOnly } from '../../parsers/get-arg.js';
+import { exit } from 'node:process';
 
 export function todo(message: string): void;
 export async function todo(
@@ -33,4 +37,53 @@ export async function skip(
   Write.log(
     `${indentation.hasDescribe ? '  ' : ''}${format(`◯ ${message}`).info().bold()}`
   );
+}
+
+export async function onlyDescribe(
+  message: string,
+  cb: () => Promise<unknown>
+): Promise<void>;
+export function onlyDescribe(message: string, cb: () => unknown): void;
+export async function onlyDescribe(cb: () => Promise<unknown>): Promise<void>;
+export function onlyDescribe(cb: () => unknown): void;
+export async function onlyDescribe(
+  messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
+  cb?: (() => unknown) | (() => Promise<unknown>)
+): Promise<void> {
+  if (!(hasOnly || hasDescribeOnly)) {
+    Write.log(
+      format(
+        "Can't run `describe.only` tests without `--only` or `--describeOnly` flags"
+      ).fail()
+    );
+    exit(1);
+  }
+
+  if (typeof messageOrCb === 'string' && cb)
+    return describeBase(messageOrCb, cb);
+  if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
+}
+
+export async function onlyIt(
+  message: string,
+  cb: () => Promise<unknown>
+): Promise<void>;
+export function onlyIt(message: string, cb: () => unknown): void;
+export async function onlyIt(cb: () => Promise<unknown>): Promise<void>;
+export function onlyIt(cb: () => unknown): void;
+export async function onlyIt(
+  messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
+  cb?: (() => unknown) | (() => Promise<unknown>)
+): Promise<void> {
+  if (!(hasOnly || hasItOnly)) {
+    Write.log(
+      format(
+        "Can't run `it.only` and `test.only` tests without `--only`, `--itOnly` or `--testOnly` flags"
+      ).fail()
+    );
+    exit(1);
+  }
+
+  if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
+  if (typeof messageOrCb === 'function') return itBase(messageOrCb);
 }

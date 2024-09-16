@@ -60,3 +60,9 @@ export const argToArray = (
     .map((a) => a.trim())
     .filter((a) => a);
 };
+
+export const hasOnly = hasArg('only');
+
+export const hasItOnly = hasArg('itonly') || hasArg('testonly');
+
+export const hasDescribeOnly = hasArg('describeonly');

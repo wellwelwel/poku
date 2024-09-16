@@ -3,16 +3,10 @@ import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { format } from '../../../services/format.js';
 import { Write } from '../../../services/write.js';
-import { todo, skip } from '../modifiers.js';
+import { todo, skip, onlyIt } from '../modifiers.js';
+import { hasItOnly, hasOnly } from '../../../parsers/get-arg.js';
 
-async function itCore(
-  message: string,
-  cb: () => Promise<unknown>
-): Promise<void>;
-function itCore(message: string, cb: () => unknown): void;
-async function itCore(cb: () => Promise<unknown>): Promise<void>;
-function itCore(cb: () => unknown): void;
-async function itCore(
+export async function itBase(
   ...args: [
     string | (() => unknown | Promise<unknown>),
     (() => unknown | Promise<unknown>)?,
@@ -80,7 +74,25 @@ async function itCore(
   }
 }
 
+async function itCore(
+  message: string,
+  cb: () => Promise<unknown>
+): Promise<void>;
+function itCore(message: string, cb: () => unknown): void;
+async function itCore(cb: () => Promise<unknown>): Promise<void>;
+function itCore(cb: () => unknown): void;
+async function itCore(
+  messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
+  cb?: (() => unknown) | (() => Promise<unknown>)
+): Promise<void> {
+  if (hasOnly || hasItOnly) return;
+
+  if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
+  if (typeof messageOrCb === 'function') return itBase(messageOrCb);
+}
+
 export const it = Object.assign(itCore, {
   todo,
   skip,
+  only: onlyIt,
 });

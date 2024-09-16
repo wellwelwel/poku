@@ -3,17 +3,10 @@ import { hrtime, env } from 'node:process';
 import { format } from '../../services/format.js';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
-import { todo, skip } from './modifiers.js';
+import { todo, skip, onlyDescribe } from './modifiers.js';
+import { hasDescribeOnly, hasOnly } from '../../parsers/get-arg.js';
 
-async function describeCore(
-  title: string,
-  cb: () => Promise<unknown>
-): Promise<void>;
-function describeCore(title: string, cb: () => unknown): void;
-async function describeCore(cb: () => Promise<unknown>): Promise<void>;
-function describeCore(cb: () => unknown): unknown;
-function describeCore(title: string, options?: DescribeOptions): void;
-async function describeCore(
+export async function describeBase(
   arg1: string | (() => unknown | Promise<unknown>),
   arg2?: (() => unknown | Promise<unknown>) | DescribeOptions
 ): Promise<void> {
@@ -69,7 +62,32 @@ async function describeCore(
   );
 }
 
+async function describeCore(
+  message: string,
+  cb: () => Promise<unknown>
+): Promise<void>;
+function describeCore(message: string, cb: () => unknown): void;
+function describeCore(message: string, options: DescribeOptions): void;
+function describeCore(message: string, options?: DescribeOptions): void;
+async function describeCore(cb: () => Promise<unknown>): Promise<void>;
+function describeCore(cb: () => unknown): void;
+async function describeCore(
+  messageOrCb: string | (() => unknown | Promise<unknown>),
+  cbOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
+): Promise<void> {
+  if (typeof messageOrCb === 'string' && typeof cbOrOptions !== 'function')
+    return describeBase(messageOrCb, cbOrOptions);
+
+  if (hasOnly || hasDescribeOnly) return;
+
+  if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
+    return describeBase(messageOrCb, cbOrOptions);
+
+  if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
+}
+
 export const describe = Object.assign(describeCore, {
   todo,
   skip,
+  only: onlyDescribe,
 });

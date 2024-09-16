@@ -9,6 +9,7 @@ import { format } from './format.js';
 import { isQuiet, parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
 import { Write } from './write.js';
+import { deepOptions } from '../configs/poku.js';
 
 const cwd = processCWD();
 
@@ -50,7 +51,7 @@ export const runTestFile = async (
   if (!(await beforeEach(fileRelative, configs))) return false;
 
   return new Promise((resolve) => {
-    const child = spawn(runtime, runtimeArguments, {
+    const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
       stdio: ['inherit', 'pipe', 'pipe'],
       shell: isWindows,
       env: {

@@ -8,10 +8,15 @@ import { Write } from '../services/write.js';
 import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
 import { isQuiet } from '../parsers/output.js';
-import { results } from '../configs/poku.js';
+import { deepOptions, results } from '../configs/poku.js';
 import { availableParallelism } from '../polyfills/os.js';
+import { hasOnly, hasDescribeOnly, hasItOnly } from '../parsers/get-arg.js';
 
 const cwd = process.cwd();
+
+if (hasOnly) deepOptions.push('--only');
+if (hasDescribeOnly) deepOptions.push('--describeOnly');
+if (hasItOnly) deepOptions.push('--itOnly');
 
 export const runTests = async (
   dir: string,
