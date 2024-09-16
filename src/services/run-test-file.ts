@@ -9,7 +9,7 @@ import { format } from './format.js';
 import { isQuiet, parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
 import { Write } from './write.js';
-import { deepOptions } from '../configs/poku.js';
+import { deepOptions, VERSION } from '../configs/poku.js';
 
 const cwd = processCWD();
 
@@ -25,7 +25,7 @@ export const runTestFile = async (
     configs?.deno?.cjs === true ||
     (Array.isArray(configs?.deno?.cjs) &&
       configs.deno.cjs.some((ext) => filePath.includes(ext)))
-      ? 'https://cdn.jsdelivr.net/npm/poku/lib/polyfills/deno.mjs'
+      ? `https://cdn.jsdelivr.net/npm/poku@${VERSION}/lib/polyfills/deno.mjs`
       : filePath,
   ];
 
