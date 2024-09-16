@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
   "files": {
     "include": ["**/**"],
     "ignore": [
@@ -34,14 +34,15 @@
       },
       "correctness": {
         "all": true,
-        "noNodejsModules": "off"
+        "noNodejsModules": "off",
+        "useImportExtensions": "error"
       },
       "nursery": {
         "all": true,
         "useImportRestrictions": "off",
-        "noConsole": "off",
-        "noMisplacedAssertion": "off",
-        "useImportExtensions": "error"
+        "noProcessEnv": "off",
+        "noCommonJs": "off",
+        "noSecrets": "off"
       },
       "performance": {
         "all": true,
@@ -60,7 +61,9 @@
         "noConsoleLog": "off",
         "noAsyncPromiseExecutor": "error",
         "useAwait": "error",
-        "useIsArray": "error"
+        "useIsArray": "error",
+        "noMisplacedAssertion": "off",
+        "noConsole": "off"
       },
       "style": {
         "all": true,
@@ -80,11 +83,11 @@
       "include": ["test", "tools"],
       "linter": {
         "rules": {
-          "nursery": {
-            "useTopLevelRegex": "off"
-          },
           "complexity": {
             "useArrowFunction": "off"
+          },
+          "performance": {
+            "useTopLevelRegex": "off"
           }
         }
       }
