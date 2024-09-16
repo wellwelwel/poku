@@ -1,0 +1,171 @@
+---
+sidebar_position: 11
+tags: [modifiers, debugging]
+---
+
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
+# 🌌 only
+
+`.only` is an extended helper for `describe`, `it`, and `test` to assist you debug tests.
+
+<Stability
+  level={1}
+  message={
+    <>
+      <div>
+        <strong>Poku</strong> doesn't map tests to run them, allowing native{' '}
+        <strong>JavaScript</strong> syntax in tests.
+      </div>
+      <div>
+        As a result, a different approach was adopted to allow{' '}
+        <code>.only</code> runs.
+      </div>
+    </>
+  }
+/>
+
+<History
+  records={[
+    {
+      version: '2.7.0',
+      changes: [
+        <>
+          Add <code>only</code> modifier to <code>describe</code>,{' '}
+          <code>it</code> and <code>test</code> methods.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## Usage
+
+You need to pass one of the temporary flags below to use the `.only` helper:
+
+> Look for "👋🏻" in the following examples.
+
+### `--only`
+
+- Only tests using `.only` will be run. This applies to `describe`, `it` and `test` at the same time.
+- If a common `describe` has a `it.only` in its scope, for example, the `it.only` will not be reached (see [**`--itOnly`**](#--itonly)).
+
+```ts
+import { describe, it, test, assert } from 'poku';
+
+describe("I won't be executed", () => {
+  it("I won't be reached", async () => {
+    process.exit(1);
+  });
+});
+
+describe.only("I'll be executed 👋🏻", () => {
+  it("I won't be executed", () => {
+    process.exit(1);
+  });
+
+  it.only("I'll be executed 👋🏻", () => {
+    assert(true);
+  });
+
+  test.only("I'll be executed 👋🏻", () => {
+    assert(true);
+  });
+});
+
+describe("I won't be executed", () => {
+  it.only("I won't be reached, as `describe` is never executed", () => {
+    process.exit(1);
+  });
+});
+
+test.only("I'll be executed 👋🏻", () => {
+  assert(true);
+});
+```
+
+```bash
+npx poku --only
+
+# Same as:
+npx poku --describeOnly --itOnly
+```
+
+:::note
+By using `.only` without `--only`, `--describeOnly`, `--itOnly` or `--testOnly` flag, the test in question will force failure.
+:::
+
+### `--itOnly`
+
+> Alias: `--testOnly`
+
+- Only `it` and `test` tests using `.only` will be run. This doens't apply to `describe`.
+
+```ts
+import { test, describe, it, assert } from 'poku';
+
+test("I won't be executed", () => {
+  process.exit(1);
+});
+
+test.only("I'll be executed 👋🏻", () => {
+  assert(true);
+});
+
+describe("I'll be executed 👋🏻", () => {
+  it("I won't be executed", () => {
+    process.exit(1);
+  });
+
+  it.only("I'll be executed 👋🏻", () => {
+    assert(true);
+  });
+});
+```
+
+```bash
+npx poku --itOnly
+```
+
+:::note
+By using `.only` in `describe` with `--itOnly` or `--testOnly` flag, the test in question will force failure.
+:::
+
+### `--describeOnly`
+
+- Only `describe` tests using `.only` will be run. This doens't apply to `it` and `test`.
+
+```ts
+import { test, describe, it, assert } from 'poku';
+
+describe("I won't be executed", () => {
+  it("I won't be reached", async () => {
+    process.exit(1);
+  });
+});
+
+describe.only("I'll be executed 👋🏻", () => {
+  it("I'll be executed 👋🏻", () => {
+    assert(true);
+  });
+
+  test("I'll be executed 👋🏻", () => {
+    assert(true);
+  });
+});
+
+describe("I won't be executed", () => {
+  it.only("I won't be reached, as `describe` is never executed", () => {
+    process.exit(1);
+  });
+});
+
+test("I'll be executed 👋🏻", () => {
+  assert(true);
+});
+```
+
+:::note
+By using `.only` in `it` or `test` with `--describeOnly` flag, the test in question will force failure.
+:::
