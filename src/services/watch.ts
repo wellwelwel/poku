@@ -68,7 +68,7 @@ export class Watcher {
     }
   }
 
-  public async start() {
+  async start() {
     const stats = await stat(this.rootDir);
 
     if (stats.isDirectory()) {
@@ -83,7 +83,7 @@ export class Watcher {
     this.watchFile(this.rootDir);
   }
 
-  public stop() {
+  stop() {
     this.unwatchFiles();
     this.unwatchDirectories();
   }

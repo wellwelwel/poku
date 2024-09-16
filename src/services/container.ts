@@ -72,7 +72,7 @@ export class DockerContainer {
     this.verbose = verbose;
   }
 
-  public async build() {
+  async build() {
     const args: string[] = ['build'];
 
     if (this.cache === false) args.push('--no-cache');
@@ -85,7 +85,7 @@ export class DockerContainer {
     );
   }
 
-  public async start() {
+  async start() {
     const args: string[] = ['run'];
 
     args.push(this.detach !== false ? '-d' : '--init');
@@ -105,7 +105,7 @@ export class DockerContainer {
     );
   }
 
-  public async stop() {
+  async stop() {
     return await runDockerCommand(
       'docker',
       ['stop', this.containerName],
@@ -114,7 +114,7 @@ export class DockerContainer {
     );
   }
 
-  public async remove() {
+  async remove() {
     await runDockerCommand(
       'docker',
       ['rm', '-f', this.containerName],
@@ -162,7 +162,7 @@ export class DockerCompose {
     this.verbose = verbose;
   }
 
-  public async up() {
+  async up() {
     const args: string[] = ['compose', '-f', this.file];
 
     if (this.envFile) args.push(...['--env-file', this.envFile]);
@@ -182,7 +182,7 @@ export class DockerCompose {
     );
   }
 
-  public async down() {
+  async down() {
     const args: string[] = ['-f', this.file];
 
     if (this.envFile) args.push(...['--env-file', this.envFile]);
