@@ -25,7 +25,7 @@ export const runTestFile = async (
     configs?.deno?.cjs === true ||
     (Array.isArray(configs?.deno?.cjs) &&
       configs.deno.cjs.some((ext) => filePath.includes(ext)))
-      ? `https://cdn.jsdelivr.net/npm/poku@${VERSION}/lib/polyfills/deno.mjs`
+      ? `https://cdn.jsdelivr.net/npm/poku${VERSION ? `@${VERSION}` : ''}/lib/polyfills/deno.mjs`
       : filePath,
   ];
 
