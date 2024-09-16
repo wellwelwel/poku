@@ -51,7 +51,7 @@
     "postbuild:deno": "tsx tools/build/check-deno-polyfill.ts",
     "lint": "npx @biomejs/biome lint && prettier --check .",
     "lint:fix": "npx @biomejs/biome lint --write && prettier --write .github/workflows/*.yml .",
-    "update": "pu minor && npm i && npm audit fix",
+    "update": "pu minor && npm i && (npm audit fix || true)",
     "postupdate": "npm run lint:fix",
     "benchmark": "cd benchmark && npm ci && npm start"
   },
