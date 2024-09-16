@@ -67,9 +67,9 @@ async function describeCore(
   cb: () => Promise<unknown>
 ): Promise<void>;
 function describeCore(message: string, cb: () => unknown): void;
-function describeCore(message: string, options?: DescribeOptions): void;
 async function describeCore(cb: () => Promise<unknown>): Promise<void>;
 function describeCore(cb: () => unknown): void;
+function describeCore(message: string, options?: DescribeOptions): void;
 async function describeCore(
   messageOrCb: string | (() => unknown | Promise<unknown>),
   cbOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
