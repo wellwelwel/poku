@@ -29,7 +29,7 @@ const summary: [string, string][] = [
   ['--killRange', 'Terminate the specified port ranges.'],
   ['--listFiles', 'Display all the files returned in the terminal.'],
   ['--node', 'Enforce tests to run through Node.js.'],
-  ['--only', 'Run only `describe`, `it` and `test` using `.only`.'],
+  ['--only', 'Enable selective execution of tests.'],
   ['--parallel, -p', 'Run tests files in parallel.'],
   ['--platform', 'Enforce tests to run through a platform.'],
   ['--quiet, -q', 'Run tests with no logs.'],
