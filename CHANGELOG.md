@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.7.0](https://github.com/wellwelwel/poku/compare/v2.6.2...v2.7.0) (2024-09-17)
+
+
+### Features
+
+* add `--help` command line option ([#765](https://github.com/wellwelwel/poku/issues/765)) ([bcde009](https://github.com/wellwelwel/poku/commit/bcde009e6a65f60c0e6c62fb8ed581a1c2c1f30f))
+* add `only` modifier to `describe`, `it` and `test` methods ([#767](https://github.com/wellwelwel/poku/issues/767)) ([7658609](https://github.com/wellwelwel/poku/commit/76586095293da726ec664e1120f5395dc0390087))
+* **strict:** use standard `assert` for Node.js legacy versions ([#761](https://github.com/wellwelwel/poku/issues/761)) ([d4b7b64](https://github.com/wellwelwel/poku/commit/d4b7b642207328cc7ead917cde3c3b5534988564))
+
+
+### Bug Fixes
+
+* **deno:** ensure `--denoCjs` respect the current Poku version ([#771](https://github.com/wellwelwel/poku/issues/771)) ([9ead4bc](https://github.com/wellwelwel/poku/commit/9ead4bc9ffdf96e23d024b9e411761a6e6f10fd0))
+
 ## [2.6.2](https://github.com/wellwelwel/poku/compare/v2.6.1...v2.6.2) (2024-09-10)
 
 
