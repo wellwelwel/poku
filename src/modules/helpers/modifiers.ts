@@ -53,7 +53,7 @@ export async function onlyDescribe(
   if (!(hasOnly || hasDescribeOnly)) {
     Write.log(
       format(
-        "Can't run `describe.only` tests without `--only` or `--describeOnly` flags"
+        "Can't run `describe.only` tests without `--only` or `--only=describe` flags"
       ).fail()
     );
     exit(1);
@@ -78,7 +78,7 @@ export async function onlyIt(
   if (!(hasOnly || hasItOnly)) {
     Write.log(
       format(
-        "Can't run `it.only` and `test.only` tests without `--only`, `--itOnly` or `--testOnly` flags"
+        "Can't run `it.only` and `test.only` tests without `--only`, `--only=it` or `--only=test` flags"
       ).fail()
     );
     exit(1);

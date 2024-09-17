@@ -20,8 +20,8 @@ describe('Only', async () => {
     assert.strictEqual(results.exitCode, 0, 'Passed');
   });
 
-  await it('--itOnly', async () => {
-    const results = await inspectPoku('--itOnly --debug', {
+  await it('--only=it', async () => {
+    const results = await inspectPoku('--only=it --debug', {
       cwd: 'test/__fixtures__/e2e/only/--it-only',
     });
 
@@ -33,8 +33,8 @@ describe('Only', async () => {
     assert.strictEqual(results.exitCode, 0, 'Passed');
   });
 
-  await it('--testOnly', async () => {
-    const results = await inspectPoku('--testOnly --debug', {
+  await it('--only=test', async () => {
+    const results = await inspectPoku('--only=test --debug', {
       cwd: 'test/__fixtures__/e2e/only/--it-only',
     });
 
@@ -59,8 +59,8 @@ describe('Only', async () => {
     assert.strictEqual(results.exitCode, 1, 'Failed');
   });
 
-  await it('--describeOnly', async () => {
-    const results = await inspectPoku('--describeOnly --debug', {
+  await it('--only=describe', async () => {
+    const results = await inspectPoku('--only=describe --debug', {
       cwd: 'test/__fixtures__/e2e/only/--describe-only',
     });
 
@@ -122,5 +122,18 @@ describe('Only', async () => {
     }
 
     assert.strictEqual(results.exitCode, 1, 'Failed');
+  });
+
+  await it('Ensure complex examples works', async () => {
+    const results = await inspectPoku('--only=it', {
+      cwd: 'test/__fixtures__/e2e/only/examples',
+    });
+
+    if (results.exitCode !== 0) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 0, 'Passed');
   });
 });
