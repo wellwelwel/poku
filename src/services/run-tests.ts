@@ -14,9 +14,9 @@ import { hasOnly, hasDescribeOnly, hasItOnly } from '../parsers/get-arg.js';
 
 const cwd = process.cwd();
 
-if (hasOnly) deepOptions.push('--only');
-if (hasDescribeOnly) deepOptions.push('--describeOnly');
-if (hasItOnly) deepOptions.push('--itOnly');
+if (hasDescribeOnly) deepOptions.push('--only=describe');
+else if (hasItOnly) deepOptions.push('--only=it');
+else if (hasOnly) deepOptions.push('--only');
 
 export const runTests = async (
   dir: string,
