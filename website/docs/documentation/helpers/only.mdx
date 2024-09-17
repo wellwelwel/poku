@@ -13,7 +13,7 @@ The `.only` helper enables selective execution of tests, allowing you to focus o
 <Stability
   level={1}
   message={
-    'This method can be altered according to suggestions and difficulties from users.'
+    "This method can be changed according to users' suggestions and needs. Major changes in this method won't be considered breaking changes while it's in experimental stage."
   }
 />
 
@@ -187,7 +187,7 @@ It's important to recall that **Poku** respects conventional **JavaScript** synt
 
 ### `.only` vs. scope
 
-If a `.only` method is inside an skipped method, it won't be executed, for example:
+If a `.only` method is inside a skipped method, it won't be executed, for example:
 
 ```ts
 import { describe, it, test } from 'poku';
@@ -296,7 +296,7 @@ As the `describe` method isn't using the `.only` helper, it will be skipped, inc
 ### `--only=it`
 
 ```ts
-import { describe, it, test, assert } from 'poku';
+import { describe, it, test, assert, beforeEach, afterEach } from 'poku';
 
 beforeEach(() => {
   // It will run normally before all `it.only` and `test.only`.

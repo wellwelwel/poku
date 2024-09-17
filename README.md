@@ -197,6 +197,10 @@ deno run npm:poku
     <td>⏭️ Skip tests when necessary.</td>
   </tr>
   <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/only">only</a></td>
+    <td>🌌 Debug tests by enabling selective runs.</td>
+  </tr>
+  <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/processes/get-pids">getPIDs</a></td>
     <td>🕵🏻 Debug processes IDs using ports and port ranges.</td>
   </tr>
