@@ -1,11 +1,11 @@
-import { getRuntime } from '../../src/parsers/get-runtime.js';
+import { getRuntime, nodeVersion } from '../../src/parsers/get-runtime.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (getRuntime() === 'deno') skip();
+if (getRuntime() === 'deno' || (nodeVersion && nodeVersion < 12)) skip();
 
 describe('Failure', async () => {
   await it('Sequential', async () => {
