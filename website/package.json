@@ -38,7 +38,7 @@
     "react-confetti": "^6.1.0",
     "react-dom": "^18.3.1",
     "react-typed": "^2.0.12",
-    "sass": "^1.78.0",
+    "sass": "^1.79.1",
     "sonner": "^1.5.0"
   },
   "devDependencies": {
@@ -55,7 +55,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.12",
     "packages-update": "^2.0.0",
-    "poku": "^2.6.2",
+    "poku": "^2.7.0",
     "prettier": "^3.3.3",
     "svps": "^2.3.0",
     "tsx": "^4.19.1",
