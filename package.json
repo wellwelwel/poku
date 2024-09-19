@@ -56,7 +56,7 @@
     "benchmark": "cd benchmark && npm ci && npm start"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.1",
+    "@biomejs/biome": "1.9.2",
     "@types/node": "^22.5.5",
     "c8": "^10.1.2",
     "jsonc.min": "^1.1.0",
