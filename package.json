@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.2",
-    "@types/node": "^22.7.0",
+    "@types/node": "^22.7.2",
     "c8": "^10.1.2",
     "jsonc.min": "^1.1.0",
     "monocart-coverage-reports": "^2.10.9",
