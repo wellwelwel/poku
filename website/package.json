@@ -32,13 +32,13 @@
     "docusaurus-plugin-sass": "^0.2.5",
     "dotenv": "^16.4.5",
     "jsonc.min": "^1.1.0",
-    "lucide-react": "^0.451.0",
+    "lucide-react": "^0.452.0",
     "prism-react-renderer": "^2.4.0",
     "react": "^18.3.1",
     "react-confetti": "^6.1.0",
     "react-dom": "^18.3.1",
     "react-typed": "^2.0.12",
-    "sass": "^1.79.4",
+    "sass": "^1.79.5",
     "sonner": "^1.5.0"
   },
   "devDependencies": {
