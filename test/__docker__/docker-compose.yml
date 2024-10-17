@@ -64,3 +64,11 @@ services:
       dockerfile: ./test/__docker__/node/22.Dockerfile
     environment:
       NODE_ENV: build
+
+  node-23:
+    container_name: 'node-23'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/23.Dockerfile
+    environment:
+      NODE_ENV: build
