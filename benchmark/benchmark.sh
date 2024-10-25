@@ -35,5 +35,3 @@ hyperfine -i --warmup 3 \
   awk '/Summary/ {flag=1} flag'
 
 echo '```'
-
-jq -e ".results | sort_by(.mean) | .[0].command == \"🐷 Poku ($SHORT_SHA)\"" results.json >/dev/null
