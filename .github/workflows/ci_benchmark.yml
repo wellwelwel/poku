@@ -52,7 +52,7 @@ jobs:
         run: npm run benchmark
 
       - name: 🤖 Actions - Commenting Results
-        if: ${{ always() && exists('./benchmark/output.md') }}
+        if: ${{ always() }}
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
