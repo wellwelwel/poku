@@ -1,4 +1,5 @@
-import { test, assert } from '../../../lib/modules/index.js';
+import assert from 'node:assert';
+import { test } from 'bun:test';
 import { sum } from '../../src/sum.js';
 
 test('should add 4 + 4', () => {

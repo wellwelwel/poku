@@ -1,6 +1,7 @@
-import { test, expect } from 'vitest';
+import assert from 'node:assert';
+import { test } from 'vitest';
 import { sum } from '../../src/sum.js';
 
 test('should add 4 + 4', () => {
-  expect(sum(4, 4)).toBe(4);
+  assert.equal(sum(4, 4), 4);
 });

@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: '22.x'
 
+      - name: ➕ Actions — Install Hyperfine
+        run: cargo install --locked hyperfine
+
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
         with:
@@ -42,3 +45,16 @@ jobs:
 
       - name: 🎖️ Rock it
         run: npm run benchmark
+
+      - name: 🤖 Actions - Commenting Results
+        if: success()
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## 🤖 Benchmark Results
+            ```text
+            $(cat ./benchmark/output.log)
+            ```

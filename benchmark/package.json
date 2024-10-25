@@ -1,14 +1,11 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node benchmark.js"
+    "start": "sh benchmark.sh | tee output.log"
   },
   "devDependencies": {
-    "benchmark": "2.1.4",
-    "chai": "5.1.1",
     "jest": "29.7.0",
-    "mocha": "10.4.0",
-    "poku": "latest",
-    "vitest": "1.6.0"
+    "mocha": "10.7.3",
+    "vitest": "2.1.3"
   }
 }
