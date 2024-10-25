@@ -12,9 +12,10 @@ hyperfine -i --warmup 3 --export-json results.json \
   --command-name 'Vitest (2.1.3)' './node_modules/vitest/vitest.mjs run ./test/vitest' |
   awk '/Summary/ {flag=1} flag'
 
-echo '```'
-echo '\n---\n'
-echo '### 🐢 Comparative with Node.js\n'
+echo '```\n'
+echo '<details>'
+echo '<summary><h3>🔬 Native Test Runners</h3></summary>\n'
+echo '#### 🐢 Comparative with Node.js\n'
 echo '```'
 
 # Not included in results.json
@@ -23,9 +24,8 @@ hyperfine -i --warmup 3 \
   --command-name "🐷 Poku ($SHORT_SHA)" '../lib/bin/index.js --parallel --node ./test/poku' |
   awk '/Summary/ {flag=1} flag'
 
-echo '```'
-echo '\n---\n'
-echo '### 🍞 Comparative with Bun.sh\n'
+echo '```\n'
+echo '#### 🍞 Comparative with Bun\n'
 echo '```'
 
 # Not included in results.json
@@ -34,4 +34,5 @@ hyperfine -i --warmup 3 \
   --command-name "🐷 Poku ($SHORT_SHA)" '../lib/bin/index.js --parallel --bun ./test/poku' |
   awk '/Summary/ {flag=1} flag'
 
-echo '```'
+echo '```\n'
+echo '</details>'
