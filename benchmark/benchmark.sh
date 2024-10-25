@@ -35,4 +35,6 @@ hyperfine -i --warmup 3 \
   awk '/Summary/ {flag=1} flag'
 
 echo '```\n'
-echo '</details>'
+echo '</details>\n'
+echo '> [!NOTE]'
+echo '> 📘 For more details and how the benchmarks are carried out, see the [**benchmark**](https://github.com/wellwelwel/poku/tree/main/benchmark) section.'
