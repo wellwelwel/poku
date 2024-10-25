@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "start": "sh benchmark.sh | tee output.md; exit ${PIPESTATUS[0]}"
+    "start": "sh benchmark.sh | tee output.md"
   },
   "devDependencies": {
     "jest": "29.7.0",

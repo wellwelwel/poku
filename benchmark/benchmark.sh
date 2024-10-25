@@ -36,4 +36,4 @@ hyperfine -i --warmup 3 \
 
 echo '```'
 
-jq -e -r ".results | sort_by(.mean) | .[0].command == \"🐷 Poku ($SHORT_SHA)\"" results.json >/dev/null
+jq -e ".results | sort_by(.mean) | .[0].command == \"🐷 Poku ($SHORT_SHA)\"" results.json >/dev/null
