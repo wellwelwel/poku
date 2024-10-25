@@ -20,7 +20,7 @@ The testers to be compared are chosen based on the three most downloaded test ru
 
 - ~**4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
 - ~**4x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v2.1.3)
-- ~**2x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.7.3) — even with test file isolation
+- ~**2x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.7.3) — _even with test file isolation_
 
 ---
 
