@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { test } from 'vitest';
+import { test } from 'bun:test';
 import { sum } from '../../src/sum.js';
 
 test('should add 2 + 2', () => {

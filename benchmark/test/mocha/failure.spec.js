@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import assert from 'node:assert';
 import { test } from 'mocha';
 import { sum } from '../../src/sum.js';
 

@@ -14,11 +14,21 @@ jobs:
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+
+      - name: ➕ Actions - Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ matrix.bun-version }}
+
+      - name: ➕ Actions — Setup Hyperfine
+        run: cargo install --locked hyperfine
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v4
@@ -42,3 +52,33 @@ jobs:
 
       - name: 🎖️ Rock it
         run: npm run benchmark
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Benchmark Results
+
+      - name: 🤖 Actions - Creating Comment
+        if: steps.fc.outputs.comment-id == ''
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: './benchmark/output.md'
+
+      - name: 🤖 Actions - Updating Comment
+        if: steps.fc.outputs.comment-id != ''
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body-path: './benchmark/output.md'
+
+      - name: 🐷 Ensure Poku
+        run: |
+          cd benchmark
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          jq -e ".results | sort_by(.mean) | .[0].command == \"🐷 Poku ($SHORT_SHA)\"" results.json

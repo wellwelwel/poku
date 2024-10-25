@@ -1,4 +1,5 @@
-import { test, assert } from 'poku';
+import assert from 'node:assert';
+import { test } from '../../../lib/modules/index.js';
 import { sum } from '../../src/sum.js';
 
 test('should add 2 + 2', () => {

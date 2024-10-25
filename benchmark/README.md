@@ -11,7 +11,7 @@ The benchmark is performed by comparing a simple success and a failure test, eac
 The testers to be compared are chosen based on the three most downloaded test runners according to the **npm** weekly statistics _(2024/06/09)_:
 
 - [**Jest**](https://www.npmjs.com/package/jest): 23,549,369
-- [**Mocha**](https://www.npmjs.com/package/mocha) + [**Chai**](https://www.npmjs.com/package/chai): 8,053,244 + 11,294,912
+- [**Mocha**](https://www.npmjs.com/package/mocha): 8,053,244
 - [**Vitest**](https://www.npmjs.com/package/vitest): 4,840,171
 
 ---
@@ -19,8 +19,8 @@ The testers to be compared are chosen based on the three most downloaded test ru
 **Poku** is continuously tested ([**CI**](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml)) to ensure the following expectations for basic usage:
 
 - ~**4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
-- ~**3x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
-- ~**1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
+- ~**4x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v2.1.3)
+- ~**2x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v10.7.3) — _even with test file isolation_
 
 ---
 
