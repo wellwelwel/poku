@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.1](https://github.com/wellwelwel/poku/compare/v2.7.0...v2.7.1) (2024-10-27)
+
+
+### Bug Fixes
+
+* prevent invalid column size count ([#830](https://github.com/wellwelwel/poku/issues/830)) ([2d00338](https://github.com/wellwelwel/poku/commit/2d00338810f25cc5fd7fa1bdea3ff4983cb54ac1))
+
 ## [2.7.0](https://github.com/wellwelwel/poku/compare/v2.6.2...v2.7.0) (2024-09-17)
 
 
