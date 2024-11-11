@@ -40,4 +40,4 @@ export type {
 export type { Configs as ListFilesConfigs } from '../@types/list-files.js';
 
 /** 🐷 Auxiliary function to define the `poku` configurations */
-export const defineConfig = (options: ConfigFile) => options;
+export const defineConfig = (options: ConfigFile): ConfigFile => options;

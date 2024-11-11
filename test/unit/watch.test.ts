@@ -18,7 +18,7 @@ const runtime = getRuntime();
 const tmpDir = path.resolve('.', 'test/__fixtures__/.temp/watch');
 const humanDelay = 750;
 
-const createTempDir = () => {
+const createTempDir = (): void => {
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir, { recursive: true });
   }

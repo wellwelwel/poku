@@ -24,10 +24,10 @@ export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
     : sanitizedPath;
 };
 
-export const isFile = async (fullPath: string) =>
+export const isFile = async (fullPath: string): Promise<boolean> =>
   (await fsStat(fullPath)).isFile();
 
-export const escapeRegExp = (string: string) =>
+export const escapeRegExp = (string: string): string =>
   string.replace(regex.safeRegExp, '\\$&');
 
 const envFilter = env.FILTER?.trim()

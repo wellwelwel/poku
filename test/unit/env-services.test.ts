@@ -89,10 +89,12 @@ describe('resolveEnvVariables', () => {
   it('should resolve environment variables', () => {
     const env = { MY_VAR: 'resolvedValue' };
     assert.strictEqual(
+      // biome-ignore lint/nursery/noTemplateCurlyInString:
       resolveEnvVariables('value is ${MY_VAR}', env),
       'value is resolvedValue'
     );
     assert.strictEqual(
+      // biome-ignore lint/nursery/noTemplateCurlyInString:
       resolveEnvVariables('${MY_VAR} is set', env),
       'resolvedValue is set'
     );
@@ -101,10 +103,12 @@ describe('resolveEnvVariables', () => {
   it('should handle missing environment variables', () => {
     const env = { MY_VAR: 'resolvedValue' };
     assert.strictEqual(
+      // biome-ignore lint/nursery/noTemplateCurlyInString:
       resolveEnvVariables('value is ${UNKNOWN_VAR}', env),
       'value is '
     );
     assert.strictEqual(
+      // biome-ignore lint/nursery/noTemplateCurlyInString:
       resolveEnvVariables('${UNKNOWN_VAR} is set', env),
       ' is set'
     );

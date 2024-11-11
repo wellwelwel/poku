@@ -1,4 +1,4 @@
-const pad = (num: number) => String(num).padStart(2, '0');
+const pad = (num: number): string => String(num).padStart(2, '0');
 
 export const parseTime = (date: Date): string => {
   const hours = pad(date.getHours());

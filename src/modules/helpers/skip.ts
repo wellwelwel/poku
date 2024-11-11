@@ -2,7 +2,7 @@ import { exit, env } from 'node:process';
 import { Write } from '../../services/write.js';
 import { format } from '../../services/format.js';
 
-export const skip = (message = 'Skipping') => {
+export const skip = (message = 'Skipping'): void => {
   const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
   const FILE = env.FILE;
 

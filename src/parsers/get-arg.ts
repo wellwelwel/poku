@@ -1,70 +1,53 @@
 import { argv } from 'node:process';
 import { toDynamicCase } from './to-dynamic-case.js';
+import { parseArgs as nodeParseArgs } from 'node:util';
 
-const [, , ...processArgs] = argv;
-const regexQuotes = /''|""/;
+function bool(short: string) {
+    return {
+      type: 'boolean',
+      short,
+    } as const;
+}
+function Options<TYPE extends string, T extends string>(type: TYPE, ...args: T[]) {
+    return Object.fromEntries(args.map(x => [x, { type }] as const)) as Record<T, { type: TYPE }>;
+}
+const options = {
+  version: bool('v'),
+  help: bool('h'),
+  parallel: bool('p'),
+  debug: bool('d'),
+  enforce: bool('x'),
+  quiet: bool('q'),
+  watch: bool('w'),
+  ...Options('string', 'concurrency', 'watchinterval', 'include', 'denocjs', 'platform', 'filter', 'exclude', 'killport', 'killrange', 'killpid', 'envfile', 'denoallow', 'denodeny'),
+  ...Options('boolean', 'listfiles', 'node', 'bun', 'deno', 'only', 'failfast'),
+  config: {
+    type: 'boolean',
+    short: 'c',
+  },
+} as const;
 
-const processedArgs = processArgs.map(toDynamicCase);
+function parseArgs(args = argv.slice(2).map(toDynamicCase)) {
+  const result = nodeParseArgs({
+    allowPositionals: true,
+    strict: false,
+    options,
+    args,
+  });
+  return {
+    values: result.values,
+    positionals: result.positionals.flatMap(x => x.split(',')),
+  };
+}
 
-export const getArg = (
-  arg: string,
-  prefix = '--',
-  baseArgs = processedArgs
-): string | undefined => {
-  const argPattern = `${prefix}${arg}=`;
-  const argValue = baseArgs.find((a) => a.startsWith(argPattern));
+export const { values, positionals } = parseArgs();
 
-  if (!argValue) return;
+const only = typeof values.only === 'boolean' ? undefined : values.only;
 
-  return argValue.slice(argPattern.length).replace(regexQuotes, '');
-};
-
-export const hasArg = (
-  arg: string,
-  prefix = '--',
-  baseArgs = processedArgs
-): boolean => baseArgs.some((a) => a.startsWith(`${prefix}${arg}`));
-
-export const getPaths = (
-  prefix = '--',
-  baseArgs = processedArgs
-): string[] | undefined => {
-  let hasPaths = false;
-  const paths: string[] = [];
-
-  for (const arg of baseArgs) {
-    if (arg.startsWith(prefix)) continue;
-
-    hasPaths = true;
-    const parts = arg.split(',');
-
-    for (const part of parts) paths.push(part);
-  }
-
-  return hasPaths ? paths : undefined;
-};
-
-export const argToArray = (
-  arg: string,
-  prefix = '--',
-  baseArgs = processedArgs
-): string[] | undefined => {
-  const hasArgument = hasArg(arg, prefix, baseArgs);
-  if (!hasArgument) return;
-
-  const argValue = getArg(arg, prefix, baseArgs);
-  if (!argValue) return [];
-
-  return argValue
-    .split(',')
-    .map((a) => a.trim())
-    .filter((a) => a);
-};
-
-const only = getArg('only');
-
-export const hasOnly = hasArg('only') && !only;
+export const hasOnly = !!values.only && !only;
 
 export const hasDescribeOnly = only === 'describe';
 
 export const hasItOnly = only && ['it', 'test'].includes(only);
+
+export const test = { parseArgs };

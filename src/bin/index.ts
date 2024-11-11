@@ -2,7 +2,7 @@
 
 import type { Configs } from '../@types/poku.js';
 import { escapeRegExp } from '../modules/helpers/list-files.js';
-import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
+import { positionals, values } from '../parsers/get-arg.js';
 import { states } from '../configs/files.js';
 import { platformIsValid } from '../parsers/get-runtime.js';
 import { format } from '../services/format.js';
@@ -12,15 +12,27 @@ import { poku } from '../modules/essentials/poku.js';
 import { Write } from '../services/write.js';
 import { getConfigs } from '../parsers/options.js';
 
+const argToArray = (
+  argValue: string | undefined,
+): string[] | undefined => {
+  if (argValue === undefined) return undefined;
+  if (!argValue) return [];
+
+  return argValue
+    .split(',')
+    .map((a) => a.trim())
+    .filter((a) => a);
+};
+
 (async () => {
-  if (hasArg('version') || hasArg('v', '-')) {
+  if (values.version) {
     const { VERSION } = require('../configs/poku.js');
 
     Write.log(VERSION);
     return;
   }
 
-  if (hasArg('help') || hasArg('h', '-')) {
+  if (values.help) {
     const { help } = require('./help.js');
 
     help();
@@ -28,56 +40,45 @@ import { getConfigs } from '../parsers/options.js';
     return;
   }
 
-  const enforce = hasArg('enforce') || hasArg('x', '-');
-  const configFile = getArg('config') || getArg('c', '-');
+  const enforce = values.enforce;
+  const configFile = typeof values.config === 'boolean' ? undefined : values.config;
   const defaultConfigs = await getConfigs(configFile);
-  const dirs: string[] = (() => {
+  const dirs = ((): string[] => {
     /* c8 ignore next 2 */ // Deprecated
-    const includeArg = getArg('include');
-    if (includeArg !== undefined) return includeArg.split(',');
-
-    return (
-      getPaths('-') ??
-      (defaultConfigs?.include
-        ? Array.prototype.concat(defaultConfigs?.include)
-        : ['.'])
-    );
+    const includeArg = values.include;
+    if (typeof includeArg === 'string') return includeArg.split(',');
+    if (positionals.length > 0) return positionals;
+    if (defaultConfigs?.include) return Array.prototype.concat(defaultConfigs?.include);
+    return ['.'];
   })();
-  const platform = getArg('platform');
-  const filter = getArg('filter') ?? defaultConfigs?.filter;
-  const exclude = getArg('exclude') ?? defaultConfigs?.exclude;
-  const killPort = getArg('killport');
-  const killRange = getArg('killrange');
-  const killPID = getArg('killpid');
+  const platform = values.platform;
+  const filter = values.filter ?? defaultConfigs?.filter;
+  const exclude = values.exclude ?? defaultConfigs?.exclude;
+  const killPort = typeof values.killport === 'boolean' ? undefined : values.killport;
+  const killRange = typeof values.killrange === 'boolean' ? undefined : values.killrange;
+  const killPID = typeof values.killpid === 'boolean' ? undefined : values.killpid;
   /* c8 ignore start */ // Deno
-  const denoAllow = argToArray('denoallow') ?? defaultConfigs?.deno?.allow;
-  const denoDeny = argToArray('denodeny') ?? defaultConfigs?.deno?.deny;
-  const denoCJS =
-    getArg('denocjs')
-      ?.split(',')
-      .map((a) => a.trim())
-      .filter((a) => a) ||
-    hasArg('denocjs') ||
-    defaultConfigs?.deno?.cjs;
+  const denoAllow = argToArray(typeof values.denoallow === 'boolean' ? undefined : values.denoallow) ?? defaultConfigs?.deno?.allow;
+  const denoDeny = argToArray(typeof values.denodeny === 'boolean' ? undefined : values.denodeny) ?? defaultConfigs?.deno?.deny;
+  const denoCJS = argToArray(typeof values.denocjs === 'boolean' ? undefined : values.denocjs) ?? defaultConfigs?.deno?.cjs;
   /* c8 ignore stop */
-  const parallel =
-    hasArg('parallel') || hasArg('p', '-') || defaultConfigs?.parallel;
-  const quiet = hasArg('quiet') || hasArg('q', '-') || defaultConfigs?.quiet;
-  const debug = hasArg('debug') || hasArg('d', '-') || defaultConfigs?.debug;
-  const failFast = hasArg('failfast') || defaultConfigs?.failFast;
-  const watchMode = hasArg('watch') || hasArg('w', '-');
-  const hasEnvFile = hasArg('envfile');
+  const parallel = !!values.parallel || defaultConfigs?.parallel;
+  const quiet = !!values.quiet || defaultConfigs?.quiet;
+  const debug = !!values.debug || defaultConfigs?.debug;
+  const failFast = !!values.failfast || defaultConfigs?.failFast;
+  const watchMode = !!values.watch;
+  const hasEnvFile = values.envfile;
   const concurrency = (() => {
     if (!(parallel || defaultConfigs?.parallel)) return;
 
-    const value = Number(getArg('concurrency'));
+    const value = Number(values.concurrency);
 
     return Number.isNaN(value) ? defaultConfigs?.concurrency : value;
   })();
 
   if (dirs.length === 1) states.isSinglePath = true;
 
-  if (hasArg('listfiles')) {
+  if (values.listfiles) {
     const { listFiles } = require('../modules/helpers/list-files.js');
 
     const files: string[] = [];
@@ -149,28 +150,25 @@ import { getConfigs } from '../parsers/options.js';
   /* c8 ignore stop */
 
   if (hasEnvFile || defaultConfigs?.envFile) {
-    const envFilePath = getArg('envfile') ?? defaultConfigs?.envFile;
+    const envFilePath = (typeof values.envfile === 'boolean' ? null : values.envfile) ?? defaultConfigs?.envFile;
 
     tasks.push(envFile(envFilePath));
   }
 
   const options: Configs = {
     /* c8 ignore next 11 */ // Varies Platform
-    platform: platformIsValid(platform)
-      ? platform
-      : hasArg('node')
-        ? 'node'
-        : hasArg('bun')
-          ? 'bun'
-          : hasArg('deno')
-            ? 'deno'
-            : platformIsValid(defaultConfigs?.platform)
-              ? defaultConfigs?.platform
-              : undefined,
+    platform: (() => {
+      if (platformIsValid(platform)) return platform;
+      if (values.node) return 'node';
+      if (values.bun) return 'bun';
+      if (values.deno) return 'deno';
+      if (platformIsValid(defaultConfigs?.platform)) return defaultConfigs?.platform;
+      return undefined;
+    })(),
     filter:
-      typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
+      typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : undefined,
     exclude:
-      typeof exclude === 'string' ? new RegExp(escapeRegExp(exclude)) : exclude,
+      typeof exclude === 'string' ? new RegExp(escapeRegExp(exclude)) : undefined,
     parallel,
     concurrency,
     quiet,

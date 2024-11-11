@@ -5,7 +5,7 @@ import { Write } from '../services/write.js';
 import process from 'node:process';
 import type { Configs } from '../@types/poku.js';
 import { format } from '../services/format.js';
-import { getArg } from '../parsers/get-arg.js';
+import { values } from '../parsers/get-arg.js';
 import { fileResults } from '../configs/files.js';
 import { availableParallelism } from '../polyfills/os.js';
 
@@ -14,7 +14,7 @@ export const startWatch = async (dirs: string[], options: Configs) => {
 
   const watchers: Set<Watcher> = new Set();
   const executing = new Set<string>();
-  const interval = Number(getArg('watchinterval')) || 1500;
+  const interval = Number(values.watchinterval) || 1500;
 
   const setIsRunning = (value: boolean) => {
     isRunning = value;
