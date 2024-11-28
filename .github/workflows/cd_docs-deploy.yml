@@ -36,23 +36,10 @@ jobs:
       - name: Building Site
         run: cd website && npm run build
 
-      - name: Checking Docker Build
-        run: cd website && docker compose up -d --build
-        env:
-          APP_PORT: ${{secrets.APP_PORT}}
-
-      - name: Checking for Service Status Header
-        run: |
-          sleep 1
-          curl --fail --silent --output /dev/null http://localhost:${{ env.APP_PORT }}
-        env:
-          APP_PORT: ${{secrets.APP_PORT}}
-
       - name: Deploy
-        run: cd website && npm run deploy
-        env:
-          SRV_HOST: ${{secrets.SRV_HOST}}
-          SRV_USER: ${{secrets.SRV_USER}}
-          SRV_PORT: ${{secrets.SRV_PORT}}
-          SRV_PASS: ${{secrets.SRV_PASS}}
-          APP_PORT: ${{secrets.APP_PORT}}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./website/build
+          cname: poku.io
+          allow_empty_commit: true

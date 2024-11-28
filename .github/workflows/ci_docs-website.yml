@@ -41,15 +41,3 @@ jobs:
 
       - name: Checking Build
         run: cd website && npm run build
-
-      - name: Checking Docker Build
-        run: cd website && docker compose up -d --build
-        env:
-          APP_PORT: 3000
-
-      - name: Checking for Service Status Header
-        run: |
-          sleep 1
-          curl --fail --silent --output /dev/null http://localhost:${{ env.APP_PORT }}
-        env:
-          APP_PORT: 3000
