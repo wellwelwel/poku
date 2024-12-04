@@ -30,15 +30,15 @@
     "@mdx-js/react": "^3.1.0",
     "clsx": "^2.1.1",
     "docusaurus-plugin-sass": "^0.2.6",
-    "dotenv": "^16.4.6",
+    "dotenv": "^16.4.7",
     "jsonc.min": "^1.1.0",
-    "lucide-react": "^0.462.0",
+    "lucide-react": "^0.464.0",
     "prism-react-renderer": "^2.4.0",
     "react": "^18.3.1",
     "react-confetti": "^6.1.0",
     "react-dom": "^18.3.1",
     "react-typed": "^2.0.12",
-    "sass": "^1.81.1",
+    "sass": "^1.82.0",
     "sonner": "^1.7.0"
   },
   "devDependencies": {
