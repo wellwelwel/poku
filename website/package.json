@@ -32,7 +32,7 @@
     "docusaurus-plugin-sass": "^0.2.6",
     "dotenv": "^16.4.7",
     "jsonc.min": "^1.1.0",
-    "lucide-react": "^0.464.0",
+    "lucide-react": "^0.465.0",
     "prism-react-renderer": "^2.4.0",
     "react": "^18.3.1",
     "react-confetti": "^6.1.0",
@@ -56,7 +56,7 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "packages-update": "^2.0.0",
     "poku": "^2.7.1",
-    "prettier": "^3.4.1",
+    "prettier": "^3.4.2",
     "svps": "^2.3.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
