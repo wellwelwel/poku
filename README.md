@@ -20,7 +20,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 > [!IMPORTANT]
 >
-> [**Version 3** in development](https://github.com/wellwelwel/poku/issues/801) 💡
+> [**Version 3**](https://github.com/wellwelwel/poku/issues/801) in development 💡
 
 ---
 
