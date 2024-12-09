@@ -24,10 +24,10 @@
     "lib"
   ],
   "engines": {
-    "node": ">=8.17.0",
-    "bun": ">=1.0.0",
-    "deno": ">=1.30.0",
-    "typescript": ">=4.7.2"
+    "node": ">=12.x.x",
+    "bun": ">=1.x.x",
+    "deno": ">=1.x.x",
+    "typescript": ">=5.x.x"
   },
   "scripts": {
     "test": "npm run test:parallel && npm run test:sequential",
