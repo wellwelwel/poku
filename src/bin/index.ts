@@ -148,18 +148,15 @@ import { getConfigs } from '../parsers/options.js';
   }
 
   const options: Configs = {
-    /* c8 ignore next 11 */ // Varies Platform
-    platform: platformIsValid(platform)
-      ? platform
-      : hasArg('node')
-        ? 'node'
-        : hasArg('bun')
-          ? 'bun'
-          : hasArg('deno')
-            ? 'deno'
-            : platformIsValid(defaultConfigs?.platform)
-              ? defaultConfigs?.platform
-              : undefined,
+    /* c8 ignore next 8 */ // Varies Platform
+    platform: (() => {
+      if (platformIsValid(platform)) return platform;
+      if (hasArg('node')) return 'node';
+      if (hasArg('bun')) return 'bun';
+      if (hasArg('deno')) return 'deno';
+      if (platformIsValid(defaultConfigs?.platform))
+        return defaultConfigs.platform;
+    })(),
     filter:
       typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
     exclude:
