@@ -50,17 +50,17 @@ export const getAllFiles = async (
     return await readdir(sanitizePath(dirPath));
   })();
 
-  const filter: RegExp = envFilter
-    ? envFilter
-    : configs?.filter instanceof RegExp
-      ? configs.filter
-      : regex.defaultFilter;
+  const filter: RegExp = (() => {
+    if (envFilter) return envFilter;
+    if (configs?.filter instanceof RegExp) return configs.filter;
+    return regex.defaultFilter;
+  })();
 
-  const exclude: Configs['exclude'] = configs?.exclude
-    ? Array.isArray(configs.exclude)
-      ? configs.exclude
-      : [configs.exclude]
-    : undefined;
+  const exclude: Configs['exclude'] = (() => {
+    if (!configs?.exclude) return undefined;
+    if (Array.isArray(configs.exclude)) return configs.exclude;
+    return [configs.exclude];
+  })();
 
   await Promise.all(
     currentFiles.map(async (file) => {

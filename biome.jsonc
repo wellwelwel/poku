@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
   "files": {
     "include": ["**/**"],
     "ignore": [
@@ -42,7 +42,8 @@
         "useImportRestrictions": "off",
         "noProcessEnv": "off",
         "noCommonJs": "off",
-        "noSecrets": "off"
+        "noSecrets": "off",
+        "useExplicitType": "off"
       },
       "performance": {
         "all": true,
@@ -88,6 +89,9 @@
           },
           "performance": {
             "useTopLevelRegex": "off"
+          },
+          "nursery": {
+            "noTemplateCurlyInString": "off"
           }
         }
       }
