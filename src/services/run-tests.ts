@@ -92,6 +92,12 @@ export const runTestsParallel = async (
   dir: string,
   configs?: Configs
 ): Promise<boolean> => {
+  let allPassed = true;
+  let failFastTriggered = false;
+  let activeTests = 0;
+  let resolveDone: (value: boolean) => void;
+  let rejectDone: (reason?: Error) => void;
+
   const testDir = join(cwd, dir);
   const files = await listFiles(testDir, configs);
   const showLogs = !isQuiet(configs);
@@ -100,12 +106,6 @@ export const runTestsParallel = async (
       configs?.concurrency ?? Math.max(availableParallelism() - 1, 1);
     return limit <= 0 ? files.length || 1 : limit;
   })();
-
-  let allPassed = true;
-  let failFastTriggered = false;
-  let activeTests = 0;
-  let resolveDone: (value: boolean) => void;
-  let rejectDone: (reason?: Error) => void;
 
   const done = new Promise<boolean>((resolve, reject) => {
     resolveDone = resolve;
@@ -118,11 +118,7 @@ export const runTestsParallel = async (
       return;
     }
 
-    const filePath = files.shift();
-    if (!filePath) {
-      if (activeTests === 0 && !failFastTriggered) resolveDone(allPassed);
-      return;
-    }
+    const filePath = files.shift()!;
 
     activeTests++;
 
@@ -142,24 +138,17 @@ export const runTestsParallel = async (
         }
       }
     } catch (error) {
-      rejectDone(error instanceof Error ? error : new Error(String(error)));
+      error instanceof Error && rejectDone(error);
+      return;
     } finally {
       activeTests--;
     }
 
-    if (failFastTriggered) {
-      if (activeTests === 0) rejectDone(new Error(failFastError));
-    } else
-      runNext().catch((error) => {
-        rejectDone(error instanceof Error ? error : new Error(String(error)));
-      });
+    runNext().catch(rejectDone);
   };
 
   try {
-    for (let i = 0; i < concurrency; i++)
-      runNext().catch((error) =>
-        rejectDone(error instanceof Error ? error : new Error(String(error)))
-      );
+    for (let i = 0; i < concurrency; i++) runNext();
 
     return await done;
   } catch (error) {
