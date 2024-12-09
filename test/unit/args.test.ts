@@ -69,16 +69,6 @@ describe('CLI Argument Handling Functions', () => {
     );
   });
 
-  it('should split paths by comma', () => {
-    const args = ['path1,path2,path3'];
-    const result = getPaths('--', args);
-    assert.deepStrictEqual(
-      result,
-      ['path1', 'path2', 'path3'],
-      'Should split paths by comma'
-    );
-  });
-
   it('should return undefined if no paths provided', () => {
     const args = ['--arg=value'];
     const result = getPaths('--', args);
@@ -86,16 +76,6 @@ describe('CLI Argument Handling Functions', () => {
       result,
       undefined,
       'Should return undefined if no paths'
-    );
-  });
-
-  it('should handle mixed arguments with and without prefix', () => {
-    const args = ['--arg=value', 'path1', '--another=value', 'path2,path3'];
-    const result = getPaths('--', args);
-    assert.deepStrictEqual(
-      result,
-      ['path1', 'path2', 'path3'],
-      'Should return ["path1", "path2", "path3"]'
     );
   });
 

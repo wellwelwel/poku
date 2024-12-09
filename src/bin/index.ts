@@ -31,18 +31,11 @@ import { getConfigs } from '../parsers/options.js';
   const enforce = hasArg('enforce') || hasArg('x', '-');
   const configFile = getArg('config') || getArg('c', '-');
   const defaultConfigs = await getConfigs(configFile);
-  const dirs: string[] = (() => {
-    /* c8 ignore next 2 */ // Deprecated
-    const includeArg = getArg('include');
-    if (includeArg !== undefined) return includeArg.split(',');
-
-    return (
-      getPaths('-') ??
-      (defaultConfigs?.include
-        ? Array.prototype.concat(defaultConfigs?.include)
-        : ['.'])
-    );
-  })();
+  const dirs: string[] =
+    getPaths('-') ??
+    (defaultConfigs?.include
+      ? Array.prototype.concat(defaultConfigs?.include)
+      : ['.']);
   const platform = getArg('platform');
   const filter = getArg('filter') ?? defaultConfigs?.filter;
   const exclude = getArg('exclude') ?? defaultConfigs?.exclude;

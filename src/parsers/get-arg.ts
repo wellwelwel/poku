@@ -34,11 +34,9 @@ export const getPaths = (
 
   for (const arg of baseArgs) {
     if (arg.startsWith(prefix)) continue;
+    if (!hasPaths) hasPaths = true;
 
-    hasPaths = true;
-    const parts = arg.split(',');
-
-    for (const part of parts) paths.push(part);
+    paths.push(arg);
   }
 
   return hasPaths ? paths : undefined;
