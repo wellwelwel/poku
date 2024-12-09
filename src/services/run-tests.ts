@@ -13,6 +13,7 @@ import { availableParallelism } from '../polyfills/os.js';
 import { hasOnly, hasDescribeOnly, hasItOnly } from '../parsers/get-arg.js';
 
 const cwd = process.cwd();
+const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
 
 if (hasDescribeOnly) deepOptions.push('--only=describe');
 else if (hasItOnly) deepOptions.push('--only=it');
@@ -76,9 +77,7 @@ export const runTests = async (
 
         if (showLogs) {
           Write.hr();
-          Write.log(
-            `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`
-          );
+          Write.log(failFastError);
         }
 
         break;
@@ -95,49 +94,78 @@ export const runTestsParallel = async (
 ): Promise<boolean> => {
   const testDir = join(cwd, dir);
   const files = await listFiles(testDir, configs);
-  const filesByConcurrency: string[][] = [];
-  const concurrencyLimit =
-    configs?.concurrency ?? Math.max(availableParallelism() - 1, 1);
-  const concurrencyResults: (boolean | undefined)[][] = [];
   const showLogs = !isQuiet(configs);
+  const concurrency: number = (() => {
+    const limit =
+      configs?.concurrency ?? Math.max(availableParallelism() - 1, 1);
+    return limit <= 0 ? files.length || 1 : limit;
+  })();
 
-  if (concurrencyLimit > 0) {
-    for (let i = 0; i < files.length; i += concurrencyLimit)
-      filesByConcurrency.push(files.slice(i, i + concurrencyLimit));
-  } else filesByConcurrency.push(files);
+  let allPassed = true;
+  let failFastTriggered = false;
+  let activeTests = 0;
+  let resolveDone: (value: boolean) => void;
+  let rejectDone: (reason?: Error) => void;
 
-  try {
-    for (const fileGroup of filesByConcurrency) {
-      const promises = fileGroup.map(async (filePath) => {
-        const testPassed = await runTestFile(filePath, configs);
+  const done = new Promise<boolean>((resolve, reject) => {
+    resolveDone = resolve;
+    rejectDone = reject;
+  });
 
-        if (!testPassed) {
-          ++results.fail;
-
-          if (configs?.failFast) {
-            process.exitCode = 1;
-
-            throw new Error(
-              `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`
-            );
-          }
-
-          return false;
-        }
-
-        ++results.success;
-        return true;
-      });
-
-      const concurrency = await Promise.all(promises);
-      concurrencyResults.push(concurrency);
+  const runNext = async () => {
+    if (failFastTriggered || files.length === 0) {
+      if (activeTests === 0 && !failFastTriggered) resolveDone(allPassed);
+      return;
     }
 
-    return concurrencyResults.every((group) => group.every((result) => result));
+    const filePath = files.shift();
+    if (!filePath) {
+      if (activeTests === 0 && !failFastTriggered) resolveDone(allPassed);
+      return;
+    }
+
+    activeTests++;
+
+    try {
+      const testPassed = await runTestFile(filePath, configs);
+
+      if (testPassed) ++results.success;
+      else {
+        ++results.fail;
+        allPassed = false;
+
+        if (configs?.failFast) {
+          failFastTriggered = true;
+          process.exitCode = 1;
+
+          throw new Error(failFastError);
+        }
+      }
+    } catch (error) {
+      rejectDone(error instanceof Error ? error : new Error(String(error)));
+    } finally {
+      activeTests--;
+    }
+
+    if (failFastTriggered) {
+      if (activeTests === 0) rejectDone(new Error(failFastError));
+    } else
+      runNext().catch((error) => {
+        rejectDone(error instanceof Error ? error : new Error(String(error)));
+      });
+  };
+
+  try {
+    for (let i = 0; i < concurrency; i++)
+      runNext().catch((error) =>
+        rejectDone(error instanceof Error ? error : new Error(String(error)))
+      );
+
+    return await done;
   } catch (error) {
-    if (showLogs) {
+    if (showLogs && error instanceof Error) {
       Write.hr();
-      error instanceof Error && console.error(error.message);
+      console.error(error.message);
     }
 
     return false;
