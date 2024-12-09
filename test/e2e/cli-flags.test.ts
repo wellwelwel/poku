@@ -25,26 +25,6 @@ describe('CLI Flags', async () => {
     );
   });
 
-  await it('Kebab flags', async () => {
-    const output = await inspectPoku('--debug --fail-fast --deno-cjs=js,cjs', {
-      cwd: 'test/__fixtures__/e2e/no-tests',
-    });
-
-    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(
-      /debug(.+)?:(.+)?true/.test(output.stdout),
-      'CLI needs to able "debug"'
-    );
-    assert(
-      /failFast(.+)?:(.+)?true/.test(output.stdout),
-      'CLI needs to able "failFast"'
-    );
-    assert(
-      /cjs(.+)?:(.+)?js(.+)?cjs/.test(output.stdout),
-      'CLI needs to able "Deno CJS Pollyfill"'
-    );
-  });
-
   await it('Camel flags', async () => {
     const output = await inspectPoku('--debug --failFast --denoCjs=js,cjs', {
       cwd: 'test/__fixtures__/e2e/no-tests',

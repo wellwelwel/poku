@@ -14,7 +14,7 @@ export const startWatch = async (dirs: string[], options: Configs) => {
 
   const watchers: Set<Watcher> = new Set();
   const executing = new Set<string>();
-  const interval = Number(getArg('watchinterval')) || 1500;
+  const interval = Number(getArg('watchInterval')) || 1500;
 
   const setIsRunning = (value: boolean) => {
     isRunning = value;
