@@ -23,6 +23,7 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           release-type: node
+          prerelease: rc
           package-name: poku
           changelog-path: 'CHANGELOG.md'
 
@@ -57,17 +58,17 @@ jobs:
         if: ${{ steps.release.outputs.releases_created }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --provenance
+        run: npm publish --tag rc --provenance
 
-      - name: 🔗 Triggering — Website Publish
-        if: ${{ steps.release.outputs.releases_created }}
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.PAT }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'cd_docs-deploy.yml',
-              ref: 'main'
-            });
+      # - name: 🔗 Triggering — Website Publish
+      #   if: ${{ steps.release.outputs.releases_created }}
+      #   uses: actions/github-script@v7
+      #   with:
+      #     github-token: ${{ secrets.PAT }}
+      #     script: |
+      #       await github.rest.actions.createWorkflowDispatch({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         workflow_id: 'cd_docs-deploy.yml',
+      #         ref: 'main'
+      #       });
