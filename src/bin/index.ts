@@ -39,27 +39,27 @@ import { getConfigs } from '../parsers/options.js';
   const platform = getArg('platform');
   const filter = getArg('filter') ?? defaultConfigs?.filter;
   const exclude = getArg('exclude') ?? defaultConfigs?.exclude;
-  const killPort = getArg('killport');
-  const killRange = getArg('killrange');
-  const killPID = getArg('killpid');
+  const killPort = getArg('killPort');
+  const killRange = getArg('killRange');
+  const killPID = getArg('killPid');
   /* c8 ignore start */ // Deno
-  const denoAllow = argToArray('denoallow') ?? defaultConfigs?.deno?.allow;
-  const denoDeny = argToArray('denodeny') ?? defaultConfigs?.deno?.deny;
+  const denoAllow = argToArray('denoAllow') ?? defaultConfigs?.deno?.allow;
+  const denoDeny = argToArray('denoDeny') ?? defaultConfigs?.deno?.deny;
   const denoCJS =
-    getArg('denocjs')
+    getArg('denoCjs')
       ?.split(',')
       .map((a) => a.trim())
       .filter((a) => a) ||
-    hasArg('denocjs') ||
+    hasArg('denoCjs') ||
     defaultConfigs?.deno?.cjs;
   /* c8 ignore stop */
   const parallel =
     hasArg('parallel') || hasArg('p', '-') || defaultConfigs?.parallel;
   const quiet = hasArg('quiet') || hasArg('q', '-') || defaultConfigs?.quiet;
   const debug = hasArg('debug') || hasArg('d', '-') || defaultConfigs?.debug;
-  const failFast = hasArg('failfast') || defaultConfigs?.failFast;
+  const failFast = hasArg('failFast') || defaultConfigs?.failFast;
   const watchMode = hasArg('watch') || hasArg('w', '-');
-  const hasEnvFile = hasArg('envfile');
+  const hasEnvFile = hasArg('envFile');
   const concurrency = (() => {
     if (!(parallel || defaultConfigs?.parallel)) return;
 
@@ -70,7 +70,7 @@ import { getConfigs } from '../parsers/options.js';
 
   if (dirs.length === 1) states.isSinglePath = true;
 
-  if (hasArg('listfiles')) {
+  if (hasArg('listFiles')) {
     const { listFiles } = require('../modules/helpers/list-files.js');
 
     const files: string[] = [];
@@ -142,7 +142,7 @@ import { getConfigs } from '../parsers/options.js';
   /* c8 ignore stop */
 
   if (hasEnvFile || defaultConfigs?.envFile) {
-    const envFilePath = getArg('envfile') ?? defaultConfigs?.envFile;
+    const envFilePath = getArg('envFile') ?? defaultConfigs?.envFile;
 
     tasks.push(envFile(envFilePath));
   }
