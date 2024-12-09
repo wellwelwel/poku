@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/wellwelwel/poku/compare/v2.7.1...v3.0.0) (2024-12-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop `include` CLI flag ([#877](https://github.com/wellwelwel/poku/issues/877))
+
+### Miscellaneous Chores
+
+* drop `include` CLI flag ([#877](https://github.com/wellwelwel/poku/issues/877)) ([237de89](https://github.com/wellwelwel/poku/commit/237de89ab7345a20fb0f8f40237535922015e9a3))
+
 ## [2.7.1](https://github.com/wellwelwel/poku/compare/v2.7.0...v2.7.1) (2024-10-27)
 
 
