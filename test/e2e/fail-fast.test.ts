@@ -7,7 +7,7 @@ import { getRuntime } from '../../src/parsers/get-runtime.js';
 
 if (isBuild || getRuntime() === 'deno') skip();
 
-describe('Fast Fast', async () => {
+describe('Fail Fast', async () => {
   await it('Parallel / Concurrent', async () => {
     const results = await inspectPoku('', {
       cwd: 'test/__fixtures__/e2e/fail-fast/parallel',
@@ -20,7 +20,6 @@ describe('Fast Fast', async () => {
 
     assert.strictEqual(results.exitCode, 1, 'Failed');
     assert.match(results.stderr, /failFast/, 'Fail Fast is enabled');
-    assert.match(results.stdout, /FAIL › 1/, 'Needs to fail 1');
   });
 
   await it('Sequential', async () => {
@@ -35,6 +34,5 @@ describe('Fast Fast', async () => {
 
     assert.strictEqual(results.exitCode, 1, 'Failed');
     assert.match(results.stdout, /failFast/, 'Fail Fast is enabled');
-    assert.match(results.stdout, /FAIL › 1/, 'Needs to fail 1');
   });
 });

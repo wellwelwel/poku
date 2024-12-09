@@ -93,7 +93,6 @@ export const runTestsParallel = async (
   configs?: Configs
 ): Promise<boolean> => {
   let allPassed = true;
-  let failFastTriggered = false;
   let activeTests = 0;
   let resolveDone: (value: boolean) => void;
   let rejectDone: (reason?: Error) => void;
@@ -113,12 +112,16 @@ export const runTestsParallel = async (
   });
 
   const runNext = async () => {
-    if (failFastTriggered || files.length === 0) {
-      if (activeTests === 0 && !failFastTriggered) resolveDone(allPassed);
+    if (files.length === 0 && activeTests === 0) {
+      resolveDone(allPassed);
       return;
     }
 
-    const filePath = files.shift()!;
+    const filePath = files.shift();
+    if (!filePath) {
+      if (activeTests === 0) resolveDone(allPassed);
+      return;
+    }
 
     activeTests++;
 
@@ -131,14 +134,17 @@ export const runTestsParallel = async (
         allPassed = false;
 
         if (configs?.failFast) {
-          failFastTriggered = true;
-          process.exitCode = 1;
+          if (showLogs) {
+            Write.hr();
+            console.error(failFastError);
+            Write.hr();
+          }
 
-          throw new Error(failFastError);
+          process.exit(1);
         }
       }
     } catch (error) {
-      error instanceof Error && rejectDone(error);
+      rejectDone(error as Error);
       return;
     } finally {
       activeTests--;
