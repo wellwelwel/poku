@@ -147,11 +147,7 @@ export const runTestsParallel = async (
     runNext().catch(rejectDone);
   };
 
-  try {
-    for (let i = 0; i < concurrency; i++) runNext();
+  for (let i = 0; i < concurrency; i++) runNext();
 
-    return await done;
-  } catch {
-    return false;
-  }
+  return await done;
 };
