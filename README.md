@@ -18,6 +18,10 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 </div>
 
+> [!IMPORTANT]
+>
+> [**Version 3** in development](https://github.com/wellwelwel/poku/issues/801) 💡
+
 ---
 
 ## Why does Poku exist?
