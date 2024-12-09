@@ -1,22 +1,6 @@
 version: '3.9'
 
 services:
-  node-08:
-    container_name: 'node-08'
-    build:
-      context: ../../
-      dockerfile: ./test/__docker__/node/08.Dockerfile
-    environment:
-      NODE_ENV: build
-
-  node-10:
-    container_name: 'node-10'
-    build:
-      context: ../../
-      dockerfile: ./test/__docker__/node/10.Dockerfile
-    environment:
-      NODE_ENV: build
-
   node-12:
     container_name: 'node-12'
     build:
