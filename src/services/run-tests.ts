@@ -151,12 +151,7 @@ export const runTestsParallel = async (
     for (let i = 0; i < concurrency; i++) runNext();
 
     return await done;
-  } catch (error) {
-    if (showLogs && error instanceof Error) {
-      Write.hr();
-      console.error(error.message);
-    }
-
+  } catch {
     return false;
   }
 };
