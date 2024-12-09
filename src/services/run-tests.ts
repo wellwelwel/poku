@@ -118,10 +118,7 @@ export const runTestsParallel = async (
     }
 
     const filePath = files.shift();
-    if (!filePath) {
-      if (activeTests === 0) resolveDone(allPassed);
-      return;
-    }
+    if (!filePath) return;
 
     activeTests++;
 
@@ -143,9 +140,6 @@ export const runTestsParallel = async (
           process.exit(1);
         }
       }
-    } catch (error) {
-      rejectDone(error as Error);
-      return;
     } finally {
       activeTests--;
     }
