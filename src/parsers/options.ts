@@ -1,7 +1,7 @@
 import type { ConfigFile, ConfigJSONFile } from '../@types/poku.js';
 import { cwd } from 'node:process';
 import { normalize, join } from 'node:path';
-import { readFile } from 'node:fs/promises';
+import { readFile } from '../polyfills/fs.js';
 import { JSONC } from '../polyfills/jsonc.js';
 
 const processCWD = cwd();

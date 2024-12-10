@@ -41,4 +41,4 @@ jobs:
         run: npm run build
 
       - name: 🔬 Deno ${{ matrix.deno-version }}
-        run: npm run test:deno:parallel
+        run: npm run test:deno

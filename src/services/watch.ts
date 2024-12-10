@@ -1,7 +1,7 @@
 import type { WatchCallback } from '../@types/watch.js';
 import { watch as nodeWatch, type FSWatcher } from 'node:fs';
 import { join } from 'node:path';
-import { readdir, stat } from 'node:fs/promises';
+import { readdir, stat } from '../polyfills/fs.js';
 import { listFiles } from '../modules/helpers/list-files.js';
 
 export class Watcher {
