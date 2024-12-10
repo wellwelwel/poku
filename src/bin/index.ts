@@ -53,20 +53,16 @@ import { getConfigs } from '../parsers/options.js';
     hasArg('denoCjs') ||
     defaultConfigs?.deno?.cjs;
   /* c8 ignore stop */
-  const parallel =
-    hasArg('parallel') || hasArg('p', '-') || defaultConfigs?.parallel;
   const quiet = hasArg('quiet') || hasArg('q', '-') || defaultConfigs?.quiet;
   const debug = hasArg('debug') || hasArg('d', '-') || defaultConfigs?.debug;
   const failFast = hasArg('failFast') || defaultConfigs?.failFast;
   const watchMode = hasArg('watch') || hasArg('w', '-');
   const hasEnvFile = hasArg('envFile');
   const concurrency = (() => {
-    if (!(parallel || defaultConfigs?.parallel)) return;
-
     const value = Number(getArg('concurrency'));
-
     return Number.isNaN(value) ? defaultConfigs?.concurrency : value;
   })();
+  const sequential = hasArg('sequential');
 
   if (dirs.length === 1) states.isSinglePath = true;
 
@@ -161,8 +157,8 @@ import { getConfigs } from '../parsers/options.js';
       typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
     exclude:
       typeof exclude === 'string' ? new RegExp(escapeRegExp(exclude)) : exclude,
-    parallel,
     concurrency,
+    sequential,
     quiet,
     debug,
     failFast,

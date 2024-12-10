@@ -10,7 +10,7 @@ if (isBuild) {
 
 describe('CLI Flags', async () => {
   await it('Short flags', async () => {
-    const output = await inspectPoku('-d -p', {
+    const output = await inspectPoku('-d', {
       cwd: 'test/__fixtures__/e2e/no-tests',
     });
 
@@ -18,10 +18,6 @@ describe('CLI Flags', async () => {
     assert(
       /debug(.+)?:(.+)?true/.test(output.stdout),
       'CLI needs to able "debug"'
-    );
-    assert(
-      /parallel(.+)?:(.+)?true/.test(output.stdout),
-      'CLI needs to able "parallel"'
     );
   });
 

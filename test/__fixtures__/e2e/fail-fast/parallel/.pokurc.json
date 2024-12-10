@@ -1,6 +1,5 @@
 {
   "$schema": "https://poku.io/schemas/configs.json",
   "failFast": true,
-  "parallel": true,
   "concurrency": 0
 }

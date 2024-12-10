@@ -8,7 +8,7 @@ import { skip } from '../../src/modules/helpers/skip.js';
 if (getRuntime() === 'deno') skip();
 
 const runtime = getRuntime();
-const offset = runtime === 'bun' ? 37 : 33;
+const offset = runtime === 'bun' ? 36 : 32;
 const output = [
   {
     run: () =>

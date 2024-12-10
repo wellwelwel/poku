@@ -42,12 +42,17 @@ export const getAllFiles = async (
   let isFullPath = false;
 
   const currentFiles = await (async () => {
-    if (await isFile(dirPath)) {
-      isFullPath = true;
-      return [sanitizePath(dirPath)];
-    }
+    try {
+      if (await isFile(dirPath)) {
+        isFullPath = true;
+        return [sanitizePath(dirPath)];
+      }
 
-    return await readdir(sanitizePath(dirPath));
+      return await readdir(sanitizePath(dirPath));
+    } catch (error) {
+      console.error(error);
+      process.exit(1);
+    }
   })();
 
   const filter: RegExp = (() => {

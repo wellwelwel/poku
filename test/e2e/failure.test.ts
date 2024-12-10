@@ -8,32 +8,8 @@ import { skip } from '../../src/modules/helpers/skip.js';
 if (getRuntime() === 'deno') skip();
 
 describe('Failure', async () => {
-  await it('Sequential', async () => {
+  await it('Basic', async () => {
     const results = await inspectPoku('', {
-      cwd: 'test/__fixtures__/e2e/fail',
-    });
-
-    if (results.exitCode !== 1) {
-      console.log(results.stdout);
-      console.log(results.stderr);
-    }
-
-    assert.strictEqual(results.exitCode, 1, 'Failed');
-    assert.match(results.stdout, /FAIL › 5/, 'Needs to fail 5');
-    assert.match(
-      results.stdout,
-      /Should fail/,
-      'Needs to show custom message for "fail"'
-    );
-    assert.match(
-      results.stdout,
-      /If error test/,
-      'Needs to show custom message for "ifError"'
-    );
-  });
-
-  await it('Parallel / Concurrent', async () => {
-    const results = await inspectPoku('-p', {
       cwd: 'test/__fixtures__/e2e/fail',
     });
 
@@ -56,21 +32,6 @@ describe('Failure', async () => {
     );
   });
 
-  await it('Missing File', async () => {
-    const results = await inspectPoku('./foo/bar.js', {
-      cwd: 'test/__fixtures__/e2e/fail',
-    });
-
-    if (results.exitCode !== 1) {
-      console.log(results.stdout);
-      console.log(results.stderr);
-    }
-
-    assert.strictEqual(results.exitCode, 1, 'Failed');
-    assert.match(results.stderr, /ENOENT/, 'Needs to show error message"');
-    assert.strictEqual(results.exitCode, 1, 'Exit Code needs to be 0');
-  });
-
   getRuntime() === 'node' &&
     !isBuild &&
     (await it('Wrong Sintax', async () => {
@@ -91,4 +52,19 @@ describe('Failure', async () => {
       );
       assert.strictEqual(results.exitCode, 1, 'Exit Code needs to be 0');
     }));
+
+  await it('Missing File', async () => {
+    const results = await inspectPoku('-d ./foo/bar.js', {
+      cwd: 'test/__fixtures__/e2e/fail',
+    });
+
+    if (results.exitCode !== 1) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 1, 'Failed');
+    assert.match(results.stderr, /ENOENT/, 'Needs to show error message"');
+    assert.strictEqual(results.exitCode, 1, 'Exit Code needs to be 0');
+  });
 });
