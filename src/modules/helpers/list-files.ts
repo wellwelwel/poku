@@ -24,9 +24,6 @@ export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
     : sanitizedPath;
 };
 
-export const isDir = async (fullPath: string) =>
-  (await fsStat(fullPath)).isDirectory();
-
 export const isFile = async (fullPath: string) =>
   (await fsStat(fullPath)).isFile();
 

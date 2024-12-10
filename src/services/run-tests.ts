@@ -70,8 +70,6 @@ export const runTests = async (
           process.exit(1);
         }
       }
-    } catch (err) {
-      console.log(err);
     } finally {
       activeTests--;
     }
@@ -79,8 +77,7 @@ export const runTests = async (
     runNext().catch(rejectDone);
   };
 
-  for (let i = 0; i < concurrency; i++)
-    runNext().catch((error) => Promise.reject(error));
+  for (let i = 0; i < concurrency; i++) runNext();
 
   return await done;
 };
