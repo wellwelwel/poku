@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.0.0-rc.0](https://github.com/wellwelwel/poku/compare/v2.7.1...v3.0.0-rc.0) (2024-12-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for `Node.js` v8 and v10 ([#885](https://github.com/wellwelwel/poku/issues/885))
+* drop kebab case support ([#883](https://github.com/wellwelwel/poku/issues/883))
+* drop `include` CLI flag ([#877](https://github.com/wellwelwel/poku/issues/877))
+
+### Performance Improvements
+
+* use queue instead of groups for parallel tests ([#886](https://github.com/wellwelwel/poku/issues/886)) ([96b8707](https://github.com/wellwelwel/poku/commit/96b87071f7ea61c0e37bf6c2d64e1bf594a8eb3a))
+
+
+### Miscellaneous Chores
+
+* drop `include` CLI flag ([#877](https://github.com/wellwelwel/poku/issues/877)) ([237de89](https://github.com/wellwelwel/poku/commit/237de89ab7345a20fb0f8f40237535922015e9a3))
+* drop kebab case support ([#883](https://github.com/wellwelwel/poku/issues/883)) ([9e36dc5](https://github.com/wellwelwel/poku/commit/9e36dc505b8fac60064fddcae756d8920e9323a7))
+* drop support for `Node.js` v8 and v10 ([#885](https://github.com/wellwelwel/poku/issues/885)) ([94a277b](https://github.com/wellwelwel/poku/commit/94a277b017fedfaad8ab86d83537035c8e807e04))
+* release 3.0.0-rc.0 ([3e03b5b](https://github.com/wellwelwel/poku/commit/3e03b5b9e958003b1fb7ed8b2b60b18be9a7b726))
+
 ## [2.7.1](https://github.com/wellwelwel/poku/compare/v2.7.0...v2.7.1) (2024-10-27)
 
 
