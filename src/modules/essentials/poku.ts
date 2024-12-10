@@ -1,12 +1,12 @@
 import type { Code } from '../../@types/code.js';
 import type { Configs } from '../../@types/poku.js';
 import process from 'node:process';
-import { runTests, runTestsParallel } from '../../services/run-tests.js';
 import { Write } from '../../services/write.js';
 import { exit } from '../helpers/exit.js';
 import { format, showTestResults } from '../../services/format.js';
 import { isQuiet } from '../../parsers/output.js';
 import { finalResults } from '../../configs/files.js';
+import { runTests } from '../../services/run-tests.js';
 
 /* c8 ignore start */ // Process-based
 export const onSigint = () => process.stdout.write('\u001B[?25h');
@@ -34,44 +34,13 @@ export async function poku(
   const dirs = Array.prototype.concat(targetPaths);
   const showLogs = !isQuiet(configs);
 
-  // Sequential
-  if (!configs?.parallel) {
-    for (const dir of dirs) {
-      const result = await runTests(dir, configs);
-
-      if (!result) {
-        code = 1;
-        if (configs?.failFast) break;
-      }
-    }
-
-    if (configs?.noExit) return code;
-
-    const end = process.hrtime(start);
-    const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
-
-    finalResults.time = total;
-
-    showLogs && showTestResults();
-
-    exit(code, configs?.quiet);
-    return;
-  }
-
-  // Parallel
   if (showLogs) {
     Write.hr();
-    Write.log(`${format('Running the Test Suite in Parallel').bold()}\n`);
+    Write.log(`${format('Running Tests').bold()}\n`);
   }
 
   try {
-    const promises = dirs.map(async (dir) => {
-      const result = await runTestsParallel(dir, configs);
-      if (!result && configs?.failFast) throw new Error('quiet');
-
-      return result;
-    });
-
+    const promises = dirs.map(async (dir) => await runTests(dir, configs));
     const concurrency = await Promise.all(promises);
 
     if (concurrency.some((result) => !result)) code = 1;

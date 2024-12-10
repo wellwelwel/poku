@@ -1,7 +1,7 @@
 import type { Configs } from '../../@types/list-files.js';
 import { env } from 'node:process';
 import { sep, join } from 'node:path';
-import { readdir, stat as fsStat } from '../../polyfills/fs.js';
+import { readdir, stat as fsStat } from 'node:fs/promises';
 import { states } from '../../configs/files.js';
 
 const regex = {
@@ -24,6 +24,9 @@ export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
     : sanitizedPath;
 };
 
+export const isDir = async (fullPath: string) =>
+  (await fsStat(fullPath)).isDirectory();
+
 export const isFile = async (fullPath: string) =>
   (await fsStat(fullPath)).isFile();
 
@@ -42,12 +45,17 @@ export const getAllFiles = async (
   let isFullPath = false;
 
   const currentFiles = await (async () => {
-    if (await isFile(dirPath)) {
-      isFullPath = true;
-      return [sanitizePath(dirPath)];
-    }
+    try {
+      if (await isFile(dirPath)) {
+        isFullPath = true;
+        return [sanitizePath(dirPath)];
+      }
 
-    return await readdir(sanitizePath(dirPath));
+      return await readdir(sanitizePath(dirPath));
+    } catch (error) {
+      console.error(error);
+      process.exit(1);
+    }
   })();
 
   const filter: RegExp = (() => {

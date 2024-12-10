@@ -1,5 +1,4 @@
 import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
 import { skip } from '../../src/modules/helpers/skip.js';
@@ -8,31 +7,15 @@ import { getRuntime } from '../../src/parsers/get-runtime.js';
 if (isBuild || getRuntime() === 'deno') skip();
 
 describe('Fail Fast', async () => {
-  await it('Parallel / Concurrent', async () => {
-    const results = await inspectPoku('', {
-      cwd: 'test/__fixtures__/e2e/fail-fast/parallel',
-    });
-
-    if (results.exitCode !== 1) {
-      console.log(results.stdout);
-      console.log(results.stderr);
-    }
-
-    assert.strictEqual(results.exitCode, 1, 'Failed');
-    assert.match(results.stderr, /failFast/, 'Fail Fast is enabled');
+  const results = await inspectPoku('', {
+    cwd: 'test/__fixtures__/e2e/fail-fast/parallel',
   });
 
-  await it('Sequential', async () => {
-    const results = await inspectPoku('', {
-      cwd: 'test/__fixtures__/e2e/fail-fast/sequential',
-    });
+  if (results.exitCode !== 1) {
+    console.log(results.stdout);
+    console.log(results.stderr);
+  }
 
-    if (results.exitCode !== 1) {
-      console.log(results.stdout);
-      console.log(results.stderr);
-    }
-
-    assert.strictEqual(results.exitCode, 1, 'Failed');
-    assert.match(results.stdout, /failFast/, 'Fail Fast is enabled');
-  });
+  assert.strictEqual(results.exitCode, 1, 'Failed');
+  assert.match(results.stderr, /failFast/, 'Fail Fast is enabled');
 });

@@ -9,7 +9,6 @@ test(async () => {
   await compose.down();
 
   const result = await poku(['./test/compatibility'], {
-    parallel: true,
     debug: true,
     noExit: true,
     platform: 'bun',

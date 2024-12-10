@@ -77,7 +77,7 @@ describe('Helper functions in logs.js', () => {
 
     assert.strictEqual(
       JSON.stringify(capturedOutput),
-      JSON.stringify(['    Line1', '    Line2', '    Line3']),
+      JSON.stringify(['  Line1', '  Line2', '  Line3']),
       'parserOutput should print all lines with padding'
     );
   });
@@ -91,7 +91,7 @@ describe('Helper functions in logs.js', () => {
     const capturedOutput = parserOutput(options);
     assert.strictEqual(
       JSON.stringify(capturedOutput),
-      JSON.stringify(['    \x1b[0mLine2\x1b[0m']),
+      JSON.stringify(['  \x1b[0mLine2\x1b[0m']),
       'parserOutput should filter lines correctly and print with padding'
     );
   });

@@ -13,29 +13,29 @@ if (isBuild || runtime === 'deno') {
 
 describe('Enforce Option', async () => {
   await it('--enforce', async () => {
-    const output = await inspectPoku('--enforce -P --paralell', {
+    const output = await inspectPoku('--enforce -D --paralell', {
       cwd: 'test/__fixtures__/e2e/no-tests',
     });
 
     assert.strictEqual(output.exitCode, 1, 'Exit Code needs to be 1');
     assert(/Unrecognized flags/.test(output.stdout), 'Has unrecognized flags');
-    assert(/-P/.test(output.stdout), 'Short flag: wrong case for valid option');
+    assert(/-D/.test(output.stdout), 'Short flag: wrong case for valid option');
     assert(/--paralell/.test(output.stdout), 'Invalid option');
   });
 
   await it('-x', async () => {
-    const output = await inspectPoku('-x -P --paralell', {
+    const output = await inspectPoku('-x -D --paralell', {
       cwd: 'test/__fixtures__/e2e/no-tests',
     });
 
     assert.strictEqual(output.exitCode, 1, 'Exit Code needs to be 1');
     assert(/Unrecognized flags/.test(output.stdout), 'Has unrecognized flags');
-    assert(/-P/.test(output.stdout), 'Short flag: wrong case for valid option');
+    assert(/-D/.test(output.stdout), 'Short flag: wrong case for valid option');
     assert(/--paralell/.test(output.stdout), 'Invalid option');
   });
 
   await it('No ensure', async () => {
-    const output = await inspectPoku('-P --paralell', {
+    const output = await inspectPoku('-D --paralell', {
       cwd: 'test/__fixtures__/e2e/no-tests',
     });
 

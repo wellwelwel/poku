@@ -1,5 +1,5 @@
 import { env as processEnv } from 'node:process';
-import { readFile } from '../../polyfills/fs.js';
+import { readFile } from 'node:fs/promises';
 import { sanitizePath } from './list-files.js';
 import {
   parseEnvLine,

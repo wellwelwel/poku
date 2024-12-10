@@ -2,10 +2,8 @@ import type { Configs } from '../@types/poku.js';
 import { cwd as processCWD, hrtime, env } from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
-import { indentation } from '../configs/indentation.js';
 import { fileResults } from '../configs/files.js';
 import { isWindows, runner } from '../parsers/get-runner.js';
-import { format } from './format.js';
 import { isQuiet, parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
 import { Write } from './write.js';
@@ -38,13 +36,6 @@ export const runTestFile = async (
     output += String(data);
   };
 
-  if (!configs?.parallel) {
-    showLogs &&
-      Write.log(
-        `${indentation.test}${format('●').info().dim()} ${format(fileRelative).dim()}`
-      );
-  }
-
   const start = hrtime();
   let end: ReturnType<typeof hrtime>;
 
@@ -56,7 +47,7 @@ export const runTestFile = async (
       shell: isWindows,
       env: {
         ...env,
-        FILE: configs?.parallel || configs?.deno?.cjs ? fileRelative : '',
+        FILE: fileRelative,
       },
     });
 

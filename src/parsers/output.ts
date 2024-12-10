@@ -27,7 +27,7 @@ export const parserOutput = (options: {
   if (hasTodo) results.todo += hasTodo.length;
 
   const debug = isDebug(configs);
-  const pad = configs?.parallel ? '  ' : '    ';
+  const pad = '  ';
   const splittedOutput = output.split('\n');
 
   const outputs = (
