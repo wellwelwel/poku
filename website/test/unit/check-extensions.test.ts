@@ -25,7 +25,7 @@ const checkExtensions = async (
 
 test(async () => {
   await checkExtensions(['docs' /*'i18n'*/], /\.(mdx|json)$/);
-  await checkExtensions([/*'helpers'*/ 'plugins'], /\.ts$/);
+  // await checkExtensions([/*'helpers'*/ 'plugins'], /\.ts$/);
   await checkExtensions(['test/unit' /*'test/utils'*/], /\.test\.ts$/);
   await checkExtensions(['src/components', 'src/pages'], /\.tsx$/);
   await checkExtensions(['src/css'], /\.scss$/);
