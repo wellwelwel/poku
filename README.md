@@ -20,7 +20,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 > [!IMPORTANT]
 >
-> [**Version 3**](https://github.com/wellwelwel/poku/issues/801) in development 💡
+> [**Version 3**](https://github.com/wellwelwel/poku/issues/801) is on its way! You can already try it by installing the Release Candidate with `poku@rc` 💡
 
 ---
 

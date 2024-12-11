@@ -3,6 +3,10 @@ import { accessSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectPoku } from '../__utils__/capture-cli.test.js';
+import { isWindows } from '../../src/parsers/get-runner.js';
+import { skip } from '../../src/modules/helpers/skip.js';
+
+if (isWindows) skip();
 
 const base = 'test/__fixtures__/.temp/ignored-paths';
 
