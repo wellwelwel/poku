@@ -1,5 +1,5 @@
 import type { Configs } from '../@types/poku.js';
-import { cwd as processCWD, hrtime, env } from 'node:process';
+import { hrtime, env } from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileResults } from '../configs/files.js';
@@ -7,9 +7,9 @@ import { isWindows, runner } from '../parsers/get-runner.js';
 import { isQuiet, parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
 import { Write } from './write.js';
-import { deepOptions, VERSION } from '../configs/poku.js';
+import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
 
-const cwd = processCWD();
+const { cwd } = GLOBAL;
 
 export const runTestFile = async (
   filePath: string,

@@ -1,3 +1,5 @@
+import { cwd } from 'node:process';
+
 export const results = {
   success: 0,
   fail: 0,
@@ -8,3 +10,7 @@ export const results = {
 export const VERSION = '';
 
 export const deepOptions: string[] = [];
+
+export const GLOBAL = {
+  cwd: cwd(),
+};

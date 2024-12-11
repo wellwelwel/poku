@@ -6,11 +6,11 @@ import { Write } from '../services/write.js';
 import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
 import { isQuiet } from '../parsers/output.js';
-import { deepOptions, results } from '../configs/poku.js';
+import { deepOptions, GLOBAL, results } from '../configs/poku.js';
 import { availableParallelism } from '../polyfills/os.js';
 import { hasOnly, hasDescribeOnly, hasItOnly } from '../parsers/get-arg.js';
 
-const cwd = process.cwd();
+const { cwd } = GLOBAL;
 const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
 
 if (hasDescribeOnly) deepOptions.push('--only=describe');

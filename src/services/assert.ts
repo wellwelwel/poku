@@ -7,8 +7,9 @@ import { parseResultType } from '../parsers/assert.js';
 import { indentation } from '../configs/indentation.js';
 import { format } from './format.js';
 import { Write } from './write.js';
+import { GLOBAL } from '../configs/poku.js';
 
-const cwd = process.cwd();
+const { cwd } = GLOBAL;
 const regexFile = /file:(\/\/)?/;
 
 const assertProcessor = () => {
