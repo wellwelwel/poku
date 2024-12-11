@@ -1,5 +1,34 @@
 # Changelog
 
+## [3.0.0-rc.0](https://github.com/wellwelwel/poku/compare/v2.7.1...v3.0.0-rc.0) (2024-12-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for Node.js v12 ([#896](https://github.com/wellwelwel/poku/issues/896))
+* drop `platform` option ([#894](https://github.com/wellwelwel/poku/issues/894))
+* remove `allow-hrtime` by default for Deno ([#892](https://github.com/wellwelwel/poku/issues/892))
+* drop `parallel` in favor of `sequential` option ([#888](https://github.com/wellwelwel/poku/issues/888))
+* drop support for `Node.js` v8 and v10 ([#885](https://github.com/wellwelwel/poku/issues/885))
+* drop kebab case support ([#883](https://github.com/wellwelwel/poku/issues/883))
+* drop `include` CLI flag ([#877](https://github.com/wellwelwel/poku/issues/877))
+
+### Performance Improvements
+
+* use queue instead of groups for parallel tests ([#886](https://github.com/wellwelwel/poku/issues/886)) ([96b8707](https://github.com/wellwelwel/poku/commit/96b87071f7ea61c0e37bf6c2d64e1bf594a8eb3a))
+
+
+### Miscellaneous Chores
+
+* drop `include` CLI flag ([#877](https://github.com/wellwelwel/poku/issues/877)) ([237de89](https://github.com/wellwelwel/poku/commit/237de89ab7345a20fb0f8f40237535922015e9a3))
+* drop `parallel` in favor of `sequential` option ([#888](https://github.com/wellwelwel/poku/issues/888)) ([fc2c72d](https://github.com/wellwelwel/poku/commit/fc2c72de249dbb9bdd5c0bbe158ad1ef65f0635c))
+* drop `platform` option ([#894](https://github.com/wellwelwel/poku/issues/894)) ([7e07f16](https://github.com/wellwelwel/poku/commit/7e07f16ec56a968a7996f7216cb40228f3fe3c92))
+* drop kebab case support ([#883](https://github.com/wellwelwel/poku/issues/883)) ([9e36dc5](https://github.com/wellwelwel/poku/commit/9e36dc505b8fac60064fddcae756d8920e9323a7))
+* drop support for `Node.js` v8 and v10 ([#885](https://github.com/wellwelwel/poku/issues/885)) ([94a277b](https://github.com/wellwelwel/poku/commit/94a277b017fedfaad8ab86d83537035c8e807e04))
+* drop support for Node.js v12 ([#896](https://github.com/wellwelwel/poku/issues/896)) ([edb1600](https://github.com/wellwelwel/poku/commit/edb1600cdef58e34389885760238a01b82eb0e8e))
+* release 3.0.0-rc.0 ([3e03b5b](https://github.com/wellwelwel/poku/commit/3e03b5b9e958003b1fb7ed8b2b60b18be9a7b726))
+* remove `allow-hrtime` by default for Deno ([#892](https://github.com/wellwelwel/poku/issues/892)) ([7b748a4](https://github.com/wellwelwel/poku/commit/7b748a4941638b1af080d170b11c20510abeb191))
+
 ## [2.7.1](https://github.com/wellwelwel/poku/compare/v2.7.0...v2.7.1) (2024-10-27)
 
 
