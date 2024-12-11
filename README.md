@@ -30,7 +30,6 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 </span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
 </span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Performant** and **lightweight**<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run **CommonJS** files directly with [**Deno**][deno-version-url]<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the **same test suite** for [**Node.js**][node-version-url] _(12+)_, [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
 <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
@@ -122,7 +121,7 @@ npx poku
 <td width="400">
 
 ```bash
-bunx poku
+bun poku
 ```
 
 </td>
@@ -216,10 +215,6 @@ deno run npm:poku
   <tr>
     <td width="280"><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
     <td width="770">🍿 Watch for changes and re-run related test files.</td>
-  </tr>
-  <tr>
-    <td><a href="https://poku.io/docs/documentation/poku/options/parallel">parallel</a></td>
-    <td>🏃🏻‍♀️ Run tests in parallel.</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/poku/options/debug">debug</a></td>
