@@ -7,8 +7,6 @@ import { skip } from '../../src/modules/helpers/skip.js';
 
 if (getRuntime() === 'deno') skip();
 
-const runtime = getRuntime();
-const offset = runtime === 'bun' ? 36 : 32;
 const output = [
   {
     run: () =>
@@ -38,6 +36,8 @@ describe('Testing ', async () => {
     await it(testCase, async () => {
       const results = await run();
       const actual = results.stdout.split('\n');
+      const offset =
+        actual.findIndex((line) => line.includes('◌ first test')) - 1;
 
       if (results.exitCode !== 0) {
         console.log(results.stdout);
