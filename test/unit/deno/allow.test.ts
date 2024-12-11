@@ -14,7 +14,6 @@ test('Deno Permissions (Allow)', () => {
       '--allow-env',
       '--allow-run',
       '--allow-net',
-      '--allow-hrtime',
     ],
     'Default Permissions'
   );

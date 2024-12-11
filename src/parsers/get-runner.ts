@@ -16,13 +16,7 @@ export const runner = (filename: string, configs?: Configs): string[] => {
       ? configs.deno.allow
           .map((allow) => (allow ? `--allow-${allow}` : ''))
           .filter((allow) => allow)
-      : [
-          '--allow-read',
-          '--allow-env',
-          '--allow-run',
-          '--allow-net',
-          '--allow-hrtime',
-        ];
+      : ['--allow-read', '--allow-env', '--allow-run', '--allow-net'];
 
     const denoDeny = configs?.deno?.deny
       ? configs.deno.deny
