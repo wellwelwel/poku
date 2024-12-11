@@ -34,7 +34,7 @@ export type Configs = {
    *
    * @default false
    */
-  parallel?: boolean;
+  sequential?: boolean;
   /**
    * Determines the platform for test execution.
    *
@@ -50,7 +50,7 @@ export type Configs = {
   /**
    * Limits the number of tests running concurrently.
    *
-   * @default 0
+   * @default (availableParallelism() || cpus().lenght) - 1
    */
   concurrency?: number;
   /**

@@ -1,4 +1,3 @@
 {
-  "$schema": "https://poku.io/schemas/configs.json",
-  "parallel": true
+  "$schema": "https://poku.io/schemas/configs.json"
 }
