@@ -98,6 +98,14 @@ poku('./test', {
 >
 > `cjs: boolean | string[]`
 
+:::danger Important
+
+From **Deno** `v2`, simply set the type to `commonjs` in your **package.json** or use the `.cjs` extension.
+
+For **Deno** `v1`, you can follow the instructions bellow.
+
+:::
+
 Agora é possível executar testes que utilizam `require`, `module.exports` e `module` diretamente com o **Deno** 🎉
 
 É uma ótima funcionalidade para testar se um projeto criado, principalmente em **Node.js** ou **Bun**, também é compatível com o **Deno** sem a necessidade de transpilar o código ou usar gambiarras.
