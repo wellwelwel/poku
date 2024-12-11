@@ -37,7 +37,7 @@
     "pretest:c8": "tsx tools/build/c8-file.ts",
     "test:c8": "c8 --experimental-monocart tsx test/c8.test.ts",
     "posttest:c8": "rm -rf ./.nycrc.json",
-    "test:docker:node": "tsx test/ci.test.ts",
+    "test:docker:node": "bun test/ci.test.ts",
     "clear": "rm -rf lib ci coverage .temp test-src test-tests",
     "prebuild": "npm run clear",
     "build": "tsc && cd test && tsc",
