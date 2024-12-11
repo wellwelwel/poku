@@ -1,0 +1,174 @@
+---
+title: 🪴 Boas Práticas
+description: Organizando testes para diferentes necessidades, requisitos e abordagens.
+tags: [assert, assertion, test, describe, it, tutorial, roadmap]
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import MidLevel from '@site/static/img/mid-level.svg';
+
+<div className='title-section'>
+<aside>
+
+# 🪴 Boas Práticas
+
+- Organizando testes para diferentes necessidades, requisitos e abordagens.
+
+</aside>
+  <aside>
+    <MidLevel className='logo' height='128' />
+  </aside>
+</div>
+
+<hr />
+
+## Organizando Testes
+
+Existem diversas motivações para organizar os testes de forma mais eficiente:
+
+- Testes diferentes geralmente têm seus próprios arquivos.
+- Uso de escopos isolados para declarar as mesmas variáveis ou isolamento de um teste do outro no mesmo arquivo.
+- Agrupamento de múltiplos testes do mesmo método.
+
+Vamos criar dois métodos básicos (**soma** e **sub**) para serem testados:
+
+<Tabs>
+  <TabItem default value='./src/calc.mjs'>
+
+```js
+export const soma = (a, b) => a + b;
+export const sub = (a, b) => a - b;
+```
+
+  </TabItem>
+</Tabs>
+
+### Separando testes com responsabilidades diferentes
+
+> Crie um arquivo para testar o método `soma` e outro para o método `sub`.
+
+<Tabs>
+  <TabItem default value='./test/unit/soma.test.mjs'>
+
+```js
+import { test, assert } from 'poku';
+import { soma } from '../../src/calc.mjs';
+
+test('Testando o método "soma"', () => {
+  assert(soma(0, 0), 0, 'deve retornar zero');
+  assert(soma(0, 1), 1, 'deve retornar um');
+  assert(soma(1, 1), 2, 'deve retornar dois');
+});
+```
+
+  </TabItem>
+  <TabItem default value='./test/unit/sub.test.mjs'>
+
+```js
+import { test, assert } from 'poku';
+import { sub } from '../../src/calc.mjs';
+
+test('Testando o método "sub"', () => {
+  assert(sub(1, 1), 0, 'deve retornar zero');
+  assert(sub(2, 1), 1, 'deve retornar um');
+  assert(sub(3, 1), 2, 'deve retornar dois');
+});
+```
+
+  </TabItem>
+</Tabs>
+
+<hr />
+
+### Categorizando testes com responsabilidades diferentes
+
+> Crie um arquivo único para testar tanto o método `soma` quanto o `sub`.
+
+<Tabs>
+  <TabItem default value='./test/unit/calc.test.mjs'>
+
+```js
+import { test, assert } from 'poku';
+import { soma, sub } from '../../src/calc.mjs';
+
+test('Testando o método "soma"', () => {
+  assert(soma(0, 0), 0, 'deve retornar zero');
+  assert(soma(0, 1), 1, 'deve retornar um');
+  assert(soma(1, 1), 2, 'deve retornar dois');
+});
+
+test('Testando o método "sub"', () => {
+  assert(sub(1, 1), 0, 'deve retornar zero');
+  assert(sub(2, 1), 1, 'deve retornar um');
+  assert(sub(3, 1), 2, 'deve retornar dois');
+});
+```
+
+  </TabItem>
+</Tabs>
+
+<hr />
+
+### Descrevendo testes com responsabilidades diferentes
+
+> Crie um arquivo único para testar tanto o método `soma` quanto o `sub`.
+
+<Tabs>
+  <TabItem default value='./test/unit/calc.test.mjs'>
+
+```js
+import { describe, it, assert } from 'poku';
+import { soma, sub } from '../../src/calc.mjs';
+
+describe('Testando métodos de cálculo', () => {
+  it('Método "soma"', () => {
+    assert(soma(0, 0), 0, 'deve retornar zero');
+    assert(soma(0, 1), 1, 'deve retornar um');
+    assert(soma(1, 1), 2, 'deve retornar dois');
+  });
+
+  it('Método "sub"', () => {
+    assert(sub(1, 1), 0, 'deve retornar zero');
+    assert(sub(2, 1), 1, 'deve retornar um');
+    assert(sub(3, 1), 2, 'deve retornar dois');
+  });
+});
+```
+
+  </TabItem>
+</Tabs>
+
+- Ao usar `describe` + `it` com mensagens, é comum não incluir a mensagem no `assert`.
+
+<hr />
+
+:::tip
+Você pode escolher usar `describe` + `it`, ou `test` + `describe`, ou `test` + `it` e assim por diante, mas observe que, se você usar mensagens, elas só serão formatadas corretamente para:
+
+- `assert`
+- `test`
+- `test` + `assert`
+- `it`
+- `it` + `assert`
+- `describe`
+- `describe` + `assert`
+- `describe` + `it`
+- `describe` + `it` + `assert`
+- `describe` + `assert` + `it` + `assert`
+- `describe` + `test`
+- `describe` + `test` + `assert`
+- `describe` + `assert` + `test` + `assert`
+
+:::
+
+:::danger Cuidado
+Evite combinar `test` e `it` ao usar hooks como `beforeEach` (por exemplo, `test + test`, `it + it`, `test + it`, etc.).
+:::
+
+<hr />
+
+:::note
+Se você encontrar algum erro de digitação, sinta-se à vontade para abrir um **Pull Request** corrigindo-o.
+:::

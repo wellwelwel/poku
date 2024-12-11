@@ -1,0 +1,124 @@
+---
+sidebar_position: 1
+---
+
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
+# 📦 Incluir Diretórios e Arquivos
+
+Por padrão, o **Poku** busca por arquivos _`.test.`_ e `.spec.`, mas você pode customizá-lo usando a opção [`filter`](/docs/documentation/poku/options/filter).
+
+<History
+  records={[
+    {
+      version: '2.1.0',
+      changes: [
+        <>Suporte para múltiplos caminhos em qualquer ordem.</>,
+        <>
+          Flag <code>--include</code> depreciada.
+        </>,
+        <>
+          Mantém suporte retroativo para múltiplos caminhos separados por
+          vírgula para evitar mudanças incompatíveis.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+### Uso Comum
+
+```bash
+# Equivalente à ./
+npx poku
+```
+
+- Executa todos os testes sequencialmente.
+
+```bash
+# Equivalente à ./
+npx poku --parallel
+```
+
+- Executa todos os testes em paralelo.
+
+```bash
+npx poku ./test
+```
+
+- Executa todos os testes do diretório `./test`.
+
+:::tip
+Você pode passar tanto diretórios quanto arquivos.
+:::
+
+:::note
+Não é possível executar testes nos diretórios `.git` e `node_modules`.
+:::
+
+<hr />
+
+### Definindo múltiplos caminhos
+
+```bash
+npx poku caminhoDoTesteA caminhoDoTesteB
+```
+
+<hr />
+
+### Estendendo padrões Glob a partir do shell
+
+Você também pode estender os **padrões do Glob** com `npx`, `bun`, `yarn`, etc.
+
+Por exemplo, executando todos os testes unitários de um _monorepo_:
+
+```sh
+npx poku ./packages/**/test/unit
+```
+
+Agora, listando todos os arquivos `.js` em vez do padrão `.test.|.spec.`:
+
+```sh
+npx poku --filter='.js' ./packages/**/test/unit
+```
+
+Ou também, ao anular o `filter`:
+
+```sh
+npx poku --filter='' ./packages/**/test/unit/*.js
+```
+
+<hr />
+
+## API
+
+> `poku(caminhosDoTestes: string | string[])`
+
+```ts
+await poku('caminhoDoTeste');
+```
+
+```ts
+await poku(['caminhoDoTesteA', 'caminhoDoTesteB']);
+```
+
+```ts
+await poku('./');
+```
+
+<blockquote>
+
+Em seguida, execute o arquivo diretamente com a plataforma de sua escolha, por exemplo:
+
+```bash
+node test/run.test.js
+```
+
+```bash
+npx tsx test/run.test.ts
+```
+
+</blockquote>

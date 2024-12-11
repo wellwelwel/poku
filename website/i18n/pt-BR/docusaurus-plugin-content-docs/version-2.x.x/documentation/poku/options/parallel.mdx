@@ -1,0 +1,46 @@
+---
+sidebar_position: 1
+---
+
+import { History } from '@site/src/components/History';
+
+# `parallel`
+
+Executa os arquivos de teste em paralelo.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Suporte para a flag curta <code>-p</code>.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+```bash
+# Modo paralelo
+
+npx poku --parallel ./test
+```
+
+- Flag curta: `-p`.
+
+## API
+
+```ts
+await poku('./test', {
+  parallel: true,
+});
+```
+
+<hr />
+
+:::tip
+Veja também a opção [`concurrency`](/docs/documentation/poku/options/concurrency).
+:::

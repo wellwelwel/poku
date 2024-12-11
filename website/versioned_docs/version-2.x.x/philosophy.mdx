@@ -1,0 +1,312 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Philosophy
+
+**Poku**'s philosophy consists of simplicity and efficiency, removing complexities and boilerplate requirements to make testing accessible for the simplest to the most complex projects.
+
+<hr />
+
+## JavaScript Essence for Tests 💡
+
+> The **JavaScript**'s native syntax for tests is what makes it possible to use **Poku** on multiple platforms.
+
+Imagine you want to execute asynchronous functions, where one runs after the other, and display a message at the beginning and end of the execution:
+
+```ts
+console.log('Started');
+
+await funcA();
+await funcB();
+
+console.log('Done');
+```
+
+Normally, we can't do this with most test runners.
+See this fictional example:
+
+> A popular term for this is "boilerplate", which are extra requirements for structuring and configuring the tests.
+
+```ts
+describe('My Test', { concurrency: 1 }, () => {
+  // You need to explicitly state what should be run before the tests
+  beforeAll(() => {
+    console.log('Started');
+  });
+
+  // The last step of the script is called before the tests themselves
+  afterAll(() => {
+    console.log('Done');
+  });
+
+  // Asynchronous tests, but they will be executed sequentially even without the use of `await`
+  it(async () => {
+    // async test
+  });
+
+  it(async () => {
+    // async test
+  });
+});
+```
+
+Also, you can't run this like `node test.js` due to evaluations, global state, or test transformations, where you need to run your test using the test runner.
+
+**Poku** brings back the **JavaScript** essence to tests:
+
+```ts
+import { describe, it } from 'poku';
+
+describe('My Test', async () => {
+  console.log('Started');
+
+  await it(async () => {
+    // async test
+  });
+
+  await it(async () => {
+    // async test
+  });
+
+  console.log('Done');
+});
+```
+
+:::tip
+
+**Poku** doesn't use a global state, allowing you to use it how and where you want:
+
+<Tabs>
+  <TabItem default value='Node.js + Poku'>
+
+```bash
+npx poku test.js
+```
+
+  </TabItem>
+  <TabItem default value='Bun + Poku'>
+
+```bash
+bunx poku test.js
+```
+
+  </TabItem>
+  <TabItem default value='Deno + Poku'>
+
+```bash
+deno run npm:poku test.js
+```
+
+  </TabItem>
+  <TabItem default value='Node.js'>
+
+```bash
+node test.js
+```
+
+  </TabItem>
+  <TabItem default value='Bun'>
+
+```bash
+bun test.js
+```
+
+  </TabItem>
+  <TabItem default value='Deno'>
+
+```bash
+deno run test.js
+```
+
+  </TabItem>
+  <TabItem default value='Yarn + Poku'>
+
+```bash
+yarn poku test.js
+```
+
+  </TabItem>
+  <TabItem default value='pnpm + Poku'>
+
+```bash
+pnpm poku test.js
+```
+
+  </TabItem>
+</Tabs>
+
+- Same idea for **TypeScript**.
+
+:::
+
+<hr />
+
+## Making Tests Really Easy 🌱
+
+In many cases, tests lead to the same common objective: the assertion of an expected value with a dynamic value.
+
+But tests usually don't show enough logs and details if you only focus on assertions. Even if they work, you might easily encounter an error message like "at least one test is necessary" with some test runners.
+
+An example using the native **Node.js** `assert`:
+
+```ts
+import assert from 'node:assert';
+
+const one = 1;
+assert.equal(one, 1, '1 needs to be equal to 1');
+```
+
+- The assert message in this example will not be displayed and the test will pass silently.
+
+Instead of, you will need to use `test` or `describe` and `it`:
+
+```ts
+import assert from 'node:assert';
+import test from 'node:test';
+
+test('one is equal to 1', () => {
+  const one = 1;
+  assert.equal(one, 1, '1 needs to be equal to 1');
+});
+```
+
+**Poku** allows a test following the **BDD**/**TDD** approach using only the `assert` method:
+
+> ⚠️ _Please, it's not a recommendation, but yes, it would be possible for simpler tests._
+
+<Tabs>
+  <TabItem default value='test/file.test.mjs'>
+
+```ts
+import { assert } from 'poku';
+
+const one = 1;
+assert.equal(one, 1, 'one is equal to 1');
+```
+
+  </TabItem>
+</Tabs>
+
+Then:
+
+<Tabs>
+  <TabItem default value='Node.js and TypeScript (Node.js)'>
+
+```bash
+npx poku
+```
+
+  </TabItem>
+  <TabItem  value='Bun'>
+
+```bash
+bunx poku
+```
+
+  </TabItem>
+  <TabItem  value='Deno'>
+
+```bash
+deno run npm:poku
+```
+
+  </TabItem>
+</Tabs>
+
+:::info
+This will generate a complete log, both in case of success or failure, maintaining the exact **Node.js** development style and being compatible with **Node.js**, **Bun**, and **Deno**.
+:::
+
+:::tip
+Each case can be different. For this, **Poku** has a completely modular way of using it, allowing you to use `test`, `describe`, `it`, `beforeEach`, `afterEach`, `--watch` mode and more, according to your needs for more complex tests or tests that follow a specified pattern.
+:::
+
+<hr />
+
+## Special Features 💫
+
+**Poku** offers integrated support for common testing challenges, such as starting services, servers and containers needed to run tests and terminating them at the tests' end, in addition to flexibility to handle ports and processes.
+
+<hr />
+
+## Development Priorities 🔧
+
+- Human-friendly usage.
+- Cross-platform compatibility (**Node**, **Bun**, and **Deno**).
+- Performance improvements.
+- All functionalities must be documented and have at least a minimum example of use.
+
+> Compatibility with legacy environments whenever possible, documenting when a specific feature only works from a version of the runtime/platform.
+
+<hr />
+
+## Why Not Install External Dependencies? 📦
+
+> In order of relevance
+
+1. By requiring all possible dependencies to be fully compatible with **Node.js**, **Bun** and **Deno**.
+2. To keep the final installation size as lightweight as possible
+3. To avoid compatibility issues with legacy environments.
+
+### TypeScript
+
+For **Node.js** + **TypeScript**, Poku uses [**tsx**](https://github.com/privatenumber/tsx) to run the files.
+Why? Because it follows the same principle as **Poku**: zero configurations for common needs.
+
+<hr />
+
+## Why Maintain Backward Compatibility? 👴🏼
+
+> This topic doesn't concern **Bun** and **Deno**.
+
+Several projects still use or support legacy versions. The requirement for legacy versions isn't a strict rule and can change with major releases due to specific features that may require polyfills and impact performance directly.
+
+That's why the limit chosen was **Node.js** version `12.x.x`.
+
+### Current Polyfills
+
+- `fs`: _promisify_ callback methods
+- `Object`: `entries` and `fromEntries` (used only when not available natively)
+- Support for direct runs for **CommonJS** on **Deno**
+
+:::note
+**Poku** always recommends using supported versions of each runtime.
+:::
+
+<hr />
+
+## Future Plans 📆
+
+Although not a priority, there are plans to integrate the following features into **Poku**:
+
+- **Stub**
+- **Mock**
+- **Spies**
+
+> See **mock** examples for both [**CJS**](/docs/examples/mock/cjs) and [**ESM**](/docs/examples/mock/esm) using **Poku** + [**quibble**](https://github.com/testdouble/quibble).
+
+<hr />
+
+## Versioning 🏷️
+
+They aren't considered breaking changes:
+
+- Formatting and style changes to outputs _(including reporters — soon)_.
+- New functionalities that depend from a specific platform version:
+  - As long as it doesn't affect basic usability.
+  - E.g., when using **Node.js** previous to `v15.x.x`, the `strict` method isn't available.
+- If a feature is no longer useful due to a new approach _(as long as it doesn't affect the end user)_.
+- _JSON_ intellisense schema changes _(config files)_.
+
+<hr />
+
+## Which Poku doesn't Pretend to be 🤚🏻
+
+- A replacement for native test runners
+  - Try and use **Poku** as an alternative 🐷
+- The lightest or the fastest
+  - Although these points are taken into consideration, the main aim is to maintain a balance between good practices.
+
+:::danger
+Note that **Poku** has a different way of being used, inspired entirely by the essence of native **JavaScript**, which can be both an advantage and a disadvantage for those who are used to the traditional _hooks_ of other test runners.
+:::

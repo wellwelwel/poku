@@ -1,0 +1,84 @@
+# Um Caso Complexo
+
+**Imagine esses passos para realizar um teste:**
+
+1. Execute a suíte de **Testes Unitários** em paralelo
+2. Limpe e popule o banco de dados
+3. Verifique a suíte de **Integração de Sucessos Esperados** sequencialmente
+4. Limpe e popule o banco de dados — novamente
+5. Verifique a suíte de **Integração de Falhas Esperadas** sequencialmente
+
+**Requisitos:**
+
+Cada passo requer sucesso para ser processado.
+
+**Estrutura de Diretórios:**
+
+```bash
+├── .
+├── test
+│ ├── unit
+│ ├── integration
+│ │ ├── successes
+│ │ │ └── **/.spec.js
+│ │ └── failures
+│ │   └── **/.spec.js
+│ ├─ run.test.js # O executor
+│ ├─ tools.test.js
+```
+
+> Nós realmente precisamos complicar ainda mais as coisas criando executores de testes avançados para rodar nossos testes já complexos? 😅
+
+### Solução do Poku ✨
+
+```ts
+import { poku, assert } from 'poku';
+import { recreateDatabase } from './tools.test.js';
+
+const unitCode = await poku('test/unit', {
+  parallel: true,
+  noExit: true,
+});
+
+assert.strictEqual(0, unitCode, 'Executando Testes Unitários');
+
+await assert.doesNotReject(
+  recreateDatabase(),
+  'Preparando o banco de dados para os Testes de Integração de Sucessos'
+);
+
+const successesCode = await poku('test/integration/successes', {
+  noExit: true,
+});
+
+assert.strictEqual(
+  0,
+  successesCode,
+  'Executando Testes de Integração de Sucessos'
+);
+
+await assert.doesNotReject(
+  recreateDatabase(),
+  'Preparando o banco de dados para os Testes de Integração de Sucessos'
+);
+
+const failuresCode = await poku('test/integration/failures', {
+  noExit: true,
+});
+
+assert.strictEqual(
+  0,
+  failuresCode,
+  'Executando Testes de Integração de Falhas'
+);
+```
+
+> Por quê comentar o código se podemos fazer melhor? 🧙🏻
+
+**Finalmente**
+
+```bash
+npx poku test/run.test.js
+```
+
+> Ou `npx poku test/run.test.ts` para **TypeScript**.

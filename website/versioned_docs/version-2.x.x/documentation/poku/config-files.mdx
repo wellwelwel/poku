@@ -1,0 +1,184 @@
+---
+sidebar_position: 2
+---
+
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
+# ⚙️ Config Files
+
+By default, **Poku** comes with the most common usage pre-set, but you can configure it as you want.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Support for <code>-c</code> short flag.
+        </>,
+      ],
+    },
+    {
+      version: '2.1.0',
+      changes: [
+        <>
+          Support for config files (<code>js</code> and <code>cjs</code>).
+        </>,
+        <>
+          Support for config files (<code>json</code> and <code>jsonc</code>).
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## JavaScript
+
+<Stability
+  level={2}
+  message={
+    <>
+      <div>
+        <strong>Pros:</strong> Supports functions and regex.
+      </div>
+      <div>
+        <strong>Cons:</strong> Needs to be a CommonJS file.
+      </div>
+    </>
+  }
+/>
+
+Create a `poku.config.js` (or `poku.config.cjs` when using `"type": "module"` in your _package.json_) in your project's root directory, for example:
+
+```js
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  include: ['.'], // Doesn't support glob patterns
+  parallel: false,
+  debug: false,
+  filter: /\.(test.|.spec)\./,
+  exclude: [], // regex
+  failFast: false,
+  concurrency: 0, // No limit
+  quiet: false,
+  envFile: '.env',
+  kill: {
+    port: [3000],
+    range: [
+      [3000, 3003],
+      [4000, 4002],
+    ],
+    pid: [612],
+  },
+  platform: 'node', // "node", "bun" and "deno"
+  deno: {
+    allow: ['run', 'env', 'read', 'hrtime', 'net'],
+    deny: [], // Same as allow
+    cjs: ['.js', '.cjs'], // specific extensions
+    // "cjs": true // all extensions
+    // "cjs": false // no polyfill
+  },
+  beforeEach: () => true, // Before each test file
+  afterEach: () => true, // After each test file
+});
+```
+
+## JSON and JSONC
+
+<Stability
+  level={2}
+  message={
+    <>
+      <div>
+        <strong>Pros:</strong> Universal file for both CommonJS, ES Modules and
+        TypeScript.
+      </div>
+      <div>
+        <strong>Cons:</strong> Doesn't support functions and regex.
+      </div>
+    </>
+  }
+/>
+
+Create a `.pokurc.json` (or `.pokurc.jsonc`) in your project's root directory, for example:
+
+```js
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "include": ["."], // Doesn't support glob patterns
+  "parallel": false,
+  "debug": false,
+  "filter": ".test.|.spec.", // regex as string
+  "exclude": "", // regex as string
+  "failFast": false,
+  "concurrency": 0, // No limit
+  "quiet": false,
+  "envFile": ".env",
+  "kill": {
+    "port": [3000],
+    "range": [
+      [3000, 3003],
+      [4000, 4002],
+    ],
+    "pid": [612],
+  },
+  "platform": "node", // "node", "bun" and "deno"
+  "deno": {
+    "allow": ["run", "env", "read", "hrtime", "net"],
+    "deny": [], // Same as allow
+    "cjs": [".js", ".cjs"], // specific extensions
+    // "cjs": true // all extensions
+    // "cjs": false // no polyfill
+  }
+}
+```
+
+:::tip
+
+- The `$schema` property allows an _JSON_ intellisense to assist you customize **Poku**.
+- All options are optional.
+- [See details of all the options](/docs/category/-options).
+
+:::
+
+:::note
+Shares the same limitations as _CLI_ flags.
+:::
+
+<hr />
+
+## Default Configuration Files
+
+> In priority order.
+
+- `poku.config.js`
+- `poku.config.cjs`
+- `.pokurc.json`
+- `.pokurc.jsonc`
+
+:::note
+
+- Using a duplicate configuration via _CLI_ will overwrite the option in the configuration file.
+- If there are multiple configuration files in the same directory, **Poku** will search for — and use — only one.
+
+:::
+
+<hr />
+
+## Custom File
+
+```sh
+npx poku --config='my-file.json'
+```
+
+```sh
+npx poku --config='my-file.jsonc'
+```
+
+```sh
+npx poku --config='my-file'
+```
+
+- Short flag: `-c`.

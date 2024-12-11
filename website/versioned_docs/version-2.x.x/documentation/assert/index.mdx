@@ -1,0 +1,189 @@
+---
+sidebar_position: 2
+tags: [assert, assertions, expect]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { FAQ } from '@site/src/components/FAQ';
+
+# 🕵🏻 Assert
+
+**Poku** includes the `assert` method native from [**Node.js**][node-version-url], keeping everything as it is, but providing human readability.<br/>
+It supports both [**Bun**][bun-version-url] and [**Deno**][deno-version-url].
+
+[node-version-url]: https://github.com/nodejs/node
+[bun-version-url]: https://github.com/oven-sh/bun
+[deno-version-url]: https://github.com/denoland/deno
+
+- [**Node.js**][node-version-url], [**Bun**][bun-version-url] and [**Deno**][deno-version-url] compatible.
+
+> The `assert` is used to write tests and verify if your code works as expected by comparing values and throwing errors, otherwise 🧑🏻‍🎓
+
+## Migrating to **Poku**'s `assert`
+
+_But only if you want to, of course._
+
+Default assertions:
+
+```diff
+- import assert from 'node:assert';
++ import { assert } from 'poku';
+```
+
+Strict assertions:
+
+```diff
+- import assert from 'node:assert/strict';
++ import { strict as assert } from 'poku';
+```
+
+- `strict` method is available for **Node.js 16** onwards, **Bun**, and **Deno**. If you use it on unsupported **Node.js** versions, **Poku** will use the standard `assert` instead.
+
+```ts
+assert(true, "It's true 🧪");
+assert.strictEqual(1, '1', 'Poku will describe it and show an error 🐷');
+// ...
+```
+
+:::tip
+**Poku**'s `assert` will use the message exactly as it is when using `describe` and `it`. <br />
+Your **Poku** is waiting for you 🐷✨
+:::
+
+<hr />
+
+📘 To learn about assertions, see the quick tutorial: [From a basic assertion test to its execution](/docs/tutorials/beginner).
+
+<hr />
+
+## Available Methods
+
+```ts
+import { assert } from 'poku';
+// import { strict as assert } from 'poku';
+```
+
+<FAQ title='Positive Assertion' open>
+
+### Truthy
+
+```ts
+assert(value[, message])
+```
+
+```ts
+assert.ok(value[, message])
+```
+
+### Equality
+
+```ts
+assert.equal(actual, expected[, message])
+```
+
+```ts
+assert.strictEqual(actual, expected[, message])
+```
+
+### Deep Equality
+
+```ts
+assert.deepEqual(actual, expected[, message])
+```
+
+```ts
+assert.deepStrictEqual(actual, expected[, message])
+```
+
+### Matching
+
+```ts
+assert.match(string, regexp[, message])
+```
+
+### Success
+
+```ts
+assert.doesNotReject(asyncFn[, error][, message])
+```
+
+```ts
+assert.doesNotThrow(fn[, error][, message])
+```
+
+</FAQ>
+
+<FAQ title='Negative Assertion'>
+
+### Inequality
+
+```ts
+assert.notEqual(actual, expected[, message])
+```
+
+```ts
+assert.notStrictEqual(actual, expected[, message])
+```
+
+### Deep Inequality
+
+```ts
+assert.notDeepEqual(actual, expected[, message])
+```
+
+```ts
+assert.notDeepStrictEqual(actual, expected[, message])
+```
+
+### Non-Matching
+
+```ts
+assert.doesNotMatch(string, regexp[, message])
+```
+
+### Failure
+
+```ts
+assert.rejects(asyncFn[, error][, message])
+```
+
+```ts
+assert.throws(fn[, error][, message])
+```
+
+</FAQ>
+
+<FAQ title='Error Handling'>
+
+### Falsy
+
+```ts
+assert.ifError(value);
+```
+
+- _Tests for a error value, useful in callbacks_
+
+### Forces a failure
+
+```ts
+assert.fail([message]);
+```
+
+</FAQ>
+
+You can follow the [**assert documentation**](https://nodejs.org/api/assert.html) from **Node.js**'s documentation.
+
+:::note
+For **Node.js**, the `assert.match` and `assert.doesNotMatch` methods are available from version 12 or higher.
+:::
+
+:::info
+
+To compile tests using `assert` with **TypeScript**, you may will need to install **@types/node**:
+
+```bash
+npm i -D @types/node
+```
+
+:::

@@ -1,0 +1,174 @@
+---
+title: 🪴 Good Practices
+description: Organizing tests for different needs, requirements and approaches.
+tags: [assert, assertion, test, describe, it, tutorial, roadmap]
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import MidLevel from '@site/static/img/mid-level.svg';
+
+<div className='title-section'>
+<aside>
+
+# 🪴 Good Practices
+
+- Organizing tests for different needs, requirements and approaches.
+
+</aside>
+  <aside>
+    <MidLevel className='logo' height='128' />
+  </aside>
+</div>
+
+<hr />
+
+## Organizing Tests
+
+There are various motivations for organizing tests better:
+
+- Different tests usually have their own files.
+- Use isolated scopes to declare the same variables or isolate one test from another in the same file.
+- Grouping multiple tests of the same method.
+
+Let's create two basic methods (**sum** and **sub**) to be tested:
+
+<Tabs>
+  <TabItem default value='./src/calc.mjs'>
+
+```js
+export const sum = (a, b) => a + b;
+export const sub = (a, b) => a - b;
+```
+
+  </TabItem>
+</Tabs>
+
+### By separating tests with different responsibilities
+
+> Create a file to test the `sum` method and another for the `sub` method.
+
+<Tabs>
+  <TabItem default value='./test/unit/sum.test.mjs'>
+
+```js
+import { test, assert } from 'poku';
+import { sum } from '../../src/calc.mjs';
+
+test('Testing "sum" method', () => {
+  assert(sum(0, 0), 0, 'should return zero');
+  assert(sum(0, 1), 1, 'should return one');
+  assert(sum(1, 1), 2, 'should return two');
+});
+```
+
+  </TabItem>
+  <TabItem default value='./test/unit/sub.test.mjs'>
+
+```js
+import { test, assert } from 'poku';
+import { sub } from '../../src/calc.mjs';
+
+test('Testing "sub" method', () => {
+  assert(sub(1, 1), 0, 'should return zero');
+  assert(sub(2, 1), 1, 'should return one');
+  assert(sub(3, 1), 2, 'should return two');
+});
+```
+
+  </TabItem>
+</Tabs>
+
+<hr />
+
+### By categorizing tests with different responsibilities
+
+> Create a unique file to test both the `sum` and `sub` methods.
+
+<Tabs>
+  <TabItem default value='./test/unit/calc.test.mjs'>
+
+```js
+import { test, assert } from 'poku';
+import { sum, sub } from '../../src/calc.mjs';
+
+test('Testing "sum" method', () => {
+  assert(sum(0, 0), 0, 'should return zero');
+  assert(sum(0, 1), 1, 'should return one');
+  assert(sum(1, 1), 2, 'should return two');
+});
+
+test('Testing "sub" method', () => {
+  assert(sub(1, 1), 0, 'should return zero');
+  assert(sub(2, 1), 1, 'should return one');
+  assert(sub(3, 1), 2, 'should return two');
+});
+```
+
+  </TabItem>
+</Tabs>
+
+<hr />
+
+### By describing tests with different responsibilities
+
+> Create a unique file to test both the `sum` and `sub` methods.
+
+<Tabs>
+  <TabItem default value='./test/unit/calc.test.mjs'>
+
+```js
+import { describe, it, assert } from 'poku';
+import { sum, sub } from '../../src/calc.mjs';
+
+describe('Testing calculation methods', () => {
+  it('"sum" method', () => {
+    assert(sum(0, 0), 0, 'should return zero');
+    assert(sum(0, 1), 1, 'should return one');
+    assert(sum(1, 1), 2, 'should return two');
+  });
+
+  it('"sub" method', () => {
+    assert(sub(1, 1), 0, 'should return zero');
+    assert(sub(2, 1), 1, 'should return one');
+    assert(sub(3, 1), 2, 'should return two');
+  });
+});
+```
+
+  </TabItem>
+</Tabs>
+
+- When using `describe` + `it` with messages, it's common not to include the message in `assert`.
+
+<hr />
+
+:::tip
+You are free to choose to use `describe` + `it`, or `test` + `describe`, or `test` + `it` and so on, but note that if you use messages, they will only be properly formatted for:
+
+- `assert`
+- `test`
+- `test` + `assert`
+- `it`
+- `it` + `assert`
+- `describe`
+- `describe` + `assert`
+- `describe` + `it`
+- `describe` + `it` + `assert`
+- `describe` + `assert` + `it` + `assert`
+- `describe` + `test`
+- `describe` + `test` + `assert`
+- `describe` + `assert` + `test` + `assert`
+
+:::
+
+:::danger Be careful
+Avoid coupling `test` and `it` when using hooks such as `beforeEach` (e.g., `test + test`, `it + it`, `test + it`, etc.).
+:::
+
+<hr />
+
+:::note
+If you find any typos, feel free to open a **Pull Request** correcting them.
+:::

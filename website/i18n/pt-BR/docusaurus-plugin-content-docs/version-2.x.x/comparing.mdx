@@ -1,0 +1,365 @@
+---
+tags: [Jest, Mocha, Chai, Vitest, AVA, TypeScript]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Comparando executores de testes
+
+| Executor de Teste     | Isolamento | CJS          | ESM            | node_modules                                     | Bun | Deno |
+| --------------------- | ---------- | ------------ | -------------- | ------------------------------------------------ | --- | ---- |
+| 🐷 **Poku** _(2.0.0)_ | ✅         | ✅           | ✅             | ![](https://pkg-size.dev/badge/install/152997)   | ✅  | ✅   |
+| **Jest** _(29.7.0)_   | ✅         | ✅           | _experimental_ | ![](https://pkg-size.dev/badge/install/21981180) | ❓  | ❓   |
+| **Mocha** _(10.4.0)_  | ❌         | ✅           | ✅             | ![](https://pkg-size.dev/badge/install/5548077)  | ❓  | ❓   |
+| **Vitest** _(1.6.0)_  | ✅         | _depreciado_ | ✅             | ![](https://pkg-size.dev/badge/install/38365477) | ❓  | ❓   |
+
+<hr />
+
+## Comparações Rápidas
+
+### Desempenho
+
+O **Poku** é [continuamente testado](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) para garantir as seguintes expectativas para o uso básico:
+
+- ~**4x** mais rápido que o [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
+- ~**3x** mais rápido que o [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
+- ~**1x** mais rápido que o [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
+
+> Você pode ver como os testes são executados e comparados no diretório [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark).
+
+<hr />
+
+### Tamanho da Instalação
+
+[![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)
+
+- [~**230x** mais leve que o **Vitest**](https://pkg-size.dev/vitest)
+- [~**130x** mais leve que o **Jest**](https://pkg-size.dev/jest)
+- [~**30x** mais leve que o **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
+
+<hr />
+
+## Comparação com TypeScript
+
+**Comparação usando **TypeScript** (_sem compilação_) e **ESM** para mostrar um teste de erro simples:**
+
+- Vamos começar a partir da instalação 🔬
+
+<Tabs>
+  <TabItem default value='Poku'>
+
+## [Poku](https://github.com/wellwelwel/poku)
+
+### Instalação
+
+```bash
+npm i -D poku tsx
+```
+
+<a href='https://pkg-size.dev/poku tsx'>
+  <img
+    src='https://pkg-size.dev/badge/install/22162793'
+    title='Tamanho da instalação para tsx e poku'
+  />
+</a>
+
+<hr />
+
+### Criando o arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+import { assert } from 'poku';
+
+assert.deepStrictEqual('1', 1, 'Número não pode ser um texto');
+```
+
+<hr />
+
+### Executando os testes
+
+```bash
+npx poku
+```
+
+<hr />
+
+Isso é tudo 🎉
+
+:::tip
+
+Para testes simples, o **Poku** não precisa usar **`test`**, **`describe`** ou **`it`**, pois a mensagem já está no **`assert`**.
+
+- O **`assert`** do **Poku** é apenas uma abstração do **`assert`** original do **Node.js**. <br />
+- Isso significa: <ins>**Nenhum novo aprendizado é necessário**</ins> 🎉
+
+:::
+
+Adote um Poku para você 🩵
+
+  </TabItem>
+  <TabItem value='Jest'>
+
+## [Jest](https://github.com/jestjs/jest)
+
+### Instalação
+
+```bash
+npm i -D jest @types/jest ts-jest
+```
+
+<a href='https://pkg-size.dev/jest @types/jest ts-jest'>
+  <img
+    src='https://pkg-size.dev/badge/install/56409485'
+    title='Tamanho da instalação para o ts-jest, @types/jest, e jest'
+  />
+</a>
+
+<hr />
+
+### Configurando o TypeScript
+
+> Adicione no seu _tsconfig.json_
+
+```json
+{
+  "compilerOptions": {
+    "esModuleInterop": true
+  }
+}
+```
+
+<hr />
+
+### Configurando o Jest
+
+> _jest.config.js_
+
+```js
+export default {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  testMatch: ['**/test/**/*.test.ts'],
+};
+```
+
+<hr />
+
+### Criando o arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+describe('Comparação de tipos', () => {
+  test('Número não pode ser um texto', () => {
+    expect('1').toStrictEqual(1);
+  });
+});
+```
+
+<hr />
+
+### Executando os testes
+
+```bash
+npx jest
+```
+
+  </TabItem>
+  <TabItem value='Mocha + Chai'>
+
+## [Mocha](https://github.com/mochajs/mocha) + [Chai](https://github.com/chaijs/chai)
+
+### Instalação
+
+```bash
+npm i -D mocha @types/mocha chai @types/chai ts-node
+```
+
+<a href='https://pkg-size.dev/mocha @types/mocha chai @types/chai ts-node'>
+  <img
+    src='https://pkg-size.dev/badge/install/44192453'
+    title='Tamanho da instalação para o mocha, ts-node, chai, @types/mocha, e @types/chai'
+  />
+</a>
+
+<hr />
+
+### Configurando o ts-node
+
+> _ts-loader.js_
+
+```js
+import { register } from 'node:module';
+import { pathToFileURL } from 'node:url';
+
+register('ts-node/esm', pathToFileURL('./'));
+```
+
+### Configurando o Mocha
+
+> _.mocharc.json_
+
+```json
+{
+  "spec": "./test/**/*.test.ts",
+  "require": "ts-loader.js"
+}
+```
+
+<hr />
+
+### Criando um arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+import { expect } from 'chai';
+
+describe('Comparação de tipos', () => {
+  it('Número não pode ser um texto', () => {
+    expect('1').to.deep.equal(1);
+  });
+});
+```
+
+<hr />
+
+### Executando os testes
+
+```bash
+npx mocha
+```
+
+  </TabItem>
+  <TabItem value='Vitest'>
+
+## [Vitest](https://github.com/vitest-dev/vitest)
+
+### Instalação
+
+```bash
+npm i -D vitest ts-node
+```
+
+<a href='https://pkg-size.dev/vitest ts-node'>
+  <img
+    src='https://pkg-size.dev/badge/install/75811670'
+    title='Tamanho da instalação para o vitest e o ts-node'
+  />
+</a>
+
+<hr />
+
+### Configurando o Vitest
+
+> _vitest.config.ts_
+
+```ts
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    include: ['test/**/*.test.ts'],
+    globals: true,
+    environment: 'node',
+  },
+});
+```
+
+<hr />
+
+### Criando um arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+import { describe, it, expect } from 'vitest';
+
+describe('Comparação de tipos', () => {
+  it('Número não pode ser um texto', () => {
+    expect('1').toStrictEqual(1);
+  });
+});
+```
+
+<hr />
+
+### Executando os testes
+
+```bash
+npx vitest run
+```
+
+  </TabItem>
+  <TabItem value='AVA'>
+
+## [AVA](https://github.com/avajs/ava)
+
+### Instalação
+
+```bash
+npm i -D ava tsimp
+```
+
+<a href='https://pkg-size.dev/ava tsimp'>
+  <img
+    src='https://pkg-size.dev/badge/install/45894421'
+    title='Tamanho da instalação para o tsimp e o ava'
+  />
+</a>
+
+<hr />
+
+### Configurando o Git
+
+> Inclua no _.gitignore_:
+
+```json
+/.tsimp
+```
+
+<hr />
+
+### Configurando o AVA
+
+> Inclua no _package.json_:
+
+```json
+{
+  "ava": {
+    "files": ["test/**/*.test.ts"],
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": ["--import=tsimp"]
+  }
+}
+```
+
+<hr />
+
+### Criando o arquivo de teste
+
+> _test/index.test.ts_
+
+```ts
+import test from 'ava';
+
+test('Número não pode ser um texto', (t) => {
+  t.deepEqual('1', 1);
+});
+```
+
+<hr />
+
+### Executando os testes
+
+```bash
+npx ava
+```
+
+  </TabItem>
+</Tabs>

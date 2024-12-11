@@ -1,0 +1,30 @@
+---
+sidebar_position: 8
+---
+
+# `concurrency`
+
+When using `parallel` option, use `concurrency` to limit the number of tests running concurrently.
+
+The default value is the number of available cores (or `os.availableParallelism()` if available) minus `1`. In **watch mode**, it uses half the number of available cores (or `os.availableParallelism()` if available).
+
+## CLI
+
+```bash
+npx poku --parallel --concurrency=4 ./test
+```
+
+## API
+
+```ts
+await poku('./test', {
+  parallel: true,
+  concurrency: 4,
+});
+```
+
+<hr />
+
+:::tip
+To allow unlimited parallelism, set the value to `0`.
+:::

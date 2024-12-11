@@ -1,0 +1,73 @@
+---
+tags: [processes, ports, debug]
+---
+
+# Seaching PIDs
+
+Returns processes IDs used by the specified ports and port ranges.
+
+## getPIDs
+
+Returns all processes IDs used by the specified ports.
+
+> `getPIDs(port: number | number[])`
+
+- Requires `lsof` for **Unix** and `netstat` for **Windows**.
+
+```ts
+import { getPIDs } from 'poku';
+
+await getPIDs(4000);
+```
+
+```ts
+await getPIDs([4000, 4001]);
+```
+
+---
+
+## getPIDs.range
+
+Returns all processes IDs used by the specified port range.
+
+> `getPIDs.range(startsAt: number, endsAt: number)`
+
+- Requires `lsof` for **Unix** and `netstat` for **Windows**.
+
+```ts
+import { getPIDs } from 'poku';
+
+await getPIDs.range(4000, 4100);
+```
+
+---
+
+:::tip
+
+If your environment doesn't include `lsof` by default:
+
+**macOS (Homebrew)**
+
+```sh
+brew install lsof
+```
+
+**Debian, Ubuntu, etc.**
+
+```sh
+sudo apt-get install lsof
+```
+
+**Arch Linux, etc.**
+
+```sh
+sudo pacman -S lsof
+```
+
+**Alpine Linux, etc.**
+
+```sh
+apk add lsof
+```
+
+:::

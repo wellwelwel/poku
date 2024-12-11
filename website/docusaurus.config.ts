@@ -36,6 +36,17 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/wellwelwel/poku/tree/main/website/',
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: 'v3.x.x (Realease Candidate)',
+              badge: false
+            },
+            '2.x.x': {
+              label: 'v2.x.x',
+              banner: 'unmaintained',
+            },
+          },
         },
         theme: {
           customCss: './src/css/custom.scss',
@@ -68,10 +79,14 @@ const config: Config = {
       },
       items: [
         {
-          to: '/docs/category/documentation',
-          label: 'Docs',
+          type: 'docsVersionDropdown',
           position: 'left',
         },
+        // {
+        //   to: '/docs/category/documentation',
+        //   label: 'Docs',
+        //   position: 'left',
+        // },
         {
           href: 'https://github.com/wellwelwel/poku',
           position: 'right',

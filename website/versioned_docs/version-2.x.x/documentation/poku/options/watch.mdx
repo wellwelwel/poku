@@ -1,0 +1,71 @@
+---
+sidebar_position: 9
+---
+
+import { History } from '@site/src/components/History';
+
+# `watch`
+
+Watches the events on tests and files that contains tests (after running all the tests), re-running the tests files that are updated for each new event.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Support for <code>-w</code> short flag.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+```bash
+npx poku --watch
+```
+
+You can use the flag `--watchInterval` to set a custom interval for `watch` events in milliseconds:
+
+> Default is `1500`
+
+```bash
+npx poku --watch --watchInterval=1500
+```
+
+- Short flag: `-w`.
+
+<hr />
+
+:::tip
+
+Quickly reset and rerun all tests by typing <kbd>rs</kbd> on the console, followed by <kbd>Enter</kbd>.
+
+- This will clean and repopulate all the directories and files to be watched.
+- It's not possible to use it while the tests are running.
+
+:::
+
+<hr />
+
+:::info
+
+If it's not possible to determine which test file depends on the changed source file, no test will be run.
+
+:::
+
+<hr />
+
+:::note
+
+❌ Dynamic paths are not supported:
+
+```ts
+const dynamicPath = './some-file.js';
+
+await import(dynamicPath);
+```
+
+:::
