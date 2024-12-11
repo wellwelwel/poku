@@ -1,4 +1,4 @@
-import process from 'node:process';
+import process, { env } from 'node:process';
 import {
   type ChildProcessWithoutNullStreams,
   spawn,
@@ -96,6 +96,10 @@ export const inspectPoku = (
   return inspectCLI(`${cmd} ${basePath}${binFile} ${command}`, {
     shell: isWindows,
     ...options,
+    env: {
+      ...(options?.env || env),
+      POKU_RUNTIME: env.POKU_RUNTIME,
+    },
   });
 };
 
@@ -121,6 +125,10 @@ export const watchCLI = (
   const childProcess = spawn(cmd, args, {
     shell: isWindows,
     ...options,
+    env: {
+      ...(options?.env || env),
+      POKU_RUNTIME: env.POKU_RUNTIME,
+    },
   });
 
   childProcess.stdout.setEncoding('utf8');

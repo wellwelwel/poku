@@ -47,7 +47,7 @@ export const runTestFile = async (
       shell: isWindows,
       env: {
         ...env,
-        FILE: fileRelative,
+        POKU_FILE: fileRelative,
         POKU_RUNTIME: env.POKU_RUNTIME,
       },
     });
