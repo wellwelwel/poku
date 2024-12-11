@@ -74,7 +74,7 @@ module.exports = defineConfig({
   },
   platform: 'node', // "node", "bun" and "deno"
   deno: {
-    allow: ['run', 'env', 'read', 'hrtime', 'net'],
+    allow: ['run', 'env', 'read', 'net'],
     deny: [], // Same as allow
     cjs: ['.js', '.cjs'], // specific extensions
     // "cjs": true // all extensions
@@ -126,7 +126,7 @@ Create a `.pokurc.json` (or `.pokurc.jsonc`) in your project's root directory, f
   },
   "platform": "node", // "node", "bun" and "deno"
   "deno": {
-    "allow": ["run", "env", "read", "hrtime", "net"],
+    "allow": ["run", "env", "read", "net"],
     "deny": [], // Same as allow
     "cjs": [".js", ".cjs"], // specific extensions
     // "cjs": true // all extensions
