@@ -101,48 +101,46 @@ describe('Strict Suite (No Message)', async () => {
   });
 
   it(() => {
-    if (!nodeVersion || nodeVersion > 8) {
-      const obj = { a: 1 };
+    const obj = { a: 1 };
 
-      const functionThatThrows = () => {
-        throw new Error('Specific error');
-      };
+    const functionThatThrows = () => {
+      throw new Error('Specific error');
+    };
 
-      it(() => {
-        assert.throws(() => {
-          throw new Error('error');
-        });
-        assert.throws(() => {
-          throw new Error('Test error');
-        });
-        assert.throws(() => {
-          throw new Error('Test error');
-        });
-        assert.throws(functionThatThrows, new Error('Specific error'));
-        assert.throws(functionThatThrows, /Specific error/);
-        assert.throws(
-          functionThatThrows,
-          (err) => err instanceof Error && err.message === 'Specific error'
-        );
+    it(() => {
+      assert.throws(() => {
+        throw new Error('error');
       });
-
-      it(() => {
-        assert.doesNotThrow(() => {
-          obj.a = 2;
-        });
-        assert.strictEqual(obj.a, 2);
-        assert.doesNotThrow(() => {
-          return 42;
-        });
-        assert.doesNotThrow(() =>
-          callbackFunction((err) => {
-            assert.ifError(err);
-          })
-        );
-        assert.doesNotThrow(() => 42);
-        assert.doesNotThrow(() => 'no error');
+      assert.throws(() => {
+        throw new Error('Test error');
       });
-    }
+      assert.throws(() => {
+        throw new Error('Test error');
+      });
+      assert.throws(functionThatThrows, new Error('Specific error'));
+      assert.throws(functionThatThrows, /Specific error/);
+      assert.throws(
+        functionThatThrows,
+        (err) => err instanceof Error && err.message === 'Specific error'
+      );
+    });
+
+    it(() => {
+      assert.doesNotThrow(() => {
+        obj.a = 2;
+      });
+      assert.strictEqual(obj.a, 2);
+      assert.doesNotThrow(() => {
+        return 42;
+      });
+      assert.doesNotThrow(() =>
+        callbackFunction((err) => {
+          assert.ifError(err);
+        })
+      );
+      assert.doesNotThrow(() => 42);
+      assert.doesNotThrow(() => 'no error');
+    });
   });
 
   it(() => {
@@ -163,41 +161,39 @@ describe('Strict Suite (No Message)', async () => {
   });
 
   it(() => {
-    if (!nodeVersion || nodeVersion > 10) {
-      const asyncFunctionThatRejects = async () =>
-        await Promise.reject(new Error('Async error'));
+    const asyncFunctionThatRejects = async () =>
+      await Promise.reject(new Error('Async error'));
 
-      const asyncFunctionThatResolves = () =>
-        Promise.resolve('Resolved successfully');
+    const asyncFunctionThatResolves = () =>
+      Promise.resolve('Resolved successfully');
 
-      const asyncFunctionThatFails = () =>
-        new Promise((_, reject) => reject(new Error('Failed')));
+    const asyncFunctionThatFails = () =>
+      new Promise((_, reject) => reject(new Error('Failed')));
 
-      const asyncFunctionThatCouldReject = () =>
-        new Promise((resolve) => resolve(undefined));
+    const asyncFunctionThatCouldReject = () =>
+      new Promise((resolve) => resolve(undefined));
 
-      it(() => {
-        assert.rejects(
-          async () => await asyncFunctionThatFails(),
-          new Error('Failed')
-        );
-        assert.rejects(asyncFunctionThatRejects, new Error('Async error'));
-        assert.rejects(
-          () => Promise.reject('Simple rejection'),
-          (err) => err === 'Simple rejection'
-        );
-        assert.rejects(asyncFunctionThatRejects, new Error('Async error'));
-      });
+    it(() => {
+      assert.rejects(
+        async () => await asyncFunctionThatFails(),
+        new Error('Failed')
+      );
+      assert.rejects(asyncFunctionThatRejects, new Error('Async error'));
+      assert.rejects(
+        () => Promise.reject('Simple rejection'),
+        (err) => err === 'Simple rejection'
+      );
+      assert.rejects(asyncFunctionThatRejects, new Error('Async error'));
+    });
 
-      it(() => {
-        assert.doesNotReject(asyncFunctionThatResolves);
-        assert.doesNotReject(Promise.resolve('Immediate resolve'));
-        assert.doesNotReject(asyncFunctionThatCouldReject);
-        assert.doesNotReject(() =>
-          Promise.resolve('Async function with no rejection')
-        );
-        assert.doesNotReject(asyncFunctionThatResolves);
-      });
-    }
+    it(() => {
+      assert.doesNotReject(asyncFunctionThatResolves);
+      assert.doesNotReject(Promise.resolve('Immediate resolve'));
+      assert.doesNotReject(asyncFunctionThatCouldReject);
+      assert.doesNotReject(() =>
+        Promise.resolve('Async function with no rejection')
+      );
+      assert.doesNotReject(asyncFunctionThatResolves);
+    });
   });
 });

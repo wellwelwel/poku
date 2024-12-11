@@ -12,12 +12,12 @@ if (runtime !== 'deno') {
 }
 
 test('Deno Compatibility', async () => {
-  const FILE = 'test/__fixtures__/integration/deno/require.cjs';
+  const POKU_FILE = 'test/__fixtures__/integration/deno/require.cjs';
   const polyfillPath = './lib/polyfills/deno.mjs';
 
   const command = 'deno';
   const args = ['run', '--allow-env', '--allow-read', polyfillPath];
-  const env = { ...process.env, FILE };
+  const env = { ...process.env, POKU_FILE };
 
   const denoProcess = spawn(command, args, { env });
 

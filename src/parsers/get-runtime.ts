@@ -6,16 +6,8 @@ declare const Bun: unknown;
 
 const regex = /v(\d+)\./;
 
-export const supportedPlatforms: readonly Runtime[] = ['node', 'bun', 'deno'];
-
-export const platformIsValid = (
-  platform: unknown
-): platform is (typeof supportedPlatforms)[number] =>
-  typeof platform === 'string' &&
-  supportedPlatforms.indexOf(platform as Runtime) > -1;
-
-export const getRuntime = (): (typeof supportedPlatforms)[number] => {
-  if (platformIsValid(env.POKU_RUNTIME)) return env.POKU_RUNTIME;
+export const getRuntime = (): Runtime => {
+  if (env.POKU_RUNTIME) return env.POKU_RUNTIME as Runtime;
   if (typeof Deno !== 'undefined') return 'deno';
   if (typeof Bun !== 'undefined') return 'bun';
 

@@ -1,5 +1,4 @@
 import type { Runner } from './runner.js';
-import type { Configs } from './poku.js';
 
 type BackgroundProcessOptions = {
   /**
@@ -40,11 +39,6 @@ export type StartScriptOptions = {
   readonly runner?: Runner;
 } & BackgroundProcessOptions;
 
-export type StartServiceOptions = {
-  /**
-   * By default, Poku will try to identify the actual platform, but you can specify it manually
-   */
-  readonly platform?: Configs['platform'];
-} & BackgroundProcessOptions;
+export type StartServiceOptions = BackgroundProcessOptions;
 
 export type End = (port?: number | number[]) => Promise<void>;

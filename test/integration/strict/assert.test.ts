@@ -146,90 +146,88 @@ describe('Strict Suite', async () => {
   });
 
   it(() => {
-    if (!nodeVersion || nodeVersion > 8) {
-      const obj = { a: 1 };
+    const obj = { a: 1 };
 
-      const functionThatThrows = () => {
-        throw new Error('Specific error');
-      };
+    const functionThatThrows = () => {
+      throw new Error('Specific error');
+    };
 
-      it(() => {
-        assert.throws(() => {
-          throw new Error('error');
-        }, 'throws with throwing function');
-        assert.throws(() => {
-          throw new Error('Test error');
-        }, 'Should throw an exception for a function that generates an error');
-        assert.throws(() => {
-          throw new Error('Test error');
-        }, 'Should throw an error for a function that actually throws');
-        assert.throws(
-          functionThatThrows,
-          new Error('Specific error'),
-          'Should throw the specific error'
-        );
+    it(() => {
+      assert.throws(() => {
+        throw new Error('error');
+      }, 'throws with throwing function');
+      assert.throws(() => {
+        throw new Error('Test error');
+      }, 'Should throw an exception for a function that generates an error');
+      assert.throws(() => {
+        throw new Error('Test error');
+      }, 'Should throw an error for a function that actually throws');
+      assert.throws(
+        functionThatThrows,
+        new Error('Specific error'),
+        'Should throw the specific error'
+      );
 
-        assert.throws(
-          functionThatThrows,
-          /Specific error/,
-          'Should throw an error matching the regex'
-        );
+      assert.throws(
+        functionThatThrows,
+        /Specific error/,
+        'Should throw an error matching the regex'
+      );
 
-        assert.throws(
-          functionThatThrows,
-          (err) => err instanceof Error && err.message === 'Specific error',
-          'Should throw an error where the message equals the specific string'
-        );
-      });
+      assert.throws(
+        functionThatThrows,
+        (err) => err instanceof Error && err.message === 'Specific error',
+        'Should throw an error where the message equals the specific string'
+      );
+    });
 
-      it(() => {
-        assert.doesNotThrow(
-          () => 1 + 1,
-          'doesNotThrow with non-throwing function'
-        );
+    it(() => {
+      assert.doesNotThrow(
+        () => 1 + 1,
+        'doesNotThrow with non-throwing function'
+      );
 
-        assert.doesNotThrow(() => {
-          obj.a = 2;
-        }, 'Changing property should not throw');
-        assert.strictEqual(obj.a, 2, 'Property a should be 2 after mutation');
+      assert.doesNotThrow(() => {
+        obj.a = 2;
+      }, 'Changing property should not throw');
+      assert.strictEqual(obj.a, 2, 'Property a should be 2 after mutation');
 
-        // Test to check functions that do or do not throw errors
-        assert.doesNotThrow(() => {
-          return 42;
-        }, 'Should not throw an exception for a function returning 42');
+      // Test to check functions that do or do not throw errors
+      assert.doesNotThrow(() => {
+        return 42;
+      }, 'Should not throw an exception for a function returning 42');
 
-        assert.doesNotThrow(
-          () =>
-            callbackFunction((err) => {
-              assert.ifError(err);
-            }),
-          'Should not throw an error for a callback function that does not error'
-        );
+      assert.doesNotThrow(
+        () =>
+          callbackFunction((err) => {
+            assert.ifError(err);
+          }),
+        'Should not throw an error for a callback function that does not error'
+      );
 
-        assert.doesNotThrow(
-          () => 42,
-          'Should not throw an error for a function returning a number'
-        );
+      assert.doesNotThrow(
+        () => 42,
+        'Should not throw an error for a function returning a number'
+      );
 
-        assert.doesNotThrow(
-          () => 'no error',
-          'Should not throw an error for a function returning a string'
-        );
+      assert.doesNotThrow(
+        () => 'no error',
+        'Should not throw an error for a function returning a string'
+      );
 
-        assert.doesNotThrow(
-          () => 'no error',
-          'Should not throw an error for an async function that resolves'
-        );
+      assert.doesNotThrow(
+        () => 'no error',
+        'Should not throw an error for an async function that resolves'
+      );
 
-        assert.doesNotThrow(
-          () => {
-            return 'test';
-          },
-          /test/,
-          'RegExp predicate should not match'
-        );
-      });
-    }
+      assert.doesNotThrow(
+        () => {
+          return 'test';
+        },
+        /test/,
+        'RegExp predicate should not match'
+      );
+    });
   });
 
   it(() => {
@@ -266,94 +264,92 @@ describe('Strict Suite', async () => {
   });
 
   await it(async () => {
-    if (!nodeVersion || nodeVersion > 10) {
-      const asyncFunctionThatRejects = async () =>
-        await Promise.reject(new Error('Async error'));
+    const asyncFunctionThatRejects = async () =>
+      await Promise.reject(new Error('Async error'));
 
-      const asyncFunctionThatResolves = () =>
-        Promise.resolve('Resolved successfully');
+    const asyncFunctionThatResolves = () =>
+      Promise.resolve('Resolved successfully');
 
-      const asyncFunctionThatFails = () =>
-        new Promise((_, reject) => reject(new Error('Failed')));
+    const asyncFunctionThatFails = () =>
+      new Promise((_, reject) => reject(new Error('Failed')));
 
-      const asyncFunctionThatCouldReject = () =>
-        new Promise((resolve) => resolve(undefined));
+    const asyncFunctionThatCouldReject = () =>
+      new Promise((resolve) => resolve(undefined));
 
-      await it(async () => {
-        await assert.rejects(
-          async () => await asyncFunctionThatFails(),
-          new Error('Failed'),
-          'Async function should reject with an error'
-        );
-        await assert.rejects(
-          asyncFunctionThatRejects,
-          new Error('Async error'),
-          'Should reject with an Error object with "Async error" message'
-        );
-        await assert.rejects(
-          () => Promise.reject('Simple rejection'),
-          (err) => err === 'Simple rejection',
-          'Should handle rejection with a simple string message'
-        );
-        await assert.rejects(
-          asyncFunctionThatRejects,
-          new Error('Async error'),
-          'Should reject with the specified error message'
-        );
-        await assert.rejects(
-          asyncFunctionThatRejects,
-          /Async error/,
-          'Should reject with the specified regex message'
-        );
-        await assert.rejects(
-          asyncFunctionThatRejects,
-          { message: 'Async error' },
-          'Should reject with the specified object predicate message'
-        );
-        await assert.rejects(
-          asyncFunctionThatRejects,
-          (err: Error) => err.message === 'Async error',
-          'Should reject with the specified function predicate message'
-        );
-        await assert.rejects(
-          asyncFunctionThatRejects,
-          'Should reject with the specified string message'
-        );
-        await assert.rejects(
-          asyncFunctionThatRejects,
-          // @ts-expect-error invalid second param
-          undefined,
-          'Should reject with the specified string message (third arg)'
-        );
-        await assert.rejects(asyncFunctionThatRejects);
-      });
+    await it(async () => {
+      await assert.rejects(
+        async () => await asyncFunctionThatFails(),
+        new Error('Failed'),
+        'Async function should reject with an error'
+      );
+      await assert.rejects(
+        asyncFunctionThatRejects,
+        new Error('Async error'),
+        'Should reject with an Error object with "Async error" message'
+      );
+      await assert.rejects(
+        () => Promise.reject('Simple rejection'),
+        (err) => err === 'Simple rejection',
+        'Should handle rejection with a simple string message'
+      );
+      await assert.rejects(
+        asyncFunctionThatRejects,
+        new Error('Async error'),
+        'Should reject with the specified error message'
+      );
+      await assert.rejects(
+        asyncFunctionThatRejects,
+        /Async error/,
+        'Should reject with the specified regex message'
+      );
+      await assert.rejects(
+        asyncFunctionThatRejects,
+        { message: 'Async error' },
+        'Should reject with the specified object predicate message'
+      );
+      await assert.rejects(
+        asyncFunctionThatRejects,
+        (err: Error) => err.message === 'Async error',
+        'Should reject with the specified function predicate message'
+      );
+      await assert.rejects(
+        asyncFunctionThatRejects,
+        'Should reject with the specified string message'
+      );
+      await assert.rejects(
+        asyncFunctionThatRejects,
+        // @ts-expect-error invalid second param
+        undefined,
+        'Should reject with the specified string message (third arg)'
+      );
+      await assert.rejects(asyncFunctionThatRejects);
+    });
 
-      await it(async () => {
-        await assert.doesNotReject(
-          asyncFunctionThatResolves,
-          'Should not reject for a function that resolves'
-        );
-        await assert.doesNotReject(
-          asyncFunctionThatResolves,
-          'Should not reject for a function that resolves'
-        );
-        await assert.doesNotReject(
-          Promise.resolve('Immediate resolve'),
-          'Should not reject for an immediately resolving promise'
-        );
-        await assert.doesNotReject(
-          asyncFunctionThatCouldReject,
-          'Should not reject for a function that could reject but resolves instead'
-        );
-        await assert.doesNotReject(
-          () => Promise.resolve('Async function with no rejection'),
-          'Should handle async functions that do not reject'
-        );
-        await assert.doesNotReject(
-          asyncFunctionThatResolves,
-          /Resolved successfully/
-        );
-      });
-    }
+    await it(async () => {
+      await assert.doesNotReject(
+        asyncFunctionThatResolves,
+        'Should not reject for a function that resolves'
+      );
+      await assert.doesNotReject(
+        asyncFunctionThatResolves,
+        'Should not reject for a function that resolves'
+      );
+      await assert.doesNotReject(
+        Promise.resolve('Immediate resolve'),
+        'Should not reject for an immediately resolving promise'
+      );
+      await assert.doesNotReject(
+        asyncFunctionThatCouldReject,
+        'Should not reject for a function that could reject but resolves instead'
+      );
+      await assert.doesNotReject(
+        () => Promise.resolve('Async function with no rejection'),
+        'Should handle async functions that do not reject'
+      );
+      await assert.doesNotReject(
+        asyncFunctionThatResolves,
+        /Resolved successfully/
+      );
+    });
   });
 });

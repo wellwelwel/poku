@@ -12,9 +12,7 @@ if (runtime !== 'deno') {
 
 test('Deno Permissions (Allow)', () => {
   assert.deepStrictEqual(
-    runner('', {
-      platform: 'deno',
-    }),
+    runner('', {}),
     [
       'deno',
       'run',
@@ -28,7 +26,6 @@ test('Deno Permissions (Allow)', () => {
 
   assert.deepStrictEqual(
     runner('', {
-      platform: 'deno',
       deno: {
         allow: ['read'],
       },
@@ -39,7 +36,6 @@ test('Deno Permissions (Allow)', () => {
 
   assert.deepStrictEqual(
     runner('', {
-      platform: 'deno',
       deno: {
         allow: ['read', 'env'],
       },
@@ -50,7 +46,6 @@ test('Deno Permissions (Allow)', () => {
 
   assert.deepStrictEqual(
     runner('', {
-      platform: 'deno',
       deno: {
         allow: ['read=file.js', 'env'],
       },
@@ -61,7 +56,6 @@ test('Deno Permissions (Allow)', () => {
 
   assert.deepStrictEqual(
     runner('', {
-      platform: 'deno',
       deno: {
         allow: [],
       },

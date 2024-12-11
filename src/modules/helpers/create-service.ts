@@ -147,7 +147,7 @@ export const startService = async (
   file: string,
   options?: StartServiceOptions
 ): Promise<{ end: End }> => {
-  const runtimeOptions = runner(file, { platform: options?.platform });
+  const runtimeOptions = runner(file);
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, file];
 

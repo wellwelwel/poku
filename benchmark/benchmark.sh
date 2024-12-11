@@ -21,7 +21,7 @@ echo '```'
 # Not included in results.json
 hyperfine -i --warmup 3 \
   --command-name 'Node.js' 'node --test "./test/node/**.spec.js"' \
-  --command-name "🐷 Poku ($SHORT_SHA)" '../lib/bin/index.js --node ./test/poku' |
+  --command-name "🐷 Poku ($SHORT_SHA)" '../lib/bin/index.js ./test/poku' |
   awk '/Summary/ {flag=1} flag'
 
 echo '```\n'
@@ -31,7 +31,7 @@ echo '```'
 # Not included in results.json
 hyperfine -i --warmup 3 \
   --command-name 'Bun' 'bun test "test/bun/"' \
-  --command-name "🐷 Poku ($SHORT_SHA)" '../lib/bin/index.js --bun ./test/poku' |
+  --command-name "🐷 Poku ($SHORT_SHA)" 'bun ../lib/bin/index.js ./test/poku' |
   awk '/Summary/ {flag=1} flag'
 
 echo '```\n'
