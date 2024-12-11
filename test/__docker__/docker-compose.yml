@@ -1,14 +1,6 @@
 version: '3.9'
 
 services:
-  node-12:
-    container_name: 'node-12'
-    build:
-      context: ../../
-      dockerfile: ./test/__docker__/node/12.Dockerfile
-    environment:
-      NODE_ENV: build
-
   node-14:
     container_name: 'node-14'
     build:

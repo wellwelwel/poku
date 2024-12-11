@@ -1,7 +1,6 @@
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
-import { nodeVersion } from '../../../src/parsers/get-runtime.js';
 
 describe('Assert Suite', async () => {
   it(() => {
@@ -223,36 +222,34 @@ describe('Assert Suite', async () => {
   });
 
   it(() => {
-    if (!nodeVersion || nodeVersion > 12) {
-      const text = 'sample text';
+    const text = 'sample text';
 
-      it(() => {
-        assert.match(text, /sample/, 'Text should match the regex');
-      });
+    it(() => {
+      assert.match(text, /sample/, 'Text should match the regex');
+    });
 
-      it(() => {
-        assert.doesNotMatch(
-          text,
-          /notpresent/,
-          'Text should not match the regex'
-        );
-        assert.doesNotMatch(
-          'abc',
-          /123/,
-          'String "abc" should not match the pattern /123/'
-        );
-        assert.doesNotMatch(
-          '',
-          /\d/,
-          'Empty string should not match the pattern /d/'
-        );
-        assert.doesNotMatch(
-          'abc',
-          /\d+/,
-          'String "abc" should not match the pattern /d+/'
-        );
-      });
-    }
+    it(() => {
+      assert.doesNotMatch(
+        text,
+        /notpresent/,
+        'Text should not match the regex'
+      );
+      assert.doesNotMatch(
+        'abc',
+        /123/,
+        'String "abc" should not match the pattern /123/'
+      );
+      assert.doesNotMatch(
+        '',
+        /\d/,
+        'Empty string should not match the pattern /d/'
+      );
+      assert.doesNotMatch(
+        'abc',
+        /\d+/,
+        'String "abc" should not match the pattern /d+/'
+      );
+    });
   });
 
   await it(async () => {

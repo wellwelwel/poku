@@ -257,17 +257,9 @@ Por que? Porque segue o mesmo princípio do **Poku**: zero configurações para 
 
 ## Por que manter a compatibilidade com versões anteriores? 👴🏼
 
-> Esse tópico não se refere ao **Bun** e ao **Deno**.
-
 Vários projetos ainda utilizam ou oferecem suporte a versões legadas. O requisito para versões legadas não é uma regra rígida e pode mudar com as versões major devido a recursos específicos que podem exigir polyfills e afetar diretamente o desempenho.
 
-Por isso, o limite escolhido foi a versão `12.x.x` do **Node.js**.
-
-### Polyfills atuais
-
-- `fs`: Transformar métodos de callback em promises
-- `Object`: `entries` e `fromEntries` (usado somente quando não estiver disponível nativamente)
-- Suporte para execuções diretas do **CommonJS** no **Deno**
+Por isso, o limite escolhido foi a versão `14.x.x` do **Node.js**.
 
 :::note
 **Poku** sempre recomenda o uso de versões compatíveis de cada runtime.

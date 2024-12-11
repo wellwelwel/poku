@@ -257,17 +257,9 @@ Why? Because it follows the same principle as **Poku**: zero configurations for 
 
 ## Why Maintain Backward Compatibility? 👴🏼
 
-> This topic doesn't concern **Bun** and **Deno**.
-
 Several projects still use or support legacy versions. The requirement for legacy versions isn't a strict rule and can change with major releases due to specific features that may require polyfills and impact performance directly.
 
-That's why the limit chosen was **Node.js** version `12.x.x`.
-
-### Current Polyfills
-
-- `fs`: _promisify_ callback methods
-- `Object`: `entries` and `fromEntries` (used only when not available natively)
-- Support for direct runs for **CommonJS** on **Deno**
+That's why the limit chosen was **Node.js** version `14.x.x`.
 
 :::note
 **Poku** always recommends using supported versions of each runtime.

@@ -144,20 +144,18 @@ describe('Strict Suite (No Message)', async () => {
   });
 
   it(() => {
-    if (!nodeVersion || nodeVersion > 12) {
-      const text = 'sample text';
+    const text = 'sample text';
 
-      it(() => {
-        assert.match(text, /sample/);
-      });
+    it(() => {
+      assert.match(text, /sample/);
+    });
 
-      it(() => {
-        assert.doesNotMatch(text, /notpresent/);
-        assert.doesNotMatch('abc', /123/);
-        assert.doesNotMatch('', /\d/);
-        assert.doesNotMatch('abc', /\d+/);
-      });
-    }
+    it(() => {
+      assert.doesNotMatch(text, /notpresent/);
+      assert.doesNotMatch('abc', /123/);
+      assert.doesNotMatch('', /\d/);
+      assert.doesNotMatch('abc', /\d+/);
+    });
   });
 
   it(() => {

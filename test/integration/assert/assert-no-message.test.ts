@@ -1,7 +1,6 @@
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
-import { nodeVersion } from '../../../src/parsers/get-runtime.js';
 
 describe('Assert Suite (No Message)', () => {
   it(() => {
@@ -133,20 +132,18 @@ describe('Assert Suite (No Message)', () => {
   });
 
   it(() => {
-    if (!nodeVersion || nodeVersion > 12) {
-      const text = 'sample text';
+    const text = 'sample text';
 
-      it(() => {
-        assert.match(text, /sample/);
-      });
+    it(() => {
+      assert.match(text, /sample/);
+    });
 
-      it(() => {
-        assert.doesNotMatch(text, /notpresent/);
-        assert.doesNotMatch('abc', /123/);
-        assert.doesNotMatch('', /\d/);
-        assert.doesNotMatch('abc', /\d+/);
-      });
-    }
+    it(() => {
+      assert.doesNotMatch(text, /notpresent/);
+      assert.doesNotMatch('abc', /123/);
+      assert.doesNotMatch('', /\d/);
+      assert.doesNotMatch('abc', /\d+/);
+    });
   });
 
   it(() => {

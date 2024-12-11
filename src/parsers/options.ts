@@ -1,6 +1,6 @@
 import type { ConfigFile, ConfigJSONFile } from '../@types/poku.js';
 import { normalize, join } from 'node:path';
-import { readFile } from '../polyfills/fs.js';
+import { readFile } from 'node:fs/promises';
 import { JSONC } from '../polyfills/jsonc.js';
 import { GLOBAL } from '../configs/poku.js';
 

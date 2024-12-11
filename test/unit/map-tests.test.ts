@@ -1,10 +1,3 @@
-import { nodeVersion } from '../../src/parsers/get-runtime.js';
-import { skip } from '../../src/modules/helpers/skip.js';
-
-if (nodeVersion && nodeVersion < 14) {
-  skip();
-}
-
 import { join } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { test } from '../../src/modules/helpers/test.js';
