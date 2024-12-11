@@ -36,14 +36,14 @@ Por padrão, o **Poku** busca por arquivos _`.test.`_ e `.spec.`, mas você pode
 npx poku
 ```
 
-- Executa todos os testes sequencialmente.
+- Executa todos os testes em paralelo.
 
 ```bash
 # Equivalente à ./
-npx poku --parallel
+npx poku --sequential
 ```
 
-- Executa todos os testes em paralelo.
+- Executa todos os testes sequencialmente.
 
 ```bash
 npx poku ./test

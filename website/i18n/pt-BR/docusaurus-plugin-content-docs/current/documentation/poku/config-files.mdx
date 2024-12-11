@@ -58,7 +58,7 @@ const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
   include: ['.'], // Não suporta padrões glob
-  parallel: false,
+  sequential: true,
   debug: false,
   filter: /\.(test.|.spec)\./,
   exclude: [], // regex
@@ -110,7 +110,7 @@ Crie um arquivo `.pokurc.json` (ou `.pokurc.jsonc`) no diretório raiz do seu pr
 {
   "$schema": "https://poku.io/schemas/configs.json",
   "include": ["."], // Não suporta padrões glob
-  "parallel": false,
+  "sequential": true,
   "debug": false,
   "filter": ".test.|.spec.", // regex como string
   "exclude": "", // regex como string
