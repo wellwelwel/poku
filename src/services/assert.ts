@@ -13,8 +13,9 @@ const regexFile = /file:(\/\/)?/;
 
 const assertProcessor = () => {
   const isPoku =
-    typeof process.env?.FILE === 'string' && process.env?.FILE.length > 0;
-  const FILE = process.env.FILE;
+    typeof process.env?.POKU_FILE === 'string' &&
+    process.env?.POKU_FILE.length > 0;
+  const FILE = process.env.POKU_FILE;
 
   let preIdentation = '';
 

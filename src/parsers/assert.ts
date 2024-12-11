@@ -1,5 +1,3 @@
-import { fromEntries, entries } from '../polyfills/object.js';
-
 const recurse = (value: unknown): unknown => {
   if (
     typeof value === 'undefined' ||
@@ -11,9 +9,11 @@ const recurse = (value: unknown): unknown => {
     return String(value);
   if (Array.isArray(value)) return value.map(recurse);
   if (value instanceof Set) return Array.from(value).map(recurse);
-  if (value instanceof Map) return recurse(fromEntries(value));
+  if (value instanceof Map) return recurse(Object.fromEntries(value));
   if (value !== null && typeof value === 'object')
-    return fromEntries(entries(value).map(([key, val]) => [key, recurse(val)]));
+    return Object.fromEntries(
+      Object.entries(value).map(([key, val]) => [key, recurse(val)])
+    );
 
   return value;
 };

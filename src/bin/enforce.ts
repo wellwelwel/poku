@@ -4,11 +4,9 @@ import { format } from '../services/format.js';
 
 export const checkFlags = () => {
   const allowedFlags = new Set([
-    '--bun',
     '--concurrency',
     '--config',
     '--debug',
-    '--deno',
     '--denoAllow',
     '--denoCjs',
     '--denoDeny',
@@ -20,9 +18,7 @@ export const checkFlags = () => {
     '--killPid',
     '--killPort',
     '--killRange',
-    '--node',
     '--only',
-    '--platform',
     '--quiet',
     '--sequential',
     '--watch',

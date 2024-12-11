@@ -15,7 +15,7 @@ export async function describeBase(
   let options: DescribeOptions | undefined;
 
   const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
-  const FILE = env.FILE;
+  const FILE = env.POKU_FILE;
 
   if (typeof arg1 === 'string') {
     title = arg1;

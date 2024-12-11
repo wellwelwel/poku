@@ -36,12 +36,6 @@ export type Configs = {
    */
   sequential?: boolean;
   /**
-   * Determines the platform for test execution.
-   *
-   * @default 'node'
-   */
-  platform?: Runtime;
-  /**
    * Stops the tests at the first failure.
    *
    * @default false

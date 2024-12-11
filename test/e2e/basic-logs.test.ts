@@ -1,4 +1,4 @@
-import process from 'node:process';
+import process, { env } from 'node:process';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
@@ -25,7 +25,8 @@ describe('Basic logs with Runner', async () => {
       {
         env: {
           ...process.env,
-          FILE: 'path-file',
+          POKU_FILE: 'path-file',
+          POKU_RUNTIME: env.POKU_RUNTIME,
         },
       }
     );

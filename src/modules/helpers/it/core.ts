@@ -16,8 +16,9 @@ export async function itBase(
     let message: string | undefined;
     let cb: () => unknown | Promise<unknown>;
 
-    const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
-    const FILE = env.FILE;
+    const isPoku =
+      typeof env?.POKU_FILE === 'string' && env?.POKU_FILE.length > 0;
+    const FILE = env.POKU_FILE;
 
     if (typeof args[0] === 'string') {
       message = args[0];

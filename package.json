@@ -4,6 +4,7 @@
   "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno, and you at the same time.",
   "main": "./lib/modules/index.js",
   "license": "MIT",
+  "type": "commonjs",
   "bin": {
     "poku": "./lib/bin/index.js"
   },
@@ -31,12 +32,12 @@
   },
   "scripts": {
     "test": "tsx src/bin/index.ts test/unit test/integration test/e2e",
-    "test:bun": "bun src/bin/index.ts --bun test/unit test/integration test/e2e",
-    "test:deno": "tsx src/bin/index.ts --deno --denoAllow=all test/unit test/integration test/e2e",
+    "test:bun": "bun src/bin/index.ts test/unit test/integration test/e2e",
+    "test:deno": "deno run -A src/bin/index.ts --denoAllow=all test/unit test/integration test/e2e",
     "pretest:c8": "tsx tools/build/c8-file.ts",
     "test:c8": "c8 --experimental-monocart tsx test/c8.test.ts",
     "posttest:c8": "rm -rf ./.nycrc.json",
-    "test:docker:node": "tsx test/ci.test.ts",
+    "test:docker:node": "bun test/ci.test.ts",
     "clear": "rm -rf lib ci coverage .temp test-src test-tests",
     "prebuild": "npm run clear",
     "build": "tsc && cd test && tsc",

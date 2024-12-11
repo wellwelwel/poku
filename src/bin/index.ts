@@ -4,7 +4,6 @@ import type { Configs } from '../@types/poku.js';
 import { escapeRegExp } from '../modules/helpers/list-files.js';
 import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
 import { states } from '../configs/files.js';
-import { platformIsValid } from '../parsers/get-runtime.js';
 import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
 import { envFile } from '../modules/helpers/env.js';
@@ -36,7 +35,6 @@ import { getConfigs } from '../parsers/options.js';
     (defaultConfigs?.include
       ? Array.prototype.concat(defaultConfigs?.include)
       : ['.']);
-  const platform = getArg('platform');
   const filter = getArg('filter') ?? defaultConfigs?.filter;
   const exclude = getArg('exclude') ?? defaultConfigs?.exclude;
   const killPort = getArg('killPort');
@@ -144,15 +142,6 @@ import { getConfigs } from '../parsers/options.js';
   }
 
   const options: Configs = {
-    /* c8 ignore next 8 */ // Varies Platform
-    platform: (() => {
-      if (platformIsValid(platform)) return platform;
-      if (hasArg('node')) return 'node';
-      if (hasArg('bun')) return 'bun';
-      if (hasArg('deno')) return 'deno';
-      if (platformIsValid(defaultConfigs?.platform))
-        return defaultConfigs.platform;
-    })(),
     filter:
       typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
     exclude:

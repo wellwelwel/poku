@@ -11,12 +11,9 @@ test(async () => {
   const result = await poku(['./test/compatibility'], {
     debug: true,
     noExit: true,
-    platform: 'bun',
   });
 
-  if (result === 0) {
-    await compose.down();
-  }
+  if (result === 0) await compose.down();
 
   exit(result);
 });

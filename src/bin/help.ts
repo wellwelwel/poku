@@ -10,11 +10,9 @@ const options = i('[--options]');
 const paths = i('[paths]');
 const bullet = d('●');
 const summary: [string, string][] = [
-  ['--bun', 'Enforce tests to run through Bun.'],
   ['--concurrency', 'Limit the number of tests running concurrently.'],
   ['--config, -c', 'Specify a configuration file.'],
   ['--debug, -d', 'Show detailed logs.'],
-  ['--deno', 'Enforce tests to run through Deno.'],
   ['--denoAllow', 'Allow permissions for Deno.'],
   ['--denoCjs', 'Support CommonJS in Deno.'],
   ['--denoDeny', 'Deny permissions for Deno.'],
@@ -28,9 +26,7 @@ const summary: [string, string][] = [
   ['--killPort', 'Terminate the specified ports.'],
   ['--killRange', 'Terminate the specified port ranges.'],
   ['--listFiles', 'Display all the files returned in the terminal.'],
-  ['--node', 'Enforce tests to run through Node.js.'],
   ['--only', 'Enable selective execution of tests.'],
-  ['--platform', 'Enforce tests to run through a platform.'],
   ['--quiet, -q', 'Run tests with no logs.'],
   ['--sequential', 'Run tests files sequentially.'],
   ['--version, -v', "Show Poku's installed version."],
@@ -48,12 +44,6 @@ const header = `
 
   poku ${options} ${paths}
   poku ${paths} ${options}
-
-› ${u(b('Ensuring platforms:'))}
-
-  poku ${b('--node')} ${options} ${paths}
-  poku ${b('--bun')} ${options} ${paths}
-  poku ${b('--deno')} ${options} ${paths}
 
 › ${u(b('Tips:'))}
 

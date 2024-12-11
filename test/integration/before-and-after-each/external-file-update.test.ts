@@ -4,13 +4,15 @@ import { test } from '../../../src/modules/helpers/test.js';
 import { poku } from '../../../src/modules/essentials/poku.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { getRuntime } from '../../../src/parsers/get-runtime.js';
+import { skip } from '../../../src/modules/helpers/skip.js';
+
+const runtime = getRuntime();
+if (runtime === 'deno') skip();
 
 const testDir = path.resolve('test/__fixtures__/.temp');
 const jsonFilePath = path.resolve(`${testDir}/external-file-update.json`);
 
 test('Before and After Each: updating an external file', async () => {
-  const runtime = getRuntime();
-
   const prepareService = () => {
     fs.mkdirSync(testDir, { recursive: true });
     fs.writeFileSync(jsonFilePath, JSON.stringify({ value: 1 }));

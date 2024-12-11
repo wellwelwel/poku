@@ -14,9 +14,7 @@ test(async () => {
 
   await describe('CLI', async () => {
     await it('Just Touch', async () => {
-      const results = await inspectPoku(
-        '--platform=node test/integration/import.test.ts'
-      );
+      const results = await inspectPoku('test/integration/import.test.ts');
 
       console.log(results.stdout);
       console.log(results.stderr);
@@ -25,7 +23,7 @@ test(async () => {
     });
 
     await it('FILTER Env', async () => {
-      const results = await inspectPoku('--platform=node test/integration', {
+      const results = await inspectPoku('test/integration', {
         env: { ...process.env, FILTER: 'import' },
       });
 
@@ -38,8 +36,8 @@ test(async () => {
     await it('Options (Just Touch)', async () => {
       const results = await inspectPoku(
         isWindows
-          ? '--concurrency=4 --platform=node --failFast --debug --exclude=".bak" --killPort=4000 --killRange="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
-          : '--concurrency=4 --platform=node --failFast --debug --exclude=.bak --killPort=4000 --killRange=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
+          ? '--concurrency=4 --failFast --debug --exclude=".bak" --killPort=4000 --killRange="4000-4001" test/integration/import.test.ts --filter=".test.|.spec."'
+          : '--concurrency=4 --failFast --debug --exclude=.bak --killPort=4000 --killRange=4000-4001 test/integration/import.test.ts --filter=.test.|.spec.'
       );
 
       console.log(results.stdout);
@@ -52,7 +50,6 @@ test(async () => {
   await describe('API', async () => {
     await it('Single Input', async () => {
       const exitCode = await poku('test/integration/import.test.ts', {
-        platform: 'node',
         noExit: true,
       });
 
@@ -61,7 +58,6 @@ test(async () => {
 
     await it('Unit (Exclude as Regex)', async () => {
       const exitCode = await poku('test/unit', {
-        platform: 'node',
         exclude: /watch|map-tests/,
         noExit: true,
       });
@@ -71,7 +67,6 @@ test(async () => {
 
     await it('Unit (Exclude as Array of Regex)', async () => {
       const exitCode = await poku('test/unit', {
-        platform: 'node',
         concurrency: 4,
         exclude: [/watch/, /map-tests/],
         noExit: true,
@@ -84,7 +79,6 @@ test(async () => {
       const exitCode = await poku(
         ['test/unit', 'test/integration', 'test/e2e'],
         {
-          platform: 'node',
           debug: true,
           filter: /\.(test|spec)\./,
           failFast: true,

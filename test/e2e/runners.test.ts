@@ -40,7 +40,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasNode &&
     (await it('Node.js', async () => {
       const output = await inspectCLI(
-        'npx tsx src/bin/index.ts --platform=node test/__fixtures__/e2e/extensions -d'
+        'npx tsx src/bin/index.ts test/__fixtures__/e2e/extensions -d'
       );
 
       if (output.exitCode !== 0) {
@@ -56,7 +56,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasBun &&
     (await it('Bun', async () => {
       const output = await inspectCLI(
-        'bun src/bin/index.ts --platform=bun test/__fixtures__/e2e/extensions -d'
+        'bun src/bin/index.ts test/__fixtures__/e2e/extensions -d'
       );
 
       if (output.exitCode !== 0) {
@@ -72,7 +72,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasDeno &&
     (await it('Deno', async () => {
       const output = await inspectCLI(
-        'deno run --unstable-sloppy-imports --allow-read --allow-env --allow-run src/bin/index.ts --platform=deno test/__fixtures__/e2e/extensions -d --exclude=.cts'
+        'deno run --unstable-sloppy-imports --allow-read --allow-env --allow-run src/bin/index.ts test/__fixtures__/e2e/extensions -d --exclude=.cts'
       );
 
       if (output.exitCode !== 0) {

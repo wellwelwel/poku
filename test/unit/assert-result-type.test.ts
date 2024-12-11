@@ -1,7 +1,6 @@
 import { test } from '../../src/modules/helpers/test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { parseResultType } from '../../src/parsers/assert.js';
-import { nodeVersion } from '../../src/parsers/get-runtime.js';
 
 test('Assert: Parse Result Type', async () => {
   assert.deepStrictEqual(
@@ -32,14 +31,14 @@ test('Assert: Parse Result Type', async () => {
     'String (Multi Line/Table)'
   );
   assert.deepStrictEqual(parseResultType(123), '123', 'Number');
-  if (!nodeVersion || nodeVersion >= 10) {
-    const module = await import('../__fixtures__/unit/sintax/big-int.js');
-    assert.deepStrictEqual(
-      parseResultType(module.bigIntValue),
-      '987456321456987456321',
-      'Big Int'
-    );
-  }
+
+  const module = await import('../__fixtures__/unit/sintax/big-int.js');
+  assert.deepStrictEqual(
+    parseResultType(module.bigIntValue),
+    '987456321456987456321',
+    'Big Int'
+  );
+
   assert.deepStrictEqual(parseResultType(/123/), '/123/', 'Regex');
 
   assert(/=>/.test(parseResultType(() => {})), 'Anonymous Function');
