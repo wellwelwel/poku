@@ -1,6 +1,6 @@
 import type { Configs } from '../@types/poku.js';
 import process from 'node:process';
-import { join } from 'node:path';
+import { relative, join } from 'node:path';
 import { listFiles } from '../modules/helpers/list-files.js';
 import { Write } from '../services/write.js';
 import { format } from './format.js';
@@ -64,6 +64,9 @@ export const runTests = async (
           if (showLogs) {
             Write.hr();
             console.error(failFastError);
+            Write.log(
+              `\n    ${format('File:').bold()} ${format(`./${relative(cwd, filePath)}`).fail()}`
+            );
             Write.hr();
           }
 
