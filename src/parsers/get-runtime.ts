@@ -1,5 +1,5 @@
-import type { Configs, Runtime } from '../@types/poku.js';
-import { version } from 'node:process';
+import type { Runtime } from '../@types/poku.js';
+import { version, env } from 'node:process';
 
 declare const Deno: unknown;
 declare const Bun: unknown;
@@ -14,11 +14,8 @@ export const platformIsValid = (
   typeof platform === 'string' &&
   supportedPlatforms.indexOf(platform as Runtime) > -1;
 
-export const getRuntime = (
-  configs?: Configs
-): (typeof supportedPlatforms)[number] => {
-  if (configs?.platform && platformIsValid(configs.platform))
-    return configs.platform;
+export const getRuntime = (): (typeof supportedPlatforms)[number] => {
+  if (platformIsValid(env.POKU_RUNTIME)) return env.POKU_RUNTIME;
   if (typeof Deno !== 'undefined') return 'deno';
   if (typeof Bun !== 'undefined') return 'bun';
 

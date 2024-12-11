@@ -7,7 +7,7 @@ import { getRuntime } from './get-runtime.js';
 export const isWindows = platform === 'win32';
 
 export const runner = (filename: string, configs?: Configs): string[] => {
-  const runtime = getRuntime(configs);
+  const runtime = getRuntime();
 
   if (runtime === 'bun') return ['bun'];
 

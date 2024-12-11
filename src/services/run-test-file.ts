@@ -48,6 +48,7 @@ export const runTestFile = async (
       env: {
         ...env,
         FILE: fileRelative,
+        POKU_RUNTIME: env.POKU_RUNTIME,
       },
     });
 
