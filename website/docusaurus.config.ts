@@ -35,7 +35,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/wellwelwel/poku/tree/main/website/',
-          lastVersion: 'current',
+          // lastVersion: 'current',
           // versions: {
           //   current: {
           //     label: 'v3.x.x (Realease Candidate)',
