@@ -25,7 +25,7 @@
     "lib"
   ],
   "engines": {
-    "node": ">=12.x.x",
+    "node": ">=14.x.x",
     "bun": ">=1.x.x",
     "deno": ">=1.x.x",
     "typescript": ">=5.x.x"

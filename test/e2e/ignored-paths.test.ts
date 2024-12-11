@@ -1,11 +1,3 @@
-import { nodeVersion } from '../../src/parsers/get-runtime.js';
-import { isWindows } from '../../src/parsers/get-runner.js';
-import { skip } from '../../src/modules/helpers/skip.js';
-
-if ((nodeVersion && nodeVersion < 14) || isWindows) {
-  skip();
-}
-
 import { join } from 'node:path';
 import { accessSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { describe } from '../../src/modules/helpers/describe.js';
