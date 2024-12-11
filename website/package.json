@@ -42,6 +42,7 @@
   "devDependencies": {
     "@docusaurus/eslint-plugin": "^3.6.3",
     "@docusaurus/module-type-aliases": "^3.6.3",
+    "@docusaurus/plugin-client-redirects": "^3.6.3",
     "@docusaurus/tsconfig": "^3.6.3",
     "@docusaurus/types": "^3.6.3",
     "@types/bun": "^1.1.14",

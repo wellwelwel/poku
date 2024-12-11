@@ -26,61 +26,20 @@ import Maintainer from '@site/static/img/maintainer.svg';
 
 ## Running tests in specific platforms
 
-First, let's understand what each definition does:
-
 ```sh
 npx poku
-```
-
-- It tries to identify the platform or run it in **Node.js** by default.
-
-```sh
-npx poku --node
-```
-
-- It calls **Poku** through **Node.js** and runs all the tests using **Node.js**.
-
-```sh
-npx poku --bun
-```
-
-- It calls **Poku** through **Node.js**, but runs all the tests using **Bun**.
-
-```sh
-npx poku --deno
-```
-
-- It calls **Poku** through **Node.js**, but runs all the tests using **Deno**.
-
-:::note
-It's important to note that the **Poku** runtime is different from the test runtime (`node`, `npx tsx`, `bun`, or `deno`).
-:::
-
-<hr />
-
-- See the `platform` section [here](/docs/documentation/poku/options/platform).
-- See all available flags and options for `poku` command [here](/docs/category/-poku).
-
-<hr />
-
-### Recommendations
-
-To avoid conflicts in environments with multiple platforms installed (**Node.js** + **Bun**, **Deno** + **Bun**. etc.), see the following examples:
-
-```sh
-npx poku --node
 ```
 
 - It runs **Poku** through **Node.js** and ensures that all tests are run with **Node.js** (or **tsx** for **TypeScript** tests).
 
 ```sh
-bunx poku --bun
+bun poku
 ```
 
 - It runs **Poku** through **Bun** and ensures that all tests are run with **Bun**.
 
 ```sh
-deno run npm:poku --deno
+deno run npm:poku
 ```
 
 - It runs **Poku** through **Deno** and ensures that all tests are run with **Deno**.
@@ -91,103 +50,29 @@ For **TypeScript** users, there's no need to install **tsx** for **Bun** and **D
 
 <hr />
 
-### Running CommonJS with Deno
+### Running CommonJS with Deno `v1`
 
 > See all options for **Deno** [here](/docs/documentation/poku/options/deno).
 
 #### All files as CommonJS
 
 ```sh
-deno run npm:poku --deno --denoCjs
+deno run npm:poku --denoCjs
 ```
 
 #### A specific extension as CommonJS
 
 ```sh
-deno run npm:poku --deno --denoCjs='.cjs'
+deno run npm:poku --denoCjs='.cjs'
 ```
 
 #### Multiple extensions as CommonJS
 
 ```sh
-deno run npm:poku --deno --denoCjs='.cjs,.js'
+deno run npm:poku --denoCjs='.cjs,.js'
 ```
 
 <hr />
-
-## Using Poku API _(advanced concept)_
-
-In **Poku**'s description, you can read _"Poku makes testing easy for Node.js, Bun, Deno, and you <u>at the same time</u>"_, and it's true:
-
-> This is more to demonstrate a point, not a recommendation 🙋🏻‍♂️
-
-_./test/run.test.ts_:
-
-```ts
-import { describe, it, poku, exit } from 'poku';
-
-const noExit = true;
-
-const codes: (0 | 1)[] = [];
-
-await describe('Running Tests on Different Platforms at the Same Time', async () => {
-  await Promise.all([
-    it('Test suite should pass on Node.js', async () => {
-      const exitCode = await poku(['./test/unit'], {
-        platform: 'node',
-        noExit,
-      });
-
-      codes.push(exitCode);
-    }),
-
-    it('Test suite should pass on Bun', async () => {
-      const exitCode = await poku(['./test/unit'], {
-        platform: 'bun',
-        noExit,
-      });
-
-      codes.push(exitCode);
-    }),
-
-    it('Test suite should pass on Deno', async () => {
-      const exitCode = await poku(['./test/unit'], {
-        platform: 'deno',
-        noExit,
-        deno: {
-          cjs: ['.cjs'],
-        },
-      });
-
-      codes.push(exitCode);
-    }),
-  ]);
-});
-
-const code = codes.every((code) => code === 0) ? 0 : 1;
-
-exit(code);
-```
-
-Then, choose a platform:
-
-- **Node.js** (using **TypeScript**)
-
-```sh
-npx tsx test/run.test.ts
-```
-
-- **Bun**
-
-```sh
-bun test/run.test.ts
-```
-
-- **Deno**
-
-```sh
-deno run test/run.test.ts
-```
 
 :::tip
 It's usually beneficial to have an exclusive _CI_ for each platform, especially to ensure better control in error cases.
