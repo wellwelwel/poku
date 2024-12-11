@@ -10,11 +10,12 @@ import { sleep } from '../../src/modules/helpers/wait-for.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import type { WatchCallback } from '../../src/@types/watch.js';
 
-if (nodeVersion && nodeVersion < 16) {
+const runtime = getRuntime();
+
+if (runtime === 'deno' || (nodeVersion && nodeVersion < 16)) {
   skip('rmSync is available from Node.js 16 onwards');
 }
 
-const runtime = getRuntime();
 const tmpDir = path.resolve('.', 'test/__fixtures__/.temp/watch');
 const humanDelay = 750;
 
