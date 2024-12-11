@@ -1,10 +1,8 @@
 import type { ConfigFile, ConfigJSONFile } from '../@types/poku.js';
-import { cwd } from 'node:process';
 import { normalize, join } from 'node:path';
 import { readFile } from '../polyfills/fs.js';
 import { JSONC } from '../polyfills/jsonc.js';
-
-const processCWD = cwd();
+import { GLOBAL } from '../configs/poku.js';
 
 export const getConfigs = async (
   customPath?: string
@@ -19,7 +17,7 @@ export const getConfigs = async (
       ]);
 
   for (const file of expectedFiles) {
-    const filePath = join(processCWD, file);
+    const filePath = join(GLOBAL.cwd, file);
 
     try {
       if (filePath.endsWith('.js') || filePath.endsWith('.cjs'))
