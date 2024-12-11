@@ -1,0 +1,168 @@
+---
+sidebar_position: 1
+tags: [processes, ports]
+---
+
+import { History } from '@site/src/components/History';
+
+# Killing Processes
+
+Terminates the specified ports, port ranges and process IDs.
+
+<History
+  records={[
+    {
+      version: '2.5.0',
+      changes: [
+        <>
+          <strong>CLI:</strong> deprecate <code>--kill-port</code> in order to{' '}
+          <code>--killPort</code>.
+        </>,
+        <>
+          <strong>CLI:</strong> deprecate <code>--kill-range</code> in order to{' '}
+          <code>--killRange</code>.
+        </>,
+        <>
+          <strong>CLI:</strong> deprecate <code>--kill-pid</code> in order to{' '}
+          <code>--killPid</code>.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## kill.port
+
+> `kill.port(port: number | number[])`
+
+Terminates the specified ports.
+
+- Requires `lsof` for **Unix** and `netstat` for **Windows**.
+
+### CLI
+
+Terminates the specified ports before running the test suite.
+
+```bash
+npx poku --killPort="4000" targetPath
+```
+
+Also, terminating multiple ports:
+
+```bash
+npx poku --killPort="4000,4001" targetPath
+```
+
+### API
+
+```ts
+import { kill } from 'poku';
+
+await kill.port(4000);
+```
+
+Also, terminating multiple ports:
+
+```ts
+await kill.port([4000, 4001]);
+```
+
+---
+
+## kill.range
+
+> `kill.range(startsAt: number, endsAt: number)`
+
+Terminates the specified port range.
+
+- Requires `lsof` for **Unix** and `netstat` for **Windows**.
+
+### CLI
+
+Terminates the specified port range before running the test suite.
+
+```bash
+npx poku --killRange="4000-4100" targetPath
+```
+
+Also, terminating multiple port ranges:
+
+```bash
+npx poku --killRange="4000-4100,5000-5100" targetPath
+```
+
+### API
+
+```ts
+import { kill } from 'poku';
+
+await kill.range(4000, 4100);
+```
+
+---
+
+## kill.pid
+
+> `kill.pid(PID: number | number[])`
+
+Terminates the specified processes.
+
+### CLI
+
+Terminates the specified processes before running the test suite
+
+```bash
+npx poku --killPid="100" targetPath
+```
+
+Also, terminating multiple processes:
+
+```bash
+npx poku --killPid="100,200" targetPath
+```
+
+### API
+
+```ts
+import { kill } from 'poku';
+
+await kill.pid(100);
+```
+
+Also, terminating multiple processes:
+
+```ts
+await kill.pid([100, 200]);
+```
+
+---
+
+:::tip
+
+If your environment doesn't include `lsof` by default:
+
+**macOS (Homebrew)**
+
+```sh
+brew install lsof
+```
+
+**Debian, Ubuntu, etc.**
+
+```sh
+sudo apt-get install lsof
+```
+
+**Arch Linux, etc.**
+
+```sh
+sudo pacman -S lsof
+```
+
+**Alpine Linux, etc.**
+
+```sh
+apk add lsof
+```
+
+:::

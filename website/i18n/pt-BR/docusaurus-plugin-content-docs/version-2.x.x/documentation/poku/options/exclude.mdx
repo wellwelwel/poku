@@ -1,0 +1,84 @@
+---
+sidebar_position: 4
+tags: [invert]
+---
+
+# `exclude`
+
+Exclui de acordo com o caminho usando **Regex** para corresponder apenas aos arquivos que devem ser executados.
+
+## CLI
+
+```bash
+# Exclui diretórios e arquivos dos testes
+
+npx poku --exclude='algum-arquivo-ou-diretorio' ./test
+```
+
+```bash
+# Exclui diretórios e arquivos dos testes
+
+npx poku --exclude='algum-arquivo-ou-diretorio|outro-arquivo-ou-diretorio' ./test
+```
+
+## API
+
+```ts
+/**
+ * Exclui diretórios dos testes
+ */
+
+await poku('./test', {
+  exclude: /\/(helpers|tools)\//,
+});
+```
+
+```ts
+/**
+ * Exclui diretórios dos testes
+ */
+
+await poku('./test', {
+  exclude: [/\/helpers\//, /\/tools\//],
+});
+```
+
+```ts
+/**
+ * Exclui arquivos específicos dos testes
+ */
+
+await poku('./test', {
+  exclude: /(index|common).test.ts/,
+});
+```
+
+```ts
+/**
+ * Exclui arquivos específicos dos testes
+ */
+
+await poku('./test', {
+  exclude: [/index.test.ts/, /common.test.ts/],
+});
+```
+
+```ts
+/**
+ * Exclui diretórios e arquivos dos testes
+ */
+
+await poku('./test', {
+  exclude: /\/(helpers|tools)\/|(index|common).test.ts/,
+});
+```
+
+```ts
+/**
+ * Exclui diretórios e arquivos dos testes
+ */
+
+await poku('./test', {
+  exclude: [/\/helpers\//, /\/tools\//, /index.test.ts/, /common.test.ts/],
+});
+```

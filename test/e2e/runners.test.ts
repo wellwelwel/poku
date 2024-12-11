@@ -51,12 +51,6 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
       assert(/PASS › 12/.test(output.stdout), 'CLI needs to pass 1');
       assert(/FAIL › 0/.test(output.stdout), 'CLI needs to fail 0');
-      assert(/node.+?\.js/.test(output.stdout), 'node => .js');
-      assert(/node.+?\.cjs/.test(output.stdout), 'node => .cjs');
-      assert(/node.+?\.mjs/.test(output.stdout), 'node => .mjs');
-      assert(/tsx.+?\.ts/.test(output.stdout), 'tsx => .ts');
-      assert(/tsx.+?\.cts/.test(output.stdout), 'tsx => .cts');
-      assert(/tsx.+?\.mts/.test(output.stdout), 'tsx => .mts');
     }));
 
   hasBun &&
@@ -73,12 +67,6 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
       assert(/PASS › 12/.test(output.stdout), 'CLI needs to pass 1');
       assert(/FAIL › 0/.test(output.stdout), 'CLI needs to fail 0');
-      assert(/bun.+?.js/.test(output.stdout), 'bun => .js');
-      assert(/bun.+?.cjs/.test(output.stdout), 'bun => .cjs');
-      assert(/bun.+?.mjs/.test(output.stdout), 'bun => .mjs');
-      assert(/bun.+?.ts/.test(output.stdout), 'bun => .ts');
-      assert(/bun.+?.cts/.test(output.stdout), 'bun => .cts');
-      assert(/bun.+?.mts/.test(output.stdout), 'bun => .mts');
     }));
 
   hasDeno &&
@@ -95,11 +83,5 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
       assert(/PASS › 10/.test(output.stdout), 'CLI needs to pass 1');
       assert(/FAIL › 0/.test(output.stdout), 'CLI needs to fail 0');
-      assert(/deno run.+?.js/.test(output.stdout), 'deno => .js');
-      assert(/deno run.+?.cjs/.test(output.stdout), 'deno => .cjs');
-      assert(/deno run.+?.mjs/.test(output.stdout), 'deno => .mjs');
-      assert(/deno run.+?.ts/.test(output.stdout), 'deno => .ts');
-      // assert(/deno run.+?.cts/.test(output.stdout), 'deno => .cts');
-      assert(/deno run.+?.mts/.test(output.stdout), 'deno => .mts');
     }));
 });

@@ -8,7 +8,7 @@ if (isBuild) {
 }
 
 test('No tests with unlimited concurrency', async () => {
-  const output = await inspectPoku('--debug --parallel --concurrency=0', {
+  const output = await inspectPoku('--debug --concurrency=0', {
     cwd: 'test/__fixtures__/e2e/no-tests',
   });
 

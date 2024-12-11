@@ -231,6 +231,10 @@ html[data-theme='dark'] {
   }
 }
 
+.theme-doc-version-badge.badge.badge--secondary {
+  margin-bottom: 20px;
+}
+
 // Components
 @import './loading';
 @import './faq';

@@ -1,0 +1,41 @@
+---
+sidebar_position: 10
+---
+
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
+# `enforce`
+
+Ensures that the execution is valid and safe before proceeding with the tests.
+
+<Stability level={1.1} />
+
+<History
+  records={[
+    {
+      version: '2.5.0',
+      changes: [
+        <>
+          <strong>CLI:</strong> Add <code>enforce</code> option.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+- [x] Forces an error if any _CLI_ flags are invalid.
+- [ ] Forces an error if no file is found _(soon)_.
+- [ ] Forces an error if the environment has multiple platforms and the `--platform` option isn't explicit _(soon)_.
+
+## CLI
+
+```bash
+npx poku --enforce ./test
+```
+
+- Short flag: `-x`.
+
+:::info
+This feature will be included in the configuration file when the development stage is stable.
+:::

@@ -1,0 +1,133 @@
+---
+sidebar_position: 98
+---
+
+# `deno`
+
+Exclusive options for **Deno** platform.
+
+## `allow`
+
+Change permissions for **Deno**.
+
+By default **Poku** uses `--allow-run`, `--allow-env`, `--allow-read`, `allow-hrtime` and `--allow-net`.
+
+### CLI
+
+```bash
+npx poku --denoAllow='read, run'
+```
+
+```bash
+npx poku --denoAllow='read=file.js, run'
+```
+
+Clear all permissions:
+
+```bash
+npx poku --denoAllow=''
+```
+
+### API
+
+```ts
+poku('./test', {
+  deno: {
+    allow: ['read', 'run' /* ... */],
+  },
+});
+```
+
+```ts
+poku('./test', {
+  deno: {
+    allow: ['read=file.js', 'run' /* ... */],
+  },
+});
+```
+
+Clear all permissions:
+
+```ts
+poku('./test', {
+  deno: {
+    allow: [],
+  },
+});
+```
+
+<hr />
+
+## `deny`
+
+Change permissions for **Deno**.
+
+### CLI
+
+```bash
+npx poku --denoDeny='write, sys'
+```
+
+```bash
+npx poku --denoDeny='env=HOME, write'
+```
+
+### API
+
+```ts
+poku('./test', {
+  deno: {
+    deny: ['write', 'sys' /* ... */],
+  },
+});
+```
+
+```ts
+poku('./test', {
+  deno: {
+    deny: ['env=HOME', 'write' /* ... */],
+  },
+});
+```
+
+<hr />
+
+## `cjs`
+
+> `poku(targetPaths: string | string[], configs?: Configs)`
+>
+> `cjs: boolean | string[]`
+
+Now, it's possible to run tests that use `require`, `module.exports` and `module` directly with **Deno** 🎉
+
+It's a great feature to test if a project created primarily in **Node.js** or **Bun** is also compatible with **Deno** without the need to transpile the code or use workarounds.
+
+To run **CommonJS** with **Deno**, you can use:
+
+### CLI
+
+```bash
+npx poku --denoCjs
+```
+
+```bash
+npx poku --denoCjs='.js,.cjs'
+```
+
+### API
+
+```ts
+await poku('./test', {
+  deno: {
+    cjs: true,
+  },
+});
+```
+
+```ts
+await poku('./test', {
+  deno: {
+    cjs: ['.js', '.cjs' /* ... */],
+  },
+});
+```

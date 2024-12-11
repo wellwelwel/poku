@@ -1,0 +1,310 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Filosofia
+
+A filosofia do **Poku** se concentra na simplicidade e na eficiência, removendo complexidades e padrões para tornar os testes acessíveis desde os projetos mais simples até os mais complexos.
+
+<hr />
+
+## Essência do JavaScript para testes 💡 {#javascript-essence-for-tests-}
+
+> A sintaxe nativa do **JavaScript** para testes é o que torna possível usar o **Poku** em várias plataformas.
+
+Imagine que você quer executar funções assíncronas, em que uma é executada após a outra, e exibir uma mensagem no início e no final da execução:
+
+```ts
+console.log('Iniciado');
+
+await funcA();
+await funcB();
+
+console.log('Finalizado');
+```
+
+Normalmente, não é possível fazer isso com a maioria dos executores de teste.
+Veja este exemplo fictício:
+
+> Um termo popular para isso é “boilerplate”, que são requisitos extras para estruturar e configurar os testes.
+
+```ts
+describe('Meu Teste', { concurrency: 1 }, () => {
+  // Você precisa declarar explicitamente o que deve ser executado antes dos testes
+  beforeAll(() => {
+    console.log('Iniciado');
+  });
+
+  // A última etapa do script é chamada antes dos próprios testes
+  afterAll(() => {
+    console.log('Finalizado');
+  });
+
+  // Testes assíncronos, mas eles serão executados sequencialmente mesmo sem o uso do `await`
+  it(async () => {
+    // teste assíncrono
+  });
+
+  it(async () => {
+    // teste assíncrono
+  });
+});
+```
+
+Além disso, não é possível executá-lo como `node test.js` devido a _evaluations_, estado global ou transformações de testes, sendo necessário rodar seu teste usando o executor de teste.
+
+O **Poku** traz de volta a essência do **JavaScript** aos testes:
+
+```ts
+import { describe, it } from 'poku';
+
+describe('Meu Teste', async () => {
+  console.log('Iniciado');
+
+  await it(async () => {
+    // teste assíncrono
+  });
+
+  await it(async () => {
+    // teste assíncrono
+  });
+
+  console.log('Finalizado');
+});
+```
+
+:::tip
+
+O **Poku** não utiliza um estado global, permitindo que você o use como e onde quiser:
+
+<Tabs>
+  <TabItem default value='Node.js + Poku'>
+
+```bash
+npx poku test.js
+```
+
+  </TabItem>
+  <TabItem default value='Bun + Poku'>
+
+```bash
+bunx poku test.js
+```
+
+  </TabItem>
+  <TabItem default value='Deno + Poku'>
+
+```bash
+deno run npm:poku test.js
+```
+
+  </TabItem>
+  <TabItem default value='Node.js'>
+
+```bash
+node test.js
+```
+
+  </TabItem>
+  <TabItem default value='Bun'>
+
+```bash
+bun test.js
+```
+
+  </TabItem>
+  <TabItem default value='Deno'>
+
+```bash
+deno run test.js
+```
+
+  </TabItem>
+  <TabItem default value='Yarn + Poku'>
+
+```bash
+yarn poku test.js
+```
+
+  </TabItem>
+  <TabItem default value='pnpm + Poku'>
+
+```bash
+pnpm poku test.js
+```
+
+  </TabItem>
+</Tabs>
+
+- A mesma ideia para o **TypeScript**.
+
+:::
+
+<hr />
+
+## Tornando os testes realmente fáceis 🌱
+
+Em muitos casos, os testes levam ao mesmo objetivo comum: a verificação de um valor esperado com um valor dinâmico.
+
+Mas os testes geralmente não mostram logs e detalhes suficientes se você se concentrar apenas na verificação de valores. Mesmo que funcionem, você pode facilmente encontrar uma mensagem de erro como "pelo menos um teste é necessário" com alguns executores de testes.
+
+Um exemplo usando o `assert` nativo do **Node.js**:
+
+```ts
+import assert from 'node:assert';
+
+const one = 1;
+assert.equal(one, 1, '1 precisa ser igual a 1');
+```
+
+- A mensagem neste exemplo não será exibida e o teste passará silenciosamente.
+
+Em vez disso, você precisará usar `test` ou `describe` e `it`:
+
+```ts
+import assert from 'node:assert';
+import test from 'node:test';
+
+test('one é igual a 1', () => {
+  const one = 1;
+  assert.equal(one, 1, '1 precisa ser igual a 1');
+});
+```
+
+O **Poku** permite que um teste siga a abordagem **BDD**/**TDD** usando apenas o método `assert`:
+
+> ⚠️ _Por favor, isso não é uma recomendação, mas sim, seria possível para testes mais simples._
+
+<Tabs>
+  <TabItem default value='test/file.test.mjs'>
+
+```ts
+import { assert } from 'poku';
+
+const one = 1;
+assert.equal(one, 1, 'one é igual a 1');
+```
+
+  </TabItem>
+</Tabs>
+
+Então:
+
+<Tabs>
+  <TabItem default value='Node.js and TypeScript (Node.js)'>
+
+```bash
+npx poku
+```
+
+  </TabItem>
+  <TabItem  value='Bun'>
+
+```bash
+bunx poku
+```
+
+  </TabItem>
+  <TabItem  value='Deno'>
+
+```bash
+deno run npm:poku
+```
+
+  </TabItem>
+</Tabs>
+
+:::info
+Isso irá gerar um log completo, tanto em caso de sucesso quanto de falha, mantendo o estilo exato de desenvolvimento do **Node.js** e sendo compatível com **Node.js**, **Bun** e **Deno**.
+:::
+
+:::tip
+Cada caso pode ser diferente. Para isso, o **Poku** possui uma forma completamente modular de uso, permitindo que você utilize `test`, `describe`, `it`, `beforeEach`, `afterEach`, o modo `--watch` e mais, de acordo com suas necessidades para testes mais complexos ou testes que seguem um padrão específico.
+:::
+
+<hr />
+
+## Funcionalidades especiais 💫
+
+O **Poku** oferece suporte integrado para desafios comuns de teste, como iniciar serviços, servidores e contêineres necessários para executar testes e encerrá-los no final dos testes, além de flexibilidade para lidar com portas e processos.
+
+<hr />
+
+## Prioridades de desenvolvimento 🔧
+
+- Uso amigável para humanos.
+- Compatibilidade entre plataformas (**Node**, **Bun**, e **Deno**).
+- Melhorias no desempenho.
+- Todas as funcionalidades devem ser documentadas e ter pelo menos um exemplo mínimo de uso.
+
+> Compatibilidade com ambientes legados sempre que possível, documentando quando um recurso específico funciona apenas a partir de uma versão do runtime/plataforma.
+
+<hr />
+
+## Por que não instalar dependências externas? 📦
+
+> Por ordem de relevância
+
+1. Exigindo que todas as dependências possíveis sejam totalmente compatíveis com **Node.js**, **Bun** e **Deno**.
+2. Para manter o tamanho final da instalação o mais leve possível.
+3. Para evitar problemas de compatibilidade com ambientes legados.
+
+### TypeScript
+
+Para **Node.js** + **TypeScript**, o Poku usa [**tsx**](https://github.com/privatenumber/tsx) para executar os arquivos.
+Por que? Porque segue o mesmo princípio do **Poku**: zero configurações para necessidades comuns.
+
+<hr />
+
+## Por que manter a compatibilidade com versões anteriores? 👴🏼
+
+> Esse tópico não se refere ao **Bun** e ao **Deno**.
+
+Vários projetos ainda utilizam ou oferecem suporte a versões legadas. O requisito para versões legadas não é uma regra rígida e pode mudar com as versões major devido a recursos específicos que podem exigir polyfills e afetar diretamente o desempenho.
+
+Por isso, o limite escolhido foi a versão `12.x.x` do **Node.js**.
+
+### Polyfills atuais
+
+- `fs`: Transformar métodos de callback em promises
+- `Object`: `entries` e `fromEntries` (usado somente quando não estiver disponível nativamente)
+- Suporte para execuções diretas do **CommonJS** no **Deno**
+
+:::note
+**Poku** sempre recomenda o uso de versões compatíveis de cada runtime.
+:::
+
+<hr />
+
+## Planos futuros 📆
+
+Embora não seja uma prioridade, há planos para integrar os seguintes recursos ao **Poku**:
+
+- **Stub**
+- **Mock**
+- **Spies**
+
+> Veja exemplos de **mock** para [**CJS**](/docs/examples/mock/cjs) e [**ESM**](/docs/examples/mock/esm) usando **Poku** + [**quibble**](https://github.com/testdouble/quibble).
+
+<hr />
+
+## Controle de versão 🏷️
+
+Elas não são consideradas breaking changes:
+
+- Alterações de formatação e estilo nos resultados.
+- Novas funcionalidades que dependem de uma versão específica da plataforma.
+- Se um recurso não for mais útil devido a uma nova abordagem.
+- Alterações no schema do intellisense do _JSON_ _(arquivos de configuração)_.
+
+<hr />
+
+## O que o Poku não se propõe a ser 🤚🏻
+
+- Um substituto para executores de teste nativos
+  - Tente usar o **Poku** como uma alternativa 🐷
+- O mais leve ou o mais rápido
+  - Embora esses pontos sejam considerados, o principal objetivo é manter um equilíbrio entre boas práticas.
+
+:::danger
+Observe que o **Poku** tem uma maneira diferente de ser usado, inspirada inteiramente na essência do JavaScript nativo, o que pode ser tanto uma vantagem quanto uma desvantagem para aqueles que estão acostumados com os _hooks_ tradicionais de outros executores de teste.
+:::

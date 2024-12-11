@@ -126,7 +126,6 @@ _./test/run.test.ts_:
 ```ts
 import { describe, it, poku, exit } from 'poku';
 
-const parallel = true;
 const noExit = true;
 
 const codes: (0 | 1)[] = [];
@@ -136,7 +135,6 @@ await describe('Executando Testes em Diferentes Plataformas ao Mesmo Tempo', asy
     it('Suíte de teste deve passar no Node.js', async () => {
       const exitCode = await poku(['./test/unit'], {
         platform: 'node',
-        parallel,
         noExit,
       });
 
@@ -146,7 +144,7 @@ await describe('Executando Testes em Diferentes Plataformas ao Mesmo Tempo', asy
     it('Suíte de teste deve passar no Bun', async () => {
       const exitCode = await poku(['./test/unit'], {
         platform: 'bun',
-        parallel,
+
         noExit,
       });
 
@@ -156,7 +154,6 @@ await describe('Executando Testes em Diferentes Plataformas ao Mesmo Tempo', asy
     it('Suíte de teste deve passar no Deno', async () => {
       const exitCode = await poku(['./test/unit'], {
         platform: 'deno',
-        parallel,
         noExit,
         deno: {
           cjs: ['.cjs'],

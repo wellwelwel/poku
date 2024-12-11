@@ -1,0 +1,267 @@
+---
+sidebar_position: 6
+tags: [containers]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# 🐳 Containers
+
+A minimal _API_ to assist tests that require containers or tests that run inside containers.
+
+> This helper assumes that you already have a basic understanding of how **Docker** works.
+
+## docker
+
+### compose
+
+Start containers from a **docker-compose.yml** in background.
+
+```ts
+import { docker } from 'poku';
+
+const compose = docker.compose();
+
+// Starts the container(s)
+await compose.up();
+
+/**
+ * Tests come here 🧪
+ */
+
+// Stops the container(s)
+await compose.down();
+```
+
+<FAQ title='Options' >
+
+```ts
+export type DockerComposeConfigs = {
+  /**
+   * Specifies the **docker-compose.yml** path
+   *
+   * ---
+   *
+   * @default "./docker-compose.yml"
+   */
+  file?: string;
+
+  /**
+   * Specifies the project name.
+   */
+  projectName?: string;
+
+  /**
+   * Specifies a `.env` path to **docker-compose.yml**.
+   */
+  envFile?: string;
+
+  /**
+   * Defines the root directory where the process will run.
+   *
+   * ---
+   *
+   * @default "."
+   */
+  cwd?: string;
+
+  /**
+   * Forces the images (**Dockerfile**) to be rebuilt.
+   */
+  build?: boolean;
+
+  /**
+   * Starts only a specific **docker-compose.yml** service.
+   */
+  serviceName?: string;
+
+  /**
+   * Doesn't run the container in the background and returns the container's process exit result (boolean).
+   *
+   * - Set to `false` to test whether a container was executed and finished successfully.
+   *
+   * ---
+   *
+   * @default true
+   */
+  detach?: boolean;
+
+  /**
+   * Show logs from **Docker** in real time.
+   */
+  verbose?: boolean;
+};
+```
+
+</FAQ>
+
+<hr />
+
+### dockerfile
+
+Build and start containers from **Dockerfiles** in background.
+
+```ts
+import { docker } from 'poku';
+
+const dockerfile = docker.dockerfile({
+  containerName: 'container-name',
+  tagName: 'image-name',
+});
+
+// Builds the image from the Dockerfile
+await dockerfile.build();
+
+// Starts the container
+await dockerfile.start();
+
+/**
+ * Tests come here 🧪
+ */
+
+// Stops and removes both the container and image
+await dockerfile.remove();
+```
+
+- You can also use `.stop()` to graceful stop the container without removing it.
+
+<FAQ title='Options'>
+
+```ts
+export type DockerfileConfigs = {
+  /**
+   * Specifies the imange name
+   *
+   * E.g., `"name"`, `"name:tag"`.
+   */
+  tagName: string;
+
+  /**
+   * Specifies the container name.
+   */
+  containerName: string;
+
+  /**
+   * Specifies the **Dockerfile** path
+   *
+   * ---
+   *
+   * @default "./Dockerfile"
+   */
+  file?: string;
+
+  /**
+   * Specifies the context path of the Dockerfile
+   *
+   * - It's different from `cwd`.
+   *
+   * ---
+   *
+   * @default "."
+   */
+  context?: string;
+
+  /**
+   * Specifies the ports to expose.
+   *
+   * E.g., `"6000:6000"`, `"8080:80"`, `"127.0.0.1:3306:3306"`.
+   */
+  ports?: string[];
+
+  /**
+   * Specifies the container environments variables.
+   *
+   * E.g, `"VAR1"`, `"VAR1=value1"`
+   */
+  environments?: string[];
+
+  /**
+   * Specifies a `.env` path to **Dockerfile**.
+   */
+  envFile?: string;
+
+  /**
+   * Forces the image build without cache.
+   */
+  cache?: boolean;
+
+  /**
+   * Doesn't run the container in the background and returns the container's process exit result (boolean).
+   *
+   * - Set to `false` to test whether a container was executed and finished successfully.
+   *
+   * ---
+   *
+   * @default true
+   */
+  detach?: boolean;
+
+  /**
+   * Defines the root directory where the process will run.
+   *
+   * ---
+   *
+   * @default "."
+   */
+  cwd?: string;
+
+  /**
+   * Show logs from **Docker** in real time.
+   */
+  verbose?: boolean;
+};
+```
+
+</FAQ>
+
+<hr />
+
+## Real Examples
+
+Tests performed inside a container (**docker-compose.yml**) in a specific service with customized images (**Dockerfile**), returning the output, stopping the containers and cleaning up the images:
+
+- [test/compatibility/bun-canary.test.ts](https://github.com/wellwelwel/poku/blob/main/test/compatibility/by-docker-compose/node-20.test.ts)
+
+<hr />
+
+Tests performed inside a container (**Dockerfile**), returning the output, stopping the container and cleaning up the image:
+
+- [test/compatibility-by-dockerfile/bun-canary.test.ts](https://github.com/wellwelwel/poku/blob/main/test/compatibility/by-dockerfile/node-20.test.ts)
+
+<hr />
+
+Starts a container before the entire test suite and stops it on finishing:
+
+> **Poku** _API_ example.
+
+```ts
+import { poku, docker, exit } from 'poku';
+
+const compose = docker.compose({ cwd: './test/docker' });
+
+// Removes the container if it already exists before to start
+await compose.down();
+
+// Starts the container
+await compose.up();
+
+const result = await poku('./test/integration', {
+  noExit: true,
+});
+
+// Stops the container
+await compose.down();
+
+// Shows the test results and ends the process with the test exit code.
+exit(result);
+```
+
+```sh
+node run.test.mjs
+```
+
+<hr />
+
+:::note
+This isn't a complete and robust _API_ designed to create an _ORM_ for **Docker**, but a minimal **API** focused on common **integration** and **end-to-end** testing needs.
+:::

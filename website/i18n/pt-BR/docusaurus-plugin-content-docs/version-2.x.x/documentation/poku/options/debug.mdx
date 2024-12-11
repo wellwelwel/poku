@@ -1,0 +1,38 @@
+---
+sidebar_position: 6
+---
+
+import { History } from '@site/src/components/History';
+
+# `debug`
+
+Por padrão, o **Poku** não exibe logs que não vêm do **`assert`** do **Poku**, mas você pode habilitá-los.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Suporte para a flag curta <code>-d</code>.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+```bash
+npx poku --debug ./test
+```
+
+- Flag curta: `-d`.
+
+## API
+
+```ts
+await poku('./test', {
+  debug: true,
+});
+```

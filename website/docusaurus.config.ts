@@ -1,7 +1,6 @@
-import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import { navbarLocalePlugin } from './plugins/locale.js';
+import { themes as prismThemes } from 'prism-react-renderer';
 
 const config: Config = {
   title: 'Poku',
@@ -36,6 +35,17 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/wellwelwel/poku/tree/main/website/',
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: 'v3.x.x (Realease Candidate)',
+              badge: false,
+            },
+            '2.x.x': {
+              label: 'v2.x.x',
+              banner: 'unmaintained',
+            },
+          },
         },
         theme: {
           customCss: './src/css/custom.scss',
@@ -68,8 +78,7 @@ const config: Config = {
       },
       items: [
         {
-          to: '/docs/category/documentation',
-          label: 'Docs',
+          type: 'docsVersionDropdown',
           position: 'left',
         },
         {
@@ -109,7 +118,7 @@ const config: Config = {
     },
   } satisfies Preset.ThemeConfig,
 
-  plugins: ['docusaurus-plugin-sass', navbarLocalePlugin],
+  plugins: ['docusaurus-plugin-sass'],
 };
 
 export default config;

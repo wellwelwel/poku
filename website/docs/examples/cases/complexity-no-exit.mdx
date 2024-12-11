@@ -36,7 +36,6 @@ import { poku, assert } from 'poku';
 import { recreateDatabase } from './tools.test.js';
 
 const unitCode = await poku('test/unit', {
-  parallel: true,
   noExit: true,
 });
 
