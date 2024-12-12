@@ -5,8 +5,8 @@
 
 Enjoying **Poku**? Give him a star to show your support 🌟
 
-[![NPM Downloads](https://img.shields.io/npm/v/poku.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
-[![NPM Downloads](https://img.shields.io/npm/dm/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
+[![NPM Version](https://img.shields.io/npm/v/poku/rc.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku/v/3.0.0-rc.0)
+[![NPM Downloads](https://img.shields.io/npm/dm/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku/v/3.0.0-rc.0)
 [![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://github.com/wellwelwel/poku/tree/main/.nycrc)<br />
 [![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
 [![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
@@ -14,13 +14,16 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ---
 
-🐷 [Website](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📘 [Documentation](https://poku.io/docs/category/documentation)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [Examples](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [Tutorials](https://poku.io/docs/category/quick-tutorials)
+🐷 [Website](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📘 [Documentation](https://poku.io/docs)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [Examples](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [Tutorials](https://poku.io/docs/category/quick-tutorials)
 
 </div>
 
 > [!IMPORTANT]
 >
-> [**Version 3**](https://github.com/wellwelwel/poku/issues/801) is on its way! You can already try it by installing the Release Candidate with `poku@rc` 💡
+> **Poku** is growing and <strong>version 3</strong> is on its way! You can already try it by installing the Release Candidate with `poku@rc`.
+>
+> - To check out what's coming, follow the [**Issue #801**](https://github.com/wellwelwel/poku/issues/801).
+> - For `v2` documentation, see the [**legacy version documentation**](https://poku.io/docs/2.x.x) and [**README**](https://github.com/wellwelwel/poku/tree/2.x.x?tab=readme-ov-file#readme).<br />
 
 ---
 
@@ -46,7 +49,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ```bash
 # Node.js
-npm i -D poku
+npm i -D poku@rc
 ```
 
 </td>
@@ -54,7 +57,7 @@ npm i -D poku
 
 ```bash
 # TypeScript (Node.js)
-npm i -D poku tsx
+npm i -D poku@rc tsx
 ```
 
 </td>
@@ -62,7 +65,7 @@ npm i -D poku tsx
 
 ```bash
 # Bun
-bun add -d poku
+bun add -d poku@rc
 ```
 
 </td>
@@ -70,7 +73,7 @@ bun add -d poku
 
 ```bash
 # Deno (optional)
-deno add npm:poku
+deno add npm:poku@rc
 ```
 
 </td>
@@ -128,7 +131,7 @@ bun poku
 <td width="400">
 
 ```bash
-deno run npm:poku
+deno run npm:poku@rc
 ```
 
 </td>
@@ -247,7 +250,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 - [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
 - [Using **Poku** without installing on **Deno** and alternatives to **JSR**](https://github.com/wellwelwel/poku/discussions/565).
-- [Migrating from version **1.x** to version **2.x**](https://github.com/wellwelwel/poku/issues/533).
+- [Migrating from version **2.x** to version **3.x** (_rc_)](https://github.com/wellwelwel/poku/issues/801).
 
 ---
 
