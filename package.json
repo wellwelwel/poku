@@ -55,7 +55,7 @@
     "@types/node": "^22.10.2",
     "c8": "^10.1.3",
     "jsonc.min": "^1.1.0",
-    "monocart-coverage-reports": "^2.11.4",
+    "monocart-coverage-reports": "^2.11.5",
     "packages-update": "^2.0.0",
     "prettier": "^3.4.2",
     "tsx": "4.19.2",
