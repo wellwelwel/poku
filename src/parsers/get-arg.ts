@@ -50,10 +50,7 @@ export const argToArray = (
   const argValue = getArg(arg, prefix, baseArgs);
   if (!argValue) return [];
 
-  return argValue
-    .split(',')
-    .map((a) => a.trim())
-    .filter((a) => a);
+  return argValue.split(',').filter((a) => a);
 };
 
 export const hasOnly = hasArg('only');
