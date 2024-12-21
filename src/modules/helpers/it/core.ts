@@ -1,4 +1,4 @@
-import { hrtime, env } from 'node:process';
+import { hrtime } from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { format } from '../../../services/format.js';
@@ -17,10 +17,6 @@ export async function itBase(
     let message: string | undefined;
     let cb: () => unknown | Promise<unknown>;
 
-    const isPoku =
-      typeof env?.POKU_FILE === 'string' && env?.POKU_FILE.length > 0;
-    const FILE = env.POKU_FILE;
-
     if (typeof args[0] === 'string') {
       message = args[0];
       cb = args[1] as () => unknown | Promise<unknown>;
@@ -30,9 +26,7 @@ export async function itBase(
       indentation.hasItOrTest = true;
 
       Write.log(
-        isPoku
-          ? `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
-          : `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
+        `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
       );
     }
 

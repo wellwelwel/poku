@@ -1,5 +1,5 @@
 import type { DescribeOptions } from '../../@types/describe.js';
-import { hrtime, env } from 'node:process';
+import { hrtime } from 'node:process';
 import { format } from '../../services/format.js';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
@@ -16,9 +16,6 @@ export async function describeBase(
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;
 
-  const isPoku = typeof env?.FILE === 'string' && env?.FILE.length > 0;
-  const FILE = env.POKU_FILE;
-
   if (typeof arg1 === 'string') {
     title = arg1;
 
@@ -33,7 +30,7 @@ export async function describeBase(
     indentation.hasDescribe = true;
 
     const { background, icon } = options ?? {};
-    const message = `${cb ? format('◌').dim() : (icon ?? '☰')} ${cb ? format(isPoku ? `${title} › ${format(`${FILE}`).italic().gray()}` : title).dim() : format(title).bold()}`;
+    const message = `${cb ? format('◌').dim() : (icon ?? '☰')} ${cb ? format(title).dim() : format(title).bold()}`;
     const noBackground = !background;
 
     if (noBackground) Write.log(format(message).bold());
