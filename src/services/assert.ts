@@ -6,7 +6,7 @@ import { findFile } from '../parsers/find-file-from-stack.js';
 import { parseResultType } from '../parsers/assert.js';
 import { indentation } from '../configs/indentation.js';
 import { format } from './format.js';
-import { Write } from './write.js';
+import { log, hr } from './write.js';
 import { GLOBAL } from '../configs/poku.js';
 
 const { cwd } = GLOBAL;
@@ -27,7 +27,7 @@ const assertProcessor = () => {
           ? `${preIdentation}${format(`${format(`✔ ${options.message}`).bold()} ${format(`› ${FILE}`).success().dim()}`).success()}`
           : `${preIdentation}${format(`✔ ${options.message}`).success().bold()}`;
 
-      Write.log(message);
+      log(message);
     }
 
     preIdentation = '';
@@ -57,41 +57,38 @@ const assertProcessor = () => {
           ? format(`✘ ${message}`).fail().bold()
           : format('✘ Assertion Error').fail().bold();
 
-      Write.log(
+      log(
         isPoku
           ? `${preIdentation}${finalMessage} ${format(`› ${FILE}`).fail().dim()}`
           : `${preIdentation}${finalMessage}`
       );
 
-      file &&
-        Write.log(`${format(`${preIdentation}      File`).dim()} ${file}`);
-      Write.log(`${format(`${preIdentation}      Code`).dim()} ${code}`);
-      Write.log(`${format(`${preIdentation}  Operator`).dim()} ${operator}\n`);
+      file && log(`${format(`${preIdentation}      File`).dim()} ${file}`);
+      log(`${format(`${preIdentation}      Code`).dim()} ${code}`);
+      log(`${format(`${preIdentation}  Operator`).dim()} ${operator}\n`);
 
       if (!options?.hideDiff) {
         const splitActual = parseResultType(actual).split('\n');
         const splitExpected = parseResultType(expected).split('\n');
 
-        Write.log(
-          format(`${preIdentation}  ${options?.actual ?? 'Actual'}:`).dim()
-        );
+        log(format(`${preIdentation}  ${options?.actual ?? 'Actual'}:`).dim());
 
         for (const line of splitActual)
-          Write.log(`${preIdentation}  ${format(line).fail().bold()}`);
+          log(`${preIdentation}  ${format(line).fail().bold()}`);
 
-        Write.log(
+        log(
           `\n${preIdentation}  ${format(`${options?.expected ?? 'Expected'}:`).dim()}`
         );
 
         for (const line of splitExpected)
-          Write.log(`${preIdentation}  ${format(line).success().bold()}`);
+          log(`${preIdentation}  ${format(line).success().bold()}`);
 
         preIdentation = '';
       }
 
       if (options.throw) {
         console.error(error);
-        Write.hr();
+        hr();
       }
 
       if (isPoku) throw error;

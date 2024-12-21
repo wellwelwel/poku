@@ -9,7 +9,7 @@ import { isWindows, runner, scriptRunner } from '../../parsers/get-runner.js';
 import { normalize } from 'node:path';
 import { sanitizePath } from './list-files.js';
 import { kill } from './kill.js';
-import { Write } from '../../services/write.js';
+import { log } from '../../services/write.js';
 
 const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
   new Map();
@@ -92,7 +92,7 @@ const backgroundProcess = (
           }
         }
 
-        options?.verbose && Write.log(data);
+        options?.verbose && log(data);
       });
 
       service.stderr.on('data', (data: Buffer) => {
@@ -111,7 +111,7 @@ const backgroundProcess = (
           }
         }
 
-        options?.verbose && Write.log(data);
+        options?.verbose && log(data);
       });
 
       service.on('error', (err) => {

@@ -2,7 +2,7 @@ import type { Code } from '../../@types/code.js';
 import process from 'node:process';
 import { results } from '../../configs/poku.js';
 import { format } from '../../services/format.js';
-import { Write } from '../../services/write.js';
+import { log, hr } from '../../services/write.js';
 import { fileResults, finalResults } from '../../configs/files.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 import { AssertionError } from 'node:assert';
@@ -35,22 +35,22 @@ export const exit = (code: Code, quiet?: boolean) => {
   !quiet &&
     process.on('exit', (code) => {
       if (isPoku) {
-        Write.hr();
-        Write.log(
+        hr();
+        log(
           `    ${format(`Start at › ${format(`${parseTime(finalResults.started)}`).bold()}`).dim()}`
         );
-        Write.log(
+        log(
           `    ${format('Duration ›').dim()} ${format(`${finalResults.time}ms`).bold().dim()} ${format(`(±${parseTimeToSecs(finalResults.time)} seconds)`).dim()}`
         );
-        Write.log(
+        log(
           `  ${format(`Test Files › ${format(String(fileResults.success.size + fileResults.fail.size)).bold()}`).dim()}`
         );
-        Write.hr();
-        Write.log(message);
-        Write.hr();
+        hr();
+        log(message);
+        hr();
       }
 
-      Write.log(
+      log(
         `${format('Exited with code').dim()} ${format(String(code)).bold()[code === 0 ? 'success' : 'fail']()}\n`
       );
     });

@@ -3,7 +3,7 @@ import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { isQuiet, isDebug, parserOutput } from '../../src/parsers/output.js';
-import { Write } from '../../src/services/write.js';
+import { log } from '../../src/services/write.js';
 
 describe('Helper functions in logs.js', () => {
   it('should return true if configs.quiet is true', () => {
@@ -54,7 +54,7 @@ describe('Helper functions in logs.js', () => {
       return true;
     };
 
-    Write.log('Test message');
+    log('Test message');
     assert.strictEqual(
       capturedOutput,
       'Test message\n',

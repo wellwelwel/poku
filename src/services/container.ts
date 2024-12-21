@@ -3,7 +3,7 @@ import type {
   DockerfileConfigs,
 } from '../@types/container.js';
 import { spawn, type SpawnOptionsWithoutStdio } from 'node:child_process';
-import { Write } from '../services/write.js';
+import { log } from '../services/write.js';
 import { isWindows } from '../parsers/get-runner.js';
 import { sanitizePath } from '../modules/helpers/list-files.js';
 
@@ -22,8 +22,8 @@ const runDockerCommand = (
     if (verbose) {
       dockerProcess.stdout.setEncoding('utf8');
       dockerProcess.stderr.setEncoding('utf8');
-      dockerProcess.stdout.on('data', Write.log);
-      dockerProcess.stderr.on('data', Write.log);
+      dockerProcess.stdout.on('data', log);
+      dockerProcess.stderr.on('data', log);
     }
 
     dockerProcess.on('close', (code) => resolve(code === 0));

@@ -9,7 +9,7 @@ import { Stability } from '@site/src/components/Stability';
 
 Ensures that the execution is valid and safe before proceeding with the tests.
 
-<Stability level={1.1} />
+<Stability level={1.2} />
 
 <History
   records={[
@@ -17,16 +17,15 @@ Ensures that the execution is valid and safe before proceeding with the tests.
       version: '2.5.0',
       changes: [
         <>
-          <strong>CLI:</strong> Add <code>enforce</code> option.
+          <strong>CLI:</strong> add <code>enforce</code> option.
         </>,
       ],
     },
   ]}
 />
 
-- [x] Forces an error if any _CLI_ flags are invalid.
+- [x] Forces an error if any _CLI_ flags are invalid or deprecated.
 - [ ] Forces an error if no file is found _(soon)_.
-- [ ] Forces an error if the environment has multiple platforms and the `--platform` option isn't explicit _(soon)_.
 
 ## CLI
 
@@ -38,4 +37,8 @@ npx poku --enforce ./test
 
 :::info
 This feature will be included in the configuration file when the development stage is stable.
+:::
+
+:::danger Important
+Failures due to deprecated features and options won't be considered breaking changes when using enforcement.
 :::

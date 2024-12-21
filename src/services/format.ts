@@ -1,6 +1,6 @@
 import { fileResults } from '../configs/files.js';
 import { indentation } from '../configs/indentation.js';
-import { Write } from '../services/write.js';
+import { log, hr } from '../services/write.js';
 
 export const backgroundColor = {
   white: 7,
@@ -96,10 +96,10 @@ export const getLargestStringLength = (arr: string[]): number =>
   arr.reduce((max, current) => Math.max(max, current.length), 0);
 
 export const showTestResults = () => {
-  Write.hr();
+  hr();
 
   if (fileResults.success.size > 0 && fileResults.fail.size === 0) {
-    Write.log(
+    log(
       Array.from(fileResults.success)
         .map(
           ([file, time]) =>
@@ -112,7 +112,7 @@ export const showTestResults = () => {
   }
 
   if (fileResults.fail.size > 0) {
-    Write.log(
+    log(
       Array.from(fileResults.fail)
         .map(
           ([file, time]) =>

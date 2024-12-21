@@ -1,6 +1,6 @@
 import type { Configs } from '../@types/poku.js';
 import { format } from './format.js';
-import { Write } from '../services/write.js';
+import { log } from '../services/write.js';
 import { isQuiet } from '../parsers/output.js';
 
 const eachCore = async (
@@ -15,7 +15,7 @@ const eachCore = async (
   const cbName = cb.name !== type ? cb.name : 'anonymous function';
 
   showLogs &&
-    Write.log(
+    log(
       `    ${format('◯').dim().info()} ${format(`${type}: ${cbName}`)
         .dim()
         .italic()}`
@@ -27,19 +27,19 @@ const eachCore = async (
     return true;
   } catch (error) {
     if (showLogs) {
-      Write.log(
+      log(
         format(`    ✘ ${type} callback failed ${format(`› ${cbName}`).dim()}`)
           .fail()
           .bold()
       );
-      Write.log(format(`      ├─ Who's trying to run this ${type}?`).fail());
-      Write.log(
+      log(format(`      ├─ Who's trying to run this ${type}?`).fail());
+      log(
         format(`      │ └─ ${format(fileRelative).fail().underline()}`).fail()
       );
 
       if (error instanceof Error) {
-        Write.log(format('      ├─ Message:').fail());
-        Write.log(format(`      │ └─ ${error.message}`).fail());
+        log(format('      ├─ Message:').fail());
+        log(format(`      │ └─ ${error.message}`).fail());
       }
     }
 
