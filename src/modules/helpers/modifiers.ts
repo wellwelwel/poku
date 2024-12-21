@@ -1,4 +1,4 @@
-import { env, exit } from 'node:process';
+import { exit } from 'node:process';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
 import { format } from '../../services/format.js';
@@ -54,9 +54,7 @@ export async function onlyDescribe(
 ): Promise<void> {
   if (!hasOnly) {
     Write.log(
-      format(
-        `Can't run \`describe.only\` tests without \`--only\` flag: ${env.POKU_FILE}`
-      ).fail()
+      format("Can't run `describe.only` tests without `--only` flag").fail()
     );
     exit(1);
   }
@@ -86,7 +84,7 @@ export async function onlyIt(
   if (!hasOnly) {
     Write.log(
       format(
-        `Can't run \`it.only\` and \`test.only\` tests without \`--only\` flag: ${env.POKU_FILE}`
+        "Can't run `it.only` and `test.only` tests without `--only` flag"
       ).fail()
     );
     exit(1);

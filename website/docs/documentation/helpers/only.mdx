@@ -8,23 +8,38 @@ import { Stability } from '@site/src/components/Stability';
 
 # 🌌 only
 
-The `.only` helper enables selective execution of tests, allowing you to focus on specific `describe`, `it`, and/or `test` blocks by running only those marked with `.only`. See the [usage](#usage) to understand the different conditions and behaviors.
+The `.only` modifier enables selective execution of tests, allowing you to focus on specific `describe`, `it`, and/or `test` blocks by running only those marked with `.only`. See the [usage](#usage) to understand the different conditions and behaviors.
 
 <Stability
-  level={1}
+  level={2}
   message={
-    "This method can be changed according to users' suggestions and needs. Major changes in this method won't be considered breaking changes while it's in experimental stage."
+    <>
+      From{' '}
+      <strong>
+        <code>3.0.0-rc.1</code>
+      </strong>{' '}
+      onwards.
+    </>
   }
 />
 
 <History
   records={[
     {
-      version: '2.7.0',
+      version: '3.0.0',
       changes: [
         <>
           Add <code>only</code> modifier to <code>describe</code>,{' '}
           <code>it</code> and <code>test</code> methods.
+        </>,
+      ],
+    },
+    {
+      version: '2.7.0',
+      changes: [
+        <>
+          Add <code>only</code> modifier to <code>describe</code>,{' '}
+          <code>it</code> and <code>test</code> methods (experimental).
         </>,
       ],
     },
@@ -33,330 +48,84 @@ The `.only` helper enables selective execution of tests, allowing you to focus o
 
 ## Usage
 
-To enable the `.only` helper, you must to pass one of the following flags to enable it selectively:
+To enable the `.only` modifier, you must to pass the `--only` flag.
 
-### `--only`
+:::tip
 
-Enables the `.only` helper for `describe`, `it` and `test` methods.
+You can pass the `--only` flag either using the test runner (**Poku**) or the runner you prefer, for example:
 
-<blockquote>
+```sh
+npx poku --only
+npx tsx test/my-test.test.ts --only
+npm test -- --only
+node test/my-test.test.js --only
+```
 
-- ✅ `describe.only`
-- ✅ `it.only`
-- ✅ `test.only`
-- ⏭️ `describe` _(it will be skipped)_
-- ⏭️ `it` _(it will be skipped)_
-- ⏭️ `test` _(it will be skipped)_
+:::
 
-</blockquote>
+### Common Examples
 
 ```ts
 import { describe, it, test } from 'poku';
 
 describe.only(() => {
-  it.only(() => {
-    // ...
+  // ✅ Will be executed
+
+  it(() => {
+    // ✅ Will be executed
   });
 
-  test.only(() => {
-    // ...
+  test(() => {
+    // ✅ Will be executed
   });
 });
 
-test.only(() => {
-  // ...
+describe(() => {
+  // ⏭️ Will be skipped
+
+  it(() => {
+    // ⏭️ Will be skipped
+  });
+
+  test(() => {
+    // ⏭️ Will be skipped
+  });
+});
+
+describe(() => {
+  // ✅ Will be executed
+
+  it(() => {
+    // ⏭️ Will be skipped
+  });
+
+  it.only(() => {
+    // ✅ Will be executed
+  });
+
+  test(() => {
+    // ⏭️ Will be skipped
+  });
 });
 ```
 
 ```bash
 npx poku --only
 ```
-
-:::note
-
-- `describe`, `it` and `test` methods without `.only` will be skipped.
-
-:::
-
-### `--only=describe`
-
-Enables the `.only` helper for `describe` method.
-
-<blockquote>
-
-- ✅ `describe.only`
-- ✅ `it`
-- ✅ `test`
-- ⏭️ `describe` _(it will be skipped)_
-- ❌ `it.only` _(it forces a failure since `it.only` is not enabled in `--only=describe`)_
-- ❌ `test.only` _(it forces a failure since `test.only` is not enabled in `--only=describe`)_
-
-</blockquote>
-
-```ts
-import { describe, it, test } from 'poku';
-
-describe.only(() => {
-  it(() => {
-    // ...
-  });
-
-  test(() => {
-    // ...
-  });
-});
-
-test(() => {
-  // ...
-});
-```
-
-```bash
-npx poku --only=describe
-```
-
-:::note
-
-- `describe` methods without `.only` will be skipped.
-- `it` and `test` methods without `.only` will be executed normally, including outside the scope of `describe` (top-level).
-
-:::
-
-### `--only=it`
-
-> Alternative flag: `--only=test`
-
-Enables the `.only` helper for `it` and `test` methods.
-
-<blockquote>
-
-- ✅ `it.only`
-- ✅ `test.only`
-- ✅ `describe`
-- ⏭️ `it` _(it will be skipped)_
-- ⏭️ `test` _(it will be skipped)_
-- ❌ `describe.only` _(it forces a failure since `describe.only` is not enabled in `--only=it`)_
-
-</blockquote>
-
-```ts
-import { describe, it, test } from 'poku';
-
-describe(() => {
-  it.only(() => {
-    // ...
-  });
-
-  test.only(() => {
-    // ...
-  });
-});
-
-test.only(() => {
-  // ...
-});
-```
-
-```bash
-npx poku --only=it
-```
-
-:::note
-
-- `it` and `test` methods without `.only` will be skipped.
-- `describe` methods without `.only` will be executed normally.
-
-:::
 
 ---
 
 :::tip
 
-- The `.only` helper works exactly as its respective `describe`, `it` and `test` methods (e.g., by running `beforeEach` and `afterEach` for the `test.only` or `it.only`).
-- It works for both sequential and parallel executions normally, including synchronous and asynchronous tests.
+- The `.only` modifier works exactly as its respective `describe`, `it` and `test` methods (e.g., by running `beforeEach` and `afterEach` for the `test.only` or `it.only`).
+- It's not possible to run `.only` modifiers without `--only` flag.
 
 :::
 
-:::danger Important
-It's important to recall that **Poku** respects conventional **JavaScript** syntax in tests and doesn't change the order of the executions. See the [examples](#complex-examples) to clarify it.
+:::note
+It's important to recall that **Poku** respects conventional **JavaScript** syntax in tests and doesn't change the order of the executions.
 :::
 
 ---
 
-## Common issues
-
-### `.only` vs. scope
-
-If a `.only` method is inside a skipped method, it won't be executed, for example:
-
-```ts
-import { describe, it, test } from 'poku';
-
-describe.only(() => {
-  it.only(() => {
-    // ... ✅
-  });
-
-  // it(() => {
-  //   // ...
-  // });
-
-  // test(() => {
-  //   // ...
-  // });
-});
-
-// describe(() => {
-//   it.only(() => {
-//     // ... ❌
-//   });
-//
-//   test(() => {
-//     // ...
-//   });
-// });
-```
-
-```bash
-npx poku --only
-```
-
----
-
-## Migrating from other Test Runners
-
-In **Poku**, the `.only` helper works like a switch:
-
-- To enable the `.only` helper for both `describe`, `it` and `test` methods, you need to use the `--only` flag.
-- To enable the `.only` helper for `describe` methods, you need to use the `--only=describe` flag.
-- To enable the `.only` helper for `it` and `test` methods, you need to use the `--only=it` flag.
-
-An example running a `it.only` inside a `describe` method without `.only`:
-
-```ts
-import { describe, it } from 'poku';
-
-describe(() => {
-  it.only(() => {
-    // ... ✅
-  });
-
-  // it(() => {
-  //   // ...
-  // });
-});
-```
-
-```bash
-npx poku --only=it
-```
-
-This way, you enable `.only` only for `it` and `test` methods, keeping `describe` methods with their default behavior. It means that `describe` methods will run even without `.only` due to `--only=it`, while `it` and `test` methods will only run if you use the `.only` helper.
-
-It's also important to note that the `--only` flag applies to all files to be tested and you can use the flag with or without `poku` command, for example:
-
-```bash
-npx poku test/my-test.test.js --only
-```
-
-```bash
-node test/my-test.test.js --only
-```
-
-```bash
-npx tsx test/my-test.test.ts --only
-```
-
----
-
-## Mapped vs. non-mapped tests _(advanced concept)_
-
-**Poku** doesn't map the tests to determine which ones will be run or not from appending `.only` tests, instead, it toggles which methods (`describe`, `it` and `test`) will be run according to the flags `--only`, `--only=describe` or `--only=it`.
-
-Why isn't `it.only` executed in the following example?
-
-```ts
-describe(() => {
-  it.only(() => {
-    // ... ❌
-  });
-});
-```
-
-```bash
-npx poku --only
-```
-
-As the `describe` method isn't using the `.only` helper, it will be skipped, including everything within its scope, which includes the `it.only` in this example.
-
----
-
-## Complex examples
-
-### `--only=it`
-
-```ts
-import { describe, it, test, assert, beforeEach, afterEach } from 'poku';
-
-beforeEach(() => {
-  // It will run normally before all `it.only` and `test.only`.
-});
-
-afterEach(() => {
-  // It will run normally after all `it.only` and `test.only`.
-});
-
-let counter = 0;
-
-// ⬇️ `describe` scopes ⬇️
-
-describe('1', () => {
-  counter++; // ✅ `describe` scope will be executed as it's in "native" JavaScript flow
-
-  it.only('2', () => {
-    counter++; // ✅ `it.only` will be executed
-  });
-
-  it('3', () => {
-    counter++; // ⏭️ `it` will be skipped
-  });
-
-  test.only('4', () => {
-    counter++; // ✅ `test.only` will be executed
-  });
-
-  test('5', () => {
-    counter++; // ⏭️ `test` will be skipped
-  });
-});
-
-// ⬇️ Top-level or non-`describe` scopes ⬇️
-
-counter++; // ✅ Will be executed as it's in "native" JavaScript flow
-
-test('6', () => {
-  counter++; // ⏭️ `test` will be skipped
-});
-
-test.only('7', () => {
-  counter++; // ✅ `test.only` will be executed
-});
-
-it('8', () => {
-  counter++; // ⏭️ `it` will be skipped
-});
-
-it.only('9', () => {
-  counter++; // ✅ `it.only` will be executed
-});
-
-// describe.only('10', () => {
-//   counter++; // ❌ It would force a failure since `describe.only` is not enabled in `--only=it`
-// });
-
-assert.strictEqual(counter, 6);
-```
-
-```bash
-npx poku --only=it
-```
+### Examples
