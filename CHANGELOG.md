@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.0.0-rc.1](https://github.com/wellwelwel/poku/compare/v3.0.0-rc.0...v3.0.0-rc.1) (2024-12-21)
+
+
+### Features
+
+* add stable `only` modifier to `describe`, `it` and `test` methods ([#901](https://github.com/wellwelwel/poku/issues/901)) ([d6b6241](https://github.com/wellwelwel/poku/commit/d6b624196e787235b702a280d04f4481cd395aab))
+
+
+### Miscellaneous Chores
+
+* release 3.0.0-rc.1 ([91305a7](https://github.com/wellwelwel/poku/commit/91305a7ca3fd3e66014c477e995a6dc3a4f33626))
+
 ## [3.0.0-rc.0](https://github.com/wellwelwel/poku/compare/v2.7.1...v3.0.0-rc.0) (2024-12-11)
 
 
