@@ -15,9 +15,9 @@ export const CheckNoOnly = (cb: unknown): boolean => {
 
   const body = cb.toString();
 
-  return (
-    !body.includes('it.only') &&
-    !body.includes('test.only') &&
-    !body.includes('describe.only')
+  return !(
+    body.includes('it.only') ||
+    body.includes('test.only') ||
+    body.includes('describe.only')
   );
 };
