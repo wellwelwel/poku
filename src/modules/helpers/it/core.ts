@@ -1,10 +1,11 @@
-import { hrtime, env } from 'node:process';
+import { hrtime } from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { format } from '../../../services/format.js';
 import { Write } from '../../../services/write.js';
 import { todo, skip, onlyIt } from '../modifiers.js';
-import { hasItOnly, hasOnly } from '../../../parsers/get-arg.js';
+import { hasOnly } from '../../../parsers/get-arg.js';
+import { GLOBAL } from '../../../configs/poku.js';
 
 export async function itBase(
   ...args: [
@@ -16,10 +17,6 @@ export async function itBase(
     let message: string | undefined;
     let cb: () => unknown | Promise<unknown>;
 
-    const isPoku =
-      typeof env?.POKU_FILE === 'string' && env?.POKU_FILE.length > 0;
-    const FILE = env.POKU_FILE;
-
     if (typeof args[0] === 'string') {
       message = args[0];
       cb = args[1] as () => unknown | Promise<unknown>;
@@ -29,9 +26,7 @@ export async function itBase(
       indentation.hasItOrTest = true;
 
       Write.log(
-        isPoku
-          ? `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message} › ${format(`${FILE}`).italic().gray()}`).dim()}`
-          : `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
+        `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
       );
     }
 
@@ -86,7 +81,14 @@ async function itCore(
   messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  if (hasOnly || hasItOnly) return;
+  if (hasOnly) {
+    if (!GLOBAL.runAsOnly) return;
+
+    if (typeof messageOrCb === 'string' && typeof cb === 'function')
+      return itBase(messageOrCb, cb);
+
+    if (typeof messageOrCb === 'function') return itBase(messageOrCb);
+  }
 
   if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
   if (typeof messageOrCb === 'function') return itBase(messageOrCb);

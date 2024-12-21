@@ -1,10 +1,12 @@
+import { exit } from 'node:process';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
 import { format } from '../../services/format.js';
 import { itBase } from './it/core.js';
 import { describeBase } from './describe.js';
-import { hasDescribeOnly, hasItOnly, hasOnly } from '../../parsers/get-arg.js';
-import { exit } from 'node:process';
+import { hasOnly } from '../../parsers/get-arg.js';
+import { CheckNoOnly } from '../../parsers/callback.js';
+import { GLOBAL } from '../../configs/poku.js';
 
 export function todo(message: string): void;
 export async function todo(
@@ -50,14 +52,18 @@ export async function onlyDescribe(
   messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  if (!(hasOnly || hasDescribeOnly)) {
+  if (!hasOnly) {
     Write.log(
-      format(
-        "Can't run `describe.only` tests without `--only` or `--only=describe` flags"
-      ).fail()
+      format("Can't run `describe.only` tests without `--only` flag").fail()
     );
     exit(1);
   }
+
+  const noItOnly = CheckNoOnly(
+    typeof messageOrCb === 'function' ? messageOrCb : cb
+  );
+
+  if (noItOnly) GLOBAL.runAsOnly = true;
 
   if (typeof messageOrCb === 'string' && cb)
     return describeBase(messageOrCb, cb);
@@ -75,10 +81,10 @@ export async function onlyIt(
   messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  if (!(hasOnly || hasItOnly)) {
+  if (!hasOnly) {
     Write.log(
       format(
-        "Can't run `it.only` and `test.only` tests without `--only`, `--only=it` or `--only=test` flags"
+        "Can't run `it.only` and `test.only` tests without `--only` flag"
       ).fail()
     );
     exit(1);

@@ -8,14 +8,12 @@ import { runTestFile } from './run-test-file.js';
 import { isQuiet } from '../parsers/output.js';
 import { deepOptions, GLOBAL, results } from '../configs/poku.js';
 import { availableParallelism } from '../polyfills/os.js';
-import { hasOnly, hasDescribeOnly, hasItOnly } from '../parsers/get-arg.js';
+import { hasOnly } from '../parsers/get-arg.js';
 
 const { cwd } = GLOBAL;
 const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
 
-if (hasDescribeOnly) deepOptions.push('--only=describe');
-else if (hasItOnly) deepOptions.push('--only=it');
-else if (hasOnly) deepOptions.push('--only');
+if (hasOnly) deepOptions.push('--only');
 
 export const runTests = async (
   dir: string,

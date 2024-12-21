@@ -13,10 +13,7 @@ const { cwd } = GLOBAL;
 const regexFile = /file:(\/\/)?/;
 
 const assertProcessor = () => {
-  const isPoku =
-    typeof process.env?.POKU_FILE === 'string' &&
-    process.env?.POKU_FILE.length > 0;
-  const FILE = process.env.POKU_FILE;
+  const { isPoku, FILE } = GLOBAL;
 
   let preIdentation = '';
 
