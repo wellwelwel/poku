@@ -46,6 +46,32 @@ describe('Only', async () => {
     assert.strictEqual(results.exitCode, 1, 'Failed');
   });
 
+  await it('No Poku Runner should fail without `--only` (describe)', async () => {
+    const results = await inspectCLI(
+      `${cmd} ./test/__fixtures__/e2e/only/describe.test.${ext}`
+    );
+
+    if (results.exitCode !== 1) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 1, 'Failed');
+  });
+
+  await it('No Poku Runner should fail without `--only` (it)', async () => {
+    const results = await inspectCLI(
+      `${cmd} ./test/__fixtures__/e2e/only/it.test.${ext}`
+    );
+
+    if (results.exitCode !== 1) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 1, 'Failed');
+  });
+
   await it('No Poku Runner should fail without `--only`', async () => {
     const results = await inspectCLI(
       `${cmd} ./test/__fixtures__/e2e/only/--only/basic-logs.test.${ext}`
@@ -57,5 +83,18 @@ describe('Only', async () => {
     }
 
     assert.strictEqual(results.exitCode, 1, 'Failed');
+  });
+
+  await it('Check hooks when using .only modifier', async () => {
+    const results = await inspectCLI(
+      `${cmd} ./test/__fixtures__/e2e/only/hooks.test.${ext} --only`
+    );
+
+    if (results.exitCode !== 1) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 0, 'Passed');
   });
 });

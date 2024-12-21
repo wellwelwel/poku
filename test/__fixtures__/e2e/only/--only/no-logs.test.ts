@@ -2,44 +2,100 @@ import { assert } from '../../../../../src/modules/essentials/assert.js';
 import { describe } from '../../../../../src/modules/helpers/describe.js';
 import { it } from '../../../../../src/modules/helpers/it/core.js';
 
-let counter = 0;
+(async () => {
+  describe(() => {
+    it(() => {
+      assert(true);
+    });
 
-it(() => {
-  counter++;
-});
+    it.only(() => {
+      assert(true);
+    });
+  });
 
-it.only(() => {
-  counter++;
-});
-
-it(() => {
-  counter++;
-});
-
-describe(() => {
-  it(() => {
-    counter++;
+  describe.only(() => {
+    assert(true);
   });
 
   it.only(() => {
-    counter++;
-  });
-});
-
-describe.only(() => {
-  it(() => {
-    counter++;
+    assert(true);
   });
 
-  it.only(() => {
-    counter++;
+  describe(() => {
+    it(() => {
+      assert(true);
+    });
   });
-});
 
-describe.only(() => {
-  it.only(() => {
-    counter++;
+  describe.only(() => {
+    it(() => {
+      assert(true);
+    });
+
+    it(() => {
+      assert(true);
+    });
+
+    it(() => {
+      assert(true);
+    });
   });
-});
 
-assert.strictEqual(counter, 4);
+  describe(() => {
+    it(() => {
+      assert(true);
+    });
+
+    it(() => {
+      assert(true);
+    });
+  });
+
+  describe.only(() => {
+    it(() => {
+      assert(true);
+    });
+
+    it.only(() => {
+      assert(true);
+    });
+
+    it(() => {
+      assert(true);
+    });
+  });
+
+  await describe.only(async () => {
+    await it(async () => {
+      await Promise.resolve(true);
+      assert(true);
+    });
+
+    await it(async () => {
+      await Promise.resolve(true);
+      assert(true);
+    });
+
+    await it(async () => {
+      await Promise.resolve(true);
+      assert(true);
+    });
+  });
+
+  await describe.only(async () => {
+    await it(async () => {
+      await Promise.resolve(true);
+      assert(true);
+    });
+
+    await it.only(async () => {
+      await Promise.resolve(true);
+      assert(true);
+    });
+
+    await it(async () => {
+      await Promise.resolve(true);
+      assert(true);
+    });
+  });
+})();
