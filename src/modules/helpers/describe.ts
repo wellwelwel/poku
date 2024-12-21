@@ -4,7 +4,9 @@ import { format } from '../../services/format.js';
 import { Write } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
 import { todo, skip, onlyDescribe } from './modifiers.js';
-import { hasDescribeOnly, hasOnly } from '../../parsers/get-arg.js';
+import { hasOnly } from '../../parsers/get-arg.js';
+import { checkOnly } from '../../parsers/callback.js';
+import { GLOBAL } from '../../configs/poku.js';
 
 export async function describeBase(
   arg1: string | (() => unknown | Promise<unknown>),
@@ -56,6 +58,7 @@ export async function describeBase(
 
   const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
+  GLOBAL.runAsOnly = false;
   indentation.hasDescribe = false;
   Write.log(
     `${format(`● ${title}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
@@ -77,7 +80,18 @@ async function describeCore(
   if (typeof messageOrCb === 'string' && typeof cbOrOptions !== 'function')
     return describeBase(messageOrCb, cbOrOptions);
 
-  if (hasOnly || hasDescribeOnly) return;
+  if (hasOnly) {
+    const hasItOnly = checkOnly(
+      typeof messageOrCb === 'function' ? messageOrCb : cbOrOptions
+    );
+
+    if (!hasItOnly) return;
+
+    if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
+      return describeBase(messageOrCb, cbOrOptions);
+
+    if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
+  }
 
   if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
     return describeBase(messageOrCb, cbOrOptions);

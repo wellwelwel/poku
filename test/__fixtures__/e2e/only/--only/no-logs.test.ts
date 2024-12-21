@@ -42,4 +42,4 @@ describe.only(() => {
   });
 });
 
-assert.strictEqual(counter, 3);
+assert.strictEqual(counter, 4);

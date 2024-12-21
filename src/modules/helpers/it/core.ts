@@ -4,7 +4,8 @@ import { indentation } from '../../../configs/indentation.js';
 import { format } from '../../../services/format.js';
 import { Write } from '../../../services/write.js';
 import { todo, skip, onlyIt } from '../modifiers.js';
-import { hasItOnly, hasOnly } from '../../../parsers/get-arg.js';
+import { hasOnly } from '../../../parsers/get-arg.js';
+import { GLOBAL } from '../../../configs/poku.js';
 
 export async function itBase(
   ...args: [
@@ -86,7 +87,14 @@ async function itCore(
   messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  if (hasOnly || hasItOnly) return;
+  if (hasOnly) {
+    if (!GLOBAL.runAsOnly) return;
+
+    if (typeof messageOrCb === 'string' && typeof cb === 'function')
+      return itBase(messageOrCb, cb);
+
+    if (typeof messageOrCb === 'function') return itBase(messageOrCb);
+  }
 
   if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
   if (typeof messageOrCb === 'function') return itBase(messageOrCb);

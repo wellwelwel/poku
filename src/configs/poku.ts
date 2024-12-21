@@ -13,4 +13,5 @@ export const deepOptions: string[] = [];
 
 export const GLOBAL = {
   cwd: cwd(),
+  runAsOnly: false,
 };

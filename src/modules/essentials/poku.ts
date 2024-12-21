@@ -44,7 +44,6 @@ export async function poku(
     const concurrency = await Promise.all(promises);
 
     if (concurrency.some((result) => !result)) code = 1;
-  } catch {
   } finally {
     const end = process.hrtime(start);
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);

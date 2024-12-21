@@ -56,10 +56,4 @@ export const argToArray = (
     .filter((a) => a);
 };
 
-const only = getArg('only');
-
-export const hasOnly = hasArg('only') && !only;
-
-export const hasDescribeOnly = only === 'describe';
-
-export const hasItOnly = only && ['it', 'test'].includes(only);
+export const hasOnly = hasArg('only');
