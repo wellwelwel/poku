@@ -1,7 +1,7 @@
 import type { Code } from '../../@types/code.js';
 import type { Configs } from '../../@types/poku.js';
 import process from 'node:process';
-import { Write } from '../../services/write.js';
+import { log, hr } from '../../services/write.js';
 import { exit } from '../helpers/exit.js';
 import { format, showTestResults } from '../../services/format.js';
 import { isQuiet } from '../../parsers/output.js';
@@ -35,8 +35,8 @@ export async function poku(
   const showLogs = !isQuiet(configs);
 
   if (showLogs) {
-    Write.hr();
-    Write.log(`${format('Running Tests').bold()}\n`);
+    hr();
+    log(`${format('Running Tests').bold()}\n`);
   }
 
   try {

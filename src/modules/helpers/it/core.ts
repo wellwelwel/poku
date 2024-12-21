@@ -2,7 +2,7 @@ import { hrtime } from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { format } from '../../../services/format.js';
-import { Write } from '../../../services/write.js';
+import { log } from '../../../services/write.js';
 import { todo, skip, onlyIt } from '../modifiers.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 import { GLOBAL } from '../../../configs/poku.js';
@@ -25,7 +25,7 @@ export async function itBase(
     if (message) {
       indentation.hasItOrTest = true;
 
-      Write.log(
+      log(
         `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${message}`).dim()}`
       );
     }
@@ -54,7 +54,7 @@ export async function itBase(
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
     indentation.hasItOrTest = false;
-    Write.log(
+    log(
       `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
     );
   } catch (error) {

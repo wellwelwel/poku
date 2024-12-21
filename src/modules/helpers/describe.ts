@@ -1,7 +1,7 @@
 import type { DescribeOptions } from '../../@types/describe.js';
 import { hrtime } from 'node:process';
 import { format } from '../../services/format.js';
-import { Write } from '../../services/write.js';
+import { log } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
 import { todo, skip, onlyDescribe } from './modifiers.js';
 import { hasOnly } from '../../parsers/get-arg.js';
@@ -33,9 +33,9 @@ export async function describeBase(
     const message = `${cb ? format('◌').dim() : (icon ?? '☰')} ${cb ? format(title).dim() : format(title).bold()}`;
     const noBackground = !background;
 
-    if (noBackground) Write.log(format(message).bold());
+    if (noBackground) log(format(message).bold());
     else
-      Write.log(
+      log(
         format(` ${message} `).bg(
           typeof background === 'string' ? background : 'grey'
         )
@@ -57,7 +57,7 @@ export async function describeBase(
 
   GLOBAL.runAsOnly = false;
   indentation.hasDescribe = false;
-  Write.log(
+  log(
     `${format(`● ${title}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
   );
 }

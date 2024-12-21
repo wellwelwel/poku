@@ -8,14 +8,14 @@ import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
 import { envFile } from '../modules/helpers/env.js';
 import { poku } from '../modules/essentials/poku.js';
-import { Write } from '../services/write.js';
+import { log, hr } from '../services/write.js';
 import { getConfigs } from '../parsers/options.js';
 
 (async () => {
   if (hasArg('version') || hasArg('v', '-')) {
     const { VERSION } = require('../configs/poku.js');
 
-    Write.log(VERSION);
+    log(VERSION);
     return;
   }
 
@@ -69,7 +69,7 @@ import { getConfigs } from '../parsers/options.js';
 
     const files: string[] = [];
 
-    Write.hr();
+    hr();
 
     for (const dir of dirs)
       files.push(
@@ -85,15 +85,15 @@ import { getConfigs } from '../parsers/options.js';
         }))
       );
 
-    Write.log(
+    log(
       files
         .sort()
         .map((file) => `${format('-').dim()} ${file}`)
         .join('\n')
     );
-    Write.hr();
-    Write.log(`Total test files: ${format(String(files.length)).bold()}`);
-    Write.hr();
+    hr();
+    log(`Total test files: ${format(String(files.length)).bold()}`);
+    hr();
 
     return;
   }
@@ -164,12 +164,12 @@ import { getConfigs } from '../parsers/options.js';
   };
 
   if (debug || defaultConfigs?.debug) {
-    Write.hr();
-    Write.log(`${format(' Debug Enabled ').bg('brightBlue')}\n`);
-    Write.log(`${format('…').info().italic()} ${format('Paths').bold()}`);
+    hr();
+    log(`${format(' Debug Enabled ').bg('brightBlue')}\n`);
+    log(`${format('…').info().italic()} ${format('Paths').bold()}`);
     console.table(dirs);
-    Write.log('\n');
-    Write.log(`${format('…').info().italic()} ${format('Options').bold()}`);
+    log('\n');
+    log(`${format('…').info().italic()} ${format('Options').bold()}`);
     console.dir(options, { depth: null, colors: true });
   }
 

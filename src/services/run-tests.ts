@@ -2,7 +2,7 @@ import type { Configs } from '../@types/poku.js';
 import process from 'node:process';
 import { relative, join } from 'node:path';
 import { listFiles } from '../modules/helpers/list-files.js';
-import { Write } from '../services/write.js';
+import { log, hr } from '../services/write.js';
 import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
 import { isQuiet } from '../parsers/output.js';
@@ -60,12 +60,12 @@ export const runTests = async (
 
         if (configs?.failFast) {
           if (showLogs) {
-            Write.hr();
+            hr();
             console.error(failFastError);
-            Write.log(
+            log(
               `\n    ${format('File:').bold()} ${format(`./${relative(cwd, filePath)}`).fail()}`
             );
-            Write.hr();
+            hr();
           }
 
           process.exit(1);

@@ -1,5 +1,5 @@
 import { argv, exit } from 'node:process';
-import { Write } from '../services/write.js';
+import { log, hr } from '../services/write.js';
 import { format } from '../services/format.js';
 
 export const checkFlags = () => {
@@ -41,12 +41,11 @@ export const checkFlags = () => {
   }
 
   if (unrecognizedFlags.length > 0) {
-    Write.hr();
-    Write.log(
+    hr();
+    log(
       `${format('Unrecognized flags:').bold()}\n\n${unrecognizedFlags.map((flag) => format(flag).fail()).join('\n')}`
     );
-    Write.hr();
-
+    hr();
     exit(1);
   }
 };

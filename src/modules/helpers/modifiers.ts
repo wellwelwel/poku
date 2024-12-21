@@ -1,5 +1,5 @@
 import { exit } from 'node:process';
-import { Write } from '../../services/write.js';
+import { log } from '../../services/write.js';
 import { indentation } from '../../configs/indentation.js';
 import { format } from '../../services/format.js';
 import { itBase } from './it/core.js';
@@ -18,7 +18,7 @@ export async function todo(
   message: string | (() => unknown) | (() => Promise<unknown>),
   _cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  Write.log(
+  log(
     `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).cyan().bold()}`
   );
 }
@@ -36,7 +36,7 @@ export async function skip(
 ): Promise<void> {
   const message = typeof messageOrCb === 'string' ? messageOrCb : 'Skipping';
 
-  Write.log(
+  log(
     `${indentation.hasDescribe ? '  ' : ''}${format(`◯ ${message}`).info().bold()}`
   );
 }
@@ -53,9 +53,7 @@ export async function onlyDescribe(
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
   if (!hasOnly) {
-    Write.log(
-      format("Can't run `describe.only` tests without `--only` flag").fail()
-    );
+    log(format("Can't run `describe.only` tests without `--only` flag").fail());
     exit(1);
   }
 
@@ -82,7 +80,7 @@ export async function onlyIt(
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
   if (!hasOnly) {
-    Write.log(
+    log(
       format(
         "Can't run `it.only` and `test.only` tests without `--only` flag"
       ).fail()

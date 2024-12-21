@@ -1,7 +1,7 @@
 import { mapTests, normalizePath } from '../services/map-tests.js';
 import { watch, type Watcher } from '../services/watch.js';
 import { onSigint, poku } from '../modules/essentials/poku.js';
-import { Write } from '../services/write.js';
+import { log, hr } from '../services/write.js';
 import process from 'node:process';
 import type { Configs } from '../@types/poku.js';
 import { format } from '../services/format.js';
@@ -99,10 +99,8 @@ export const startWatch = async (dirs: string[], options: Configs) => {
     currentWatcher.then((watcher) => watchers.add(watcher));
   }
 
-  Write.hr();
-  Write.log(
-    `${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`
-  );
+  hr();
+  log(`${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`);
 
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', listenStdin);

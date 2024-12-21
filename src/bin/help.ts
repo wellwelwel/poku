@@ -1,5 +1,5 @@
 import { format } from '../services/format.js';
-import { Write } from '../services/write.js';
+import { log, hr } from '../services/write.js';
 
 const b = (text: string) => `${format(text).bold()}`;
 const i = (text: string) => `${format(text).italic()}`;
@@ -81,11 +81,11 @@ ${bullet} Give him a ${b('star')} to show your support 🌟
 `;
 
 export const help = () => {
-  Write.hr();
-  Write.log(header.trim());
-  Write.hr();
-  Write.log(main.trim());
-  Write.hr();
-  Write.log(footer.trim());
-  Write.hr();
+  hr();
+  log(header.trim());
+  hr();
+  log(main.trim());
+  hr();
+  log(footer.trim());
+  hr();
 };

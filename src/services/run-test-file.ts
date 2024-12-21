@@ -6,7 +6,7 @@ import { fileResults } from '../configs/files.js';
 import { isWindows, runner } from '../parsers/get-runner.js';
 import { isQuiet, parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
-import { Write } from './write.js';
+import { log } from './write.js';
 import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
 
 const { cwd } = GLOBAL;
@@ -69,7 +69,7 @@ export const runTestFile = async (
           configs,
         });
 
-        mappedOutputs && Write.log(mappedOutputs.join('\n'));
+        mappedOutputs && log(mappedOutputs.join('\n'));
       }
 
       if (!(await afterEach(fileRelative, configs))) {
