@@ -8,21 +8,16 @@ import { envFile } from '../modules/helpers/env.js';
 import { poku } from '../modules/essentials/poku.js';
 import { log, hr } from '../services/write.js';
 import { getConfigs } from '../parsers/options.js';
-import { GLOBAL } from '../configs/poku.js';
+import { GLOBAL, VERSION } from '../configs/poku.js';
 
 (async () => {
   if (hasArg('version') || hasArg('v', '-')) {
-    const { VERSION } = require('../configs/poku.js');
-
     log(VERSION);
     return;
   }
 
   if (hasArg('help') || hasArg('h', '-')) {
-    const { help } = require('./help.js');
-
-    help();
-
+    require('./help.js').help();
     return;
   }
 
@@ -126,11 +121,7 @@ import { GLOBAL } from '../configs/poku.js';
     GLOBAL.envFile = getArg('envFile') ?? defaultConfigs?.envFile ?? '.env';
   }
 
-  if (enforce) {
-    const { enforce: ensure } = require('../services/enforce.js');
-
-    await ensure();
-  }
+  if (enforce) require('../services/enforce.js').enforce();
 
   /* c8 ignore start */ // Process-based
   if (killPort || defaultConfigs?.kill?.port) {
@@ -176,9 +167,5 @@ import { GLOBAL } from '../configs/poku.js';
   await Promise.all(tasks);
   await poku(dirs, GLOBAL.options);
 
-  if (watchMode) {
-    const { startWatch } = require('./watch.js');
-
-    await startWatch(dirs, GLOBAL.options);
-  }
+  if (watchMode) await require('./watch.js').startWatch(dirs, GLOBAL.options);
 })();

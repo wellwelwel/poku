@@ -5,20 +5,13 @@ import { format } from './format.js';
 import { GLOBAL } from '../configs/poku.js';
 import { getArg, hasArg } from '../parsers/get-arg.js';
 
-const unrecognizedFlags: string[] = [];
-const unrecognizedValues: string[] = [];
-
-const printErrors = (type: 'flags' | 'values', errorList: string[]) => {
-  log(
-    `${format(`Unrecognized ${type}:`).bold()}\n\n${errorList.map((flag) => format(flag).fail()).join('\n')}`
-  );
-};
+const errors: string[] = [];
 
 const pathExists = async (arg: string, path: string): Promise<void> => {
   try {
     await stat(path);
   } catch {
-    unrecognizedValues.push(`--${arg}: ./${path} doesn't exists.`);
+    errors.push(`--${arg}: ./${path} doesn't exists.`);
   }
 };
 
@@ -26,16 +19,14 @@ const checkUselessValue = (arg: string): void => {
   const prefix = arg.length === 1 ? '-' : '--';
 
   if (typeof getArg(arg, prefix) !== 'undefined')
-    unrecognizedValues.push(
-      `${prefix}${arg}: this flag shouldn't receive a value.`
-    );
+    errors.push(`${prefix}${arg}: this flag shouldn't receive a value.`);
 };
 
 const checkRequiredValue = (arg: string): void => {
   const prefix = arg.length === 1 ? '-' : '--';
 
   if (hasArg(arg, prefix) && typeof getArg(arg, prefix) === 'undefined')
-    unrecognizedValues.push(`${prefix}${arg}: this flag require a value.`);
+    errors.push(`${prefix}${arg}: this flag require a value.`);
 };
 
 const checkFlags = () => {
@@ -69,10 +60,10 @@ const checkFlags = () => {
   const args = argv.slice(2);
 
   for (const arg of args) {
-    const flagName = arg.split('=')[0];
+    const flag = arg.split('=')[0];
 
-    if (!allowedFlags.has(flagName) && flagName.startsWith('-'))
-      unrecognizedFlags.push(flagName);
+    if (!allowedFlags.has(flag) && flag.startsWith('-'))
+      errors.push(`${flag}: unrecognized flag.`);
   }
 };
 
@@ -103,33 +94,24 @@ const checkValues = async () => {
     checkRequiredValue(flag);
 
   if (GLOBAL.configFile) await pathExists('config', GLOBAL.configFile);
-
   if (GLOBAL.envFile) await pathExists('envFile', GLOBAL.envFile);
-  else if (hasArg('envFile') && !getArg('envFile'))
-    await pathExists('envFile', '.env');
 
   if (
     getArg('concurrency') &&
     typeof GLOBAL.options.concurrency === 'undefined'
   )
-    unrecognizedValues.push('--concurrency: expects for a valid integer.');
+    errors.push('--concurrency: expects for a valid integer.');
 };
 
 export const enforce = async () => {
   checkFlags();
   await checkValues();
 
-  if (unrecognizedFlags.length > 0) {
+  if (errors.length > 0) {
     hr();
-    printErrors('flags', unrecognizedFlags);
-    if (unrecognizedValues.length === 0) hr();
+    log(`${format('Ensure Enabled').bold()}\n`);
+    log(errors.map((flag) => format(flag).fail()).join('\n'));
+    hr();
+    exit(1);
   }
-
-  if (unrecognizedValues.length > 0) {
-    hr();
-    printErrors('values', unrecognizedValues);
-    hr();
-  }
-
-  if (unrecognizedFlags.length > 0 || unrecognizedValues.length > 0) exit(1);
 };
