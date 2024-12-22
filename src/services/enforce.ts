@@ -1,6 +1,6 @@
 import { argv, exit } from 'node:process';
-import { log, hr } from '../services/write.js';
-import { format } from '../services/format.js';
+import { log, hr } from './write.js';
+import { format } from './format.js';
 
 export const checkFlags = () => {
   const allowedFlags = new Set([

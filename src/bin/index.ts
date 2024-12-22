@@ -99,7 +99,7 @@ import { getConfigs } from '../parsers/options.js';
   }
 
   if (enforce) {
-    const { checkFlags } = require('./enforce.js');
+    const { checkFlags } = require('../services/enforce.js');
 
     checkFlags();
   }
