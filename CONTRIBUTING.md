@@ -4,13 +4,15 @@ If you're thinking of contributing, thank you, and _naturally_, please **be resp
 
 ## Issues
 
-By opening an **Issue**, please describe the problem. If you can share a basic repro, it will be great.
+By opening an **Issue**, please describe the problem.<br />
+If you can share a basic repro, it will be great.
 
 ---
 
 ## Pull Requests
 
-By opening a **Pull Request**, please describe the proposed solution and what it solves.
+By opening a **Pull Request**, please describe the proposed solution and what it solves.<br />
+The final commit message will be generated from the _PR_ title by using "**Squash and Merge**".
 
 ---
 
@@ -29,10 +31,14 @@ You will need these tools installed on your system:
 
 ---
 
-Fork this project, download your forked repository locally and create a new branch from `main`.
-Then run `npm ci` to clean install the node modules.
+Fork this project, download your forked repository locally and create a new branch from `main`.<br />
+Then run `npm ci` to clean install the _node_modules_:
 
-> Please, do not change the _package-lock.json_.
+```sh
+npm ci
+```
+
+> Please, do not change the _package-lock.json_ manually.
 
 ### 🔧 Fixes
 
@@ -48,6 +54,7 @@ It's better to discuss an **API** before actually start implementing it. You can
 
 Check if there is an existing section or feel free to create a new one. You can find the wesite source code at [./website](https://github.com/wellwelwel/poku/tree/main/website).
 
+- Please, do not change legacy documentations.
 - Feel free to open _PRs_ fixing typos or adding support for more languages 🤝
 
 <blockquote>
@@ -83,34 +90,10 @@ npm run test:bun              # Test with the locally installed Bun version
 npm run test:deno             # Test with the locally installed Deno version
 ```
 
-#### Sequential
-
-```sh
-npm run test:sequential       # Test with the locally installed Node.js version
-npm run test:bun:sequential   # Test with the locally installed Bun version
-npm run test:deno:sequential  # Test with the locally installed Deno version
-```
-
 > Pass custom flags using `--`, for example:
 >
 > ```sh
-> npm run test:sequential -- --debug --watch # etc.
-> ```
->
-> - Same for **Bun** and **Deno**.
-
-#### Parallel
-
-```sh
-npm run test:parallel         # Test with the locally installed Node.js version
-npm run test:bun:parallel     # Test with the locally installed Bun version
-npm run test:deno:parallel    # Test with the locally installed Deno version
-```
-
-> Pass custom flags using `--`, for example:
->
-> ```sh
-> npm run test:parallel -- --concurrency=5 --watch # etc.
+> npm run test -- --debug --watch # etc.
 > ```
 >
 > - Same for **Bun** and **Deno**.
@@ -120,7 +103,7 @@ npm run test:deno:parallel    # Test with the locally installed Deno version
 The coverage target is **95%**.
 
 ```sh
-npm run test:c8:sequential
+npm run test:c8
 ```
 
 > [!tip]
