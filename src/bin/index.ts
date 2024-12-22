@@ -1,6 +1,4 @@
 #! /usr/bin/env node
-
-import type { Configs } from '../@types/poku.js';
 import { escapeRegExp } from '../modules/helpers/list-files.js';
 import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
 import { states } from '../configs/files.js';
@@ -10,6 +8,7 @@ import { envFile } from '../modules/helpers/env.js';
 import { poku } from '../modules/essentials/poku.js';
 import { log, hr } from '../services/write.js';
 import { getConfigs } from '../parsers/options.js';
+import { GLOBAL } from '../configs/poku.js';
 
 (async () => {
   if (hasArg('version') || hasArg('v', '-')) {
@@ -98,13 +97,40 @@ import { getConfigs } from '../parsers/options.js';
     return;
   }
 
-  if (enforce) {
-    const { checkFlags } = require('../services/enforce.js');
-
-    checkFlags();
-  }
+  GLOBAL.configFile = configFile;
+  GLOBAL.options = {
+    filter:
+      typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
+    exclude:
+      typeof exclude === 'string' ? new RegExp(escapeRegExp(exclude)) : exclude,
+    concurrency,
+    sequential,
+    quiet,
+    debug,
+    failFast,
+    deno: {
+      allow: denoAllow,
+      deny: denoDeny,
+      cjs: denoCJS,
+    },
+    noExit: watchMode,
+    beforeEach:
+      'beforeEach' in defaultConfigs ? defaultConfigs.beforeEach : undefined,
+    afterEach:
+      'afterEach' in defaultConfigs ? defaultConfigs.afterEach : undefined,
+  };
 
   const tasks: Promise<unknown>[] = [];
+
+  if (hasEnvFile || defaultConfigs?.envFile) {
+    GLOBAL.envFile = getArg('envFile') ?? defaultConfigs?.envFile ?? '.env';
+  }
+
+  if (enforce) {
+    const { enforce: ensure } = require('../services/enforce.js');
+
+    await ensure();
+  }
 
   /* c8 ignore start */ // Process-based
   if (killPort || defaultConfigs?.kill?.port) {
@@ -135,33 +161,7 @@ import { getConfigs } from '../parsers/options.js';
   }
   /* c8 ignore stop */
 
-  if (hasEnvFile || defaultConfigs?.envFile) {
-    const envFilePath = getArg('envFile') ?? defaultConfigs?.envFile;
-
-    tasks.push(envFile(envFilePath));
-  }
-
-  const options: Configs = {
-    filter:
-      typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
-    exclude:
-      typeof exclude === 'string' ? new RegExp(escapeRegExp(exclude)) : exclude,
-    concurrency,
-    sequential,
-    quiet,
-    debug,
-    failFast,
-    deno: {
-      allow: denoAllow,
-      deny: denoDeny,
-      cjs: denoCJS,
-    },
-    noExit: watchMode,
-    beforeEach:
-      'beforeEach' in defaultConfigs ? defaultConfigs.beforeEach : undefined,
-    afterEach:
-      'afterEach' in defaultConfigs ? defaultConfigs.afterEach : undefined,
-  };
+  GLOBAL.envFile && tasks.push(envFile(GLOBAL.envFile));
 
   if (debug || defaultConfigs?.debug) {
     hr();
@@ -170,15 +170,15 @@ import { getConfigs } from '../parsers/options.js';
     console.table(dirs);
     log('\n');
     log(`${format('…').info().italic()} ${format('Options').bold()}`);
-    console.dir(options, { depth: null, colors: true });
+    console.dir(GLOBAL.options, { depth: null, colors: true });
   }
 
   await Promise.all(tasks);
-  await poku(dirs, options);
+  await poku(dirs, GLOBAL.options);
 
   if (watchMode) {
     const { startWatch } = require('./watch.js');
 
-    await startWatch(dirs, options);
+    await startWatch(dirs, GLOBAL.options);
   }
 })();
