@@ -29,5 +29,5 @@ export const getConfigs = async (
     } catch {}
   }
 
-  return {};
+  return Object.create(null);
 };

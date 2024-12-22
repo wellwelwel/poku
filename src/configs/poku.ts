@@ -17,7 +17,7 @@ export const GLOBAL = {
   runAsOnly: false,
   isPoku: typeof env?.POKU_FILE === 'string' && env?.POKU_FILE.length > 0,
   FILE: env.POKU_FILE,
-  options: {} as Configs,
+  options: Object.create(null) as Configs,
   configFile: undefined as string | undefined,
   envFile: undefined as string | undefined,
 };
