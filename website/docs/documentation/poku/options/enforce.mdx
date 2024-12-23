@@ -9,10 +9,30 @@ import { Stability } from '@site/src/components/Stability';
 
 Ensures that the execution is valid and safe before proceeding with the tests.
 
-<Stability level={1.2} />
+<Stability
+  level={2}
+  message={
+    <>
+      From{' '}
+      <strong>
+        <code>3.0.0-rc.1</code>
+      </strong>{' '}
+      onwards.
+    </>
+  }
+/>
 
 <History
   records={[
+    {
+      version: '3.0.0',
+      changes: [
+        <>
+          Ensure both _CLI_ flags and config file properties, including its
+          values.
+        </>,
+      ],
+    },
     {
       version: '2.5.0',
       changes: [
@@ -24,8 +44,12 @@ Ensures that the execution is valid and safe before proceeding with the tests.
   ]}
 />
 
-- [x] Forces an error if any _CLI_ flags are invalid or deprecated.
-- [ ] Forces an error if no file is found _(soon)_.
+Forces an error for:
+
+- Invalid or deprecated flags _(CLI)_ or properties _(config file)_.
+- Flags with required values, but with no value.
+- Invalid values (`--config`, `--envFile`, `--concurrency`).
+- Flags that don't use values, but have some values in them.
 
 ## CLI
 
@@ -36,8 +60,9 @@ npx poku --enforce ./test
 - Short flag: `-x`.
 
 :::info
-This feature will be included in the configuration file when the development stage is stable.
-:::
+
+- This option ignores the `quiet` option.
+  :::
 
 :::danger Important
 Failures due to deprecated features and options won't be considered breaking changes when using enforcement.
