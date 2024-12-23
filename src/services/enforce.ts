@@ -98,7 +98,7 @@ const checkValues = async () => {
 
   if (
     getArg('concurrency') &&
-    typeof GLOBAL.options.concurrency === 'undefined'
+    typeof GLOBAL.configs.concurrency === 'undefined'
   )
     errors.push('--concurrency: expects for a valid integer.');
 };
@@ -123,7 +123,7 @@ const checkConfigFile = () => {
     'deno',
   ]);
 
-  for (const prop in GLOBAL.defaultConfigs) {
+  for (const prop in GLOBAL.configsFromFile) {
     if (!allowedProps.has(prop))
       errors.push(`${prop}: unrecognized property in the config file.`);
   }

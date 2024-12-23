@@ -1,25 +1,25 @@
-import type { Configs } from '../@types/poku.js';
 import type { Runner } from '../@types/runner.js';
 import { platform } from 'node:process';
 import { extname } from 'node:path';
 import { getRuntime } from './get-runtime.js';
+import { GLOBAL } from '../configs/poku.js';
 
 export const isWindows = platform === 'win32';
 
-export const runner = (filename: string, configs?: Configs): string[] => {
+export const runner = (filename: string): string[] => {
   const runtime = getRuntime();
 
   if (runtime === 'bun') return ['bun'];
 
   if (runtime === 'deno') {
-    const denoAllow = configs?.deno?.allow
-      ? configs.deno.allow
+    const denoAllow = GLOBAL.configs.deno?.allow
+      ? GLOBAL.configs.deno.allow
           .map((allow) => (allow ? `--allow-${allow}` : ''))
           .filter((allow) => allow)
       : ['--allow-read', '--allow-env', '--allow-run', '--allow-net'];
 
-    const denoDeny = configs?.deno?.deny
-      ? configs.deno.deny
+    const denoDeny = GLOBAL.configs.deno?.deny
+      ? GLOBAL.configs.deno.deny
           .map((deny) => (deny ? `--deny-${deny}` : ''))
           .filter((deny) => deny)
       : [];

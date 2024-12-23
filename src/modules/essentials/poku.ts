@@ -4,9 +4,9 @@ import process from 'node:process';
 import { log, hr } from '../../services/write.js';
 import { exit } from '../helpers/exit.js';
 import { format, showTestResults } from '../../services/format.js';
-import { isQuiet } from '../../parsers/output.js';
 import { finalResults } from '../../configs/files.js';
 import { runTests } from '../../services/run-tests.js';
+import { GLOBAL } from '../../configs/poku.js';
 
 /* c8 ignore start */ // Process-based
 export const onSigint = () => process.stdout.write('\u001B[?25h');
@@ -28,11 +28,13 @@ export async function poku(
 ): Promise<Code | undefined> {
   let code: Code = 0;
 
+  if (configs) GLOBAL.configs = { ...GLOBAL.configs, ...configs };
+
   finalResults.started = new Date();
 
   const start = process.hrtime();
   const dirs = Array.prototype.concat(targetPaths);
-  const showLogs = !isQuiet(configs);
+  const showLogs = !GLOBAL.configs.quiet;
 
   if (showLogs) {
     hr();
@@ -40,7 +42,7 @@ export async function poku(
   }
 
   try {
-    const promises = dirs.map(async (dir) => await runTests(dir, configs));
+    const promises = dirs.map(async (dir) => await runTests(dir));
     const concurrency = await Promise.all(promises);
 
     if (concurrency.some((result) => !result)) code = 1;
@@ -53,7 +55,7 @@ export async function poku(
 
   showLogs && showTestResults();
 
-  if (configs?.noExit) return code;
+  if (GLOBAL.configs.noExit) return code;
 
-  exit(code, configs?.quiet);
+  exit(code, GLOBAL.configs.quiet);
 }
