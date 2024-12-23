@@ -16,7 +16,7 @@ export const GLOBAL = {
   cwd: cwd(),
   configs: Object.create(null) as Configs,
   configFile: undefined as string | undefined,
-  defaultConfigs: Object.create(null) as ConfigFile | ConfigJSONFile,
+  configsFromFile: Object.create(null) as ConfigFile | ConfigJSONFile,
   isPoku: typeof env?.POKU_FILE === 'string' && env?.POKU_FILE.length > 0,
   FILE: env.POKU_FILE,
   envFile: undefined as string | undefined,

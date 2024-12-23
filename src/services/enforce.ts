@@ -123,7 +123,7 @@ const checkConfigFile = () => {
     'deno',
   ]);
 
-  for (const prop in GLOBAL.defaultConfigs) {
+  for (const prop in GLOBAL.configsFromFile) {
     if (!allowedProps.has(prop))
       errors.push(`${prop}: unrecognized property in the config file.`);
   }

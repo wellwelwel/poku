@@ -24,38 +24,38 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
   const enforce = hasArg('enforce') || hasArg('x', '-');
   const configFile = getArg('config') || getArg('c', '-');
 
-  GLOBAL.defaultConfigs = await getConfigs(configFile);
-  const { defaultConfigs } = GLOBAL;
+  GLOBAL.configsFromFile = await getConfigs(configFile);
 
+  const { configsFromFile } = GLOBAL;
   const dirs: string[] =
     getPaths('-') ??
-    (defaultConfigs?.include
-      ? Array.prototype.concat(defaultConfigs?.include)
+    (configsFromFile?.include
+      ? Array.prototype.concat(configsFromFile?.include)
       : ['.']);
-  const filter = getArg('filter') ?? defaultConfigs?.filter;
-  const exclude = getArg('exclude') ?? defaultConfigs?.exclude;
+  const filter = getArg('filter') ?? configsFromFile?.filter;
+  const exclude = getArg('exclude') ?? configsFromFile?.exclude;
   const killPort = getArg('killPort');
   const killRange = getArg('killRange');
   const killPID = getArg('killPid');
   /* c8 ignore start */ // Deno
-  const denoAllow = argToArray('denoAllow') ?? defaultConfigs?.deno?.allow;
-  const denoDeny = argToArray('denoDeny') ?? defaultConfigs?.deno?.deny;
+  const denoAllow = argToArray('denoAllow') ?? configsFromFile?.deno?.allow;
+  const denoDeny = argToArray('denoDeny') ?? configsFromFile?.deno?.deny;
   const denoCJS =
     getArg('denoCjs')
       ?.split(',')
       .map((a) => a.trim())
       .filter((a) => a) ||
     hasArg('denoCjs') ||
-    defaultConfigs?.deno?.cjs;
+    configsFromFile?.deno?.cjs;
   /* c8 ignore stop */
-  const quiet = hasArg('quiet') || hasArg('q', '-') || defaultConfigs?.quiet;
-  const debug = hasArg('debug') || hasArg('d', '-') || defaultConfigs?.debug;
-  const failFast = hasArg('failFast') || defaultConfigs?.failFast;
+  const quiet = hasArg('quiet') || hasArg('q', '-') || configsFromFile?.quiet;
+  const debug = hasArg('debug') || hasArg('d', '-') || configsFromFile?.debug;
+  const failFast = hasArg('failFast') || configsFromFile?.failFast;
   const watchMode = hasArg('watch') || hasArg('w', '-');
   const hasEnvFile = hasArg('envFile');
   const concurrency = (() => {
     const value = Number(getArg('concurrency'));
-    return Number.isNaN(value) ? defaultConfigs?.concurrency : value;
+    return Number.isNaN(value) ? configsFromFile?.concurrency : value;
   })();
   const sequential = hasArg('sequential');
 
@@ -113,30 +113,30 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
     },
     noExit: watchMode,
     beforeEach:
-      'beforeEach' in defaultConfigs ? defaultConfigs.beforeEach : undefined,
+      'beforeEach' in configsFromFile ? configsFromFile.beforeEach : undefined,
     afterEach:
-      'afterEach' in defaultConfigs ? defaultConfigs.afterEach : undefined,
+      'afterEach' in configsFromFile ? configsFromFile.afterEach : undefined,
   };
 
   const tasks: Promise<unknown>[] = [];
 
-  if (hasEnvFile || defaultConfigs?.envFile) {
-    GLOBAL.envFile = getArg('envFile') ?? defaultConfigs?.envFile ?? '.env';
+  if (hasEnvFile || configsFromFile?.envFile) {
+    GLOBAL.envFile = getArg('envFile') ?? configsFromFile?.envFile ?? '.env';
   }
 
   if (enforce) require('../services/enforce.js').enforce();
 
   /* c8 ignore start */ // Process-based
-  if (killPort || defaultConfigs?.kill?.port) {
+  if (killPort || configsFromFile?.kill?.port) {
     const ports =
-      killPort?.split(',').map(Number) || defaultConfigs?.kill?.port || [];
+      killPort?.split(',').map(Number) || configsFromFile?.kill?.port || [];
     tasks.push(kill.port(ports));
   }
 
-  if (killRange || defaultConfigs?.kill?.range) {
+  if (killRange || configsFromFile?.kill?.range) {
     const ranges =
       killRange?.split(',') ||
-      defaultConfigs?.kill?.range?.map((range) => `${range[0]}-${range[1]}`) ||
+      configsFromFile?.kill?.range?.map((range) => `${range[0]}-${range[1]}`) ||
       [];
 
     for (const range of ranges) {
@@ -147,9 +147,9 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
     }
   }
 
-  if (killPID || defaultConfigs?.kill?.pid) {
+  if (killPID || configsFromFile?.kill?.pid) {
     const PIDs =
-      killPID?.split(',').map(Number) || defaultConfigs?.kill?.pid || [];
+      killPID?.split(',').map(Number) || configsFromFile?.kill?.pid || [];
 
     tasks.push(kill.pid(PIDs));
   }
@@ -157,7 +157,7 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
 
   GLOBAL.envFile && tasks.push(envFile(GLOBAL.envFile));
 
-  if (debug || defaultConfigs?.debug) {
+  if (debug || configsFromFile?.debug) {
     hr();
     log(`${format(' Debug Enabled ').bg('brightBlue')}\n`);
     log(`${format('…').info().italic()} ${format('Paths').bold()}`);
@@ -170,5 +170,5 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
   await Promise.all(tasks);
   await poku(dirs);
 
-  if (watchMode) await require('./watch.js').startWatch(dirs, GLOBAL.configs);
+  if (watchMode) await require('./watch.js').startWatch(dirs);
 })();
