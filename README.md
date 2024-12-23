@@ -20,10 +20,10 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 > [!IMPORTANT]
 >
-> **Poku** is growing and <strong>version 3</strong> is on its way! You can already try it by installing the Release Candidate with `poku@rc`.
+> **Poku** is growing and <strong>version 3</strong> is on its way! You can already try it by installing the Release Candidate.
 >
 > - To check out what's coming, follow the [**Issue #801**](https://github.com/wellwelwel/poku/issues/801).
-> - For `v2` documentation, see the [**previous version documentation**](https://poku.io/docs/2.x.x) and [**README**](https://github.com/wellwelwel/poku/tree/2.x.x?tab=readme-ov-file#readme).<br />
+> - For `v2` documentation, see the [**previous version's documentation**](https://poku.io/docs/2.x.x) and [**README**](https://github.com/wellwelwel/poku/tree/2.x.x?tab=readme-ov-file#readme).<br />
 
 ---
 
