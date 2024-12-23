@@ -98,7 +98,7 @@ const checkValues = async () => {
 
   if (
     getArg('concurrency') &&
-    typeof GLOBAL.options.concurrency === 'undefined'
+    typeof GLOBAL.configs.concurrency === 'undefined'
   )
     errors.push('--concurrency: expects for a valid integer.');
 };

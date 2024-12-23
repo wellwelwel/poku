@@ -96,7 +96,7 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
   }
 
   GLOBAL.configFile = configFile;
-  GLOBAL.options = {
+  GLOBAL.configs = {
     filter:
       typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
     exclude:
@@ -164,11 +164,11 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
     console.table(dirs);
     log('\n');
     log(`${format('…').info().italic()} ${format('Options').bold()}`);
-    console.dir(GLOBAL.options, { depth: null, colors: true });
+    console.dir(GLOBAL.configs, { depth: null, colors: true });
   }
 
   await Promise.all(tasks);
-  await poku(dirs, GLOBAL.options);
+  await poku(dirs);
 
-  if (watchMode) await require('./watch.js').startWatch(dirs, GLOBAL.options);
+  if (watchMode) await require('./watch.js').startWatch(dirs, GLOBAL.configs);
 })();

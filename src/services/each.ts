@@ -1,17 +1,16 @@
 import type { Configs } from '../@types/poku.js';
 import { format } from './format.js';
 import { log } from '../services/write.js';
-import { isQuiet } from '../parsers/output.js';
+import { GLOBAL } from '../configs/poku.js';
 
 const eachCore = async (
   type: keyof Required<Pick<Configs, 'beforeEach' | 'afterEach'>>,
-  fileRelative: string,
-  configs?: Configs
+  fileRelative: string
 ): Promise<boolean> => {
-  if (typeof configs?.[type] !== 'function') return true;
+  if (typeof GLOBAL.configs?.[type] !== 'function') return true;
 
-  const cb = configs[type];
-  const showLogs = !isQuiet(configs);
+  const cb = GLOBAL.configs[type];
+  const showLogs = !GLOBAL.configs.quiet;
   const cbName = cb.name !== type ? cb.name : 'anonymous function';
 
   showLogs &&
@@ -47,16 +46,16 @@ const eachCore = async (
   }
 };
 
-export const beforeEach = async (fileRelative: string, configs?: Configs) => {
-  if (configs?.beforeEach)
-    return await eachCore('beforeEach', fileRelative, configs);
+export const beforeEach = async (fileRelative: string) => {
+  if (GLOBAL.configs.beforeEach)
+    return await eachCore('beforeEach', fileRelative);
 
   return true;
 };
 
-export const afterEach = async (fileRelative: string, configs?: Configs) => {
-  if (configs?.afterEach)
-    return await eachCore('afterEach', fileRelative, configs);
+export const afterEach = async (fileRelative: string) => {
+  if (GLOBAL.configs.afterEach)
+    return await eachCore('afterEach', fileRelative);
 
   return true;
 };

@@ -1,11 +1,9 @@
-import type { Configs } from '../@types/poku.js';
 import process from 'node:process';
 import { relative, join } from 'node:path';
 import { listFiles } from '../modules/helpers/list-files.js';
 import { log, hr } from '../services/write.js';
 import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
-import { isQuiet } from '../parsers/output.js';
 import { deepOptions, GLOBAL, results } from '../configs/poku.js';
 import { availableParallelism } from '../polyfills/os.js';
 import { hasOnly } from '../parsers/get-arg.js';
@@ -15,22 +13,19 @@ const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is
 
 if (hasOnly) deepOptions.push('--only');
 
-export const runTests = async (
-  dir: string,
-  configs?: Configs
-): Promise<boolean> => {
+export const runTests = async (dir: string): Promise<boolean> => {
   let allPassed = true;
   let activeTests = 0;
   let resolveDone: (value: boolean) => void;
   let rejectDone: (reason?: Error) => void;
 
   const testDir = join(cwd, dir);
-  const files = await listFiles(testDir, configs);
-  const showLogs = !isQuiet(configs);
+  const files = await listFiles(testDir, GLOBAL.configs);
+  const showLogs = !GLOBAL.configs.quiet;
   const concurrency: number = (() => {
-    if (configs?.sequential) return 1;
+    if (GLOBAL.configs.sequential) return 1;
     const limit =
-      configs?.concurrency ?? Math.max(availableParallelism() - 1, 1);
+      GLOBAL.configs.concurrency ?? Math.max(availableParallelism() - 1, 1);
     return limit <= 0 ? files.length || 1 : limit;
   })();
 
@@ -51,14 +46,14 @@ export const runTests = async (
     activeTests++;
 
     try {
-      const testPassed = await runTestFile(filePath, configs);
+      const testPassed = await runTestFile(filePath);
 
       if (testPassed) ++results.success;
       else {
         ++results.fail;
         allPassed = false;
 
-        if (configs?.failFast) {
+        if (GLOBAL.configs.failFast) {
           if (showLogs) {
             hr();
             console.error(failFastError);
