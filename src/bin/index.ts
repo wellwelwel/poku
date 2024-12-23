@@ -23,7 +23,10 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
 
   const enforce = hasArg('enforce') || hasArg('x', '-');
   const configFile = getArg('config') || getArg('c', '-');
-  const defaultConfigs = await getConfigs(configFile);
+
+  GLOBAL.defaultConfigs = await getConfigs(configFile);
+  const { defaultConfigs } = GLOBAL;
+
   const dirs: string[] =
     getPaths('-') ??
     (defaultConfigs?.include

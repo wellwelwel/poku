@@ -1,5 +1,5 @@
 import { env, cwd } from 'node:process';
-import type { Configs } from '../@types/poku.js';
+import type { ConfigFile, ConfigJSONFile, Configs } from '../@types/poku.js';
 
 export const results = {
   success: 0,
@@ -19,5 +19,6 @@ export const GLOBAL = {
   FILE: env.POKU_FILE,
   options: Object.create(null) as Configs,
   configFile: undefined as string | undefined,
+  defaultConfigs: Object.create(null) as ConfigFile | ConfigJSONFile,
   envFile: undefined as string | undefined,
 };

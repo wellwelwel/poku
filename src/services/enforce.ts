@@ -103,8 +103,35 @@ const checkValues = async () => {
     errors.push('--concurrency: expects for a valid integer.');
 };
 
+const checkConfigFile = () => {
+  const allowedProps = new Set([
+    '$schema',
+    'include',
+    'sequential',
+    'debug',
+    'filter',
+    'exclude',
+    'failFast',
+    'envFile',
+    'exclude',
+    'failFast',
+    'concurrency',
+    'quiet',
+    'envFile',
+    'kill',
+    'platform',
+    'deno',
+  ]);
+
+  for (const prop in GLOBAL.defaultConfigs) {
+    if (!allowedProps.has(prop))
+      errors.push(`${prop}: unrecognized property in the config file.`);
+  }
+};
+
 export const enforce = async () => {
   checkFlags();
+  checkConfigFile();
   await checkValues();
 
   if (errors.length > 0) {
