@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.0.0-rc.1](https://github.com/wellwelwel/poku/compare/v3.0.0-rc.0...v3.0.0-rc.1) (2024-12-23)
+
+
+### Features
+
+* add stable `only` modifier to `describe`, `it` and `test` methods ([#901](https://github.com/wellwelwel/poku/issues/901)) ([d6b6241](https://github.com/wellwelwel/poku/commit/d6b624196e787235b702a280d04f4481cd395aab))
+* stable enforce values validation ([#905](https://github.com/wellwelwel/poku/issues/905)) ([3823848](https://github.com/wellwelwel/poku/commit/3823848669c312f7814fd5b3d7ceb63ab0d032e0))
+
+
+### Performance Improvements
+
+* improve global cache ([#907](https://github.com/wellwelwel/poku/issues/907)) ([7c01898](https://github.com/wellwelwel/poku/commit/7c01898247a43fb84a2e24bfe078808fe2d780c7))
+
+
+### Miscellaneous Chores
+
+* release 3.0.0-rc.1 ([91305a7](https://github.com/wellwelwel/poku/commit/91305a7ca3fd3e66014c477e995a6dc3a4f33626))
+
 ## [3.0.0-rc.0](https://github.com/wellwelwel/poku/compare/v2.7.1...v3.0.0-rc.0) (2024-12-11)
 
 
