@@ -29,7 +29,8 @@ export async function describeBase(
   if (title) {
     indentation.hasDescribe = true;
 
-    const { background, icon } = options ?? {};
+    const { background, icon } =
+      options ?? (Object.create(null) as DescribeOptions);
     const message = `${cb ? format('◌').dim() : (icon ?? '☰')} ${cb ? format(title).dim() : format(title).bold()}`;
     const noBackground = !background;
 

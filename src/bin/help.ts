@@ -34,8 +34,7 @@ const summary: [string, string][] = [
   ['--watchInterval', 'Set an interval for watch events.'],
 ];
 const sortedSummary = summary.sort(([a], [b]) => a.localeCompare(b));
-const largeEndPad = (() =>
-  Math.max(...summary.map(([start]) => start.length)))();
+const largeEndPad = Math.max(...summary.map(([start]) => start.length));
 
 const header = `
 🐷 ${format(' Poku — CLI Usage ').bg('brightMagenta')}

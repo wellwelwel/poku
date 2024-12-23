@@ -90,7 +90,22 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
     });
 
     assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-    assert(/PASS › 1/.test(output.stdout), 'CLI needs to fail 1');
-    assert(!/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
+    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
+    assert(
+      !/debug/.test(output.stdout),
+      'CLI doesn\'t needs to pass able "debug"'
+    );
+  });
+
+  await it('Wrong Props', async () => {
+    const output = await inspectPoku('-x', {
+      cwd: 'test/__fixtures__/e2e/config-files/wrong-props',
+    });
+
+    assert.strictEqual(output.exitCode, 1, 'Exit Code needs to be 1');
+    assert(
+      /debugs: unrecognized property in the config file./.test(output.stdout),
+      'Needs to ensure unrecognized props'
+    );
   });
 });
