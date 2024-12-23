@@ -3,13 +3,13 @@ import { watch, type Watcher } from '../services/watch.js';
 import { onSigint, poku } from '../modules/essentials/poku.js';
 import { log, hr } from '../services/write.js';
 import process from 'node:process';
-import type { Configs } from '../@types/poku.js';
 import { format } from '../services/format.js';
 import { getArg } from '../parsers/get-arg.js';
 import { fileResults } from '../configs/files.js';
 import { availableParallelism } from '../polyfills/os.js';
+import { GLOBAL } from '../configs/poku.js';
 
-export const startWatch = async (dirs: string[], options: Configs) => {
+export const startWatch = async (dirs: string[]) => {
   let isRunning = false;
 
   const watchers: Set<Watcher> = new Set();
@@ -33,7 +33,7 @@ export const startWatch = async (dirs: string[], options: Configs) => {
 
       watchers.clear();
       resultsClear();
-      await poku(dirs, options);
+      await poku(dirs);
     }
   };
 
@@ -44,8 +44,8 @@ export const startWatch = async (dirs: string[], options: Configs) => {
   const mappedTests = await mapTests(
     '.',
     dirs,
-    options.filter,
-    options.exclude
+    GLOBAL.configs.filter,
+    GLOBAL.configs.exclude
   );
 
   for (const mappedTest of Array.from(mappedTests.keys())) {
@@ -62,9 +62,9 @@ export const startWatch = async (dirs: string[], options: Configs) => {
         if (!tests) return;
 
         await poku(Array.from(tests), {
-          ...options,
+          ...GLOBAL.configs,
           concurrency:
-            options.concurrency ??
+            GLOBAL.configs.concurrency ??
             Math.max(Math.floor(availableParallelism() / 2), 1),
         });
 
@@ -87,7 +87,7 @@ export const startWatch = async (dirs: string[], options: Configs) => {
         executing.add(file);
         resultsClear();
 
-        poku(file, options).then(() =>
+        poku(file).then(() =>
           setTimeout(() => {
             executing.delete(file);
             setIsRunning(false);
