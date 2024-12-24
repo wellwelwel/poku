@@ -12,6 +12,7 @@ import { GLOBAL } from '../configs/poku.js';
 export const startWatch = async (dirs: string[]) => {
   let isRunning = false;
 
+  const { configs } = GLOBAL;
   const watchers: Set<Watcher> = new Set();
   const executing = new Set<string>();
   const interval = Number(getArg('watchInterval')) || 1500;
@@ -44,8 +45,8 @@ export const startWatch = async (dirs: string[]) => {
   const mappedTests = await mapTests(
     '.',
     dirs,
-    GLOBAL.configs.filter,
-    GLOBAL.configs.exclude
+    configs.filter,
+    configs.exclude
   );
 
   for (const mappedTest of Array.from(mappedTests.keys())) {
@@ -62,9 +63,9 @@ export const startWatch = async (dirs: string[]) => {
         if (!tests) return;
 
         await poku(Array.from(tests), {
-          ...GLOBAL.configs,
+          ...configs,
           concurrency:
-            GLOBAL.configs.concurrency ??
+            configs.concurrency ??
             Math.max(Math.floor(availableParallelism() / 2), 1),
         });
 

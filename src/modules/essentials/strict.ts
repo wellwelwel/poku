@@ -1,5 +1,5 @@
 import { createAssert } from '../../builders/assert.js';
-import { nodeVersion } from '../../parsers/get-runtime.js';
+import { nodeVersion } from '../../parsers/node.js';
 
 /* c8 ignore next 4 */ // Platform version
 const nodeAssert =

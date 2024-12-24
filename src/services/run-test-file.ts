@@ -8,23 +8,22 @@ import { beforeEach, afterEach } from './each.js';
 import { log } from './write.js';
 import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
 
-const { cwd } = GLOBAL;
-
-export const runTestFile = async (filePath: string): Promise<boolean> => {
-  const runtimeOptions = runner(filePath);
+export const runTestFile = async (path: string): Promise<boolean> => {
+  const { cwd, configs } = GLOBAL;
+  const runtimeOptions = runner(path);
   const runtime = runtimeOptions.shift()!;
   const runtimeArguments = [
     ...runtimeOptions,
     /* c8 ignore next 5 */ // Varies Platform
-    GLOBAL.configs.deno?.cjs === true ||
-    (Array.isArray(GLOBAL.configs.deno?.cjs) &&
-      GLOBAL.configs.deno.cjs.some((ext) => filePath.includes(ext)))
+    configs.deno?.cjs === true ||
+    (Array.isArray(configs.deno?.cjs) &&
+      configs.deno.cjs.some((ext) => path.includes(ext)))
       ? `https://cdn.jsdelivr.net/npm/poku${VERSION ? `@${VERSION}` : ''}/lib/polyfills/deno.mjs`
-      : filePath,
+      : path,
   ];
 
-  const fileRelative = relative(cwd, filePath);
-  const showLogs = !GLOBAL.configs.quiet;
+  const file = relative(cwd, path);
+  const showLogs = !configs.quiet;
 
   let output = '';
 
@@ -35,7 +34,9 @@ export const runTestFile = async (filePath: string): Promise<boolean> => {
   const start = hrtime();
   let end: ReturnType<typeof hrtime>;
 
-  if (!(await beforeEach(fileRelative))) return false;
+  if (!(await beforeEach(file))) return false;
+
+  console.log(runtime, [...runtimeArguments, ...deepOptions]);
 
   return new Promise((resolve) => {
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
@@ -43,8 +44,9 @@ export const runTestFile = async (filePath: string): Promise<boolean> => {
       shell: isWindows,
       env: {
         ...env,
-        POKU_FILE: fileRelative,
+        POKU_FILE: file,
         POKU_RUNTIME: env.POKU_RUNTIME,
+        POKU_REPORTER: configs.reporter,
       },
     });
 
@@ -67,15 +69,15 @@ export const runTestFile = async (filePath: string): Promise<boolean> => {
         mappedOutputs && log(mappedOutputs.join('\n'));
       }
 
-      if (!(await afterEach(fileRelative))) {
+      if (!(await afterEach(file))) {
         resolve(false);
         return;
       }
 
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
-      if (result) fileResults.success.set(fileRelative, total);
-      else fileResults.fail.set(fileRelative, total);
+      if (result) fileResults.success.set(file, total);
+      else fileResults.fail.set(file, total);
 
       resolve(result);
     });
@@ -86,8 +88,8 @@ export const runTestFile = async (filePath: string): Promise<boolean> => {
 
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
-      console.error(`Failed to start test: ${filePath}`, err);
-      fileResults.fail.set(fileRelative, total);
+      console.error(`Failed to start test: ${path}`, err);
+      fileResults.fail.set(file, total);
 
       resolve(false);
     });

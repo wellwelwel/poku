@@ -4,11 +4,12 @@ import { it } from '../../src/modules/helpers/it/core.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { beforeEach, afterEach } from '../../src/modules/helpers/each.js';
 import { assert } from '../../src/modules/essentials/assert.js';
-import { getRuntime, nodeVersion } from '../../src/parsers/get-runtime.js';
+import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { watch } from '../../src/services/watch.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import type { WatchCallback } from '../../src/@types/watch.js';
+import { nodeVersion } from '../../src/parsers/node.js';
 
 const runtime = getRuntime();
 

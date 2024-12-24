@@ -1,6 +1,5 @@
 import { exit } from 'node:process';
 import { log } from '../../services/write.js';
-import { indentation } from '../../configs/indentation.js';
 import { format } from '../../services/format.js';
 import { itBase } from './it/core.js';
 import { describeBase } from './describe.js';
@@ -15,12 +14,12 @@ export async function todo(
 ): Promise<void>;
 export function todo(message: string, cb?: () => unknown): void;
 export async function todo(
-  message: string | (() => unknown) | (() => Promise<unknown>),
+  messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
   _cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  log(
-    `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).cyan().bold()}`
-  );
+  const message = typeof messageOrCb === 'string' ? messageOrCb : 'Planning';
+
+  GLOBAL.reporter.onTodoModifier({ message });
 }
 
 export async function skip(
@@ -36,9 +35,7 @@ export async function skip(
 ): Promise<void> {
   const message = typeof messageOrCb === 'string' ? messageOrCb : 'Skipping';
 
-  log(
-    `${indentation.hasDescribe ? '  ' : ''}${format(`◯ ${message}`).info().bold()}`
-  );
+  GLOBAL.reporter.onSkipModifier({ message });
 }
 
 export async function onlyDescribe(

@@ -1,4 +1,8 @@
-import type { Configs as ListFilesConfigs } from './list-files.js';
+import type { AssertionError } from 'node:assert';
+import type { results } from '../configs/poku.js';
+import type { FileResults, Configs as ListFilesConfigs } from './list-files.js';
+import type { ProcessAssertionOptions } from './assert.js';
+import type { DescribeOptions } from './describe.js';
 
 export type DenoOptions = {
   allow?: string[];
@@ -7,6 +11,8 @@ export type DenoOptions = {
 };
 
 export type Runtime = 'node' | 'bun' | 'deno';
+
+export type Reporter = 'poku' | 'mini' | (string & NonNullable<unknown>);
 
 export type Configs = {
   /**
@@ -47,6 +53,10 @@ export type Configs = {
    * @default (availableParallelism() || cpus().lenght) - 1
    */
   concurrency?: number;
+  /**
+   * @default "poku"
+   */
+  reporter?: Reporter;
   /**
    * You can use this option to run a **callback** or a **file** before each test file on your suite.
    *
@@ -113,3 +123,31 @@ export type ConfigJSONFile = {
   cliConfigs;
 
 export type ConfigFile = Omit<Configs, 'noExit'> & cliConfigs;
+
+export type ReporterPlugin = (configs?: Configs) => {
+  onRunStart: () => void;
+  onDescribeAsTitle: (title: string, options: DescribeOptions) => void;
+  onDescribeStart: (options: { title?: string }) => void;
+  onDescribeEnd: (options: { title?: string; duration: string }) => void;
+  onItStart: (options: { title?: string }) => void;
+  onItEnd: (options: { title?: string; duration: string }) => void;
+  onAssertionSuccess: (options: { message: string }) => void;
+  onAssertionFailure: (options: {
+    assertOptions: ProcessAssertionOptions;
+    error: AssertionError;
+  }) => void;
+  onSkipFile: (options: { message?: string }) => void;
+  onSkipModifier: (options: { message: string }) => void;
+  onTodoModifier: (options: { message: string }) => void;
+  // onFileStart: () => void;
+  // onFileResult: () => void;
+  onRunResult: (options: { results: FileResults }) => void;
+  onExit: (options: {
+    results: typeof results;
+    finalResults: FinalResults;
+    fileResults: FileResults;
+    code: number;
+  }) => void;
+};
+
+export type ReporterEvents = Partial<ReturnType<ReporterPlugin>>;
