@@ -9,9 +9,8 @@ export const getRuntime = (): Runtime => {
   const { _, POKU_RUNTIME } = env;
 
   if (POKU_RUNTIME) return POKU_RUNTIME as Runtime;
-  if (typeof Deno !== 'undefined') return 'deno';
-  if (typeof Bun !== 'undefined') return 'bun';
 
+  // Unix
   if (typeof _ === 'string') {
     const bin = basename(_);
 
@@ -20,5 +19,8 @@ export const getRuntime = (): Runtime => {
     return 'node';
   }
 
+  // Win32
+  if (typeof Deno !== 'undefined') return 'deno';
+  if (typeof Bun !== 'undefined') return 'bun';
   return 'node';
 };

@@ -37,8 +37,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   if (!(await beforeEach(file))) return false;
 
-  console.log(runtime, [...runtimeArguments, ...deepOptions]);
-
   return new Promise((resolve) => {
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
       stdio: ['inherit', 'pipe', 'pipe'],
