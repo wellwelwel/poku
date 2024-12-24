@@ -2,11 +2,12 @@ import { hrtime, env } from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileResults } from '../configs/files.js';
-import { isWindows, runner } from '../parsers/get-runner.js';
+import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
 import { log } from './write.js';
 import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
+import { isWindows } from '../parsers/os.js';
 
 export const runTestFile = async (path: string): Promise<boolean> => {
   const { cwd, configs } = GLOBAL;

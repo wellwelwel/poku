@@ -1,9 +1,7 @@
 import type { Runner } from '../@types/runner.js';
-import { platform } from 'node:process';
 import { extname } from 'node:path';
 import { GLOBAL } from '../configs/poku.js';
-
-export const isWindows = platform === 'win32';
+import { isWindows } from './os.js';
 
 export const runner = (filename: string): string[] => {
   const { configs, runtime } = GLOBAL;

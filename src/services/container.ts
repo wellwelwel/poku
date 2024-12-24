@@ -4,7 +4,7 @@ import type {
 } from '../@types/container.js';
 import { spawn, type SpawnOptionsWithoutStdio } from 'node:child_process';
 import { log } from '../services/write.js';
-import { isWindows } from '../parsers/get-runner.js';
+import { isWindows } from '../parsers/os.js';
 import { sanitizePath } from '../modules/helpers/list-files.js';
 
 const runDockerCommand = (

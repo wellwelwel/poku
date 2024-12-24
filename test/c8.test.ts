@@ -1,6 +1,6 @@
 import { rmSync } from 'node:fs';
 import { poku, test, describe, it, assert } from '../src/modules/index.js';
-import { isWindows } from '../src/parsers/get-runner.js';
+import { isWindows } from '../src/parsers/os.js';
 import { inspectPoku } from './__utils__/capture-cli.test.js';
 import { GLOBAL } from '../src/configs/poku.js';
 import { beforeEach } from '../src/modules/helpers/each.js';

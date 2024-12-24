@@ -5,11 +5,12 @@ import type {
 } from '../../@types/background-process.js';
 import process from 'node:process';
 import { spawn } from 'node:child_process';
-import { isWindows, runner, scriptRunner } from '../../parsers/get-runner.js';
+import { runner, scriptRunner } from '../../parsers/get-runner.js';
 import { normalize } from 'node:path';
 import { sanitizePath } from './list-files.js';
 import { kill } from './kill.js';
 import { log } from '../../services/write.js';
+import { isWindows } from '../../parsers/os.js';
 
 const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
   new Map();

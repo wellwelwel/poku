@@ -4,9 +4,10 @@ import {
   spawn,
   type SpawnOptionsWithoutStdio,
 } from 'node:child_process';
-import { isWindows, runner } from '../../src/parsers/get-runner.js';
+import { runner } from '../../src/parsers/get-runner.js';
 import { kill as pokuKill } from '../../src/modules/helpers/kill.js';
 import { getRuntime } from '../../src/parsers/get-runtime.js';
+import { isWindows } from '../../src/parsers/os.js';
 
 export const isBuild = process.env.NODE_ENV === 'build';
 

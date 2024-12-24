@@ -1,6 +1,6 @@
 import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { isBuild, watchCLI } from '../__utils__/capture-cli.test.js';
-import { isWindows } from '../../src/parsers/get-runner.js';
+import { isWindows } from '../../src/parsers/os.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
 if (isBuild || getRuntime() !== 'node' || isWindows) {

@@ -1,4 +1,4 @@
-import { isWindows } from '../../parsers/get-runner.js';
+import { isWindows } from '../../parsers/os.js';
 import {
   getPIDs as getPIDsService,
   populateRange,

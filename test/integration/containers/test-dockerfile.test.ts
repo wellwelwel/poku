@@ -6,7 +6,7 @@ import { assert } from '../../../src/modules/essentials/assert.js';
 import { docker } from '../../../src/modules/helpers/container.js';
 import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
 import { legacyFetch } from '../../__utils__/legacy-fetch.test.js';
-import { isWindows } from '../../../src/parsers/get-runner.js';
+import { isWindows } from '../../../src/parsers/os.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
 import { kill } from '../../../src/modules/helpers/kill.js';
 
