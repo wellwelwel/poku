@@ -16,11 +16,12 @@ export const getRuntime = (): Runtime => {
 
     if (bin.indexOf('bun') !== -1) return 'bun';
     if (bin.indexOf('deno') !== -1) return 'deno';
-    return 'node';
+    if (bin.indexOf('node') !== -1 || bin.indexOf('tsx') !== -1) return 'node';
   }
 
   // Win32
   if (typeof Deno !== 'undefined') return 'deno';
   if (typeof Bun !== 'undefined') return 'bun';
+
   return 'node';
 };

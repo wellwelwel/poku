@@ -12,8 +12,8 @@ const runDockerCommand = (
   args: string[],
   options?: SpawnOptionsWithoutStdio,
   verbose?: boolean
-): Promise<boolean> => {
-  return new Promise((resolve) => {
+): Promise<boolean> =>
+  new Promise((resolve) => {
     const dockerProcess = spawn(command, args, {
       ...options,
       shell: isWindows,
@@ -29,7 +29,6 @@ const runDockerCommand = (
     dockerProcess.on('close', (code) => resolve(code === 0));
     dockerProcess.on('error', () => resolve(false));
   });
-};
 
 export class DockerContainer {
   private file;

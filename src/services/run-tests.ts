@@ -9,7 +9,6 @@ import { availableParallelism } from '../polyfills/os.js';
 import { hasOnly } from '../parsers/get-arg.js';
 
 const { cwd } = GLOBAL;
-const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
 
 if (hasOnly) deepOptions.push('--only');
 
@@ -23,6 +22,7 @@ export const runTests = async (dir: string): Promise<boolean> => {
   const testDir = join(cwd, dir);
   const files = await listFiles(testDir, configs);
   const showLogs = !configs.quiet;
+  const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
   const concurrency: number = (() => {
     if (configs.sequential) return 1;
     const limit =
