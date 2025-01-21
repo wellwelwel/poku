@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 import { escapeRegExp } from '../modules/helpers/list-files.js';
 import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
-import { states } from '../configs/files.js';
+import { states } from '../configs/poku.js';
 import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
 import { envFile } from '../modules/helpers/env.js';

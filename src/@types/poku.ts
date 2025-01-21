@@ -1,6 +1,6 @@
 import type { AssertionError } from 'node:assert';
 import type { results } from '../configs/poku.js';
-import type { FileResults, Configs as ListFilesConfigs } from './list-files.js';
+import type { Configs as ListFilesConfigs } from './list-files.js';
 import type { ProcessAssertionOptions } from './assert.js';
 import type { DescribeOptions } from './describe.js';
 
@@ -88,9 +88,11 @@ export type Configs = {
   deno?: DenoOptions;
 } & ListFilesConfigs;
 
-export type FinalResults = {
-  time: string;
+export type Timespan = {
   started: Date;
+  finished: Date;
+  /** Calculation from `process.hrtime()`. */
+  duration: string;
 };
 
 export type States = {
@@ -124,6 +126,12 @@ export type ConfigJSONFile = {
 
 export type ConfigFile = Omit<Configs, 'noExit'> & cliConfigs;
 
+type Results = {
+  code: number;
+  timespan: Timespan;
+  results: typeof results;
+};
+
 export type ReporterPlugin = (configs?: Configs) => {
   onRunStart: () => void;
   onDescribeAsTitle: (title: string, options: DescribeOptions) => void;
@@ -139,15 +147,10 @@ export type ReporterPlugin = (configs?: Configs) => {
   onSkipFile: (options: { message?: string }) => void;
   onSkipModifier: (options: { message: string }) => void;
   onTodoModifier: (options: { message: string }) => void;
-  // onFileStart: () => void;
-  // onFileResult: () => void;
-  onRunResult: (options: { results: FileResults }) => void;
-  onExit: (options: {
-    results: typeof results;
-    finalResults: FinalResults;
-    fileResults: FileResults;
-    code: number;
-  }) => void;
+  onFileStart?: () => void;
+  onFileResult?: () => void;
+  onRunResult: (options: Results) => void;
+  onExit: (options: Results) => void;
 };
 
 export type ReporterEvents = Partial<ReturnType<ReporterPlugin>>;

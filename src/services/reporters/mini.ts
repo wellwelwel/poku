@@ -16,11 +16,13 @@ export const mini: ReporterPlugin = createReporter({
   onSkipModifier() {},
   onSkipFile() {},
   onRunResult({ results }) {
-    if (results.fail.size === 0) return;
+    const { files } = results;
+
+    if (files.failed.size === 0) return;
 
     hr();
     log(
-      Array.from(results.fail)
+      Array.from(files.failed)
         .map(
           ([file, time]) =>
             `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time}ms`).fail()}`).dim()}`
@@ -28,14 +30,16 @@ export const mini: ReporterPlugin = createReporter({
         .join('\n')
     );
   },
-  onExit({ results, fileResults, code }) {
-    if (fileResults.fail.size > 0) hr();
+  onExit({ results, code }) {
+    const { files, resume } = results;
+
+    if (files.failed.size > 0) hr();
 
     log(
-      `${format(String(results.success)).bold().dim()} ${format('test file(s) passed').dim()}`
+      `${format(String(resume.passed)).bold().dim()} ${format('test file(s) passed').dim()}`
     );
     log(
-      `${format(String(results.fail)).bold().dim()} ${format('test file(s) failed').dim()}`
+      `${format(String(resume.failed)).bold().dim()} ${format('test file(s) failed').dim()}`
     );
     log(
       `${format('Exited with code').dim()} ${format(String(code)).bold()[code === 0 ? 'success' : 'fail']()}\n`

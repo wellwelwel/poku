@@ -1,4 +1,5 @@
 import { env, cwd } from 'node:process';
+import type { Timespan, States } from '../@types/poku.js';
 import type {
   ConfigFile,
   ConfigJSONFile,
@@ -8,11 +9,21 @@ import type {
 import { reporter } from '../services/reporter.js';
 import { getRuntime } from '../parsers/get-runtime.js';
 
+export const states = Object.create(null) as States;
+
+export const timespan = Object.create(null) as Timespan;
+
 export const results = {
-  success: 0,
-  fail: 0,
-  skip: 0,
-  todo: 0,
+  files: {
+    passed: new Map<string, string>(),
+    failed: new Map<string, string>(),
+  },
+  resume: {
+    passed: 0,
+    failed: 0,
+    skipped: 0,
+    todo: 0,
+  },
 };
 
 export const VERSION = '';

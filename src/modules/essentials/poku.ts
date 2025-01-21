@@ -2,7 +2,7 @@ import type { Code } from '../../@types/code.js';
 import type { Configs } from '../../@types/poku.js';
 import process from 'node:process';
 import { exit } from '../helpers/exit.js';
-import { fileResults, finalResults } from '../../configs/files.js';
+import { results, timespan } from '../../configs/poku.js';
 import { runTests } from '../../services/run-tests.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { reporter } from '../../services/reporter.js';
@@ -29,7 +29,7 @@ export async function poku(
 
   if (configs) GLOBAL.configs = { ...GLOBAL.configs, ...configs };
 
-  finalResults.started = new Date();
+  timespan.started = new Date();
 
   const start = process.hrtime();
   const paths: string[] = Array.prototype.concat(targetPaths);
@@ -50,10 +50,11 @@ export async function poku(
     const end = process.hrtime(start);
     const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
-    finalResults.time = total;
+    timespan.duration = total;
+    timespan.finished = new Date();
   }
 
-  if (showLogs) GLOBAL.reporter.onRunResult({ results: fileResults });
+  if (showLogs) GLOBAL.reporter.onRunResult({ code, timespan, results });
   if (GLOBAL.configs.noExit) return code;
 
   exit(code, GLOBAL.configs.quiet);

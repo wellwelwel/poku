@@ -1,7 +1,7 @@
 import { hrtime, env } from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
-import { fileResults } from '../configs/files.js';
+import { results } from '../configs/poku.js';
 import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
@@ -75,8 +75,8 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
-      if (result) fileResults.success.set(file, total);
-      else fileResults.fail.set(file, total);
+      if (result) results.files.passed.set(file, total);
+      else results.files.failed.set(file, total);
 
       resolve(result);
     });
@@ -88,7 +88,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
       console.error(`Failed to start test: ${path}`, err);
-      fileResults.fail.set(file, total);
+      results.files.failed.set(file, total);
 
       resolve(false);
     });

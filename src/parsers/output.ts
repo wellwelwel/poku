@@ -11,10 +11,10 @@ export const parserOutput = (options: { output: string; result: boolean }) => {
   const normalizedOutput = JSON.stringify(output);
 
   const hasSkip = normalizedOutput.match(regex.skip);
-  if (hasSkip) results.skip += hasSkip.length;
+  if (hasSkip) results.resume.skipped += hasSkip.length;
 
   const hasTodo = normalizedOutput.match(regex.todo);
-  if (hasTodo) results.todo += hasTodo.length;
+  if (hasTodo) results.resume.todo += hasTodo.length;
 
   const pad = '  ';
   const splittedOutput = output.split('\n');
