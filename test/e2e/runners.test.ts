@@ -49,7 +49,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
       }
 
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-      assert(/PASS › 12/.test(output.stdout), 'CLI needs to pass 1');
+      assert(/PASS › 12/.test(output.stdout), 'CLI needs to pass 12');
       assert(/FAIL › 0/.test(output.stdout), 'CLI needs to fail 0');
     }));
 
@@ -65,8 +65,16 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
       }
 
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-      assert(/PASS › 12/.test(output.stdout), 'CLI needs to pass 1');
-      assert(/FAIL › 0/.test(output.stdout), 'CLI needs to fail 0');
+      assert.strictEqual(
+        (output.stdout.match(/✔/g) || []).length,
+        12,
+        'CLI needs to pass 12'
+      );
+      assert.strictEqual(
+        (output.stdout.match(/✘/g) || []).length,
+        0,
+        'CLI needs to fail 0'
+      );
     }));
 
   hasDeno &&
@@ -81,7 +89,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
       }
 
       assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
-      assert(/PASS › 10/.test(output.stdout), 'CLI needs to pass 1');
+      assert(/PASS › 10/.test(output.stdout), 'CLI needs to pass 10');
       assert(/FAIL › 0/.test(output.stdout), 'CLI needs to fail 0');
     }));
 });
