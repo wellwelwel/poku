@@ -6,8 +6,8 @@ import {
 } from 'node:child_process';
 import { runner } from '../../src/parsers/get-runner.js';
 import { kill as pokuKill } from '../../src/modules/helpers/kill.js';
-import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { isWindows } from '../../src/parsers/os.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 
 export const isBuild = process.env.NODE_ENV === 'build';
 
@@ -108,7 +108,7 @@ export const watchCLI = (
   command: string,
   options?: SpawnOptionsWithoutStdio
 ): WatchCLIResult => {
-  const runtime = getRuntime();
+  const { runtime } = GLOBAL;
   const binFile = 'src/bin/index.ts';
   const basePath =
     typeof options?.cwd === 'string'

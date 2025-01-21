@@ -1,11 +1,10 @@
 import { test } from '../../../src/modules/helpers/test.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { runner } from '../../../src/parsers/get-runner.js';
-import { getRuntime } from '../../../src/parsers/get-runtime.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
 import { GLOBAL } from '../../../src/configs/poku.js';
 
-const runtime = getRuntime();
+const { runtime } = GLOBAL;
 
 if (runtime !== 'deno') {
   skip('Skipping for non-Deno platforms');

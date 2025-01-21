@@ -3,10 +3,11 @@ import path from 'node:path';
 import { test } from '../../../src/modules/helpers/test.js';
 import { poku } from '../../../src/modules/essentials/poku.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
-import { getRuntime } from '../../../src/parsers/get-runtime.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
+import { GLOBAL } from '../../../src/configs/poku.js';
 
-const runtime = getRuntime();
+const { runtime } = GLOBAL;
+
 if (runtime === 'deno') skip();
 
 const testDir = path.resolve('test/__fixtures__/.temp');

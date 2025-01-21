@@ -2,12 +2,10 @@ import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
-import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { skip } from '../../src/modules/helpers/skip.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 
-if (isBuild) {
-  skip();
-}
+if (isBuild) skip();
 
 describe('Test Runtimes/Platforms + Extensions', async () => {
   await it('.pokurc.jsonc', async () => {
@@ -40,9 +38,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
     assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
   });
 
-  if (getRuntime() === 'deno') {
-    return;
-  }
+  if (GLOBAL.runtime === 'deno') return;
 
   await it('poku.config.js', async () => {
     const output = await inspectPoku('', {

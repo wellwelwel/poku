@@ -2,11 +2,11 @@ import process from 'node:process';
 import { test } from '../../../../src/modules/helpers/test.js';
 import { assert } from '../../../../src/modules/essentials/assert.js';
 import { runtimeVersion } from '../../../../src/parsers/runtime-version.js';
-import { getRuntime } from '../../../../src/parsers/get-runtime.js';
+import { GLOBAL } from '../../../../src/configs/poku.js';
 
 test('Defining Variables', () => {
   const noValue =
-    getRuntime() === 'deno' ? (runtimeVersion === 2 ? undefined : '') : '';
+    GLOBAL.runtime === 'deno' && runtimeVersion >= 2 ? undefined : '';
 
   assert.strictEqual(process.env.HOST, '123.123.123.123', 'Basic');
   assert.strictEqual(process.env.USER0, undefined, 'Comented Line');

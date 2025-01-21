@@ -1,11 +1,8 @@
-import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { isBuild, watchCLI } from '../__utils__/capture-cli.test.js';
 import { isWindows } from '../../src/parsers/os.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (isBuild || getRuntime() !== 'node' || isWindows) {
-  skip();
-}
+if (isBuild || GLOBAL.runtime !== 'node' || isWindows) skip();
 
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
@@ -15,6 +12,7 @@ import {
   waitForExpectedResult,
 } from '../../src/modules/helpers/wait-for.js';
 import { readFile, writeFile } from 'node:fs/promises';
+import { GLOBAL } from '../../src/configs/poku.js';
 
 const saveFileUnchanged = async (filename: string) => {
   const data = await readFile(filename, 'utf8');

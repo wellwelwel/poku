@@ -1,13 +1,8 @@
 import { version } from 'node:process';
-import { getRuntime } from './get-runtime.js';
+import { GLOBAL } from '../configs/poku.js';
 
-const regex = /v(\d+)\./;
-
-export const runtimeVersion = (() => {
-  const runtime = getRuntime();
-
-  if (runtime === 'node') return Number(version.match(regex)?.[1]) || undefined;
-
-  if (runtime === 'deno')
-    return Number(Deno.version.deno.split('.')[0]) || undefined;
+export const runtimeVersion: number = (() => {
+  if (GLOBAL.runtime === 'bun') return Number(Bun.version.split('.')[0]);
+  if (GLOBAL.runtime === 'deno') return Number(Deno.version.deno.split('.')[0]);
+  return Number(version.replace('v', '').split('.')[0]);
 })();

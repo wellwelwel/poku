@@ -3,13 +3,11 @@ import { spawn } from 'node:child_process';
 import { test } from '../../../src/modules/helpers/test.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
-import { getRuntime } from '../../../src/parsers/get-runtime.js';
+import { GLOBAL } from '../../../src/configs/poku.js';
 
-const runtime = getRuntime();
+const { runtime } = GLOBAL;
 
-if (runtime !== 'deno') {
-  skip('Skipping for non-Deno platforms');
-}
+if (runtime !== 'deno') skip('Skipping for non-Deno platforms');
 
 test('Deno Compatibility', async () => {
   const POKU_FILE = 'test/__fixtures__/integration/deno/require.cjs';
