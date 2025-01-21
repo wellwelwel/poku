@@ -4,7 +4,6 @@
   "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno, and you at the same time.",
   "main": "./lib/modules/index.js",
   "license": "MIT",
-  "type": "commonjs",
   "bin": {
     "poku": "./lib/bin/index.js"
   },

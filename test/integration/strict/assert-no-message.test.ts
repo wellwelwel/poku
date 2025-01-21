@@ -1,8 +1,8 @@
 import { skip } from '../../../src/modules/helpers/skip.js';
 import { getRuntime } from '../../../src/parsers/get-runtime.js';
-import { nodeVersion } from '../../../src/parsers/node.js';
+import { runtimeVersion } from '../../../src/parsers/runtime-version.js';
 
-if (nodeVersion && nodeVersion < 16) {
+if (runtimeVersion && runtimeVersion < 16) {
   skip('Strict method is available from Node.js 16');
 }
 

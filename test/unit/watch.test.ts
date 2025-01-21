@@ -9,11 +9,11 @@ import { watch } from '../../src/services/watch.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import type { WatchCallback } from '../../src/@types/watch.js';
-import { nodeVersion } from '../../src/parsers/node.js';
+import { runtimeVersion } from '../../src/parsers/runtime-version.js';
 
 const runtime = getRuntime();
 
-if (runtime === 'deno' || (nodeVersion && nodeVersion < 16)) {
+if (runtime === 'deno' || (runtimeVersion && runtimeVersion < 16)) {
   skip('rmSync is available from Node.js 16 onwards');
 }
 

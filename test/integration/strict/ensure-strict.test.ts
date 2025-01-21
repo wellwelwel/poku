@@ -2,9 +2,9 @@ import { skip } from '../../../src/modules/helpers/skip.js';
 import { getRuntime } from '../../../src/parsers/get-runtime.js';
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
-import { nodeVersion } from '../../../src/parsers/node.js';
+import { runtimeVersion } from '../../../src/parsers/runtime-version.js';
 
-if ((nodeVersion && nodeVersion < 16) || getRuntime() !== 'node') {
+if ((runtimeVersion && runtimeVersion < 16) || getRuntime() !== 'node') {
   skip('Strict method is available from Node.js 16');
 }
 
