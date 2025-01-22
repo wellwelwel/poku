@@ -37,6 +37,13 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   if (!(await beforeEach(file))) return false;
 
+  GLOBAL.reporter.onFileStart({
+    path: {
+      relative: file,
+      absolute: path,
+    },
+  });
+
   return new Promise((resolve) => {
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
       stdio: ['inherit', 'pipe', 'pipe'],
@@ -67,6 +74,14 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
         mappedOutputs && log(mappedOutputs.join('\n'));
       }
+
+      GLOBAL.reporter.onFileResult({
+        status: result,
+        path: {
+          relative: file,
+          absolute: path,
+        },
+      });
 
       if (!(await afterEach(file))) {
         resolve(false);

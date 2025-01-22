@@ -16,6 +16,7 @@ export const poku: ReturnType<ReporterPlugin> = {
     hr();
     log(`${format('🐷 Running Tests').bold()}\n`);
   },
+  onFileStart() {},
   onDescribeAsTitle(title, options) {
     const { background, icon } =
       options ?? (Object.create(null) as DescribeOptions);
@@ -158,6 +159,7 @@ export const poku: ReturnType<ReporterPlugin> = {
       `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).cyan().bold()}`
     );
   },
+  onFileResult() {},
   onRunResult({ results }) {
     const { files } = results;
 

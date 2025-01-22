@@ -132,6 +132,11 @@ type Results = {
   results: typeof results;
 };
 
+type Path = {
+  absolute: string;
+  relative: string;
+};
+
 export type ReporterPlugin = (configs?: Configs) => {
   onRunStart: () => void;
   onDescribeAsTitle: (title: string, options: DescribeOptions) => void;
@@ -147,8 +152,8 @@ export type ReporterPlugin = (configs?: Configs) => {
   onSkipFile: (options: { message?: string }) => void;
   onSkipModifier: (options: { message: string }) => void;
   onTodoModifier: (options: { message: string }) => void;
-  onFileStart?: () => void;
-  onFileResult?: () => void;
+  onFileStart: (options: { path: Path }) => void;
+  onFileResult: (options: { status: boolean; path: Path }) => void;
   onRunResult: (options: Results) => void;
   onExit: (options: Results) => void;
 };
