@@ -14,10 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        bun-version: [
-            'latest',
-            # 'canary'
-          ]
+        bun-version: ['latest', 'canary']
     name: Bun ${{ matrix.bun-version }}
     steps:
       - name: ➕ Actions - Checkout

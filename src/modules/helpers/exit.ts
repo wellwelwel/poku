@@ -8,14 +8,11 @@ export const exit = (code: Code, quiet?: boolean) => {
   const { resume } = results;
   const isPoku = resume.passed > 0 || resume.failed > 0;
 
-  !quiet &&
-    process.on('exit', (code) => {
-      if (isPoku)
-        GLOBAL.reporter.onExit({
-          code,
-          timespan,
-          results,
-        });
+  if (!quiet && isPoku)
+    GLOBAL.reporter.onExit({
+      code,
+      timespan,
+      results,
     });
 
   process.exitCode = code === 0 ? 0 : 1;

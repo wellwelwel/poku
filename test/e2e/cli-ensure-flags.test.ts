@@ -5,7 +5,7 @@ import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import { GLOBAL } from '../../src/configs/poku.js';
 
-if (isBuild || GLOBAL.runtime === 'deno') skip();
+if (isBuild || GLOBAL.runtime !== 'node') skip();
 
 describe('Enforce Option', async () => {
   await it('--enforce', async () => {

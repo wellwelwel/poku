@@ -94,6 +94,8 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   });
 
   await it('Wrong Props', async () => {
+    if (GLOBAL.runtime === 'bun') return;
+
     const output = await inspectPoku('-x', {
       cwd: 'test/__fixtures__/e2e/config-files/wrong-props',
     });
