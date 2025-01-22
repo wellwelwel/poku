@@ -7,11 +7,10 @@ import { runTests } from '../../services/run-tests.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { reporter } from '../../services/reporter.js';
 
-/* c8 ignore start */ // Process-based
+/* c8 ignore next 1 */ // Process-based
 export const onSigint = () => process.stdout.write('\u001B[?25h');
 
 process.once('SIGINT', onSigint);
-/* c8 ignore stop */
 
 export async function poku(
   targetPaths: string | string[],

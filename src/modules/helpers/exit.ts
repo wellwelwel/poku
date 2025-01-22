@@ -21,7 +21,6 @@ export const exit = (code: Code, quiet?: boolean) => {
   process.exitCode = code === 0 ? 0 : 1;
 };
 
-/* c8 ignore start */ // Unknown external error
 process.on('unhandledRejection', (err) => {
   if (!(err instanceof AssertionError))
     console.error('unhandledRejection', err);
@@ -29,9 +28,9 @@ process.on('unhandledRejection', (err) => {
   process.exitCode = 1;
 });
 
+/* c8 ignore next 5 */ // Unknown external error
 process.on('uncaughtException', (err) => {
   if (!(err instanceof AssertionError)) console.error('uncaughtException', err);
 
   process.exitCode = 1;
 });
-/* c8 ignore stop */
