@@ -7,6 +7,7 @@
 {
   "exclude": [
     "src/@types", // Typings exports only
+    "src/globals.d.ts", // Typings exports only
     "src/polyfills", // They involve compatibility between older versions of platforms or assist in cross-platform compatibility
     "src/modules/helpers/create-service.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/modules/helpers/container.ts", // On Windows-based GitHub Actions, it's not possible to pull images based on manifest windows/amd64

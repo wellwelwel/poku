@@ -10,7 +10,7 @@ import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
 import { isWindows } from '../parsers/os.js';
 
 export const runTestFile = async (path: string): Promise<boolean> => {
-  const { cwd, configs } = GLOBAL;
+  const { cwd, configs, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
   const runtime = runtimeOptions.shift()!;
   const runtimeArguments = [
@@ -37,7 +37,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   if (!(await beforeEach(file))) return false;
 
-  GLOBAL.reporter.onFileStart({
+  reporter.onFileStart({
     path: {
       relative: file,
       absolute: path,
@@ -75,7 +75,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
         mappedOutputs && log(mappedOutputs.join('\n'));
       }
 
-      GLOBAL.reporter.onFileResult({
+      reporter.onFileResult({
         status: result,
         path: {
           relative: file,

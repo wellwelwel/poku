@@ -13,6 +13,8 @@ export async function describeBase(
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;
 
+  const { reporter } = GLOBAL;
+
   if (typeof arg1 === 'string') {
     title = arg1;
 
@@ -26,8 +28,8 @@ export async function describeBase(
   const hasCB = typeof cb === 'function';
 
   if (title) {
-    if (hasCB) GLOBAL.reporter.onDescribeStart({ title });
-    else GLOBAL.reporter.onDescribeAsTitle(title, options as DescribeOptions);
+    if (hasCB) reporter.onDescribeStart({ title });
+    else reporter.onDescribeAsTitle(title, options as DescribeOptions);
   }
 
   if (!hasCB) return;
@@ -43,7 +45,8 @@ export async function describeBase(
 
   const duration = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
 
-  GLOBAL.reporter.onDescribeEnd({ title, duration });
+  reporter.onDescribeEnd({ title, duration });
+
   GLOBAL.runAsOnly = false;
 }
 
