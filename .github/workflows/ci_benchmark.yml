@@ -1,9 +1,6 @@
 name: '🎖️ CI — Benchmark'
 
 on:
-  push:
-    branches:
-      - 'reporter'
   pull_request:
   workflow_dispatch:
 

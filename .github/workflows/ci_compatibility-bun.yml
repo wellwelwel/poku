@@ -1,9 +1,6 @@
 name: '🔬 CI — Compatibility'
 
 on:
-  push:
-    branches:
-      - 'reporter'
   pull_request:
   workflow_dispatch:
 
