@@ -38,7 +38,11 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
   const killPort = getArg('killPort');
   const killRange = getArg('killRange');
   const killPID = getArg('killPid');
-  const reporter = getArg('reporter') || getArg('r', '-') || 'poku';
+  const reporter =
+    getArg('reporter') ??
+    getArg('r', '-') ??
+    GLOBAL.configsFromFile.reporter ??
+    'poku';
   /* c8 ignore start */ // Deno
   const denoAllow = argToArray('denoAllow') ?? configsFromFile?.deno?.allow;
   const denoDeny = argToArray('denoDeny') ?? configsFromFile?.deno?.deny;

@@ -16,9 +16,9 @@
       "description": "Specify the path(s) to include in the configuration. Doesn't support glob patterns.\nhttps://poku.io/docs/documentation/poku/include-files",
       "default": "."
     },
-    "parallel": {
+    "sequential": {
       "type": "boolean",
-      "description": "Determines the mode of test execution.\nhttps://poku.io/docs/documentation/poku/options/parallel",
+      "description": "Run the tests files sequentially (alias to `concurrency=1`).\nhttps://poku.io/docs/documentation/poku/options/sequential",
       "default": false
     },
     "filter": {
@@ -92,11 +92,11 @@
       "required": [],
       "additionalProperties": false
     },
-    "platform": {
+    "reporter": {
       "type": "string",
-      "description": "Determines the platform for test execution.\nhttps://poku.io/docs/documentation/poku/options/platform",
-      "default": "node",
-      "enum": ["node", "bun", "deno"]
+      "description": "Specify the reporter for test execution.\nhttps://poku.io/docs/documentation/poku/options/reporters",
+      "default": "poku",
+      "enum": ["poku", "dot", "compact", "focus", "verbose"]
     },
     "deno": {
       "type": "object",
@@ -121,7 +121,7 @@
           "items": {
             "type": "string"
           },
-          "description": "CommonJS compatibility for Deno.\nhttps://poku.io/docs/documentation/poku/options/deno#cjs"
+          "description": "CommonJS compatibility for Deno v1.\nhttps://poku.io/docs/documentation/poku/options/deno#cjs"
         }
       },
       "additionalProperties": false,
