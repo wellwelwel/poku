@@ -15,8 +15,8 @@ export const timespan = Object.create(null) as Timespan;
 
 export const results = {
   files: {
-    passed: new Map<string, string>(),
-    failed: new Map<string, string>(),
+    passed: new Map<string, number>(),
+    failed: new Map<string, number>(),
   },
   resume: {
     passed: 0,

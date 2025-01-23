@@ -24,7 +24,7 @@ export const classic: ReporterPlugin = createReporter({
         Array.from(files.passed)
           .map(
             ([file, time]) =>
-              `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${time}ms`).success()}`).dim()}`
+              `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${time.toFixed(6)}ms`).success()}`).dim()}`
           )
           .join('\n')
       );
@@ -37,7 +37,7 @@ export const classic: ReporterPlugin = createReporter({
         Array.from(files.failed)
           .map(
             ([file, time]) =>
-              `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time}ms`).fail()}`).dim()}`
+              `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time.toFixed(6)}ms`).fail()}`).dim()}`
           )
           .join('\n')
       );

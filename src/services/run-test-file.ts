@@ -86,7 +86,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
         return;
       }
 
-      const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+      const total = end[0] * 1e3 + end[1] / 1e6;
 
       if (result) results.files.passed.set(file, total);
       else results.files.failed.set(file, total);
@@ -98,7 +98,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     child.on('error', (err) => {
       end = hrtime(start);
 
-      const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+      const total = end[0] * 1e3 + end[1] / 1e6;
 
       console.error(`Failed to start test: ${path}`, err);
       results.files.failed.set(file, total);
