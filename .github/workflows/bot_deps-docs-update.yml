@@ -18,6 +18,7 @@ env:
 jobs:
   update-deps:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     if: github.event.repository.fork == false
     name: Update
     steps:

@@ -91,7 +91,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       resolve(result);
     });
 
-    /* c8 ignore next 10 */ // Unknown external error
+    /* c8 ignore start */ // Unknown external error
     child.on('error', (err) => {
       end = hrtime(start);
 
@@ -110,5 +110,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
       resolve(false);
     });
+    /* c8 ignore stop */
   });
 };

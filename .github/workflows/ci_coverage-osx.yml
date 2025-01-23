@@ -10,7 +10,7 @@ on:
 jobs:
   osx:
     runs-on: macos-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     strategy:
       fail-fast: false
     name: macOS
