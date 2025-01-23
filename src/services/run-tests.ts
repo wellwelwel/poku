@@ -19,7 +19,6 @@ export const runTests = async (dir: string): Promise<boolean> => {
   let rejectDone: (reason?: Error) => void;
 
   const { configs } = GLOBAL;
-  const { resume } = results;
   const testDir = join(cwd, dir);
   const files = await listFiles(testDir, configs);
   const showLogs = !configs.quiet;
@@ -50,9 +49,9 @@ export const runTests = async (dir: string): Promise<boolean> => {
     try {
       const testPassed = await runTestFile(filePath);
 
-      if (testPassed) ++resume.passed;
+      if (testPassed) ++results.passed;
       else {
-        ++resume.failed;
+        ++results.failed;
         allPassed = false;
 
         if (configs.failFast) {

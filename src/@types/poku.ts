@@ -165,6 +165,7 @@ export type ReporterPlugin = (configs?: Configs) => {
   onFileResult: (options: {
     status: boolean;
     path: Path;
+    duration: number;
     output?: string;
   }) => void;
   onRunResult: (options: Results) => void;

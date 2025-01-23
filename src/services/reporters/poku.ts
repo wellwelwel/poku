@@ -147,18 +147,26 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
         `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).cyan().bold()}`
       );
     },
-    onFileResult({ status, path, output }) {
+    onFileResult({ status, path, duration, output }) {
       stdout.write('\n');
 
       if (status) {
         log(
-          `${format('›').success().bold()} ${format(path.relative).success().underline()}`
+          `${format('›').success().bold()} ${format(path.relative).success().underline()} ${format(
+            `› ${duration.toFixed(6)}ms`
+          )
+            .success()
+            .dim()}`
         );
 
         if (output) log(output);
       } else
         log(
-          `${format('›').fail().bold()} ${format(path.relative).fail().underline()}`
+          `${format('›').fail().bold()} ${format(path.relative).fail().underline()} ${format(
+            `› ${duration.toFixed(6)}ms`
+          )
+            .fail()
+            .dim()}`
         );
 
       if (!status)
@@ -193,24 +201,23 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       }
     },
     onExit({ results, timespan }) {
-      const { files, resume } = results;
-      const success = ` PASS › ${resume.passed} `;
-      const failure = ` FAIL › ${resume.failed} `;
-      const skips = ` SKIP › ${resume.skipped} `;
-      const plans = ` TODO › ${resume.todo} `;
-      const inline = resume.skipped === 0 || resume.todo === 0;
+      const success = ` PASS › ${results.passed} `;
+      const failure = ` FAIL › ${results.failed} `;
+      const skips = ` SKIP › ${results.skipped} `;
+      const plans = ` TODO › ${results.todo} `;
+      const inline = results.skipped === 0 || results.todo === 0;
 
       let message = '';
 
       if (inline) {
-        message += `${format(success).bg('green')} ${format(failure).bg(resume.failed === 0 ? 'grey' : 'brightRed')}`;
+        message += `${format(success).bg('green')} ${format(failure).bg(results.failed === 0 ? 'grey' : 'brightRed')}`;
 
-        if (resume.skipped) message += ` ${format(skips).bg('brightBlue')}`;
-        if (resume.todo) message += ` ${format(plans).bg('brightBlue')}`;
+        if (results.skipped) message += ` ${format(skips).bg('brightBlue')}`;
+        if (results.todo) message += ` ${format(plans).bg('brightBlue')}`;
       } else {
         message += `${format(success.trim()).success().bold()}\n`;
         message +=
-          resume.failed === 0
+          results.failed === 0
             ? format(`${failure.trim()}\n`).bold()
             : `${format(failure.trim()).fail().bold()}\n`;
         message += `${format(skips.trim()).info().bold()}\n`;
@@ -229,7 +236,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
           .dim()} ${format(`(±${parseTimeToSecs(timespan.duration)} seconds)`).dim()}`
       );
       log(
-        `${format(`Files     ›  ${format(String(files.passed.size + files.failed.size)).bold()}`).dim()}`
+        `${format(`Files     ›  ${format(String(results.passed + results.failed)).bold()}`).dim()}`
       );
       log(`\n${message}\n`);
     },

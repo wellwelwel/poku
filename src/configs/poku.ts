@@ -14,16 +14,10 @@ export const states = Object.create(null) as States;
 export const timespan = Object.create(null) as Timespan;
 
 export const results = {
-  files: {
-    passed: new Map<string, number>(),
-    failed: new Map<string, number>(),
-  },
-  resume: {
-    passed: 0,
-    failed: 0,
-    skipped: 0,
-    todo: 0,
-  },
+  passed: 0,
+  failed: 0,
+  skipped: 0,
+  todo: 0,
 };
 
 export const VERSION = '';

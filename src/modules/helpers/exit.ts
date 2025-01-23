@@ -5,8 +5,7 @@ import { timespan } from '../../configs/poku.js';
 import { AssertionError } from 'node:assert';
 
 export const exit = (code: Code, quiet?: boolean) => {
-  const { resume } = results;
-  const isPoku = resume.passed > 0 || resume.failed > 0;
+  const isPoku = results.passed > 0 || results.failed > 0;
 
   if (!quiet && isPoku)
     GLOBAL.reporter.onExit({

@@ -1,7 +1,6 @@
 import { hrtime, env } from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
-import { results } from '../configs/poku.js';
 import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
@@ -71,13 +70,16 @@ export const runTestFile = async (path: string): Promise<boolean> => {
           result,
         })?.join('\n');
 
+        const total = end[0] * 1e3 + end[1] / 1e6;
+
         reporter.onFileResult({
           status: result,
-          output: parsedOutputs,
           path: {
             relative: file,
             absolute: path,
           },
+          duration: total,
+          output: parsedOutputs,
         });
       }
 
@@ -85,11 +87,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
         resolve(false);
         return;
       }
-
-      const total = end[0] * 1e3 + end[1] / 1e6;
-
-      if (result) results.files.passed.set(file, total);
-      else results.files.failed.set(file, total);
 
       resolve(result);
     });
@@ -100,8 +97,16 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
       const total = end[0] * 1e3 + end[1] / 1e6;
 
-      console.error(`Failed to start test: ${path}`, err);
-      results.files.failed.set(file, total);
+      if (showLogs) console.error(`Failed to start test: ${path}`, err);
+
+      reporter.onFileResult({
+        status: false,
+        path: {
+          relative: file,
+          absolute: path,
+        },
+        duration: total,
+      });
 
       resolve(false);
     });

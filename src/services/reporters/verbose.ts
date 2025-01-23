@@ -9,8 +9,8 @@ export const verbose: ReporterPlugin = (() => {
     onRunStart() {
       log(`${format('Running Tests').bold()}\n`);
     },
-    onFileResult({ status, path, output }) {
-      poku.onFileResult({ status, path, output });
+    onFileResult({ status, path, duration, output }) {
+      poku.onFileResult({ status, path, duration, output });
 
       if (!status && output) log(output);
     },
