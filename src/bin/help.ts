@@ -28,7 +28,7 @@ const summary: [string, string][] = [
   ['--listFiles', 'Display all the files returned in the terminal.'],
   [
     '--reporter, -r',
-    'Specify the reporter: poku, dot, compact, focus, verbose.',
+    'Specify the reporter: poku, dot, compact, focus, verbose, classic.',
   ],
   ['--only', 'Enable selective execution of tests.'],
   ['--quiet, -q', 'Run tests with no logs.'],
