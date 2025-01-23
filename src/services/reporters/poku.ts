@@ -144,13 +144,13 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       if (status) {
         log(
-          `${format(' › ').bg('brightGreen')} ${format(path.relative).success().underline()}`
+          `${format('›').success().bold()} ${format(path.relative).success().underline()}`
         );
 
         if (output) log(output);
       } else
         log(
-          `${format(' › ').bg('brightRed')} ${format(path.relative).fail().underline()}`
+          `${format('›').fail().bold()} ${format(path.relative).fail().underline()}`
         );
 
       if (!status)

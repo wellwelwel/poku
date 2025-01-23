@@ -2,7 +2,7 @@ import type { ReporterPlugin } from '../../@types/poku.js';
 import { createReporter } from '../../builders/reporter.js';
 import { format } from '../format.js';
 import { log } from '../write.js';
-import { errors } from './poku.js';
+import { poku } from './poku.js';
 
 export const verbose: ReporterPlugin = (() => {
   return createReporter({
@@ -10,13 +10,9 @@ export const verbose: ReporterPlugin = (() => {
       log(`${format('Running Tests').bold()}\n`);
     },
     onFileResult({ status, path, output }) {
-      if (output) log(output);
+      poku.onFileResult({ status, path, output });
 
-      if (!status)
-        errors.push({
-          file: path.relative,
-          output,
-        });
+      if (!status && output) log(output);
     },
   });
 })();
