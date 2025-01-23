@@ -5,9 +5,7 @@ import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectCLI, isBuild } from '../__utils__/capture-cli.test.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (isBuild) {
-  skip();
-}
+if (isBuild) skip();
 
 const hasNode = (() => {
   try {

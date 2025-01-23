@@ -11,6 +11,7 @@ import { getConfigs } from '../parsers/options.js';
 import { GLOBAL, VERSION } from '../configs/poku.js';
 
 (async () => {
+  /* c8 ignore next 4 */ // Version is tested during build process: "../../tools/build/version.ts"
   if (hasArg('version') || hasArg('v', '-')) {
     log(VERSION);
     return;
@@ -175,5 +176,6 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
   await Promise.all(tasks);
   await poku(dirs);
 
+  /* c8 ignore next 1 */ // Blocked by TSX
   if (watchMode) await require('./watch.js').startWatch(dirs);
 })();

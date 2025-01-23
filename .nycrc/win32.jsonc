@@ -18,6 +18,6 @@
     "src/parsers/runtime-version.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/services/pid.ts", // 100% Process-based
     "src/services/container.ts", // On Windows-based GitHub Actions, it's not possible to pull images based on manifest windows/amd64
-    "src/bin" // TODO: Remove after expose `inpectCLI` and `watchCLI` methods
+    "src/bin/watch.ts" // Blocked by TSX
   ]
 }
