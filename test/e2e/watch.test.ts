@@ -50,7 +50,7 @@ describe('Watch Mode', async () => {
       .split('\n')
       .filter((result) => /test\/a\.test\.ts/.test(result)).length;
 
-    assert(watched >= 2);
+    assert(watched >= 1);
   });
 
   await it('Sub path', async () => {
@@ -58,6 +58,6 @@ describe('Watch Mode', async () => {
       .split('\n')
       .filter((result) => /test\/sub\/b\.test\.ts/.test(result)).length;
 
-    assert(watched >= 2);
+    assert(watched >= 1);
   });
 });

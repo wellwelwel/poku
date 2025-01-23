@@ -1,10 +1,10 @@
 import type { ReporterPlugin } from '../../@types/poku.js';
 import { createReporter } from '../../builders/reporter.js';
-import { indentation } from '../../configs/indentation.js';
 import { hr, log } from '../write.js';
 import { format } from '../format.js';
+import { parseTimeToSecs } from '../../parsers/time.js';
 
-export const mini: ReporterPlugin = createReporter({
+export const focus: ReporterPlugin = createReporter({
   onRunStart() {},
   onDescribeAsTitle() {},
   onDescribeStart() {},
@@ -15,22 +15,10 @@ export const mini: ReporterPlugin = createReporter({
   onTodoModifier() {},
   onSkipModifier() {},
   onSkipFile() {},
-  onRunResult({ results }) {
-    const { files } = results;
-
-    if (files.failed.size === 0) return;
-
-    hr();
-    log(
-      Array.from(files.failed)
-        .map(
-          ([file, time]) =>
-            `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time}ms`).fail()}`).dim()}`
-        )
-        .join('\n')
-    );
+  onFileResult({ status, output }) {
+    if (!status && output) log(output);
   },
-  onExit({ results, code }) {
+  onExit({ timespan, results }) {
     const { files, resume } = results;
 
     if (files.failed.size > 0) hr();
@@ -42,7 +30,7 @@ export const mini: ReporterPlugin = createReporter({
       `${format(String(resume.failed)).bold().dim()} ${format('test file(s) failed').dim()}`
     );
     log(
-      `${format('Exited with code').dim()} ${format(String(code)).bold()[code === 0 ? 'success' : 'fail']()}\n`
+      `${format(`Finished in ±${parseTimeToSecs(timespan.duration)} seconds.`).dim()}`
     );
   },
 });

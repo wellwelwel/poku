@@ -5,7 +5,6 @@ import { results } from '../configs/poku.js';
 import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
-import { log } from './write.js';
 import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
 import { isWindows } from '../parsers/os.js';
 
@@ -15,7 +14,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
   const runtime = runtimeOptions.shift()!;
   const runtimeArguments = [
     ...runtimeOptions,
-    /* c8 ignore next 5 */ // Varies Platform
     configs.deno?.cjs === true ||
     (Array.isArray(configs.deno?.cjs) &&
       configs.deno.cjs.some((ext) => path.includes(ext)))
@@ -67,21 +65,20 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       const result = code === 0;
 
       if (showLogs) {
-        const mappedOutputs = parserOutput({
+        const parsedOutputs = parserOutput({
           output,
           result,
+        })?.join('\n');
+
+        reporter.onFileResult({
+          status: result,
+          output: parsedOutputs,
+          path: {
+            relative: file,
+            absolute: path,
+          },
         });
-
-        mappedOutputs && log(mappedOutputs.join('\n'));
       }
-
-      reporter.onFileResult({
-        status: result,
-        path: {
-          relative: file,
-          absolute: path,
-        },
-      });
 
       if (!(await afterEach(file))) {
         resolve(false);
@@ -96,7 +93,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       resolve(result);
     });
 
-    /* c8 ignore next 10 */ // Unknown external error
     child.on('error', (err) => {
       end = hrtime(start);
 

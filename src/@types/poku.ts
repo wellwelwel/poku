@@ -4,6 +4,8 @@ import type { Configs as ListFilesConfigs } from './list-files.js';
 import type { ProcessAssertionOptions } from './assert.js';
 import type { DescribeOptions } from './describe.js';
 
+type CustomString = string & NonNullable<unknown>;
+
 export type DenoOptions = {
   allow?: string[];
   deny?: string[];
@@ -12,7 +14,14 @@ export type DenoOptions = {
 
 export type Runtime = 'node' | 'bun' | 'deno';
 
-export type Reporter = 'poku' | 'mini' | (string & NonNullable<unknown>);
+export type Reporter =
+  | 'poku'
+  | 'focus'
+  | 'dot'
+  | 'verbose'
+  | 'compact'
+  | 'classic'
+  | CustomString;
 
 export type Configs = {
   /**
@@ -153,7 +162,11 @@ export type ReporterPlugin = (configs?: Configs) => {
   onSkipModifier: (options: { message: string }) => void;
   onTodoModifier: (options: { message: string }) => void;
   onFileStart: (options: { path: Path }) => void;
-  onFileResult: (options: { status: boolean; path: Path }) => void;
+  onFileResult: (options: {
+    status: boolean;
+    path: Path;
+    output?: string;
+  }) => void;
   onRunResult: (options: Results) => void;
   onExit: (options: Results) => void;
 };

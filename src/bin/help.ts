@@ -26,6 +26,10 @@ const summary: [string, string][] = [
   ['--killPort', 'Terminate the specified ports.'],
   ['--killRange', 'Terminate the specified port ranges.'],
   ['--listFiles', 'Display all the files returned in the terminal.'],
+  [
+    '--reporter, -r',
+    'Specify the reporter: poku, dot, compact, focus, verbose.',
+  ],
   ['--only', 'Enable selective execution of tests.'],
   ['--quiet, -q', 'Run tests with no logs.'],
   ['--sequential', 'Run tests files sequentially.'],
@@ -73,7 +77,7 @@ ${sortedSummary
 `;
 
 const footer = `
-${b('Documentation:')} ${u('https://poku.io')}
+${b('Documentation:')} ${u('https://poku.io/docs')}
 
 ${bullet} ${b('Poku')} is made with ${b('love')} and ${b('care')} in every detail.
 ${bullet} Give him a ${b('star')} to show your support 🌟

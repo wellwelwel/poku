@@ -26,7 +26,7 @@ export class Formatter {
     this.text = text;
   }
 
-  private code(code: string) {
+  code(code: string) {
     this.parts += `${ESC}${code}m`;
     return this;
   }
