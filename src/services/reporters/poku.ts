@@ -127,8 +127,6 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       }
     },
     onSkipFile({ message }) {
-      if (!message) return;
-
       log(format(`◯ ${message}`).info().bold());
     },
     onSkipModifier({ message }) {

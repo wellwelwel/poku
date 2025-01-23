@@ -13,7 +13,7 @@
   "statements": 95,
   "lines": 95,
   "functions": 95,
-  "checkCoverage": false,
+  "checkCoverage": true,
   "import": ["tsx"],
   "extension": [".ts"]
 }

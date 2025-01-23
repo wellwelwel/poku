@@ -12,6 +12,8 @@ export const dot: ReporterPlugin = (() => {
     },
     onDescribeAsTitle() {},
     onTodoModifier() {},
+    onSkipModifier() {},
+    onSkipFile() {},
     onFileResult({ path, status, output }) {
       stdout.write(
         status ? String(format('.')) : String(format('F').bold().code('31'))

@@ -158,7 +158,7 @@ export type ReporterPlugin = (configs?: Configs) => {
     assertOptions: ProcessAssertionOptions;
     error: AssertionError;
   }) => void;
-  onSkipFile: (options: { message?: string }) => void;
+  onSkipFile: (options: { message: string }) => void;
   onSkipModifier: (options: { message: string }) => void;
   onTodoModifier: (options: { message: string }) => void;
   onFileStart: (options: { path: Path }) => void;
