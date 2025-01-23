@@ -43,7 +43,7 @@ export async function itBase(
 
     if (!title) return;
 
-    const duration = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+    const duration = end[0] * 1e3 + end[1] / 1e6;
 
     GLOBAL.reporter.onItEnd({ title, duration });
   } catch (error) {

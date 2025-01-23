@@ -42,7 +42,11 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       indentation.hasDescribe = false;
 
       log(
-        `${format(`● ${title}`).success().bold()} ${format(`› ${duration}ms`).success().dim()}`
+        `${format(`● ${title}`).success().bold()} ${format(
+          `› ${duration.toFixed(6)}ms`
+        )
+          .success()
+          .dim()}`
       );
     },
     onItStart({ title }) {
@@ -58,7 +62,11 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       indentation.hasItOrTest = false;
 
       log(
-        `${indentation.hasDescribe ? '  ' : ''}${format(`● ${title}`).success().bold()} ${format(`› ${duration}ms`).success().dim()}`
+        `${indentation.hasDescribe ? '  ' : ''}${format(`● ${title}`).success().bold()} ${format(
+          `› ${duration.toFixed(6)}ms`
+        )
+          .success()
+          .dim()}`
       );
     },
     onAssertionSuccess({ message }) {
@@ -214,7 +222,11 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
         `${format(`Start at  ›  ${format(`${parseTime(timespan.started)}`).bold()}`).dim()}`
       );
       log(
-        `${format('Duration  ›  ').dim()}${format(`${timespan.duration}ms`).bold().dim()} ${format(`(±${parseTimeToSecs(timespan.duration)} seconds)`).dim()}`
+        `${format('Duration  ›  ').dim()}${format(
+          `${timespan.duration.toFixed(6)}ms`
+        )
+          .bold()
+          .dim()} ${format(`(±${parseTimeToSecs(timespan.duration)} seconds)`).dim()}`
       );
       log(
         `${format(`Files     ›  ${format(String(files.passed.size + files.failed.size)).bold()}`).dim()}`

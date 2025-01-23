@@ -101,7 +101,7 @@ export type Timespan = {
   started: Date;
   finished: Date;
   /** Calculation from `process.hrtime()`. */
-  duration: string;
+  duration: number;
 };
 
 export type States = {
@@ -150,9 +150,9 @@ export type ReporterPlugin = (configs?: Configs) => {
   onRunStart: () => void;
   onDescribeAsTitle: (title: string, options: DescribeOptions) => void;
   onDescribeStart: (options: { title?: string }) => void;
-  onDescribeEnd: (options: { title?: string; duration: string }) => void;
+  onDescribeEnd: (options: { title?: string; duration: number }) => void;
   onItStart: (options: { title?: string }) => void;
-  onItEnd: (options: { title?: string; duration: string }) => void;
+  onItEnd: (options: { title?: string; duration: number }) => void;
   onAssertionSuccess: (options: { message: string }) => void;
   onAssertionFailure: (options: {
     assertOptions: ProcessAssertionOptions;
