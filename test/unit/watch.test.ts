@@ -4,38 +4,37 @@ import { it } from '../../src/modules/helpers/it/core.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { beforeEach, afterEach } from '../../src/modules/helpers/each.js';
 import { assert } from '../../src/modules/essentials/assert.js';
-import { getRuntime, nodeVersion } from '../../src/parsers/get-runtime.js';
 import { watch } from '../../src/services/watch.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import type { WatchCallback } from '../../src/@types/watch.js';
+import { runtimeVersion } from '../../src/parsers/runtime-version.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 
-const runtime = getRuntime();
+const { runtime } = GLOBAL;
 
-if (runtime === 'deno' || (nodeVersion && nodeVersion < 16)) {
+if (runtime === 'deno') skip();
+if (runtime === 'node' && runtimeVersion < 16)
   skip('rmSync is available from Node.js 16 onwards');
-}
 
 const tmpDir = path.resolve('.', 'test/__fixtures__/.temp/watch');
 const humanDelay = 750;
 
 const createTempDir = () => {
-  if (!fs.existsSync(tmpDir)) {
-    fs.mkdirSync(tmpDir, { recursive: true });
-  }
+  if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
 
   fs.writeFileSync(path.join(tmpDir, 'file1.test.js'), 'export default {};');
   fs.writeFileSync(path.join(tmpDir, 'file2.test.js'), 'export default {};');
 };
 
 const cleanTempDir = () => {
-  if (fs.existsSync(tmpDir)) {
+  if (fs.existsSync(tmpDir))
     fs.rmSync(tmpDir, { recursive: true, force: true });
-  }
 };
 
 describe('Watcher Service', async () => {
   let callbackResults: { file: string; event: string }[] = [];
+
   const callback: WatchCallback = (file, event) => {
     callbackResults.push({ file, event });
   };

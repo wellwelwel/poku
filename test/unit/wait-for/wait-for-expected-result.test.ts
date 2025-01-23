@@ -1,10 +1,10 @@
 import { test } from '../../../src/modules/helpers/test.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { waitForExpectedResult } from '../../../src/modules/helpers/wait-for.js';
-import { getRuntime } from '../../../src/parsers/get-runtime.js';
+import { GLOBAL } from '../../../src/configs/poku.js';
 
 test('Wait For Expected Result', async () => {
-  const runtime = getRuntime();
+  const { runtime } = GLOBAL;
 
   class SomeClass {}
   function someFunc() {

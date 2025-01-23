@@ -1,11 +1,13 @@
-import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
 import { skip } from '../../src/modules/helpers/skip.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 
-if (getRuntime() === 'deno') skip();
+const { runtime } = GLOBAL;
+
+if (runtime === 'deno') skip();
 
 describe('Failure', async () => {
   await it('Basic', async () => {
@@ -32,7 +34,7 @@ describe('Failure', async () => {
     );
   });
 
-  getRuntime() === 'node' &&
+  runtime === 'node' &&
     !isBuild &&
     (await it('Wrong Sintax', async () => {
       const results = await inspectPoku('invalid-file.js', {

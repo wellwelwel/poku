@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+
 header {
   @include flex(row, center, flex-start);
   gap: 15px;

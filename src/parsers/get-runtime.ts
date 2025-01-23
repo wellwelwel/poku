@@ -1,18 +1,24 @@
+import { env } from 'node:process';
+import { basename } from 'node:path';
 import type { Runtime } from '../@types/poku.js';
-import { version, env } from 'node:process';
-
-declare const Deno: unknown;
-declare const Bun: unknown;
-
-const regex = /v(\d+)\./;
 
 export const getRuntime = (): Runtime => {
-  if (env.POKU_RUNTIME) return env.POKU_RUNTIME as Runtime;
+  const { _, POKU_RUNTIME } = env;
+
+  if (POKU_RUNTIME) return POKU_RUNTIME as Runtime;
+
+  // Unix
+  if (typeof _ === 'string') {
+    const bin = basename(_);
+
+    if (bin.indexOf('bun') !== -1) return 'bun';
+    if (bin.indexOf('deno') !== -1) return 'deno';
+    if (bin.indexOf('node') !== -1 || bin.indexOf('tsx') !== -1) return 'node';
+  }
+
+  // Win32
   if (typeof Deno !== 'undefined') return 'deno';
   if (typeof Bun !== 'undefined') return 'bun';
 
   return 'node';
 };
-
-export const nodeVersion =
-  getRuntime() === 'node' ? Number(version.match(regex)?.[1]) : undefined;

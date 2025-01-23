@@ -13,8 +13,7 @@ describe('Only', async () => {
     });
 
     const actual = results.stdout.split('\n');
-    const offset =
-      actual.findIndex((line) => line.includes('Running Tests')) + 1;
+    const offset = actual.findIndex((line) => line.includes('◌ 1'));
 
     if (results.exitCode !== 0) {
       console.log(results.stdout);
@@ -23,43 +22,43 @@ describe('Only', async () => {
 
     assert.strictEqual(results.exitCode, 0, 'Passed');
 
-    assert.match(actual[offset + 1], /1/);
+    assert.match(actual[offset + 0], /1/);
+    assert.match(actual[offset + 1], /3/);
     assert.match(actual[offset + 2], /3/);
-    assert.match(actual[offset + 3], /3/);
-    assert.match(actual[offset + 4], /1/);
+    assert.match(actual[offset + 3], /1/);
 
+    assert.match(actual[offset + 4], /4/);
     assert.match(actual[offset + 5], /4/);
-    assert.match(actual[offset + 6], /4/);
+    assert.match(actual[offset + 6], /5/);
     assert.match(actual[offset + 7], /5/);
-    assert.match(actual[offset + 8], /5/);
 
-    assert.match(actual[offset + 9], /8/);
+    assert.match(actual[offset + 8], /8/);
+    assert.match(actual[offset + 9], /9/);
     assert.match(actual[offset + 10], /9/);
-    assert.match(actual[offset + 11], /9/);
+    assert.match(actual[offset + 11], /10/);
     assert.match(actual[offset + 12], /10/);
-    assert.match(actual[offset + 13], /10/);
+    assert.match(actual[offset + 13], /11/);
     assert.match(actual[offset + 14], /11/);
-    assert.match(actual[offset + 15], /11/);
-    assert.match(actual[offset + 16], /8/);
+    assert.match(actual[offset + 15], /8/);
 
-    assert.match(actual[offset + 17], /15/);
+    assert.match(actual[offset + 16], /15/);
+    assert.match(actual[offset + 17], /17/);
     assert.match(actual[offset + 18], /17/);
-    assert.match(actual[offset + 19], /17/);
-    assert.match(actual[offset + 20], /15/);
+    assert.match(actual[offset + 19], /15/);
 
-    assert.match(actual[offset + 21], /19/);
+    assert.match(actual[offset + 20], /19/);
+    assert.match(actual[offset + 21], /20/);
     assert.match(actual[offset + 22], /20/);
-    assert.match(actual[offset + 23], /20/);
+    assert.match(actual[offset + 23], /21/);
     assert.match(actual[offset + 24], /21/);
-    assert.match(actual[offset + 25], /21/);
+    assert.match(actual[offset + 25], /22/);
     assert.match(actual[offset + 26], /22/);
-    assert.match(actual[offset + 27], /22/);
-    assert.match(actual[offset + 28], /19/);
+    assert.match(actual[offset + 27], /19/);
 
-    assert.match(actual[offset + 29], /23/);
+    assert.match(actual[offset + 28], /23/);
+    assert.match(actual[offset + 29], /25/);
     assert.match(actual[offset + 30], /25/);
-    assert.match(actual[offset + 31], /25/);
-    assert.match(actual[offset + 32], /23/);
+    assert.match(actual[offset + 31], /23/);
   });
 
   await it('No Poku Runner', async () => {

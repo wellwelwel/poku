@@ -8,11 +8,11 @@ import {
 } from '../../src/modules/helpers/create-service.js';
 import { legacyFetch } from '../__utils__/legacy-fetch.test.js';
 import { ext } from '../__utils__/capture-cli.test.js';
-import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { waitForPort } from '../../src/modules/helpers/wait-for.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 
 test(async () => {
-  const runtime = getRuntime();
+  const { runtime } = GLOBAL;
 
   await describe('Start Service (Single Port)', async () => {
     await it(async () => {

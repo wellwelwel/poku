@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 import { escapeRegExp } from '../modules/helpers/list-files.js';
 import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
-import { states } from '../configs/files.js';
+import { states } from '../configs/poku.js';
 import { format } from '../services/format.js';
 import { kill } from '../modules/helpers/kill.js';
 import { envFile } from '../modules/helpers/env.js';
@@ -11,6 +11,7 @@ import { getConfigs } from '../parsers/options.js';
 import { GLOBAL, VERSION } from '../configs/poku.js';
 
 (async () => {
+  /* c8 ignore next 4 */ // Version is tested during build process: "../../tools/build/version.ts"
   if (hasArg('version') || hasArg('v', '-')) {
     log(VERSION);
     return;
@@ -37,6 +38,11 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
   const killPort = getArg('killPort');
   const killRange = getArg('killRange');
   const killPID = getArg('killPid');
+  const reporter =
+    getArg('reporter') ??
+    getArg('r', '-') ??
+    GLOBAL.configsFromFile.reporter ??
+    'poku';
   /* c8 ignore start */ // Deno
   const denoAllow = argToArray('denoAllow') ?? configsFromFile?.deno?.allow;
   const denoDeny = argToArray('denoDeny') ?? configsFromFile?.deno?.deny;
@@ -112,6 +118,7 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
       cjs: denoCJS,
     },
     noExit: watchMode,
+    reporter,
     beforeEach:
       'beforeEach' in configsFromFile ? configsFromFile.beforeEach : undefined,
     afterEach:
@@ -160,15 +167,19 @@ import { GLOBAL, VERSION } from '../configs/poku.js';
   if (debug || configsFromFile?.debug) {
     hr();
     log(`${format(' Debug Enabled ').bg('brightBlue')}\n`);
-    log(`${format('…').info().italic()} ${format('Paths').bold()}`);
-    console.table(dirs);
-    log('\n');
     log(`${format('…').info().italic()} ${format('Options').bold()}`);
-    console.dir(GLOBAL.configs, { depth: null, colors: true });
+    console.dir(GLOBAL.configs, {
+      depth: Number.POSITIVE_INFINITY,
+      colors: true,
+    });
+    log(
+      `\n${format('💡')} To list all test files, run: ${format('poku --listFiles').bold()}`
+    );
   }
 
   await Promise.all(tasks);
   await poku(dirs);
 
+  /* c8 ignore next 1 */ // Blocked by TSX
   if (watchMode) await require('./watch.js').startWatch(dirs);
 })();

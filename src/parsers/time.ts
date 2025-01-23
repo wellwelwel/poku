@@ -8,8 +8,5 @@ export const parseTime = (date: Date): string => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-export const parseTimeToSecs = (milliseconds: string): string => {
-  const ms = Number(milliseconds);
-
-  return (ms / 1000).toFixed(2);
-};
+export const parseTimeToSecs = (milliseconds: number): string =>
+  (milliseconds / 1000).toFixed(2);

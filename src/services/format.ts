@@ -1,7 +1,3 @@
-import { fileResults } from '../configs/files.js';
-import { indentation } from '../configs/indentation.js';
-import { log, hr } from '../services/write.js';
-
 export const backgroundColor = {
   white: 7,
   black: 40,
@@ -30,7 +26,7 @@ export class Formatter {
     this.text = text;
   }
 
-  private code(code: string) {
+  code(code: string) {
     this.parts += `${ESC}${code}m`;
     return this;
   }
@@ -94,31 +90,3 @@ export const format = (text: string) => Formatter.create(text);
 
 export const getLargestStringLength = (arr: string[]): number =>
   arr.reduce((max, current) => Math.max(max, current.length), 0);
-
-export const showTestResults = () => {
-  hr();
-
-  if (fileResults.success.size > 0 && fileResults.fail.size === 0) {
-    log(
-      Array.from(fileResults.success)
-        .map(
-          ([file, time]) =>
-            `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${time}ms`).success()}`).dim()}`
-        )
-        .join('\n')
-    );
-
-    return;
-  }
-
-  if (fileResults.fail.size > 0) {
-    log(
-      Array.from(fileResults.fail)
-        .map(
-          ([file, time]) =>
-            `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time}ms`).fail()}`).dim()}`
-        )
-        .join('\n')
-    );
-  }
-};

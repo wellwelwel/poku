@@ -2,7 +2,7 @@ import type { Configs } from '../../@types/list-files.js';
 import { env } from 'node:process';
 import { sep, join } from 'node:path';
 import { readdir, stat as fsStat } from 'node:fs/promises';
-import { states } from '../../configs/files.js';
+import { states } from '../../configs/poku.js';
 
 const regex = {
   sep: /[/\\]+/g,

@@ -3,7 +3,7 @@ import { normalize, join } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { JSONC } from '../polyfills/jsonc.js';
 import { GLOBAL } from '../configs/poku.js';
-import { isWindows } from './get-runner.js';
+import { isWindows } from './os.js';
 
 export const getConfigs = async (
   customPath?: string

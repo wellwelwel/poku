@@ -1,30 +1,28 @@
 import { hrtime, env } from 'node:process';
 import { relative } from 'node:path';
 import { spawn } from 'node:child_process';
-import { fileResults } from '../configs/files.js';
-import { isWindows, runner } from '../parsers/get-runner.js';
+import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { beforeEach, afterEach } from './each.js';
-import { log } from './write.js';
 import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
+import { isWindows } from '../parsers/os.js';
 
-const { cwd } = GLOBAL;
-
-export const runTestFile = async (filePath: string): Promise<boolean> => {
-  const runtimeOptions = runner(filePath);
+export const runTestFile = async (path: string): Promise<boolean> => {
+  const { cwd, configs, reporter } = GLOBAL;
+  const runtimeOptions = runner(path);
   const runtime = runtimeOptions.shift()!;
   const runtimeArguments = [
     ...runtimeOptions,
     /* c8 ignore next 5 */ // Varies Platform
-    GLOBAL.configs.deno?.cjs === true ||
-    (Array.isArray(GLOBAL.configs.deno?.cjs) &&
-      GLOBAL.configs.deno.cjs.some((ext) => filePath.includes(ext)))
+    configs.deno?.cjs === true ||
+    (Array.isArray(configs.deno?.cjs) &&
+      configs.deno.cjs.some((ext) => path.includes(ext)))
       ? `https://cdn.jsdelivr.net/npm/poku${VERSION ? `@${VERSION}` : ''}/lib/polyfills/deno.mjs`
-      : filePath,
+      : path,
   ];
 
-  const fileRelative = relative(cwd, filePath);
-  const showLogs = !GLOBAL.configs.quiet;
+  const file = relative(cwd, path);
+  const showLogs = !configs.quiet;
 
   let output = '';
 
@@ -35,7 +33,14 @@ export const runTestFile = async (filePath: string): Promise<boolean> => {
   const start = hrtime();
   let end: ReturnType<typeof hrtime>;
 
-  if (!(await beforeEach(fileRelative))) return false;
+  if (!(await beforeEach(file))) return false;
+
+  reporter.onFileStart({
+    path: {
+      relative: file,
+      absolute: path,
+    },
+  });
 
   return new Promise((resolve) => {
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
@@ -43,8 +48,9 @@ export const runTestFile = async (filePath: string): Promise<boolean> => {
       shell: isWindows,
       env: {
         ...env,
-        POKU_FILE: fileRelative,
+        POKU_FILE: file,
         POKU_RUNTIME: env.POKU_RUNTIME,
+        POKU_REPORTER: configs.reporter,
       },
     });
 
@@ -59,37 +65,51 @@ export const runTestFile = async (filePath: string): Promise<boolean> => {
       const result = code === 0;
 
       if (showLogs) {
-        const mappedOutputs = parserOutput({
+        const parsedOutputs = parserOutput({
           output,
           result,
-        });
+        })?.join('\n');
 
-        mappedOutputs && log(mappedOutputs.join('\n'));
+        const total = end[0] * 1e3 + end[1] / 1e6;
+
+        reporter.onFileResult({
+          status: result,
+          path: {
+            relative: file,
+            absolute: path,
+          },
+          duration: total,
+          output: parsedOutputs,
+        });
       }
 
-      if (!(await afterEach(fileRelative))) {
+      if (!(await afterEach(file))) {
         resolve(false);
         return;
       }
 
-      const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
-
-      if (result) fileResults.success.set(fileRelative, total);
-      else fileResults.fail.set(fileRelative, total);
-
       resolve(result);
     });
 
-    /* c8 ignore next 10 */ // Unknown external error
+    /* c8 ignore start */ // Unknown external error
     child.on('error', (err) => {
       end = hrtime(start);
 
-      const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+      const total = end[0] * 1e3 + end[1] / 1e6;
 
-      console.error(`Failed to start test: ${filePath}`, err);
-      fileResults.fail.set(fileRelative, total);
+      if (showLogs) console.error(`Failed to start test: ${path}`, err);
+
+      reporter.onFileResult({
+        status: false,
+        path: {
+          relative: file,
+          absolute: path,
+        },
+        duration: total,
+      });
 
       resolve(false);
     });
+    /* c8 ignore stop */
   });
 };

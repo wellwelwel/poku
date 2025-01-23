@@ -1,14 +1,14 @@
 import { skip } from '../../../src/modules/helpers/skip.js';
-import { getRuntime, nodeVersion } from '../../../src/parsers/get-runtime.js';
-
-if (nodeVersion && nodeVersion < 16) {
-  skip('Strict method is available from Node.js 16');
-}
-
-if (getRuntime() === 'deno') skip();
-
+import { runtimeVersion } from '../../../src/parsers/runtime-version.js';
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
+import { GLOBAL } from '../../../src/configs/poku.js';
+
+const { runtime } = GLOBAL;
+
+if (runtime === 'deno') skip();
+if (runtime === 'node' && runtimeVersion < 16)
+  skip('Strict method is available from Node.js 16');
 
 describe('Strict Suite (No Message)', async () => {
   const { strict: assert } = await import(

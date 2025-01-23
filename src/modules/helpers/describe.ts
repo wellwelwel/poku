@@ -1,8 +1,5 @@
 import type { DescribeOptions } from '../../@types/describe.js';
 import { hrtime } from 'node:process';
-import { format } from '../../services/format.js';
-import { log } from '../../services/write.js';
-import { indentation } from '../../configs/indentation.js';
 import { todo, skip, onlyDescribe } from './modifiers.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { checkOnly } from '../../parsers/callback.js';
@@ -16,6 +13,8 @@ export async function describeBase(
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;
 
+  const { reporter } = GLOBAL;
+
   if (typeof arg1 === 'string') {
     title = arg1;
 
@@ -26,27 +25,17 @@ export async function describeBase(
     options = arg2 as DescribeOptions;
   }
 
+  const hasCB = typeof cb === 'function';
+
   if (title) {
-    indentation.hasDescribe = true;
-
-    const { background, icon } =
-      options ?? (Object.create(null) as DescribeOptions);
-    const message = `${cb ? format('◌').dim() : (icon ?? '☰')} ${cb ? format(title).dim() : format(title).bold()}`;
-    const noBackground = !background;
-
-    if (noBackground) log(format(message).bold());
-    else
-      log(
-        format(` ${message} `).bg(
-          typeof background === 'string' ? background : 'grey'
-        )
-      );
+    if (hasCB) reporter.onDescribeStart({ title });
+    else reporter.onDescribeAsTitle(title, options as DescribeOptions);
   }
 
-  if (typeof cb !== 'function') return;
+  if (!hasCB) return;
 
   const start = hrtime();
-  const resultCb = cb();
+  const resultCb = cb!();
 
   if (resultCb instanceof Promise) await resultCb;
 
@@ -54,13 +43,11 @@ export async function describeBase(
 
   if (!title) return;
 
-  const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+  const duration = end[0] * 1e3 + end[1] / 1e6;
+
+  reporter.onDescribeEnd({ title, duration });
 
   GLOBAL.runAsOnly = false;
-  indentation.hasDescribe = false;
-  log(
-    `${format(`● ${title}`).success().bold()} ${format(`› ${total}ms`).success().dim()}`
-  );
 }
 
 async function describeCore(

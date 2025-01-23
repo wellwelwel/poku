@@ -7,10 +7,12 @@ const eachCore = async (
   type: keyof Required<Pick<Configs, 'beforeEach' | 'afterEach'>>,
   fileRelative: string
 ): Promise<boolean> => {
-  if (typeof GLOBAL.configs?.[type] !== 'function') return true;
+  const { configs } = GLOBAL;
 
-  const cb = GLOBAL.configs[type];
-  const showLogs = !GLOBAL.configs.quiet;
+  if (typeof configs?.[type] !== 'function') return true;
+
+  const cb = configs[type];
+  const showLogs = !configs.quiet;
   const cbName = cb.name !== type ? cb.name : 'anonymous function';
 
   showLogs &&

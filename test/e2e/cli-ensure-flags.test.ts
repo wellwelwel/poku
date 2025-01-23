@@ -2,14 +2,10 @@ import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
-import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { skip } from '../../src/modules/helpers/skip.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 
-const runtime = getRuntime();
-
-if (isBuild || runtime === 'deno') {
-  skip();
-}
+if (isBuild || GLOBAL.runtime !== 'node') skip();
 
 describe('Enforce Option', async () => {
   await it('--enforce', async () => {

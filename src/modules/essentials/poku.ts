@@ -1,18 +1,16 @@
 import type { Code } from '../../@types/code.js';
 import type { Configs } from '../../@types/poku.js';
 import process from 'node:process';
-import { log, hr } from '../../services/write.js';
 import { exit } from '../helpers/exit.js';
-import { format, showTestResults } from '../../services/format.js';
-import { finalResults } from '../../configs/files.js';
+import { results, timespan } from '../../configs/poku.js';
 import { runTests } from '../../services/run-tests.js';
 import { GLOBAL } from '../../configs/poku.js';
+import { reporter } from '../../services/reporter.js';
 
-/* c8 ignore start */ // Process-based
+/* c8 ignore next 1 */ // Process-based
 export const onSigint = () => process.stdout.write('\u001B[?25h');
 
 process.once('SIGINT', onSigint);
-/* c8 ignore stop */
 
 export async function poku(
   targetPaths: string | string[],
@@ -30,31 +28,32 @@ export async function poku(
 
   if (configs) GLOBAL.configs = { ...GLOBAL.configs, ...configs };
 
-  finalResults.started = new Date();
+  timespan.started = new Date();
 
   const start = process.hrtime();
-  const dirs = Array.prototype.concat(targetPaths);
+  const paths: string[] = Array.prototype.concat(targetPaths);
   const showLogs = !GLOBAL.configs.quiet;
+  const { reporter: plugin } = GLOBAL.configs;
 
-  if (showLogs) {
-    hr();
-    log(`${format('Running Tests').bold()}\n`);
-  }
+  if (typeof plugin === 'string' && plugin !== 'poku')
+    GLOBAL.reporter = reporter[plugin]();
+
+  if (showLogs) GLOBAL.reporter.onRunStart();
 
   try {
-    const promises = dirs.map(async (dir) => await runTests(dir));
+    const promises = paths.map(async (dir) => await runTests(dir));
     const concurrency = await Promise.all(promises);
 
     if (concurrency.some((result) => !result)) code = 1;
   } finally {
     const end = process.hrtime(start);
-    const total = (end[0] * 1e3 + end[1] / 1e6).toFixed(6);
+    const total = end[0] * 1e3 + end[1] / 1e6;
 
-    finalResults.time = total;
+    timespan.duration = total;
+    timespan.finished = new Date();
   }
 
-  showLogs && showTestResults();
-
+  if (showLogs) GLOBAL.reporter.onRunResult({ code, timespan, results });
   if (GLOBAL.configs.noExit) return code;
 
   exit(code, GLOBAL.configs.quiet);

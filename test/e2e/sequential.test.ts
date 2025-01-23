@@ -1,10 +1,10 @@
-import { getRuntime } from '../../src/parsers/get-runtime.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
 import { skip } from '../../src/modules/helpers/skip.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 
-if (getRuntime() === 'deno' || isBuild) skip();
+if (GLOBAL.runtime === 'deno' || isBuild) skip();
 
 describe('Ensure sequential runs', async () => {
   const results = await inspectPoku('--debug --sequential', {

@@ -1,5 +1,7 @@
+@use 'sass:meta' as *;
+@use 'mixins' as *;
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600..800;1,600..800&display=swap');
-@import 'mixins';
 
 :root {
   --ifm-color-primary: #ff4e8c;
@@ -236,8 +238,8 @@ html[data-theme='dark'] {
 }
 
 // Components
-@import './loading';
-@import './faq';
-@import './personal';
-@import './history';
-@import './stability/main';
+@include load-css('loading');
+@include load-css('faq');
+@include load-css('personal');
+@include load-css('history');
+@include load-css('stability/main');

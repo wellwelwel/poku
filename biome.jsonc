@@ -77,7 +77,7 @@
     }
   },
   "javascript": {
-    "globals": ["BufferEncoding"]
+    "globals": ["BufferEncoding", "Bun", "Deno"]
   },
   "overrides": [
     {

@@ -12,8 +12,3 @@ export type Configs = {
    */
   exclude?: RegExp | RegExp[];
 };
-
-export type FileResults = {
-  success: Map<string, string>;
-  fail: Map<string, string>;
-};

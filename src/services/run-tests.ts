@@ -9,7 +9,6 @@ import { availableParallelism } from '../polyfills/os.js';
 import { hasOnly } from '../parsers/get-arg.js';
 
 const { cwd } = GLOBAL;
-const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
 
 if (hasOnly) deepOptions.push('--only');
 
@@ -19,13 +18,15 @@ export const runTests = async (dir: string): Promise<boolean> => {
   let resolveDone: (value: boolean) => void;
   let rejectDone: (reason?: Error) => void;
 
+  const { configs } = GLOBAL;
   const testDir = join(cwd, dir);
-  const files = await listFiles(testDir, GLOBAL.configs);
-  const showLogs = !GLOBAL.configs.quiet;
+  const files = await listFiles(testDir, configs);
+  const showLogs = !configs.quiet;
+  const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
   const concurrency: number = (() => {
-    if (GLOBAL.configs.sequential) return 1;
+    if (configs.sequential) return 1;
     const limit =
-      GLOBAL.configs.concurrency ?? Math.max(availableParallelism() - 1, 1);
+      configs.concurrency ?? Math.max(availableParallelism() - 1, 1);
     return limit <= 0 ? files.length || 1 : limit;
   })();
 
@@ -48,12 +49,12 @@ export const runTests = async (dir: string): Promise<boolean> => {
     try {
       const testPassed = await runTestFile(filePath);
 
-      if (testPassed) ++results.success;
+      if (testPassed) ++results.passed;
       else {
-        ++results.fail;
+        ++results.failed;
         allPassed = false;
 
-        if (GLOBAL.configs.failFast) {
+        if (configs.failFast) {
           if (showLogs) {
             hr();
             console.error(failFastError);
