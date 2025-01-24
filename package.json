@@ -47,7 +47,7 @@
     "lint:fix": "biome lint --write && prettier --write .github/workflows/*.yml .",
     "update": "pu minor && npm i && (npm audit fix || true)",
     "postupdate": "npm run lint:fix",
-    "benchmark": "cd benchmark && npm ci && npm start"
+    "benchmark": "cd benchmark && npm start"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

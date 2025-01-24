@@ -2,39 +2,69 @@
 
 SHORT_SHA=$(git rev-parse --short HEAD)
 
-echo '### 🚀 Benchmark Results\n'
-echo '```'
+HR="\x1b[2;90m-----------------------------------------------------------------------\x1b[0m"
 
-hyperfine -i --warmup 5 --export-json results.json \
-  --command-name "🐷 Poku ($SHORT_SHA)" '../lib/bin/index.js ./test/poku' \
-  --command-name 'Mocha (10.7.3)' './node_modules/mocha/bin/mocha.js --parallel ./test/mocha' \
-  --command-name 'Jest (29.7.0)' 'node --experimental-vm-modules ./node_modules/jest/bin/jest.js ./test/jest' \
-  --command-name 'Vitest (2.1.3)' './node_modules/vitest/vitest.mjs run ./test/vitest' |
-  awk '/Summary/ {flag=1} flag'
+BIN_POKU="node ./node_modules/poku/lib/bin/index.js"
+BIN_MOCHA="node ./node_modules/mocha/bin/mocha.js --parallel"
+BIN_JEST="node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
+BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
+BIN_NODE="node --test"
 
-echo '```\n'
-echo '<details>'
-echo '<summary><h3>🔬 Native Test Runners</h3></summary>\n'
-echo '#### 🐢 Comparative with Node.js\n'
-echo '```'
+rm -rf results
+mkdir -p results/{generalist,assertions,execution/{success,balanced,failure}}
 
-# Not included in results.json
-hyperfine -i --warmup 5 \
-  --command-name 'Node.js' 'node --test "./test/node/**.spec.js"' \
-  --command-name "🐷 Poku ($SHORT_SHA)" '../lib/bin/index.js ./test/poku' |
-  awk '/Summary/ {flag=1} flag'
+h1() {
+  echo "\n\x1b[1;44m $1 \x1b[0m"
+}
 
-echo '```\n'
-echo '#### 🍞 Comparative with Bun\n'
-echo '```'
+quote() {
+  echo "\x1b[90m| $1 \x1b[0m"
+}
 
-# Not included in results.json
-hyperfine -i --warmup 5 \
-  --command-name 'Bun' 'bun test "test/bun/"' \
-  --command-name "🐷 Poku ($SHORT_SHA)" 'bun ../lib/bin/index.js ./test/poku' |
-  awk '/Summary/ {flag=1} flag'
+execution() {
+  local name=$1
+  local bin=$2
+  local dir=$3
+  local path=$4
+  local cmd_src="$bin \"./test/execution/${dir}/${path}\""
+  local cmd_poku="$BIN_POKU \"./test/execution/${dir}/poku\""
+  local title_src="\x1b[1;94msource (${dir}) →\x1b[0m \x1b[90m${cmd_src}\x1b[0m"
+  local title_poku="\x1b[1;95m  poku (${dir}) →\x1b[0m \x1b[90m${cmd_poku}\x1b[0m"
 
-echo '```\n'
-echo '</details>\n'
-echo '> [!NOTE]'
-echo '> 📘 For more details and how the benchmarks are carried out, see the [**benchmark**](https://github.com/wellwelwel/poku/tree/main/benchmark) section.'
+  echo "${HR}\n ${title_src}\n ${title_poku}\n${HR}"
+
+  hyperfine -i --warmup 5 --runs 20 --export-json "results/execution/${dir}/${name}.json" \
+    --command-name "$name" "$cmd_src" \
+    --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/execution/${dir}/poku" 2>/dev/null |
+    awk '/ ran/ {flag=1} flag'
+}
+
+quote "\x1b[1mEXECUTION TESTS"
+quote ""
+quote " Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from Node.js."
+quote ""
+quote " ℹ success:  a suite of 5 tests that will pass."
+quote " ℹ failure:  a suite of 5 tests that will fail."
+quote " ℹ balanced: a suite of 10 tests where 5 tests will fail and 5 tests will pass."
+
+h1 "Jest"
+execution "jest" "$BIN_JEST" "success" "jest"
+execution "jest" "$BIN_JEST" "failure" "jest"
+execution "jest" "$BIN_JEST" "balanced" "jest"
+
+h1 "Vitest"
+execution "vitest" "$BIN_VITEST" "success" "vitest"
+execution "vitest" "$BIN_VITEST" "failure" "vitest"
+execution "vitest" "$BIN_VITEST" "balanced" "vitest"
+
+h1 "Mocha"
+execution "mocha" "$BIN_MOCHA" "success" "mocha/**"
+execution "mocha" "$BIN_MOCHA" "failure" "mocha/**"
+execution "mocha" "$BIN_MOCHA" "balanced" "mocha/**"
+
+h1 "Node.js"
+execution "node" "$BIN_NODE" "success" "node/**/**.spec.js"
+execution "node" "$BIN_NODE" "failure" "node/**/**.spec.js"
+execution "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
+
+echo "\n"
