@@ -11,7 +11,12 @@ BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
 BIN_NODE="node --test"
 
 rm -rf results
-mkdir -p results/{generalist,assertions,execution/{success,balanced,failure}}
+
+mkdir -p results/generalist
+mkdir -p results/assertions
+mkdir -p results/execution/success
+mkdir -p results/execution/balanced
+mkdir -p results/execution/failure
 
 h1() {
   echo "\n$1"
