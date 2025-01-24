@@ -38,17 +38,18 @@ execution() {
 
   echo "${HR}\n ${title_src}\n ${title_poku}\n${HR}"
 
-  hyperfine -i --warmup 5 --runs 20 --export-json "results/execution/${dir}/${name}.json" \
+  hyperfine -i --warmup 5 --runs 10 --export-json "results/execution/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
-    --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/execution/${dir}/poku"
+    --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/execution/${dir}/poku" 2>/dev/null |
+    awk '/ ran/ {flag=1} flag'
 }
 
 quote "EXECUTION TESTS"
 quote ""
 quote " Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from Node.js."
 quote ""
-quote " ℹ success:  a suite of 5 tests that will pass."
-quote " ℹ failure:  a suite of 5 tests that will fail."
+quote " ℹ  success: a suite of 5 tests that will pass."
+quote " ℹ  failure: a suite of 5 tests that will fail."
 quote " ℹ balanced: a suite of 10 tests where 5 tests will fail and 5 tests will pass."
 
 h1 "Jest"
