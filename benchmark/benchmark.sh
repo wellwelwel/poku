@@ -23,7 +23,7 @@ h1() {
 }
 
 h2() {
-  echo "## $1"
+  echo "## $1\n"
 }
 
 h3() {
@@ -96,9 +96,9 @@ execution() {
 
 h1 "🎖️ Benchmarks"
 
+h2 "🏃🏻‍♀️ 1/4 Execution Tests"
+
 quote "[!NOTE]"
-quote ""
-quote "## 🏃🏻‍♀️ 1/4 Execution Tests"
 quote ""
 quote "Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from **Node.js** and searches for files in four levels of depth."
 quote ""
