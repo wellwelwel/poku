@@ -61,7 +61,7 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
-          body-includes: Benchmark Results
+          body-includes: Benchmarks
 
       - name: 🤖 Actions - Creating Comment
         if: steps.fc.outputs.comment-id == ''
