@@ -134,3 +134,9 @@ execution "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
 
 echo ""
 echo "</details>"
+
+echo "$HR"
+
+quote "[!IMPORTANT]"
+quote ""
+quote "Please take into consideration that benchmarks do not indicate the competitiveness of one over the other; rather, they serve as a metric to monitor and objectively assess the current performance state of the project."
