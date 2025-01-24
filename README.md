@@ -250,7 +250,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 - [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
 - [Using **Poku** without installing on **Deno** and alternatives to **JSR**](https://github.com/wellwelwel/poku/discussions/565).
-- [Migrating from version **2.x** to version **3.x** (_rc_)](https://github.com/wellwelwel/poku/issues/801).
+- [Migrating from version **2.x** to version **3.x**](https://github.com/wellwelwel/poku/issues/801).
 
 ---
 
