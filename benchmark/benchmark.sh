@@ -2,7 +2,7 @@
 
 SHORT_SHA=$(git rev-parse --short HEAD)
 
-HR="-----------------------------------------------------------------------"
+HR="\n---\n"
 
 BIN_POKU="node ./node_modules/poku/lib/bin/index.js"
 BIN_MOCHA="node ./node_modules/mocha/bin/mocha.js --parallel"
@@ -19,11 +19,58 @@ mkdir -p results/execution/balanced
 mkdir -p results/execution/failure
 
 h1() {
-  echo "\n$1"
+  echo "# $1\n"
+}
+
+h2() {
+  echo "## $1"
+}
+
+h3() {
+  echo "$HR"
+  echo "### $1"
 }
 
 quote() {
-  echo "| $1"
+  echo "> $1"
+}
+
+li() {
+  echo "- $1"
+}
+
+grid() {
+  quote "<details>"
+  quote "<summary>"
+  quote "See commands"
+  quote "</summary>"
+  quote "<table>"
+  quote "<tr>"
+  quote "<td>"
+  quote "source"
+  quote "</td>"
+  quote "<td>"
+  quote ""
+  quote "\`\`\`sh"
+  quote "$1"
+  quote "\`\`\`"
+  quote ""
+  quote "</td>"
+  quote "</tr>"
+  quote "<tr>"
+  quote "<td>"
+  quote "poku"
+  quote "</td>"
+  quote "<td>"
+  quote ""
+  quote "\`\`\`sh"
+  quote "$2"
+  quote "\`\`\`"
+  quote ""
+  quote "</td>"
+  quote "</tr>"
+  quote "</table>"
+  quote "</details>"
 }
 
 execution() {
@@ -33,43 +80,48 @@ execution() {
   local path=$4
   local cmd_src="$bin \"./test/execution/${dir}/${path}\""
   local cmd_poku="$BIN_POKU \"./test/execution/${dir}/poku\""
-  local title_src="source (${dir}) → ${cmd_src}"
-  local title_poku="  poku (${dir}) → ${cmd_poku}"
 
-  echo "${HR}\n ${title_src}\n ${title_poku}\n${HR}"
-
+  echo ""
+  li "${dir}"
+  echo ""
+  echo "\`\`\`"
   hyperfine -i --warmup 5 --runs 10 --export-json "results/execution/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/execution/${dir}/poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
+  echo "\`\`\`"
+  echo ""
+  grid "$cmd_src" "$cmd_poku"
 }
 
-quote "EXECUTION TESTS"
-quote ""
-quote " Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from Node.js."
-quote ""
-quote " ℹ  success: a suite of 5 tests that will pass."
-quote " ℹ  failure: a suite of 5 tests that will fail."
-quote " ℹ balanced: a suite of 10 tests where 5 tests will fail and 5 tests will pass."
+h1 "🎖️ Benchmarks"
 
-h1 "Jest"
+quote "[!NOTE]"
+quote ""
+quote "## 🏃🏻‍♀️ 1/4 Execution Tests"
+quote ""
+quote "Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from **Node.js**."
+quote ""
+quote "- **success:** a suite of 5 tests that will pass."
+quote "- **failure:** a suite of 5 tests that will fail."
+quote "- **balanced:** a suite of 10 tests where 5 tests will fail and 5 tests will pass."
+
+h3 "🃏 [Jest](https://github.com/jestjs/jest)"
 execution "jest" "$BIN_JEST" "success" "jest"
 execution "jest" "$BIN_JEST" "failure" "jest"
 execution "jest" "$BIN_JEST" "balanced" "jest"
 
-h1 "Vitest"
+h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
 execution "vitest" "$BIN_VITEST" "success" "vitest"
 execution "vitest" "$BIN_VITEST" "failure" "vitest"
 execution "vitest" "$BIN_VITEST" "balanced" "vitest"
 
-h1 "Mocha"
+h3 "☕️ [Mocha](https://github.com/mochajs/mocha)"
 execution "mocha" "$BIN_MOCHA" "success" "mocha/**"
 execution "mocha" "$BIN_MOCHA" "failure" "mocha/**"
 execution "mocha" "$BIN_MOCHA" "balanced" "mocha/**"
 
-h1 "Node.js"
+h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 execution "node" "$BIN_NODE" "success" "node/**/**.spec.js"
 execution "node" "$BIN_NODE" "failure" "node/**/**.spec.js"
 execution "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
-
-echo "\n"
