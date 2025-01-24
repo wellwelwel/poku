@@ -5,8 +5,8 @@
 
 Enjoying **Poku**? Give him a star to show your support 🌟
 
-[![NPM Version](https://img.shields.io/npm/v/poku/rc.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku/v/3.0.0-rc.1)
-[![NPM Downloads](https://img.shields.io/npm/dm/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku/v/3.0.0-rc.1)
+[![NPM Version](https://img.shields.io/npm/v/poku.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
+[![NPM Downloads](https://img.shields.io/npm/dm/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
 [![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://github.com/wellwelwel/poku/tree/main/.nycrc)<br />
 [![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
 [![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
@@ -20,9 +20,9 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 > [!IMPORTANT]
 >
-> **Poku** is growing and <strong>version 3</strong> is on its way! You can already try it by installing the Release Candidate.
+> **Poku `v3`** is here! 🎉
 >
-> - To check out what's coming, follow the [**Issue #801**](https://github.com/wellwelwel/poku/issues/801).
+> - To check out what's changed, follow the [**Issue #801**](https://github.com/wellwelwel/poku/issues/801).
 > - For `v2` documentation, see the [**previous version's documentation**](https://poku.io/docs/2.x.x) and [**README**](https://github.com/wellwelwel/poku/tree/2.x.x?tab=readme-ov-file#readme).<br />
 
 ---
@@ -49,7 +49,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ```bash
 # Node.js
-npm i -D poku@rc
+npm i -D poku
 ```
 
 </td>
@@ -57,7 +57,7 @@ npm i -D poku@rc
 
 ```bash
 # TypeScript (Node.js)
-npm i -D poku@rc tsx
+npm i -D poku tsx
 ```
 
 </td>
@@ -65,7 +65,7 @@ npm i -D poku@rc tsx
 
 ```bash
 # Bun
-bun add -d poku@rc
+bun add -d poku
 ```
 
 </td>
@@ -73,7 +73,7 @@ bun add -d poku@rc
 
 ```bash
 # Deno (optional)
-deno add npm:poku@rc
+deno add npm:poku
 ```
 
 </td>
@@ -131,7 +131,7 @@ bun poku
 <td width="400">
 
 ```bash
-deno run npm:poku@rc
+deno run npm:poku
 ```
 
 </td>

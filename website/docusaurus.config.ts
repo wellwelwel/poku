@@ -38,7 +38,7 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
-              label: 'v3.x.x (Release Candidate)',
+              label: 'v3.x.x',
               // badge: false,
             },
             '2.x.x': {
