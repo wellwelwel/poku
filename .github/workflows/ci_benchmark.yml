@@ -53,9 +53,6 @@ jobs:
           cd benchmark && npm ci
 
       - name: 🎖️ Rock it
-        env:
-          FORCE_COLOR: '1'
-          TERM: 'xterm-256color'
         run: npm run benchmark
 
       # - name: 🐷 Ensure Poku

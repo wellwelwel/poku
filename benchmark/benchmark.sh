@@ -2,7 +2,7 @@
 
 SHORT_SHA=$(git rev-parse --short HEAD)
 
-HR="\x1b[2;90m-----------------------------------------------------------------------\x1b[0m"
+HR="-----------------------------------------------------------------------"
 
 BIN_POKU="node ./node_modules/poku/lib/bin/index.js"
 BIN_MOCHA="node ./node_modules/mocha/bin/mocha.js --parallel"
@@ -14,11 +14,11 @@ rm -rf results
 mkdir -p results/{generalist,assertions,execution/{success,balanced,failure}}
 
 h1() {
-  echo "\n\x1b[1;44m $1 \x1b[0m"
+  echo "\n$1"
 }
 
 quote() {
-  echo "\x1b[90m| $1 \x1b[0m"
+  echo "| $1"
 }
 
 execution() {
@@ -28,18 +28,17 @@ execution() {
   local path=$4
   local cmd_src="$bin \"./test/execution/${dir}/${path}\""
   local cmd_poku="$BIN_POKU \"./test/execution/${dir}/poku\""
-  local title_src="\x1b[1;94msource (${dir}) →\x1b[0m \x1b[90m${cmd_src}\x1b[0m"
-  local title_poku="\x1b[1;95m  poku (${dir}) →\x1b[0m \x1b[90m${cmd_poku}\x1b[0m"
+  local title_src="source (${dir}) → ${cmd_src}"
+  local title_poku="  poku (${dir}) → ${cmd_poku}"
 
   echo "${HR}\n ${title_src}\n ${title_poku}\n${HR}"
 
   hyperfine -i --warmup 5 --runs 20 --export-json "results/execution/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
-    --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/execution/${dir}/poku" 2>/dev/null |
-    awk '/ ran/ {flag=1} flag'
+    --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/execution/${dir}/poku"
 }
 
-quote "\x1b[1mEXECUTION TESTS"
+quote "EXECUTION TESTS"
 quote ""
 quote " Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from Node.js."
 quote ""
