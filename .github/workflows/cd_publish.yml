@@ -23,7 +23,6 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           release-type: node
-          prerelease: true
           package-name: poku
           changelog-path: 'CHANGELOG.md'
 
