@@ -58,7 +58,7 @@ jobs:
         if: ${{ steps.release.outputs.releases_created }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --tag rc --provenance
+        run: npm publish --provenance
 
       - name: 🔗 Triggering — Website Publish
         if: ${{ steps.release.outputs.releases_created }}
