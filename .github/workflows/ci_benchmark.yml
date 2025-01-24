@@ -48,9 +48,13 @@ jobs:
         run: npm ci
 
       - name: 🚀 Building Poku
-        run: npm run build
+        run: |
+          npm run build
+          cd benchmark && npm ci
 
       - name: 🎖️ Rock it
+        env:
+          FORCE_COLOR: '1'
         run: npm run benchmark
 
       # - name: 🐷 Ensure Poku
