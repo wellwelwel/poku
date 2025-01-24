@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.0.0](https://github.com/wellwelwel/poku/compare/v3.0.0-rc.1...v3.0.0) (2025-01-24)
+
+
+### Features
+
+* introduce custom reporters (`poku`, `dot`, `compact`, `focus`, `verbose`, and `classic`) ([#921](https://github.com/wellwelwel/poku/issues/921)) ([b1feeac](https://github.com/wellwelwel/poku/commit/b1feeac327c306bb7febefd422e688de05b963cd))
+
+
+### Miscellaneous Chores
+
+* release 3.0.0 ([4be371d](https://github.com/wellwelwel/poku/commit/4be371da5d54f10158d55b5589f5bd4e7a970e1a))
+
 ## [3.0.0-rc.1](https://github.com/wellwelwel/poku/compare/v3.0.0-rc.0...v3.0.0-rc.1) (2024-12-23)
 
 
