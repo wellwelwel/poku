@@ -270,7 +270,7 @@ const Home = () => {
                   <NodeJS aria-label="Node.js's Logo" />
                 </Heading>
                 <div className='custom-code-block'>
-                  <ConfettiButton toCopy='npm i -D poku@rc' />
+                  <ConfettiButton toCopy='npm i -D poku' />
                 </div>
               </section>
               <section>
@@ -283,7 +283,7 @@ const Home = () => {
                   <TypeScript aria-label="TypeScript's Logo" />
                 </Heading>
                 <div className='custom-code-block'>
-                  <ConfettiButton toCopy='npm i -D poku@rc tsx' />
+                  <ConfettiButton toCopy='npm i -D poku tsx' />
                 </div>
               </section>
               <section>
@@ -291,7 +291,7 @@ const Home = () => {
                   <Bun aria-label="Bun's Logo" />
                 </Heading>
                 <div className='custom-code-block'>
-                  <ConfettiButton toCopy='bun add -d poku@rc' />
+                  <ConfettiButton toCopy='bun add -d poku' />
                 </div>
               </section>
               <section>
@@ -299,7 +299,7 @@ const Home = () => {
                   <Deno aria-label="Deno's Logo" />
                 </Heading>
                 <div className='custom-code-block'>
-                  <ConfettiButton toCopy='deno add npm:poku@rc' />
+                  <ConfettiButton toCopy='deno add npm:poku' />
                 </div>
               </section>
             </menu>
