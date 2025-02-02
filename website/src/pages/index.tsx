@@ -1,8 +1,6 @@
-import Link from '@docusaurus/Link';
 import Head from '@docusaurus/Head';
+import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
-import { ReactTyped } from 'react-typed';
-import { ConfettiButton } from '@site/src/components/Confetti';
 import {
   Album,
   DatabaseZap,
@@ -13,19 +11,20 @@ import {
   PiggyBank,
   Plus,
 } from 'lucide-react';
-import Junior from '@site/static/img/junior.svg';
-import MidLevel from '@site/static/img/mid-level.svg';
-import Senior from '@site/static/img/senior.svg';
-import Maintainer from '@site/static/img/maintainer.svg';
-import Silhouette from '@site/static/img/silhouette-darker.svg';
-import SilhouetteOriginal from '@site/static/img/silhouette.svg';
-import NPM from '@site/static/img/npm.svg';
-import NodeJS from '@site/static/img/node-js.svg';
-import TypeScript from '@site/static/img/typescript.svg';
+import { ReactTyped } from 'react-typed';
+import { ConfettiButton } from '@site/src/components/Confetti';
 import Bun from '@site/static/img/bun.svg';
 import Deno from '@site/static/img/deno.svg';
+import Junior from '@site/static/img/junior.svg';
+import Maintainer from '@site/static/img/maintainer.svg';
+import MidLevel from '@site/static/img/mid-level.svg';
+import NodeJS from '@site/static/img/node-js.svg';
+import NPM from '@site/static/img/npm.svg';
+import Senior from '@site/static/img/senior.svg';
+import Silhouette from '@site/static/img/silhouette-darker.svg';
+import SilhouetteOriginal from '@site/static/img/silhouette.svg';
+import TypeScript from '@site/static/img/typescript.svg';
 
-// Asserts
 import '@site/src/css/home.scss';
 import '@site/src/css/features.scss';
 

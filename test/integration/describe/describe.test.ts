@@ -1,6 +1,6 @@
 import { describe } from '../../../src/modules/helpers/describe.js';
-import { test } from '../../../src/modules/helpers/test.js';
 import { log } from '../../../src/modules/helpers/log.js';
+import { test } from '../../../src/modules/helpers/test.js';
 
 describe('Testing "describe" method', {
   icon: '🔬',

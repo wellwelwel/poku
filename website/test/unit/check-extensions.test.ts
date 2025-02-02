@@ -1,4 +1,4 @@
-import { listFiles, test, strict } from 'poku';
+import { listFiles, strict, test } from 'poku';
 
 const invalidFiles: string[] = [];
 const message = [

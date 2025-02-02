@@ -1,11 +1,10 @@
 import type { Code } from '../../@types/code.js';
 import type { Configs } from '../../@types/poku.js';
 import process from 'node:process';
-import { exit } from '../helpers/exit.js';
-import { results, timespan } from '../../configs/poku.js';
-import { runTests } from '../../services/run-tests.js';
-import { GLOBAL } from '../../configs/poku.js';
+import { GLOBAL, results, timespan } from '../../configs/poku.js';
 import { reporter } from '../../services/reporter.js';
+import { runTests } from '../../services/run-tests.js';
+import { exit } from '../helpers/exit.js';
 
 /* c8 ignore next 1 */ // Process-based
 export const onSigint = () => process.stdout.write('\u001B[?25h');

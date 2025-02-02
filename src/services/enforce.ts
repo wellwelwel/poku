@@ -1,9 +1,9 @@
-import { argv, exit } from 'node:process';
 import { stat } from 'node:fs/promises';
-import { log, hr } from './write.js';
-import { format } from './format.js';
+import { argv, exit } from 'node:process';
 import { GLOBAL } from '../configs/poku.js';
 import { getArg, hasArg } from '../parsers/get-arg.js';
+import { format } from './format.js';
+import { hr, log } from './write.js';
 
 const errors: string[] = [];
 

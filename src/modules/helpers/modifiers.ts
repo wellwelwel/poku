@@ -1,11 +1,11 @@
 import { exit } from 'node:process';
-import { log } from '../../services/write.js';
-import { format } from '../../services/format.js';
-import { itBase } from './it/core.js';
-import { describeBase } from './describe.js';
-import { hasOnly } from '../../parsers/get-arg.js';
-import { CheckNoOnly } from '../../parsers/callback.js';
 import { GLOBAL } from '../../configs/poku.js';
+import { CheckNoOnly } from '../../parsers/callback.js';
+import { hasOnly } from '../../parsers/get-arg.js';
+import { format } from '../../services/format.js';
+import { log } from '../../services/write.js';
+import { describeBase } from './describe.js';
+import { itBase } from './it/core.js';
 
 export function todo(message: string): void;
 export async function todo(

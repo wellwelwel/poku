@@ -1,11 +1,11 @@
 import {
-  beforeEach,
   afterEach,
-  log,
-  test,
-  describe,
   assert,
+  beforeEach,
+  describe,
+  log,
   sleep,
+  test,
 } from '../../../../src/modules/index.js';
 
 const clearFixture = async () => {

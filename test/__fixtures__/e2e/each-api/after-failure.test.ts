@@ -1,11 +1,11 @@
-import { readFile, writeFile, rm, mkdir } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import {
-  beforeEach,
   afterEach,
+  assert,
+  beforeEach,
+  describe,
   log,
   test,
-  describe,
-  assert,
 } from '../../../../src/modules/index.js';
 
 const testDir = '../../.temp/after-failure';

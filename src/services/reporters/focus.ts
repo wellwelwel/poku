@@ -1,8 +1,8 @@
 import type { ReporterPlugin } from '../../@types/poku.js';
 import { createReporter } from '../../builders/reporter.js';
-import { hr, log } from '../write.js';
-import { format } from '../format.js';
 import { parseTimeToSecs } from '../../parsers/time.js';
+import { format } from '../format.js';
+import { hr, log } from '../write.js';
 
 export const focus: ReporterPlugin = (() => {
   let countFails = 0;

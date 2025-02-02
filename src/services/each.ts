@@ -1,7 +1,7 @@
 import type { Configs } from '../@types/poku.js';
-import { format } from './format.js';
-import { log } from '../services/write.js';
 import { GLOBAL } from '../configs/poku.js';
+import { log } from '../services/write.js';
+import { format } from './format.js';
 
 const eachCore = async (
   type: keyof Required<Pick<Configs, 'beforeEach' | 'afterEach'>>,

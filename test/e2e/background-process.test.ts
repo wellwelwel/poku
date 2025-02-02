@@ -1,15 +1,15 @@
-import { test } from '../../src/modules/helpers/test.js';
-import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it/core.js';
+import { ext } from '../__utils__/capture-cli.test.js';
+import { legacyFetch } from '../__utils__/legacy-fetch.test.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import {
   startScript,
   startService,
 } from '../../src/modules/helpers/create-service.js';
-import { legacyFetch } from '../__utils__/legacy-fetch.test.js';
-import { ext } from '../__utils__/capture-cli.test.js';
+import { describe } from '../../src/modules/helpers/describe.js';
+import { it } from '../../src/modules/helpers/it/core.js';
+import { test } from '../../src/modules/helpers/test.js';
 import { waitForPort } from '../../src/modules/helpers/wait-for.js';
-import { GLOBAL } from '../../src/configs/poku.js';
 
 test(async () => {
   const { runtime } = GLOBAL;

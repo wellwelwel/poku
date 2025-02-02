@@ -1,5 +1,5 @@
-import { test } from '../../src/modules/helpers/test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
+import { test } from '../../src/modules/helpers/test.js';
 import { parseResultType } from '../../src/parsers/assert.js';
 
 test('Assert: Parse Result Type', async () => {

@@ -1,6 +1,6 @@
-import { env, exit, cwd } from 'node:process';
 import { createRequire } from 'node:module';
-import { resolve, normalize } from 'node:path';
+import { normalize, resolve } from 'node:path';
+import { cwd, env, exit } from 'node:process';
 
 const file = env?.POKU_FILE;
 if (!file) exit(1);

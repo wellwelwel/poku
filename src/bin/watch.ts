@@ -1,13 +1,14 @@
-import { mapTests, normalizePath } from '../services/map-tests.js';
-import { watch, type Watcher } from '../services/watch.js';
-import { onSigint, poku } from '../modules/essentials/poku.js';
-import { log, hr } from '../services/write.js';
+import type { Watcher } from '../services/watch.js';
 import process from 'node:process';
-import { format } from '../services/format.js';
+import { GLOBAL } from '../configs/poku.js';
+import { onSigint, poku } from '../modules/essentials/poku.js';
 import { getArg } from '../parsers/get-arg.js';
 import { availableParallelism } from '../polyfills/os.js';
-import { GLOBAL } from '../configs/poku.js';
+import { format } from '../services/format.js';
+import { mapTests, normalizePath } from '../services/map-tests.js';
 import { errors } from '../services/reporters/poku.js';
+import { watch } from '../services/watch.js';
+import { hr, log } from '../services/write.js';
 
 export const startWatch = async (dirs: string[]) => {
   let isRunning = false;

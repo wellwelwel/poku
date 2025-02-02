@@ -20,6 +20,26 @@
       "options": {
         "trailingComma": "none"
       }
+    },
+    {
+      "files": "*.{ts,tsx}",
+      "options": {
+        "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+        "importOrder": [
+          "<TYPES>^(node:)",
+          "<TYPES>",
+          "<TYPES>^[.]",
+          "<BUILTIN_MODULES>",
+          "^react$",
+          "^@docusaurus",
+          "^@theme",
+          "<THIRD_PARTY_MODULES>",
+          "^@site",
+          "^[.]",
+          "",
+          ".scss$"
+        ]
+      }
     }
   ]
 }
