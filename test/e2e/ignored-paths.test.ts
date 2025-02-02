@@ -1,10 +1,10 @@
-import { join } from 'node:path';
 import { accessSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
-import { describe } from '../../src/modules/helpers/describe.js';
-import { assert } from '../../src/modules/essentials/assert.js';
+import { join } from 'node:path';
 import { inspectPoku } from '../__utils__/capture-cli.test.js';
-import { isWindows } from '../../src/parsers/os.js';
+import { assert } from '../../src/modules/essentials/assert.js';
+import { describe } from '../../src/modules/helpers/describe.js';
 import { skip } from '../../src/modules/helpers/skip.js';
+import { isWindows } from '../../src/parsers/os.js';
 
 if (isWindows) skip();
 

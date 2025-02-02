@@ -1,8 +1,8 @@
 import type { AssertionError } from 'node:assert';
 import type { results } from '../configs/poku.js';
-import type { Configs as ListFilesConfigs } from './list-files.js';
 import type { ProcessAssertionOptions } from './assert.js';
 import type { DescribeOptions } from './describe.js';
+import type { Configs as ListFilesConfigs } from './list-files.js';
 
 type CustomString = string & NonNullable<unknown>;
 

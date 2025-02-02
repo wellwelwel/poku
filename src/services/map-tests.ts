@@ -1,5 +1,5 @@
-import { relative, dirname } from 'node:path';
-import { stat, readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
+import { dirname, relative } from 'node:path';
 import { listFiles } from '../modules/helpers/list-files.js';
 
 const importMap = new Map<string, Set<string>>();

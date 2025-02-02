@@ -1,8 +1,8 @@
 import type { ReporterPlugin } from '../../@types/poku.js';
-import { indentation } from '../../configs/indentation.js';
-import { log, hr } from '../write.js';
-import { format } from '../format.js';
 import { createReporter } from '../../builders/reporter.js';
+import { indentation } from '../../configs/indentation.js';
+import { format } from '../format.js';
+import { hr, log } from '../write.js';
 import { poku } from './poku.js';
 
 export const classic: ReporterPlugin = (() => {

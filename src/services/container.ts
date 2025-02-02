@@ -1,11 +1,12 @@
+import type { SpawnOptionsWithoutStdio } from 'node:child_process';
 import type {
   DockerComposeConfigs,
   DockerfileConfigs,
 } from '../@types/container.js';
-import { spawn, type SpawnOptionsWithoutStdio } from 'node:child_process';
-import { log } from '../services/write.js';
-import { isWindows } from '../parsers/os.js';
+import { spawn } from 'node:child_process';
 import { sanitizePath } from '../modules/helpers/list-files.js';
+import { isWindows } from '../parsers/os.js';
+import { log } from '../services/write.js';
 
 const runDockerCommand = (
   command: string,

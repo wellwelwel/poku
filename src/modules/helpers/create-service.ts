@@ -3,14 +3,14 @@ import type {
   StartScriptOptions,
   StartServiceOptions,
 } from '../../@types/background-process.js';
-import process from 'node:process';
 import { spawn } from 'node:child_process';
-import { runner, scriptRunner } from '../../parsers/get-runner.js';
 import { normalize } from 'node:path';
-import { sanitizePath } from './list-files.js';
-import { kill } from './kill.js';
-import { log } from '../../services/write.js';
+import process from 'node:process';
+import { runner, scriptRunner } from '../../parsers/get-runner.js';
 import { isWindows } from '../../parsers/os.js';
+import { log } from '../../services/write.js';
+import { kill } from './kill.js';
+import { sanitizePath } from './list-files.js';
 
 const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
   new Map();

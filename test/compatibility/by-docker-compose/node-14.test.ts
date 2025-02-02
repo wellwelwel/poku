@@ -1,6 +1,6 @@
-import { test } from '../../../src/modules/helpers/test.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { docker } from '../../../src/modules/helpers/container.js';
+import { test } from '../../../src/modules/helpers/test.js';
 
 const projectName = 'poku';
 const serviceName = 'node-14';

@@ -1,11 +1,11 @@
-import { env as processEnv } from 'node:process';
 import { readFile } from 'node:fs/promises';
-import { sanitizePath } from './list-files.js';
+import { env as processEnv } from 'node:process';
 import {
   parseEnvLine,
   removeComments,
   resolveEnvVariables,
 } from '../../services/env.js';
+import { sanitizePath } from './list-files.js';
 
 const regex = {
   comment: /^\s*#/,

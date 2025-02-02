@@ -2,8 +2,8 @@ import type {
   WaitForExpectedResultOptions,
   WaitForPortOptions,
 } from '../../@types/wait-for.js';
-import { createConnection } from 'node:net';
 import { deepEqual, deepStrictEqual } from 'node:assert';
+import { createConnection } from 'node:net';
 
 const checkPort = (port: number, host: string): Promise<boolean> =>
   new Promise((resolve) => {

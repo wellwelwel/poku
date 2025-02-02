@@ -1,7 +1,7 @@
 import type { Configs } from '../../@types/list-files.js';
+import { stat as fsStat, readdir } from 'node:fs/promises';
+import { join, sep } from 'node:path';
 import { env } from 'node:process';
-import { sep, join } from 'node:path';
-import { readdir, stat as fsStat } from 'node:fs/promises';
 import { states } from '../../configs/poku.js';
 
 const regex = {

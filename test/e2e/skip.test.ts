@@ -1,7 +1,7 @@
+import { ext, inspectCLI, inspectPoku } from '../__utils__/capture-cli.test.js';
+import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
-import { assert } from '../../src/modules/essentials/assert.js';
-import { ext, inspectPoku, inspectCLI } from '../__utils__/capture-cli.test.js';
 import { runner } from '../../src/parsers/get-runner.js';
 
 describe('Skip', async () => {

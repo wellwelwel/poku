@@ -1,7 +1,7 @@
-import { test } from '../../src/modules/helpers/test.js';
-import { assert } from '../../src/modules/essentials/assert.js';
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
+import { assert } from '../../src/modules/essentials/assert.js';
 import { skip } from '../../src/modules/helpers/skip.js';
+import { test } from '../../src/modules/helpers/test.js';
 
 if (isBuild) skip();
 

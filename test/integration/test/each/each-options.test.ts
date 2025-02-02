@@ -1,6 +1,6 @@
-import { test } from '../../../../src/modules/helpers/test.js';
 import { assert } from '../../../../src/modules/essentials/assert.js';
-import { beforeEach, afterEach } from '../../../../src/modules/helpers/each.js';
+import { afterEach, beforeEach } from '../../../../src/modules/helpers/each.js';
+import { test } from '../../../../src/modules/helpers/test.js';
 
 test('Before and After Each Suite (test)', () => {
   let counter = 0;

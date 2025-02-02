@@ -1,12 +1,12 @@
+import { join, relative } from 'node:path';
 import process from 'node:process';
-import { relative, join } from 'node:path';
+import { deepOptions, GLOBAL, results } from '../configs/poku.js';
 import { listFiles } from '../modules/helpers/list-files.js';
-import { log, hr } from '../services/write.js';
+import { hasOnly } from '../parsers/get-arg.js';
+import { availableParallelism } from '../polyfills/os.js';
+import { hr, log } from '../services/write.js';
 import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
-import { deepOptions, GLOBAL, results } from '../configs/poku.js';
-import { availableParallelism } from '../polyfills/os.js';
-import { hasOnly } from '../parsers/get-arg.js';
 
 const { cwd } = GLOBAL;
 

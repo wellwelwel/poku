@@ -1,7 +1,8 @@
+import type { FSWatcher } from 'node:fs';
 import type { WatchCallback } from '../@types/watch.js';
-import { watch as nodeWatch, type FSWatcher } from 'node:fs';
-import { join } from 'node:path';
+import { watch as nodeWatch } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
+import { join } from 'node:path';
 import { listFiles } from '../modules/helpers/list-files.js';
 
 export class Watcher {

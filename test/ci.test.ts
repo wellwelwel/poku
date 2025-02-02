@@ -1,7 +1,7 @@
 import { poku } from '../src/modules/essentials/poku.js';
-import { test } from '../src/modules/helpers/test.js';
-import { exit } from '../src/modules/helpers/exit.js';
 import { docker } from '../src/modules/helpers/container.js';
+import { exit } from '../src/modules/helpers/exit.js';
+import { test } from '../src/modules/helpers/test.js';
 
 test(async () => {
   const compose = docker.compose({ cwd: './test/__docker__' });

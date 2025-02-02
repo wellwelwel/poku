@@ -1,9 +1,9 @@
 import type { DescribeOptions } from '../../@types/describe.js';
 import { hrtime } from 'node:process';
-import { todo, skip, onlyDescribe } from './modifiers.js';
-import { hasOnly } from '../../parsers/get-arg.js';
-import { checkOnly } from '../../parsers/callback.js';
 import { GLOBAL } from '../../configs/poku.js';
+import { checkOnly } from '../../parsers/callback.js';
+import { hasOnly } from '../../parsers/get-arg.js';
+import { onlyDescribe, skip, todo } from './modifiers.js';
 
 export async function describeBase(
   arg1: string | (() => unknown | Promise<unknown>),

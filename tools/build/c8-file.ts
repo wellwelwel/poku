@@ -1,5 +1,5 @@
-import { platform } from 'node:os';
 import { readFile, writeFile } from 'node:fs/promises';
+import { platform } from 'node:os';
 import { JSONC } from 'jsonc.min';
 
 (async () => {

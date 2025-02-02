@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { test } from '../../../src/modules/helpers/test.js';
-import { poku } from '../../../src/modules/essentials/poku.js';
-import { assert } from '../../../src/modules/essentials/assert.js';
-import { skip } from '../../../src/modules/helpers/skip.js';
 import { GLOBAL } from '../../../src/configs/poku.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { poku } from '../../../src/modules/essentials/poku.js';
+import { skip } from '../../../src/modules/helpers/skip.js';
+import { test } from '../../../src/modules/helpers/test.js';
 
 const { runtime } = GLOBAL;
 

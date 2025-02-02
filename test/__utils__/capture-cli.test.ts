@@ -1,13 +1,13 @@
-import process, { env } from 'node:process';
-import {
-  type ChildProcessWithoutNullStreams,
-  spawn,
-  type SpawnOptionsWithoutStdio,
+import type {
+  ChildProcessWithoutNullStreams,
+  SpawnOptionsWithoutStdio,
 } from 'node:child_process';
-import { runner } from '../../src/parsers/get-runner.js';
-import { kill as pokuKill } from '../../src/modules/helpers/kill.js';
-import { isWindows } from '../../src/parsers/os.js';
+import { spawn } from 'node:child_process';
+import process, { env } from 'node:process';
 import { GLOBAL } from '../../src/configs/poku.js';
+import { kill as pokuKill } from '../../src/modules/helpers/kill.js';
+import { runner } from '../../src/parsers/get-runner.js';
+import { isWindows } from '../../src/parsers/os.js';
 
 export const isBuild = process.env.NODE_ENV === 'build';
 

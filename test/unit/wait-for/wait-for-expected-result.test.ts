@@ -1,7 +1,7 @@
-import { test } from '../../../src/modules/helpers/test.js';
-import { assert } from '../../../src/modules/essentials/assert.js';
-import { waitForExpectedResult } from '../../../src/modules/helpers/wait-for.js';
 import { GLOBAL } from '../../../src/configs/poku.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { waitForExpectedResult } from '../../../src/modules/helpers/wait-for.js';
 
 test('Wait For Expected Result', async () => {
   const { runtime } = GLOBAL;

@@ -1,9 +1,9 @@
 import type { ReporterPlugin } from '../../@types/poku.js';
-import { hr, log } from '../write.js';
-import { format } from '../format.js';
 import { createReporter } from '../../builders/reporter.js';
-import { errors } from './poku.js';
 import { parseTimeToSecs } from '../../parsers/time.js';
+import { format } from '../format.js';
+import { hr, log } from '../write.js';
+import { errors } from './poku.js';
 
 export const compact: ReporterPlugin = (() => {
   let countFails = 0;
