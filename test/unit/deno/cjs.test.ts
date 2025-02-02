@@ -1,9 +1,9 @@
-import process from 'node:process';
 import { spawn } from 'node:child_process';
-import { test } from '../../../src/modules/helpers/test.js';
+import process from 'node:process';
+import { GLOBAL } from '../../../src/configs/poku.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
-import { GLOBAL } from '../../../src/configs/poku.js';
+import { test } from '../../../src/modules/helpers/test.js';
 
 const { runtime } = GLOBAL;
 

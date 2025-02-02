@@ -1,8 +1,8 @@
 import type { ConfigFile, ConfigJSONFile } from '../@types/poku.js';
-import { normalize, join } from 'node:path';
 import { readFile } from 'node:fs/promises';
-import { JSONC } from '../polyfills/jsonc.js';
+import { join, normalize } from 'node:path';
 import { GLOBAL } from '../configs/poku.js';
+import { JSONC } from '../polyfills/jsonc.js';
 import { isWindows } from './os.js';
 
 export const getConfigs = async (

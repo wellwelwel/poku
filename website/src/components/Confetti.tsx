@@ -1,5 +1,5 @@
+import React, { useRef, useState } from 'react';
 import { Copy } from 'lucide-react';
-import React, { useState, useRef } from 'react';
 import Confetti from 'react-confetti';
 import { toast } from 'sonner';
 

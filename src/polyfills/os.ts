@@ -1,6 +1,6 @@
 import {
-  availableParallelism as nodeAvailableParallelism,
   cpus,
+  availableParallelism as nodeAvailableParallelism,
 } from 'node:os';
 
 export const availableParallelism = (): number =>

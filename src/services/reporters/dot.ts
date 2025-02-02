@@ -1,9 +1,9 @@
 import type { ReporterPlugin } from '../../@types/poku.js';
-import { createReporter } from '../../builders/reporter.js';
-import { hr } from '../write.js';
-import { format } from '../format.js';
 import { stdout } from 'node:process';
-import { poku, errors } from './poku.js';
+import { createReporter } from '../../builders/reporter.js';
+import { format } from '../format.js';
+import { hr } from '../write.js';
+import { errors, poku } from './poku.js';
 
 export const dot: ReporterPlugin = (() => {
   return createReporter({

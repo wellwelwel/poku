@@ -1,11 +1,11 @@
+import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
-import { assert } from '../../src/modules/essentials/assert.js';
 import {
-  getArg,
-  hasArg,
   argToArray,
+  getArg,
   getPaths,
+  hasArg,
 } from '../../src/parsers/get-arg.js';
 
 describe('CLI Argument Handling Functions', () => {

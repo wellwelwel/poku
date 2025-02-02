@@ -1,10 +1,10 @@
 import {
-  beforeEach,
   afterEach,
+  assert,
+  beforeEach,
+  describe,
   log,
   test,
-  describe,
-  assert,
 } from '../../../../src/modules/index.js';
 
 const clearFixture = () => {

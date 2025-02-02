@@ -1,5 +1,5 @@
-import { test } from '../../src/modules/helpers/test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
+import { test } from '../../src/modules/helpers/test.js';
 import { findFile } from '../../src/parsers/find-file-from-stack.js';
 
 const setStack = (stack?: string): Error => {

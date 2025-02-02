@@ -1,8 +1,8 @@
-import { skip } from '../../../src/modules/helpers/skip.js';
-import { describe } from '../../../src/modules/helpers/describe.js';
-import { assert } from '../../../src/modules/essentials/assert.js';
-import { runtimeVersion } from '../../../src/parsers/runtime-version.js';
 import { GLOBAL } from '../../../src/configs/poku.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
+import { describe } from '../../../src/modules/helpers/describe.js';
+import { skip } from '../../../src/modules/helpers/skip.js';
+import { runtimeVersion } from '../../../src/parsers/runtime-version.js';
 
 if (GLOBAL.runtime !== 'node') skip();
 if (runtimeVersion < 16) skip('Strict method is available from Node.js 16');

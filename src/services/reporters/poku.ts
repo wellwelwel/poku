@@ -1,14 +1,14 @@
-import type { ReporterPlugin } from '../../@types/poku.js';
-import { indentation } from '../../configs/indentation.js';
-import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
-import { log, hr } from '../write.js';
-import { format } from '../format.js';
-import { GLOBAL } from '../../configs/poku.js';
-import { findFile } from '../../parsers/find-file-from-stack.js';
-import { relative, resolve } from 'node:path';
-import { parseResultType } from '../../parsers/assert.js';
 import type { DescribeOptions } from '../../@types/describe.js';
+import type { ReporterPlugin } from '../../@types/poku.js';
+import { relative, resolve } from 'node:path';
 import { stdout } from 'node:process';
+import { indentation } from '../../configs/indentation.js';
+import { GLOBAL } from '../../configs/poku.js';
+import { parseResultType } from '../../parsers/assert.js';
+import { findFile } from '../../parsers/find-file-from-stack.js';
+import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
+import { format } from '../format.js';
+import { hr, log } from '../write.js';
 
 const regexFile = /file:(\/\/)?/;
 

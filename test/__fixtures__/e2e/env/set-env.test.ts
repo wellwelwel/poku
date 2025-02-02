@@ -1,8 +1,8 @@
 import process from 'node:process';
-import { test } from '../../../../src/modules/helpers/test.js';
-import { assert } from '../../../../src/modules/essentials/assert.js';
-import { runtimeVersion } from '../../../../src/parsers/runtime-version.js';
 import { GLOBAL } from '../../../../src/configs/poku.js';
+import { assert } from '../../../../src/modules/essentials/assert.js';
+import { test } from '../../../../src/modules/helpers/test.js';
+import { runtimeVersion } from '../../../../src/parsers/runtime-version.js';
 
 test('Defining Variables', () => {
   const noValue =

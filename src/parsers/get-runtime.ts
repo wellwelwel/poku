@@ -1,6 +1,6 @@
-import { env } from 'node:process';
-import { basename } from 'node:path';
 import type { Runtime } from '../@types/poku.js';
+import { basename } from 'node:path';
+import { env } from 'node:process';
 
 export const getRuntime = (): Runtime => {
   const { _, POKU_RUNTIME } = env;

@@ -1,9 +1,9 @@
 import { hrtime } from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
-import { todo, skip, onlyIt } from '../modifiers.js';
-import { hasOnly } from '../../../parsers/get-arg.js';
 import { GLOBAL } from '../../../configs/poku.js';
+import { hasOnly } from '../../../parsers/get-arg.js';
+import { onlyIt, skip, todo } from '../modifiers.js';
 
 export async function itBase(
   ...args: [

@@ -1,13 +1,14 @@
-import { env, cwd } from 'node:process';
-import type { Timespan, States } from '../@types/poku.js';
 import type {
   ConfigFile,
   ConfigJSONFile,
   Configs,
   Runtime,
+  States,
+  Timespan,
 } from '../@types/poku.js';
-import { reporter } from '../services/reporter.js';
+import { cwd, env } from 'node:process';
 import { getRuntime } from '../parsers/get-runtime.js';
+import { reporter } from '../services/reporter.js';
 
 export const states = Object.create(null) as States;
 

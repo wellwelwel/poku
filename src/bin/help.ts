@@ -1,5 +1,5 @@
 import { format } from '../services/format.js';
-import { log, hr } from '../services/write.js';
+import { hr, log } from '../services/write.js';
 
 const b = (text: string) => `${format(text).bold()}`;
 const i = (text: string) => `${format(text).italic()}`;

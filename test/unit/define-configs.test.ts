@@ -1,6 +1,6 @@
-import { test } from '../../src/modules/helpers/test.js';
-import { skip } from '../../src/modules/helpers/skip.js';
 import { GLOBAL } from '../../src/configs/poku.js';
+import { skip } from '../../src/modules/helpers/skip.js';
+import { test } from '../../src/modules/helpers/test.js';
 
 if (GLOBAL.runtime === 'deno') skip();
 

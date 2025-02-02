@@ -1,9 +1,10 @@
-import { createServer, type Server } from 'node:http';
-import { test } from '../../../src/modules/helpers/test.js';
-import { it } from '../../../src/modules/helpers/it/core.js';
+import type { Server } from 'node:http';
+import { createServer } from 'node:http';
 import { assert } from '../../../src/modules/essentials/assert.js';
-import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
+import { it } from '../../../src/modules/helpers/it/core.js';
 import { kill } from '../../../src/modules/helpers/kill.js';
+import { test } from '../../../src/modules/helpers/test.js';
+import { waitForPort } from '../../../src/modules/helpers/wait-for.js';
 
 const startServer = (port: number): Promise<Server> =>
   new Promise((resolve) => {

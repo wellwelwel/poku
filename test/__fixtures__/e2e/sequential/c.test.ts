@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
-import { writeFile, rm, mkdir } from 'node:fs/promises';
-import { test, assert } from '../../../../src/modules/index.js';
+import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { assert, test } from '../../../../src/modules/index.js';
 
 test(async () => {
   const testDir = '../../.temp/sequential';

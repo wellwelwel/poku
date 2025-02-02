@@ -4,8 +4,8 @@ import {
   Lightbulb,
   LightbulbOff,
   Microscope,
-  PackageSearch,
   PackageCheck,
+  PackageSearch,
 } from 'lucide-react';
 
 export type StabilityProps = {

@@ -1,14 +1,13 @@
 #! /usr/bin/env node
-import { escapeRegExp } from '../modules/helpers/list-files.js';
-import { getArg, getPaths, hasArg, argToArray } from '../parsers/get-arg.js';
-import { states } from '../configs/poku.js';
-import { format } from '../services/format.js';
-import { kill } from '../modules/helpers/kill.js';
-import { envFile } from '../modules/helpers/env.js';
+import { GLOBAL, states, VERSION } from '../configs/poku.js';
 import { poku } from '../modules/essentials/poku.js';
-import { log, hr } from '../services/write.js';
+import { envFile } from '../modules/helpers/env.js';
+import { kill } from '../modules/helpers/kill.js';
+import { escapeRegExp } from '../modules/helpers/list-files.js';
+import { argToArray, getArg, getPaths, hasArg } from '../parsers/get-arg.js';
 import { getConfigs } from '../parsers/options.js';
-import { GLOBAL, VERSION } from '../configs/poku.js';
+import { format } from '../services/format.js';
+import { hr, log } from '../services/write.js';
 
 (async () => {
   /* c8 ignore next 4 */ // Version is tested during build process: "../../tools/build/version.ts"
