@@ -24,9 +24,9 @@ const config: Config = {
     },
   },
 
-  onBrokenLinks: 'log',
-  onBrokenMarkdownLinks: 'log',
-  onBrokenAnchors: 'log',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'throw',
+  onBrokenAnchors: 'throw',
 
   presets: [
     [
