@@ -29,7 +29,7 @@ export const runTests = async (dir: string): Promise<boolean> => {
     return limit <= 0 ? files.length || 1 : limit;
   })();
 
-  const done = new Promise<boolean>((resolve, reject) => {
+  const done = new Promise<boolean>((resolve) => {
     resolveDone = resolve;
   });
 
