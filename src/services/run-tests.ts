@@ -16,7 +16,6 @@ export const runTests = async (dir: string): Promise<boolean> => {
   let allPassed = true;
   let activeTests = 0;
   let resolveDone: (value: boolean) => void;
-  let rejectDone: (reason?: Error) => void;
 
   const { configs } = GLOBAL;
   const testDir = join(cwd, dir);
@@ -32,7 +31,6 @@ export const runTests = async (dir: string): Promise<boolean> => {
 
   const done = new Promise<boolean>((resolve, reject) => {
     resolveDone = resolve;
-    rejectDone = reject;
   });
 
   const runNext = async () => {
@@ -46,32 +44,30 @@ export const runTests = async (dir: string): Promise<boolean> => {
 
     activeTests++;
 
-    try {
-      const testPassed = await runTestFile(filePath);
+    const testPassed = await runTestFile(filePath);
 
-      if (testPassed) ++results.passed;
-      else {
-        ++results.failed;
-        allPassed = false;
+    if (testPassed) ++results.passed;
+    else {
+      ++results.failed;
+      allPassed = false;
 
-        if (configs.failFast) {
-          if (showLogs) {
-            hr();
-            console.error(failFastError);
-            log(
-              `\n    ${format('File:').bold()} ${format(`./${relative(cwd, filePath)}`).fail()}`
-            );
-            hr();
-          }
-
-          process.exit(1);
+      if (configs.failFast) {
+        if (showLogs) {
+          hr();
+          console.error(failFastError);
+          log(
+            `\n    ${format('File:').bold()} ${format(`./${relative(cwd, filePath)}`).fail()}`
+          );
+          hr();
         }
+
+        process.exit(1);
       }
-    } finally {
-      activeTests--;
     }
 
-    runNext().catch(rejectDone);
+    activeTests--;
+
+    await runNext();
   };
 
   for (let i = 0; i < concurrency; i++) runNext();
