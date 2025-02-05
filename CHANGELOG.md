@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/wellwelwel/poku/compare/v3.0.0...v3.0.1) (2025-02-05)
+
+
+### Bug Fixes
+
+* ensure sequential runs respect the previous test's end ([#940](https://github.com/wellwelwel/poku/issues/940)) ([d486f01](https://github.com/wellwelwel/poku/commit/d486f0199111660c223f028918a4c9437b173e09))
+
 ## [3.0.0](https://github.com/wellwelwel/poku/compare/v3.0.0-rc.1...v3.0.0) (2025-01-24)
 
 
