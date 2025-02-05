@@ -70,7 +70,8 @@ export const runTests = async (dir: string): Promise<boolean> => {
     await runNext();
   };
 
-  for (let i = 0; i < concurrency; i++) runNext();
+  for (let i = 0; i < concurrency; i++)
+    concurrency === 1 ? await runNext() : runNext();
 
   return await done;
 };
