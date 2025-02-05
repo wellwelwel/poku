@@ -22,7 +22,7 @@ const getPIDsByPorts = async (port: number | number[]): Promise<number[]> => {
   return PIDs;
 };
 
-const getPIDsByRange = async (
+const getPIDsByRange = (
   startsAt: number,
   endsAt: number
 ): Promise<number[]> => {

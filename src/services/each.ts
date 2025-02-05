@@ -48,13 +48,13 @@ const eachCore = async (
   }
 };
 
-export const beforeEach = async (fileRelative: string) => {
+export const beforeEach = (fileRelative: string) => {
   if (GLOBAL.configs.beforeEach) return eachCore('beforeEach', fileRelative);
 
   return true;
 };
 
-export const afterEach = async (fileRelative: string) => {
+export const afterEach = (fileRelative: string) => {
   if (GLOBAL.configs.afterEach) return eachCore('afterEach', fileRelative);
 
   return true;
