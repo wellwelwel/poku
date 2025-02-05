@@ -144,7 +144,7 @@ const backgroundProcess = (
   });
 
 /** Starts a file in a background process (useful for servers, APIs, etc.) */
-export const startService = async (
+export const startService = (
   file: string,
   options?: StartServiceOptions
 ): Promise<{ end: End }> => {
@@ -152,7 +152,7 @@ export const startService = async (
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, file];
 
-  return await backgroundProcess(
+  return backgroundProcess(
     runtime,
     runtimeArgs,
     normalize(sanitizePath(file)),
@@ -168,7 +168,7 @@ export const startService = async (
  *
  * By default it uses **npm**, but you can costumize it using the `runner` option.
  */
-export const startScript = async (
+export const startScript = (
   script: string,
   options?: StartScriptOptions
 ): Promise<{ end: End }> => {
@@ -177,7 +177,7 @@ export const startScript = async (
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, script];
 
-  return await backgroundProcess(runtime, runtimeArgs, script, {
+  return backgroundProcess(runtime, runtimeArgs, script, {
     ...options,
     runner,
   });

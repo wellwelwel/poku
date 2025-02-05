@@ -74,5 +74,5 @@ export const runTests = async (dir: string): Promise<boolean> => {
   for (let i = 0; i < concurrency; i++)
     isSequential ? await runNext() : runNext();
 
-  return await done;
+  return done;
 };

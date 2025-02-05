@@ -48,7 +48,7 @@ export const getAllFiles = async (
         return [sanitizePath(dirPath)];
       }
 
-      return await readdir(sanitizePath(dirPath));
+      return readdir(sanitizePath(dirPath));
     } catch (error) {
       console.error(error);
       process.exit(1);
