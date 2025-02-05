@@ -28,6 +28,7 @@ export const runTests = async (dir: string): Promise<boolean> => {
       configs.concurrency ?? Math.max(availableParallelism() - 1, 1);
     return limit <= 0 ? files.length || 1 : limit;
   })();
+  const isSequential = concurrency === 1;
 
   const done = new Promise<boolean>((resolve) => {
     resolveDone = resolve;
@@ -67,11 +68,11 @@ export const runTests = async (dir: string): Promise<boolean> => {
 
     activeTests--;
 
-    concurrency === 1 ? await runNext() : runNext();
+    isSequential ? await runNext() : runNext();
   };
 
   for (let i = 0; i < concurrency; i++)
-    concurrency === 1 ? await runNext() : runNext();
+    isSequential ? await runNext() : runNext();
 
   return await done;
 };
