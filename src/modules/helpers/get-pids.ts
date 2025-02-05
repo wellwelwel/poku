@@ -28,7 +28,7 @@ const getPIDsByRange = async (
 ): Promise<number[]> => {
   const ports = populateRange(startsAt, endsAt);
 
-  return await getPIDs(ports);
+  return getPIDs(ports);
 };
 
 /** Returns an array containing the ID of all processes listening to the specified port */

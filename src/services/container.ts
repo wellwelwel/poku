@@ -97,7 +97,7 @@ export class DockerContainer {
 
     if (this.envFile) args.push(...['--env-file', this.envFile]);
 
-    return await runDockerCommand(
+    return runDockerCommand(
       'docker',
       [...args, this.tagName],
       { cwd: this.cwd },
@@ -106,7 +106,7 @@ export class DockerContainer {
   }
 
   async stop() {
-    return await runDockerCommand(
+    return runDockerCommand(
       'docker',
       ['stop', this.containerName],
       { cwd: this.cwd },
@@ -174,12 +174,7 @@ export class DockerCompose {
     if (this.build) args.push('--build');
     if (this.serviceName) args.push(this.serviceName);
 
-    return await runDockerCommand(
-      'docker',
-      args,
-      { cwd: this.cwd },
-      this.verbose
-    );
+    return runDockerCommand('docker', args, { cwd: this.cwd }, this.verbose);
   }
 
   async down() {
@@ -188,7 +183,7 @@ export class DockerCompose {
     if (this.envFile) args.push(...['--env-file', this.envFile]);
     if (this.projectName) args.push(...['-p', this.projectName]);
 
-    return await runDockerCommand(
+    return runDockerCommand(
       'docker',
       ['compose', ...args, 'down'],
       { cwd: this.cwd },

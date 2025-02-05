@@ -152,7 +152,7 @@ export const startService = async (
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, file];
 
-  return await backgroundProcess(
+  return backgroundProcess(
     runtime,
     runtimeArgs,
     normalize(sanitizePath(file)),
@@ -177,7 +177,7 @@ export const startScript = async (
   const runtime = runtimeOptions.shift()!;
   const runtimeArgs = [...runtimeOptions, script];
 
-  return await backgroundProcess(runtime, runtimeArgs, script, {
+  return backgroundProcess(runtime, runtimeArgs, script, {
     ...options,
     runner,
   });
