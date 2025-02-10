@@ -2,39 +2,141 @@
 
 SHORT_SHA=$(git rev-parse --short HEAD)
 
-echo '### 🚀 Benchmark Results\n'
-echo '```'
+HR="\n---\n"
 
-hyperfine -i --warmup 5 --export-json results.json \
-  --command-name "🐷 Poku ($SHORT_SHA)" '../lib/bin/index.js ./test/poku' \
-  --command-name 'Mocha (10.7.3)' './node_modules/mocha/bin/mocha.js --parallel ./test/mocha' \
-  --command-name 'Jest (29.7.0)' 'node --experimental-vm-modules ./node_modules/jest/bin/jest.js ./test/jest' \
-  --command-name 'Vitest (2.1.3)' './node_modules/vitest/vitest.mjs run ./test/vitest' |
-  awk '/Summary/ {flag=1} flag'
+BIN_POKU="node ./node_modules/poku/lib/bin/index.js"
+BIN_MOCHA="node ./node_modules/mocha/bin/mocha.js --parallel"
+BIN_JEST="node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
+BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
+BIN_NODE="node --test"
 
-echo '```\n'
-echo '<details>'
-echo '<summary><h3>🔬 Native Test Runners</h3></summary>\n'
-echo '#### 🐢 Comparative with Node.js\n'
-echo '```'
+rm -rf results
 
-# Not included in results.json
-hyperfine -i --warmup 5 \
-  --command-name 'Node.js' 'node --test "./test/node/**.spec.js"' \
-  --command-name "🐷 Poku ($SHORT_SHA)" '../lib/bin/index.js ./test/poku' |
-  awk '/Summary/ {flag=1} flag'
+mkdir -p results/generalist
+mkdir -p results/assertions
+mkdir -p results/execution/success
+mkdir -p results/execution/balanced
+mkdir -p results/execution/failure
 
-echo '```\n'
-echo '#### 🍞 Comparative with Bun\n'
-echo '```'
+h1() {
+  echo "# $1\n"
+}
 
-# Not included in results.json
-hyperfine -i --warmup 5 \
-  --command-name 'Bun' 'bun test "test/bun/"' \
-  --command-name "🐷 Poku ($SHORT_SHA)" 'bun ../lib/bin/index.js ./test/poku' |
-  awk '/Summary/ {flag=1} flag'
+h2() {
+  echo "## $1\n"
+}
 
-echo '```\n'
-echo '</details>\n'
-echo '> [!NOTE]'
-echo '> 📘 For more details and how the benchmarks are carried out, see the [**benchmark**](https://github.com/wellwelwel/poku/tree/main/benchmark) section.'
+h3() {
+  echo "$HR"
+  echo "### $1"
+}
+
+quote() {
+  echo "> $1"
+}
+
+li() {
+  echo "- $1"
+}
+
+grid() {
+  quote "<details>"
+  quote "<summary>"
+  quote "See commands"
+  quote "</summary>"
+  quote "<table>"
+  quote "<tr>"
+  quote "<td>"
+  quote "source"
+  quote "</td>"
+  quote "<td>"
+  quote ""
+  quote "\`\`\`sh"
+  quote "$1"
+  quote "\`\`\`"
+  quote ""
+  quote "</td>"
+  quote "</tr>"
+  quote "<tr>"
+  quote "<td>"
+  quote "poku"
+  quote "</td>"
+  quote "<td>"
+  quote ""
+  quote "\`\`\`sh"
+  quote "$2"
+  quote "\`\`\`"
+  quote ""
+  quote "</td>"
+  quote "</tr>"
+  quote "</table>"
+  quote "</details>"
+}
+
+execution() {
+  local name=$1
+  local bin=$2
+  local dir=$3
+  local path=$4
+  local cmd_src="$bin \"./test/execution/${dir}/${path}\""
+  local cmd_poku="$BIN_POKU \"./test/execution/${dir}/poku\""
+
+  echo ""
+  li "${dir}"
+  echo ""
+  echo "\`\`\`"
+  hyperfine -i --warmup 5 --runs 10 --export-json "results/execution/${dir}/${name}.json" \
+    --command-name "$name" "$cmd_src" \
+    --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/execution/${dir}/poku" 2>/dev/null |
+    awk '/ ran/ {flag=1} flag'
+  echo "\`\`\`"
+  echo ""
+  grid "$cmd_src" "$cmd_poku"
+}
+
+h1 "🎖️ Benchmarks"
+
+h2 "🏃🏻‍♀️ 1/4 Execution Tests"
+
+quote "[!NOTE]"
+quote ""
+quote "Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from **Node.js** and searches for files in four levels of depth."
+quote ""
+quote "- **success:** a suite of 5 tests that will pass."
+quote "- **failure:** a suite of 5 tests that will fail."
+quote "- **balanced:** a suite of 10 tests where 5 tests will fail and 5 tests will pass."
+
+echo ""
+echo "<details>"
+echo "<summary>"
+echo "See Results"
+echo "</summary>"
+
+h3 "🃏 [Jest](https://github.com/jestjs/jest)"
+execution "jest" "$BIN_JEST" "success" "jest"
+execution "jest" "$BIN_JEST" "failure" "jest"
+execution "jest" "$BIN_JEST" "balanced" "jest"
+
+h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
+execution "vitest" "$BIN_VITEST" "success" "vitest"
+execution "vitest" "$BIN_VITEST" "failure" "vitest"
+execution "vitest" "$BIN_VITEST" "balanced" "vitest"
+
+h3 "☕️ [Mocha](https://github.com/mochajs/mocha)"
+execution "mocha" "$BIN_MOCHA" "success" "mocha/**"
+execution "mocha" "$BIN_MOCHA" "failure" "mocha/**"
+execution "mocha" "$BIN_MOCHA" "balanced" "mocha/**"
+
+h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
+execution "node" "$BIN_NODE" "success" "node/**/**.spec.js"
+execution "node" "$BIN_NODE" "failure" "node/**/**.spec.js"
+execution "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
+
+echo ""
+echo "</details>"
+
+echo "$HR"
+
+quote "[!IMPORTANT]"
+quote ""
+quote "Please take into consideration that benchmarks do not indicate the competitiveness of one over the other; rather, they serve as a metric to monitor and objectively assess the current performance state of the project."

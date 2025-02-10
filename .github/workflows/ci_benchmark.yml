@@ -7,7 +7,7 @@ on:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     strategy:
       fail-fast: false
     name: Compare
@@ -48,37 +48,39 @@ jobs:
         run: npm ci
 
       - name: 🚀 Building Poku
-        run: npm run build
+        run: |
+          npm run build
+          cd benchmark && npm ci
 
       - name: 🎖️ Rock it
         run: npm run benchmark
 
-      # - name: Find Comment
-      #   uses: peter-evans/find-comment@v3
-      #   id: fc
-      #   with:
-      #     issue-number: ${{ github.event.pull_request.number }}
-      #     comment-author: 'github-actions[bot]'
-      #     body-includes: Benchmark Results
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Benchmarks
 
-      # - name: 🤖 Actions - Creating Comment
-      #   if: steps.fc.outputs.comment-id == ''
-      #   uses: peter-evans/create-or-update-comment@v4
-      #   with:
-      #     issue-number: ${{ github.event.pull_request.number }}
-      #     body-path: './benchmark/output.md'
+      - name: 🤖 Actions - Creating Comment
+        if: steps.fc.outputs.comment-id == ''
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: './benchmark/output.md'
 
-      # - name: 🤖 Actions - Updating Comment
-      #   if: steps.fc.outputs.comment-id != ''
-      #   uses: peter-evans/create-or-update-comment@v4
-      #   with:
-      #     comment-id: ${{ steps.fc.outputs.comment-id }}
-      #     issue-number: ${{ github.event.pull_request.number }}
-      #     edit-mode: replace
-      #     body-path: './benchmark/output.md'
+      - name: 🤖 Actions - Updating Comment
+        if: steps.fc.outputs.comment-id != ''
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body-path: './benchmark/output.md'
 
-      - name: 🐷 Ensure Poku
-        run: |
-          cd benchmark
-          SHORT_SHA=$(git rev-parse --short HEAD)
-          jq -e ".results | sort_by(.mean) | .[0].command == \"🐷 Poku ($SHORT_SHA)\"" results.json
+      # - name: 🐷 Ensure Poku
+      #   run: |
+      #     cd benchmark
+      #     SHORT_SHA=$(git rev-parse --short HEAD)
+      #     jq -e ".results | sort_by(.mean) | .[0].command == \"🐷 Poku ($SHORT_SHA)\"" results.json
