@@ -1,6 +1,6 @@
 {
   "name": "poku",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno, and you at the same time.",
   "main": "./lib/modules/index.js",
   "license": "MIT",
@@ -52,12 +52,12 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
-    "@types/node": "^22.12.0",
+    "@types/node": "^22.13.1",
     "c8": "^10.1.3",
     "jsonc.min": "^1.1.0",
-    "monocart-coverage-reports": "^2.12.0",
+    "monocart-coverage-reports": "^2.12.1",
     "packages-update": "^2.0.0",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.0",
     "tsx": "4.19.2",
     "typescript": "^5.7.3"
   },
