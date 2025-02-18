@@ -6,6 +6,7 @@ on:
 
 permissions:
   issues: write
+  pull-requests: write
 
 jobs:
   benchmark:
@@ -65,6 +66,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: Benchmarks
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🤖 Actions - Creating Comment
         if: steps.fc.outputs.comment-id == ''
@@ -72,6 +74,7 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body-path: './benchmark/output.md'
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🤖 Actions - Updating Comment
         if: steps.fc.outputs.comment-id != ''
@@ -81,6 +84,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           edit-mode: replace
           body-path: './benchmark/output.md'
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🐷 Ensure Poku
         run: |
