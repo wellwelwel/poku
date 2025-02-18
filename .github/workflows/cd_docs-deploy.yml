@@ -7,6 +7,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: github.event.repository.fork == false
     name: Deploy
     steps:
       - name: Actions - Checkout
