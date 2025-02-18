@@ -4,6 +4,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  issues: write
+
 jobs:
   benchmark:
     runs-on: ubuntu-latest
