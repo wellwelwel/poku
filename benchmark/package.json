@@ -1,12 +1,13 @@
 {
   "type": "module",
   "scripts": {
-    "start": "sh benchmark.sh | tee output.md"
+    "start": "sh benchmark.sh | tee output.md",
+    "compare": "node comparison.js"
   },
   "devDependencies": {
     "jest": "29.7.0",
-    "mocha": "10.8.2",
+    "mocha": "11.1.0",
     "poku": "file:..",
-    "vitest": "2.1.8"
+    "vitest": "3.0.6"
   }
 }

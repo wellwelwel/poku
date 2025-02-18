@@ -79,8 +79,7 @@ jobs:
           edit-mode: replace
           body-path: './benchmark/output.md'
 
-      # - name: 🐷 Ensure Poku
-      #   run: |
-      #     cd benchmark
-      #     SHORT_SHA=$(git rev-parse --short HEAD)
-      #     jq -e ".results | sort_by(.mean) | .[0].command == \"🐷 Poku ($SHORT_SHA)\"" results.json
+      - name: 🐷 Ensure Poku
+        run: |
+          cd benchmark
+          npm run compare
