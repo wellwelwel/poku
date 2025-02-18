@@ -3,7 +3,7 @@
 
 # Poku
 
-Enjoying **Poku**? Give him a star to show your support 🌟
+Enjoying **Poku**? Give him a star to show your support ✨
 
 [![NPM Version](https://img.shields.io/npm/v/poku.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
 [![NPM Downloads](https://img.shields.io/npm/dm/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
