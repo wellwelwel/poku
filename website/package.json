@@ -36,7 +36,7 @@
     "react-confetti": "^6.2.3",
     "react-dom": "^18.3.1",
     "react-typed": "^2.0.12",
-    "sass": "^1.85.0",
+    "sass": "^1.85.1",
     "sonner": "^1.7.4"
   },
   "devDependencies": {
