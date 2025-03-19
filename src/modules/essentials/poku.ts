@@ -37,11 +37,11 @@ export async function poku(
   const { reporter: plugin } = GLOBAL.configs;
   const { cwd } = GLOBAL;
 
-  const testFiles = [
-    ...(await Promise.all(
+  const testFiles = (
+    await Promise.all(
       paths.map((dir) => listFiles(join(cwd, dir), GLOBAL.configs))
-    )),
-  ].flat();
+    )
+  ).flat(1);
 
   if (typeof plugin === 'string' && plugin !== 'poku')
     GLOBAL.reporter = reporter[plugin]();
