@@ -1,7 +1,6 @@
-import { join, relative } from 'node:path';
-import process from 'node:process';
+import { relative } from 'node:path';
+import { exit } from 'node:process';
 import { deepOptions, GLOBAL, results } from '../configs/poku.js';
-import { listFiles } from '../modules/helpers/list-files.js';
 import { hasOnly } from '../parsers/get-arg.js';
 import { availableParallelism } from '../polyfills/os.js';
 import { hr, log } from '../services/write.js';
@@ -12,14 +11,12 @@ const { cwd } = GLOBAL;
 
 if (hasOnly) deepOptions.push('--only');
 
-export const runTests = async (dir: string): Promise<boolean> => {
+export const runTests = async (files: string[]): Promise<boolean> => {
   let allPassed = true;
   let activeTests = 0;
   let resolveDone: (value: boolean) => void;
 
   const { configs } = GLOBAL;
-  const testDir = join(cwd, dir);
-  const files = await listFiles(testDir, configs);
   const showLogs = !configs.quiet;
   const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
   const concurrency: number = (() => {
@@ -62,7 +59,7 @@ export const runTests = async (dir: string): Promise<boolean> => {
           hr();
         }
 
-        process.exit(1);
+        exit(1);
       }
     }
 

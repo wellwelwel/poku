@@ -21,12 +21,12 @@ const stopServer = (server: Server): Promise<void> =>
 
 test('Wait For Port', async () => {
   try {
-    await kill.range(8000, 8003);
+    await kill.range(8001, 8004);
   } catch {}
 
   await Promise.all([
     it(async () => {
-      const port = 8000;
+      const port = 8001;
       const server = await startServer(port);
 
       try {
@@ -40,7 +40,7 @@ test('Wait For Port', async () => {
     }),
 
     it(async () => {
-      const port = 8001;
+      const port = 8002;
       const server = await startServer(port);
 
       try {
@@ -54,7 +54,7 @@ test('Wait For Port', async () => {
     }),
 
     it(async () => {
-      const port = 8002;
+      const port = 8003;
 
       try {
         await waitForPort(port, { timeout: 1000 });
@@ -69,7 +69,7 @@ test('Wait For Port', async () => {
     }),
 
     it(async () => {
-      const port = 8003;
+      const port = 8004;
       const server = await startServer(port);
 
       try {
@@ -97,6 +97,6 @@ test('Wait For Port', async () => {
   ]);
 
   try {
-    await kill.range(8000, 8003);
+    await kill.range(8001, 8004);
   } catch {}
 });
