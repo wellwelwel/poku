@@ -25,8 +25,6 @@ export async function poku(
   targetPaths: string | string[],
   configs?: Configs
 ): Promise<Code | undefined> {
-  let code: Code = 0;
-
   if (configs) GLOBAL.configs = { ...GLOBAL.configs, ...configs };
 
   timespan.started = new Date();
@@ -46,21 +44,15 @@ export async function poku(
   if (typeof plugin === 'string' && plugin !== 'poku')
     GLOBAL.reporter = reporter[plugin]();
 
-  try {
-    if (showLogs) GLOBAL.reporter.onRunStart();
+  if (showLogs) GLOBAL.reporter.onRunStart();
 
-    const result = await runTests(testFiles);
+  const result = await runTests(testFiles);
+  const code: Code = result ? 0 : 1;
+  const end = process.hrtime(start);
+  const total = end[0] * 1e3 + end[1] / 1e6;
 
-    if (!result) code = 1;
-  } catch {
-    code = 1;
-  } finally {
-    const end = process.hrtime(start);
-    const total = end[0] * 1e3 + end[1] / 1e6;
-
-    timespan.duration = total;
-    timespan.finished = new Date();
-  }
+  timespan.duration = total;
+  timespan.finished = new Date();
 
   if (showLogs) GLOBAL.reporter.onRunResult({ code, timespan, results });
   if (GLOBAL.configs.noExit) return code;
