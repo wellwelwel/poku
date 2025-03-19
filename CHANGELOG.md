@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/wellwelwel/poku/compare/v3.0.1...v3.0.2) (2025-03-19)
+
+
+### Bug Fixes
+
+* ensure concurrency for multiple inputs ([#973](https://github.com/wellwelwel/poku/issues/973)) ([3902d1c](https://github.com/wellwelwel/poku/commit/3902d1c08f5efb4ee9bc669f56500470fc418f17))
+
 ## [3.0.1](https://github.com/wellwelwel/poku/compare/v3.0.0...v3.0.1) (2025-02-05)
 
 
