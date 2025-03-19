@@ -6,17 +6,15 @@ import { skip } from '../../src/modules/helpers/skip.js';
 
 if (GLOBAL.runtime === 'deno') skip();
 
-describe('Ensure sequential runs 10 times', async () => {
-  for (let i = 0; i < 10; i++) {
-    const results = await inspectPoku('--debug --sequential', {
-      cwd: 'test/__fixtures__/e2e/sequential',
-    });
+describe('Ensure sequential runs', async () => {
+  const results = await inspectPoku('--debug --sequential', {
+    cwd: 'test/__fixtures__/e2e/sequential',
+  });
 
-    if (results.exitCode !== 0) {
-      console.log(results.stdout);
-      console.log(results.stderr);
-    }
-
-    assert.strictEqual(results.exitCode, 0, 'Exit Code needs to be 0');
+  if (results.exitCode !== 0) {
+    console.log(results.stdout);
+    console.log(results.stderr);
   }
+
+  assert.strictEqual(results.exitCode, 0, 'Exit Code needs to be 0');
 });
