@@ -23,7 +23,6 @@ process.on('unhandledRejection', (err) => {
   process.exitCode = 1;
 });
 
-/* c8 ignore next 5 */ // Unknown external error
 process.on('uncaughtException', (err) => {
   if (!(err instanceof AssertionError)) console.error('uncaughtException', err);
 
