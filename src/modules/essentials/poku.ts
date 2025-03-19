@@ -39,7 +39,7 @@ export async function poku(
 
   const testFiles = [
     ...(await Promise.all(
-      paths.map((dir) => listFiles(join(cwd, dir), configs))
+      paths.map((dir) => listFiles(join(cwd, dir), GLOBAL.configs))
     )),
   ].flat();
 
