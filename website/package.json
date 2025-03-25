@@ -45,7 +45,7 @@
     "@docusaurus/tsconfig": "^3.7.0",
     "@docusaurus/types": "^3.7.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.13.13",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.1",
