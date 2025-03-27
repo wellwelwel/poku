@@ -297,9 +297,15 @@ See the [**Contributing Guide**](https://github.com/wellwelwel/poku/blob/main/CO
 
 ## Acknowledgements
 
+### Contributors
+
 [![Contributors](https://img.shields.io/github/contributors/wellwelwel/poku?color=9c88ff)](https://github.com/wellwelwel/poku/graphs/contributors)
 
 [![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)](https://opencollective.com/poku/contributors.svg?button=false)
+
+### Sponsors
+
+[![Sponsors](https://wellwelwel.github.io/wellwelwel/sponsors.svg?v=1)](https://github.com/sponsors/wellwelwel)
 
 ---
 
