@@ -2,6 +2,9 @@ name: '🎖️ CI — Benchmark'
 
 on:
   pull_request:
+    paths:
+      - 'benchmark/**'
+      - 'src/**'
   workflow_dispatch:
 
 permissions:
