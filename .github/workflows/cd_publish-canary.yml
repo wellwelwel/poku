@@ -33,6 +33,7 @@ jobs:
              [[ "$MESSAGE" =~ build\(deps\) ]] ||
              [[ "$MESSAGE" =~ chore\(main\) ]] ||
              [[ "$MESSAGE" =~ chore\(deps\) ]] ||
+             [[ "$MESSAGE" =~ chore\(deps-dev\) ]] ||
              [[ "$MESSAGE" =~ chore:\ update\ dependencies ]] ||
              [[ "$MESSAGE" =~ docs: ]] ||
              [[ "$MESSAGE" =~ ci: ]] ||
