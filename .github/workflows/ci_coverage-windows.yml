@@ -6,7 +6,7 @@ on:
       - 'main'
   pull_request:
     paths:
-      - '.github/**'
+      - '.github/workflows/ci_coverage-windows.yml'
       - '.nycrc/**'
       - 'src/**'
       - 'test/**'
