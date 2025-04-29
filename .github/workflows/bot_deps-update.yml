@@ -2,8 +2,6 @@
 name: '⏫ Bot — Dependencies'
 
 on:
-  schedule:
-    - cron: '0 15 * * 1-5'
   workflow_dispatch:
 
 env:
