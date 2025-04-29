@@ -299,11 +299,15 @@ See the [**Contributing Guide**](https://github.com/wellwelwel/poku/blob/main/CO
 
 ### Contributors
 
-[![Contributors](https://img.shields.io/github/contributors-anon/wellwelwel/poku?color=9c88ff)](https://github.com/wellwelwel/poku/graphs/contributors)
+My thanks to everyone who has dedicated their time and effort to improving **Poku**.
 
 [![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)](https://opencollective.com/poku/contributors.svg?button=false)
 
 ### Sponsors
+
+Really thanks to everyone who has supported and keeps supporting my work.
+
+> _Also for the private ones, who don't appear here_ 🕵
 
 [![Sponsors](https://wellwelwel.github.io/wellwelwel/sponsors.svg?v=1)](https://github.com/sponsors/wellwelwel)
 
