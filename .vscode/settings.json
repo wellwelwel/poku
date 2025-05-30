@@ -11,5 +11,8 @@
   },
   "[markdown]": {
     "files.trimTrailingWhitespace": false
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }

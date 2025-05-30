@@ -41,10 +41,10 @@ services:
     environment:
       NODE_ENV: build
 
-  node-23:
-    container_name: 'node-23'
+  node-24:
+    container_name: 'node-24'
     build:
       context: ../../
-      dockerfile: ./test/__docker__/node/23.Dockerfile
+      dockerfile: ./test/__docker__/node/24.Dockerfile
     environment:
       NODE_ENV: build
