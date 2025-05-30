@@ -3,7 +3,7 @@ import { docker } from '../../../src/modules/helpers/container.js';
 import { test } from '../../../src/modules/helpers/test.js';
 
 const projectName = 'poku';
-const serviceName = 'node-23';
+const serviceName = 'node-24';
 
 test(`Compatibility Tests: ${serviceName}`, async () => {
   const dockerfile = docker.dockerfile({
