@@ -14,6 +14,11 @@ export type DenoOptions = {
 
 export type Runtime = 'node' | 'bun' | 'deno';
 
+export type CoverageOptions = {
+  dir?: string;
+  reports?: string[];
+};
+
 export type Reporter =
   | 'poku'
   | 'focus'
@@ -95,6 +100,7 @@ export type Configs = {
    */
   afterEach?: () => unknown | Promise<unknown>;
   deno?: DenoOptions;
+  coverage?: CoverageOptions;
 } & ListFilesConfigs;
 
 export type Timespan = {
