@@ -57,6 +57,9 @@ import { hr, log } from '../services/write.js';
   const debug = hasArg('debug') || hasArg('d', '-') || configsFromFile?.debug;
   const failFast = hasArg('failFast') || configsFromFile?.failFast;
   const watchMode = hasArg('watch') || hasArg('w', '-');
+  const coverageEnabled = hasArg('coverage') || typeof configsFromFile?.coverage === 'object';
+  const coverageDir = getArg('coverageDir') ?? configsFromFile?.coverage?.dir ?? 'coverage';
+  const coverageReports = argToArray('coverageReport') ?? configsFromFile?.coverage?.reports ?? ['text', 'html'];
   const hasEnvFile = hasArg('envFile');
   const concurrency = (() => {
     const value = Number(getArg('concurrency'));
@@ -116,8 +119,9 @@ import { hr, log } from '../services/write.js';
       deny: denoDeny,
       cjs: denoCJS,
     },
-    noExit: watchMode,
+    noExit: watchMode || coverageEnabled,
     reporter,
+    coverage: coverageEnabled ? { dir: coverageDir, reports: coverageReports } : undefined,
     beforeEach:
       'beforeEach' in configsFromFile ? configsFromFile.beforeEach : undefined,
     afterEach:
@@ -177,7 +181,20 @@ import { hr, log } from '../services/write.js';
   }
 
   await Promise.all(tasks);
-  await poku(dirs);
+
+  if(coverageEnabled) {
+    await require('../services/coverage.js').coverageStart(coverageDir);
+  }
+
+  const code = await poku(dirs);
+
+  if(coverageEnabled) {
+    await require('../services/coverage.js').coverageReport(coverageReports);
+  }
+
+  if(coverageEnabled && !watchMode) {
+    require('../modules/helpers/exit.js').exit(code, GLOBAL.configs.quiet);
+  }
 
   /* c8 ignore next 1 */ // Blocked by TSX
   if (watchMode) await require('./watch.js').startWatch(dirs);

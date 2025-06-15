@@ -36,4 +36,6 @@ export const GLOBAL = {
   envFile: undefined as string | undefined,
   runtime: (env.POKU_RUNTIME || getRuntime()) as Runtime,
   runAsOnly: false,
+  coverageDir: undefined as string | undefined,
+  coverageTempDir: undefined as string | undefined,
 };
