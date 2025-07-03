@@ -8,6 +8,7 @@ import { argToArray, getArg, getPaths, hasArg } from '../parsers/get-arg.js';
 import { getConfigs } from '../parsers/options.js';
 import { format } from '../services/format.js';
 import { hr, log } from '../services/write.js';
+import { coverageReport, coverageStart } from '@pokujs/c8';
 
 (async () => {
   /* c8 ignore next 4 */ // Version is tested during build process: "../../tools/build/version.ts"
@@ -183,13 +184,13 @@ import { hr, log } from '../services/write.js';
   await Promise.all(tasks);
 
   if(coverageEnabled) {
-    await require('../services/coverage.js').coverageStart(coverageDir);
+    await coverageStart(coverageDir);
   }
 
   const code = await poku(dirs);
 
   if(coverageEnabled) {
-    await require('../services/coverage.js').coverageReport(coverageReports);
+    await coverageReport(coverageReports);
   }
 
   if(coverageEnabled && !watchMode) {
