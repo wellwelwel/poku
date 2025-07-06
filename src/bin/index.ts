@@ -8,7 +8,6 @@ import { argToArray, getArg, getPaths, hasArg } from '../parsers/get-arg.js';
 import { getConfigs } from '../parsers/options.js';
 import { format } from '../services/format.js';
 import { hr, log } from '../services/write.js';
-import { coverageReport, coverageStart } from '@pokujs/c8';
 
 (async () => {
   /* c8 ignore next 4 */ // Version is tested during build process: "../../tools/build/version.ts"
@@ -183,14 +182,40 @@ import { coverageReport, coverageStart } from '@pokujs/c8';
 
   await Promise.all(tasks);
 
+  const validateErrorImportCoveragec8 = (error: unknown) => {
+    if (
+        typeof error === 'object' &&
+        error !== null &&
+        'code' in error &&
+        'message' in error &&
+        (error as { code?: string; message?: string }).code === 'MODULE_NOT_FOUND' &&
+        (error as { message?: string }).message?.includes('@pokujs/c8')
+      ) {
+        console.error(`❌ Optional module "@pokujs/c8" not found. Install it to enable code coverage: npm install --save-dev @pokujs/c8`);
+        process.exit(1);
+      } else {
+        throw error;
+      }
+  }
+
+  //TODO: add support for command --coverage=c8
   if(coverageEnabled) {
-    await coverageStart(coverageDir);
+    try {
+      await require('@pokujs/c8').coverageStart(coverageDir);
+    } catch (error: unknown) {
+      validateErrorImportCoveragec8(error);
+    }
   }
 
   const code = await poku(dirs);
 
+  //TODO: add support for command --coverage=c8
   if(coverageEnabled) {
-    await coverageReport(coverageReports);
+    try {
+      await require('@pokujs/c8').coverageReport(coverageReports);
+    } catch (error: unknown) {
+      validateErrorImportCoveragec8(error);
+    }
   }
 
   if(coverageEnabled && !watchMode) {
