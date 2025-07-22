@@ -10,7 +10,7 @@ const regex = {
   unusualChars: /[<>|^?*]+/g,
   absolutePath: /^[/\\]/,
   safeRegExp: /[.*{}[\]\\]/g,
-  defaultFilter: /\.(test|spec)\./i,
+  defaultFilter: /\.(test|spec|resource)\./i,
 } as const;
 
 export const sanitizePath = (input: string, ensureTarget?: boolean): string => {

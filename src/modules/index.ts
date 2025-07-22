@@ -21,6 +21,13 @@ export { getPIDs } from './helpers/get-pids.js';
 export { exit } from './helpers/exit.js';
 export { log } from './helpers/log.js';
 export { listFiles } from './helpers/list-files.js';
+export {
+  createSharedResource,
+  dispatchSharedResourceAction,
+  subscribeToSharedResource,
+  getSharedResource,
+  setupSharedResourceIPC,
+} from './helpers/shared-resources.js';
 export { VERSION as version } from '../configs/poku.js';
 
 export type { Code } from '../@types/code.js';

@@ -1,13 +1,18 @@
+import type { SharedResourceEntry } from '../modules/helpers/shared-resources.js';
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
 import { env, hrtime } from 'node:process';
 import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
+import { setupSharedResourceIPC } from '../modules/helpers/shared-resources.js';
 import { runner } from '../parsers/get-runner.js';
 import { isWindows } from '../parsers/os.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
 
-export const runTestFile = async (path: string): Promise<boolean> => {
+export const runTestFile = async (
+  path: string,
+  registry: Record<string, SharedResourceEntry>
+): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
   const runtime = runtimeOptions.shift()!;
@@ -44,7 +49,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   return new Promise((resolve) => {
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
-      stdio: ['inherit', 'pipe', 'pipe'],
+      stdio: ['inherit', 'pipe', 'pipe', 'ipc'],
       shell: isWindows,
       env: {
         ...env,
@@ -54,10 +59,12 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       },
     });
 
-    child.stdout.setEncoding('utf8');
-    child.stderr.setEncoding('utf8');
-    child.stdout.on('data', stdOut);
-    child.stderr.on('data', stdOut);
+    child.stdout!.setEncoding('utf8');
+    child.stderr!.setEncoding('utf8');
+    child.stdout!.on('data', stdOut);
+    child.stderr!.on('data', stdOut);
+
+    setupSharedResourceIPC(child, registry);
 
     child.on('close', async (code) => {
       end = hrtime(start);
