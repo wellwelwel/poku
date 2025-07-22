@@ -22,12 +22,6 @@ test('should set message in shared resource from file B', async () => {
   const resource =
     await getSharedResource<SharedResourceType>('sharedResource');
 
-  process.send!({
-    type: 'RESOURCE_RESULT',
-    id: 'test-file-b',
-    value: resource,
-  });
-
   assert.ok(
     resource.messages.includes('Message from File B'),
     'Initial message not set correctly'
