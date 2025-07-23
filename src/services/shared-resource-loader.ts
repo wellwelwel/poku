@@ -2,6 +2,8 @@ import type {
   createSharedResource,
   SharedResourceEntry,
 } from '../modules/helpers/shared-resources.js';
+import { relative } from 'node:path';
+import { GLOBAL } from '../configs/poku.js';
 
 /**
  * Execute resource files (*.resource.ts) in the current process
@@ -11,7 +13,6 @@ export async function executeResourceFiles(
   files: string[],
   registry: Record<string, SharedResourceEntry>
 ): Promise<void> {
-  // Execute each resource file in the current process
   for (const file of files) {
     const { entry, name } = await executeResourceFile(file);
     registry[name] = entry as SharedResourceEntry;
@@ -22,8 +23,11 @@ export async function executeResourceFiles(
  * Execute a single resource file in the parent process
  * Loads the resource module, gets the default export (should be { entry, name }), and registers it
  */
-async function executeResourceFile(filePath: string) {
-  const mod = await import(filePath);
+async function executeResourceFile(path: string) {
+  const { cwd } = GLOBAL;
+  const file = relative(cwd, path);
+
+  const mod = await import(path);
   const resource = mod.default as ReturnType<typeof createSharedResource>;
 
   if (
@@ -33,7 +37,7 @@ async function executeResourceFile(filePath: string) {
     !resource.name
   ) {
     throw new Error(
-      `Resource file ${filePath} does not export a valid default resource object`
+      `Resource file ${file} does not export a valid default resource object`
     );
   }
 

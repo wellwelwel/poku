@@ -23,8 +23,6 @@ export { log } from './helpers/log.js';
 export { listFiles } from './helpers/list-files.js';
 export {
   createSharedResource,
-  dispatchSharedResourceAction,
-  subscribeToSharedResource,
   getSharedResource,
   setupSharedResourceIPC,
 } from './helpers/shared-resources.js';
