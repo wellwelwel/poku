@@ -1,4 +1,5 @@
 import type EventEmitter from 'node:events';
+import { env } from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
 
 const SHARED_RESOURCE_MESSAGE_TYPES = {
@@ -63,7 +64,7 @@ export interface SharedResourceEntry<T = unknown> {
 }
 
 type MethodsToRPC<T> = {
-  // biome-ignore lint/suspicious/noExplicitAny: any
+  // biome-ignore lint/suspicious/noExplicitAny: testing for function extensions
   [K in keyof T]: T[K] extends (...args: any[]) => any
     ? (
         ...args: Parameters<T[K]>
@@ -74,7 +75,7 @@ type MethodsToRPC<T> = {
 };
 
 type MethodsOf<T> = {
-  // biome-ignore lint/suspicious/noExplicitAny: any
+  // biome-ignore lint/suspicious/noExplicitAny: testing for function extensions
   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
 }[keyof T];
 
@@ -93,7 +94,12 @@ type ReturnTypeOf<T> =
     : never;
 
 function assertSharedResourcesActive() {
-  if (!GLOBAL.configs.sharedResources) {
+  if (
+    // on parent process, it will be available through GLOBAL.configs
+    !GLOBAL.configs.sharedResources &&
+    // on child process, it will be available through env variable
+    env.POKU_SHARED_RESOURCES !== 'true'
+  ) {
     throw new Error(
       'Shared resources are not enabled. Please enable them in your configuration.'
     );
