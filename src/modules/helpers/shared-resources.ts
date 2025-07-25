@@ -266,7 +266,7 @@ export function setupSharedResourceIPC<T>(
   });
 }
 
-function constructSharedResourceWithRPCs<T extends SharedResource>(
+export function constructSharedResourceWithRPCs<T extends SharedResource>(
   resource: T,
   rpcs: MethodsOf<T>[],
   name: string

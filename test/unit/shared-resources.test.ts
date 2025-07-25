@@ -1,6 +1,7 @@
 import type { IPCEventEmitter } from '../../src/modules/helpers/shared-resources.js';
 import { EventEmitter } from 'node:events';
 import {
+  constructSharedResourceWithRPCs,
   createSharedResource,
   extractFunctionNames,
   getSharedResourceFactory,
@@ -56,4 +57,30 @@ test('getSharedResourceFactory should return a function', () => {
 test('remoteProcedureCallFactory should return a function', () => {
   const remoteProcedureCall = remoteProcedureCallFactory();
   assert.strictEqual(typeof remoteProcedureCall, 'function');
+});
+
+test('constructSharedResourceWithRPCs should create a shared resource with RPCs', async () => {
+  const resource = {
+    messages: [] as string[],
+    addMessage: function (msg: string) {
+      this.messages.push(msg);
+    },
+  };
+
+  const rpcs = extractFunctionNames(resource);
+  const sharedResource = constructSharedResourceWithRPCs(
+    resource,
+    rpcs,
+    'testResource'
+  );
+
+  await assert.rejects(
+    // will reject because it won't be able to add messages,
+    // Meaning it indeed was transformed into a remote procedure call
+    () => sharedResource.addMessage('Hello')
+  );
+
+  // the messages array should be empty as it
+  // was transformed into a remote procedure call
+  assert.deepStrictEqual(sharedResource.messages, []);
 });
