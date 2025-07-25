@@ -57,20 +57,3 @@ test('remoteProcedureCallFactory should return a function', () => {
   const remoteProcedureCall = remoteProcedureCallFactory();
   assert.strictEqual(typeof remoteProcedureCall, 'function');
 });
-
-// test('should call events on IPCEventEmitter', () => {
-//   const mockProcess = new MockProcess();
-//   const remoteProcedureCall = remoteProcedureCallFactory(mockProcess);
-//   remoteProcedureCall<
-//     {
-//       testMethod: (args: number[]) => string;
-//     },
-//     'testMethod'
-//   >('testResource', 'testMethod', [1, 2, 3]);
-
-//   assert.strictEqual(mockProcess.sent.length, 1);
-//   const message = mockProcess.sent[0];
-//   assert.strictEqual(message.type, 'shared_resources_remoteProcedureCall');
-//   assert.strictEqual(message.name, 'testResource');
-//   assert.strictEqual(message.method, 'testMethod');
-// });

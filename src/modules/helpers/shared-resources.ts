@@ -1,4 +1,5 @@
 import type EventEmitter from 'node:events';
+import { GLOBAL } from '../../configs/poku.js';
 
 const SHARED_RESOURCE_MESSAGE_TYPES = {
   GET_RESOURCE: 'shared_resources_getResource',
@@ -56,7 +57,7 @@ type IPCResponse =
   | IPCResourceUpdatedMessage
   | IPCRemoteProcedureCallResultMessage;
 
-interface SharedResourceEntry<T = unknown> {
+export interface SharedResourceEntry<T = unknown> {
   state: T;
   subscribers: Set<(state: T) => void>;
 }
@@ -91,10 +92,19 @@ type ReturnTypeOf<T> =
       : never
     : never;
 
+function assertSharedResourcesActive() {
+  if (!GLOBAL.configs.sharedResources) {
+    throw new Error(
+      'Shared resources are not enabled. Please enable them in your configuration.'
+    );
+  }
+}
+
 export function createSharedResource<T>(
   name: string,
   factory: () => T
 ): { entry: SharedResourceEntry<T>; name: string } {
+  assertSharedResourcesActive();
   const entry: SharedResourceEntry<T> = {
     state: factory(),
     subscribers: new Set<(state: T) => void>(),
@@ -117,6 +127,7 @@ export function remoteProcedureCallFactory(
     result: TResult;
     latest: TResource;
   }> {
+    assertSharedResourcesActive();
     return new Promise((resolve, reject) => {
       const requestId = `${name}-${String(method)}-${Date.now()}-${Math.random()}`;
 
@@ -173,6 +184,7 @@ export function setupSharedResourceIPC<T>(
   child: IPCEventEmitter,
   registry: Record<string, SharedResourceEntry<T>>
 ): void {
+  assertSharedResourcesActive();
   child.on('message', async (message: IPCMessage) => {
     if (!message || typeof message.type !== 'string') return;
     switch (message.type) {
@@ -289,6 +301,7 @@ export function getSharedResourceFactory(
   return function getSharedResource<T extends SharedResource>(
     name: string
   ): Promise<MethodsToRPC<T>> {
+    assertSharedResourcesActive();
     return new Promise((resolve, reject) => {
       const requestId = `${name}-${Date.now()}-${Math.random()}`;
 

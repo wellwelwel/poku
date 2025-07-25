@@ -21,7 +21,9 @@ export const runTests = async (files: string[]): Promise<boolean> => {
 
   const registry: Record<string, SharedResourceEntry> = {};
 
-  await executeResourceFiles(resourceFiles, registry);
+  if (GLOBAL.configs.sharedResources) {
+    await executeResourceFiles(resourceFiles, registry);
+  }
 
   let allPassed = true;
   let activeTests = 0;

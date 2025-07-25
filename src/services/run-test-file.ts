@@ -1,3 +1,4 @@
+import type { StdioOptions } from 'node:child_process';
 import type {
   IPCEventEmitter,
   SharedResourceEntry,
@@ -50,9 +51,13 @@ export const runTestFile = async (
     },
   });
 
+  const stdio = GLOBAL.configs.sharedResources
+    ? (['inherit', 'pipe', 'pipe', 'ipc'] as StdioOptions)
+    : (['inherit', 'pipe', 'pipe'] as StdioOptions);
+
   return new Promise((resolve) => {
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
-      stdio: ['inherit', 'pipe', 'pipe', 'ipc'],
+      stdio,
       shell: isWindows,
       env: {
         ...env,
