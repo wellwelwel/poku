@@ -66,6 +66,7 @@ test(async () => {
       const exitCode = await poku('test/unit', {
         exclude: /watch|map-tests/,
         noExit: true,
+        sharedResources: true,
       });
 
       assert.strictEqual(exitCode, 0, 'Passed');
@@ -76,6 +77,7 @@ test(async () => {
         concurrency: 4,
         exclude: [/watch/, /map-tests/],
         noExit: true,
+        sharedResources: true,
       });
 
       assert.strictEqual(exitCode, 0, 'Passed');
@@ -89,6 +91,7 @@ test(async () => {
           filter: /\.(test|spec)\./,
           failFast: true,
           noExit: true,
+          sharedResources: true,
         }
       );
 
