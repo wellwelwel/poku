@@ -1,4 +1,4 @@
-import type { ChildProcess } from 'node:child_process';
+import type EventEmitter from 'node:events';
 
 const SHARED_RESOURCE_MESSAGE_TYPES = {
   GET_RESOURCE: 'shared_resources_getResource',
@@ -7,6 +7,10 @@ const SHARED_RESOURCE_MESSAGE_TYPES = {
   REMOTE_PROCEDURE_CALL: 'shared_resources_remoteProcedureCall',
   REMOTE_PROCEDURE_CALL_RESULT: 'shared_resources_remoteProcedureCallResult',
 } as const;
+
+export interface IPCEventEmitter extends EventEmitter {
+  send: (message: unknown, ...args: unknown[]) => boolean;
+}
 
 type SharedResource = Record<string, unknown>;
 
@@ -24,7 +28,7 @@ type IPCRemoteProcedureCallMessage = {
   args: unknown[];
 };
 
-export type IPCMessage = IPCGetMessage | IPCRemoteProcedureCallMessage;
+type IPCMessage = IPCGetMessage | IPCRemoteProcedureCallMessage;
 
 type IPCResourceResultMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT;
@@ -47,12 +51,12 @@ type IPCRemoteProcedureCallResultMessage<T = unknown> = {
   error?: string;
 };
 
-export type IPCResponse =
+type IPCResponse =
   | IPCResourceResultMessage
   | IPCResourceUpdatedMessage
   | IPCRemoteProcedureCallResultMessage;
 
-export interface SharedResourceEntry<T = unknown> {
+interface SharedResourceEntry<T = unknown> {
   state: T;
   subscribers: Set<(state: T) => void>;
 }
@@ -98,62 +102,66 @@ export function createSharedResource<T>(
   return { entry, name };
 }
 
-export async function remoteProcedureCall<
-  TResource,
-  TMethod extends MethodsOf<TResource>,
-  TResult = ReturnTypeOf<TResource[TMethod]>,
->(
-  name: string,
-  method: TMethod,
-  ...args: ArgumentsOf<TResource[TMethod]>
-): Promise<{
-  result: TResult;
-  latest: TResource;
-}> {
-  return new Promise((resolve, reject) => {
-    const requestId = `${name}-${String(method)}-${Date.now()}-${Math.random()}`;
+export function remoteProcedureCallFactory(
+  proc: IPCEventEmitter = process as IPCEventEmitter
+) {
+  return async function remoteProcedureCall<
+    TResource,
+    TMethod extends MethodsOf<TResource>,
+    TResult = ReturnTypeOf<TResource[TMethod]>,
+  >(
+    name: string,
+    method: TMethod,
+    ...args: ArgumentsOf<TResource[TMethod]>
+  ): Promise<{
+    result: TResult;
+    latest: TResource;
+  }> {
+    return new Promise((resolve, reject) => {
+      const requestId = `${name}-${String(method)}-${Date.now()}-${Math.random()}`;
 
-    const responseHandler = (
-      message: IPCRemoteProcedureCallResultMessage<
-        ReturnTypeOf<TResource[TMethod]>
-      >
-    ) => {
-      if (
-        message.type ===
-          SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT &&
-        message.id === requestId
-      ) {
-        process.off('message', responseHandler);
-        if (message.error) {
-          reject(new Error(message.error));
-        } else {
-          resolve(message.value!);
+      const responseHandler = (
+        message: IPCRemoteProcedureCallResultMessage<
+          ReturnTypeOf<TResource[TMethod]>
+        >
+      ) => {
+        if (
+          message.type ===
+            SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT &&
+          message.id === requestId
+        ) {
+          proc.off('message', responseHandler);
+          if (message.error) {
+            reject(new Error(message.error));
+          } else {
+            resolve(message.value!);
+          }
         }
-      }
-    };
+      };
 
-    process.on('message', responseHandler);
+      proc.on('message', responseHandler);
 
-    process.send!({
-      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
-      name,
-      id: requestId,
-      method: String(method),
-      args,
-    } as unknown as IPCRemoteProcedureCallMessage);
+      proc.send!({
+        type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
+        name,
+        id: requestId,
+        method: String(method),
+        args,
+      } as unknown as IPCRemoteProcedureCallMessage);
 
-    setTimeout(() => {
-      process.off('message', responseHandler);
-      reject(
-        new Error(
-          `Timeout waiting for remote procedure call "${name}.${String(method)}"`
-        )
-      );
-    }, 5000);
-  });
+      setTimeout(() => {
+        proc.off('message', responseHandler);
+        reject(
+          new Error(
+            `Timeout waiting for remote procedure call "${name}.${String(method)}"`
+          )
+        );
+      }, 5000);
+    });
+  };
 }
 
-function extractFunctionNames<T extends Record<string, unknown>>(
+export function extractFunctionNames<T extends Record<string, unknown>>(
   obj: T
 ): MethodsOf<T>[] {
   return Object.keys(obj).filter(
@@ -162,7 +170,7 @@ function extractFunctionNames<T extends Record<string, unknown>>(
 }
 
 export function setupSharedResourceIPC<T>(
-  child: ChildProcess,
+  child: IPCEventEmitter,
   registry: Record<string, SharedResourceEntry<T>>
 ): void {
   child.on('message', async (message: IPCMessage) => {
@@ -275,53 +283,60 @@ function constructSharedResourceWithRPCs<T extends SharedResource>(
   return result;
 }
 
-export function getSharedResource<T extends SharedResource>(
-  name: string
-): Promise<MethodsToRPC<T>> {
-  return new Promise((resolve, reject) => {
-    const requestId = `${name}-${Date.now()}-${Math.random()}`;
+export function getSharedResourceFactory(
+  proc: IPCEventEmitter = process as IPCEventEmitter
+) {
+  return function getSharedResource<T extends SharedResource>(
+    name: string
+  ): Promise<MethodsToRPC<T>> {
+    return new Promise((resolve, reject) => {
+      const requestId = `${name}-${Date.now()}-${Math.random()}`;
 
-    let resolved = false;
-    let resourceProxy: MethodsToRPC<T> | null = null;
+      let resolved = false;
+      let resourceProxy: MethodsToRPC<T> | null = null;
 
-    const responseHandler = (
-      message: IPCResourceResultMessage<T> | IPCResourceUpdatedMessage<T>
-    ) => {
-      if (
-        message.type === SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT &&
-        message.id === requestId &&
-        !resolved
-      ) {
-        resourceProxy = constructSharedResourceWithRPCs<T>(
-          message.value as T,
-          message.rpcs as MethodsOf<T>[],
-          name
-        );
-        resolved = true;
-        resolve(resourceProxy);
-      }
-      if (
-        message.type === SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED &&
-        message.name === name &&
-        resourceProxy
-      ) {
-        Object.assign(resourceProxy, message.value);
-      }
-    };
+      const responseHandler = (
+        message: IPCResourceResultMessage<T> | IPCResourceUpdatedMessage<T>
+      ) => {
+        if (
+          message.type === SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT &&
+          message.id === requestId &&
+          !resolved
+        ) {
+          resourceProxy = constructSharedResourceWithRPCs<T>(
+            message.value as T,
+            message.rpcs as MethodsOf<T>[],
+            name
+          );
+          resolved = true;
+          resolve(resourceProxy);
+        }
+        if (
+          message.type === SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED &&
+          message.name === name &&
+          resourceProxy
+        ) {
+          Object.assign(resourceProxy, message.value);
+        }
+      };
 
-    process.on('message', responseHandler);
+      proc.on('message', responseHandler);
 
-    process.send!({
-      type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
-      name,
-      id: requestId,
-    } as IPCGetMessage);
+      proc.send!({
+        type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
+        name,
+        id: requestId,
+      } as IPCGetMessage);
 
-    setTimeout(() => {
-      process.off('message', responseHandler);
-      if (!resolved) {
-        reject(new Error(`Timeout waiting for shared resource "${name}"`));
-      }
-    }, 5000);
-  });
+      setTimeout(() => {
+        proc.off('message', responseHandler);
+        if (!resolved) {
+          reject(new Error(`Timeout waiting for shared resource "${name}"`));
+        }
+      }, 5000);
+    });
+  };
 }
+
+export const getSharedResource = getSharedResourceFactory();
+export const remoteProcedureCall = remoteProcedureCallFactory();

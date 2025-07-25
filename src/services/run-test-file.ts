@@ -1,4 +1,7 @@
-import type { SharedResourceEntry } from '../modules/helpers/shared-resources.js';
+import type {
+  IPCEventEmitter,
+  SharedResourceEntry,
+} from '../modules/helpers/shared-resources.js';
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
 import { env, hrtime } from 'node:process';
@@ -64,7 +67,7 @@ export const runTestFile = async (
     child.stdout!.on('data', stdOut);
     child.stderr!.on('data', stdOut);
 
-    setupSharedResourceIPC(child, registry);
+    setupSharedResourceIPC(child as IPCEventEmitter, registry);
 
     child.on('close', async (code) => {
       end = hrtime(start);
