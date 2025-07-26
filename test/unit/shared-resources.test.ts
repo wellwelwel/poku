@@ -1,6 +1,8 @@
 import type { IPCEventEmitter } from '../../src/modules/helpers/shared-resources.js';
 import { EventEmitter } from 'node:events';
 import { assert } from '../../src/modules/essentials/assert.js';
+import { describe } from '../../src/modules/helpers/describe.js';
+import { it } from '../../src/modules/helpers/it/core.js';
 import {
   constructSharedResourceWithRPCs,
   createSharedResource,
@@ -9,6 +11,7 @@ import {
   remoteProcedureCallFactory,
 } from '../../src/modules/helpers/shared-resources.js';
 import { test } from '../../src/modules/helpers/test.js';
+import { sleep } from '../../src/modules/helpers/wait-for.js';
 
 class MockProcess extends EventEmitter implements IPCEventEmitter {
   sent: unknown[] = [];
@@ -21,10 +24,28 @@ class MockProcess extends EventEmitter implements IPCEventEmitter {
   on = this.addListener;
 }
 
-test('createSharedResource should create a shared resource', () => {
-  const { entry, name } = createSharedResource('test', () => ({ value: 42 }));
-  assert.deepStrictEqual(entry.state, { value: 42 });
-  assert.deepStrictEqual(name, 'test');
+describe('createSharedResource', () => {
+  it('should create a shared resource', async () => {
+    const { entry, name } = await createSharedResource('test', () => ({
+      value: 42,
+    }));
+
+    assert.deepStrictEqual(entry.state, { value: 42 });
+    assert.deepStrictEqual(name, 'test');
+  });
+
+  it('should create a shared resource with async factory', async () => {
+    const { entry, name } = await createSharedResource(
+      'asyncTest',
+      async () => {
+        await sleep(100);
+        return { value: 42 };
+      }
+    );
+
+    assert.deepStrictEqual(entry.state, { value: 42 });
+    assert.deepStrictEqual(name, 'asyncTest');
+  });
 });
 
 test('extractFunctionNames should return function names from an object', () => {

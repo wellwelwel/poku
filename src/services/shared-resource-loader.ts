@@ -28,7 +28,9 @@ export async function executeResourceFile(path: string) {
   const file = relative(cwd, path);
 
   const mod = await import(path);
-  const resource = mod.default as ReturnType<typeof createSharedResource>;
+  const resource = (await mod.default) as Awaited<
+    ReturnType<typeof createSharedResource>
+  >;
 
   if (
     !resource ||
