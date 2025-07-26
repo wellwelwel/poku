@@ -1,5 +1,6 @@
 import type { IPCEventEmitter } from '../../src/modules/helpers/shared-resources.js';
 import { EventEmitter } from 'node:events';
+import { assert } from '../../src/modules/essentials/assert.js';
 import {
   constructSharedResourceWithRPCs,
   createSharedResource,
@@ -7,7 +8,7 @@ import {
   getSharedResourceFactory,
   remoteProcedureCallFactory,
 } from '../../src/modules/helpers/shared-resources.js';
-import { assert, test } from '../../src/modules/index.js';
+import { test } from '../../src/modules/helpers/test.js';
 
 class MockProcess extends EventEmitter implements IPCEventEmitter {
   sent: unknown[] = [];

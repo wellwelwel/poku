@@ -1,6 +1,7 @@
 import type { SharedResourceType } from './setup.resource.js';
 import nodeAssert from 'node:assert';
-import { getSharedResource, test } from '../../../src/modules/index.js';
+import { getSharedResource } from '../../../src/modules/helpers/shared-resources.js';
+import { test } from '../../../src/modules/helpers/test.js';
 
 async function waitUntil(
   cb: () => void,
