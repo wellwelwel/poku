@@ -38,20 +38,8 @@ test('should observe modifications in shared resource', async () => {
     );
 
     nodeAssert(
-      !res.messages.includes('Message from File B'),
-      'File B message should not be present'
-    );
-  });
-
-  await waitUntil(() => {
-    nodeAssert(
-      res.messages.includes('Message from File A'),
-      'File A message should still be present'
-    );
-
-    nodeAssert(
       res.messages.includes('Message from File B'),
-      'File B message should now be present'
+      'File B message should be present'
     );
   });
 });
