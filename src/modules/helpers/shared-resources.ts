@@ -110,7 +110,6 @@ export function createSharedResource<T>(
   name: string,
   factory: () => T
 ): { entry: SharedResourceEntry<T>; name: string } {
-  assertSharedResourcesActive();
   const entry: SharedResourceEntry<T> = {
     state: factory(),
     subscribers: new Set<(state: T) => void>(),
@@ -190,7 +189,6 @@ export function setupSharedResourceIPC<T>(
   child: IPCEventEmitter,
   registry: Record<string, SharedResourceEntry<T>>
 ): void {
-  assertSharedResourcesActive();
   child.on('message', async (message: IPCMessage) => {
     if (!message || typeof message.type !== 'string') return;
     switch (message.type) {

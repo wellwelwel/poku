@@ -23,7 +23,7 @@ export async function executeResourceFiles(
  * Execute a single resource file in the parent process
  * Loads the resource module, gets the default export (should be { entry, name }), and registers it
  */
-async function executeResourceFile(path: string) {
+export async function executeResourceFile(path: string) {
   const { cwd } = GLOBAL;
   const file = relative(cwd, path);
 

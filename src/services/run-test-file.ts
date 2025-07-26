@@ -73,7 +73,9 @@ export const runTestFile = async (
     child.stdout!.on('data', stdOut);
     child.stderr!.on('data', stdOut);
 
-    setupSharedResourceIPC(child as IPCEventEmitter, registry);
+    if (configs.sharedResources) {
+      setupSharedResourceIPC(child as IPCEventEmitter, registry);
+    }
 
     child.on('close', async (code) => {
       end = hrtime(start);
