@@ -19,7 +19,7 @@ if (hasOnly) deepOptions.push('--only');
 export const runTests = async (files: string[]): Promise<boolean> => {
   const { resourceFiles, testFiles } = separateResourceFiles(files);
 
-  const registry: Record<string, SharedResourceEntry> = {};
+  const registry: Record<string, SharedResourceEntry> = Object.create(null);
 
   if (GLOBAL.configs.sharedResources) {
     await executeResourceFiles(resourceFiles, registry);
