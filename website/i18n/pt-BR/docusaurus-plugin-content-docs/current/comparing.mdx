@@ -7,12 +7,12 @@ import TabItem from '@theme/TabItem';
 
 # Comparando executores de testes
 
-| Executor de Teste     | Isolamento | CJS          | ESM            | node_modules                                     | Bun | Deno |
-| --------------------- | ---------- | ------------ | -------------- | ------------------------------------------------ | --- | ---- |
-| 🐷 **Poku** _(2.0.0)_ | ✅         | ✅           | ✅             | ![](https://pkg-size.dev/badge/install/152997)   | ✅  | ✅   |
-| **Jest** _(29.7.0)_   | ✅         | ✅           | _experimental_ | ![](https://pkg-size.dev/badge/install/21981180) | ❓  | ❓   |
-| **Mocha** _(10.4.0)_  | ❌         | ✅           | ✅             | ![](https://pkg-size.dev/badge/install/5548077)  | ❓  | ❓   |
-| **Vitest** _(1.6.0)_  | ✅         | _depreciado_ | ✅             | ![](https://pkg-size.dev/badge/install/38365477) | ❓  | ❓   |
+| Executor de Teste    | Isolamento | CJS          | ESM            | node_modules        | Tamanho                                                                                           | Bun | Deno |
+| -------------------- | ---------- | ------------ | -------------- | ------------------- | ------------------------------------------------------------------------------------------------- | --- | ---- |
+| 🐷 **Poku**          | ✅         | ✅           | ✅             | 1 pacote (**poku**) | [![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)              | ✅  | ✅   |
+| **Jest** _(30.0.5)_  | ✅         | ✅           | _experimental_ | 296 pacotes         | [![Install Size](https://pkg-size.dev/badge/install/27703218)](https://pkg-size.dev/jest@30.0.5)  | ❓  | ❓   |
+| **Mocha** _(11.7.1)_ | ❌         | ✅           | ✅             | 91 pacotes          | [![Install Size](https://pkg-size.dev/badge/install/8841701)](https://pkg-size.dev/mocha@11.7.1)  | ❓  | ❓   |
+| **Vitest** _(3.2.4)_ | ✅         | _depreciado_ | ✅             | 49 pacotes          | [![Install Size](https://pkg-size.dev/badge/install/34561544)](https://pkg-size.dev/vitest@3.2.4) | ❓  | ❓   |
 
 <hr />
 
@@ -22,11 +22,15 @@ import TabItem from '@theme/TabItem';
 
 O **Poku** é [continuamente testado](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) para garantir as seguintes expectativas para o uso básico:
 
-- ~**4x** mais rápido que o [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
-- ~**3x** mais rápido que o [**Vitest**](https://github.com/vitest-dev/vitest) (v1.6.0)
-- ~**1x** mais rápido que o [**Mocha**](https://github.com/mochajs/mocha) (v10.4.0) + [**Chai**](https://github.com/chaijs/chai) (v5.1.1)
+- ~**4x** mais rápido que o [**Jest**](https://github.com/jestjs/jest) (v30.0.5)
+- ~**5x** mais rápido que o [**Vitest**](https://github.com/vitest-dev/vitest) (v3.2.4)
+- ~**1x** _mais rápido_ que o [**Mocha**](https://github.com/mochajs/mocha) (v11.7.1) — _mesmo com isolamento por arquivos de teste_ 🚀
+
+Todas as comparações são arredondadas para baixo (por exemplo, `4.99` seria arredondado para `~4x`).
 
 > Você pode ver como os testes são executados e comparados no diretório [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark).
+>
+> - [Comparando **Poku** e executores de teste nativos _(discussão)_](https://github.com/wellwelwel/poku/discussions/740).
 
 <hr />
 
@@ -34,9 +38,9 @@ O **Poku** é [continuamente testado](https://github.com/wellwelwel/poku/blob/ma
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)
 
-- [~**230x** mais leve que o **Vitest**](https://pkg-size.dev/vitest)
-- [~**130x** mais leve que o **Jest**](https://pkg-size.dev/jest)
-- [~**30x** mais leve que o **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
+- [~**206x** mais leve que o **Vitest**](https://pkg-size.dev/vitest@3.2.4)
+- [~**165x** mais leve que o **Jest**](https://pkg-size.dev/jest@30.0.5)
+- [~**52x** mais leve que o **Mocha**](https://pkg-size.dev/mocha@11.7.1)
 
 <hr />
 
