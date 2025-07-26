@@ -18,13 +18,6 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 </div>
 
-> [!IMPORTANT]
->
-> **Poku `v3`** is here! 🎉
->
-> - To check out what's changed, follow the [**Issue #801**](https://github.com/wellwelwel/poku/issues/801).
-> - For `v2` documentation, see the [**previous version's documentation**](https://poku.io/docs/2.x.x) and [**README**](https://github.com/wellwelwel/poku/tree/2.x.x?tab=readme-ov-file#readme).<br />
-
 ---
 
 ## Why does Poku exist?
