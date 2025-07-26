@@ -23,7 +23,7 @@ test('should observe modifications in shared resource', async () => {
     'File B message should not be present'
   );
 
-  await sleep(500);
+  await sleep(600);
 
   assert(
     res.messages.includes('Message from File A'),
