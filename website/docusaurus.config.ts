@@ -39,10 +39,10 @@ const config: Config = {
           versions: {
             current: {
               label: 'v3.x.x',
-              // badge: false,
+              badge: false,
             },
             '2.x.x': {
-              label: 'v2.x.x',
+              label: 'v2.7.1',
               banner: 'unmaintained',
             },
           },
