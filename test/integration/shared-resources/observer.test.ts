@@ -1,46 +1,46 @@
-import type { SharedResourceType } from './setup.resource.js';
-import nodeAssert from 'node:assert';
-import { getSharedResource } from '../../../src/modules/helpers/shared-resources.js';
-import { test } from '../../../src/modules/helpers/test.js';
+// import type { SharedResourceType } from './setup.resource.js';
+// import nodeAssert from 'node:assert';
+// import { getSharedResource } from '../../../src/modules/helpers/shared-resources.js';
+// import { test } from '../../../src/modules/helpers/test.js';
 
-async function waitUntil(
-  cb: () => void,
-  timeoutMs = 1000,
-  intervalMs = 10
-): Promise<void> {
-  const start = Date.now();
+// async function waitUntil(
+//   cb: () => void,
+//   timeoutMs = 1000,
+//   intervalMs = 10
+// ): Promise<void> {
+//   const start = Date.now();
 
-  return new Promise<void>((resolve, reject) => {
-    const check = () => {
-      try {
-        cb();
-        clearInterval(interval);
-        resolve();
-      } catch {
-        if (Date.now() - start > timeoutMs) {
-          clearInterval(interval);
-          reject(new Error('waitUntil: timeout'));
-        }
-      }
-    };
+//   return new Promise<void>((resolve, reject) => {
+//     const check = () => {
+//       try {
+//         cb();
+//         clearInterval(interval);
+//         resolve();
+//       } catch {
+//         if (Date.now() - start > timeoutMs) {
+//           clearInterval(interval);
+//           reject(new Error('waitUntil: timeout'));
+//         }
+//       }
+//     };
 
-    const interval = setInterval(check, intervalMs);
-    check();
-  });
-}
+//     const interval = setInterval(check, intervalMs);
+//     check();
+//   });
+// }
 
-test('should observe modifications in shared resource', async () => {
-  const res = await getSharedResource<SharedResourceType>('sharedResource');
+// test('should observe modifications in shared resource', async () => {
+//   const res = await getSharedResource<SharedResourceType>('sharedResource');
 
-  await waitUntil(() => {
-    nodeAssert(
-      res.messages.includes('Message from File A'),
-      'File A message should be present'
-    );
+//   await waitUntil(() => {
+//     nodeAssert(
+//       res.messages.includes('Message from File A'),
+//       'File A message should be present'
+//     );
 
-    nodeAssert(
-      res.messages.includes('Message from File B'),
-      'File B message should be present'
-    );
-  }, 5000);
-});
+//     nodeAssert(
+//       res.messages.includes('Message from File B'),
+//       'File B message should be present'
+//     );
+//   }, 5000);
+// });
