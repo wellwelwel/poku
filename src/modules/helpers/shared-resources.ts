@@ -296,6 +296,7 @@ export function constructSharedResourceWithRPCs<T extends SharedResource>(
       },
     });
   }
+
   return result;
 }
 
@@ -325,15 +326,21 @@ export function getSharedResourceFactory(
             message.rpcs as MethodsOf<T>[],
             name
           );
+
           resolved = true;
           resolve(resourceProxy);
         }
+
         if (
           message.type === SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED &&
           message.name === name &&
           resourceProxy
         ) {
-          Object.assign(resourceProxy, message.value);
+          resourceProxy = constructSharedResourceWithRPCs<T>(
+            message.value,
+            extractFunctionNames(message.value) as MethodsOf<T>[],
+            name
+          );
         }
       };
 
