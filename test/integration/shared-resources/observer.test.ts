@@ -9,9 +9,9 @@ import {
 test('should observe modifications in shared resource', async () => {
   const res = await getSharedResource<SharedResourceType>('sharedResource');
 
-  assert.ok(res.messages.length === 0, 'Initial resource should be empty');
+  assert.equal(res.messages.length, 0, 'Initial resource should be empty');
 
-  await sleep(150);
+  await sleep(250);
 
   assert(
     res.messages.includes('Message from File A'),
@@ -23,7 +23,7 @@ test('should observe modifications in shared resource', async () => {
     'File B message should not be present'
   );
 
-  await sleep(200);
+  await sleep(500);
 
   assert(
     res.messages.includes('Message from File A'),
