@@ -50,6 +50,18 @@ It's better to discuss an **API** before actually start implementing it. You can
 
 > Please ensure test cases to cover new features.
 
+### 🧠 Design Preferences (Architecture)
+
+- Features that aren't commonly used should be implemented so that the code is only reached if a conditional flag is triggered by the user.
+
+### ✌🏻 Tips
+
+- When using global variables such as `process`, make sure to import them as `import process from 'node:process'` to ensure interoperability with **Deno**.
+- To create tests that work with **Deno**, use `assert` instead of `strict`.
+- You can open a Pull Request in your own fork to run the entire test suite without having to install anything on your computer.
+  - Just remember to enable the workflows in the Actions tab of your fork.
+  - When you're done, you can open your Pull Request in the Poku repository to share your changes with the entire community.
+
 ### 📘 Documentation
 
 Check if there is an existing section or feel free to create a new one. You can find the wesite source code at [./website](https://github.com/wellwelwel/poku/tree/main/website).
