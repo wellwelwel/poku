@@ -15,7 +15,7 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           close-issue-message: 'This issue has been closed due to inactivity for 15 days.'
-          close-pr-message: 'This PR has been closed due to inactivity for 15 days.'
+          close-pr-message: 'This PR has been closed due to inactivity for 15 days. You are welcome to reopen it if you want to continue the development or request it to be reopened by a maintainer 🤝'
           stale-issue-message: ''
           stale-pr-message: ''
           days-before-stale: 13
