@@ -1,5 +1,5 @@
 import type EventEmitter from 'node:events';
-import { env } from 'node:process';
+import process, { env } from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
 
 const SHARED_RESOURCE_MESSAGE_TYPES = {
