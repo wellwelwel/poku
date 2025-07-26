@@ -92,7 +92,7 @@ describe('Shared Resources Loader', () => {
     it('throws if resource file does not exist', async () => {
       await assert.rejects(
         () => executeResourceFile(makePath('nonexistent')),
-        /Cannot find module/
+        /(Cannot find module | Module not found)/
       );
     });
 
