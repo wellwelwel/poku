@@ -1,37 +1,59 @@
 import type { SharedResourceType } from './setup.resource.js';
-import {
-  assert,
-  getSharedResource,
-  sleep,
-  test,
-} from '../../../src/modules/index.js';
+import nodeAssert from 'node:assert';
+import { getSharedResource, test } from '../../../src/modules/index.js';
+
+async function waitUntil(
+  cb: () => void,
+  timeoutMs = 1000,
+  intervalMs = 10
+): Promise<void> {
+  const start = Date.now();
+
+  return new Promise<void>((resolve, reject) => {
+    const check = () => {
+      try {
+        cb();
+        clearInterval(interval);
+        resolve();
+      } catch {
+        if (Date.now() - start > timeoutMs) {
+          clearInterval(interval);
+          reject(new Error('waitUntil: timeout'));
+        }
+      }
+    };
+
+    const interval = setInterval(check, intervalMs);
+    check();
+  });
+}
 
 test('should observe modifications in shared resource', async () => {
   const res = await getSharedResource<SharedResourceType>('sharedResource');
 
-  assert.equal(res.messages.length, 0, 'Initial resource should be empty');
+  nodeAssert.equal(res.messages.length, 0, 'Initial resource should be empty');
 
-  await sleep(250);
+  await waitUntil(() => {
+    nodeAssert(
+      res.messages.includes('Message from File A'),
+      'File A message should be present'
+    );
 
-  assert(
-    res.messages.includes('Message from File A'),
-    'File A message should be present'
-  );
+    nodeAssert(
+      !res.messages.includes('Message from File B'),
+      'File B message should not be present'
+    );
+  });
 
-  assert(
-    !res.messages.includes('Message from File B'),
-    'File B message should not be present'
-  );
+  await waitUntil(() => {
+    nodeAssert(
+      res.messages.includes('Message from File A'),
+      'File A message should still be present'
+    );
 
-  await sleep(600);
-
-  assert(
-    res.messages.includes('Message from File A'),
-    'File A message should still be present'
-  );
-
-  assert(
-    res.messages.includes('Message from File B'),
-    'File B message should now be present'
-  );
+    nodeAssert(
+      res.messages.includes('Message from File B'),
+      'File B message should now be present'
+    );
+  });
 });

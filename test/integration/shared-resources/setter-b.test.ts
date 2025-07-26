@@ -3,7 +3,7 @@ import { assert } from '../../../src/modules/essentials/assert.js';
 import { getSharedResource, sleep, test } from '../../../src/modules/index.js';
 
 test('should set message in shared resource from file B', async () => {
-  await sleep(400);
+  await sleep(200);
 
   const res = await getSharedResource<SharedResourceType>('sharedResource');
 
