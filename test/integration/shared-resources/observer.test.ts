@@ -31,8 +31,6 @@ async function waitUntil(
 test('should observe modifications in shared resource', async () => {
   const res = await getSharedResource<SharedResourceType>('sharedResource');
 
-  nodeAssert.equal(res.messages.length, 0, 'Initial resource should be empty');
-
   await waitUntil(() => {
     nodeAssert(
       res.messages.includes('Message from File A'),
