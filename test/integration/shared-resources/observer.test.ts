@@ -41,5 +41,5 @@ test('should observe modifications in shared resource', async () => {
       res.messages.includes('Message from File B'),
       'File B message should be present'
     );
-  });
+  }, 5000);
 });
