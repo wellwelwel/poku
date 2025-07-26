@@ -69,7 +69,7 @@ describe('Shared Resources Loader', () => {
           'test',
           '__fixtures__',
           'shared-resources',
-          `${slug}.resource.mjs`
+          `${slug}.resource-fixture.mjs`
         );
 
       it('loads a valid resource file', async () => {
