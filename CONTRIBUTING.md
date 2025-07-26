@@ -54,7 +54,7 @@ It's better to discuss an **API** before actually start implementing it. You can
 
 - Features that aren't commonly used should be implemented so that the code is only reached if a conditional flag is triggered by the user.
   - You can picture them as _"dead code"_ until they are actually triggered.
-- Use a "Fail Fast" approach, creating variables after verifications that return if the code shouldn't proceed.
+- Prefer to use a "Fail Fast" approach, creating variables after verifications that return if the code shouldn't proceed.
   - This prevents variables from being allocated in memory without being used.
 - To prevent checks from being performed repeatedly, you can use the [`GLOBALS`](https://github.com/wellwelwel/poku/blob/df9f5682f123d6b1872c5390b8e058b4766ef462/src/configs/poku.ts#L28) variable to store their states.
 - If you create a flag that should be deeply shared across all tests (e.g., `--only`), you need to include it in the [`deepOptions`](https://github.com/wellwelwel/poku/blob/df9f5682f123d6b1872c5390b8e058b4766ef462/src/services/run-tests.ts#L12) list.
