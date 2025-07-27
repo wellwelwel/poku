@@ -40,7 +40,7 @@
     "clear": "rm -rf lib ci coverage .temp test-src test-tests",
     "prebuild": "npm run clear",
     "build": "tsc && cd test && tsc",
-    "postbuild": "tsx tools/compatibility/node.ts && tsx tools/compatibility/comments.ts && tsx tools/build/version.ts && cp test/__fixtures__/e2e/server/package.json ci/test/__fixtures__/e2e/server/package.json && rm -f ./lib/@types/*.js ./lib/bin/*.ts && npm run build:deno && chmod +x lib/bin/index.js",
+    "postbuild": "tsx tools/compatibility/comments.ts && tsx tools/build/version.ts && cp test/__fixtures__/e2e/server/package.json ci/test/__fixtures__/e2e/server/package.json && rm -f ./lib/@types/*.js ./lib/bin/*.ts && npm run build:deno && chmod +x lib/bin/index.js",
     "build:deno": "tsc -p tsconfig.mjs.json",
     "postbuild:deno": "tsx tools/build/check-deno-polyfill.ts",
     "lint": "biome lint --error-on-warnings && prettier --check .",
