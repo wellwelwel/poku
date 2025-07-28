@@ -57,6 +57,9 @@ import { hr, log } from '../services/write.js';
   const debug = hasArg('debug') || hasArg('d', '-') || configsFromFile?.debug;
   const failFast = hasArg('failFast') || configsFromFile?.failFast;
   const watchMode = hasArg('watch') || hasArg('w', '-');
+  const coverageEnabled = hasArg('coverage') || typeof configsFromFile?.coverage === 'object';
+  const coverageDir = getArg('coverageDir') ?? configsFromFile?.coverage?.dir ?? 'coverage';
+  const coverageReports = argToArray('coverageReport') ?? configsFromFile?.coverage?.reports ?? ['text', 'html'];
   const hasEnvFile = hasArg('envFile');
   const concurrency = (() => {
     const value = Number(getArg('concurrency'));
@@ -116,8 +119,9 @@ import { hr, log } from '../services/write.js';
       deny: denoDeny,
       cjs: denoCJS,
     },
-    noExit: watchMode,
+    noExit: watchMode || coverageEnabled,
     reporter,
+    coverage: coverageEnabled ? { dir: coverageDir, reports: coverageReports } : undefined,
     beforeEach:
       'beforeEach' in configsFromFile ? configsFromFile.beforeEach : undefined,
     afterEach:
@@ -175,7 +179,46 @@ import { hr, log } from '../services/write.js';
   }
 
   await Promise.all(tasks);
-  await poku(dirs);
+
+  const validateErrorImportCoveragec8 = (error: unknown) => {
+    if (
+        typeof error === 'object' &&
+        error !== null &&
+        'code' in error &&
+        'message' in error &&
+        (error as { code?: string; message?: string }).code === 'MODULE_NOT_FOUND' &&
+        (error as { message?: string }).message?.includes('@pokujs/c8')
+      ) {
+        console.error(`❌ Optional module "@pokujs/c8" not found. Install it to enable code coverage: npm install --save-dev @pokujs/c8`);
+        process.exit(1);
+      } else {
+        throw error;
+      }
+  }
+
+  //TODO: add support for command --coverage=c8
+  if(coverageEnabled) {
+    try {
+      await require('@pokujs/c8').coverageStart(coverageDir);
+    } catch (error: unknown) {
+      validateErrorImportCoveragec8(error);
+    }
+  }
+
+  const code = await poku(dirs);
+
+  //TODO: add support for command --coverage=c8
+  if(coverageEnabled) {
+    try {
+      await require('@pokujs/c8').coverageReport(coverageReports);
+    } catch (error: unknown) {
+      validateErrorImportCoveragec8(error);
+    }
+  }
+
+  if(coverageEnabled && !watchMode) {
+    require('../modules/helpers/exit.js').exit(code, GLOBAL.configs.quiet);
+  }
 
   /* c8 ignore next 1 */ // Blocked by TSX
   if (watchMode) require('./watch.js').startWatch(dirs); // TODO: Replace with import()
