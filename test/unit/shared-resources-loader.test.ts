@@ -69,8 +69,8 @@ describe('Shared Resources Loader', () => {
         GLOBAL.cwd,
         'test',
         '__fixtures__',
-        'shared-resources',
-        'resource_tests',
+        'unit',
+        'shared-resources-loader',
         `${slug}.resource-fixture`
       );
 

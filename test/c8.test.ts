@@ -89,7 +89,6 @@ test(async () => {
           filter: /\.(test|spec)\./,
           failFast: true,
           noExit: true,
-          sharedResources: true,
         }
       );
 

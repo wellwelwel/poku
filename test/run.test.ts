@@ -5,5 +5,4 @@ poku(['test/unit', 'test/integration', 'test/e2e'], {
   deno: {
     allow: ['read', 'write', 'env', 'run', 'net'],
   },
-  sharedResources: true,
 });
