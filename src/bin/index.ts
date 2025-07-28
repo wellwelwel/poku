@@ -132,7 +132,6 @@ import { hr, log } from '../services/write.js';
 
   if (enforce) (await import('../services/enforce.js')).enforce();
 
-  /* c8 ignore start */ // Process-based
   if (killPort || configsFromFile?.kill?.port) {
     const ports =
       killPort?.split(',').map(Number) || configsFromFile?.kill?.port || [];
@@ -159,7 +158,6 @@ import { hr, log } from '../services/write.js';
 
     tasks.push(kill.pid(PIDs));
   }
-  /* c8 ignore stop */
 
   GLOBAL.envFile && tasks.push(envFile(GLOBAL.envFile));
 
