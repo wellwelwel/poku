@@ -5,6 +5,7 @@ import type {
 import { relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { GLOBAL } from '../configs/poku.js';
+import { isWindows } from '../parsers/os.js';
 
 /**
  * Execute resource files (*.resource.ts) in the current process
@@ -28,7 +29,7 @@ export async function executeResourceFile(path: string) {
   const { cwd } = GLOBAL;
   const file = relative(cwd, path);
 
-  const fileUrl = pathToFileURL(path).href;
+  const fileUrl = isWindows ? pathToFileURL(path).href : path;
 
   const mod = await import(fileUrl);
   const resource = (await mod.default) as Awaited<
