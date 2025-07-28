@@ -3,6 +3,7 @@ import type {
   SharedResourceEntry,
 } from '../modules/helpers/shared-resources.js';
 import { relative } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { GLOBAL } from '../configs/poku.js';
 
 /**
@@ -27,7 +28,9 @@ export async function executeResourceFile(path: string) {
   const { cwd } = GLOBAL;
   const file = relative(cwd, path);
 
-  const mod = await import(path);
+  const fileUrl = pathToFileURL(path).href;
+
+  const mod = await import(fileUrl);
   const resource = (await mod.default) as Awaited<
     ReturnType<typeof createSharedResource>
   >;
