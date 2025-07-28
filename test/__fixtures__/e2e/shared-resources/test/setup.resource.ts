@@ -1,4 +1,4 @@
-import { createSharedResource } from '../../../src/modules/helpers/shared-resources.js';
+import { createSharedResource } from '../../../../../src/modules/helpers/shared-resources.js';
 
 export const sharedResourceKey = 'sharedResource';
 

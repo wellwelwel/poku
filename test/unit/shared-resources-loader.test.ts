@@ -70,6 +70,7 @@ describe('Shared Resources Loader', () => {
         'test',
         '__fixtures__',
         'shared-resources',
+        'resource_tests',
         `${slug}.resource-fixture`
       );
 
@@ -96,32 +97,32 @@ describe('Shared Resources Loader', () => {
       );
     });
 
-    // const invalidCases = [
-    //   {
-    //     description: 'throws if resource file does not export default',
-    //     slug: 'no-default',
-    //   },
-    //   {
-    //     description: 'throws if resource file does not export a valid object',
-    //     slug: 'not-object',
-    //   },
-    //   {
-    //     description: 'throws if resource file default is missing entry',
-    //     slug: 'missing-entry',
-    //   },
-    //   {
-    //     description: 'throws if resource file default is missing name',
-    //     slug: 'missing-name',
-    //   },
-    // ];
+    const invalidCases = [
+      {
+        description: 'throws if resource file does not export default',
+        slug: 'no-default',
+      },
+      {
+        description: 'throws if resource file does not export a valid object',
+        slug: 'not-object',
+      },
+      {
+        description: 'throws if resource file default is missing entry',
+        slug: 'missing-entry',
+      },
+      {
+        description: 'throws if resource file default is missing name',
+        slug: 'missing-name',
+      },
+    ];
 
-    // for (const { description, slug } of invalidCases) {
-    //   it(description, async () => {
-    //     await assert.rejects(
-    //       () => executeResourceFile(makePath(slug)),
-    //       /does not export a valid default resource object/
-    //     );
-    //   });
-    // }
+    for (const { description, slug } of invalidCases) {
+      it(description, async () => {
+        await assert.rejects(
+          () => executeResourceFile(makePath(slug)),
+          /does not export a valid default resource object/
+        );
+      });
+    }
   });
 });
