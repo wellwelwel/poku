@@ -178,5 +178,5 @@ import { hr, log } from '../services/write.js';
   await poku(dirs);
 
   /* c8 ignore next 1 */ // Blocked by TSX
-  if (watchMode) (await import('./watch.js')).startWatch(dirs);
+  if (watchMode) require('./watch.js').startWatch(dirs); // TODO: Replace with import()
 })();
