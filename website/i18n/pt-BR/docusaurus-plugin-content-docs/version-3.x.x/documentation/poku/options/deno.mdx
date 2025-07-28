@@ -1,0 +1,141 @@
+---
+sidebar_position: 98
+---
+
+# `deno`
+
+Opções exclusivas para a plataforma **Deno**.
+
+## `allow`
+
+Altere as permissões para o **Deno**.
+
+Por padrão, o **Poku** utiliza `--allow-run`, `--allow-env`, `--allow-read` e `--allow-net`.
+
+### CLI
+
+```bash
+deno run npm:poku --denoAllow='read,run'
+```
+
+```bash
+deno run npm:poku --denoAllow='read=arquivo.js,run'
+```
+
+Limpe todas as permissões:
+
+```bash
+deno run npm:poku --denoAllow=''
+```
+
+### API
+
+```ts
+poku('./test', {
+  deno: {
+    allow: ['read', 'run' /* ... */],
+  },
+});
+```
+
+```ts
+poku('./test', {
+  deno: {
+    allow: ['read=arquivo.js', 'run' /* ... */],
+  },
+});
+```
+
+Limpe todas as permissões:
+
+```ts
+poku('./test', {
+  deno: {
+    allow: [],
+  },
+});
+```
+
+<hr />
+
+## `deny`
+
+Altere as permissões para o **Deno**.
+
+### CLI
+
+```bash
+deno run npm:poku --denoDeny='write,sys'
+```
+
+```bash
+deno run npm:poku --denoDeny='env=HOME,write'
+```
+
+### API
+
+```ts
+poku('./test', {
+  deno: {
+    deny: ['write', 'sys' /* ... */],
+  },
+});
+```
+
+```ts
+poku('./test', {
+  deno: {
+    deny: ['env=HOME', 'write' /* ... */],
+  },
+});
+```
+
+<hr />
+
+## `cjs` (Deno `v1`)
+
+> `poku(targetPaths: string | string[], configs?: Configs)`
+>
+> `cjs: boolean | string[]`
+
+:::danger Important
+
+From **Deno** `v2`, simply set the type to `commonjs` in your **package.json** or use the `.cjs` extension.
+
+For **Deno** `v1`, you can follow the instructions bellow.
+
+:::
+
+Agora é possível executar testes que utilizam `require`, `module.exports` e `module` diretamente com o **Deno** 🎉
+
+É uma ótima funcionalidade para testar se um projeto criado, principalmente em **Node.js** ou **Bun**, também é compatível com o **Deno** sem a necessidade de transpilar o código ou usar gambiarras.
+
+Para executar o **CommonJS** com o **Deno**, você pode usar:
+
+### CLI
+
+```bash
+deno run npm:poku --denoCjs
+```
+
+```bash
+deno run npm:poku --denoCjs='.js,.cjs'
+```
+
+### API
+
+```ts
+await poku('./test', {
+  deno: {
+    cjs: true,
+  },
+});
+```
+
+```ts
+await poku('./test', {
+  deno: {
+    cjs: ['.js', '.cjs' /* ... */],
+  },
+});
+```

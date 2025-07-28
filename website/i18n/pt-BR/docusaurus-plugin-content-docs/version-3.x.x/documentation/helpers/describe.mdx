@@ -1,0 +1,102 @@
+---
+sidebar_position: 2
+tags: [boilerplate, tdd, bdd]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# 🧪 describe
+
+> `describe(título: string, opções?: DescribeOptions)` | `describe(mensagem: string, cb: () => void)` | `describe(cb: () => void)`
+
+## Usando como títulos de teste
+
+No **Poku**, o `describe` pode ser usado apenas como um `console.log` elegante para dar título aos seus conjuntos de testes no terminal.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Título Teste');
+
+assert(true, '1');
+assert(true, '2');
+```
+
+### Personalização
+
+#### background
+
+Altere a cor de fundo para seu título pessoal.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Título Teste', { background: 'blue' });
+
+assert.ok(true, '1');
+assert.ok(true, '2');
+```
+
+<FAQ title='Cores Disponíveis'>
+
+- `white`
+- `black`
+- `grey`
+- `red`
+- `green`
+- `yellow`
+- `blue`
+- `magenta`
+- `cyan`
+- `brightRed`
+- `brightGreen`
+- `brightYellow`
+- `brightBlue`
+- `brightMagenta`
+- `brightCyan`
+
+</FAQ>
+
+#### icon (prefixo)
+
+o **Poku** também permite a personalização do prefixo.
+
+> O ícone padrão é `☰`.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Título Teste', { icon: '🔬' });
+
+assert.ok(true, '1');
+assert.ok(true, '2');
+```
+
+## Agrupamento de testes (usual)
+
+```ts
+import { describe, assert } from 'poku';
+
+describe(() => {
+  assert.equal(1 + 1, 2, '1 + 1 deve ser 2');
+  assert.equal(2 + 2, 4, '2 + 2 deve ser 4');
+});
+```
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Testes de soma', () => {
+  assert.equal(1 + 1, 2);
+  assert.equal(2 + 2, 4);
+});
+```
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Testes de soma', () => {
+  assert.equal(1 + 1, 2, '1 + 1 deve ser 2');
+  assert.equal(2 + 2, 4, '2 + 2 deve ser 4');
+});
+```

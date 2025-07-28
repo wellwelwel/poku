@@ -1,0 +1,89 @@
+---
+title: 👩🏼‍🚀 Testando em Diferentes Plataformas
+description: Executando a mesma suíte de testes em diferentes plataformas.
+tags: [cross-platform, Node.js, Bun, Deno, tutorial, roadmap]
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Maintainer from '@site/static/img/maintainer.svg';
+
+<div className='title-section'>
+<aside>
+
+# 👩🏼‍🚀 Testando em Diferentes Plataformas
+
+- Executando a mesma suíte de testes em diferentes plataformas.
+
+</aside>
+  <aside>
+    <Maintainer className='logo' height='128' />
+  </aside>
+</div>
+
+<hr />
+
+## Executando testes em plataformas específicas
+
+Para evitar conflitos em ambientes com múltiplas plataformas instaladas (**Node.js** + **Bun**, **Deno** + **Bun**. etc.), veja os exemplos a seguir:
+
+```sh
+npx poku
+```
+
+- Executa o **Poku** através do **Node.js** e garante que todos os testes sejam executados com **Node.js** (ou **tsx** para testes com **TypeScript**).
+
+```sh
+bun poku
+```
+
+- Executa o **Poku** através do **Bun** e garante que todos os testes sejam executados com **Bun**.
+
+```sh
+deno run npm:poku
+```
+
+- Executa o **Poku** através do **Deno** e garante que todos os testes sejam executados com **Deno**.
+
+:::tip
+Para usuários de **TypeScript**, não é necessário instalar **tsx** para o **Bun** e o **Deno**, pois ambos executam **TypeScript** nativamente.
+:::
+
+<hr />
+
+### Executando CommonJS com Deno `v1`
+
+> Veja todas as opções para o **Deno** [aqui](/docs/documentation/poku/options/deno).
+
+#### Todos os arquivos como CommonJS
+
+```sh
+deno run npm:poku --denoCjs
+```
+
+#### Uma extensão específica como CommonJS
+
+```sh
+deno run npm:poku --denoCjs='.cjs'
+```
+
+#### Múltiplas extensões como CommonJS
+
+```sh
+deno run npm:poku --denoCjs='.cjs,.js'
+```
+
+<hr />
+
+### Recomendações {#recommendations}
+
+:::tip
+Geralmente é benéfico ter um _CI_ exclusivo para cada plataforma, especialmente para garantir um melhor controle em casos de erro.
+:::
+
+<hr />
+
+:::note
+Se você encontrar algum erro de digitação, sinta-se à vontade para abrir um **Pull Request** corrigindo-o.
+:::

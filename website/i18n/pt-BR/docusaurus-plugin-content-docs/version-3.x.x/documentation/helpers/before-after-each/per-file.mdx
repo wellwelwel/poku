@@ -1,0 +1,63 @@
+---
+sidebar_position: 1
+tags: [hooks, setup, teardown]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { FAQ } from '@site/src/components/FAQ';
+import Success from '@site/static/img/each-success.png';
+import Failure from '@site/static/img/each-fail.png';
+
+# Por Arquivo
+
+## Executando um callback antes e depois de cada arquivo de teste
+
+- [x] `poku` **API**
+- [ ] `poku` **CLI**
+
+O **Poku** traz uma maneira simples de executar um callback antes e/ou depois de cada arquivo de teste.
+
+<Tabs>
+  <TabItem default value='test/run.test.js'>
+
+    ```ts
+    import { poku } from 'poku';
+
+    const prepareService = () => new Promise((resolve) => resolve(undefined));
+    const resetService = () => new Promise((_, reject) => reject('Vamos fazer com que falhe'));
+
+    await poku('test/unit', {
+      beforeEach: prepareService,
+      afterEach: resetService,
+    });
+    ```
+
+    ```bash
+    npx poku test/run.test.js
+    ```
+
+  </TabItem>
+</Tabs>
+
+<FAQ title="Caso de Sucesso" >
+
+<img src={Success} />
+
+</FAQ>
+
+<FAQ title="Caso de Falha (verifique o debug)" >
+
+<img src={Failure} />
+
+</FAQ>
+
+<hr />
+
+:::tip
+O modo "por arquivo" se aproxima dos plugins, embora essa não fosse a intenção original.
+:::
+
+:::danger
+Embora também funcione com execuções paralelas, é fortemente desaconselhado usar esses recursos para testes concorrentes, prefira usar o modo `--sequential`.
+:::

@@ -1,0 +1,61 @@
+---
+sidebar_position: 10
+tags: [boilerplate]
+---
+
+# 📋 todo
+
+O `.todo` é um auxiliar estendido para `describe`, `it` e `test` para ajudá-lo a planejar testes futuros.
+
+## Uso Básico
+
+### Mensagem simples
+
+```ts
+import { describe, it, test } from 'poku';
+
+describe.todo('todo: Teste Futuro');
+
+it.todo('todo: Teste Futuro');
+
+test.todo('todo: Teste Futuro');
+```
+
+- Não há diferença entre as funcionalidades.
+
+Também em contextos internos:
+
+```ts
+import { describe, it } from 'poku';
+
+describe(() => {
+  it.todo('todo: Teste Futuro');
+
+  it('Teste real', () => {
+    /* ... */
+  });
+});
+```
+
+### Ignorando um callback
+
+Isso pode ser útil quando você já tem uma ideia ou protótipo do que deseja testar, mas não quer que o teste seja executado de fato.<br />
+Também pode ser útil para testes que pararam de funcionar inesperadamente devido a algum evento externo, necessitando de maior atenção.
+
+```ts
+import { describe, it } from 'poku';
+
+describe.todo('todo: Teste Futuro', () => {
+  it(async () => {
+    process.exit(1);
+  });
+});
+```
+
+- O método recebido por `todo` e tudo dentro dele será completamente ignorado.
+
+<hr />
+
+:::note
+Ao usar `beforeEach` ou `afterEach`, eles não serão acionados por testes com `.todo`.
+:::

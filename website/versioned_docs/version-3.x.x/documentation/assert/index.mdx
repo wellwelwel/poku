@@ -34,18 +34,20 @@ Default assertions:
 Strict assertions:
 
 ```diff
-- import strict from 'node:assert/strict';
-+ import { strict } from 'poku';
+- import assert from 'node:assert/strict';
++ import { strict as assert } from 'poku';
 ```
 
+- `strict` method is available for **Node.js 16** onwards, **Bun**, and **Deno**. If you use it on unsupported **Node.js** versions, **Poku** will use the standard `assert` instead.
+
 ```ts
-strict(true, "It's true 🧪");
-strict.strictqual(1, '1', 'Poku will describe it and show an error 🐷');
+assert(true, "It's true 🧪");
+assert.strictEqual(1, '1', 'Poku will describe it and show an error 🐷');
 // ...
 ```
 
 :::tip
-**Poku**'s `assert` and `strict` will use the message exactly as it is when using `describe` and `it`. <br />
+**Poku**'s `assert` will use the message exactly as it is when using `describe` and `it`. <br />
 Your **Poku** is waiting for you 🐷✨
 :::
 

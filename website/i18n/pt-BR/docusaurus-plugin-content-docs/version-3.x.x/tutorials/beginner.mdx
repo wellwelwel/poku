@@ -1,0 +1,144 @@
+---
+title: 🐣 Iniciantes
+description: De um teste básico de asserção até sua execução.
+tags: [assert, assertion, tutorial, beginner, roadmap]
+sidebar_position: 0
+---
+
+import Junior from '@site/static/img/junior.svg';
+
+<div className='title-section'>
+<aside>
+
+# 🐣 Tutorial para Iniciantes
+
+- De um teste básico de asserção até sua execução.
+
+</aside>
+<aside>
+  <Junior className='logo' height='128' />
+</aside>
+</div>
+
+<hr />
+
+## Asserções
+
+>
+
+### ☑️ O que são Asserções?
+
+Nos testes, **asserções** são usadas para garantir que o resultado seja realmente o que esperamos.
+
+:::tip
+
+Cada _testador_ pode ter um jeito diferente de fazer isso, mas o final costuma ser o mesmo:
+
+- Se nossa verificação (asserção) não for exatamente como esperado, o teste irá disparar um erro naquela asserção.
+
+:::
+
+<hr />
+
+### Na Prática
+
+#### Entendendo condições e asserções
+
+Em **JavaScript**, podemos comparar usando `===`, certo?
+
+<blockquote>
+
+Se a condição for válida, ela continua, **caso contrário** tentará outra condição, se existir. Por exemplo:
+
+```js
+const atual = 'maçã';
+const esperado = 'banana';
+
+if (atual === esperado) {
+  console.log('As frutas são iguais');
+} else {
+  console.log('As frutas são diferentes');
+}
+
+console.log(
+  'Será executado após as condições abaixo, independente do resultado'
+);
+```
+
+</blockquote>
+
+- ☁️ Com as asserções, imagine que se a condição não for válida, o script é interrompido imediatamente com um erro.
+
+<hr />
+
+Vamos criar um arquivo `assertion-error.test.mjs` e tentar o mesmo, mas como uma asserção de teste:
+
+```js
+import { assert } from 'poku';
+
+const atual = 'maçã';
+const esperado = 'banana';
+
+assert.strictEqual(atual, esperado, 'Espera pelas mesmas frutas');
+
+// Após o erro de asserção, o script irá encerrar o processo com um erro ❌
+
+console.log('Ninguém me nota 😔');
+```
+
+E agora, o arquivo `assertion-success.test.mjs`:
+
+```js
+import { assert } from 'poku';
+
+const atual = 'maçã';
+const esperado = 'maçã';
+
+assert.strictEqual(atual, esperado, 'Espera pelas mesmas frutas');
+
+// Após o sucesso da asserção, o script continuará normalmente ✅
+
+console.log('Estou aqui 😌');
+```
+
+<hr />
+
+Nossos testes foram criados:
+
+- Um causará um erro e o outro será concluído com sucesso.
+
+Para executar todos os testes de uma vez, basta executar o comando `npx poku --debug` no terminal e ver a mágica acontecer:
+
+```sh
+npx poku --debug
+```
+
+> Por que `--debug`?
+>
+> Para os iniciantes, é sempre recomendado usar essa opção para ver todas as saídas no terminal. Sem essa opção, nenhum `console.log` será exibido no terminal, por exemplo.
+
+:::note
+[Veja todas as opções e o uso do `assert`](/docs/documentation/assert).
+:::
+
+<hr />
+
+## Conclusão
+
+Em um teste real, nós não usaríamos valores óbvios/fictícios, testaríamos métodos reais e resultados que podem variar em nosso projeto, seja ele frontend ou backend.
+
+Quando todos os testes passam, isso significa que nossa suíte passou com sucesso em todos os testes criados 🎉
+
+<hr />
+
+## Extra
+
+Aqui está um passo a passo completo para aprender testes unitários na prática com o **Poku**, em Português (BR):
+
+[🇧🇷 Tutorial: Introduzindo Testes Unitários para Devs Iniciantes (JS)](https://www.tabnews.com.br/wellwelwel/tutorial-introduzindo-testes-unitarios-para-devs-iniciantes-js)
+
+<hr />
+
+:::note
+Se você encontrar algum erro de digitação, sinta-se à vontade para abrir um **Pull Request** corrigindo-o.
+:::

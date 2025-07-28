@@ -1,0 +1,90 @@
+---
+sidebar_position: 3
+tags: [boilerplate, tdd, bdd]
+---
+
+# 🧪 it
+
+> `it(mensagem: string, cb: () => void)` | `it(cb: () => void)`
+
+O `it` é um auxiliar para ajudá-lo em casos como:
+
+- Usar o [`beforeEach` e `afterEach`](/docs/documentation/helpers/before-after-each/in-code) para cada `it` realizado
+
+## Uso Básico
+
+### Agrupando testes
+
+```ts
+import { describe, it, assert } from 'poku';
+
+describe('Conjunto de cálculos', () => {
+  it('Somas', () => {
+    assert.equal(1 + 1, 2);
+    assert.equal(2 + 2, 4);
+  });
+
+  it('Divisão', () => {
+    assert.equal(1 / 1, 1);
+    assert.equal(2 / 2, 1);
+  });
+});
+```
+
+### Aguardando Promessas
+
+```ts
+import { describe, it } from 'poku';
+
+await describe(async () => {
+  await it(async () => {
+    // faça o que quiser
+  });
+
+  await it(async () => {
+    // faça o que quiser
+  });
+});
+```
+
+### Executando em paralelo
+
+```ts
+import { describe, it } from 'poku';
+
+describe(() => {
+  it(async () => {
+    // faça o que quiser
+  });
+
+  it(async () => {
+    // faça o que quiser
+  });
+});
+```
+
+### Aguardando múltiplas promessas
+
+```ts
+import { describe, it } from 'poku';
+
+await describe(async () => {
+  // faça algo antes
+
+  await Promise.all([
+    it(async () => {
+      // faça o que quiser
+    }),
+
+    it(async () => {
+      // faça o que quiser
+    }),
+  ]);
+
+  // faça algo depois
+});
+```
+
+:::tip
+Você pode pensar nisso como `beforeAll` e `afterAll`.
+:::
