@@ -135,7 +135,7 @@ npm run test:deno             # Test with the locally installed Deno version
 The coverage target is **95%**.
 
 ```sh
-npm run test:c8
+npm run test:coverage
 ```
 
 > [!tip]

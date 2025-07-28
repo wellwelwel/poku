@@ -1,0 +1,127 @@
+---
+sidebar_position: 11
+tags: [modifiers, debugging]
+---
+
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
+# 🌌 only
+
+The `.only` modifier enables selective execution of tests, allowing you to focus on specific `describe`, `it`, and/or `test` blocks by running only those marked with `.only`. See the [usage](#usage) to understand the different conditions and behaviors.
+
+<Stability
+  level={2}
+  message={
+    <>
+      From{' '}
+      <strong>
+        <code>3.0.0-rc.1</code>
+      </strong>{' '}
+      onwards.
+    </>
+  }
+/>
+
+<History
+  records={[
+    {
+      version: '3.0.0',
+      changes: [
+        <>
+          Add <code>only</code> modifier to <code>describe</code>,{' '}
+          <code>it</code> and <code>test</code> methods.
+        </>,
+      ],
+    },
+    {
+      version: '2.7.0',
+      changes: [
+        <>
+          Add <code>only</code> modifier to <code>describe</code>,{' '}
+          <code>it</code> and <code>test</code> methods (experimental).
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## Usage
+
+To enable the `.only` modifier, you must to pass the `--only` flag.
+
+:::tip
+
+You can pass the `--only` flag either using the test runner (**Poku**) or the runner you prefer, for example:
+
+```sh
+npx poku --only
+npx tsx test/my-test.test.ts --only
+npm test -- --only
+node test/my-test.test.js --only
+```
+
+:::
+
+### Common Examples
+
+```ts
+import { describe, it, test } from 'poku';
+
+describe.only(() => {
+  // ✅ Will be executed
+
+  it(() => {
+    // ✅ Will be executed
+  });
+
+  test(() => {
+    // ✅ Will be executed
+  });
+});
+
+describe(() => {
+  // ⏭️ Will be skipped
+
+  it(() => {
+    // ⏭️ Will be skipped
+  });
+
+  test(() => {
+    // ⏭️ Will be skipped
+  });
+});
+
+describe(() => {
+  // ✅ Will be executed
+
+  it(() => {
+    // ⏭️ Will be skipped
+  });
+
+  it.only(() => {
+    // ✅ Will be executed
+  });
+
+  test(() => {
+    // ⏭️ Will be skipped
+  });
+});
+```
+
+```bash
+npx poku --only
+```
+
+---
+
+:::tip
+
+- The `.only` modifier works exactly as its respective `describe`, `it` and `test` methods (e.g., by running `beforeEach` and `afterEach` for the `test.only` or `it.only`).
+- It's not possible to run `.only` modifiers without `--only` flag.
+
+:::
+
+:::note
+It's important to recall that **Poku** respects conventional **JavaScript** syntax in tests and doesn't change the order of the executions.
+:::

@@ -19,7 +19,7 @@ test(`Compatibility Tests: ${serviceName}`, async () => {
     detach: false,
     serviceName,
     projectName,
-    // verbose: true,
+    verbose: true,
   });
 
   const result = await compose.up();

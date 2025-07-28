@@ -1,0 +1,154 @@
+---
+sidebar_position: 3
+tags: [flakey, containers]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# Aguardando por Resultados Esperados
+
+Semelhante ao `assert`, mas em vez de retornar um erro na comparação, ele tentará novamente até obter sucesso ou exceder o tempo limite.
+
+> Espera até que conexões, serviços externos estejam prontos ou que um resultado específico de um método esteja disponível antes de iniciar os testes.
+
+## waitForExpectedResult
+
+```ts
+import { waitForExpectedResult } from 'poku';
+
+await waitForExpectedResult(() => true, true, {
+  delay: 0,
+  interval: 100,
+  timeout: 60000,
+  strict: false,
+});
+```
+
+<hr />
+
+<FAQ title='Options' >
+
+```ts
+export type WaitForExpectedResultOptions = {
+  /**
+   * Intervalo de repetição em milissegundos
+   *
+   * ---
+   *
+   * @default 100
+   */
+  interval?: number;
+  /**
+   * Tempo limite em milissegundos
+   *
+   * ---
+   *
+   * @default 60000
+   */
+  timeout?: number;
+  /**
+   * Atrasa o início e o fim pelo número definido de milissegundos.
+   *
+   * ---
+   *
+   * @default 0
+   */
+  delay?: number;
+  /**
+   * Garante comparações estritas.
+   *
+   * - Para usuários do **Bun**, essa opção não é necessária.
+   *
+   * ---
+   *
+   * @default false
+   */
+  strict?: boolean;
+};
+```
+
+</FAQ>
+
+<hr />
+
+## Exemplos
+
+Aguardando até a conexão com o banco de dados retornar `true`:
+
+```ts
+import { waitForExpectedResult } from 'poku';
+import { db } from './db.js';
+
+await waitForExpectedResult(() => db.connect(), true);
+// await waitForExpectedResult(async () => await db.connect(), true);
+```
+
+<hr />
+
+Aguardando até que a conexão com o banco de dados não lance uma exceção:
+
+```ts
+import { waitForExpectedResult } from 'poku';
+import { db } from './db.js';
+
+await waitForExpectedResult(async () => {
+  try {
+    await db.connect();
+    return true;
+  } catch {}
+}, true);
+```
+
+<hr />
+
+Aguardando por uma conexão com o banco de dados de um contêiner antes de executar toda a suíte de testes e parando o contêiner ao finalizar:
+
+> Exemplo de _API_ do **Poku**.
+
+```ts
+import { poku, docker, waitForExpectedResult, exit } from 'poku';
+import { db } from './db.js';
+
+// Carrega o docker-compose.yml
+const compose = docker.compose();
+
+// Inicia o contêiner
+await compose.up();
+
+// Aguardando pelo banco de dados
+await waitForExpectedResult(async () => {
+  try {
+    await db.connect();
+    return true;
+  } catch {}
+}, true);
+
+// Inicia a suíte de testes
+const result = await poku('./test/integration', {
+  noExit: true,
+});
+
+// Finaliza o contêiner
+await compose.down();
+
+// Mostra os resultados dos testes e encerra o processo com o código de saída dos testes.
+exit(result);
+```
+
+<blockquote>
+
+Então:
+
+```sh
+node run.test.js
+```
+
+```sh
+npx tsx run.test.ts
+```
+
+</blockquote>
+
+:::tip
+[Veja um exemplo usando o **Dockerfile**.](/docs/documentation/helpers/containers#dockerfile)
+:::

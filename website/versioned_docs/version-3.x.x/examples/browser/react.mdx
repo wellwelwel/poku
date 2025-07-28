@@ -1,0 +1,68 @@
+---
+sidebar_position: 1
+---
+
+# ReactJS
+
+To effectively test **React** components, we can combine **Poku** and your preferred web scraper tool.
+
+For this example, let's create a simple **Vite React** app and then navigate on it using **Puppeteer** to interact with the page:
+
+```bash
+# highlight-start
+npm create vite@latest my-project -- --template react
+# highlight-end
+```
+
+> It will create a default **Vite React** app in the `my-project` directory.
+
+Test steps:
+
+- ✅ Start the `dev` script from `my-project/package.json` in the background
+- ✅ Verify the initial counter is **zero**
+- ✅ Click on button to increment the counter
+- ✅ Check the updated counter value
+- ✅ Close the background process
+
+```ts
+import { assert, startScript } from 'poku';
+// highlight-start
+import puppeteer from 'puppeteer';
+// highlight-end
+
+const server = await startScript('dev', {
+  cwd: 'my-project',
+});
+
+// highlight-start
+const API = 'http://localhost:5173';
+
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+
+await page.goto(API);
+
+const button = await page.waitForSelector('button');
+// highlight-end
+
+assert.strictEqual(
+  await button.evaluate((e) => e.textContent),
+  'count is 0',
+  'Initial Counter needs to be 0'
+);
+
+// highlight-start
+await button.click();
+// highlight-end
+
+assert.strictEqual(
+  await button.evaluate((e) => e.textContent),
+  'count is 1',
+  'After click, needs to be 1'
+);
+
+// highlight-start
+await browser.close();
+// highlight-end
+server.end();
+```

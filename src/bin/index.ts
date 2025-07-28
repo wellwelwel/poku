@@ -17,7 +17,7 @@ import { hr, log } from '../services/write.js';
   }
 
   if (hasArg('help') || hasArg('h', '-')) {
-    require('./help.js').help();
+    (await import('./help.js')).help();
     return;
   }
 
@@ -70,7 +70,7 @@ import { hr, log } from '../services/write.js';
   if (dirs.length === 1) states.isSinglePath = true;
 
   if (hasArg('listFiles')) {
-    const { listFiles } = require('../modules/helpers/list-files.js');
+    const { listFiles } = await import('../modules/helpers/list-files.js');
 
     const files: string[] = [];
 
@@ -134,9 +134,8 @@ import { hr, log } from '../services/write.js';
     GLOBAL.envFile = getArg('envFile') ?? configsFromFile?.envFile ?? '.env';
   }
 
-  if (enforce) require('../services/enforce.js').enforce();
+  if (enforce) (await import('../services/enforce.js')).enforce();
 
-  /* c8 ignore start */ // Process-based
   if (killPort || configsFromFile?.kill?.port) {
     const ports =
       killPort?.split(',').map(Number) || configsFromFile?.kill?.port || [];
@@ -163,7 +162,6 @@ import { hr, log } from '../services/write.js';
 
     tasks.push(kill.pid(PIDs));
   }
-  /* c8 ignore stop */
 
   GLOBAL.envFile && tasks.push(envFile(GLOBAL.envFile));
 
@@ -223,5 +221,5 @@ import { hr, log } from '../services/write.js';
   }
 
   /* c8 ignore next 1 */ // Blocked by TSX
-  if (watchMode) await require('./watch.js').startWatch(dirs);
+  if (watchMode) require('./watch.js').startWatch(dirs); // TODO: Replace with import()
 })();

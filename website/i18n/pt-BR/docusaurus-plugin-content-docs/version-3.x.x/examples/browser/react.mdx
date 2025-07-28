@@ -1,0 +1,68 @@
+---
+sidebar_position: 1
+---
+
+# ReactJS
+
+Para testar efetivamente os componentes do **React**, nós podemos combinar o **Poku** com a sua ferramenta de web scraping preferida.
+
+Para esse exemplo, vamos criar um app simples com **Vite React** e, em seguida, navegar nele usando o **Puppeteer** para interagir com a página:
+
+```bash
+# highlight-start
+npm create vite@latest meu-projeto -- --template react
+# highlight-end
+```
+
+> Irá criar um app **Vite React** padrão no diretório `meu-projeto`.
+
+Etapas de teste:
+
+- ✅ Inicie o script `dev` do arquivo `meu-projeto/package.json` em segundo plano
+- ✅ Verifique se o contador inicial é **zero**
+- ✅ Clique no botão para incrementar o contador
+- ✅ Verifique o valor atualizado do contador
+- ✅ Feche o processo em segundo plano
+
+```ts
+import { assert, startScript } from 'poku';
+// highlight-start
+import puppeteer from 'puppeteer';
+// highlight-end
+
+const server = await startScript('dev', {
+  cwd: 'meu-projeto',
+});
+
+// highlight-start
+const API = 'http://localhost:5173';
+
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+
+await page.goto(API);
+
+const button = await page.waitForSelector('button');
+// highlight-end
+
+assert.strictEqual(
+  await button.evaluate((e) => e.textContent),
+  'O contador é 0',
+  'O contador inicial precisa ser 0'
+);
+
+// highlight-start
+await button.click();
+// highlight-end
+
+assert.strictEqual(
+  await button.evaluate((e) => e.textContent),
+  'O contador é 1',
+  'Após o clique, precisa ser 1'
+);
+
+// highlight-start
+await browser.close();
+// highlight-end
+server.end();
+```

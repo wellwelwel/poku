@@ -1,0 +1,29 @@
+---
+sidebar_position: 3
+---
+
+# Virtual DOM
+
+Let's simule a **Virtual DOM** (Browser) by using [**Happy DOM**](https://github.com/capricorn86/happy-dom), then testing its results with **Poku**:
+
+```ts
+import { assert } from 'poku';
+// highlight-start
+import { Window } from 'happy-dom';
+
+const window = new Window();
+const document = window.document;
+
+document.body.innerHTML = '<div id="name">Poku</div>';
+
+const name = document.querySelector('#name');
+// highlight-end
+
+assert.strictEqual(name?.textContent, 'Poku', 'My div contains a Poku 🐷');
+```
+
+Then:
+
+```bash
+npx poku
+```

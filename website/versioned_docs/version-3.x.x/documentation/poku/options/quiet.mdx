@@ -1,0 +1,45 @@
+---
+sidebar_position: 5
+---
+
+import { History } from '@site/src/components/History';
+
+# `quiet`
+
+Perform tests with no logs. <br />
+This option overwrites all `log` settings by exiting with code and no logs (see below).
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Support for <code>-q</code> short flag.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+```bash
+npx poku --quiet ./test
+```
+
+- Short flag: `-q`.
+
+## API
+
+```ts
+await poku('./test', {
+  quiet: true,
+});
+```
+
+<hr />
+
+:::note
+Since **Poku** doesn't transform files, tests using `beforeEach` or `afterEach` with external consoles can be generated.
+:::

@@ -11,13 +11,10 @@
     "src/polyfills", // They involve compatibility between older versions of platforms or assist in cross-platform compatibility
     "src/modules/helpers/container.ts", // Unexpectedly, GitHub Actions started refusing a simple connection (`node:http`), not directly related to the container test (this test isn't skipped locally)
     "src/modules/helpers/create-service.ts", // Varies of platform (Node.js, Bun, and Deno)
-    "src/modules/helpers/get-pids.ts", // 100% Process-based
-    "src/modules/helpers/kill.ts", // 100% Process-based
     "src/parsers/get-runner.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/parsers/get-runtime.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/parsers/runtime-version.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/services/container.ts", // Unexpectedly, GitHub Actions started refusing a simple connection (`node:http`), not directly related to the container test (this test isn't skipped locally)
-    "src/services/pid.ts", // 100% Process-based
     "src/bin/watch.ts" // Blocked by TSX
   ]
 }
