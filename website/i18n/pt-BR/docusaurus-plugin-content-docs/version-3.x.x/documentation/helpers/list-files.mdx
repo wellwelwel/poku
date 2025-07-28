@@ -1,0 +1,71 @@
+import { History } from '@site/src/components/History';
+
+# 🗄️ List Files
+
+Retorna todos os arquivos em um diretório (independente de sua profundidade) ou o próprio arquivo.
+
+<History
+  records={[
+    {
+      version: '2.4.0',
+      changes: [<>Suporte para uso via CLI.</>],
+    },
+  ]}
+/>
+
+## CLI
+
+Exibe todos os arquivos retornados no terminal, sem executar os testes.
+
+```sh
+npx poku --listFiles
+```
+
+```sh
+npx poku ./test --listFiles
+```
+
+```sh
+npx poku ./packages/**/test --listFiles
+```
+
+```sh
+npx poku ./test/unit ./test/e2e --listFiles
+```
+
+- Você pode usar as flags `--filter` e `--exclude` e incluir múltiplos caminhos.
+
+:::note
+
+Os arquivos retornados pelo `--listFiles` não refletem os caminhos exibidos pelo `--debug`:
+
+- **`--debug`:** os caminhos a serem pesquisados.
+- **`--listFiles`:** os caminhos encontrados.
+
+:::
+
+:::tip
+Se você passar flags diferentes de `--filter` e `--exclude`, elas serão ignoradas.
+:::
+
+## API
+
+> `listFiles(diretórioDeDestino: string, configs?: ListFilesConfigs)`
+
+```ts
+import { listFiles } from 'poku';
+
+await listFiles('algum-diretório');
+```
+
+- Você pode usar as opções `filter` e `exclude`, assim como são usadas no método **`poku`**.
+
+:::info
+
+Para compilar testes usando `listFiles` com **TypeScript**, você pode precisar instalar o **@types/node**:
+
+```bash
+npm i -D @types/node
+```
+
+:::

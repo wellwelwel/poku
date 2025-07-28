@@ -1,0 +1,124 @@
+---
+sidebar_position: 1
+---
+
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
+# 📦 Include Directories and Files
+
+By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it using the [`filter`](/docs/documentation/poku/options/filter) option.
+
+<History
+  records={[
+    {
+      version: '2.1.0',
+      changes: [
+        <>Support for multiple paths in any order.</>,
+        <>
+          Deprecate <code>--include</code> flag.
+        </>,
+        <>
+          Maintains retroactive support for multiple comma-separated paths to
+          avoid breaking changes.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+### Common usage
+
+```bash
+# Same as ./
+npx poku
+```
+
+- Run all tests in parallel.
+
+```bash
+# Same as ./
+npx poku --sequential
+```
+
+- Run all tests sequentially.
+
+```bash
+npx poku ./test
+```
+
+- Run all tests in `./test` directory.
+
+:::tip
+You can pass both directories and files.
+:::
+
+:::note
+It's not possible to run tests in the `.git` and `node_modules` directories.
+:::
+
+<hr />
+
+### By setting multiple paths
+
+```bash
+npx poku targetPathA targetPathB
+```
+
+<hr />
+
+### By extending Glob patterns from shell
+
+You can also extend **Glob patterns** with `npx`, `bun`, `yarn`, etc.
+
+For example, by running all the unit tests of a _monorepo_:
+
+```sh
+npx poku ./packages/**/test/unit
+```
+
+Now, listing all `.js` files instead of the default `.test.|.spec.`:
+
+```sh
+npx poku --filter='.js' ./packages/**/test/unit
+```
+
+Also, by bypassing the filter:
+
+```sh
+npx poku --filter='' ./packages/**/test/unit/*.js
+```
+
+<hr />
+
+## API
+
+> `poku(targetPaths: string | string[])`
+
+```ts
+await poku('targetPath');
+```
+
+```ts
+await poku(['targetPathA', 'targetPathB']);
+```
+
+```ts
+await poku('./');
+```
+
+<blockquote>
+
+Then, run the file directly with the preferred platform, for example:
+
+```bash
+node test/run.test.js
+```
+
+```bash
+npx tsx test/run.test.ts
+```
+
+</blockquote>

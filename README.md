@@ -238,12 +238,13 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 ---
 
-### Common Issues
+### Common Issues (FAQ)
 
 - [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
 - [Using **Poku** without installing it on **Deno**](https://github.com/wellwelwel/poku/discussions/565).
 - Migrating:
+  - [From version **3.x.x** to version **4.x.x**](https://github.com/wellwelwel/poku/issues/1006).
   - [From version **2.x.x** to version **3.x.x**](https://github.com/wellwelwel/poku/issues/801).
   - [From version **1.x.x** to version **2.x.x**](https://github.com/wellwelwel/poku/issues/533).
 

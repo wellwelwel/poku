@@ -1,0 +1,274 @@
+---
+sidebar_position: 1
+tags: [reporter, reporters, dot, tap]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# `reporter`
+
+Specify the reporter for test execution.
+
+## Reporters
+
+### `poku` _(default)_
+
+- Logs all `describe`, `it`, `test` and `assert` titles and messages, including their modifiers.
+- Logs only the file name for errors during the execution, then lists all logs for each failed file at the running end.
+
+### `dot` (inspired by [Mocha](https://github.com/mochajs/mocha))
+
+- Logs a dot for each success file test and `F` for each failed file.
+- Lists all logs for each failed file at the running end.
+
+### `compact` (partially inspired by modern [Tap](https://github.com/tapjs/tapjs))
+
+- Lists only file paths with **`PASS`** or **`FAIL`** and, in case of failures, lists all logs for each failed file at the running end.
+
+### `focus`
+
+- Logs only errors (in real time). If there is no error, it just logs a small footnote resume.
+
+### `verbose`
+
+- Just like the default (`poku`), but logs errors both in real time and also at the running end.
+
+### `classic`
+
+- The standard report style from **version 2** to preserve our history 🐷
+
+<hr />
+
+## Usage
+
+### CLI
+
+<Tabs groupId="reporters">
+  <TabItem default value='poku'>
+
+```bash
+npx poku --reporter=poku # default
+```
+
+  </TabItem>
+  <TabItem default value='dot'>
+  
+```bash
+npx poku --reporter=dot
+```
+
+  </TabItem>
+  <TabItem default value='compact'>
+  
+```bash
+npx poku --reporter=compact
+```
+
+  </TabItem>
+  <TabItem default value='focus'>
+  
+```bash
+npx poku --reporter=focus
+```
+
+  </TabItem>
+  <TabItem default value='verbose'>
+  
+```bash
+npx poku --reporter=verbose
+```
+
+  </TabItem>
+  <TabItem default value='classic'>
+  
+```bash
+npx poku --reporter=classic
+```
+
+  </TabItem>
+</Tabs>
+
+- Short flag: `-r`.
+
+### Config File
+
+<Tabs groupId="reporters">
+  <TabItem default value='poku'>
+  
+```ts
+{
+  // "$schema": "https://poku.io/schemas/configs.json",
+  "reporter": "poku" // default
+}
+```
+
+```ts
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  reporter: 'poku', // default
+});
+```
+
+  </TabItem>
+  <TabItem default value='dot'>
+  
+```ts
+{
+  // "$schema": "https://poku.io/schemas/configs.json",
+  "reporter": "dot"
+}
+```
+
+```ts
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  reporter: 'dot',
+});
+```
+
+  </TabItem>
+  <TabItem default value='compact'>
+  
+```ts
+{
+  // "$schema": "https://poku.io/schemas/configs.json",
+  "reporter": "compact"
+}
+```
+
+```ts
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  reporter: 'compact',
+});
+```
+
+  </TabItem>
+  <TabItem default value='focus'>
+  
+```ts
+{
+  // "$schema": "https://poku.io/schemas/configs.json",
+  "reporter": "focus"
+}
+```
+
+```ts
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  reporter: 'focus',
+});
+```
+
+  </TabItem>
+  <TabItem default value='verbose'>
+  
+```ts
+{
+  // "$schema": "https://poku.io/schemas/configs.json",
+  "reporter": "verbose"
+}
+```
+
+```ts
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  reporter: 'verbose',
+});
+```
+
+  </TabItem>
+  <TabItem default value='classic'>
+  
+```ts
+{
+  // "$schema": "https://poku.io/schemas/configs.json",
+  "reporter": "classic"
+}
+```
+
+```ts
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  reporter: 'classic',
+});
+```
+
+  </TabItem>
+</Tabs>
+
+### API
+
+<Tabs groupId="reporters">
+  <TabItem default value='poku'>
+
+```ts
+await poku('./test', {
+  reporter: 'poku', // default
+});
+```
+
+  </TabItem>
+  <TabItem default value='dot'>
+  
+```ts
+await poku('./test', {
+  reporter: 'dot',
+});
+```
+
+  </TabItem>
+  <TabItem default value='compact'>
+  
+```ts
+await poku('./test', {
+  reporter: 'compact',
+});
+```
+
+  </TabItem>
+  <TabItem default value='focus'>
+  
+```ts
+await poku('./test', {
+  reporter: 'focus',
+});
+```
+
+  </TabItem>
+  <TabItem default value='verbose'>
+  
+```ts
+await poku('./test', {
+  reporter: 'verbose',
+});
+```
+
+  </TabItem>
+  <TabItem default value='classic'>
+  
+```ts
+await poku('./test', {
+  reporter: 'classic',
+});
+```
+
+  </TabItem>
+</Tabs>
+
+<hr />
+
+:::tip
+
+- To debug, see [`debug`](/docs/documentation/poku/options/debug) option.
+- To quiet the output, see [`quiet`](/docs/documentation/poku/options/quiet) option.
+- Both the `--debug` and `--quiet` options work with all reporters.
+
+:::

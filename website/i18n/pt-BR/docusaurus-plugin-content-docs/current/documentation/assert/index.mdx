@@ -34,20 +34,18 @@ Asserções padrões:
 Asserções estritas:
 
 ```diff
-- import assert from 'node:assert/strict';
-+ import { strict as assert } from 'poku';
+- import strict from 'node:assert/strict';
++ import { strict } from 'poku';
 ```
 
-- O método `strict` está disponível para **Node.js 16** em diante, **Bun** e **Deno**.
-
 ```ts
-assert(true, 'Isso é válido 🧪');
-assert.strictEqual(1, '1', 'O Poku irá descrever isso e mostrar um erro 🐷');
+strict(true, 'Isso é válido 🧪');
+strict.strictEqual(1, '1', 'O Poku irá descrever isso e mostrar um erro 🐷');
 // ...
 ```
 
 :::tip
-O `assert` do **Poku** usará a mensagem exatamente como seria ao usar `describe` e `it`. <br />
+Os métodos `assert` e `strict` do **Poku** usarão a mensagem exatamente como seria ao usar `describe` e `it`. <br />
 Seu **Poku** está esperando por você 🐷✨
 :::
 

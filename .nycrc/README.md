@@ -17,7 +17,7 @@
 
 ### process-based
 
-> E.g., `process.on`, `process.once`, `pid`, etc.
+> E.g., `process.on`, `process.once`, etc.
 
 - I intend to do more research.
 

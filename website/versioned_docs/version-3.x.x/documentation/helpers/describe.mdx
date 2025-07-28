@@ -1,0 +1,102 @@
+---
+sidebar_position: 2
+tags: [boilerplate, tdd, bdd]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# 🧪 describe
+
+> `describe(title: string, options?: DescribeOptions)` | `describe(message: string, cb: () => void)` | `describe(cb: () => void)`
+
+## Using as test titles
+
+On **Poku**, `describe` can be used just as a pretty `console.log` to title your test suites in the terminal.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Test Title');
+
+assert(true, '1');
+assert(true, '2');
+```
+
+### Personalization
+
+#### background
+
+Change the background color for your personal title.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Test Title', { background: 'blue' });
+
+assert.ok(true, '1');
+assert.ok(true, '2');
+```
+
+<FAQ title='Available Colors'>
+
+- `white`
+- `black`
+- `grey`
+- `red`
+- `green`
+- `yellow`
+- `blue`
+- `magenta`
+- `cyan`
+- `brightRed`
+- `brightGreen`
+- `brightYellow`
+- `brightBlue`
+- `brightMagenta`
+- `brightCyan`
+
+</FAQ>
+
+#### icon (prefix)
+
+**Poku** also allows the prefix customization.
+
+> The default icon is `☰`.
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Test Title', { icon: '🔬' });
+
+assert.ok(true, '1');
+assert.ok(true, '2');
+```
+
+## Grouping tests (usual)
+
+```ts
+import { describe, assert } from 'poku';
+
+describe(() => {
+  assert.equal(1 + 1, 2, '1 + 1 should be 2');
+  assert.equal(2 + 2, 4, '2 + 2 should be 4');
+});
+```
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Sum tests', () => {
+  assert.equal(1 + 1, 2);
+  assert.equal(2 + 2, 4);
+});
+```
+
+```ts
+import { describe, assert } from 'poku';
+
+describe('Sum tests', () => {
+  assert.equal(1 + 1, 2, '1 + 1 should be 2');
+  assert.equal(2 + 2, 4, '2 + 2 should be 4');
+});
+```

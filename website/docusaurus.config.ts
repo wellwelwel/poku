@@ -38,8 +38,12 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
-              label: 'v3.x.x',
+              label: 'v4.x.x',
               badge: false,
+            },
+            '3.x.x': {
+              label: 'v3.0.2',
+              banner: 'unmaintained',
             },
             '2.x.x': {
               label: 'v2.7.1',

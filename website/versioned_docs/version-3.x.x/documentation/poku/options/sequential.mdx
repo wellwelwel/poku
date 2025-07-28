@@ -1,0 +1,35 @@
+---
+sidebar_position: 1.1
+tags: [runInBand, sequence, test-sequential, no-parallel, jobs]
+---
+
+# `sequential`
+
+Run the tests files sequentially.
+
+## CLI
+
+```bash
+# Sequential mode
+
+npx poku --sequential ./test
+```
+
+## API
+
+```ts
+await poku('./test', {
+  sequential: true,
+});
+```
+
+<hr />
+
+:::tip
+Learn how to control the number of concurrent test executions with the [`concurrency`](/docs/documentation/poku/options/concurrency) option.
+:::
+
+:::info
+Sequential execution processes test files one by one, but doesn't guarantee alphabetical.<br />
+Want to change that? Let's discuss the best approach and the inclusion of a new feature 🤝
+:::
