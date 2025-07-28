@@ -1,0 +1,267 @@
+---
+sidebar_position: 6
+tags: [containers]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# 🐳 Contêineres
+
+Uma API mínima para auxiliar testes que requerem contêineres ou testes que são executados dentro de contêineres.
+
+> Esse auxiliar pressupõe que você já tem uma compreensão básica de como o **Docker** funciona.
+
+## docker
+
+### compose
+
+Inicie contêineres a partir de um **docker-compose.yml** em segundo plano.
+
+```ts
+import { docker } from 'poku';
+
+const compose = docker.compose();
+
+// Inicia o(s) contêiner(es)
+await compose.up();
+
+/**
+ * Testes vêm aqui 🧪
+ */
+
+// Interrompe o(s) contêiner(es)
+await compose.down();
+```
+
+<FAQ title='Options' >
+
+```ts
+export type DockerComposeConfigs = {
+  /**
+   * Especifica o caminho do **docker-compose.yml**
+   *
+   * ---
+   *
+   * @default "./docker-compose.yml"
+   */
+  file?: string;
+
+  /**
+   * Especifica o nome do projeto.
+   */
+  projectName?: string;
+
+  /**
+   * Especifica um caminho `.env` para o **docker-compose.yml**.
+   */
+  envFile?: string;
+
+  /**
+   * Define o diretório raiz onde o processo irá rodar.
+   *
+   * ---
+   *
+   * @default "."
+   */
+  cwd?: string;
+
+  /**
+   * Força a reconstrução das imagens (**Dockerfile**).
+   */
+  build?: boolean;
+
+  /**
+   * Inicia apenas um serviço específico do **docker-compose.yml**.
+   */
+  serviceName?: string;
+
+  /**
+   * Não executa o contêiner em segundo plano e retorna o resultado de saída do processo do contêiner (boolean).
+   *
+   * - Defina como `false` para testar se um contêiner foi executado e finalizado com sucesso.
+   *
+   * ---
+   *
+   * @default true
+   */
+  detach?: boolean;
+
+  /**
+   * Mostra logs do **Docker** em tempo real.
+   */
+  verbose?: boolean;
+};
+```
+
+</FAQ>
+
+<hr />
+
+### dockerfile
+
+Constrói e inicia contêineres a partir de **Dockerfiles** em segundo plano.
+
+```ts
+import { docker } from 'poku';
+
+const dockerfile = docker.dockerfile({
+  containerName: 'nome-do-contêiner',
+  tagName: 'nome-da-imagem',
+});
+
+// Constrói a imagem a partir do Dockerfile
+await dockerfile.build();
+
+// Inicia o contêiner
+await dockerfile.start();
+
+/**
+ * Testes vêm aqui 🧪
+ */
+
+// Interrompe e remove tanto o contêiner quanto a imagem
+await dockerfile.remove();
+```
+
+- Você também pode usar `.stop()` para interromper o contêiner de maneira suave sem removê-lo.
+
+<FAQ title='Options'>
+
+```ts
+export type DockerfileConfigs = {
+  /**
+   * Especifica o nome da imagem
+   *
+   * Por exemplo, `"nome"`, `"nome:tag"`.
+   */
+  tagName: string;
+
+  /**
+   * Especifica o nome do contêiner.
+   */
+  containerName: string;
+
+  /**
+   * Especifica o caminho do **Dockerfile**
+   *
+   * ---
+   *
+   * @default "./Dockerfile"
+   */
+  file?: string;
+
+  /**
+   * Especifica o caminho de contexto do **Dockerfile**
+   *
+   * - É diferente do `cwd`.
+   *
+   * ---
+   *
+   * @default "."
+   */
+  context?: string;
+
+  /**
+   * Especifica as portas a serem expostas.
+   *
+   * Por exemplo, `"6000:6000"`, `"8080:80"`, `"127.0.0.1:3306:3306"`.
+   */
+  ports?: string[];
+
+  /**
+   * Especifica as variáveis de ambiente do contêiner.
+   *
+   * Por exemplo, `"VAR1"`, `"VAR1=value1"`
+   */
+  environments?: string[];
+
+  /**
+   * Especifica um caminho para o arquivo `.env` no **Dockerfile**.
+   */
+  envFile?: string;
+
+  /**
+   * Força a construção da imagem sem cache.
+   */
+  cache?: boolean;
+
+  /**
+   * Não executa o contêiner em segundo plano e retorna o resultado de saída do processo do contêiner (boolean).
+   *
+   * - Defina como `false` para testar se um contêiner foi executado e finalizado com sucesso.
+   *
+   * ---
+   *
+   * @default true
+   */
+  detach?: boolean;
+
+  /**
+   * Define o diretório raiz onde o processo irá rodar.
+   *
+   * ---
+   *
+   * @default "."
+   */
+  cwd?: string;
+
+  /**
+   * Mostra logs do **Docker** em tempo real.
+   */
+  verbose?: boolean;
+};
+```
+
+</FAQ>
+
+<hr />
+
+## Exemplos Reais
+
+Testes realizados dentro de um contêiner (**docker-compose.yml**) em um serviço específico com imagens personalizadas (**Dockerfile**), retornando a saída, interrompendo os contêineres e limpando as imagens:
+
+- [test/compatibility/bun-canary.test.ts](https://github.com/wellwelwel/poku/blob/main/test/compatibility/bun-canary.test.ts)
+
+<hr />
+
+Testes realizados dentro de um contêiner (**Dockerfile**), retornando a saída, interrompendo o contêiner e limpando a imagem:
+
+- [test/compatibility-by-dockerfile/bun-canary.test.ts](https://github.com/wellwelwel/poku/blob/main/test/compatibility-by-dockerfile/bun-canary.test.ts)
+
+<hr />
+
+Inicia um contêiner antes de toda a suíte de testes e o interrompe ao finalizar:
+
+> Exemplo de _API_ do **Poku**.
+
+```ts
+import { poku, docker, exit } from 'poku';
+
+const compose = docker.compose({ cwd: './test/docker' });
+
+// Remove o contêiner se ele já existir antes de iniciar
+await compose.down();
+
+// Inicia o contêiner
+await compose.up();
+
+const result = await poku('./test/integration', {
+  noExit: true,
+});
+
+// Interrompe o contêiner
+await compose.down();
+
+// Mostra os resultados dos testes e finaliza o processo com o código de saída do teste.
+exit(result);
+```
+
+```sh
+node run.test.mjs
+```
+
+<hr />
+
+:::note
+Esta não é uma _API_ completa e robusta projetada para criar um _ORM_ para **Docker**, mas uma **API** mínima focada em necessidades comuns de **integração** e **teste de ponta a ponta**.
+:::

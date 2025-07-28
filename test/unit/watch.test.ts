@@ -8,14 +8,11 @@ import { afterEach, beforeEach } from '../../src/modules/helpers/each.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
-import { runtimeVersion } from '../../src/parsers/runtime-version.js';
 import { watch } from '../../src/services/watch.js';
 
 const { runtime } = GLOBAL;
 
 if (runtime === 'deno') skip();
-if (runtime === 'node' && runtimeVersion < 16)
-  skip('rmSync is available from Node.js 16 onwards');
 
 const tmpDir = path.resolve('.', 'test/__fixtures__/.temp/watch');
 const humanDelay = 750;

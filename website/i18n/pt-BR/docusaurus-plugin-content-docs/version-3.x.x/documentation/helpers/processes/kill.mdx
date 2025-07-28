@@ -1,0 +1,144 @@
+---
+sidebar_position: 1
+tags: [processes, ports]
+---
+
+# Encerrando Processos
+
+Encerra as portas especificadas, intervalos de portas e IDs de processos.
+
+## kill.port
+
+> `kill.port(porta: number | number[])`
+
+Encerra as portas especificadas
+
+- Requer `lsof` para **Unix** e `netstat` para **Windows**.
+
+### CLI
+
+Encerra as portas especificadas antes de executar a suíte de testes.
+
+```bash
+npx poku --killPort="4000" caminhoDoTeste
+```
+
+Também, encerrando múltiplas portas:
+
+```bash
+npx poku --killPort="4000,4001" caminhoDoTeste
+```
+
+### API
+
+```ts
+import { kill } from 'poku';
+
+await kill.port(4000);
+```
+
+Também, encerrando múltiplas portas:
+
+```ts
+await kill.port([4000, 4001]);
+```
+
+---
+
+## kill.range
+
+> `kill.range(iniciaEm: number, terminaEm: number)`
+
+Encerra o intervalo de portas especificado.
+
+- Requer `lsof` para **Unix** e `netstat` para **Windows**.
+
+### CLI
+
+Encerra o intervalo de portas especificado antes de executar a suíte de testes.
+
+```bash
+npx poku --killRange="4000-4100" caminhoDoTeste
+```
+
+Também, encerrando múltiplos intervalos de portas:
+
+```bash
+npx poku --killRange="4000-4100,5000-5100" caminhoDoTeste
+```
+
+### API
+
+```ts
+import { kill } from 'poku';
+
+await kill.range(4000, 4100);
+```
+
+---
+
+## kill.pid
+
+> `kill.pid(PID: number | number[])`
+
+Encerra os processos especificados.
+
+### CLI
+
+Encerra os processos especificados antes de executar a suíte de testes
+
+```bash
+npx poku --killPid="100" caminhoDoTeste
+```
+
+Também, encerrando múltiplos processos:
+
+```bash
+npx poku --killPid="100,200" caminhoDoTeste
+```
+
+### API
+
+```ts
+import { kill } from 'poku';
+
+await kill.pid(100);
+```
+
+Também, encerrando múltiplos processos:
+
+```ts
+await kill.pid([100, 200]);
+```
+
+---
+
+:::tip
+
+Se o seu ambiente não incluir o `lsof` por padrão:
+
+**macOS (Homebrew)**
+
+```sh
+brew install lsof
+```
+
+**Debian, Ubuntu, etc.**
+
+```sh
+sudo apt-get install lsof
+```
+
+**Arch Linux, etc.**
+
+```sh
+sudo pacman -S lsof
+```
+
+**Alpine Linux, etc.**
+
+```sh
+apk add lsof
+```
+
+:::

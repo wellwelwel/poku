@@ -1,0 +1,123 @@
+---
+sidebar_position: 2
+tags: [flakey, containers]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# Waiting For Ports
+
+Wait for the specified ports to become active.
+
+## waitForPort
+
+```ts
+import { waitForPort } from 'poku';
+
+await waitForPort(3000, {
+  delay: 0,
+  interval: 100,
+  timeout: 60000,
+  host: 'localhost',
+});
+```
+
+<hr />
+
+<FAQ title='Options' >
+
+```ts
+export type WaitForPortOptions = {
+  /**
+   * Retry interval in milliseconds
+   *
+   * ---
+   *
+   * @default 100
+   */
+  interval?: number;
+  /**
+   * Timeout in milliseconds
+   *
+   * ---
+   *
+   * @default 60000
+   */
+  timeout?: number;
+  /**
+   * Delays both the start and end by the defined milliseconds.
+   *
+   * ---
+   *
+   * @default 0
+   */
+  delay?: number;
+  /**
+   * Host to check the port on.
+   *
+   * ---
+   *
+   * @default "localhost"
+   */
+  host?: string;
+};
+```
+
+</FAQ>
+
+<hr />
+
+## Examples
+
+### Waiting for Multiple Ports
+
+```ts
+import { waitForPort } from 'poku';
+
+await Promise.all([
+  waitForPort(3000),
+  waitForPort(4000),
+  waitForPort(5000),
+  waitForPort(6000),
+]);
+```
+
+### Waiting for a Container Service in Port 3000
+
+```ts
+import { docker, waitForPort } from 'poku';
+
+// highlight-start
+const compose = docker.compose();
+
+await compose.up();
+// highlight-end
+await waitForPort(3000, { delay: 100 });
+
+// highlight-start
+const res = await fetch('http://localhost:3000');
+// highlight-end
+
+/**
+ * Tests come here 🧪
+ */
+
+// highlight-start
+await compose.down();
+// highlight-end
+```
+
+<hr />
+
+:::tip
+
+**Poku** exposes a minimal `sleep` helper that just waits for milliseconds in addition to `waitForPort`:
+
+```ts
+import { sleep } from 'poku';
+
+// Wait for 1 second
+await sleep(1000);
+```
+
+:::

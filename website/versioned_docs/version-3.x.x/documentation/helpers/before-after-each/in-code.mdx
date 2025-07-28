@@ -1,0 +1,68 @@
+---
+sidebar_position: 2
+tags: [hooks, setup, teardown]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# In-Code
+
+## `beforeEach` and `afterEach`
+
+Both `beforeEach`, `afterEach` are recommended for tests that consume a particular global state for each test.<br />
+For example, by populating or resetting a database before and/or after multiple assertions.
+
+### Basic usage
+
+```ts
+import { test, beforeEach, afterEach } from 'poku';
+
+const prepareService = () => true;
+const resetService = () => true;
+
+beforeEach(() => prepareService());
+
+afterEach(() => resetService());
+
+test(() => {
+  // do anything you want
+});
+
+test(() => {
+  // do anything you want
+});
+```
+
+### By using promises
+
+```ts
+import { test, beforeEach, afterEach } from 'poku';
+
+const prepareService = () => new Promise((resolve) => resolve(true));
+
+const resetService = () => new Promise((resolve) => resolve(true));
+
+beforeEach(async () => await prepareService());
+afterEach(async () => await resetService());
+
+await test(async () => {
+  // do anything you want
+});
+
+await test(async () => {
+  // do anything you want
+});
+```
+
+:::tip
+
+You can overwriting both `beforeEach` and `afterEach` by declaring them again anytime.
+
+**Poku** provides three optional methods from both `beforeEach` and `afterEach`:
+
+- `.pause()`
+- `.continue()`
+- `.reset()`
+
+:::

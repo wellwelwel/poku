@@ -1,0 +1,82 @@
+---
+tags: [examples, promise, tutorial, parameterized, parametrized]
+sidebar_position: 0.5
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import MidLevel from '@site/static/img/mid-level.svg';
+
+# Parameterized Tests
+
+Parameterized tests allow you to run the same test logic with different inputs and expected results. This helps to test across various scenarios without writing repetitive tests.
+
+For example:
+
+```ts
+import { assert, test } from 'poku';
+
+const testCases = [
+  {
+    expected: true,
+    input: { name: 'Alice', role: 'admin' },
+    testCase: 'is admin',
+  },
+  {
+    expected: false,
+    input: { name: 'Bob', role: 'user' },
+    testCase: 'is not admin',
+  },
+];
+
+const isAdmin = (user) => user.role === 'admin';
+
+for (const { expected, input, testCase } of testCases) {
+  test(testCase, () => {
+    const actual = isAdmin(input);
+
+    assert.strictEqual(actual, expected);
+  });
+}
+```
+
+## Using promises
+
+Handling asynchronous operations sequentially within parameterized tests using promises:
+
+```ts
+import { assert, test } from 'poku';
+
+const testCases = [
+  {
+    expected: true,
+    input: { name: 'Alice', role: 'admin' },
+    testCase: 'is admin',
+  },
+  {
+    expected: false,
+    input: { name: 'Bob', role: 'user' },
+    testCase: 'is not admin',
+  },
+];
+
+const isAdmin = (user) => Promise.resolve(user.role === 'admin');
+
+for (const { expected, input, testCase } of testCases) {
+  await test(testCase, async () => {
+    const actual = await isAdmin(input);
+
+    assert.strictEqual(actual, expected);
+  });
+}
+```
+
+:::tip
+To run asynchronous operations in parallel, simply remove `await` from `test` or `it`.
+:::
+
+<hr />
+
+:::info
+These examples were based on [this comment](https://github.com/wellwelwel/poku/issues/566#issuecomment-2241496155).
+:::

@@ -1,0 +1,123 @@
+---
+sidebar_position: 2
+tags: [flakey, containers]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# Aguardando Portas
+
+Aguarda as portas especificadas se tornarem ativas.
+
+## waitForPort
+
+```ts
+import { waitForPort } from 'poku';
+
+await waitForPort(3000, {
+  delay: 0,
+  interval: 100,
+  timeout: 60000,
+  host: 'localhost',
+});
+```
+
+<hr />
+
+<FAQ title='Options' >
+
+```ts
+export type WaitForPortOptions = {
+  /**
+   * Intervalo de tentativa em milissegundos
+   *
+   * ---
+   *
+   * @default 100
+   */
+  interval?: number;
+  /**
+   * Tempo limite em milissegundos
+   *
+   * ---
+   *
+   * @default 60000
+   */
+  timeout?: number;
+  /**
+   * Atrasa o início e o fim pelo número definido de milissegundos.
+   *
+   * ---
+   *
+   * @default 0
+   */
+  delay?: number;
+  /**
+   * Host para verificar a porta.
+   *
+   * ---
+   *
+   * @default "localhost"
+   */
+  host?: string;
+};
+```
+
+</FAQ>
+
+<hr />
+
+## Exemplos
+
+### Aguardando Múltiplas Portas
+
+```ts
+import { waitForPort } from 'poku';
+
+await Promise.all([
+  waitForPort(3000),
+  waitForPort(4000),
+  waitForPort(5000),
+  waitForPort(6000),
+]);
+```
+
+### Aguardando um Serviço de Container na Porta 3000
+
+```ts
+import { docker, waitForPort } from 'poku';
+
+// highlight-start
+const compose = docker.compose();
+
+await compose.up();
+// highlight-end
+await waitForPort(3000, { delay: 100 });
+
+// highlight-start
+const res = await fetch('http://localhost:3000');
+// highlight-end
+
+/**
+ * Os testes vêm aqui 🧪
+ */
+
+// highlight-start
+await compose.down();
+// highlight-end
+```
+
+<hr />
+
+:::tip
+
+O **Poku** expõe um auxiliar `sleep` mínimo que apenas espera por milissegundos, além do `waitForPort`:
+
+```ts
+import { sleep } from 'poku';
+
+// Aguarda por 1 segundo
+await sleep(1000);
+```
+
+:::

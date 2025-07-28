@@ -1,0 +1,38 @@
+---
+sidebar_position: 7
+tags: [bail]
+---
+
+import { History } from '@site/src/components/History';
+
+# `failFast`
+
+By using `failFast`, **Poku** will stop the tests at the first failure.
+
+<History
+  records={[
+    {
+      version: '2.5.0',
+      changes: [
+        <>
+          <strong>CLI:</strong> deprecate <code>--fail-fast</code> in order to{' '}
+          <code>--failFast</code>.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+```bash
+npx poku --failFast ./test
+```
+
+## API
+
+```ts
+await poku('./test', {
+  failFast: true,
+});
+```
