@@ -1,5 +1,3 @@
-import type { IPCEventEmitter } from '../../src/modules/helpers/shared-resources.js';
-import { EventEmitter } from 'node:events';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
@@ -7,22 +5,9 @@ import {
   constructSharedResourceWithRPCs,
   createSharedResource,
   extractFunctionNames,
-  getSharedResourceFactory,
-  remoteProcedureCallFactory,
 } from '../../src/modules/helpers/shared-resources.js';
 import { test } from '../../src/modules/helpers/test.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
-
-class MockProcess extends EventEmitter implements IPCEventEmitter {
-  sent: unknown[] = [];
-  send(msg: unknown) {
-    this.sent.push(msg);
-    setImmediate(() => this.emit('message', msg));
-    return true;
-  }
-  off = this.removeListener;
-  on = this.addListener;
-}
 
 describe('createSharedResource', () => {
   it('should create a shared resource', async () => {
@@ -68,17 +53,6 @@ test('extractFunctionNames should return an empty array for non-function propert
 
   const result = extractFunctionNames(obj);
   assert.deepStrictEqual(result, ['methodA', 'methodC']);
-});
-
-test('getSharedResourceFactory should return a function', () => {
-  const mockProcess = new MockProcess();
-  const getSharedResource = getSharedResourceFactory(mockProcess);
-  assert.strictEqual(typeof getSharedResource, 'function');
-});
-
-test('remoteProcedureCallFactory should return a function', () => {
-  const remoteProcedureCall = remoteProcedureCallFactory();
-  assert.strictEqual(typeof remoteProcedureCall, 'function');
 });
 
 test('constructSharedResourceWithRPCs should create a shared resource with RPCs', async () => {
