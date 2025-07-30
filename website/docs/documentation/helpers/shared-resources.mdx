@@ -11,9 +11,9 @@ tags: [shared, state, resources, e2e, integration]
 
 **Shared Resources** allow you to define a resource (object, state, or API) in a single file and access or mutate it from multiple test files or processes. This is useful for scenarios like:
 
-* Sharing a database connection or in-memory store.
-* Coordinating state between parallel or sequential tests.
-* Implementing cross-file setup/teardown logic.
+- Sharing a database connection or in-memory store.
+- Coordinating state between parallel or sequential tests.
+- Implementing cross-file setup/teardown logic.
 
 ## Basic Usage
 
@@ -29,7 +29,9 @@ export default createSharedResource('sharedCounter', () => {
   return {
     getCount: () => count,
     increment: () => ++count,
-    reset: () => { count = 0; },
+    reset: () => {
+      count = 0;
+    },
   };
 });
 ```
@@ -57,18 +59,23 @@ All functions on your resource become remote procedure calls (RPCs), so you can 
 You can define a cleanup function when creating the resource. This will be called when the resource is no longer needed:
 
 ```ts
-
-export default createSharedResource('sharedCounter', () => {
-  let count = 0;
-  return {
-    getCount: () => count,
-    increment: () => ++count,
-    reset: () => { count = 0; },
-  };
-}, (resource) => {
-  // Cleanup logic
-  resource.reset();
-});
+export default createSharedResource(
+  'sharedCounter',
+  () => {
+    let count = 0;
+    return {
+      getCount: () => count,
+      increment: () => ++count,
+      reset: () => {
+        count = 0;
+      },
+    };
+  },
+  (resource) => {
+    // Cleanup logic
+    resource.reset();
+  }
+);
 ```
 
 ## Real-World Examples
@@ -97,7 +104,7 @@ import { getSharedResource, test, assert } from 'poku';
 test('can share cache', async () => {
   const cache = await getSharedResource('lru');
   await cache.set('foo', 123);
-  assert(await cache.get('foo') === 123);
+  assert((await cache.get('foo')) === 123);
 });
 ```
 
@@ -113,17 +120,21 @@ Share a single MySQL connection across tests:
 import { createSharedResource } from 'poku';
 import mysql from 'mysql2/promise';
 
-export default createSharedResource('mysql', async () => {
-  const connection = await mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    database: 'test'
-  });
-  return connection;
-}, (connection) => {
-  // Cleanup function to close the connection
-  return connection.destroy();
-});
+export default createSharedResource(
+  'mysql',
+  async () => {
+    const connection = await mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      database: 'test',
+    });
+    return connection;
+  },
+  (connection) => {
+    // Cleanup function to close the connection
+    return connection.destroy();
+  }
+);
 ```
 
 **db.test.ts**
