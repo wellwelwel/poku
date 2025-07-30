@@ -79,6 +79,7 @@ describe('Shared Resources Loader', () => {
       assert.deepStrictEqual(resource, {
         entry: { state: { value: 42 }, subscribers: new Set() },
         name: 'valid',
+        cleanup: undefined,
       });
     });
 
@@ -87,6 +88,18 @@ describe('Shared Resources Loader', () => {
       assert.deepStrictEqual(resource, {
         entry: { state: { value: 42 }, subscribers: new Set() },
         name: 'async-factory',
+        cleanup: undefined,
+      });
+    });
+
+    it('loads a valid resource file with cleanup function', async () => {
+      const resource = await executeResourceFile(makePath('cleanup'));
+
+      assert.equal(resource.name, 'cleanup');
+      assert.equal(typeof resource.cleanup, 'function');
+      assert.deepStrictEqual(resource.entry, {
+        state: { value: 42 },
+        subscribers: new Set(),
       });
     });
 
