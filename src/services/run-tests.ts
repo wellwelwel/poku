@@ -20,9 +20,12 @@ export const runTests = async (files: string[]): Promise<boolean> => {
   const { resourceFiles, testFiles } = separateResourceFiles(files);
 
   const registry: Record<string, SharedResourceEntry> = Object.create(null);
-
+  const cleanupMethods: Record<
+    string,
+    (arg0: SharedResourceEntry) => void | Promise<void>
+  > = Object.create(null);
   if (GLOBAL.configs.sharedResources) {
-    await executeResourceFiles(resourceFiles, registry);
+    await executeResourceFiles(resourceFiles, registry, cleanupMethods);
   }
 
   let allPassed = true;
@@ -84,5 +87,11 @@ export const runTests = async (files: string[]): Promise<boolean> => {
   for (let i = 0; i < concurrency; i++)
     isSequential ? await runNext() : runNext();
 
-  return done;
+  return done.then((res) => {
+    for (const [key, method] of Object.entries(cleanupMethods)) {
+      method(registry[key].state as SharedResourceEntry);
+    }
+
+    return res;
+  });
 };

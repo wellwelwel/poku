@@ -74,7 +74,7 @@ export interface SharedResourceEntry<T = unknown> {
   subscribers: Set<(state: T) => void>;
 }
 
-type MethodsToRPC<T> = {
+export type MethodsToRPC<T> = {
   // biome-ignore lint/suspicious/noExplicitAny: testing for function extensions
   [K in keyof T]: T[K] extends (...args: any[]) => any
     ? (
@@ -114,15 +114,20 @@ function assertSharedResourcesActive() {
 
 export async function createSharedResource<T>(
   name: string,
-  factory: () => T | Promise<T>
-): Promise<{ entry: SharedResourceEntry<T>; name: string }> {
+  factory: () => T | Promise<T>,
+  cleanup?: (arg0: T) => void | Promise<void>
+): Promise<{
+  entry: SharedResourceEntry<T>;
+  name: string;
+  cleanup?: (arg0: T) => void | Promise<void>;
+}> {
   const state = await factory();
   const entry: SharedResourceEntry<T> = {
     state,
     subscribers: new Set<(state: T) => void>(),
   };
 
-  return { entry, name };
+  return { entry, name, cleanup };
 }
 
 export async function remoteProcedureCall<
@@ -164,24 +169,36 @@ export async function remoteProcedureCall<
       method: String(method),
       args,
     } as unknown as IPCRemoteProcedureCallMessage);
-
-    setTimeout(() => {
-      process.off('message', handleResponse);
-      reject(
-        new Error(
-          `Timeout waiting for remote procedure call "${name}.${String(method)}"`
-        )
-      );
-    }, 5000);
   });
 }
 
 export function extractFunctionNames<T extends Record<string, unknown>>(
   obj: T
 ) {
-  return Object.keys(obj).filter(
-    (key) => typeof obj[key] === 'function'
-  ) as MethodsOf<T>[];
+  const seen = new Set<string>();
+  let current = obj;
+
+  while (
+    current &&
+    current !== Object.prototype &&
+    Object.getPrototypeOf(current) !== null
+  ) {
+    for (const key of Object.getOwnPropertyNames(current)) {
+      if (
+        typeof (obj as Record<string, unknown>)[key] !== 'function' ||
+        key === 'constructor' ||
+        seen.has(key)
+      ) {
+        continue;
+      }
+
+      seen.add(key);
+    }
+
+    current = Object.getPrototypeOf(current);
+  }
+
+  return Array.from(seen) as MethodsOf<T>[];
 }
 
 export function setupSharedResourceIPC<T>(
@@ -241,9 +258,10 @@ export function setupSharedResourceIPC<T>(
         const methodKey = message.method as MethodsOf<typeof entry.state>;
         if (!methodKey) return;
 
-        const method = entry.state[methodKey];
-        if (typeof method !== 'function') return;
+        const methodCandidate = entry.state[methodKey];
+        if (typeof methodCandidate !== 'function') return;
 
+        const method = methodCandidate.bind(entry.state);
         const result = await method(...(message.args || []));
 
         for (const subscriber of entry.subscribers) {
@@ -267,7 +285,7 @@ export function setupSharedResourceIPC<T>(
   });
 }
 
-function functionToRPC<T extends SharedResource, K extends MethodsOf<T>>(
+function functionToRPC<T extends object, K extends MethodsOf<T>>(
   resource: T,
   key: K,
   name: string
@@ -279,7 +297,7 @@ function functionToRPC<T extends SharedResource, K extends MethodsOf<T>>(
   };
 }
 
-export function constructSharedResourceWithRPCs<T extends SharedResource>(
+export function constructSharedResourceWithRPCs<T extends object>(
   resource: T,
   rpcs: MethodsOf<T>[],
   name: string
@@ -300,7 +318,7 @@ export function getSharedResource<T extends SharedResource>(
 ): Promise<MethodsToRPC<T>> {
   assertSharedResourcesActive();
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const requestId = `${name}-${Date.now()}-${Math.random()}`;
     let resourceProxy: MethodsToRPC<T> = Object.create(null);
     let resolved = false;
@@ -339,19 +357,12 @@ export function getSharedResource<T extends SharedResource>(
       }
     }
 
-    process.on('message', handleResponse);
+    process.once('message', handleResponse);
 
     process.send!({
       type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
       name,
       id: requestId,
     } as IPCGetMessage);
-
-    setTimeout(() => {
-      process.off('message', handleResponse);
-      if (!resolved) {
-        reject(new Error(`Timeout waiting for shared resource "${name}"`));
-      }
-    }, 5000);
   });
 }

@@ -13,11 +13,18 @@ import { isWindows } from '../parsers/os.js';
  */
 export async function executeResourceFiles(
   files: string[],
-  registry: Record<string, SharedResourceEntry>
+  registry: Record<string, SharedResourceEntry>,
+  cleanupMethods: Record<
+    string,
+    (arg0: SharedResourceEntry) => void | Promise<void>
+  >
 ): Promise<void> {
   for (const file of files) {
-    const { entry, name } = await executeResourceFile(file);
+    const { entry, name, cleanup } = await executeResourceFile(file);
     registry[name] = entry as SharedResourceEntry;
+    if (cleanup) {
+      cleanupMethods[name] = cleanup;
+    }
   }
 }
 
@@ -47,7 +54,7 @@ export async function executeResourceFile(path: string) {
     );
   }
 
-  return { entry: resource.entry, name: resource.name };
+  return resource;
 }
 
 /**

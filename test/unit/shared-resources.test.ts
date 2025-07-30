@@ -55,7 +55,33 @@ test('extractFunctionNames should return an empty array for non-function propert
   assert.deepStrictEqual(result, ['methodA', 'methodC']);
 });
 
-test('constructSharedResourceWithRPCs should create a shared resource with RPCs', async () => {
+test('extractFunctionNames should return function names from an object prototype', () => {
+  class MessageStore {
+    messages: string[] = [];
+    addMessage(msg: string) {
+      this.messages.push(msg);
+    }
+  }
+
+  class MessageStoreExtended extends MessageStore {
+    clearMessages() {
+      this.messages = [];
+    }
+  }
+
+  const resource = new MessageStoreExtended();
+  const rpcs = extractFunctionNames(
+    resource as unknown as Record<string, unknown>
+  );
+
+  assert.deepStrictEqual(
+    rpcs.sort(),
+    ['addMessage', 'clearMessages'],
+    'RPCs should include all methods from the prototype chain'
+  );
+});
+
+test('constructSharedResourceWithRPCs should create a shared resource with RPCs for sync functions', async () => {
   const resource = {
     messages: [] as string[],
     addMessage: function (msg: string) {
@@ -64,6 +90,34 @@ test('constructSharedResourceWithRPCs should create a shared resource with RPCs'
   };
 
   const rpcs = extractFunctionNames(resource);
+  const sharedResource = constructSharedResourceWithRPCs(
+    resource,
+    rpcs,
+    'testResource'
+  );
+
+  await assert.rejects(
+    // will reject because it won't be able to add messages,
+    // Meaning it indeed was transformed into a remote procedure call
+    () => sharedResource.addMessage('Hello')
+  );
+
+  // the messages array should be empty as it
+  // was transformed into a remote procedure call
+  assert.deepStrictEqual(sharedResource.messages, []);
+});
+
+test('constructSharedResourceWithRPCs should create a shared resource with RPCs for async functions', async () => {
+  const resource = {
+    messages: [] as string[],
+    addMessage: async function (msg: string) {
+      await sleep(1);
+      this.messages.push(msg);
+    },
+  };
+
+  const rpcs = extractFunctionNames(resource);
+
   const sharedResource = constructSharedResourceWithRPCs(
     resource,
     rpcs,
