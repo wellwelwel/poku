@@ -1,0 +1,38 @@
+---
+sidebar_position: 6
+---
+
+import { History } from '@site/src/components/History';
+
+# `debug`
+
+By default **Poku** doesn't shows logs that doesn't comes from **Poku**'s **`assert`**, but you can enable them.
+
+<History
+  records={[
+    {
+      version: '2.2.0',
+      changes: [
+        <>
+          Support for <code>-d</code> short flag.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## CLI
+
+```bash
+npx poku --debug ./test
+```
+
+- Short flag: `-d`.
+
+## API
+
+```ts
+await poku('./test', {
+  debug: true,
+});
+```

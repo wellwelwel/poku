@@ -1,0 +1,141 @@
+---
+sidebar_position: 98
+---
+
+# `deno`
+
+Exclusive options for **Deno** platform.
+
+## `allow`
+
+Change permissions for **Deno**.
+
+By default **Poku** uses `--allow-run`, `--allow-env`, `--allow-read` and `--allow-net`.
+
+### CLI
+
+```bash
+deno run npm:poku --denoAllow='read,run'
+```
+
+```bash
+deno run npm:poku --denoAllow='read=file.js,run'
+```
+
+Clear all permissions:
+
+```bash
+deno run npm:poku --denoAllow=''
+```
+
+### API
+
+```ts
+poku('./test', {
+  deno: {
+    allow: ['read', 'run' /* ... */],
+  },
+});
+```
+
+```ts
+poku('./test', {
+  deno: {
+    allow: ['read=file.js', 'run' /* ... */],
+  },
+});
+```
+
+Clear all permissions:
+
+```ts
+poku('./test', {
+  deno: {
+    allow: [],
+  },
+});
+```
+
+<hr />
+
+## `deny`
+
+Change permissions for **Deno**.
+
+### CLI
+
+```bash
+deno run npm:poku --denoDeny='write,sys'
+```
+
+```bash
+deno run npm:poku --denoDeny='env=HOME,write'
+```
+
+### API
+
+```ts
+poku('./test', {
+  deno: {
+    deny: ['write', 'sys' /* ... */],
+  },
+});
+```
+
+```ts
+poku('./test', {
+  deno: {
+    deny: ['env=HOME', 'write' /* ... */],
+  },
+});
+```
+
+<hr />
+
+## `cjs` (Deno `v1`)
+
+> `poku(targetPaths: string | string[], configs?: Configs)`
+>
+> `cjs: boolean | string[]`
+
+:::danger Important
+
+From **Deno** `v2`, simply set the type to `commonjs` in your **package.json** or use the `.cjs` extension.
+
+For **Deno** `v1`, you can follow the instructions bellow.
+
+:::
+
+Now, it's possible to run tests that use `require`, `module.exports` and `module` directly with **Deno** 🎉
+
+It's a great feature to test if a project created primarily in **Node.js** or **Bun** is also compatible with **Deno** without the need to transpile the code or use workarounds.
+
+To run **CommonJS** with **Deno**, you can use:
+
+### CLI
+
+```bash
+deno run npm:poku --denoCjs
+```
+
+```bash
+deno run npm:poku --denoCjs='.js,.cjs'
+```
+
+### API
+
+```ts
+await poku('./test', {
+  deno: {
+    cjs: true,
+  },
+});
+```
+
+```ts
+await poku('./test', {
+  deno: {
+    cjs: ['.js', '.cjs' /* ... */],
+  },
+});
+```

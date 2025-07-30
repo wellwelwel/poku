@@ -18,13 +18,6 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 </div>
 
-> [!IMPORTANT]
->
-> **Poku `v3`** is here! 🎉
->
-> - To check out what's changed, follow the [**Issue #801**](https://github.com/wellwelwel/poku/issues/801).
-> - For `v2` documentation, see the [**previous version's documentation**](https://poku.io/docs/2.x.x) and [**README**](https://github.com/wellwelwel/poku/tree/2.x.x?tab=readme-ov-file#readme).<br />
-
 ---
 
 ## Why does Poku exist?
@@ -245,12 +238,15 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 ---
 
-### Common Issues
+### Common Issues (FAQ)
 
 - [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
-- [Using **Poku** without installing on **Deno** and alternatives to **JSR**](https://github.com/wellwelwel/poku/discussions/565).
-- [Migrating from version **2.x** to version **3.x**](https://github.com/wellwelwel/poku/issues/801).
+- [Using **Poku** without installing it on **Deno**](https://github.com/wellwelwel/poku/discussions/565).
+- Migrating:
+  - [From version **3.x.x** to version **4.x.x**](https://github.com/wellwelwel/poku/issues/1006).
+  - [From version **2.x.x** to version **3.x.x**](https://github.com/wellwelwel/poku/issues/801).
+  - [From version **1.x.x** to version **2.x.x**](https://github.com/wellwelwel/poku/issues/533).
 
 ---
 
@@ -260,9 +256,11 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 **Poku** is [continuously tested](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) to ensure the following expectations for basic usage:
 
-- ~**4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
-- ~**4x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v3.0.6)
-- ~**1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v11.1.0) — _even with test file isolation_
+- ~**4x** faster than [**Jest**](https://github.com/jestjs/jest) (30.0.5)
+- ~**5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v3.2.4)
+- ~**1x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.1) — _even with test file isolation_ 🚀
+
+All comparisons are rounded down (e.g., `4.99` would be rounded down to `~4x`).
 
 > - You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
 > - [Comparing **Poku** and native test runners _(discussion)_](https://github.com/wellwelwel/poku/discussions/740).
@@ -273,9 +271,9 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)
 
-- [~**230x** lighter than **Vitest**](https://pkg-size.dev/vitest)
-- [~**130x** lighter than **Jest**](https://pkg-size.dev/jest)
-- [~**30x** lighter than **Mocha** + **Chai**](https://pkg-size.dev/mocha%20chai)
+- [~**206x** lighter than **Vitest**](https://pkg-size.dev/vitest@3.2.4)
+- [~**165x** lighter than **Jest**](https://pkg-size.dev/jest@30.0.5)
+- [~**52x** lighter than **Mocha**](https://pkg-size.dev/mocha@11.7.1)
 
 > **Poku** size ensures _cost-saving_ **CI** for services that charge for storage and usage.
 

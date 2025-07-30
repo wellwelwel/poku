@@ -259,7 +259,7 @@ Why? Because it follows the same principle as **Poku**: zero configurations for 
 
 Several projects still use or support legacy versions. The requirement for legacy versions isn't a strict rule and can change with major releases due to specific features that may require polyfills and impact performance directly.
 
-That's why the limit chosen was **Node.js** version `14.x.x`.
+That's why the limit chosen was **Node.js** version `16.x.x`.
 
 :::note
 **Poku** always recommends using supported versions of each runtime.
@@ -284,9 +284,8 @@ Although not a priority, there are plans to integrate the following features int
 They aren't considered breaking changes:
 
 - Formatting and style changes to outputs _(including reporters — soon)_.
-- New functionalities that depend from a specific platform version:
+- New non-critical functionalities that depend from a specific platform version:
   - As long as it doesn't affect basic usability.
-  - E.g., when using **Node.js** previous to `v15.x.x`, the `strict` method isn't available.
 - If a feature is no longer useful due to a new approach _(as long as it doesn't affect the end user)_.
 - _JSON_ intellisense schema changes _(config files)_.
 
