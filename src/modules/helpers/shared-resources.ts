@@ -1,4 +1,23 @@
-import type EventEmitter from 'node:events';
+import type { ChildProcess } from 'node:child_process';
+import type {
+  ArgumentsOf,
+  Cleanup,
+  IPCEventEmitter,
+  IPCGetMessage,
+  IPCMessage,
+  IPCRemoteProcedureCallMessage,
+  IPCRemoteProcedureCallResultMessage,
+  IPCResourceNotFoundMessage,
+  IPCResourceResultMessage,
+  IPCResourceUpdatedMessage,
+  IPCResponse,
+  MethodsOf,
+  MethodsToRPC,
+  ReturnTypeOf,
+  RPCResult,
+  SharedResource,
+  SharedResourceEntry,
+} from '../../@types/shared-resources.js';
 import process, { env } from 'node:process';
 
 export const SHARED_RESOURCE_MESSAGE_TYPES = {
@@ -9,104 +28,6 @@ export const SHARED_RESOURCE_MESSAGE_TYPES = {
   REMOTE_PROCEDURE_CALL: 'shared_resources_remoteProcedureCall',
   REMOTE_PROCEDURE_CALL_RESULT: 'shared_resources_remoteProcedureCallResult',
 } as const;
-
-export interface IPCEventEmitter extends EventEmitter {
-  send: (message: unknown, ...args: unknown[]) => boolean;
-}
-
-type SharedResource = Record<string, unknown>;
-
-export type IPCGetMessage = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE;
-  name: string;
-  id: string;
-};
-
-export type IPCRemoteProcedureCallMessage = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL;
-  name: string;
-  id: string;
-  method: string;
-  args: unknown[];
-};
-
-export type IPCMessage = IPCGetMessage | IPCRemoteProcedureCallMessage;
-
-export type IPCResourceNotFoundMessage = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND;
-  name: string;
-};
-
-export type IPCResourceResultMessage<T = unknown> = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT;
-  name: string;
-  id: string;
-  value: T;
-  rpcs: MethodsOf<T>[];
-};
-
-export type IPCResourceUpdatedMessage<T = unknown> = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED;
-  name: string;
-  value: T;
-  rpcs: MethodsOf<T>[];
-};
-
-export type IPCRemoteProcedureCallResultMessage<T = unknown> = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT;
-  id: string;
-  value?: T;
-  error?: string;
-};
-
-type IPCResponse =
-  | IPCResourceResultMessage
-  | IPCResourceUpdatedMessage
-  | IPCRemoteProcedureCallResultMessage;
-
-type RPCResult<TResult, TResource> = {
-  result: TResult;
-  latest: TResource;
-};
-
-export interface SharedResourceEntry<T = unknown> {
-  state: T;
-  subscribers: Set<(state: T) => void>;
-}
-
-export type MethodsToRPC<T> = {
-  // biome-ignore lint/suspicious/noExplicitAny: testing for function extensions
-  [K in keyof T]: T[K] extends (...args: any[]) => any
-    ? (
-        ...args: Parameters<T[K]>
-      ) => ReturnType<T[K]> extends Promise<unknown>
-        ? ReturnType<T[K]>
-        : Promise<ReturnType<T[K]>>
-    : T[K];
-};
-
-type MethodsOf<T> = {
-  // biome-ignore lint/suspicious/noExplicitAny: testing for function extensions
-  [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
-}[keyof T];
-
-type ArgumentsOf<T> =
-  T extends MethodsOf<infer U>
-    ? U extends (...args: infer P) => unknown
-      ? P & { length: number }
-      : never
-    : never;
-
-type ReturnTypeOf<T> =
-  T extends MethodsOf<infer U>
-    ? U extends (...args: unknown[]) => infer R
-      ? R
-      : never
-    : never;
-
-export type Cleanup<T = SharedResourceEntry> = (
-  state: T
-) => void | Promise<void>;
 
 export function assertSharedResourcesActive() {
   if (env.POKU_SHARED_RESOURCES !== 'true') {
@@ -201,7 +122,7 @@ export function extractFunctionNames<T extends Record<string, unknown>>(
 }
 
 export function setupSharedResourceIPC<T>(
-  child: IPCEventEmitter,
+  child: IPCEventEmitter | ChildProcess,
   registry: Record<string, SharedResourceEntry<T>>
 ): void {
   child.on('message', async (message: IPCMessage) => {
@@ -224,7 +145,7 @@ export function setupSharedResourceIPC<T>(
 export async function handleGetResource<T>(
   message: IPCGetMessage,
   registry: Record<string, SharedResourceEntry<T>>,
-  child: IPCEventEmitter
+  child: IPCEventEmitter | ChildProcess
 ) {
   const entry = registry[message.name];
 
@@ -264,7 +185,7 @@ export async function handleGetResource<T>(
 export async function handleRemoteProcedureCall<T>(
   message: IPCRemoteProcedureCallMessage,
   registry: Record<string, SharedResourceEntry<T>>,
-  child: IPCEventEmitter
+  child: IPCEventEmitter | ChildProcess
 ) {
   const entry = registry[message.name];
 

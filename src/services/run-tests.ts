@@ -1,7 +1,7 @@
 import type {
   Cleanup,
   SharedResourceEntry,
-} from '../modules/helpers/shared-resources.js';
+} from '../@types/shared-resources.js';
 import { relative } from 'node:path';
 import { exit } from 'node:process';
 import { deepOptions, GLOBAL, results } from '../configs/poku.js';
@@ -46,6 +46,7 @@ export const runTests = async (files: string[]): Promise<boolean> => {
 
   const done = new Promise<boolean>((resolve) => {
     resolveDone = resolve;
+
     for (const [key, method] of Object.entries(cleanupMethods)) {
       method(registry[key].state as SharedResourceEntry);
     }

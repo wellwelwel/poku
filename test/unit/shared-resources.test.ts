@@ -7,7 +7,7 @@ import type {
   IPCResourceResultMessage,
   IPCResourceUpdatedMessage,
   SharedResourceEntry,
-} from '../../src/modules/helpers/shared-resources.js';
+} from '../../src/@types/shared-resources.js';
 import EventEmitter from 'node:events';
 import { env } from 'node:process';
 import { assert } from '../../src/modules/essentials/assert.js';

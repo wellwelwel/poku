@@ -1,8 +1,5 @@
 import type { StdioOptions } from 'node:child_process';
-import type {
-  IPCEventEmitter,
-  SharedResourceEntry,
-} from '../modules/helpers/shared-resources.js';
+import type { SharedResourceEntry } from '../@types/shared-resources.js';
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
 import { env, hrtime } from 'node:process';
@@ -15,7 +12,7 @@ import { afterEach, beforeEach } from './each.js';
 
 export const runTestFile = async (
   path: string,
-  registry: Record<string, SharedResourceEntry>
+  registry?: Record<string, SharedResourceEntry>
 ): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
@@ -51,9 +48,9 @@ export const runTestFile = async (
     },
   });
 
-  const stdio = GLOBAL.configs.sharedResources
-    ? (['inherit', 'pipe', 'pipe', 'ipc'] as StdioOptions)
-    : (['inherit', 'pipe', 'pipe'] as StdioOptions);
+  const stdio: StdioOptions = GLOBAL.configs.sharedResources
+    ? ['inherit', 'pipe', 'pipe', 'ipc']
+    : ['inherit', 'pipe', 'pipe'];
 
   return new Promise((resolve) => {
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
@@ -73,8 +70,8 @@ export const runTestFile = async (
     child.stdout!.on('data', stdOut);
     child.stderr!.on('data', stdOut);
 
-    if (configs.sharedResources) {
-      setupSharedResourceIPC(child as IPCEventEmitter, registry);
+    if (configs.sharedResources && registry) {
+      setupSharedResourceIPC(child, registry);
     }
 
     child.on('close', async (code) => {
