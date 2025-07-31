@@ -1,3 +1,12 @@
+import type {
+  IPCEventEmitter,
+  IPCRemoteProcedureCallResultMessage,
+  IPCResourceNotFoundMessage,
+  IPCResourceResultMessage,
+  IPCResourceUpdatedMessage,
+  SharedResourceEntry,
+} from '../../src/modules/helpers/shared-resources.js';
+import EventEmitter from 'node:events';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
@@ -5,8 +14,10 @@ import {
   constructSharedResourceWithRPCs,
   createSharedResource,
   extractFunctionNames,
+  handleGetResource,
+  handleRemoteProcedureCall,
+  SHARED_RESOURCE_MESSAGE_TYPES,
 } from '../../src/modules/helpers/shared-resources.js';
-import { test } from '../../src/modules/helpers/test.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
 
 describe('createSharedResource', () => {
@@ -33,104 +44,384 @@ describe('createSharedResource', () => {
   });
 });
 
-test('extractFunctionNames should return function names from an object', () => {
-  const obj = {
-    methodA: () => {},
-    methodB: () => {},
-    methodC: () => {},
-  };
+describe('extractFunctionNames', () => {
+  it('should return function names from an object', () => {
+    const obj = {
+      methodA: () => {},
+      methodB: () => {},
+      methodC: () => {},
+    };
 
-  const result = extractFunctionNames(obj);
-  assert.deepStrictEqual(result, ['methodA', 'methodB', 'methodC']);
-});
+    const result = extractFunctionNames(obj);
+    assert.deepStrictEqual(result, ['methodA', 'methodB', 'methodC']);
+  });
 
-test('extractFunctionNames should return an empty array for non-function properties', () => {
-  const obj = {
-    methodA: () => {},
-    propB: 'not a function',
-    methodC: () => {},
-  };
+  it('should should return an empty array for non-function properties', () => {
+    const obj = {
+      methodA: () => {},
+      propB: 'not a function',
+      methodC: () => {},
+    };
 
-  const result = extractFunctionNames(obj);
-  assert.deepStrictEqual(result, ['methodA', 'methodC']);
-});
+    const result = extractFunctionNames(obj);
+    assert.deepStrictEqual(result, ['methodA', 'methodC']);
+  });
 
-test('extractFunctionNames should return function names from an object prototype', () => {
-  class MessageStore {
-    messages: string[] = [];
-    addMessage(msg: string) {
-      this.messages.push(msg);
+  it('should should return function names from an object prototype', () => {
+    class MessageStore {
+      messages: string[] = [];
+      addMessage(msg: string) {
+        this.messages.push(msg);
+      }
     }
+
+    class MessageStoreExtended extends MessageStore {
+      clearMessages() {
+        this.messages = [];
+      }
+    }
+
+    const resource = new MessageStoreExtended();
+    const rpcs = extractFunctionNames(
+      resource as unknown as Record<string, unknown>
+    );
+
+    assert.deepStrictEqual(
+      rpcs.sort(),
+      ['addMessage', 'clearMessages'],
+      'RPCs should include all methods from the prototype chain'
+    );
+  });
+});
+
+describe('constructSharedResourceWithRPCs', () => {
+  it('should  create a shared resource with RPCs for sync functions', async () => {
+    const resource = {
+      messages: [] as string[],
+      addMessage: function (msg: string) {
+        this.messages.push(msg);
+      },
+    };
+
+    const sharedResource = constructSharedResourceWithRPCs(
+      resource,
+      extractFunctionNames(resource),
+      'testResource'
+    );
+
+    assert.ok(sharedResource.addMessage instanceof Function);
+    assert.ok(
+      sharedResource.addMessage.toString().includes('remoteProcedureCall')
+    );
+  });
+
+  it('should  create a shared resource with RPCs for async functions', () => {
+    const resource = {
+      messages: [] as string[],
+      addMessage: async function (msg: string) {
+        await sleep(1);
+        this.messages.push(msg);
+      },
+    };
+
+    const sharedResource = constructSharedResourceWithRPCs(
+      resource,
+      extractFunctionNames(resource),
+      'testResource'
+    );
+
+    assert.ok(sharedResource.addMessage instanceof Function);
+    assert.ok(
+      sharedResource.addMessage.toString().includes('remoteProcedureCall')
+    );
+  });
+});
+
+class ChildMock extends EventEmitter implements IPCEventEmitter {
+  sentMessages: unknown[] = [];
+  onceEvents: Record<string, () => void> = {};
+  send(message: unknown, ..._: unknown[]): boolean {
+    this.sentMessages.push(message);
+    return true;
   }
 
-  class MessageStoreExtended extends MessageStore {
-    clearMessages() {
-      this.messages = [];
-    }
+  once(event: string, listener: (...args: unknown[]) => void): this {
+    this.onceEvents[event] = listener;
+    return this;
   }
+}
 
-  const resource = new MessageStoreExtended();
-  const rpcs = extractFunctionNames(
-    resource as unknown as Record<string, unknown>
-  );
+describe('handleGetResource', () => {
+  it('should send RESOURCE_RESULT if resource exists', async () => {
+    const resource = { foo: 123, bar: () => 42 };
+    const entry: SharedResourceEntry<typeof resource> = {
+      state: resource,
+      subscribers: new Set(),
+    };
+    const registry = { testResource: entry };
+    const child = new ChildMock();
+    const message = {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
+      name: 'testResource',
+      id: 'abc123',
+    };
 
-  assert.deepStrictEqual(
-    rpcs.sort(),
-    ['addMessage', 'clearMessages'],
-    'RPCs should include all methods from the prototype chain'
-  );
+    await handleGetResource(message, registry, child as IPCEventEmitter);
+
+    const sent = child.sentMessages[0] as IPCResourceResultMessage;
+    assert.strictEqual(
+      sent.type,
+      SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT
+    );
+    assert.strictEqual(sent.name, 'testResource');
+    assert.deepStrictEqual(sent.value, resource);
+    assert.deepStrictEqual(sent.rpcs, extractFunctionNames(resource));
+    assert.strictEqual(sent.id, 'abc123');
+  });
+
+  it('should send RESOURCE_NOT_FOUND if resource does not exist', async () => {
+    const registry = {};
+    const child = new ChildMock();
+    const message = {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
+      name: 'missingResource',
+      id: 'id1',
+    };
+
+    await handleGetResource(message, registry, child);
+
+    const sent = child.sentMessages[0] as IPCResourceNotFoundMessage;
+    assert.strictEqual(
+      sent.type,
+      SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND
+    );
+    assert.strictEqual(sent.name, 'missingResource');
+  });
+
+  it('should add a subscriber and send RESOURCE_UPDATED on state change', async () => {
+    const resource = {
+      foo: 1,
+      inc() {
+        this.foo++;
+      },
+    };
+    const entry: SharedResourceEntry<typeof resource> = {
+      state: resource,
+      subscribers: new Set(),
+    };
+    const registry = { testResource: entry };
+    const child = new ChildMock();
+    const message = {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
+      name: 'testResource',
+      id: 'id2',
+    };
+
+    await handleGetResource(message, registry, child);
+
+    // There should be one subscriber added
+    assert.strictEqual(entry.subscribers.size, 1);
+
+    // Simulate a state update and notify subscribers
+    resource.foo = 42;
+    for (const sub of entry.subscribers) {
+      sub(resource);
+    }
+
+    // The last message should be RESOURCE_UPDATED
+    const sent = child.sentMessages[1] as IPCResourceUpdatedMessage;
+    assert.strictEqual(
+      sent.type,
+      SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED
+    );
+    assert.strictEqual(sent.name, 'testResource');
+    assert.deepStrictEqual(sent.value, resource);
+    assert.deepStrictEqual(sent.rpcs, extractFunctionNames(resource));
+  });
+
+  it('should remove subscriber on exit or disconnect', async () => {
+    const resource = { foo: 1 };
+    const entry: SharedResourceEntry<typeof resource> = {
+      state: resource,
+      subscribers: new Set(),
+    };
+    const registry = { testResource: entry };
+    const child = new ChildMock();
+    const message = {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
+      name: 'testResource',
+      id: 'id3',
+    };
+
+    await handleGetResource(message, registry, child);
+
+    assert.strictEqual(entry.subscribers.size, 1);
+
+    // Simulate exit event
+    child.onceEvents.exit();
+    assert.strictEqual(entry.subscribers.size, 0);
+
+    // Add again and simulate disconnect event
+    await handleGetResource(message, registry, child);
+    assert.strictEqual(entry.subscribers.size, 1);
+    child.onceEvents.disconnect();
+    assert.strictEqual(entry.subscribers.size, 0);
+  });
 });
 
-test('constructSharedResourceWithRPCs should create a shared resource with RPCs for sync functions', async () => {
-  const resource = {
-    messages: [] as string[],
-    addMessage: function (msg: string) {
-      this.messages.push(msg);
-    },
-  };
+describe('handleRemoteProcedureCall', () => {
+  it('should do nothing if resource does not exist', async () => {
+    const registry = {};
+    const child = new ChildMock();
+    const message = {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
+      name: 'missingResource',
+      method: 'foo',
+      args: [],
+      id: 'id1',
+    };
 
-  const rpcs = extractFunctionNames(resource);
-  const sharedResource = constructSharedResourceWithRPCs(
-    resource,
-    rpcs,
-    'testResource'
-  );
+    await handleRemoteProcedureCall(message, registry, child);
 
-  await assert.rejects(
-    // will reject because it won't be able to add messages,
-    // Meaning it indeed was transformed into a remote procedure call
-    () => sharedResource.addMessage('Hello')
-  );
+    assert.strictEqual(child.sentMessages.length, 0);
+  });
 
-  // the messages array should be empty as it
-  // was transformed into a remote procedure call
-  assert.deepStrictEqual(sharedResource.messages, []);
-});
+  it('should do nothing if method does not exist', async () => {
+    const resource = { foo: 1 };
+    const entry: SharedResourceEntry<typeof resource> = {
+      state: resource,
+      subscribers: new Set(),
+    };
+    const registry = { testResource: entry };
+    const child = new ChildMock();
+    const message = {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
+      name: 'testResource',
+      method: 'bar', // not present
+      args: [],
+      id: 'id2',
+    };
 
-test('constructSharedResourceWithRPCs should create a shared resource with RPCs for async functions', async () => {
-  const resource = {
-    messages: [] as string[],
-    addMessage: async function (msg: string) {
-      await sleep(1);
-      this.messages.push(msg);
-    },
-  };
+    await handleRemoteProcedureCall(message, registry, child);
 
-  const rpcs = extractFunctionNames(resource);
+    assert.strictEqual(child.sentMessages.length, 0);
+  });
 
-  const sharedResource = constructSharedResourceWithRPCs(
-    resource,
-    rpcs,
-    'testResource'
-  );
+  it('should do nothing if method is not a function', async () => {
+    const resource = { foo: 1, bar: 42 };
+    const entry: SharedResourceEntry<typeof resource> = {
+      state: resource,
+      subscribers: new Set(),
+    };
+    const registry = { testResource: entry };
+    const child = new ChildMock();
+    const message = {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
+      name: 'testResource',
+      method: 'bar', // not a function
+      args: [],
+      id: 'id3',
+    };
 
-  await assert.rejects(
-    // will reject because it won't be able to add messages,
-    // Meaning it indeed was transformed into a remote procedure call
-    () => sharedResource.addMessage('Hello')
-  );
+    await handleRemoteProcedureCall(message, registry, child);
 
-  // the messages array should be empty as it
-  // was transformed into a remote procedure call
-  assert.deepStrictEqual(sharedResource.messages, []);
+    assert.strictEqual(child.sentMessages.length, 0);
+  });
+
+  it('should call sync method and notify subscribers and send result', async () => {
+    const resource = {
+      foo: 1,
+      inc(n: number) {
+        this.foo += n;
+        return this.foo;
+      },
+    };
+    let notified = false;
+    const entry: SharedResourceEntry<typeof resource> = {
+      state: resource,
+      subscribers: new Set([
+        () => {
+          notified = true;
+        },
+      ]),
+    };
+    const registry = { testResource: entry };
+    const child = new ChildMock();
+    const message = {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
+      name: 'testResource',
+      method: 'inc',
+      args: [2],
+      id: 'id4',
+    };
+
+    await handleRemoteProcedureCall(message, registry, child);
+
+    assert.strictEqual(resource.foo, 3);
+    assert.strictEqual(notified, true);
+    const sent = child.sentMessages[0] as IPCRemoteProcedureCallResultMessage<{
+      result: number;
+      latest: typeof resource;
+    }>;
+
+    assert.strictEqual(
+      sent.type,
+      SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT
+    );
+    assert.strictEqual(sent.id, 'id4');
+    assert.ok(sent.value, 'Value should be defined');
+    assert.deepStrictEqual(sent.value!.result, 3);
+    assert.deepStrictEqual(sent.value!.latest, resource);
+  });
+
+  it('should call async method and notify subscribers and send result', async () => {
+    const resource = {
+      foo: 1,
+      async inc(n: number) {
+        await sleep(1);
+        this.foo += n;
+        return this.foo;
+      },
+    };
+    let notified = false;
+    const entry: SharedResourceEntry<typeof resource> = {
+      state: resource,
+      subscribers: new Set([
+        () => {
+          notified = true;
+        },
+      ]),
+    };
+    const registry = { testResource: entry };
+    const child = new ChildMock();
+    const message = {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
+      name: 'testResource',
+      method: 'inc',
+      args: [5],
+      id: 'id5',
+    };
+
+    await handleRemoteProcedureCall(message, registry, child);
+
+    assert.strictEqual(resource.foo, 6);
+    assert.strictEqual(notified, true);
+    const sent = child.sentMessages[0] as IPCRemoteProcedureCallResultMessage<{
+      result: number;
+      latest: typeof resource;
+    }>;
+
+    assert.strictEqual(
+      sent.type,
+      SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT
+    );
+    assert.strictEqual(sent.id, 'id5');
+    assert.ok(sent.value, 'Value should be defined');
+    assert.deepStrictEqual(sent.value!.result, 6, 'Result should be 6');
+    assert.deepStrictEqual(
+      sent.value!.latest,
+      resource,
+      'Latest should match resource'
+    );
+  });
 });

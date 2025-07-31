@@ -1,7 +1,7 @@
 import type EventEmitter from 'node:events';
 import process, { env } from 'node:process';
 
-const SHARED_RESOURCE_MESSAGE_TYPES = {
+export const SHARED_RESOURCE_MESSAGE_TYPES = {
   GET_RESOURCE: 'shared_resources_getResource',
   RESOURCE_RESULT: 'shared_resources_resourceResult',
   RESOURCE_NOT_FOUND: 'shared_resources_resourceNotFound',
@@ -16,13 +16,13 @@ export interface IPCEventEmitter extends EventEmitter {
 
 type SharedResource = Record<string, unknown>;
 
-type IPCGetMessage = {
+export type IPCGetMessage = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE;
   name: string;
   id: string;
 };
 
-type IPCRemoteProcedureCallMessage = {
+export type IPCRemoteProcedureCallMessage = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL;
   name: string;
   id: string;
@@ -30,14 +30,14 @@ type IPCRemoteProcedureCallMessage = {
   args: unknown[];
 };
 
-type IPCMessage = IPCGetMessage | IPCRemoteProcedureCallMessage;
+export type IPCMessage = IPCGetMessage | IPCRemoteProcedureCallMessage;
 
-type IPCResourceNotFoundMessage = {
+export type IPCResourceNotFoundMessage = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND;
   name: string;
 };
 
-type IPCResourceResultMessage<T = unknown> = {
+export type IPCResourceResultMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT;
   name: string;
   id: string;
@@ -45,14 +45,14 @@ type IPCResourceResultMessage<T = unknown> = {
   rpcs: MethodsOf<T>[];
 };
 
-type IPCResourceUpdatedMessage<T = unknown> = {
+export type IPCResourceUpdatedMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED;
   name: string;
   value: T;
   rpcs: MethodsOf<T>[];
 };
 
-type IPCRemoteProcedureCallResultMessage<T = unknown> = {
+export type IPCRemoteProcedureCallResultMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT;
   id: string;
   value?: T;
@@ -205,84 +205,92 @@ export function setupSharedResourceIPC<T>(
   registry: Record<string, SharedResourceEntry<T>>
 ): void {
   child.on('message', async (message: IPCMessage) => {
-    if (!message || typeof message.type !== 'string') return;
     switch (message.type) {
       case SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE: {
-        const entry = registry[message.name];
-
-        if (!entry) {
-          child.send({
-            type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND,
-            name: message.name,
-          } as IPCResourceNotFoundMessage);
-          return;
-        }
-
-        child.send({
-          type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT,
-          name: message.name,
-          value: entry.state,
-          rpcs: extractFunctionNames(entry.state as SharedResource),
-          id: message.id,
-        } as IPCResourceResultMessage<T>);
-
-        child.send({
-          type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED,
-          name: message.name,
-          value: entry.state,
-          rpcs: extractFunctionNames(entry.state as SharedResource),
-        } as IPCResourceUpdatedMessage<T>);
-
-        function subscriber(state: unknown) {
-          child.send({
-            type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED,
-            name: message.name,
-            value: state,
-            rpcs: extractFunctionNames(state as SharedResource),
-          } as IPCResourceUpdatedMessage<T>);
-        }
-
-        entry.subscribers.add(subscriber);
-        const cleanup = () => entry.subscribers.delete(subscriber);
-        child.once('exit', cleanup);
-        child.once('disconnect', cleanup);
-
+        await handleGetResource(message, registry, child);
         break;
       }
 
       case SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL: {
-        const entry = registry[message.name];
-
-        if (!entry) return;
-
-        const methodKey = message.method as MethodsOf<typeof entry.state>;
-        if (!methodKey) return;
-
-        const methodCandidate = entry.state[methodKey];
-        if (typeof methodCandidate !== 'function') return;
-
-        const method = methodCandidate.bind(entry.state);
-        const result = await method(...(message.args || []));
-
-        for (const subscriber of entry.subscribers) {
-          subscriber(entry.state);
-        }
-
-        child.send({
-          type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
-          id: message.id,
-          value: {
-            result,
-            latest: entry.state,
-          },
-        } as IPCResponse);
-
+        await handleRemoteProcedureCall(message, registry, child);
         break;
       }
       default:
         break;
     }
   });
+}
+
+export async function handleGetResource<T>(
+  message: IPCGetMessage,
+  registry: Record<string, SharedResourceEntry<T>>,
+  child: IPCEventEmitter
+) {
+  const entry = registry[message.name];
+
+  if (!entry) {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND,
+      name: message.name,
+    } as IPCResourceNotFoundMessage);
+    return;
+  }
+
+  const rpcs = extractFunctionNames(entry.state as SharedResource);
+
+  child.send({
+    type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT,
+    name: message.name,
+    value: entry.state,
+    rpcs,
+    id: message.id,
+  } as IPCResourceResultMessage<T>);
+
+  function subscriber(state: unknown) {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED,
+      name: message.name,
+      value: state,
+      rpcs,
+    } as IPCResourceUpdatedMessage<T>);
+  }
+
+  entry.subscribers.add(subscriber);
+  const cleanup = () => entry.subscribers.delete(subscriber);
+  child.once('exit', cleanup);
+  child.once('disconnect', cleanup);
+}
+
+export async function handleRemoteProcedureCall<T>(
+  message: IPCRemoteProcedureCallMessage,
+  registry: Record<string, SharedResourceEntry<T>>,
+  child: IPCEventEmitter
+) {
+  const entry = registry[message.name];
+
+  if (!entry) return;
+
+  const methodKey = message.method as MethodsOf<typeof entry.state>;
+  if (!methodKey) return;
+
+  const methodCandidate = entry.state[methodKey];
+  if (typeof methodCandidate !== 'function') return;
+
+  const method = methodCandidate.bind(entry.state);
+  const result = await method(...(message.args || []));
+
+  for (const subscriber of entry.subscribers) {
+    subscriber(entry.state);
+  }
+
+  child.send({
+    type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+    id: message.id,
+    value: {
+      result,
+      latest: entry.state,
+    },
+  } as IPCResponse);
 }
 
 function functionToRPC<T extends object, K extends MethodsOf<T>>(
