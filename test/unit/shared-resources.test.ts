@@ -9,6 +9,7 @@ import type {
   SharedResourceEntry,
 } from '../../src/modules/helpers/shared-resources.js';
 import EventEmitter from 'node:events';
+import { env } from 'node:process';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
@@ -469,16 +470,16 @@ describe('setupSharedResourceIPC', () => {
 });
 
 describe('assertSharedResourcesActive', () => {
-  const original = process.env.POKU_SHARED_RESOURCES;
+  const original = env.POKU_SHARED_RESOURCES;
   it('should not throw if shared resources are enabled', () => {
-    process.env.POKU_SHARED_RESOURCES = 'true';
+    env.POKU_SHARED_RESOURCES = 'true';
     assert.doesNotThrow(assertSharedResourcesActive);
-    process.env.POKU_SHARED_RESOURCES = original;
+    env.POKU_SHARED_RESOURCES = original;
   });
 
   it('should throw if shared resources are not enabled', () => {
-    process.env.POKU_SHARED_RESOURCES = 'false';
+    env.POKU_SHARED_RESOURCES = 'false';
     assert.throws(assertSharedResourcesActive);
-    process.env.POKU_SHARED_RESOURCES = original;
+    env.POKU_SHARED_RESOURCES = original;
   });
 });
