@@ -5,8 +5,7 @@ import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (GLOBAL.runtime === 'node') skip(); // node + tsx wont work with this test
-// because of the way tsx handles spawning processes, it breaks the IPC chain
+if (GLOBAL.runtime === 'node') skip('Blocked by TSX');
 
 const finalPath = path.join(
   'test',
@@ -17,7 +16,6 @@ const finalPath = path.join(
 );
 
 describe('Shared Resources', async () => {
-  console.log(relative(GLOBAL.cwd, finalPath));
   const results = await inspectPoku('--debug --sharedResources', {
     cwd: finalPath,
   });
