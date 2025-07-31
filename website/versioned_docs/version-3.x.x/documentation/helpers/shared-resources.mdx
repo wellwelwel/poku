@@ -1,0 +1,169 @@
+---
+sidebar_position: 11
+tags: [shared, state, resources, e2e, integration]
+---
+
+# 🪢 Shared Resources
+
+> Share state and methods between test files and processes, enabling advanced integration and end-to-end testing patterns.
+
+## What are Shared Resources?
+
+**Shared Resources** allow you to define a resource (object, state, or API) in a single file and access or mutate it from multiple test files or processes. This is useful for scenarios like:
+
+- Sharing a database connection or in-memory store.
+- Coordinating state between parallel or sequential tests.
+- Implementing cross-file setup/teardown logic.
+
+## Basic Usage
+
+### 1. Define a Shared Resource
+
+Create a `.resource.ts` file and export a shared resource using `createSharedResource` :
+
+```ts
+import { createSharedResource } from 'poku';
+
+export default createSharedResource('sharedCounter', () => {
+  let count = 0;
+  return {
+    getCount: () => count,
+    increment: () => ++count,
+    reset: () => {
+      count = 0;
+    },
+  };
+});
+```
+
+### 2. Access the Shared Resource in Tests
+
+Use `getSharedResource` in any test file to access and call methods on the shared resource:
+
+```ts
+import { getSharedResource, test, assert } from 'poku';
+
+test('increments the counter', async () => {
+  const [counter, detach] = await getSharedResource('sharedCounter');
+  await counter.increment();
+  assert.equal(await counter.getCount(), 1);
+  detach();
+});
+```
+
+### 3. Methods Become Remote Procedure Calls
+
+All functions on your resource become remote procedure calls (RPCs), so you can safely mutate or read shared state across processes.
+
+### 4. Detach the Resource
+
+When you call `getSharedResource`, it returns a tuple with the resource and a `detach` function. This function should be called to
+detach the test from the resource, allowing cleanup and preventing memory leaks:
+
+```ts
+test('detaches of the resource', async () => {
+  const [counter, detach] = await getSharedResource('sharedCounter');
+  await counter.increment();
+  assert.equal(await counter.getCount(), 1);
+  detach(); // Clean up the resource
+});
+```
+
+### 5. Cleanup Logic
+
+You can define a cleanup function when creating the resource. This will be called when the resource is no longer needed:
+
+```ts
+export default createSharedResource(
+  'sharedCounter',
+  () => {
+    let count = 0;
+    return {
+      getCount: () => count,
+      increment: () => ++count,
+      reset: () => {
+        count = 0;
+      },
+    };
+  },
+  (resource) => {
+    // Cleanup logic
+    resource.reset();
+  }
+);
+```
+
+## Real-World Examples
+
+### 1. Shared LRU Cache ( `lru.min` )
+
+Share an in-memory LRU cache between tests:
+
+**lru.resource.ts**
+
+```ts
+import { createSharedResource } from 'poku';
+import { createLRU } from 'lru.min';
+
+export default createSharedResource('lru', () => {
+  const cache = createLRU({ max: 3 });
+  return cache;
+});
+```
+
+**cache.test.ts**
+
+```ts
+import { getSharedResource, test, assert } from 'poku';
+
+test('can share cache', async () => {
+  const [cache, detach] = await getSharedResource('lru');
+  await cache.set('foo', 123);
+  assert((await cache.get('foo')) === 123);
+  detach();
+});
+```
+
+---
+
+### 2. Shared MySQL Connection ( `mysql2` )
+
+Share a single MySQL connection across tests:
+
+**mysql.resource.ts**
+
+```ts
+import { createSharedResource } from 'poku';
+import mysql from 'mysql2/promise';
+
+export default createSharedResource(
+  'mysql',
+  async () => {
+    const connection = await mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      database: 'test',
+    });
+    return connection;
+  },
+  (connection) => {
+    // Cleanup function to close the connection
+    return connection.destroy();
+  }
+);
+```
+
+**db.test.ts**
+
+```ts
+import { getSharedResource, test, assert } from 'poku';
+
+test('can query users', async () => {
+  const [db, detach] = await getSharedResource('mysql');
+  const [rows] = await db.query('SELECT * FROM users LIMIT 10');
+
+  assert(Array.isArray(rows));
+  assert.equal(rows.length, 10);
+  detach();
+});
+```
