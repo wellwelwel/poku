@@ -1,4 +1,4 @@
-import path, { relative } from 'node:path';
+import { join } from 'node:path';
 import { inspectPoku } from '../__utils__/capture-cli.test.js';
 import { GLOBAL } from '../../src/configs/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
@@ -7,7 +7,7 @@ import { skip } from '../../src/modules/helpers/skip.js';
 
 if (GLOBAL.runtime === 'node') skip('Blocked by TSX');
 
-const finalPath = path.join(
+const finalPath = join(
   'test',
   '__fixtures__',
   'e2e',
