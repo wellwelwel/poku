@@ -4,12 +4,15 @@ import { getSharedResource } from '../../../../../src/modules/helpers/shared-res
 import { test } from '../../../../../src/modules/helpers/test.js';
 
 test('should set message in shared resource from file B', async () => {
-  const res = await getSharedResource<SharedResourceType>('sharedResource');
+  const [resource, dispose] =
+    await getSharedResource<SharedResourceType>('sharedResource');
 
-  await assert.doesNotReject(() => res.addMessage('Message from File B'));
+  await assert.doesNotReject(() => resource.addMessage('Message from File B'));
 
   assert(
-    res.messages.includes('Message from File B'),
-    'Initial message set correctly'
+    resource.messages.includes('Message from File B'),
+    'Message from File B should be in the shared resource'
   );
+
+  dispose();
 });

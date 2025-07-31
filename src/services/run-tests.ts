@@ -1,4 +1,7 @@
-import type { SharedResourceEntry } from '../modules/helpers/shared-resources.js';
+import type {
+  Cleanup,
+  SharedResourceEntry,
+} from '../modules/helpers/shared-resources.js';
 import { relative } from 'node:path';
 import { exit } from 'node:process';
 import { deepOptions, GLOBAL, results } from '../configs/poku.js';
@@ -20,10 +23,8 @@ export const runTests = async (files: string[]): Promise<boolean> => {
   const { resourceFiles, testFiles } = separateResourceFiles(files);
 
   const registry: Record<string, SharedResourceEntry> = Object.create(null);
-  const cleanupMethods: Record<
-    string,
-    (arg0: SharedResourceEntry) => void | Promise<void>
-  > = Object.create(null);
+  const cleanupMethods: Record<string, Cleanup> = Object.create(null);
+
   if (GLOBAL.configs.sharedResources) {
     await executeResourceFiles(resourceFiles, registry, cleanupMethods);
   }
@@ -45,6 +46,9 @@ export const runTests = async (files: string[]): Promise<boolean> => {
 
   const done = new Promise<boolean>((resolve) => {
     resolveDone = resolve;
+    for (const [key, method] of Object.entries(cleanupMethods)) {
+      method(registry[key].state as SharedResourceEntry);
+    }
   });
 
   const runNext = async () => {
@@ -87,11 +91,5 @@ export const runTests = async (files: string[]): Promise<boolean> => {
   for (let i = 0; i < concurrency; i++)
     isSequential ? await runNext() : runNext();
 
-  return done.then((res) => {
-    for (const [key, method] of Object.entries(cleanupMethods)) {
-      method(registry[key].state as SharedResourceEntry);
-    }
-
-    return res;
-  });
+  return done;
 };

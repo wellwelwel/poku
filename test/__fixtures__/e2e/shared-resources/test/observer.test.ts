@@ -5,10 +5,11 @@ import { test } from '../../../../../src/modules/helpers/test.js';
 import { waitForExpectedResult } from '../../../../../src/modules/helpers/wait-for.js';
 
 test('should observe modifications in shared resource', async () => {
-  const res = await getSharedResource<SharedResourceType>('sharedResource');
+  const [resource, dispose] =
+    await getSharedResource<SharedResourceType>('sharedResource');
 
   const messagesIncludes = (message: string) => {
-    return () => res.messages.includes(message);
+    return () => resource.messages.includes(message);
   };
 
   await assert.doesNotReject(() => {
@@ -17,4 +18,6 @@ test('should observe modifications in shared resource', async () => {
       waitForExpectedResult(messagesIncludes('Message from File B'), true),
     ]);
   });
+
+  dispose();
 });
