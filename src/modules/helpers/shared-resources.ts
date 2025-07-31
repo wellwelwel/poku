@@ -108,7 +108,7 @@ export type Cleanup<T = SharedResourceEntry> = (
   state: T
 ) => void | Promise<void>;
 
-function assertSharedResourcesActive() {
+export function assertSharedResourcesActive() {
   if (env.POKU_SHARED_RESOURCES !== 'true') {
     throw new Error(
       'Shared resources are not enabled. Please enable them in your configuration.'

@@ -1,5 +1,7 @@
 import type {
   IPCEventEmitter,
+  IPCGetMessage,
+  IPCRemoteProcedureCallMessage,
   IPCRemoteProcedureCallResultMessage,
   IPCResourceNotFoundMessage,
   IPCResourceResultMessage,
@@ -11,11 +13,13 @@ import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import {
+  assertSharedResourcesActive,
   constructSharedResourceWithRPCs,
   createSharedResource,
   extractFunctionNames,
   handleGetResource,
   handleRemoteProcedureCall,
+  setupSharedResourceIPC,
   SHARED_RESOURCE_MESSAGE_TYPES,
 } from '../../src/modules/helpers/shared-resources.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
@@ -137,7 +141,7 @@ describe('constructSharedResourceWithRPCs', () => {
   });
 });
 
-class ChildMock extends EventEmitter implements IPCEventEmitter {
+class IPCEventEmitterMock extends EventEmitter implements IPCEventEmitter {
   sentMessages: unknown[] = [];
   onceEvents: Record<string, () => void> = {};
   send(message: unknown, ..._: unknown[]): boolean {
@@ -159,7 +163,7 @@ describe('handleGetResource', () => {
       subscribers: new Set(),
     };
     const registry = { testResource: entry };
-    const child = new ChildMock();
+    const child = new IPCEventEmitterMock();
     const message = {
       type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
       name: 'testResource',
@@ -181,7 +185,7 @@ describe('handleGetResource', () => {
 
   it('should send RESOURCE_NOT_FOUND if resource does not exist', async () => {
     const registry = {};
-    const child = new ChildMock();
+    const child = new IPCEventEmitterMock();
     const message = {
       type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
       name: 'missingResource',
@@ -210,7 +214,7 @@ describe('handleGetResource', () => {
       subscribers: new Set(),
     };
     const registry = { testResource: entry };
-    const child = new ChildMock();
+    const child = new IPCEventEmitterMock();
     const message = {
       type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
       name: 'testResource',
@@ -246,7 +250,7 @@ describe('handleGetResource', () => {
       subscribers: new Set(),
     };
     const registry = { testResource: entry };
-    const child = new ChildMock();
+    const child = new IPCEventEmitterMock();
     const message = {
       type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
       name: 'testResource',
@@ -272,7 +276,7 @@ describe('handleGetResource', () => {
 describe('handleRemoteProcedureCall', () => {
   it('should do nothing if resource does not exist', async () => {
     const registry = {};
-    const child = new ChildMock();
+    const child = new IPCEventEmitterMock();
     const message = {
       type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
       name: 'missingResource',
@@ -293,7 +297,7 @@ describe('handleRemoteProcedureCall', () => {
       subscribers: new Set(),
     };
     const registry = { testResource: entry };
-    const child = new ChildMock();
+    const child = new IPCEventEmitterMock();
     const message = {
       type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
       name: 'testResource',
@@ -314,7 +318,7 @@ describe('handleRemoteProcedureCall', () => {
       subscribers: new Set(),
     };
     const registry = { testResource: entry };
-    const child = new ChildMock();
+    const child = new IPCEventEmitterMock();
     const message = {
       type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
       name: 'testResource',
@@ -346,7 +350,7 @@ describe('handleRemoteProcedureCall', () => {
       ]),
     };
     const registry = { testResource: entry };
-    const child = new ChildMock();
+    const child = new IPCEventEmitterMock();
     const message = {
       type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
       name: 'testResource',
@@ -393,7 +397,7 @@ describe('handleRemoteProcedureCall', () => {
       ]),
     };
     const registry = { testResource: entry };
-    const child = new ChildMock();
+    const child = new IPCEventEmitterMock();
     const message = {
       type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
       name: 'testResource',
@@ -423,5 +427,58 @@ describe('handleRemoteProcedureCall', () => {
       resource,
       'Latest should match resource'
     );
+  });
+});
+
+describe('setupSharedResourceIPC', () => {
+  it('should set up IPC handlers for shared resources', () => {
+    const registry: Record<string, SharedResourceEntry<unknown>> = {};
+    const child = new IPCEventEmitterMock();
+    setupSharedResourceIPC(child, registry);
+
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
+      name: 'testResource',
+      id: 'id6',
+    } as IPCGetMessage);
+
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
+      name: 'testResource',
+      id: 'id6',
+      args: [42],
+      method: 'inc',
+    } as IPCRemoteProcedureCallMessage);
+
+    assert.strictEqual(child.sentMessages.length, 2);
+
+    assert.deepStrictEqual(child.sentMessages[0], {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
+      name: 'testResource',
+      id: 'id6',
+    } as IPCGetMessage);
+
+    assert.deepStrictEqual(child.sentMessages[1], {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
+      name: 'testResource',
+      id: 'id6',
+      args: [42],
+      method: 'inc',
+    } as IPCRemoteProcedureCallMessage);
+  });
+});
+
+describe('assertSharedResourcesActive', () => {
+  const original = process.env.POKU_SHARED_RESOURCES;
+  it('should not throw if shared resources are enabled', () => {
+    process.env.POKU_SHARED_RESOURCES = 'true';
+    assert.doesNotThrow(assertSharedResourcesActive);
+    process.env.POKU_SHARED_RESOURCES = original;
+  });
+
+  it('should throw if shared resources are not enabled', () => {
+    process.env.POKU_SHARED_RESOURCES = 'false';
+    assert.throws(assertSharedResourcesActive);
+    process.env.POKU_SHARED_RESOURCES = original;
   });
 });
