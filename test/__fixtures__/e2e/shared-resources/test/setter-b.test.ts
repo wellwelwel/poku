@@ -4,7 +4,7 @@ import { getSharedResource } from '../../../../../src/modules/helpers/shared-res
 import { test } from '../../../../../src/modules/helpers/test.js';
 
 test('should set message in shared resource from file B', async () => {
-  const [resource, dispose] =
+  const [resource, detach] =
     await getSharedResource<SharedResourceType>('sharedResource');
 
   await assert.doesNotReject(() => resource.addMessage('Message from File B'));
@@ -14,5 +14,5 @@ test('should set message in shared resource from file B', async () => {
     'Message from File B should be in the shared resource'
   );
 
-  dispose();
+  detach();
 });

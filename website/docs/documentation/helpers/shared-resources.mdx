@@ -44,10 +44,10 @@ Use `getSharedResource` in any test file to access and call methods on the share
 import { getSharedResource, test, assert } from 'poku';
 
 test('increments the counter', async () => {
-  const [counter, dispose] = await getSharedResource('sharedCounter');
+  const [counter, detach] = await getSharedResource('sharedCounter');
   await counter.increment();
   assert.equal(await counter.getCount(), 1);
-  dispose();
+  detach();
 });
 ```
 
@@ -55,19 +55,19 @@ test('increments the counter', async () => {
 
 All functions on your resource become remote procedure calls (RPCs), so you can safely mutate or read shared state across processes.
 
-### 4. Dispose of Shared Resources
+### 4. Detach the Resource
 
-When you're done with a shared resource, call the `dispose` function returned by `getSharedResource` to clean up:
+When you call `getSharedResource`, it returns a tuple with the resource and a `detach` function. This function should be called to
+detach the test from the resource, allowing cleanup and preventing memory leaks:
 
 ```ts
-test('disposes of the resource', async () => {
-  const [counter, dispose] = await getSharedResource('sharedCounter');
+test('detaches of the resource', async () => {
+  const [counter, detach] = await getSharedResource('sharedCounter');
   await counter.increment();
   assert.equal(await counter.getCount(), 1);
-  dispose(); // Clean up the resource
+  detach(); // Clean up the resource
 });
 ```
-
 
 ### 5. Cleanup Logic
 
@@ -117,10 +117,10 @@ export default createSharedResource('lru', () => {
 import { getSharedResource, test, assert } from 'poku';
 
 test('can share cache', async () => {
-  const [cache, dispose] = await getSharedResource('lru');
+  const [cache, detach] = await getSharedResource('lru');
   await cache.set('foo', 123);
   assert((await cache.get('foo')) === 123);
-  dispose();
+  detach();
 });
 ```
 
@@ -159,11 +159,11 @@ export default createSharedResource(
 import { getSharedResource, test, assert } from 'poku';
 
 test('can query users', async () => {
-  const [db, dispose] = await getSharedResource('mysql');
+  const [db, detach] = await getSharedResource('mysql');
   const [rows] = await db.query('SELECT * FROM users LIMIT 10');
 
   assert(Array.isArray(rows));
   assert.equal(rows.length, 10);
-  dispose();
+  detach();
 });
 ```

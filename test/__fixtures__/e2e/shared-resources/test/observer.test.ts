@@ -5,7 +5,7 @@ import { test } from '../../../../../src/modules/helpers/test.js';
 import { waitForExpectedResult } from '../../../../../src/modules/helpers/wait-for.js';
 
 test('should observe modifications in shared resource', async () => {
-  const [resource, dispose] =
+  const [resource, detach] =
     await getSharedResource<SharedResourceType>('sharedResource');
 
   const messagesIncludes = (message: string) => {
@@ -19,5 +19,5 @@ test('should observe modifications in shared resource', async () => {
     ]);
   });
 
-  dispose();
+  detach();
 });

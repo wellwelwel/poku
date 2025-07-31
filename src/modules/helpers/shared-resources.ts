@@ -380,7 +380,7 @@ export function getSharedResource<
       handleResponse(message as TResult, (value) => {
         resolve([
           value,
-          function dispose() {
+          function detach() {
             process.removeListener('message', handleResponseWrapper);
           },
         ]);
