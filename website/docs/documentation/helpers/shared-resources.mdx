@@ -11,9 +11,9 @@ tags: [shared, state, resources, e2e, integration]
 
 **Shared Resources** allow you to define a resource (object, state, or API) in a single file and access or mutate it from multiple test files or processes. This is useful for scenarios like:
 
-- Sharing a database connection or in-memory store.
-- Coordinating state between parallel or sequential tests.
-- Implementing cross-file setup/teardown logic.
+* Sharing a database connection or in-memory store.
+* Coordinating state between parallel or sequential tests.
+* Implementing cross-file setup/teardown logic.
 
 ## Basic Usage
 
@@ -55,9 +55,12 @@ test('increments the counter', async () => {
 
 All functions on your resource become remote procedure calls (RPCs), so you can safely mutate or read shared state across processes.
 
+It's important to notice that arguments are serialized using [Advanced Serialization](https://nodejs.org/api/child_process.html#advanced-serialization)
+during communication between different procceses, meaning some complex types (as functions) are not supported at this time.
+
 ### 4. Detach the Resource
 
-When you call `getSharedResource`, it returns a tuple with the resource and a `detach` function. This function should be called to
+When you call `getSharedResource` , it returns a tuple with the resource and a `detach` function. This function should be called to
 detach the test from the resource, allowing cleanup and preventing memory leaks:
 
 ```ts

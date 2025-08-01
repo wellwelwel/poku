@@ -10,6 +10,16 @@ import { isWindows } from '../parsers/os.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
 
+const serialization = (() => {
+  if (!GLOBAL.configs.sharedResources) return 'json';
+  if (GLOBAL.runtime === 'bun') return 'json';
+  return 'advanced';
+})();
+
+const stdio: StdioOptions = GLOBAL.configs.sharedResources
+  ? ['inherit', 'pipe', 'pipe', 'ipc']
+  : ['inherit', 'pipe', 'pipe'];
+
 export const runTestFile = async (
   path: string,
   registry?: Record<string, SharedResourceEntry>
@@ -48,14 +58,11 @@ export const runTestFile = async (
     },
   });
 
-  const stdio: StdioOptions = GLOBAL.configs.sharedResources
-    ? ['inherit', 'pipe', 'pipe', 'ipc']
-    : ['inherit', 'pipe', 'pipe'];
-
   return new Promise((resolve) => {
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
       stdio,
       shell: isWindows,
+      serialization,
       env: {
         ...env,
         POKU_FILE: file,
