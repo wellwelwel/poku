@@ -8,6 +8,8 @@ import { pathToFileURL } from 'node:url';
 import { GLOBAL } from '../configs/poku.js';
 import { isWindows } from '../parsers/os.js';
 
+const resourceFilePattern = /\.resource\.((c|m)?((j|t)s))$/i;
+
 /** Execute resource files (*.resource.ts) in the current process to initialize shared resources before running tests. */
 export const executeResourceFiles = async (
   files: string[],
@@ -65,11 +67,7 @@ export const separateResourceFiles = (
   const testFiles: string[] = [];
 
   for (const file of files) {
-    if (
-      file.endsWith('.resource.ts') ||
-      file.endsWith('.resource.js') ||
-      file.endsWith('.resource.mjs')
-    ) {
+    if (resourceFilePattern.test(file)) {
       resourceFiles.push(file);
       continue;
     }
