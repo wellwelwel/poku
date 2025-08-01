@@ -5,6 +5,11 @@ export interface IPCEventEmitter extends EventEmitter {
   send: (message: unknown, ...args: unknown[]) => boolean;
 }
 
+export interface SharedResourceEntry<T = unknown> {
+  state: T;
+  subscribers: Set<(state: T) => void>;
+}
+
 export type SharedResource = Record<string, unknown>;
 
 export type IPCGetMessage = {
@@ -60,13 +65,8 @@ export type RPCResult<TResult, TResource> = {
   latest: TResource;
 };
 
-export interface SharedResourceEntry<T = unknown> {
-  state: T;
-  subscribers: Set<(state: T) => void>;
-}
-
 export type MethodsToRPC<T> = {
-  [K in keyof T]: T[K] extends (...args: any[]) => any
+  [K in keyof T]: T[K] extends (...args: any[]) => unknown
     ? (
         ...args: Parameters<T[K]>
       ) => ReturnType<T[K]> extends Promise<unknown>
@@ -76,7 +76,7 @@ export type MethodsToRPC<T> = {
 };
 
 export type MethodsOf<T> = {
-  [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
+  [K in keyof T]: T[K] extends (...args: any[]) => unknown ? K : never;
 }[keyof T];
 
 export type ArgumentsOf<T> =

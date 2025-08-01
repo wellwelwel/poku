@@ -117,6 +117,16 @@
       }
     },
     {
+      "include": ["src/@types/shared-resources.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
       "include": [
         "src/modules/helpers/modifiers.ts",
         "src/modules/helpers/describe.ts",

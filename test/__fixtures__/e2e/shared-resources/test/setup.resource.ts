@@ -29,5 +29,4 @@ export function SharedResource() {
   };
 }
 
-// biome-ignore lint/style/noDefaultExport: <explanation>
 export default createSharedResource(sharedResourceKey, () => SharedResource());
