@@ -1,4 +1,3 @@
-import type { StdioOptions } from 'node:child_process';
 import type { SharedResourceEntry } from '../@types/shared-resources.js';
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
@@ -48,21 +47,13 @@ export const runTestFile = async (
     },
   });
 
-  const serialization = (() => {
-    if (!GLOBAL.configs.sharedResources) return 'json';
-    if (GLOBAL.runtime === 'bun') return 'json';
-    return 'advanced';
-  })();
-
-  const stdio: StdioOptions = GLOBAL.configs.sharedResources
-    ? ['inherit', 'pipe', 'pipe', 'ipc']
-    : ['inherit', 'pipe', 'pipe'];
-
   return new Promise((resolve) => {
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
-      stdio,
+      stdio: GLOBAL.configs.sharedResources
+        ? ['inherit', 'pipe', 'pipe', 'ipc']
+        : ['inherit', 'pipe', 'pipe'],
+      serialization: GLOBAL.configs.sharedResources ? 'advanced' : undefined,
       shell: isWindows,
-      serialization,
       env: {
         ...env,
         POKU_FILE: file,
