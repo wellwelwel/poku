@@ -52,7 +52,11 @@ export const runTestFile = async (
       stdio: GLOBAL.configs.sharedResources
         ? ['inherit', 'pipe', 'pipe', 'ipc']
         : ['inherit', 'pipe', 'pipe'],
-      serialization: GLOBAL.configs.sharedResources ? 'advanced' : undefined,
+      serialization: (() => {
+        if (!GLOBAL.configs.sharedResources) return undefined;
+        if (runtime === 'bun') return 'json';
+        return 'advanced';
+      })(),
       shell: isWindows,
       env: {
         ...env,
