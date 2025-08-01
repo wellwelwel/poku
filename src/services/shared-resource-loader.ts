@@ -6,14 +6,14 @@ import { GLOBAL } from '../configs/poku.js';
 import { isWindows } from '../parsers/os.js';
 
 /** Execute resource files (*.resource.ts) in the current process to initialize shared resources before running tests. */
-export async function executeResourceFiles(
+export const executeResourceFiles = async (
   files: string[],
   registry: Record<string, SharedResourceEntry>,
   cleanupMethods: Record<
     string,
     (arg0: SharedResourceEntry) => void | Promise<void>
   >
-): Promise<void> {
+): Promise<void> => {
   for (const file of files) {
     const { entry, name, cleanup } = await executeResourceFile(file);
 
@@ -23,10 +23,10 @@ export async function executeResourceFiles(
       cleanupMethods[name] = cleanup;
     }
   }
-}
+};
 
 /** Execute a single resource file in the parent process loads the resource module, gets the default export (should be { entry, name }), and registers it. */
-export async function executeResourceFile(path: string) {
+export const executeResourceFile = async (path: string) => {
   const { cwd } = GLOBAL;
   const file = relative(cwd, path);
 
@@ -49,13 +49,15 @@ export async function executeResourceFile(path: string) {
   }
 
   return resource;
-}
+};
 
 /** Filter out resource files from the test files list */
-export function separateResourceFiles(files: string[]): {
+export const separateResourceFiles = (
+  files: string[]
+): {
   resourceFiles: string[];
   testFiles: string[];
-} {
+} => {
   const resourceFiles: string[] = [];
   const testFiles: string[] = [];
 
@@ -72,4 +74,4 @@ export function separateResourceFiles(files: string[]): {
   }
 
   return { resourceFiles, testFiles };
-}
+};

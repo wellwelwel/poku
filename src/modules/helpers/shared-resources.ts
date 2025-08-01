@@ -30,15 +30,15 @@ export const SHARED_RESOURCE_MESSAGE_TYPES = {
   REMOTE_PROCEDURE_CALL_RESULT: 'shared_resources_remoteProcedureCallResult',
 } as const;
 
-export function assertSharedResourcesActive() {
+export const assertSharedResourcesActive = () => {
   if (env.POKU_SHARED_RESOURCES !== 'true') {
     throw new Error(
       'Shared resources are not enabled. Please enable them in your configuration.'
     );
   }
-}
+};
 
-export async function createSharedResource<T>(
+export const createSharedResource = async <T>(
   name: string,
   factory: () => T | Promise<T>,
   cleanup?: Cleanup<T>
@@ -46,7 +46,7 @@ export async function createSharedResource<T>(
   entry: SharedResourceEntry<T>;
   name: string;
   cleanup?: Cleanup<T>;
-}> {
+}> => {
   const state = await factory();
   const entry: SharedResourceEntry<T> = {
     state,
@@ -54,9 +54,9 @@ export async function createSharedResource<T>(
   };
 
   return { entry, name, cleanup };
-}
+};
 
-export async function remoteProcedureCall<
+export const remoteProcedureCall = <
   TResource,
   TMethod extends MethodsOf<TResource>,
   TMessage extends IPCRemoteProcedureCallResultMessage<
@@ -67,12 +67,12 @@ export async function remoteProcedureCall<
   name: string,
   method: TMethod,
   ...args: ArgumentsOf<TResource[TMethod]>
-): Promise<RPCResult<TResult, TResource>> {
+): Promise<RPCResult<TResult, TResource>> => {
   assertSharedResourcesActive();
   const requestId = `${name}-${String(method)}-${Date.now()}-${Math.random()}`;
 
   return new Promise((resolve, reject) => {
-    function handleResponse(message: TMessage) {
+    const handleResponse = (message: TMessage) => {
       if (message.id !== requestId) {
         return;
       }
@@ -84,7 +84,7 @@ export async function remoteProcedureCall<
       } else {
         resolve(message.value!);
       }
-    }
+    };
 
     process.on('message', handleResponse);
 
@@ -96,11 +96,11 @@ export async function remoteProcedureCall<
       id: requestId,
     } as IPCRemoteProcedureCallMessage);
   });
-}
+};
 
-export function extractFunctionNames<T extends Record<string, unknown>>(
+export const extractFunctionNames = <T extends Record<string, unknown>>(
   obj: T
-) {
+) => {
   const seen = new Set<string>();
   let current = obj;
 
@@ -120,12 +120,12 @@ export function extractFunctionNames<T extends Record<string, unknown>>(
   }
 
   return Array.from(seen) as MethodsOf<T>[];
-}
+};
 
-export function setupSharedResourceIPC<T>(
+export const setupSharedResourceIPC = <T>(
   child: IPCEventEmitter | ChildProcess,
   registry: Record<string, SharedResourceEntry<T>>
-): void {
+): void => {
   child.on('message', async (message: IPCMessage) => {
     switch (message.type) {
       case SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE: {
@@ -141,13 +141,13 @@ export function setupSharedResourceIPC<T>(
         break;
     }
   });
-}
+};
 
-export async function handleGetResource<T>(
+export const handleGetResource = async <T>(
   message: IPCGetMessage,
   registry: Record<string, SharedResourceEntry<T>>,
   child: IPCEventEmitter | ChildProcess
-) {
+) => {
   const entry = registry[message.name];
 
   if (!entry) {
@@ -168,26 +168,26 @@ export async function handleGetResource<T>(
     id: message.id,
   } as IPCResourceResultMessage<T>);
 
-  function subscriber(state: unknown) {
+  const subscriber = (state: unknown) => {
     child.send({
       type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED,
       name: message.name,
       value: state,
       rpcs,
     } as IPCResourceUpdatedMessage<T>);
-  }
+  };
 
   entry.subscribers.add(subscriber);
   const cleanup = () => entry.subscribers.delete(subscriber);
   child.once('exit', cleanup);
   child.once('disconnect', cleanup);
-}
+};
 
-export async function handleRemoteProcedureCall<T>(
+export const handleRemoteProcedureCall = async <T>(
   message: IPCRemoteProcedureCallMessage,
   registry: Record<string, SharedResourceEntry<T>>,
   child: IPCEventEmitter | ChildProcess
-) {
+) => {
   const entry = registry[message.name];
 
   if (!entry) return;
@@ -213,13 +213,13 @@ export async function handleRemoteProcedureCall<T>(
       latest: entry.state,
     },
   } as IPCResponse);
-}
+};
 
-function functionToRPC<T extends object, K extends MethodsOf<T>>(
+const functionToRPC = <T extends object, K extends MethodsOf<T>>(
   resource: T,
   key: K,
   name: string
-) {
+) => {
   return async (...args: ArgumentsOf<T[K]>) => {
     const rpcResult = await remoteProcedureCall<T, K>(name, key, ...args);
     if (!rpcResult) {
@@ -230,13 +230,13 @@ function functionToRPC<T extends object, K extends MethodsOf<T>>(
     Object.assign(resource, rpcResult.latest);
     return rpcResult.result;
   };
-}
+};
 
-export function constructSharedResourceWithRPCs<T extends object>(
+export const constructSharedResourceWithRPCs = <T extends object>(
   resource: T,
   rpcs: MethodsOf<T>[],
   name: string
-): MethodsToRPC<T> {
+): MethodsToRPC<T> => {
   if (rpcs.length === 0) {
     return resource as MethodsToRPC<T>;
   }
@@ -246,23 +246,25 @@ export function constructSharedResourceWithRPCs<T extends object>(
   }
 
   return resource as MethodsToRPC<T>;
-}
+};
 
-export function getSharedResource<
+export const getSharedResource = <
   T extends SharedResource,
   TResult extends IPCListenable<T> = IPCListenable<T>,
->(name: string): Promise<[MethodsToRPC<T>, () => void]> {
+>(
+  name: string
+): Promise<[MethodsToRPC<T>, () => void]> => {
   assertSharedResourcesActive();
 
   let resourceProxy = Object.create(null) as MethodsToRPC<T>;
-
   let resolved = false;
+
   const requestId = `${name}-${Date.now()}-${Math.random()}`;
 
-  function handleResponse(
+  const handleResponse = (
     response: TResult,
     callback: (value: MethodsToRPC<T>) => void
-  ) {
+  ) => {
     if (
       response.type === SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT &&
       response.id === requestId &&
@@ -293,26 +295,26 @@ export function getSharedResource<
         )
       );
     }
-  }
+  };
 
   return new Promise<[MethodsToRPC<T>, () => void]>((resolve) => {
-    function handleResponseWrapper(message: unknown) {
+    const handleResponseWrapper = (message: unknown) => {
       handleResponse(message as TResult, (value) => {
         resolve([
           value,
-          function detach() {
+          () => {
             process.removeListener('message', handleResponseWrapper);
           },
         ]);
       });
-    }
+    };
 
     process.on('message', handleResponseWrapper);
 
-    process.send!({
+    process.send?.({
       type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
       name,
       id: requestId,
     });
   });
-}
+};
