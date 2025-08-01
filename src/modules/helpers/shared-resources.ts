@@ -31,7 +31,7 @@ export const SHARED_RESOURCE_MESSAGE_TYPES = {
 } as const;
 
 export const assertSharedResourcesActive = () => {
-  if (env.POKU_SHARED_RESOURCES !== 'true') {
+  if (env.POKU_SHARED_RESOURCES !== '1') {
     throw new Error(
       'Shared resources are not enabled. Please enable them in your configuration.'
     );

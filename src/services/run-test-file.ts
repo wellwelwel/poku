@@ -63,7 +63,9 @@ export const runTestFile = async (
         POKU_FILE: file,
         POKU_RUNTIME: env.POKU_RUNTIME,
         POKU_REPORTER: configs.reporter,
-        POKU_SHARED_RESOURCES: String(configs.sharedResources),
+        POKU_SHARED_RESOURCES: configs.sharedResources
+          ? String(Number(configs.sharedResources))
+          : undefined,
       },
     });
 

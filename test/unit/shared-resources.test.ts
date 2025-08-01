@@ -471,15 +471,18 @@ describe('setupSharedResourceIPC', () => {
 
 describe('assertSharedResourcesActive', () => {
   const original = env.POKU_SHARED_RESOURCES;
+
   it('should not throw if shared resources are enabled', () => {
-    env.POKU_SHARED_RESOURCES = 'true';
+    env.POKU_SHARED_RESOURCES = '1';
     assert.doesNotThrow(assertSharedResourcesActive);
+
     env.POKU_SHARED_RESOURCES = original;
   });
 
   it('should throw if shared resources are not enabled', () => {
-    env.POKU_SHARED_RESOURCES = 'false';
+    env.POKU_SHARED_RESOURCES = '0';
     assert.throws(assertSharedResourcesActive);
+
     env.POKU_SHARED_RESOURCES = original;
   });
 });
