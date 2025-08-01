@@ -480,7 +480,7 @@ describe('assertSharedResourcesActive', () => {
   });
 
   it('should throw if shared resources are not enabled', () => {
-    env.POKU_SHARED_RESOURCES = '0';
+    env.POKU_SHARED_RESOURCES = undefined;
     assert.throws(assertSharedResourcesActive);
 
     env.POKU_SHARED_RESOURCES = original;
