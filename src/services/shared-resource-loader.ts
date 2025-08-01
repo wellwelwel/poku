@@ -1,4 +1,7 @@
-import type { SharedResourceEntry } from '../@types/shared-resources.js';
+import type {
+  Registry,
+  SharedResourceEntry,
+} from '../@types/shared-resources.js';
 import type { createSharedResource } from '../modules/helpers/shared-resources.js';
 import { relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -8,12 +11,14 @@ import { isWindows } from '../parsers/os.js';
 /** Execute resource files (*.resource.ts) in the current process to initialize shared resources before running tests. */
 export const executeResourceFiles = async (
   files: string[],
-  registry: Record<string, SharedResourceEntry>,
-  cleanupMethods: Record<
+  registry?: Registry,
+  cleanupMethods?: Record<
     string,
     (arg0: SharedResourceEntry) => void | Promise<void>
   >
 ): Promise<void> => {
+  if (!(registry && cleanupMethods)) return;
+
   for (const file of files) {
     const { entry, name, cleanup } = await executeResourceFile(file);
 
@@ -29,9 +34,7 @@ export const executeResourceFiles = async (
 export const executeResourceFile = async (path: string) => {
   const { cwd } = GLOBAL;
   const file = relative(cwd, path);
-
   const fileUrl = isWindows ? pathToFileURL(path).href : path;
-
   const mod = await import(fileUrl);
   const resource = (await mod.default) as Awaited<
     ReturnType<typeof createSharedResource>
@@ -68,9 +71,10 @@ export const separateResourceFiles = (
       file.endsWith('.resource.mjs')
     ) {
       resourceFiles.push(file);
-    } else {
-      testFiles.push(file);
+      continue;
     }
+
+    testFiles.push(file);
   }
 
   return { resourceFiles, testFiles };

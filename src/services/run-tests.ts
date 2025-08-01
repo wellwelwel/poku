@@ -1,5 +1,6 @@
 import type {
   Cleanup,
+  Registry,
   SharedResourceEntry,
 } from '../@types/shared-resources.js';
 import { relative } from 'node:path';
@@ -22,10 +23,13 @@ if (hasOnly) deepOptions.push('--only');
 export const runTests = async (files: string[]): Promise<boolean> => {
   const { resourceFiles, testFiles } = separateResourceFiles(files);
 
-  const registry: Record<string, SharedResourceEntry> = Object.create(null);
-  const cleanupMethods: Record<string, Cleanup> = Object.create(null);
+  let registry: Registry | undefined;
+  let cleanupMethods: Record<string, Cleanup> | undefined;
 
   if (GLOBAL.configs.sharedResources) {
+    if (!registry) registry = Object.create(null);
+    if (!cleanupMethods) cleanupMethods = Object.create(null);
+
     await executeResourceFiles(resourceFiles, registry, cleanupMethods);
   }
 
@@ -47,9 +51,12 @@ export const runTests = async (files: string[]): Promise<boolean> => {
   const done = new Promise<boolean>((resolve) => {
     resolveDone = resolve;
 
-    for (const [key, method] of Object.entries(cleanupMethods)) {
-      method(registry[key].state as SharedResourceEntry);
-    }
+    if (!GLOBAL.configs.sharedResources) return;
+
+    const entries = Object.entries(cleanupMethods!);
+
+    for (const [key, method] of entries)
+      method(registry![key].state as SharedResourceEntry);
   });
 
   const runNext = async () => {

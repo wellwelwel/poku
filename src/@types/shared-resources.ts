@@ -101,3 +101,5 @@ export type ReturnTypeOf<T> =
 export type Cleanup<T = SharedResourceEntry> = (
   state: T
 ) => void | Promise<void>;
+
+export type Registry = Record<string, SharedResourceEntry>;

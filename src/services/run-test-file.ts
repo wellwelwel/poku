@@ -1,4 +1,4 @@
-import type { SharedResourceEntry } from '../@types/shared-resources.js';
+import type { Registry } from '../@types/shared-resources.js';
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
 import { env, hrtime } from 'node:process';
@@ -11,7 +11,7 @@ import { afterEach, beforeEach } from './each.js';
 
 export const runTestFile = async (
   path: string,
-  registry?: Record<string, SharedResourceEntry>
+  registry?: Registry
 ): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
@@ -72,9 +72,7 @@ export const runTestFile = async (
     child.stdout!.on('data', stdOut);
     child.stderr!.on('data', stdOut);
 
-    if (configs.sharedResources && registry) {
-      setupSharedResourceIPC(child, registry);
-    }
+    if (configs.sharedResources) setupSharedResourceIPC(child, registry);
 
     child.on('close', async (code) => {
       end = hrtime(start);

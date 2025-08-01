@@ -88,7 +88,7 @@ export const remoteProcedureCall = <
 
     process.on('message', handleResponse);
 
-    process.send!({
+    process.send?.({
       type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
       name,
       method,
@@ -124,8 +124,10 @@ export const extractFunctionNames = <T extends Record<string, unknown>>(
 
 export const setupSharedResourceIPC = <T>(
   child: IPCEventEmitter | ChildProcess,
-  registry: Record<string, SharedResourceEntry<T>>
+  registry?: Record<string, SharedResourceEntry<T>>
 ): void => {
+  if (!registry) return;
+
   child.on('message', async (message: IPCMessage) => {
     switch (message.type) {
       case SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE: {
