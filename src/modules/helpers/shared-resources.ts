@@ -4,6 +4,7 @@ import type {
   Cleanup,
   IPCEventEmitter,
   IPCGetMessage,
+  IPCListenable,
   IPCMessage,
   IPCRemoteProcedureCallMessage,
   IPCRemoteProcedureCallResultMessage,
@@ -249,9 +250,7 @@ export function constructSharedResourceWithRPCs<T extends object>(
 
 export function getSharedResource<
   T extends SharedResource,
-  TResult extends IPCResourceResultMessage<T> | IPCResourceUpdatedMessage<T> =
-    | IPCResourceResultMessage<T>
-    | IPCResourceUpdatedMessage<T>,
+  TResult extends IPCListenable<T> = IPCListenable<T>,
 >(name: string): Promise<[MethodsToRPC<T>, () => void]> {
   assertSharedResourcesActive();
 

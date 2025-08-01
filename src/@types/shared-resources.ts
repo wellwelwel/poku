@@ -1,3 +1,4 @@
+import type { Serializable } from 'node:child_process';
 import type EventEmitter from 'node:events';
 import type { SHARED_RESOURCE_MESSAGE_TYPES } from '../modules/helpers/shared-resources.js';
 
@@ -41,6 +42,10 @@ export type IPCResourceResultMessage<T = unknown> = {
   rpcs: MethodsOf<T>[];
 };
 
+export type IPCListenable<T> =
+  | IPCResourceResultMessage<T>
+  | IPCResourceUpdatedMessage<T>;
+
 export type IPCResourceUpdatedMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED;
   name: string;
@@ -66,7 +71,7 @@ export type RPCResult<TResult, TResource> = {
 };
 
 export type MethodsToRPC<T> = {
-  [K in keyof T]: T[K] extends (...args: any[]) => unknown
+  [K in keyof T]: T[K] extends (...args: infer _) => Serializable
     ? (
         ...args: Parameters<T[K]>
       ) => ReturnType<T[K]> extends Promise<unknown>
@@ -76,19 +81,19 @@ export type MethodsToRPC<T> = {
 };
 
 export type MethodsOf<T> = {
-  [K in keyof T]: T[K] extends (...args: any[]) => unknown ? K : never;
+  [K in keyof T]: T[K] extends (...args: infer _) => Serializable ? K : never;
 }[keyof T];
 
 export type ArgumentsOf<T> =
   T extends MethodsOf<infer U>
-    ? U extends (...args: infer P) => unknown
+    ? U extends (...args: infer P) => Serializable
       ? P & { length: number }
       : never
     : never;
 
 export type ReturnTypeOf<T> =
   T extends MethodsOf<infer U>
-    ? U extends (...args: unknown[]) => infer R
+    ? U extends (...args: infer _) => infer R
       ? R
       : never
     : never;
