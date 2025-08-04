@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.0.0](https://github.com/wellwelwel/poku/compare/v3.0.2...v4.0.0) (2025-08-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for Node.js v14 ([#1005](https://github.com/wellwelwel/poku/issues/1005))
+
+### Features
+
+* support shared resources between isolated processes ([#1008](https://github.com/wellwelwel/poku/issues/1008)) ([60ff5ce](https://github.com/wellwelwel/poku/commit/60ff5ce22358207e1dd0c6701c282bcc7a9d11e5))
+
+
+### Miscellaneous Chores
+
+* drop support for Node.js v14 ([#1005](https://github.com/wellwelwel/poku/issues/1005)) ([4b9d2ac](https://github.com/wellwelwel/poku/commit/4b9d2ac26f782741a19c4d86c190b8121fc90dc6))
+
 ## [3.0.2](https://github.com/wellwelwel/poku/compare/v3.0.1...v3.0.2) (2025-03-19)
 
 
