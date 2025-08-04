@@ -1,3 +1,8 @@
+import type {
+  Cleanup,
+  Registry,
+  SharedResourceEntry,
+} from '../@types/shared-resources.js';
 import { relative } from 'node:path';
 import { exit } from 'node:process';
 import { deepOptions, GLOBAL, results } from '../configs/poku.js';
@@ -6,12 +11,28 @@ import { availableParallelism } from '../polyfills/os.js';
 import { hr, log } from '../services/write.js';
 import { format } from './format.js';
 import { runTestFile } from './run-test-file.js';
+import {
+  executeResourceFiles,
+  separateResourceFiles,
+} from './shared-resource-loader.js';
 
 const { cwd } = GLOBAL;
 
 if (hasOnly) deepOptions.push('--only');
 
 export const runTests = async (files: string[]): Promise<boolean> => {
+  const { resourceFiles, testFiles } = separateResourceFiles(files);
+
+  let registry: Registry | undefined;
+  let cleanupMethods: Record<string, Cleanup> | undefined;
+
+  if (GLOBAL.configs.sharedResources) {
+    if (!registry) registry = Object.create(null);
+    if (!cleanupMethods) cleanupMethods = Object.create(null);
+
+    await executeResourceFiles(resourceFiles, registry, cleanupMethods);
+  }
+
   let allPassed = true;
   let activeTests = 0;
   let resolveDone: (value: boolean) => void;
@@ -23,26 +44,33 @@ export const runTests = async (files: string[]): Promise<boolean> => {
     if (configs.sequential) return 1;
     const limit =
       configs.concurrency ?? Math.max(availableParallelism() - 1, 1);
-    return limit <= 0 ? files.length || 1 : limit;
+    return limit <= 0 ? testFiles.length || 1 : limit;
   })();
   const isSequential = concurrency === 1;
 
   const done = new Promise<boolean>((resolve) => {
     resolveDone = resolve;
+
+    if (!GLOBAL.configs.sharedResources) return;
+
+    const entries = Object.entries(cleanupMethods!);
+
+    for (const [key, method] of entries)
+      method(registry![key].state as SharedResourceEntry);
   });
 
   const runNext = async () => {
-    if (files.length === 0 && activeTests === 0) {
+    if (testFiles.length === 0 && activeTests === 0) {
       resolveDone(allPassed);
       return;
     }
 
-    const filePath = files.shift();
+    const filePath = testFiles.shift();
     if (typeof filePath === 'undefined') return;
 
     activeTests++;
 
-    const testPassed = await runTestFile(filePath);
+    const testPassed = await runTestFile(filePath, registry);
 
     if (testPassed) ++results.passed;
     else {
