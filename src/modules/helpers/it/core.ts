@@ -2,7 +2,7 @@ import { hrtime } from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { GLOBAL } from '../../../configs/poku.js';
-import { hasOnly } from '../../../parsers/get-arg.js';
+import { getArg, hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
 export async function itBase(
@@ -19,6 +19,9 @@ export async function itBase(
       title = args[0];
       cb = args[1] as () => unknown | Promise<unknown>;
     } else cb = args[0] as () => unknown | Promise<unknown>;
+
+    const followTestPattern = title?.includes(getArg('testNamePattern') ?? '');
+    if (!followTestPattern) return;
 
     GLOBAL.reporter.onItStart({ title });
 
