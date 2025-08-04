@@ -60,8 +60,12 @@ during communication between different procceses, meaning some complex types (as
 
 ### 4. Detach the Resource
 
-When you call `getSharedResource` , it returns a tuple with the resource and a `detach` function. This function should be called to
-detach the test from the resource, allowing cleanup and preventing memory leaks:
+When you call `getSharedResource`, it returns a tuple with the resource and a `detach` function.
+**It is essential to always call `detach` at the end of your test**: this unsubscribes your test
+process from updates to the shared resource, ensuring proper cleanup and preventing memory leaks.
+If you do not call `detach`, your process will remain subscribed, which can lead to resource
+leaks, unnecessary memory usage, and test isolation issues. By always calling `detach`, you keep
+your test environment clean, predictable, and free from side effects caused by lingering subscriptions.
 
 ```ts
 test('detaches of the resource', async () => {
