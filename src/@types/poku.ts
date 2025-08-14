@@ -72,6 +72,12 @@ export type Configs = {
    */
   reporter?: Reporter;
   /**
+   * By default, **Poku** runs in full isolation mode. Sharing resources allows IPC-based sharing of resources between test files.
+   *
+   * @default false
+   */
+  sharedResources?: boolean;
+  /**
    * You can use this option to run a **callback** or a **file** before each test file on your suite.
    *
    * Ex.:

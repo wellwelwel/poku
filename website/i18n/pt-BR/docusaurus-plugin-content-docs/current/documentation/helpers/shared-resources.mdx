@@ -1,0 +1,176 @@
+---
+sidebar_position: 11
+tags: [shared, state, resources, e2e, integration]
+---
+
+# 🪢 Recursos Compartilhados
+
+> Compartilhe estado e métodos entre arquivos e processos de teste, permitindo padrões avançados de integração e testes end-to-end.
+
+## O que são Recursos Compartilhados?
+
+**Recursos Compartilhados** permitem que você defina um recurso (objeto, estado ou API) em um único arquivo e acesse ou altere esse recurso a partir de múltiplos arquivos ou processos de teste. Isso é útil para cenários como:
+
+- Compartilhar uma conexão de banco de dados ou armazenamento em memória.
+- Coordenar estado entre testes paralelos ou sequenciais.
+- Implementar lógica de setup/teardown entre arquivos.
+
+## Uso Básico
+
+### 1. Defina um Recurso Compartilhado
+
+Crie um arquivo `.resource.ts` e exporte um recurso compartilhado usando `createSharedResource`:
+
+```ts
+import { createSharedResource } from 'poku';
+
+export default createSharedResource('sharedCounter', () => {
+  let count = 0;
+  return {
+    getCount: () => count,
+    increment: () => ++count,
+    reset: () => {
+      count = 0;
+    },
+  };
+});
+```
+
+### 2. Acesse o Recurso Compartilhado nos Testes
+
+Use `getSharedResource` em qualquer arquivo de teste para acessar e chamar métodos do recurso compartilhado:
+
+```ts
+import { getSharedResource, test, assert } from 'poku';
+
+test('incrementa o contador', async () => {
+  const [counter, detach] = await getSharedResource('sharedCounter');
+  await counter.increment();
+  assert.equal(await counter.getCount(), 1);
+  detach();
+});
+```
+
+### 3. Métodos se Tornam Chamadas de Procedimento Remoto
+
+Todas as funções do seu recurso se tornam chamadas de procedimento remoto (RPCs), então você pode alterar ou ler o estado compartilhado com segurança entre processos.
+
+É importante notar que os argumentos são serializados usando [Advanced Serialization](https://nodejs.org/api/child_process.html#advanced-serialization)
+durante a comunicação entre diferentes processos, o que significa que alguns tipos complexos (como funções) não são suportados neste momento.
+
+### 4. Desanexando o Recurso
+
+Quando você chama `getSharedResource`, ele retorna uma tupla com o recurso e uma função `detach`.
+**É essencial sempre chamar `detach` ao final do seu teste**: isso cancela a inscrição do seu processo de teste
+nas atualizações do recurso compartilhado, garantindo a limpeza adequada e prevenindo vazamentos de memória.
+Se você não chamar `detach`, seu processo permanecerá inscrito, o que pode levar a vazamentos de recursos,
+uso desnecessário de memória e problemas de isolamento de testes. Ao sempre chamar `detach`, você mantém
+seu ambiente de teste limpo, previsível e livre de efeitos colaterais causados por inscrições remanescentes.
+
+```ts
+test('desanexa o recurso', async () => {
+  const [counter, detach] = await getSharedResource('sharedCounter');
+  await counter.increment();
+  assert.equal(await counter.getCount(), 1);
+  detach(); // Limpa o recurso
+});
+```
+
+### 5. Lógica de Limpeza
+
+Você pode definir uma função de limpeza ao criar o recurso. Ela será chamada quando o recurso não for mais necessário:
+
+```ts
+export default createSharedResource(
+  'sharedCounter',
+  () => {
+    let count = 0;
+    return {
+      getCount: () => count,
+      increment: () => ++count,
+      reset: () => {
+        count = 0;
+      },
+    };
+  },
+  (resource) => {
+    // Lógica de limpeza
+    resource.reset();
+  }
+);
+```
+
+## Exemplos do Mundo Real
+
+### 1. Cache LRU Compartilhado (`lru.min`)
+
+Compartilhe um cache LRU em memória entre testes:
+
+**lru.resource.ts**
+
+```ts
+import { createSharedResource } from 'poku';
+import { createLRU } from 'lru.min';
+
+export default createSharedResource('lru', () => {
+  const cache = createLRU({ max: 3 });
+  return cache;
+});
+```
+
+**cache.test.ts**
+
+```ts
+import { getSharedResource, test, assert } from 'poku';
+
+test('pode compartilhar cache', async () => {
+  const [cache, detach] = await getSharedResource('lru');
+  await cache.set('foo', 123);
+  assert((await cache.get('foo')) === 123);
+  detach();
+});
+```
+
+---
+
+### 2. Conexão MySQL Compartilhada (`mysql2`)
+
+Compartilhe uma única conexão MySQL entre testes:
+
+**mysql.resource.ts**
+
+```ts
+import { createSharedResource } from 'poku';
+import mysql from 'mysql2/promise';
+
+export default createSharedResource(
+  'mysql',
+  async () => {
+    const connection = await mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      database: 'test',
+    });
+    return connection;
+  },
+  (connection) => {
+    // Função de limpeza para fechar a conexão
+    return connection.destroy();
+  }
+);
+```
+
+**db.test.ts**
+
+```ts
+import { getSharedResource, test, assert } from 'poku';
+
+test('pode consultar usuários', async () => {
+  const [db, detach] = await getSharedResource('mysql');
+  const [rows] = await db.query('SELECT * FROM users LIMIT 10');
+
+  assert(Array.isArray(rows));
+  assert.equal(rows.length, 10);
+  detach();
+});
+```

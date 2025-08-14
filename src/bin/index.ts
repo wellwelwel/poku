@@ -66,6 +66,8 @@ import { hr, log } from '../services/write.js';
     return Number.isNaN(value) ? configsFromFile?.concurrency : value;
   })();
   const sequential = hasArg('sequential');
+  const sharedResources =
+    hasArg('sharedResources') || configsFromFile?.sharedResources;
 
   if (dirs.length === 1) states.isSinglePath = true;
 
@@ -119,6 +121,7 @@ import { hr, log } from '../services/write.js';
       deny: denoDeny,
       cjs: denoCJS,
     },
+    sharedResources,
     noExit: watchMode || coverageEnabled,
     reporter,
     coverage: coverageEnabled ? { dir: coverageDir, reports: coverageReports } : undefined,

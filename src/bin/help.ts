@@ -32,6 +32,7 @@ const summary: [string, string][] = [
   ],
   ['--only', 'Enable selective execution of tests.'],
   ['--quiet, -q', 'Run tests with no logs.'],
+  ['--sharedResources', 'Share state and methods between isolated test files.'],
   ['--sequential', 'Run tests files sequentially.'],
   ['--version, -v', "Show Poku's installed version."],
   ['--watch, -w', 'Watch for test events.'],
