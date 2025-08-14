@@ -7,3 +7,6 @@ declare const Deno: {
 declare const Bun: {
   version: string;
 };
+
+declare module 'istanbul-lib-report';
+declare module 'istanbul-reports';
