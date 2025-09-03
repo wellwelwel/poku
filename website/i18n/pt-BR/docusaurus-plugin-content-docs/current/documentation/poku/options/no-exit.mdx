@@ -26,7 +26,7 @@ const integration = await poku('test/integration', {
 
 // Faça algo mais
 
-const code = unit === 0 && integration === 0 ? 0 : 1;
+const code = Number(unit === 0 && integration === 0);
 
 // Faça algo mais novamente
 

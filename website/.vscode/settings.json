@@ -5,10 +5,8 @@
   "editor.formatOnSave": true,
   "files.trimTrailingWhitespace": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll": "explicit"
   },
-  "eslint.validate": ["ts"],
   "[markdown]": {
     "files.trimTrailingWhitespace": false,
     "editor.trimAutoWhitespace": false
