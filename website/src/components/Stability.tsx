@@ -44,11 +44,9 @@ export type StabilityProps = {
  * ```
  */
 export const Stability: FC<StabilityProps> = ({ level, message }) => {
-  /* eslint-disable @typescript-eslint/indent */
   const styles: Record<
     StabilityProps['level'],
     { title: string; icon: JSX.Element }
-    /* eslint-enable @typescript-eslint/indent */
   > = {
     0: {
       title: 'Deprecated',
