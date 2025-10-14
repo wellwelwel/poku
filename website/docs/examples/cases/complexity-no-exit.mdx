@@ -5,7 +5,7 @@
 1. Perform **Unit Tests** suite in parallel
 2. Clear and Populate the Database
 3. Check for **Expected Successes Integration** suite sequentially
-4. Clear and Populate the Database — again
+4. Don't Clear or Populate the Database again
 5. Check for **Expected Failures Integration** suite sequentially
 
 **Requirements:**
@@ -41,24 +41,18 @@ const unitCode = await poku('test/unit', {
 
 assert.strictEqual(0, unitCode, 'Running Unit Tests');
 
-await assert.doesNotReject(
-  recreateDatabase(),
-  'Preparing DB for Successes Integration Tests'
-);
+await recreateDatabase();
 
 const successesCode = await poku('test/integration/successes', {
   noExit: true,
+  sequential: true,
 });
 
 assert.strictEqual(0, successesCode, 'Running Successes Integration Tests');
 
-await assert.doesNotReject(
-  recreateDatabase(),
-  'Preparing DB for Successes Integration Tests'
-);
-
 const failuresCode = await poku('test/integration/failures', {
   noExit: true,
+  sequential: true,
 });
 
 assert.strictEqual(0, failuresCode, 'Running Failures Integration Tests');
