@@ -1,13 +1,8 @@
 import process from 'node:process';
-import { GLOBAL } from '../../../../src/configs/poku.js';
 import { assert } from '../../../../src/modules/essentials/assert.js';
 import { test } from '../../../../src/modules/helpers/test.js';
-import { runtimeVersion } from '../../../../src/parsers/runtime-version.js';
 
 test('Defining Variables', () => {
-  const noValue =
-    GLOBAL.runtime === 'deno' && runtimeVersion >= 2 ? undefined : '';
-
   assert.strictEqual(process.env.HOST, '123.123.123.123', 'Basic');
   assert.strictEqual(process.env.USER0, undefined, 'Comented Line');
   assert.strictEqual(process.env.USER1, '#user', 'Using quoted #');
@@ -34,10 +29,10 @@ test('Defining Variables', () => {
   assert.strictEqual(process.env.PORT1, '8080', 'Using a number');
   assert.strictEqual(
     process.env.PORT2,
-    noValue,
+    '',
     'Valid env with full commented value'
   );
-  assert.strictEqual(process.env.PORT3, noValue, 'Undefined local variable');
+  assert.strictEqual(process.env.PORT3, '', 'Undefined local variable');
   assert.strictEqual(
     process.env.WHO_AM_I,
     "I'm Poku",
@@ -63,10 +58,6 @@ test('Defining Variables', () => {
     undefined,
     'Undefined value (invalid)'
   );
-  assert.strictEqual(process.env.NO_VALUE2, noValue, 'No value (valid)');
-  assert.strictEqual(
-    process.env.NO_VALUE3,
-    noValue,
-    'No value (valid with spaces)'
-  );
+  assert.strictEqual(process.env.NO_VALUE2, '', 'No value (valid)');
+  assert.strictEqual(process.env.NO_VALUE3, '', 'No value (valid with spaces)');
 });
