@@ -49,14 +49,16 @@ export const runTests = async (files: string[]): Promise<boolean> => {
   const isSequential = concurrency === 1;
 
   const done = new Promise<boolean>((resolve) => {
-    resolveDone = resolve;
+    resolveDone = (passed: boolean) => {
+      resolve(passed);
 
-    if (!GLOBAL.configs.sharedResources) return;
+      if (!GLOBAL.configs.sharedResources) return;
 
-    const entries = Object.entries(cleanupMethods!);
+      const entries = Object.entries(cleanupMethods!);
 
-    for (const [key, method] of entries)
-      method(registry![key].state as SharedResourceEntry);
+      for (const [key, method] of entries)
+        method(registry![key].state as SharedResourceEntry);
+    };
   });
 
   const runNext = async () => {
