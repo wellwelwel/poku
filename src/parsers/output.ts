@@ -6,6 +6,26 @@ const regex = {
   todo: /\\u001b\[96m\\u001b\[1m●/gi,
 } as const;
 
+export const serialize = (value: unknown): unknown => {
+  if (
+    typeof value === 'undefined' ||
+    typeof value === 'function' ||
+    typeof value === 'bigint' ||
+    typeof value === 'symbol' ||
+    value instanceof RegExp
+  )
+    return String(value);
+  if (Array.isArray(value)) return value.map(serialize);
+  if (value instanceof Set) return Array.from(value).map(serialize);
+  if (value instanceof Map) return serialize(Object.fromEntries(value));
+  if (value !== null && typeof value === 'object')
+    return Object.fromEntries(
+      Object.entries(value).map(([key, val]) => [key, serialize(val)])
+    );
+
+  return value;
+};
+
 export const parserOutput = (options: { output: string; result: boolean }) => {
   const { output, result } = options;
   const normalizedOutput = JSON.stringify(output);

@@ -23,7 +23,7 @@ export type IPCRemoteProcedureCallMessage = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL;
   name: string;
   id: string;
-  method: string;
+  method: string | number | symbol;
   args: unknown[];
 };
 
@@ -38,7 +38,7 @@ export type IPCResourceResultMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT;
   name: string;
   id: string;
-  value: T;
+  value: T | unknown;
   rpcs: MethodsOf<T>[];
 };
 
@@ -49,7 +49,7 @@ export type IPCListenable<T> =
 export type IPCResourceUpdatedMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED;
   name: string;
-  value: T;
+  value: T | unknown;
   rpcs: MethodsOf<T>[];
 };
 
