@@ -154,7 +154,6 @@ export const handleGetResource = async <T>(
   child: IPCEventEmitter | ChildProcess
 ) => {
   const entry = registry[message.name];
-
   if (!entry) {
     child.send({
       type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND,
