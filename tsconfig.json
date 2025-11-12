@@ -1,12 +1,6 @@
 {
   "include": ["src"],
-  "exclude": [
-    "test",
-    "tools",
-    "src/@types",
-    "src/polyfills/deno.mts",
-    "fixtures/sintax/invalid-file.js"
-  ],
+  "exclude": ["test", "tools", "src/@types", "src/polyfills/deno.mts"],
   "compilerOptions": {
     "target": "ES2021",
     "lib": ["ES2021"],

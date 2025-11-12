@@ -26,7 +26,7 @@ export const runner = (filename: string): string[] => {
 
   // Node.js
   return ['.ts', '.mts', '.cts'].includes(extname(filename))
-    ? [isWindows ? 'npx.cmd' : 'npx', 'tsx']
+    ? ['node', '--import=tsx']
     : ['node'];
 };
 
