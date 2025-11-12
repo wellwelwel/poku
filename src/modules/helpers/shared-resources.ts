@@ -169,7 +169,7 @@ export const handleGetResource = async <T>(
   child.send({
     type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT,
     name: message.name,
-    value: serializeState(entry.state, useIPC),
+    value: serializeState(entry.state, useIPC) as T,
     rpcs,
     id: message.id,
   } satisfies IPCResourceResultMessage<T>);
@@ -178,7 +178,7 @@ export const handleGetResource = async <T>(
     child.send({
       type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED,
       name: message.name,
-      value: serializeState(state, useIPC),
+      value: serializeState(state, useIPC) as T,
       rpcs,
     } satisfies IPCResourceUpdatedMessage<T>);
   };

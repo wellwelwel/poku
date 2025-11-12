@@ -38,7 +38,7 @@ export type IPCResourceResultMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT;
   name: string;
   id: string;
-  value: T | unknown;
+  value: T;
   rpcs: MethodsOf<T>[];
 };
 
@@ -49,7 +49,7 @@ export type IPCListenable<T> =
 export type IPCResourceUpdatedMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED;
   name: string;
-  value: T | unknown;
+  value: T;
   rpcs: MethodsOf<T>[];
 };
 
