@@ -1,5 +1,5 @@
-import { assert } from '../../../../../src/modules/essentials/assert.js';
-import { test } from '../../../../../src/modules/helpers/test.js';
+const { assert } = require('../../../../../src/modules/essentials/assert.js');
+const { test } = require('../../../../../src/modules/helpers/test.js');
 
 test(() => {
   assert.match(__dirname, /cjs$/, 'Ensure dirname');
