@@ -20,7 +20,6 @@ import type {
   SharedResourceEntry,
 } from '../../@types/shared-resources.js';
 import process, { env } from 'node:process';
-import { serialize } from '../../parsers/output.js';
 
 export const SHARED_RESOURCE_MESSAGE_TYPES = {
   GET_RESOURCE: 'shared_resources_getResource',
@@ -142,12 +141,6 @@ export const setupSharedResourceIPC = <T>(
   });
 };
 
-const hasIPCChannel = (child: IPCEventEmitter | ChildProcess): boolean =>
-  'channel' in child || '_channel' in child;
-
-const serializeState = (state: unknown, hasChannel: boolean) =>
-  hasChannel ? serialize(state) : state;
-
 export const handleGetResource = async <T>(
   message: IPCGetMessage,
   registry: Record<string, SharedResourceEntry<T>>,
@@ -163,12 +156,11 @@ export const handleGetResource = async <T>(
   }
 
   const rpcs = extractFunctionNames(entry.state as SharedResource);
-  const useIPC = hasIPCChannel(child);
 
   child.send({
     type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT,
     name: message.name,
-    value: serializeState(entry.state, useIPC) as T,
+    value: entry.state,
     rpcs,
     id: message.id,
   } satisfies IPCResourceResultMessage<T>);
@@ -177,7 +169,7 @@ export const handleGetResource = async <T>(
     child.send({
       type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED,
       name: message.name,
-      value: serializeState(state, useIPC) as T,
+      value: state,
       rpcs,
     } satisfies IPCResourceUpdatedMessage<T>);
   };
@@ -202,7 +194,6 @@ export const handleRemoteProcedureCall = async <T>(
   const methodCandidate = entry.state[methodKey];
   if (typeof methodCandidate !== 'function') return;
 
-  const useIPC = hasIPCChannel(child);
   const method = methodCandidate.bind(entry.state);
   const result = await method(...(message.args || []));
 
@@ -213,7 +204,7 @@ export const handleRemoteProcedureCall = async <T>(
     id: message.id,
     value: {
       result,
-      latest: serializeState(entry.state, useIPC),
+      latest: entry.state,
     },
   } satisfies IPCResponse);
 };
