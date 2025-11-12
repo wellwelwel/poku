@@ -30,7 +30,7 @@ jobs:
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '24.x'
 
       - name: ➕ Actions - Setup Bun
         uses: oven-sh/setup-bun@v2

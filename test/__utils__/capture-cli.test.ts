@@ -119,7 +119,7 @@ export const watchCLI = (
       : './';
 
   const [cmd, ...args] =
-    `${runtime === 'node' ? 'node -r tsx/cjs' : runner(`_.${ext}`).join(' ')} ${basePath}${binFile} --watch ${command}`.split(
+    `${runtime === 'node' ? 'node --import=tsx' : runner(`_.${ext}`).join(' ')} ${basePath}${binFile} --watch ${command}`.split(
       ' '
     );
 
