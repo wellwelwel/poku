@@ -30,9 +30,9 @@ The testers to be compared are chosen based on the three most downloaded test ru
 > - **failure:** a suite of 5 tests that will fail.
 > - **balanced:** a suite of 10 tests where 5 tests will fail and 5 tests will pass.
 
-- ~**4x** faster than [**Jest**](https://github.com/jestjs/jest) (v29.7.0)
-- ~**4x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v3.0.6)
-- ~**1x** faster than [**Mocha**](https://github.com/mochajs/mocha) (v11.1.0) — _even with test file isolation_
+- ~**3.7x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.2.0)
+- ~**3.2x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.0.8)
+- ~**1.1x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.5) — _even with test file isolation_ 🚀
 
 ---
 

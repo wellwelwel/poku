@@ -35,7 +35,7 @@ jobs:
         uses: actions/setup-node@v4
         if: ${{ steps.release.outputs.releases_created }}
         with:
-          node-version: '22.x'
+          node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: ➕ Cache dependencies
