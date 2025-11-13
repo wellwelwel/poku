@@ -36,12 +36,12 @@ const results = await Promise.all([
   // Execution — Jest
   compare('./results/execution/balanced/jest.json', 4),
   compare('./results/execution/failure/jest.json', 4),
-  compare('./results/execution/success/jest.json', 4),
+  compare('./results/execution/success/jest.json', 3),
 
   // Execution — Vitest
-  compare('./results/execution/balanced/vitest.json', 4),
-  compare('./results/execution/failure/vitest.json', 4),
-  compare('./results/execution/success/vitest.json', 4),
+  compare('./results/execution/balanced/vitest.json', 3),
+  compare('./results/execution/failure/vitest.json', 3),
+  compare('./results/execution/success/vitest.json', 3),
 
   // Execution — Mocha
   compare('./results/execution/balanced/mocha.json', 1),

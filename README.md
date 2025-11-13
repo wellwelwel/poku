@@ -256,11 +256,9 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 **Poku** is [continuously tested](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) to ensure the following expectations for basic usage:
 
-- ~**4x** faster than [**Jest**](https://github.com/jestjs/jest) (30.0.5)
-- ~**5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v3.2.4)
-- ~**1x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.1) — _even with test file isolation_ 🚀
-
-All comparisons are rounded down (e.g., `4.99` would be rounded down to `~4x`).
+- ~**3.7x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.0.5)
+- ~**4.8x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v3.2.4)
+- ~**1.1x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.1) — _even with test file isolation_ 🚀
 
 > - You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
 > - [Comparing **Poku** and native test runners _(discussion)_](https://github.com/wellwelwel/poku/discussions/740).
