@@ -3,6 +3,7 @@ name: '🎖️ CI — Benchmark'
 on:
   pull_request:
     paths:
+      - '.github/workflows/ci_benchmark.yml'
       - 'benchmark/**'
       - 'src/**'
   workflow_dispatch:
