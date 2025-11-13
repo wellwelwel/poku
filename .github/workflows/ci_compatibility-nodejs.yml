@@ -2,6 +2,15 @@ name: '🔬 CI — Compatibility'
 
 on:
   pull_request:
+    paths:
+      - '.github/workflows/ci_compatibility-nodejs.yml'
+      - '.nycrc/**'
+      - 'src/**'
+      - 'test/**'
+      - 'tools/**'
+      - 'codecov.yml'
+      - 'package-lock.json'
+      - 'package.json'
   workflow_dispatch:
 
 jobs:
