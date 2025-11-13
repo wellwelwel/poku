@@ -5,7 +5,6 @@ import { env, hrtime } from 'node:process';
 import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
 import { setupSharedResourceIPC } from '../modules/helpers/shared-resources.js';
 import { runner } from '../parsers/get-runner.js';
-import { isWindows } from '../parsers/os.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
 
@@ -52,12 +51,7 @@ export const runTestFile = async (
       stdio: GLOBAL.configs.sharedResources
         ? ['inherit', 'pipe', 'pipe', 'ipc']
         : ['inherit', 'pipe', 'pipe'],
-      serialization: (() => {
-        if (!GLOBAL.configs.sharedResources) return undefined;
-        if (runtime === 'bun') return 'json';
-        return 'advanced';
-      })(),
-      shell: isWindows,
+      shell: false,
       env: {
         ...env,
         POKU_FILE: file,

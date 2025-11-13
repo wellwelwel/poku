@@ -23,7 +23,7 @@ export type IPCRemoteProcedureCallMessage = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL;
   name: string;
   id: string;
-  method: string;
+  method: string | number | symbol;
   args: unknown[];
 };
 

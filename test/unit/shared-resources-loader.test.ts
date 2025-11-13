@@ -8,7 +8,7 @@ import {
   separateResourceFiles,
 } from '../../src/services/shared-resource-loader.js';
 
-describe('Shared Resources Loader', () => {
+describe('Shared Resources Loader', async () => {
   describe('separateResourceFiles', () => {
     it('should separate test files from resource files', () => {
       const cases = [
@@ -63,7 +63,7 @@ describe('Shared Resources Loader', () => {
     });
   });
 
-  describe('executeResourceFile', () => {
+  await describe('executeResourceFile', async () => {
     const makePath = (slug: string) =>
       path.join(
         GLOBAL.cwd,
@@ -74,7 +74,7 @@ describe('Shared Resources Loader', () => {
         `${slug}.resource-fixture`
       );
 
-    it('loads a valid resource file', async () => {
+    await it('loads a valid resource file', async () => {
       const resource = await executeResourceFile(makePath('valid'));
       assert.deepStrictEqual(resource, {
         entry: { state: { value: 42 }, subscribers: new Set() },
@@ -83,7 +83,7 @@ describe('Shared Resources Loader', () => {
       });
     });
 
-    it('loads a valid resource file with async factory', async () => {
+    await it('loads a valid resource file with async factory', async () => {
       const resource = await executeResourceFile(makePath('async-factory'));
       assert.deepStrictEqual(resource, {
         entry: { state: { value: 42 }, subscribers: new Set() },
@@ -92,7 +92,7 @@ describe('Shared Resources Loader', () => {
       });
     });
 
-    it('loads a valid resource file with cleanup function', async () => {
+    await it('loads a valid resource file with cleanup function', async () => {
       const resource = await executeResourceFile(makePath('cleanup'));
 
       assert.equal(resource.name, 'cleanup');
@@ -103,7 +103,7 @@ describe('Shared Resources Loader', () => {
       });
     });
 
-    it('throws if resource file does not exist', async () => {
+    await it('throws if resource file does not exist', async () => {
       await assert.rejects(
         () => executeResourceFile(makePath('nonexistent')),
         /(Cannot find module | Module not found)/
@@ -130,7 +130,7 @@ describe('Shared Resources Loader', () => {
     ];
 
     for (const { description, slug } of invalidCases) {
-      it(description, async () => {
+      await it(description, async () => {
         await assert.rejects(
           () => executeResourceFile(makePath(slug)),
           /does not export a valid default resource object/
