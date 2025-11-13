@@ -5,9 +5,9 @@
     "compare": "node comparison.js"
   },
   "devDependencies": {
-    "jest": "30.0.5",
-    "mocha": "11.7.1",
+    "jest": "30.2.0",
+    "mocha": "11.7.5",
     "poku": "file:..",
-    "vitest": "3.2.4"
+    "vitest": "4.0.8"
   }
 }

@@ -2,6 +2,15 @@ name: '🔬 CI — Compatibility'
 
 on:
   pull_request:
+    paths:
+      - '.github/workflows/ci_compatibility-nodejs.yml'
+      - '.nycrc/**'
+      - 'src/**'
+      - 'test/**'
+      - 'tools/**'
+      - 'codecov.yml'
+      - 'package-lock.json'
+      - 'package.json'
   workflow_dispatch:
 
 jobs:
@@ -11,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['16', '18', '20', '22', '24']
+        node-version: ['16', '18', '20', '22', '24', '25']
     name: Node.js ${{ matrix.node-version }}
     steps:
       - name: ➕ Actions - Checkout
@@ -20,7 +29,7 @@ jobs:
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '24.x'
 
       - name: ➕ Actions - Setup Bun
         uses: oven-sh/setup-bun@v2

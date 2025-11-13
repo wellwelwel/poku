@@ -3,6 +3,7 @@ name: '🎖️ CI — Benchmark'
 on:
   pull_request:
     paths:
+      - '.github/workflows/ci_benchmark.yml'
       - 'benchmark/**'
       - 'src/**'
   workflow_dispatch:
@@ -27,7 +28,7 @@ jobs:
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '24.x'
 
       - name: ➕ Actions - Setup Bun
         uses: oven-sh/setup-bun@v1
