@@ -14,6 +14,10 @@ import { Stability } from '@site/src/components/Stability';
       version: '3.0.3-canary.60ff5ce2',
       changes: [<>Introduce Shared Resources.</>],
     },
+    {
+      version: '3.0.3-canary.ffab4562',
+      changes: [<>Improved serialization and Windows support.</>],
+    },
   ]}
 />
 
@@ -69,8 +73,8 @@ test('increments the counter', async () => {
 
 All functions on your resource become remote procedure calls (RPCs), so you can safely mutate or read shared state across processes.
 
-It's important to notice that arguments are serialized using [Advanced Serialization](https://nodejs.org/api/child_process.html#advanced-serialization)
-during communication between different procceses, meaning some complex types (as functions) are not supported at this time.
+It's important to notice that arguments are serialized using JSON Serialization during communication between different procceses,
+meaning some complex types (as functions) are not supported at this time.
 
 ### 4. Detach the Resource
 
