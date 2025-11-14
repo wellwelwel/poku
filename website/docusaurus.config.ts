@@ -42,8 +42,8 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
-              label: 'v4.x.x',
-              badge: false,
+              label: 'Canary',
+              badge: true,
             },
             '3.x.x': {
               label: 'v3.0.2',
