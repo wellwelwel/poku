@@ -4,16 +4,37 @@ tags: [containers]
 ---
 
 import { FAQ } from '@site/src/components/FAQ';
+import { History } from '@site/src/components/History';
 
 # 🐳 Contêineres
+
+<History
+  records={[
+    {
+      version: '3.0.3-canary.86e2832e',
+      changes: [
+        <>
+          Migrate <strong>Docker</strong> functionality to a{' '}
+          <a href='https://github.com/pokujs/docker'>dedicated package</a>.
+        </>,
+      ],
+    },
+  ]}
+/>
 
 Uma API mínima para auxiliar testes que requerem contêineres ou testes que são executados dentro de contêineres.
 
 > Esse auxiliar pressupõe que você já tem uma compreensão básica de como o **Docker** funciona.
 
-## docker
+## Install
 
-### compose
+```sh
+npm i -D @pokujs/docker
+```
+
+## Usage
+
+### Docker Compose
 
 Inicie contêineres a partir de um **docker-compose.yml** em segundo plano.
 
@@ -97,7 +118,7 @@ export type DockerComposeConfigs = {
 
 <hr />
 
-### dockerfile
+### Dockerfile
 
 Constrói e inicia contêineres a partir de **Dockerfiles** em segundo plano.
 
