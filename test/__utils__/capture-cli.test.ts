@@ -4,8 +4,8 @@ import type {
 } from 'node:child_process';
 import { spawn } from 'node:child_process';
 import process, { env } from 'node:process';
-import { GLOBAL } from '../../src/configs/poku.js';
 import { kill as pokuKill } from '../../src/modules/helpers/kill.js';
+import { sleep } from '../../src/modules/helpers/wait-for.js';
 import { runner } from '../../src/parsers/get-runner.js';
 import { isWindows } from '../../src/parsers/os.js';
 
@@ -40,8 +40,8 @@ export const inspectCLI = (
     const [cmd, ...args] = command.split(' ');
 
     const childProcess = spawn(cmd, args, {
-      shell: isWindows,
       ...options,
+      shell: isWindows,
     });
 
     childProcess.stdout.setEncoding('utf8');
@@ -95,8 +95,8 @@ export const inspectPoku = (
       : './';
 
   return inspectCLI(`${cmd} ${basePath}${binFile} ${command}`, {
-    shell: isWindows,
     ...options,
+    shell: isWindows,
     env: {
       ...(options?.env || env),
       POKU_RUNTIME: env.POKU_RUNTIME,
@@ -108,8 +108,8 @@ export const watchCLI = (
   command: string,
   options?: SpawnOptionsWithoutStdio
 ): WatchCLIResult => {
-  const { runtime } = GLOBAL;
-  const binFile = 'src/bin/index.ts';
+  const cmd = runner(`_.${ext}`);
+  const binFile = `src/bin/index.${ext}`;
   const basePath =
     typeof options?.cwd === 'string'
       ? options.cwd
@@ -117,15 +117,17 @@ export const watchCLI = (
           .map(() => '../')
           .join('')
       : './';
+  const runtime = cmd.shift()!;
+  const args = [
+    ...cmd,
+    `${basePath}${binFile}`,
+    '--watch',
+    ...command.split(' '),
+  ];
 
-  const [cmd, ...args] =
-    `${runtime === 'node' ? 'node --import=tsx' : runner(`_.${ext}`).join(' ')} ${basePath}${binFile} --watch ${command}`.split(
-      ' '
-    );
-
-  const childProcess = spawn(cmd, args, {
-    shell: isWindows,
+  const childProcess = spawn(runtime, args, {
     ...options,
+    shell: isWindows,
     env: {
       ...(options?.env || env),
       POKU_RUNTIME: env.POKU_RUNTIME,
@@ -141,7 +143,10 @@ export const watchCLI = (
   const PID = childProcess.pid!;
 
   const kill = async () => {
-    await pokuKill.pid(PID);
+    childProcess.kill('SIGTERM');
+    await sleep(250);
+
+    if (!childProcess.killed) await pokuKill.pid(PID);
   };
 
   const getOutput = () => {

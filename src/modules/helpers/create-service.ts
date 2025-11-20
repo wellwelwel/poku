@@ -30,7 +30,7 @@ const backgroundProcess = (
         env: process.env,
         timeout: options?.timeout,
         cwd: options?.cwd ? sanitizePath(normalize(options.cwd)) : undefined,
-        shell: isWindows,
+        shell: false,
         detached: !isWindows,
         windowsHide: isWindows,
       });
