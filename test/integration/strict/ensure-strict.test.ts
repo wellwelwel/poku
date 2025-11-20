@@ -1,5 +1,6 @@
 import { GLOBAL } from '../../../src/configs/poku.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
+import { strict } from '../../../src/modules/essentials/strict.js';
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { skip } from '../../../src/modules/helpers/skip.js';
 import { runtimeVersion } from '../../../src/parsers/runtime-version.js';
@@ -10,9 +11,7 @@ if (GLOBAL.runtime === 'bun')
 if (GLOBAL.runtime === 'deno' && runtimeVersion === 1)
   skip('Default assert acts as strict method for Deno v1');
 
-describe('Ensure strict', async () => {
-  const { strict } = await import('../../../src/modules/essentials/strict.js');
-
+describe('Ensure strict', () => {
   const actual = Object.create(null);
   const expected = { name: 'John' };
 

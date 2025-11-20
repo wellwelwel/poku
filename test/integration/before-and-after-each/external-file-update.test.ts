@@ -3,12 +3,9 @@ import path from 'node:path';
 import { GLOBAL } from '../../../src/configs/poku.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { poku } from '../../../src/modules/essentials/poku.js';
-import { skip } from '../../../src/modules/helpers/skip.js';
 import { test } from '../../../src/modules/helpers/test.js';
 
 const { runtime } = GLOBAL;
-
-if (runtime === 'deno') skip();
 
 const testDir = path.resolve('test/__fixtures__/.temp');
 const jsonFilePath = path.resolve(`${testDir}/external-file-update.json`);
