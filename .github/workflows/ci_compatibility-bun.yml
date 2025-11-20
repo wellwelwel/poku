@@ -1,4 +1,4 @@
-name: '🔬 CI — Compatibility'
+name: '🔬 CI — Bun'
 
 on:
   pull_request:
@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         bun-version: ['latest', 'canary']
-    name: Bun ${{ matrix.bun-version }}
+    name: ${{ matrix.bun-version }}
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -29,10 +29,11 @@ jobs:
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.x'
+          check-latest: true
+          node-version: lts/*
 
       - name: ➕ Actions - Setup Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ matrix.bun-version }}
 
