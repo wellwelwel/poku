@@ -31,12 +31,13 @@ Some test runners use **`eval`**, **Poku** prefers to use **`spawn`** to create 
 
 Currently, security updates will be applied to the following versions of **Poku**:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 3.x.x   | :white_check_mark: |
-| 2.x.x   | :x:                |
-| 1.x.x   | :x:                |
-| 0.x.x   | :x:                |
+| Version        | Supported          |
+| -------------- | ------------------ |
+| 4.x.x (Canary) | :white_check_mark: |
+| 3.x.x          | :x:                |
+| 2.x.x          | :x:                |
+| 1.x.x          | :x:                |
+| 0.x.x          | :x:                |
 
 ---
 
