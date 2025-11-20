@@ -11,7 +11,7 @@ import {
 } from '../../src/modules/helpers/wait-for.js';
 import { isWindows } from '../../src/parsers/os.js';
 
-if (isBuild || GLOBAL.runtime !== 'node' || isWindows) skip();
+if (isBuild || isWindows || GLOBAL.runtime === 'deno') skip();
 
 const saveFileUnchanged = async (filename: string) => {
   const data = await readFile(filename, 'utf8');

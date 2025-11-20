@@ -180,6 +180,5 @@ import { hr, log } from '../services/write.js';
   await Promise.all(tasks);
   await poku(dirs);
 
-  /* c8 ignore next 1 */ // Blocked by TSX
   if (watchMode) require('./watch.js').startWatch(dirs); // TODO: Replace with import()
 })();
