@@ -14,7 +14,6 @@
     "src/parsers/get-runner.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/parsers/get-runtime.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/parsers/runtime-version.ts", // Varies of platform (Node.js, Bun, and Deno)
-    "src/services/container.ts", // On Windows-based GitHub Actions, it's not possible to pull images based on manifest windows/amd64
     "src/bin/watch.ts" // Blocked by TSX
   ]
 }

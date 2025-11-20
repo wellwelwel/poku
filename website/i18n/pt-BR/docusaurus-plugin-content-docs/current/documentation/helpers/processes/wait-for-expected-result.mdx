@@ -106,7 +106,8 @@ Aguardando por uma conexão com o banco de dados de um contêiner antes de execu
 > Exemplo de _API_ do **Poku**.
 
 ```ts
-import { poku, docker, waitForExpectedResult, exit } from 'poku';
+import { poku, waitForExpectedResult, exit } from 'poku';
+import { docker } from '@pokujs/docker';
 import { db } from './db.js';
 
 // Carrega o docker-compose.yml

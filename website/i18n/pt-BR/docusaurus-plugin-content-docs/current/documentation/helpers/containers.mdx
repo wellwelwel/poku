@@ -18,7 +18,7 @@ Uma API mínima para auxiliar testes que requerem contêineres ou testes que sã
 Inicie contêineres a partir de um **docker-compose.yml** em segundo plano.
 
 ```ts
-import { docker } from 'poku';
+import { docker } from '@pokujs/docker';
 
 const compose = docker.compose();
 
@@ -102,7 +102,7 @@ export type DockerComposeConfigs = {
 Constrói e inicia contêineres a partir de **Dockerfiles** em segundo plano.
 
 ```ts
-import { docker } from 'poku';
+import { docker } from '@pokujs/docker';
 
 const dockerfile = docker.dockerfile({
   containerName: 'nome-do-contêiner',
@@ -235,7 +235,8 @@ Inicia um contêiner antes de toda a suíte de testes e o interrompe ao finaliza
 > Exemplo de _API_ do **Poku**.
 
 ```ts
-import { poku, docker, exit } from 'poku';
+import { poku, exit } from 'poku';
+import { docker } from '@pokujs/docker';
 
 const compose = docker.compose({ cwd: './test/docker' });
 

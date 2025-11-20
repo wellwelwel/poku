@@ -9,7 +9,6 @@ export { it } from './helpers/it/core.js';
 export { envFile } from './helpers/env.js';
 export { skip } from './helpers/skip.js';
 export { beforeEach, afterEach } from './helpers/each.js';
-export { docker } from './helpers/container.js';
 export { startScript, startService } from './helpers/create-service.js';
 export {
   waitForExpectedResult,
@@ -30,10 +29,6 @@ export { VERSION as version } from '../configs/poku.js';
 
 export type { Code } from '../@types/code.js';
 export type { Configs } from '../@types/poku.js';
-export type {
-  DockerComposeConfigs,
-  DockerfileConfigs,
-} from '../@types/container.js';
 export type {
   StartServiceOptions,
   StartScriptOptions,
