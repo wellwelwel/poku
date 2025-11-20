@@ -108,7 +108,7 @@ export const watchCLI = (
   command: string,
   options?: SpawnOptionsWithoutStdio
 ): WatchCLIResult => {
-  const cmd = runner(`_.${ext}`).join(' ');
+  const cmd = runner(`_.${ext}`);
   const binFile = `src/bin/index.${ext}`;
   const basePath =
     typeof options?.cwd === 'string'
@@ -117,10 +117,9 @@ export const watchCLI = (
           .map(() => '../')
           .join('')
       : './';
-  const runtimeArgs = cmd.split(' ');
-  const runtime = runtimeArgs.shift()!;
+  const runtime = cmd.shift()!;
   const args = [
-    ...runtimeArgs,
+    ...cmd,
     `${basePath}${binFile}`,
     '--watch',
     ...command.split(' '),
