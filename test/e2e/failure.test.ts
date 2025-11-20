@@ -6,8 +6,6 @@ import { it } from '../../src/modules/helpers/it/core.js';
 
 const { runtime } = GLOBAL;
 
-// if (runtime === 'deno') skip();
-
 describe('Failure', async () => {
   await it('Basic', async () => {
     const results = await inspectPoku('', {

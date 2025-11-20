@@ -7,8 +7,6 @@ import { test } from '../../../src/modules/helpers/test.js';
 
 const { runtime } = GLOBAL;
 
-// if (runtime === 'deno') skip();
-
 const testDir = path.resolve('test/__fixtures__/.temp');
 const jsonFilePath = path.resolve(`${testDir}/external-file-update.json`);
 
