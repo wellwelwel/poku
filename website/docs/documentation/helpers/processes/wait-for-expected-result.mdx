@@ -106,7 +106,8 @@ Waiting for a database connection from a container before to run the entire test
 > **Poku** _API_ example.
 
 ```ts
-import { poku, docker, waitForExpectedResult, exit } from 'poku';
+import { poku, waitForExpectedResult, exit } from 'poku';
+import { docker } from '@pokujs/docker';
 import { db } from './db.js';
 
 // Load the docker-compose.yml

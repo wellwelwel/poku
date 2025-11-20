@@ -18,7 +18,7 @@ A minimal _API_ to assist tests that require containers or tests that run inside
 Start containers from a **docker-compose.yml** in background.
 
 ```ts
-import { docker } from 'poku';
+import { docker } from '@pokujs/docker';
 
 const compose = docker.compose();
 
@@ -102,7 +102,7 @@ export type DockerComposeConfigs = {
 Build and start containers from **Dockerfiles** in background.
 
 ```ts
-import { docker } from 'poku';
+import { docker } from '@pokujs/docker';
 
 const dockerfile = docker.dockerfile({
   containerName: 'container-name',
@@ -235,7 +235,8 @@ Starts a container before the entire test suite and stops it on finishing:
 > **Poku** _API_ example.
 
 ```ts
-import { poku, docker, exit } from 'poku';
+import { poku, exit } from 'poku';
+import { docker } from '@pokujs/docker';
 
 const compose = docker.compose({ cwd: './test/docker' });
 
