@@ -7,6 +7,7 @@ import process, { env } from 'node:process';
 import { kill as pokuKill } from '../../src/modules/helpers/kill.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
 import { runner } from '../../src/parsers/get-runner.js';
+import { isWindows } from '../../src/parsers/os.js';
 
 export const isBuild = process.env.NODE_ENV === 'build';
 
@@ -40,7 +41,7 @@ export const inspectCLI = (
 
     const childProcess = spawn(cmd, args, {
       ...options,
-      shell: false,
+      shell: isWindows,
     });
 
     childProcess.stdout.setEncoding('utf8');
@@ -95,7 +96,7 @@ export const inspectPoku = (
 
   return inspectCLI(`${cmd} ${basePath}${binFile} ${command}`, {
     ...options,
-    shell: false,
+    shell: isWindows,
     env: {
       ...(options?.env || env),
       POKU_RUNTIME: env.POKU_RUNTIME,
@@ -127,7 +128,7 @@ export const watchCLI = (
 
   const childProcess = spawn(runtime, args, {
     ...options,
-    shell: false,
+    shell: isWindows,
     env: {
       ...(options?.env || env),
       POKU_RUNTIME: env.POKU_RUNTIME,
