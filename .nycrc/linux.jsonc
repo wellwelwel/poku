@@ -14,7 +14,6 @@
     "src/parsers/get-runner.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/parsers/get-runtime.ts", // Varies of platform (Node.js, Bun, and Deno)
     "src/parsers/runtime-version.ts", // Varies of platform (Node.js, Bun, and Deno)
-    "src/services/container.ts", // Unexpectedly, GitHub Actions started refusing a simple connection (`node:http`), not directly related to the container test (this test isn't skipped locally)
     "src/bin/watch.ts" // Blocked by TSX
   ]
 }
