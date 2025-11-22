@@ -1,4 +1,3 @@
-import type { Registry } from '../@types/shared-resources.js';
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
 import { env, hrtime } from 'node:process';
@@ -8,10 +7,7 @@ import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
 
-export const runTestFile = async (
-  path: string,
-  registry?: Registry
-): Promise<boolean> => {
+export const runTestFile = async (path: string): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
   const runtime = runtimeOptions.shift()!;
@@ -32,6 +28,7 @@ export const runTestFile = async (
 
   const stdOut = (data: Buffer): void => {
     output += String(data);
+    console.log(data.toString());
   };
 
   const start = hrtime();
@@ -68,7 +65,7 @@ export const runTestFile = async (
     child.stdout!.on('data', stdOut);
     child.stderr!.on('data', stdOut);
 
-    if (configs.sharedResources) setupSharedResourceIPC(child, registry);
+    if (configs.sharedResources) setupSharedResourceIPC(child);
 
     child.on('close', async (code) => {
       end = hrtime(start);

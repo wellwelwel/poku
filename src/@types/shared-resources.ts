@@ -6,12 +6,25 @@ export interface IPCEventEmitter extends EventEmitter {
   send: (message: unknown, ...args: unknown[]) => boolean;
 }
 
+export type ResourceContext<T> = {
+  name: string;
+  factory: () => T | Promise<T>;
+  cleanup?: (instance: T) => void | Promise<void>;
+};
+
 export interface SharedResourceEntry<T = unknown> {
   state: T;
   subscribers: Set<(state: T) => void>;
+  cleanup?: (instance: T) => void | Promise<void>;
 }
 
 export type SharedResource = Record<string, unknown>;
+
+export type IPCRegisterMessage = {
+  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REGISTER;
+  name: string;
+  filePath: string;
+};
 
 export type IPCGetMessage = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE;
@@ -27,7 +40,10 @@ export type IPCRemoteProcedureCallMessage = {
   args: unknown[];
 };
 
-export type IPCMessage = IPCGetMessage | IPCRemoteProcedureCallMessage;
+export type IPCMessage =
+  | IPCRegisterMessage
+  | IPCGetMessage
+  | IPCRemoteProcedureCallMessage;
 
 export type IPCResourceNotFoundMessage = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND;
