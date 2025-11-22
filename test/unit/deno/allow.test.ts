@@ -6,9 +6,7 @@ import { runner } from '../../../src/parsers/get-runner.js';
 
 const { runtime } = GLOBAL;
 
-if (runtime !== 'deno') {
-  skip('Skipping for non-Deno platforms');
-}
+if (runtime !== 'deno') skip('Skipping for non-Deno platforms');
 
 test('Deno Permissions (Allow)', () => {
   GLOBAL.configs = Object.create(null);
