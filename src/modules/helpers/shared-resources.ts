@@ -127,7 +127,7 @@ const getRemoteResource = <
       !resolved
     ) {
       resourceProxy = constructSharedResourceWithRPCs(
-        response.value as T,
+        response.value,
         response.rpcs,
         name
       );
@@ -144,11 +144,7 @@ const getRemoteResource = <
     ) {
       Object.assign(
         resourceProxy,
-        constructSharedResourceWithRPCs(
-          response.value as T,
-          response.rpcs,
-          name
-        )
+        constructSharedResourceWithRPCs(response.value, response.rpcs, name)
       );
     }
 
@@ -172,13 +168,10 @@ const getRemoteResource = <
   return new Promise<MethodsToRPC<T>>((resolve) => {
     trackRequestStart();
 
-    const handleResponseWrapper = (message: unknown) => {
-      handleResponse(message as TResult, (value) => {
+    const handleResponseWrapper = (message: TResult) => {
+      handleResponse(message, (value) => {
         resolve(value);
         trackRequestEnd();
-        // We don't remove the listener immediately because we want updates
-        // But we should probably manage memory.
-        // For now, we rely on process exit to clean up listeners in the child.
       });
     };
 
@@ -405,7 +398,7 @@ const functionToRPC = <T extends object, K extends MethodsOf<T>>(
   };
 };
 
-export const constructSharedResourceWithRPCs = <T extends object>(
+export const constructSharedResourceWithRPCs = <T extends SharedResource>(
   resource: T,
   rpcs: MethodsOf<T>[],
   name: string
