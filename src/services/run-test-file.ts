@@ -28,7 +28,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   const stdOut = (data: Buffer): void => {
     output += String(data);
-    console.log(data.toString());
   };
 
   const start = hrtime();
