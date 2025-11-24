@@ -1,12 +1,11 @@
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
-import { GLOBAL } from '../../src/configs/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import { isWindows } from '../../src/parsers/os.js';
 
-if (GLOBAL.runtime === 'deno' || isBuild || isWindows) skip();
+if (isBuild || isWindows) skip();
 
 describe('List Files command', async () => {
   await it('Default', async () => {

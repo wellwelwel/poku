@@ -1,4 +1,4 @@
-name: '🔬 CI — Compatibility'
+name: '🔬 CI — Deno'
 
 on:
   pull_request:
@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         deno-version: ['v1.x', 'v2.x', 'canary']
-    name: Deno ${{ matrix.deno-version }}
+    name: ${{ matrix.deno-version }}
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
@@ -29,7 +29,8 @@ jobs:
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.x'
+          check-latest: true
+          node-version: lts/*
 
       - name: ➕ Actions - Setup Deno
         uses: denoland/setup-deno@v1

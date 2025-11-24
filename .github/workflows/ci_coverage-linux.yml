@@ -30,17 +30,18 @@ jobs:
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.x'
+          check-latest: true
+          node-version: lts/*
 
       - name: ➕ Actions - Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: '1.1.22'
+          bun-version: 'latest'
 
       - name: ➕ Actions - Setup Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: 'v1.x'
+          deno-version: 'v2.x'
 
       # - name: 🐳 Update Docker to latest version
       #   run: |

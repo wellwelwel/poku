@@ -37,7 +37,8 @@ jobs:
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.x'
+          check-latest: true
+          node-version: lts/*
 
       - name: 📦 Installing Dependencies
         run: npm ci

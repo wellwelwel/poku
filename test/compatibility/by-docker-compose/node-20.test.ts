@@ -1,5 +1,5 @@
+import { docker } from '@pokujs/docker';
 import { assert } from '../../../src/modules/essentials/assert.js';
-import { docker } from '../../../src/modules/helpers/container.js';
 import { test } from '../../../src/modules/helpers/test.js';
 
 const projectName = 'poku';

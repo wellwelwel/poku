@@ -85,7 +85,8 @@ await Promise.all([
 ### Aguardando um Serviço de Container na Porta 3000
 
 ```ts
-import { docker, waitForPort } from 'poku';
+import { waitForPort } from 'poku';
+import { docker } from '@pokujs/docker';
 
 // highlight-start
 const compose = docker.compose();

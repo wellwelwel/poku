@@ -14,6 +14,10 @@ import { Stability } from '@site/src/components/Stability';
       version: '3.0.3-canary.60ff5ce2',
       changes: [<>Introduce Shared Resources.</>],
     },
+    {
+      version: '3.0.3-canary.ffab4562',
+      changes: [<>Improved serialization and Windows support.</>],
+    },
   ]}
 />
 
@@ -69,8 +73,8 @@ test('incrementa o contador', async () => {
 
 Todas as funções do seu recurso se tornam chamadas de procedimento remoto (RPCs), então você pode alterar ou ler o estado compartilhado com segurança entre processos.
 
-É importante notar que os argumentos são serializados usando [Advanced Serialization](https://nodejs.org/api/child_process.html#advanced-serialization)
-durante a comunicação entre diferentes processos, o que significa que alguns tipos complexos (como funções) não são suportados neste momento.
+É importante notar que os argumentos são serializados usando JSON Serialization durante a comunicação entre diferentes processos,
+o que significa que alguns tipos complexos (como funções) não são suportados neste momento.
 
 ### 4. Desanexando o Recurso
 
