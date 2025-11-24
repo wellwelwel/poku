@@ -3,13 +3,7 @@ import { inspectPoku } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 
-const finalPath = join(
-  'test',
-  '__fixtures__',
-  'e2e',
-  'shared-resources',
-  'test'
-);
+const finalPath = join('test', '__fixtures__', 'e2e', 'shared-resources');
 
 describe('Shared Resources', async () => {
   const results = await inspectPoku('--debug --sharedResources', {
