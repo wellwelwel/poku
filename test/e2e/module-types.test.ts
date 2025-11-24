@@ -5,8 +5,8 @@ import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (GLOBAL.runtime !== 'node') skip('Exclusive tests for Node.js + TSX');
-if (isBuild) skip();
+if (GLOBAL.runtime !== 'node' || isBuild)
+  skip('Exclusive tests for Node.js + TSX');
 
 describe('Ensure module types', async () => {
   await it('CommonJS', async () => {

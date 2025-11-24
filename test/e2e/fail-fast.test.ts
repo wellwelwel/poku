@@ -1,10 +1,9 @@
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
-import { GLOBAL } from '../../src/configs/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 
-if (isBuild || GLOBAL.runtime === 'deno') skip();
+if (isBuild) skip();
 
 describe('Fail Fast', async () => {
   const results = await inspectPoku('', {
