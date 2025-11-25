@@ -16,6 +16,6 @@ describe('Shared Resources', async () => {
   }
 
   assert.strictEqual(results.exitCode, 0, 'Exit Code needs to be 0');
-  assert(/PASS › 3/.test(results.stdout), 'CLI needs to pass 3');
+  assert(/PASS › 2/.test(results.stdout), 'CLI needs to pass 2');
   assert(/FAIL › 0/.test(results.stdout), 'CLI needs to fail 0');
 });

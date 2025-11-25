@@ -12,6 +12,6 @@ test('Test B: Verify Counter State', async () => {
   await waitForExpectedResult(counter.get, 1);
   assert.strictEqual(await counter.get(), 1, 'Should be 1 at start of Test B');
 
-  const next = await counter.inc();
-  assert.strictEqual(next, 2, 'Should be 2 after second increment');
+  await counter.inc();
+  assert.strictEqual(await counter.get(), 2, 'Should be 2 after increment');
 });

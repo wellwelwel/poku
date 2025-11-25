@@ -50,6 +50,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       shell: false,
       env: {
         ...env,
+        POKU_TEST: '1',
         POKU_FILE: file,
         POKU_RUNTIME: env.POKU_RUNTIME,
         POKU_REPORTER: configs.reporter,

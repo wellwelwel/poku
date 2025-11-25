@@ -20,9 +20,12 @@ import type {
   SharedResource,
   SharedResourceEntry,
 } from '../../@types/shared-resources.js';
+import { readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 import process, { env } from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { findFile } from '../../parsers/find-file-from-stack.js';
+import { parseImports } from '../../parsers/imports.js';
 
 export const SHARED_RESOURCE_MESSAGE_TYPES = {
   REGISTER: 'shared_resources_register',
@@ -53,6 +56,9 @@ export const clearGlobalRegistry = () => {
   }
 };
 
+const regexFile = /:\d+(?::\d+)?$/;
+const regexStackNormalize = /at\s+.*?\s+\((.*?)\)/;
+
 export const shared = async <T>(
   context: ResourceContext<T>
 ): Promise<MethodsToRPC<T>> => {
@@ -79,7 +85,22 @@ export const shared = async <T>(
   // Child Process (Test)
   assertSharedResourcesActive();
 
-  const filePath = findFile(new Error('Shared Resource Registration'));
+  const error = new Error('Shared Resource Registration');
+
+  if (error.stack) {
+    const stackLines = error.stack.split('\n');
+    const filteredStack = stackLines.filter((line) => {
+      const isInternal =
+        line.includes('poku/src/') || line.includes('poku/lib/');
+      return !isInternal;
+    });
+
+    error.stack = filteredStack
+      .map((line) => line.replace(regexStackNormalize, 'at $1'))
+      .join('\n');
+  }
+
+  const filePath = findFile(error).replace(regexFile, '');
 
   process.send({
     type: SHARED_RESOURCE_MESSAGE_TYPES.REGISTER,
@@ -282,6 +303,42 @@ export const handleRegister = async (
   if (registry[message.name]) return;
 
   try {
+    const content = readFileSync(message.filePath, 'utf-8');
+    const imports = parseImports(content);
+    const dir = dirname(message.filePath);
+
+    for (const imp of imports) {
+      let targetUrl: string;
+
+      if (imp.module.startsWith('.')) {
+        const absolutePath = resolve(dir, imp.module);
+        targetUrl = pathToFileURL(absolutePath).href;
+      } else if (imp.module.startsWith('/')) {
+        targetUrl = pathToFileURL(imp.module).href;
+      } else {
+        targetUrl = imp.module;
+      }
+
+      try {
+        const module = await import(targetUrl);
+
+        for (const key in module) {
+          if (Object.prototype.hasOwnProperty.call(module, key)) {
+            const exported = module[key];
+            if (
+              exported &&
+              typeof exported === 'object' &&
+              exported.name === message.name &&
+              typeof exported.factory === 'function'
+            ) {
+              await shared(exported);
+              return;
+            }
+          }
+        }
+      } catch {}
+    }
+
     const fileUrl = pathToFileURL(message.filePath).href;
     const module = await import(fileUrl);
 
