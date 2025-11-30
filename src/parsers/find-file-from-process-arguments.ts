@@ -1,3 +1,5 @@
+import process from 'node:process';
+
 export function findFile(): string {
   if (!process.env.POKU_TEST) {
     throw new Error('findFile() can only be used within a test environment.');
