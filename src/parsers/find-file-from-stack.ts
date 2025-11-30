@@ -1,4 +1,4 @@
-const regex = /at\s(\/.*|file:.+)|^(\s+)at\smodule\scode\s\((\/.*|file:.+)\)/i;
+const regex = /at\s(\/.+|file:.+)|^(\s+)at\smodule\scode\s\((\/.+|file:.+)\)/i;
 
 export const findFile = (error: Error) => {
   const stackLines = error.stack?.split('\n') ?? [];

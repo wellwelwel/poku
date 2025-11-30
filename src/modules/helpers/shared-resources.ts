@@ -24,7 +24,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import process, { env } from 'node:process';
 import { pathToFileURL } from 'node:url';
-import { findFile } from '../../parsers/find-file-from-stack.js';
+import { findFile } from '../../parsers/find-file-from-process-arguments.js';
 import { parseImports } from '../../parsers/imports.js';
 
 export const SHARED_RESOURCE_MESSAGE_TYPES = {
@@ -45,7 +45,6 @@ export const assertSharedResourcesActive = () => {
   }
 };
 
-// Singleton registry
 export const globalRegistry: Record<string, SharedResourceEntry<unknown>> = {};
 
 export const clearGlobalRegistry = () => {
@@ -56,16 +55,13 @@ export const clearGlobalRegistry = () => {
   }
 };
 
-const regexFile = /:\d+(?::\d+)?$/;
-const regexStackNormalize = /at\s+.*?\s+\((.*?)\)/;
-
 export const shared = async <T>(
   context: ResourceContext<T>
 ): Promise<MethodsToRPC<T>> => {
   const { name } = context;
 
   // Parent Process (Host)
-  if (!process.send) {
+  if (!process.env.POKU_TEST) {
     if (globalRegistry[name]) {
       return globalRegistry[name].state as MethodsToRPC<T>;
     }
@@ -82,27 +78,12 @@ export const shared = async <T>(
     return state as MethodsToRPC<T>;
   }
 
+  const filePath = findFile();
+
   // Child Process (Test)
   assertSharedResourcesActive();
 
-  const error = new Error('Shared Resource Registration');
-
-  if (error.stack) {
-    const stackLines = error.stack.split('\n');
-    const filteredStack = stackLines.filter((line) => {
-      const isInternal =
-        line.includes('poku/src/') || line.includes('poku/lib/');
-      return !isInternal;
-    });
-
-    error.stack = filteredStack
-      .map((line) => line.replace(regexStackNormalize, 'at $1'))
-      .join('\n');
-  }
-
-  const filePath = findFile(error).replace(regexFile, '');
-
-  process.send({
+  process.send!({
     type: SHARED_RESOURCE_MESSAGE_TYPES.REGISTER,
     name,
     filePath,
@@ -115,14 +96,12 @@ let activeRequests = 0;
 
 const trackRequestStart = () => {
   activeRequests++;
-  // @ts-ignore
   process.channel?.ref?.();
 };
 
 const trackRequestEnd = () => {
   activeRequests--;
   if (activeRequests === 0) {
-    // @ts-ignore
     process.channel?.unref?.();
   }
 };
@@ -302,68 +281,38 @@ export const handleRegister = async (
 ) => {
   if (registry[message.name]) return;
 
-  try {
-    const content = readFileSync(message.filePath, 'utf-8');
-    const imports = parseImports(content);
-    const dir = dirname(message.filePath);
+  const content = readFileSync(message.filePath, 'utf-8');
+  const imports = parseImports(content);
+  const dir = dirname(message.filePath);
 
-    for (const imp of imports) {
-      let targetUrl: string;
+  for (const imp of imports) {
+    let targetUrl: string;
 
-      if (imp.module.startsWith('.')) {
-        const absolutePath = resolve(dir, imp.module);
-        targetUrl = pathToFileURL(absolutePath).href;
-      } else if (imp.module.startsWith('/')) {
-        targetUrl = pathToFileURL(imp.module).href;
-      } else {
-        targetUrl = imp.module;
-      }
-
-      try {
-        const module = await import(targetUrl);
-
-        for (const key in module) {
-          if (Object.prototype.hasOwnProperty.call(module, key)) {
-            const exported = module[key];
-            if (
-              exported &&
-              typeof exported === 'object' &&
-              exported.name === message.name &&
-              typeof exported.factory === 'function'
-            ) {
-              await shared(exported);
-              return;
-            }
-          }
-        }
-      } catch {}
+    if (imp.module.startsWith('.')) {
+      const absolutePath = resolve(dir, imp.module);
+      targetUrl = pathToFileURL(absolutePath).href;
+    } else if (imp.module.startsWith('/')) {
+      targetUrl = pathToFileURL(imp.module).href;
+    } else {
+      targetUrl = imp.module;
     }
 
-    const fileUrl = pathToFileURL(message.filePath).href;
-    const module = await import(fileUrl);
+    const module = await import(targetUrl);
 
-    // If the module didn't auto-register (side-effect), try to find the context export
-    if (!registry[message.name]) {
-      for (const key in module) {
-        if (Object.prototype.hasOwnProperty.call(module, key)) {
-          const exported = module[key];
-          if (
-            exported &&
-            typeof exported === 'object' &&
-            exported.name === message.name &&
-            typeof exported.factory === 'function'
-          ) {
-            await shared(exported);
-            break;
-          }
+    for (const key in module) {
+      if (Object.prototype.hasOwnProperty.call(module, key)) {
+        const exported = module[key];
+        if (
+          exported &&
+          typeof exported === 'object' &&
+          exported.name === message.name &&
+          typeof exported.factory === 'function'
+        ) {
+          await shared(exported);
+          return;
         }
       }
     }
-  } catch (error) {
-    console.error(
-      `Failed to register resource ${message.name} from ${message.filePath}:`,
-      error
-    );
   }
 };
 

@@ -1,5 +1,3 @@
-import { shared } from '../../../../src/modules/helpers/shared-resources.js';
-
 export const CounterContext = {
   name: 'shared-counter',
   factory: () => ({
@@ -13,5 +11,3 @@ export const CounterContext = {
     },
   }),
 };
-
-export const useCounter = () => shared(CounterContext);
