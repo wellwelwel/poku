@@ -1,12 +1,6 @@
 import process from 'node:process';
 
-export function findFile(verbose = false): string {
-  if (verbose) {
-    process.argv.forEach((val, index) => {
-      console.log(`${index}: ${val}`);
-    });
-  }
-
+export function findFile(): string {
   if (!process.env.POKU_TEST) {
     throw new Error('findFile() can only be used within a test environment.');
   }

@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { test } from '../../src/modules/helpers/test.js';
@@ -49,7 +50,6 @@ const testCases = [
 test('Assert: findFile() should correctly identify the test file path', () => {
   for (const { args, description } of testCases) {
     it(description, () => {
-      assert.doesNotThrow(() => findFile(true));
       const originalArgv = process.argv;
       process.argv = args;
       const testFilePath = findFile();
