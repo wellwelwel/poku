@@ -1,7 +1,11 @@
 import { join } from 'node:path';
 import { inspectPoku } from '../__utils__/capture-cli.test.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
+import { skip } from '../../src/modules/helpers/skip.js';
+
+if (GLOBAL.runtime === 'deno') skip();
 
 const finalPath = join('test', '__fixtures__', 'e2e', 'shared-resources');
 

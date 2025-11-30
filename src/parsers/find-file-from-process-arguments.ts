@@ -1,13 +1,17 @@
 import process from 'node:process';
 
-export function findFile(): string {
+export function findFile(verbose = false): string {
+  if (verbose) {
+    process.argv.forEach((val, index) => {
+      console.log(`${index}: ${val}`);
+    });
+  }
+
   if (!process.env.POKU_TEST) {
     throw new Error('findFile() can only be used within a test environment.');
   }
 
-  const possiblePaths = process.argv;
-
-  for (const path of possiblePaths) {
+  for (const path of process.argv) {
     if (path.endsWith('.test.ts') || path.endsWith('.test.js')) {
       return path;
     }

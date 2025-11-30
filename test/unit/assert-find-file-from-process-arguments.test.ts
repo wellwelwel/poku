@@ -1,4 +1,5 @@
 import { assert } from '../../src/modules/essentials/assert.js';
+import { it } from '../../src/modules/helpers/it/core.js';
 import { test } from '../../src/modules/helpers/test.js';
 import { findFile } from '../../src/parsers/find-file-from-process-arguments.js';
 
@@ -45,15 +46,17 @@ const testCases = [
   },
 ];
 
-for (const { description, args } of testCases) {
-  test(`Assert: findFile() should correctly identify the test file path - ${description}`, () => {
-    const originalArgv = process.argv;
-    process.argv = args;
+test('Assert: findFile() should correctly identify the test file path', () => {
+  for (const { args, description } of testCases) {
+    it(description, () => {
+      assert.doesNotThrow(() => findFile(true));
+      const originalArgv = process.argv;
+      process.argv = args;
+      const testFilePath = findFile();
 
-    const testFilePath = findFile();
+      assert.strictEqual(testFilePath, targetFilePath);
 
-    assert.strictEqual(testFilePath, targetFilePath);
-
-    process.argv = originalArgv;
-  });
-}
+      process.argv = originalArgv;
+    });
+  }
+});
