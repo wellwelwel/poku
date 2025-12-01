@@ -94,13 +94,15 @@ export const inspectPoku = (
           .join('')
       : './';
 
+  const newEnv = { ...(options?.env || env) };
+  newEnv.POKU_INSPECT = '1';
+  newEnv.POKU_TEST = undefined;
+  newEnv.POKU_RUNTIME = env.POKU_RUNTIME;
+
   return inspectCLI(`${cmd} ${basePath}${binFile} ${command}`, {
     ...options,
     shell: isWindows,
-    env: {
-      ...(options?.env || env),
-      POKU_RUNTIME: env.POKU_RUNTIME,
-    },
+    env: newEnv,
   });
 };
 
@@ -125,13 +127,15 @@ export const watchCLI = (
     ...command.split(' '),
   ];
 
+  const newEnv = { ...(options?.env || env) };
+  newEnv.POKU_INSPECT = '1';
+  newEnv.POKU_TEST = undefined;
+  newEnv.POKU_RUNTIME = env.POKU_RUNTIME;
+
   const childProcess = spawn(runtime, args, {
     ...options,
     shell: isWindows,
-    env: {
-      ...(options?.env || env),
-      POKU_RUNTIME: env.POKU_RUNTIME,
-    },
+    env: newEnv,
   });
 
   childProcess.stdout.setEncoding('utf8');
