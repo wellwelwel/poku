@@ -1,0 +1,14 @@
+[2025-11-30T20:45:05.005Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-b.test.ts
+[2025-11-30T20:45:05.006Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-a.test.ts
+[2025-11-30T20:45:14.755Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-b.test.ts
+[2025-11-30T20:45:14.755Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-a.test.ts
+[2025-11-30T20:59:14.747Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-a.test.ts
+[2025-11-30T20:59:14.747Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-b.test.ts
+[2025-11-30T20:59:46.792Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-a.test.ts
+[2025-11-30T20:59:46.791Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-b.test.ts
+[2025-11-30T20:59:56.641Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-b.test.ts
+[2025-11-30T20:59:56.641Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-a.test.ts
+[2025-11-30T21:00:20.074Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-a.test.ts
+[2025-11-30T21:00:20.075Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-b.test.ts
+[2025-11-30T21:01:06.406Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-b.test.ts
+[2025-11-30T21:01:06.406Z] /Users/viniciuslojhan/Development/OSS/poku/test/__fixtures__/e2e/shared-resources/test-a.test.ts
