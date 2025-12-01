@@ -388,15 +388,24 @@ export const handleRemoteProcedureCall = async (
 
 const functionToRPC = <T extends object, K extends MethodsOf<T>>(
   resource: T,
+  rpcs: MethodsOf<T>[],
   key: K,
   name: string
 ) => {
-  return async (...args: ArgumentsOf<T[K]>) => {
+  return async (...args: ArgumentsOf<T[K]>): Promise<ReturnTypeOf<T[K]>> => {
     const rpcResult = await remoteProcedureCall<T, K>(name, key, ...args);
     if (!rpcResult) {
       throw new Error(
         `Failed to call remote procedure ${String(key)} on resource ${name}`
       );
+    }
+
+    // if rpcResult.latest has keys to any rpc, we should remove it to avoid overwriting the function
+    for (const rpcKey of rpcs) {
+      if (rpcKey in rpcResult.latest) {
+        // inefficient, should be optimized later
+        delete rpcResult.latest[rpcKey];
+      }
     }
 
     Object.assign(resource, rpcResult.latest);
@@ -412,7 +421,9 @@ export const constructSharedResourceWithRPCs = <T extends SharedResource>(
   if (rpcs.length === 0) return resource as MethodsToRPC<T>;
 
   for (const key of rpcs)
-    Object.assign(resource, { [key]: functionToRPC(resource, key, name) });
+    Object.assign(resource, {
+      [key]: functionToRPC(resource, rpcs, key, name),
+    });
 
   return resource as MethodsToRPC<T>;
 };
