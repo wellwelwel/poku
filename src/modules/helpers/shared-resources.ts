@@ -83,7 +83,7 @@ export const shared = async <T>(
   // Child Process (Test)
   assertSharedResourcesActive();
 
-  process.send({
+  process.send!({
     type: SHARED_RESOURCE_MESSAGE_TYPES.REGISTER,
     name,
     filePath,
