@@ -2,8 +2,6 @@ FROM node:20-alpine
 
 WORKDIR /usr/app
 
-COPY . ./
-RUN ls -la
 COPY ./ci ./
 COPY ./test/__fixtures__/e2e/server/package.json ./test/__fixtures__/e2e/server/package.json
 
