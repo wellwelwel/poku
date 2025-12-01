@@ -61,7 +61,7 @@ export const shared = async <T>(
   const { name } = context;
 
   // Parent Process (Host)
-  if (process.env.POKU_TEST !== '1') {
+  if (process.env.POKU_TEST !== '1' && !process.send) {
     if (globalRegistry[name]) {
       return globalRegistry[name].state as MethodsToRPC<T>;
     }
@@ -83,7 +83,7 @@ export const shared = async <T>(
   // Child Process (Test)
   assertSharedResourcesActive();
 
-  process.send!({
+  process.send({
     type: SHARED_RESOURCE_MESSAGE_TYPES.REGISTER,
     name,
     filePath,
