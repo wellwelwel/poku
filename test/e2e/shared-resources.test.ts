@@ -1,4 +1,5 @@
 import { join } from 'node:path';
+import process from 'node:process';
 import { inspectPoku } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
@@ -6,6 +7,7 @@ import { describe } from '../../src/modules/helpers/describe.js';
 const finalPath = join('test', '__fixtures__', 'e2e', 'shared-resources');
 
 describe('Shared Resources', async () => {
+  process.env.POKU_TEST = '0'; // Simulate Host Process
   const results = await inspectPoku('--debug --sharedResources', {
     cwd: finalPath,
   });

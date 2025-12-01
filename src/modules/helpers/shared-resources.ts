@@ -61,7 +61,7 @@ export const shared = async <T>(
   const { name } = context;
 
   // Parent Process (Host)
-  if (!process.env.POKU_TEST) {
+  if (process.env.POKU_TEST !== '1') {
     if (globalRegistry[name]) {
       return globalRegistry[name].state as MethodsToRPC<T>;
     }

@@ -1,7 +1,7 @@
 import process from 'node:process';
 
 export function findFile(): string {
-  if (!process.env.POKU_TEST) {
+  if (process.env.POKU_TEST !== '1') {
     throw new Error('findFile() can only be used within a test environment.');
   }
 
@@ -12,6 +12,6 @@ export function findFile(): string {
   }
 
   throw new Error(
-    'Could not determine the test file path from process arguments.'
+    `Could not find test file in process arguments: \n${process.argv.join('\n')}`
   );
 }
