@@ -14,21 +14,15 @@ export type ResourceContext<T> = {
 
 export interface SharedResourceEntry<T = unknown> {
   state: T;
-  subscribers: Set<(state: T) => void>;
   cleanup?: (instance: T) => void | Promise<void>;
 }
 
 export type SharedResource = Record<string, unknown>;
 
-export type IPCRegisterMessage = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REGISTER;
+export type IPCRequestResourceMessage = {
+  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REQUEST_RESOURCE;
   name: string;
   filePath: string;
-};
-
-export type IPCGetMessage = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE;
-  name: string;
   id: string;
 };
 
@@ -41,30 +35,13 @@ export type IPCRemoteProcedureCallMessage = {
 };
 
 export type IPCMessage =
-  | IPCRegisterMessage
-  | IPCGetMessage
+  | IPCRequestResourceMessage
   | IPCRemoteProcedureCallMessage;
-
-export type IPCResourceNotFoundMessage = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND;
-  name: string;
-};
 
 export type IPCResourceResultMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT;
   name: string;
   id: string;
-  value: T;
-  rpcs: MethodsOf<T>[];
-};
-
-export type IPCListenable<T> =
-  | IPCResourceResultMessage<T>
-  | IPCResourceUpdatedMessage<T>;
-
-export type IPCResourceUpdatedMessage<T = unknown> = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED;
-  name: string;
   value: T;
   rpcs: MethodsOf<T>[];
 };
@@ -78,7 +55,6 @@ export type IPCRemoteProcedureCallResultMessage<T = unknown> = {
 
 export type IPCResponse =
   | IPCResourceResultMessage
-  | IPCResourceUpdatedMessage
   | IPCRemoteProcedureCallResultMessage;
 
 export type RPCResult<TResult, TResource> = {
