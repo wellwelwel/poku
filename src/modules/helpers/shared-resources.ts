@@ -24,7 +24,6 @@ import process, { env } from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { findFile } from '../../parsers/find-file-from-process-arguments.js';
 import { parseImports } from '../../parsers/imports.js';
-import { isWindows } from '../../parsers/os.js';
 import { ResourceRegistry } from './resource-registry.js';
 
 export const SHARED_RESOURCE_MESSAGE_TYPES = {
@@ -275,9 +274,15 @@ export const loadResourceFromFile = async (
 
     if (imp.module.startsWith('.')) {
       const absolutePath = resolve(dir, imp.module);
-      targetUrl = isWindows ? pathToFileURL(absolutePath).href : absolutePath;
+      targetUrl =
+        process.platform === 'win32'
+          ? pathToFileURL(absolutePath).href
+          : absolutePath;
     } else if (isAbsolute(imp.module)) {
-      targetUrl = isWindows ? pathToFileURL(imp.module).href : imp.module;
+      targetUrl =
+        process.platform === 'win32'
+          ? pathToFileURL(imp.module).href
+          : imp.module;
     } else {
       targetUrl = imp.module;
     }
