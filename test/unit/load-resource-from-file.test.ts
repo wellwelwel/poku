@@ -1,4 +1,5 @@
 import type { readFile } from 'node:fs/promises';
+import { isAbsolute } from 'node:path';
 import { assert } from '../../src/modules/essentials/assert.js';
 import {
   clearGlobalRegistry,
@@ -69,7 +70,7 @@ test('loadResourceFromFile', async () => {
 
     // It should be an absolute path
     assert.ok(
-      importedUrl.startsWith('/'),
+      isAbsolute(importedUrl),
       `Expected URL to be an absolute path, got: ${importedUrl}`
     );
   });
