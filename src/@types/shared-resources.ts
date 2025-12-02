@@ -1,4 +1,4 @@
-import type { Serializable } from 'node:child_process';
+import type { ChildProcess, Serializable } from 'node:child_process';
 import type EventEmitter from 'node:events';
 import type { SHARED_RESOURCE_MESSAGE_TYPES } from '../modules/helpers/shared-resources.js';
 
@@ -26,6 +26,12 @@ export type IPCRequestResourceMessage = {
   id: string;
 };
 
+export type MessageHandler = (
+  message: IPCMessage,
+  registry: Record<string, SharedResourceEntry<unknown>>,
+  child: IPCEventEmitter | ChildProcess
+) => Promise<void>;
+
 export type IPCRemoteProcedureCallMessage = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL;
   name: string;
@@ -37,6 +43,14 @@ export type IPCRemoteProcedureCallMessage = {
 export type IPCMessage =
   | IPCRequestResourceMessage
   | IPCRemoteProcedureCallMessage;
+
+export type SendIPCMessageOptions<TResponse> = {
+  message: { id: string; [key: string]: unknown };
+  validator: (response: unknown) => response is TResponse;
+  timeout?: number;
+  emitter?: EventEmitter | IPCEventEmitter | ChildProcess;
+  sender?: (message: unknown) => void;
+};
 
 export type IPCResourceResultMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT;
