@@ -55,13 +55,15 @@ export const clearGlobalRegistry = () => {
   }
 };
 
+let isRegistering = false;
+
 export const shared = async <T>(
   context: ResourceContext<T>
 ): Promise<MethodsToRPC<T>> => {
   const { name } = context;
 
   // Parent Process (Host)
-  if (!process.send) {
+  if (!process.send || isRegistering) {
     if (globalRegistry[name]) {
       return globalRegistry[name].state as MethodsToRPC<T>;
     }
@@ -170,6 +172,7 @@ const getRemoteResource = <
 
     const handleResponseWrapper = (message: TResult) => {
       handleResponse(message, (value) => {
+        process.off('message', handleResponseWrapper);
         resolve(value);
         trackRequestEnd();
       });
@@ -281,38 +284,44 @@ export const handleRegister = async (
 ) => {
   if (registry[message.name]) return;
 
-  const content = readFileSync(message.filePath, 'utf-8');
-  const imports = parseImports(content);
-  const dir = dirname(message.filePath);
+  isRegistering = true;
 
-  for (const imp of imports) {
-    let targetUrl: string;
+  try {
+    const content = readFileSync(message.filePath, 'utf-8');
+    const imports = parseImports(content);
+    const dir = dirname(message.filePath);
 
-    if (imp.module.startsWith('.')) {
-      const absolutePath = resolve(dir, imp.module);
-      targetUrl = pathToFileURL(absolutePath).href;
-    } else if (imp.module.startsWith('/')) {
-      targetUrl = pathToFileURL(imp.module).href;
-    } else {
-      targetUrl = imp.module;
-    }
+    for (const imp of imports) {
+      let targetUrl: string;
 
-    const module = await import(targetUrl);
+      if (imp.module.startsWith('.')) {
+        const absolutePath = resolve(dir, imp.module);
+        targetUrl = pathToFileURL(absolutePath).href;
+      } else if (imp.module.startsWith('/')) {
+        targetUrl = pathToFileURL(imp.module).href;
+      } else {
+        targetUrl = imp.module;
+      }
 
-    for (const key in module) {
-      if (Object.prototype.hasOwnProperty.call(module, key)) {
-        const exported = module[key];
-        if (
-          exported &&
-          typeof exported === 'object' &&
-          exported.name === message.name &&
-          typeof exported.factory === 'function'
-        ) {
-          await shared(exported);
-          return;
+      const module = await import(targetUrl);
+
+      for (const key in module) {
+        if (Object.prototype.hasOwnProperty.call(module, key)) {
+          const exported = module[key];
+          if (
+            exported &&
+            typeof exported === 'object' &&
+            exported.name === message.name &&
+            typeof exported.factory === 'function'
+          ) {
+            await shared(exported);
+            return;
+          }
         }
       }
     }
+  } finally {
+    isRegistering = false;
   }
 };
 
@@ -361,29 +370,58 @@ export const handleRemoteProcedureCall = async (
   child: IPCEventEmitter | ChildProcess
 ) => {
   const entry = registry[message.name];
-  if (!entry) return;
+  if (!entry) {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      error: `Resource "${message.name}" not found`,
+    } satisfies IPCResponse);
+    return;
+  }
 
   const methodKey = message.method as MethodsOf<typeof entry.state>;
-  if (!methodKey) return;
+  if (!methodKey) {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      error: 'Method name is missing',
+    } satisfies IPCResponse);
+    return;
+  }
 
   const methodCandidate = (entry.state as Record<string, unknown>)[
     methodKey as string
   ];
-  if (typeof methodCandidate !== 'function') return;
+  if (typeof methodCandidate !== 'function') {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      error: `Method "${String(methodKey)}" not found on resource "${message.name}"`,
+    } satisfies IPCResponse);
+    return;
+  }
 
-  const method = methodCandidate.bind(entry.state);
-  const result = await method(...(message.args || []));
+  try {
+    const method = methodCandidate.bind(entry.state);
+    const result = await method(...(message.args || []));
 
-  for (const subscriber of entry.subscribers) subscriber(entry.state);
+    for (const subscriber of entry.subscribers) subscriber(entry.state);
 
-  child.send({
-    type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
-    id: message.id,
-    value: {
-      result,
-      latest: entry.state,
-    },
-  } satisfies IPCResponse);
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      value: {
+        result,
+        latest: entry.state,
+      },
+    } satisfies IPCResponse);
+  } catch (error) {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      error: error instanceof Error ? error.message : String(error),
+    } satisfies IPCResponse);
+  }
 };
 
 const functionToRPC = <T extends object, K extends MethodsOf<T>>(
