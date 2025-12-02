@@ -19,7 +19,6 @@ import type {
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import process, { env } from 'node:process';
-import { pathToFileURL } from 'node:url';
 import { findFile } from '../../parsers/find-file-from-process-arguments.js';
 import { parseImports } from '../../parsers/imports.js';
 
@@ -245,9 +244,9 @@ export const handleRequestResource = async (
 
         if (imp.module.startsWith('.')) {
           const absolutePath = resolve(dir, imp.module);
-          targetUrl = pathToFileURL(absolutePath).href;
+          targetUrl = absolutePath;
         } else if (imp.module.startsWith('/')) {
-          targetUrl = pathToFileURL(imp.module).href;
+          targetUrl = imp.module;
         } else {
           targetUrl = imp.module;
         }
@@ -269,8 +268,6 @@ export const handleRequestResource = async (
           }
         }
       }
-    } catch {
-      //
     } finally {
       isRegistering = false;
     }
