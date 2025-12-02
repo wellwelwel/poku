@@ -19,10 +19,12 @@ import type {
   SharedResourceEntry,
 } from '../../@types/shared-resources.js';
 import { readFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { dirname, isAbsolute, resolve } from 'node:path';
 import process, { env } from 'node:process';
+import { pathToFileURL } from 'node:url';
 import { findFile } from '../../parsers/find-file-from-process-arguments.js';
 import { parseImports } from '../../parsers/imports.js';
+import { isWindows } from '../../parsers/os.js';
 import { ResourceRegistry } from './resource-registry.js';
 
 export const SHARED_RESOURCE_MESSAGE_TYPES = {
@@ -42,6 +44,7 @@ export const assertSharedResourcesActive = () => {
 
 const resourceRegistry = new ResourceRegistry<SharedResourceEntry<unknown>>();
 export const globalRegistry = resourceRegistry.getRegistry();
+export const clearGlobalRegistry = () => resourceRegistry.clear();
 
 export const shared = async <T>(
   context: ResourceContext<T>
@@ -252,9 +255,18 @@ export const setupSharedResourceIPC = (
 
 export const loadResourceFromFile = async (
   name: string,
-  filePath: string
+  filePath: string,
+  deps: {
+    readFile?: typeof readFile;
+    importer?: (url: string) => Promise<unknown>;
+  } = {}
 ): Promise<void> => {
-  const content = await readFile(filePath, 'utf-8');
+  const {
+    readFile: readFileFn = readFile,
+    importer = (url: string) => import(url),
+  } = deps;
+
+  const content = await readFileFn(filePath, 'utf-8');
   const imports = parseImports(content);
   const dir = dirname(filePath);
 
@@ -263,25 +275,25 @@ export const loadResourceFromFile = async (
 
     if (imp.module.startsWith('.')) {
       const absolutePath = resolve(dir, imp.module);
-      targetUrl = absolutePath;
-    } else if (imp.module.startsWith('/')) {
-      targetUrl = imp.module;
+      targetUrl = isWindows ? pathToFileURL(absolutePath).href : absolutePath;
+    } else if (isAbsolute(imp.module)) {
+      targetUrl = isWindows ? pathToFileURL(imp.module).href : imp.module;
     } else {
       targetUrl = imp.module;
     }
 
-    const module = await import(targetUrl);
+    const module = (await importer(targetUrl)) as Record<string, unknown>;
 
     for (const key in module) {
       if (Object.prototype.hasOwnProperty.call(module, key)) {
-        const exported = module[key];
+        const exported = module[key] as { name?: unknown; factory?: unknown };
         if (
           exported &&
           typeof exported === 'object' &&
           exported.name === name &&
           typeof exported.factory === 'function'
         ) {
-          await shared(exported);
+          await shared(exported as unknown as ResourceContext<unknown>);
           break;
         }
       }
