@@ -258,11 +258,13 @@ export const loadResourceFromFile = async (
   deps: {
     readFile?: typeof readFile;
     importer?: (url: string) => Promise<unknown>;
+    platform?: string;
   } = {}
 ): Promise<void> => {
   const {
     readFile: readFileFn = readFile,
     importer = (url: string) => import(url),
+    platform = process.platform,
   } = deps;
 
   const content = await readFileFn(filePath, 'utf-8');
@@ -275,14 +277,10 @@ export const loadResourceFromFile = async (
     if (imp.module.startsWith('.')) {
       const absolutePath = resolve(dir, imp.module);
       targetUrl =
-        process.platform === 'win32'
-          ? pathToFileURL(absolutePath).href
-          : absolutePath;
+        platform === 'win32' ? pathToFileURL(absolutePath).href : absolutePath;
     } else if (isAbsolute(imp.module)) {
       targetUrl =
-        process.platform === 'win32'
-          ? pathToFileURL(imp.module).href
-          : imp.module;
+        platform === 'win32' ? pathToFileURL(imp.module).href : imp.module;
     } else {
       targetUrl = imp.module;
     }

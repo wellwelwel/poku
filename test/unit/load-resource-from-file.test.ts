@@ -6,23 +6,8 @@ import {
 } from '../../src/modules/helpers/shared-resources.js';
 import { test } from '../../src/modules/helpers/test.js';
 
-const originalPlatform = process.platform;
-
-const mockPlatform = (platform: string) => {
-  Object.defineProperty(process, 'platform', {
-    value: platform,
-  });
-};
-
-const restorePlatform = () => {
-  Object.defineProperty(process, 'platform', {
-    value: originalPlatform,
-  });
-};
-
 test('loadResourceFromFile', async () => {
   await test('should use file:// URL on Windows', async () => {
-    mockPlatform('win32');
     clearGlobalRegistry();
 
     const mockReadFile = async () =>
@@ -42,9 +27,8 @@ test('loadResourceFromFile', async () => {
     await loadResourceFromFile('test-resource-win', '/abs/path/to/file.ts', {
       readFile: mockReadFile as unknown as typeof readFile,
       importer: mockImporter,
+      platform: 'win32',
     });
-
-    restorePlatform();
 
     assert.ok(
       importedUrl.startsWith('file://'),
@@ -53,7 +37,6 @@ test('loadResourceFromFile', async () => {
   });
 
   await test('should use raw path on Linux/others', async () => {
-    mockPlatform('linux');
     clearGlobalRegistry();
 
     const mockReadFile = async () =>
@@ -76,9 +59,8 @@ test('loadResourceFromFile', async () => {
     await loadResourceFromFile('test-resource-linux', '/abs/path/to/file.ts', {
       readFile: mockReadFile as unknown as typeof readFile,
       importer: mockImporter,
+      platform: 'linux',
     });
-
-    restorePlatform();
 
     assert.ok(
       !importedUrl.startsWith('file://'),
