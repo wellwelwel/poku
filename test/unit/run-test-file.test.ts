@@ -11,8 +11,7 @@ describe('Service: runTestFile', async () => {
   await Promise.all([
     it(async () => {
       const code = await runTestFile(
-        `test/__fixtures__/e2e/fail/exit.test.${ext}`,
-        {}
+        `test/__fixtures__/e2e/fail/exit.test.${ext}`
       );
 
       assert.deepStrictEqual(code, false, 'Failure test file case');
@@ -20,8 +19,7 @@ describe('Service: runTestFile', async () => {
 
     it(async () => {
       const code = await runTestFile(
-        `test/__fixtures__/e2e/success/exit.test.${ext}`,
-        {}
+        `test/__fixtures__/e2e/success/exit.test.${ext}`
       );
 
       assert.deepStrictEqual(code, true, 'Success test file case');
