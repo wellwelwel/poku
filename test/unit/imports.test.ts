@@ -173,4 +173,28 @@ describe('parseImports', () => {
       },
     ]);
   });
+
+  it('should parse imports with extra spaces', () => {
+    const code = `import    {    x    }    from    "n";`;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      {
+        module: 'n',
+        members: [{ name: 'x', alias: 'x', type: 'named' }],
+        kind: 'esm',
+      },
+    ]);
+  });
+
+  it('should parse require with extra spaces', () => {
+    const code = `const    {    x    }    =    require("o");`;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      {
+        module: 'o',
+        members: [{ name: 'x', alias: 'x', type: 'named' }],
+        kind: 'cjs',
+      },
+    ]);
+  });
 });
