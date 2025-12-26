@@ -1,22 +1,9 @@
-export interface ImportMember {
-  name: string;
-  alias: string;
-  type: 'default' | 'named' | 'namespace';
-}
-
-export interface ImportDefinition {
-  module: string;
-  members: ImportMember[];
-  kind: 'esm' | 'cjs' | 'dynamic';
-}
-
-type TokenType = 'keyword' | 'identifier' | 'string' | 'punctuation';
-
-interface Token {
-  type: TokenType;
-  value: string;
-  index: number;
-}
+import type {
+  ImportDefinition,
+  ImportMember,
+  RequireDefinition,
+  Token,
+} from '../@types/shared-resources.js';
 
 const keywords = new Set([
   'import',
@@ -274,7 +261,7 @@ const sortMembers = (members: ImportMember[]) => {
 const processCJSRequire = (
   tokens: Token[],
   index: number
-): { result?: ImportDefinition; newIndex: number } => {
+): RequireDefinition => {
   if (
     index + 2 < tokens.length &&
     tokens[index + 1].value === '(' &&

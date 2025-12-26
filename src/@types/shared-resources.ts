@@ -109,3 +109,28 @@ export type Cleanup<T = SharedResourceEntry> = (
 ) => void | Promise<void>;
 
 export type Registry = Record<string, SharedResourceEntry>;
+
+export type ImportMember = {
+  name: string;
+  alias: string;
+  type: 'default' | 'named' | 'namespace';
+};
+
+export type ImportDefinition = {
+  module: string;
+  members: ImportMember[];
+  kind: 'esm' | 'cjs' | 'dynamic';
+};
+
+export type RequireDefinition = {
+  result?: ImportDefinition;
+  newIndex: number;
+};
+
+export type TokenType = 'keyword' | 'identifier' | 'string' | 'punctuation';
+
+export type Token = {
+  type: TokenType;
+  value: string;
+  index: number;
+};
