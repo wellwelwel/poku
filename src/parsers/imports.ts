@@ -33,7 +33,7 @@ const identifierStartRegex = /[a-zA-Z_$]/;
 const identifierPartRegex = /[a-zA-Z0-9_$]/;
 const punctuationRegex = /[{}(),=*:]/;
 
-function tokenize(input: string): Token[] {
+const tokenize = (input: string): Token[] => {
   const tokens: Token[] = [];
   let current = 0;
 
@@ -89,9 +89,9 @@ function tokenize(input: string): Token[] {
     current++;
   }
   return tokens;
-}
+};
 
-function parseImportClause(tokens: Token[]): ImportMember[] {
+const parseImportClause = (tokens: Token[]): ImportMember[] => {
   const members: ImportMember[] = [];
   let i = 0;
 
@@ -160,9 +160,9 @@ function parseImportClause(tokens: Token[]): ImportMember[] {
     i++;
   }
   return members;
-}
+};
 
-function parseDestructuring(tokens: Token[]): ImportMember[] {
+const parseDestructuring = (tokens: Token[]): ImportMember[] => {
   const members: ImportMember[] = [];
 
   if (tokens.length === 0) return members;
@@ -205,12 +205,12 @@ function parseDestructuring(tokens: Token[]): ImportMember[] {
   }
 
   return members;
-}
+};
 
-function processESMImport(
+const processESMImport = (
   tokens: Token[],
   index: number
-): { result?: ImportDefinition; newIndex: number } {
+): { result?: ImportDefinition; newIndex: number } => {
   if (index + 1 < tokens.length && tokens[index + 1].value === '(') {
     if (index + 2 < tokens.length && tokens[index + 2].type === 'string') {
       return {
@@ -264,12 +264,17 @@ function processESMImport(
   }
 
   return { newIndex: index };
-}
+};
 
-function processCJSRequire(
+const sortMembers = (members: ImportMember[]) => {
+  const order = { named: 0, namespace: 1, default: 2 };
+  return members.sort((a, b) => order[a.type] - order[b.type]);
+};
+
+const processCJSRequire = (
   tokens: Token[],
   index: number
-): { result?: ImportDefinition; newIndex: number } {
+): { result?: ImportDefinition; newIndex: number } => {
   if (
     index + 2 < tokens.length &&
     tokens[index + 1].value === '(' &&
@@ -304,9 +309,9 @@ function processCJSRequire(
     };
   }
   return { newIndex: index };
-}
+};
 
-export function parseImports(content: string): ImportDefinition[] {
+export const parseImports = (content: string): ImportDefinition[] => {
   const tokens = tokenize(content);
   const results: ImportDefinition[] = [];
 
@@ -335,9 +340,4 @@ export function parseImports(content: string): ImportDefinition[] {
   }
 
   return results;
-}
-
-function sortMembers(members: ImportMember[]) {
-  const order = { named: 0, namespace: 1, default: 2 };
-  return members.sort((a, b) => order[a.type] - order[b.type]);
-}
+};

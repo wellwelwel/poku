@@ -36,6 +36,7 @@ export const runTests = async (files: string[]): Promise<boolean> => {
           if (entry.cleanup) await entry.cleanup(entry.state);
         }
       }
+
       resolve(passed);
     };
   });
