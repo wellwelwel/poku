@@ -36,17 +36,18 @@ const tokenize = (input: string): Token[] => {
       let value = '';
       const quote = char;
       const start = current;
+
       current++;
 
       while (current < input.length && input[current] !== quote) {
         if (input[current] === '\\') {
           current++;
           if (current < input.length) value += input[current];
-        } else {
-          value += input[current];
-        }
+        } else value += input[current];
+
         current++;
       }
+
       current++;
       tokens.push({ type: 'string', value, index: start });
       continue;
@@ -55,6 +56,7 @@ const tokenize = (input: string): Token[] => {
     if (identifierStartRegex.test(char)) {
       let value = '';
       const start = current;
+
       while (
         current < input.length &&
         identifierPartRegex.test(input[current])
@@ -62,7 +64,9 @@ const tokenize = (input: string): Token[] => {
         value += input[current];
         current++;
       }
+
       const type = keywords.has(value) ? 'keyword' : 'identifier';
+
       tokens.push({ type, value, index: start });
       continue;
     }
@@ -75,6 +79,7 @@ const tokenize = (input: string): Token[] => {
 
     current++;
   }
+
   return tokens;
 };
 
@@ -97,15 +102,16 @@ const parseImportClause = (tokens: Token[]): ImportMember[] => {
           alias: tokens[i + 2].value,
           type: 'namespace',
         });
+
         i += 3;
-      } else {
-        i++;
-      }
+      } else i++;
+
       continue;
     }
 
     if (token.value === '{') {
       i++;
+
       while (i < tokens.length && tokens[i].value !== '}') {
         if (tokens[i].value === ',') {
           i++;
@@ -114,10 +120,12 @@ const parseImportClause = (tokens: Token[]): ImportMember[] => {
 
         const name = tokens[i].value;
         let alias = name;
+
         i++;
 
         if (i < tokens.length && tokens[i].value === 'as') {
           i++;
+
           if (i < tokens.length) {
             alias = tokens[i].value;
             i++;
@@ -130,6 +138,7 @@ const parseImportClause = (tokens: Token[]): ImportMember[] => {
           type: 'named',
         });
       }
+
       i++;
       continue;
     }
@@ -140,12 +149,14 @@ const parseImportClause = (tokens: Token[]): ImportMember[] => {
         alias: token.value,
         type: 'default',
       });
+
       i++;
       continue;
     }
 
     i++;
   }
+
   return members;
 };
 
@@ -153,9 +164,9 @@ const parseDestructuring = (tokens: Token[]): ImportMember[] => {
   const members: ImportMember[] = [];
 
   if (tokens.length === 0) return members;
-
   if (tokens[0].value === '{') {
     let i = 1;
+
     while (i < tokens.length && tokens[i].value !== '}') {
       if (tokens[i].value === ',') {
         i++;
@@ -164,10 +175,12 @@ const parseDestructuring = (tokens: Token[]): ImportMember[] => {
 
       const name = tokens[i].value;
       let alias = name;
+
       i++;
 
       if (i < tokens.length && tokens[i].value === ':') {
         i++;
+
         if (i < tokens.length) {
           alias = tokens[i].value;
           i++;
@@ -183,13 +196,12 @@ const parseDestructuring = (tokens: Token[]): ImportMember[] => {
   } else if (
     tokens.length === 1 &&
     (tokens[0].type === 'identifier' || tokens[0].type === 'keyword')
-  ) {
+  )
     members.push({
       name: 'default',
       alias: tokens[0].value,
       type: 'default',
     });
-  }
 
   return members;
 };
@@ -209,6 +221,7 @@ const processESMImport = (
         newIndex: index,
       };
     }
+
     return { newIndex: index };
   }
 
@@ -224,6 +237,7 @@ const processESMImport = (
   }
 
   let fromIndex = -1;
+
   for (let j = index + 1; j < tokens.length; j++) {
     if (tokens[j].value === 'from' && tokens[j].type === 'keyword') {
       fromIndex = j;
@@ -240,6 +254,7 @@ const processESMImport = (
     const module = tokens[fromIndex + 1].value;
     const clauseTokens = tokens.slice(index + 1, fromIndex);
     const members = parseImportClause(clauseTokens);
+
     return {
       result: {
         module,
@@ -254,7 +269,12 @@ const processESMImport = (
 };
 
 const sortMembers = (members: ImportMember[]) => {
-  const order = { named: 0, namespace: 1, default: 2 };
+  const order = {
+    named: 0,
+    namespace: 1,
+    default: 2,
+  };
+
   return members.sort((a, b) => order[a.type] - order[b.type]);
 };
 
@@ -272,11 +292,13 @@ const processCJSRequire = (
 
     if (index > 0 && tokens[index - 1].value === '=') {
       let declIndex = -1;
+
       for (let j = index - 2; j >= 0; j--) {
         if (['const', 'let', 'var'].includes(tokens[j].value)) {
           declIndex = j;
           break;
         }
+
         if (tokens[j].value === ';') break;
       }
 
@@ -295,6 +317,7 @@ const processCJSRequire = (
       newIndex: index,
     };
   }
+
   return { newIndex: index };
 };
 
@@ -307,22 +330,16 @@ export const parseImports = (content: string): ImportDefinition[] => {
 
     if (token.type === 'keyword' && token.value === 'import') {
       const { result, newIndex } = processESMImport(tokens, i);
-      if (result) {
-        results.push(result);
-      }
-      if (newIndex > i) {
-        i = newIndex;
-      }
+
+      if (result) results.push(result);
+      if (newIndex > i) i = newIndex;
     }
 
     if (token.type === 'keyword' && token.value === 'require') {
       const { result, newIndex } = processCJSRequire(tokens, i);
-      if (result) {
-        results.push(result);
-      }
-      if (newIndex > i) {
-        i = newIndex;
-      }
+
+      if (result) results.push(result);
+      if (newIndex > i) i = newIndex;
     }
   }
 
