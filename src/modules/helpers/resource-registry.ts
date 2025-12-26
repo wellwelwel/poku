@@ -1,5 +1,5 @@
 export class ResourceRegistry<T> {
-  private registry: Record<string, T> = {};
+  private registry: Record<string, T> = Object.create(null);
   private isRegistering = false;
 
   register(name: string, entry: T) {

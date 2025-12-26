@@ -259,7 +259,7 @@ export const loadResourceFromFile = async (
     readFile?: typeof readFile;
     importer?: (url: string) => Promise<unknown>;
     platform?: string;
-  } = {}
+  } = Object.create(null)
 ): Promise<void> => {
   const {
     readFile: readFileFn = readFile,

@@ -45,11 +45,10 @@ test('ResourceRegistry', () => {
 
   test('should return the entire registry', () => {
     const reg = registry.getRegistry();
-    assert.deepStrictEqual(
-      reg,
-      { 'test-resource': 'test-value' },
-      'Registry object returned'
-    );
+    const expected = Object.create(null);
+    expected['test-resource'] = 'test-value';
+
+    assert.deepStrictEqual(reg, expected, 'Registry object returned');
   });
 
   test('should clear the registry', () => {
@@ -61,7 +60,7 @@ test('ResourceRegistry', () => {
     );
     assert.deepStrictEqual(
       registry.getRegistry(),
-      {},
+      Object.create(null),
       'Registry object is empty'
     );
   });
