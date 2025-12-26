@@ -85,50 +85,53 @@ const tokenize = (input: string): Token[] => {
 
 const parseImportClause = (tokens: Token[]): ImportMember[] => {
   const members: ImportMember[] = [];
-  let i = 0;
+  let tokenIndex = 0;
 
-  while (i < tokens.length) {
-    const token = tokens[i];
+  while (tokenIndex < tokens.length) {
+    const token = tokens[tokenIndex];
 
     if (token.value === ',') {
-      i++;
+      tokenIndex++;
       continue;
     }
 
     if (token.value === '*') {
-      if (i + 2 < tokens.length && tokens[i + 1].value === 'as') {
+      if (
+        tokenIndex + 2 < tokens.length &&
+        tokens[tokenIndex + 1].value === 'as'
+      ) {
         members.push({
           name: '*',
-          alias: tokens[i + 2].value,
+          alias: tokens[tokenIndex + 2].value,
           type: 'namespace',
         });
 
-        i += 3;
-      } else i++;
+        tokenIndex += 3;
+      } else tokenIndex++;
 
       continue;
     }
 
     if (token.value === '{') {
-      i++;
+      tokenIndex++;
 
-      while (i < tokens.length && tokens[i].value !== '}') {
-        if (tokens[i].value === ',') {
-          i++;
+      while (tokenIndex < tokens.length && tokens[tokenIndex].value !== '}') {
+        if (tokens[tokenIndex].value === ',') {
+          tokenIndex++;
           continue;
         }
 
-        const name = tokens[i].value;
+        const name = tokens[tokenIndex].value;
         let alias = name;
 
-        i++;
+        tokenIndex++;
 
-        if (i < tokens.length && tokens[i].value === 'as') {
-          i++;
+        if (tokenIndex < tokens.length && tokens[tokenIndex].value === 'as') {
+          tokenIndex++;
 
-          if (i < tokens.length) {
-            alias = tokens[i].value;
-            i++;
+          if (tokenIndex < tokens.length) {
+            alias = tokens[tokenIndex].value;
+            tokenIndex++;
           }
         }
 
@@ -139,7 +142,7 @@ const parseImportClause = (tokens: Token[]): ImportMember[] => {
         });
       }
 
-      i++;
+      tokenIndex++;
       continue;
     }
 
@@ -150,11 +153,11 @@ const parseImportClause = (tokens: Token[]): ImportMember[] => {
         type: 'default',
       });
 
-      i++;
+      tokenIndex++;
       continue;
     }
 
-    i++;
+    tokenIndex++;
   }
 
   return members;
@@ -165,25 +168,25 @@ const parseDestructuring = (tokens: Token[]): ImportMember[] => {
 
   if (tokens.length === 0) return members;
   if (tokens[0].value === '{') {
-    let i = 1;
+    let tokenIndex = 1;
 
-    while (i < tokens.length && tokens[i].value !== '}') {
-      if (tokens[i].value === ',') {
-        i++;
+    while (tokenIndex < tokens.length && tokens[tokenIndex].value !== '}') {
+      if (tokens[tokenIndex].value === ',') {
+        tokenIndex++;
         continue;
       }
 
-      const name = tokens[i].value;
+      const name = tokens[tokenIndex].value;
       let alias = name;
 
-      i++;
+      tokenIndex++;
 
-      if (i < tokens.length && tokens[i].value === ':') {
-        i++;
+      if (tokenIndex < tokens.length && tokens[tokenIndex].value === ':') {
+        tokenIndex++;
 
-        if (i < tokens.length) {
-          alias = tokens[i].value;
-          i++;
+        if (tokenIndex < tokens.length) {
+          alias = tokens[tokenIndex].value;
+          tokenIndex++;
         }
       }
 
@@ -238,12 +241,19 @@ const processESMImport = (
 
   let fromIndex = -1;
 
-  for (let j = index + 1; j < tokens.length; j++) {
-    if (tokens[j].value === 'from' && tokens[j].type === 'keyword') {
-      fromIndex = j;
+  for (
+    let searchIndex = index + 1;
+    searchIndex < tokens.length;
+    searchIndex++
+  ) {
+    if (
+      tokens[searchIndex].value === 'from' &&
+      tokens[searchIndex].type === 'keyword'
+    ) {
+      fromIndex = searchIndex;
       break;
     }
-    if (tokens[j].value === ';') break;
+    if (tokens[searchIndex].value === ';') break;
   }
 
   if (
@@ -293,13 +303,13 @@ const processCJSRequire = (
     if (index > 0 && tokens[index - 1].value === '=') {
       let declIndex = -1;
 
-      for (let j = index - 2; j >= 0; j--) {
-        if (['const', 'let', 'var'].includes(tokens[j].value)) {
-          declIndex = j;
+      for (let backwardIndex = index - 2; backwardIndex >= 0; backwardIndex--) {
+        if (['const', 'let', 'var'].includes(tokens[backwardIndex].value)) {
+          declIndex = backwardIndex;
           break;
         }
 
-        if (tokens[j].value === ';') break;
+        if (tokens[backwardIndex].value === ';') break;
       }
 
       if (declIndex !== -1) {
@@ -325,21 +335,21 @@ export const parseImports = (content: string): ImportDefinition[] => {
   const tokens = tokenize(content);
   const results: ImportDefinition[] = [];
 
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
+  for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
+    const token = tokens[tokenIndex];
 
     if (token.type === 'keyword' && token.value === 'import') {
-      const { result, newIndex } = processESMImport(tokens, i);
+      const { result, newIndex } = processESMImport(tokens, tokenIndex);
 
       if (result) results.push(result);
-      if (newIndex > i) i = newIndex;
+      if (newIndex > tokenIndex) tokenIndex = newIndex;
     }
 
     if (token.type === 'keyword' && token.value === 'require') {
-      const { result, newIndex } = processCJSRequire(tokens, i);
+      const { result, newIndex } = processCJSRequire(tokens, tokenIndex);
 
       if (result) results.push(result);
-      if (newIndex > i) i = newIndex;
+      if (newIndex > tokenIndex) tokenIndex = newIndex;
     }
   }
 
