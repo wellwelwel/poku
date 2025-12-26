@@ -497,4 +497,305 @@ from
       },
     ]);
   });
+
+  it('should parse minified code imports', () => {
+    const code = `import{a,b as c,d}from"m1";const{e:f,g,h}=require("m2");import i from"m3";const j=require("m4");import*as k from"m5";import("m6");import l,{m,n as o}from"m7";`;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      {
+        module: 'm1',
+        members: [
+          { name: 'a', alias: 'a', type: 'named' },
+          { name: 'b', alias: 'c', type: 'named' },
+          { name: 'd', alias: 'd', type: 'named' },
+        ],
+        kind: 'esm',
+      },
+      {
+        module: 'm2',
+        members: [
+          { name: 'e', alias: 'f', type: 'named' },
+          { name: 'g', alias: 'g', type: 'named' },
+          { name: 'h', alias: 'h', type: 'named' },
+        ],
+        kind: 'cjs',
+      },
+      {
+        module: 'm3',
+        members: [{ name: 'default', alias: 'i', type: 'default' }],
+        kind: 'esm',
+      },
+      {
+        module: 'm4',
+        members: [{ name: 'default', alias: 'j', type: 'default' }],
+        kind: 'cjs',
+      },
+      {
+        module: 'm5',
+        members: [{ name: '*', alias: 'k', type: 'namespace' }],
+        kind: 'esm',
+      },
+      {
+        module: 'm6',
+        members: [],
+        kind: 'dynamic',
+      },
+      {
+        module: 'm7',
+        members: [
+          { name: 'm', alias: 'm', type: 'named' },
+          { name: 'n', alias: 'o', type: 'named' },
+          { name: 'default', alias: 'l', type: 'default' },
+        ],
+        kind: 'esm',
+      },
+    ]);
+  });
+
+  it('should parse imports mixed with function declarations', () => {
+    const code = `
+      import { useState } from 'react';
+
+      function myFunction() {
+        return 'hello';
+      }
+
+      const fs = require('fs');
+
+      function anotherFunction(x) {
+        import('dynamic-in-function');
+        return x * 2;
+      }
+
+      import { Component } from 'react';
+    `;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      {
+        module: 'react',
+        members: [{ name: 'useState', alias: 'useState', type: 'named' }],
+        kind: 'esm',
+      },
+      {
+        module: 'fs',
+        members: [{ name: 'default', alias: 'fs', type: 'default' }],
+        kind: 'cjs',
+      },
+      {
+        module: 'dynamic-in-function',
+        members: [],
+        kind: 'dynamic',
+      },
+      {
+        module: 'react',
+        members: [{ name: 'Component', alias: 'Component', type: 'named' }],
+        kind: 'esm',
+      },
+    ]);
+  });
+
+  it('should parse imports mixed with variable declarations and class definitions', () => {
+    const code = `
+      const API_URL = 'https://api.example.com';
+      import { fetch } from 'node-fetch';
+
+      let counter = 0;
+      const { readFile } = require('fs/promises');
+
+      class MyClass {
+        constructor() {
+          this.value = 42;
+        }
+      }
+
+      import defaultExport from './utils.js';
+
+      const obj = {
+        method() {
+          return import('lazy-module');
+        }
+      };
+
+      var globalVar;
+      import * as helpers from './helpers.js';
+    `;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      {
+        module: 'node-fetch',
+        members: [{ name: 'fetch', alias: 'fetch', type: 'named' }],
+        kind: 'esm',
+      },
+      {
+        module: 'fs/promises',
+        members: [{ name: 'readFile', alias: 'readFile', type: 'named' }],
+        kind: 'cjs',
+      },
+      {
+        module: './utils.js',
+        members: [{ name: 'default', alias: 'defaultExport', type: 'default' }],
+        kind: 'esm',
+      },
+      {
+        module: 'lazy-module',
+        members: [],
+        kind: 'dynamic',
+      },
+      {
+        module: './helpers.js',
+        members: [{ name: '*', alias: 'helpers', type: 'namespace' }],
+        kind: 'esm',
+      },
+    ]);
+  });
+
+  it('should parse imports mixed with loops and conditionals', () => {
+    const code = `
+      if (condition) {
+        import { conditionalModule } from 'conditional';
+      }
+
+      import defaultValue from 'default-module';
+
+      for (let i = 0; i < 10; i++) {
+        console.log(i);
+      }
+
+      const utils = require('utils');
+
+      while (true) {
+        break;
+      }
+
+      import('async-import').then(module => {
+        console.log(module);
+      });
+
+      switch (type) {
+        case 'A':
+          const { handlerA } = require('handler-a');
+          break;
+        case 'B':
+          import { handlerB } from 'handler-b';
+          break;
+      }
+    `;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      {
+        module: 'conditional',
+        members: [
+          {
+            name: 'conditionalModule',
+            alias: 'conditionalModule',
+            type: 'named',
+          },
+        ],
+        kind: 'esm',
+      },
+      {
+        module: 'default-module',
+        members: [{ name: 'default', alias: 'defaultValue', type: 'default' }],
+        kind: 'esm',
+      },
+      {
+        module: 'utils',
+        members: [{ name: 'default', alias: 'utils', type: 'default' }],
+        kind: 'cjs',
+      },
+      {
+        module: 'async-import',
+        members: [],
+        kind: 'dynamic',
+      },
+      {
+        module: 'handler-a',
+        members: [{ name: 'handlerA', alias: 'handlerA', type: 'named' }],
+        kind: 'cjs',
+      },
+      {
+        module: 'handler-b',
+        members: [{ name: 'handlerB', alias: 'handlerB', type: 'named' }],
+        kind: 'esm',
+      },
+    ]);
+  });
+
+  it('should parse imports mixed with try-catch and arrow functions', () => {
+    const code = `
+      try {
+        import { riskyModule } from 'risky';
+        const data = require('data-module');
+      } catch (error) {
+        console.error(error);
+      }
+
+      const asyncFn = async () => {
+        const module = await import('async-module');
+        return module;
+      };
+
+      import defaultAsync from 'default-async';
+
+      const regularFn = () => {
+        const local = require('local-module');
+        return local;
+      };
+
+      setTimeout(() => {
+        import('timeout-module');
+      }, 1000);
+
+      const { middleware } = require('middleware');
+
+      Promise.resolve().then(() => {
+        import { promiseModule } from 'promise-module';
+      });
+    `;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      {
+        module: 'risky',
+        members: [{ name: 'riskyModule', alias: 'riskyModule', type: 'named' }],
+        kind: 'esm',
+      },
+      {
+        module: 'data-module',
+        members: [{ name: 'default', alias: 'data', type: 'default' }],
+        kind: 'cjs',
+      },
+      {
+        module: 'async-module',
+        members: [],
+        kind: 'dynamic',
+      },
+      {
+        module: 'default-async',
+        members: [{ name: 'default', alias: 'defaultAsync', type: 'default' }],
+        kind: 'esm',
+      },
+      {
+        module: 'local-module',
+        members: [{ name: 'default', alias: 'local', type: 'default' }],
+        kind: 'cjs',
+      },
+      {
+        module: 'timeout-module',
+        members: [],
+        kind: 'dynamic',
+      },
+      {
+        module: 'middleware',
+        members: [{ name: 'middleware', alias: 'middleware', type: 'named' }],
+        kind: 'cjs',
+      },
+      {
+        module: 'promise-module',
+        members: [
+          { name: 'promiseModule', alias: 'promiseModule', type: 'named' },
+        ],
+        kind: 'esm',
+      },
+    ]);
+  });
 });
