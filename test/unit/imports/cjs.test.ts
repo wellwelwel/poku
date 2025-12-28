@@ -22,7 +22,7 @@ describe('Imports Parser: CommonJS', () => {
     assert.deepStrictEqual(result, [{ module: 'i', members: [], kind: 'cjs' }]);
   });
 
-  it.todo('should parse CJS require with backticks', () => {
+  it('should parse CJS require with backticks', () => {
     const code = 'require(`./lib/modules/index.js`);';
     const result = parseImports(code);
     assert.deepStrictEqual(result, [

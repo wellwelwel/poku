@@ -28,7 +28,7 @@ export const tokenize = (input: string): Token[] => {
       continue;
     }
 
-    if (char === '"' || char === "'") {
+    if (char === '"' || char === "'" || char === '`') {
       let value = '';
       const quote = char;
       const start = current;

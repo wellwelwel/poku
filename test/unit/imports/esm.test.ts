@@ -134,7 +134,7 @@ describe('Imports Parser: ESM', () => {
     ]);
   });
 
-  it.todo('should parse dynamic imports with backticks', () => {
+  it('should parse dynamic imports with backticks', () => {
     const code = 'import(`./lib/modules/index.js`);';
     const result = parseImports(code);
     assert.deepStrictEqual(result, [
