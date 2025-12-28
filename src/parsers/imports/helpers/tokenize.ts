@@ -1,28 +1,29 @@
 import type { Token } from '../../../@types/shared-resources.ts';
 
-const whitespaceRegex = /\s/;
-const identifierStartRegex = /[a-zA-Z_$]/;
-const identifierPartRegex = /[a-zA-Z0-9_$]/;
-const punctuationRegex = /[{}(),=*:]/;
-
-const keywords = new Set([
-  'import',
-  'from',
-  'as',
-  'const',
-  'let',
-  'var',
-  'require',
-]);
+const regex = {
+  whitespace: /\s/,
+  identifierStart: /[a-zA-Z_$]/,
+  identifierPart: /[a-zA-Z0-9_$]/,
+  punctuation: /[{}(),=*:]/,
+} as const;
 
 export const tokenize = (input: string): Token[] => {
+  const keywords = new Set([
+    'import',
+    'from',
+    'as',
+    'const',
+    'let',
+    'var',
+    'require',
+  ]);
   const tokens: Token[] = [];
   let current = 0;
 
   while (current < input.length) {
     const char = input[current];
 
-    if (whitespaceRegex.test(char)) {
+    if (regex.whitespace.test(char)) {
       current++;
       continue;
     }
@@ -48,13 +49,13 @@ export const tokenize = (input: string): Token[] => {
       continue;
     }
 
-    if (identifierStartRegex.test(char)) {
+    if (regex.identifierStart.test(char)) {
       let value = '';
       const start = current;
 
       while (
         current < input.length &&
-        identifierPartRegex.test(input[current])
+        regex.identifierPart.test(input[current])
       ) {
         value += input[current];
         current++;
@@ -66,7 +67,7 @@ export const tokenize = (input: string): Token[] => {
       continue;
     }
 
-    if (punctuationRegex.test(char)) {
+    if (regex.punctuation.test(char)) {
       tokens.push({ type: 'punctuation', value: char, index: current });
       current++;
       continue;

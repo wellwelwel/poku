@@ -1,6 +1,6 @@
 import type { ImportMember } from '../../../@types/shared-resources.js';
 
-export const sortMembers = (members: ImportMember[]) => {
+export const sort = (members: ImportMember[]) => {
   const order = {
     named: 0,
     namespace: 1,

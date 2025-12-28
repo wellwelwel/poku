@@ -1,6 +1,6 @@
 import type { ImportMember, Token } from '../../../@types/shared-resources.js';
 
-export const parseImportClause = (tokens: Token[]): ImportMember[] => {
+export const getMembers = (tokens: Token[]): ImportMember[] => {
   const members: ImportMember[] = [];
   let tokenIndex = 0;
 

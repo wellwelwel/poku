@@ -3,10 +3,10 @@ import type {
   RequireDefinition,
   Token,
 } from '../../../@types/shared-resources.js';
-import { sortMembers } from '../helpers/members.js';
-import { parseDestructuring } from './destructuring.js';
+import { sort } from '../helpers/sort.js';
+import { getMembers } from './members.js';
 
-export const processCJSRequire = (
+export const processCJS = (
   tokens: Token[],
   index: number
 ): RequireDefinition => {
@@ -32,14 +32,14 @@ export const processCJSRequire = (
 
       if (declIndex !== -1) {
         const patternTokens = tokens.slice(declIndex + 1, index - 1);
-        members = parseDestructuring(patternTokens);
+        members = getMembers(patternTokens);
       }
     }
 
     return {
       result: {
         module,
-        members: sortMembers(members),
+        members: sort(members),
         kind: 'cjs',
       },
       newIndex: index,

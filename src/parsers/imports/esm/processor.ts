@@ -2,10 +2,10 @@ import type {
   ImportDefinition,
   Token,
 } from '../../../@types/shared-resources.js';
-import { sortMembers } from '../helpers/members.js';
-import { parseImportClause } from './clauses.js';
+import { sort } from '../helpers/sort.js';
+import { getMembers } from './members.js';
 
-export const processESMImport = (
+export const processESM = (
   tokens: Token[],
   index: number
 ): { result?: ImportDefinition; newIndex: number } => {
@@ -59,12 +59,12 @@ export const processESMImport = (
   ) {
     const module = tokens[fromIndex + 1].value;
     const clauseTokens = tokens.slice(index + 1, fromIndex);
-    const members = parseImportClause(clauseTokens);
+    const members = sort(getMembers(clauseTokens));
 
     return {
       result: {
         module,
-        members: sortMembers(members),
+        members,
         kind: 'esm',
       },
       newIndex: fromIndex + 1,
