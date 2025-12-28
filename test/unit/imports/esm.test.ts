@@ -10,8 +10,32 @@ describe('Imports Parser: ESM', () => {
     assert.deepStrictEqual(result, [{ module: 'a', members: [], kind: 'esm' }]);
   });
 
+  it('should parse side-effect ESM imports with single quotes', () => {
+    const code = `import 'a';`;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [{ module: 'a', members: [], kind: 'esm' }]);
+  });
+
+  it('should parse side-effect ESM imports without semicolon', () => {
+    const code = `import "a"`;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [{ module: 'a', members: [], kind: 'esm' }]);
+  });
+
   it('should parse default ESM imports', () => {
     const code = `import v from "b";`;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      {
+        module: 'b',
+        members: [{ name: 'default', alias: 'v', type: 'default' }],
+        kind: 'esm',
+      },
+    ]);
+  });
+
+  it('should parse default ESM imports without semicolon', () => {
+    const code = `import v from "b"`;
     const result = parseImports(code);
     assert.deepStrictEqual(result, [
       {
@@ -107,6 +131,14 @@ describe('Imports Parser: ESM', () => {
     const result = parseImports(code);
     assert.deepStrictEqual(result, [
       { module: 'm', members: [], kind: 'dynamic' },
+    ]);
+  });
+
+  it.todo('should parse dynamic imports with backticks', () => {
+    const code = 'import(`./lib/modules/index.js`);';
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      { module: './lib/modules/index.js', members: [], kind: 'dynamic' },
     ]);
   });
 

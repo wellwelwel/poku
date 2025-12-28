@@ -10,6 +10,26 @@ describe('Imports Parser: CommonJS', () => {
     assert.deepStrictEqual(result, [{ module: 'i', members: [], kind: 'cjs' }]);
   });
 
+  it('should parse CJS require with single quotes', () => {
+    const code = `require('i');`;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [{ module: 'i', members: [], kind: 'cjs' }]);
+  });
+
+  it('should parse CJS require without semicolon', () => {
+    const code = `require("i")`;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [{ module: 'i', members: [], kind: 'cjs' }]);
+  });
+
+  it.todo('should parse CJS require with backticks', () => {
+    const code = 'require(`./lib/modules/index.js`);';
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      { module: './lib/modules/index.js', members: [], kind: 'cjs' },
+    ]);
+  });
+
   it('should parse assigned CJS require', () => {
     const code = `const v = require("j");`;
     const result = parseImports(code);
@@ -48,6 +68,18 @@ describe('Imports Parser: CommonJS', () => {
 
   it('should parse require with extra spaces', () => {
     const code = `const    {    x    }    =    require("o");`;
+    const result = parseImports(code);
+    assert.deepStrictEqual(result, [
+      {
+        module: 'o',
+        members: [{ name: 'x', alias: 'x', type: 'named' }],
+        kind: 'cjs',
+      },
+    ]);
+  });
+
+  it('should parse require with extra spaces without semicolon', () => {
+    const code = `const    {    x    }    =    require("o")`;
     const result = parseImports(code);
     assert.deepStrictEqual(result, [
       {
