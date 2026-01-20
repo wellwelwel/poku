@@ -38,14 +38,16 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       log(format(`◌ ${title}`).bold().dim());
     },
-    onDescribeEnd({ title, duration }) {
+    onDescribeEnd({ title, duration, success = true }) {
+      const status = success ? 'success' : 'fail';
+
       indentation.hasDescribe = false;
 
       log(
-        `${format(`● ${title}`).success().bold()} ${format(
+        `${format(`● ${title}`)[status]().bold()} ${format(
           `› ${duration.toFixed(6)}ms`
         )
-          .success()
+          [status]()
           .dim()}`
       );
     },
@@ -58,14 +60,16 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
         );
       }
     },
-    onItEnd({ title, duration }) {
+    onItEnd({ title, duration, success = true }) {
+      const status = success ? 'success' : 'fail';
+
       indentation.hasItOrTest = false;
 
       log(
-        `${indentation.hasDescribe ? '  ' : ''}${format(`● ${title}`).success().bold()} ${format(
+        `${indentation.hasDescribe ? '  ' : ''}${format(`● ${title}`)[status]().bold()} ${format(
           `› ${duration.toFixed(6)}ms`
         )
-          .success()
+          [status]()
           .dim()}`
       );
     },

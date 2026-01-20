@@ -1,5 +1,5 @@
 import type { DescribeOptions } from '../../@types/describe.js';
-import { hrtime } from 'node:process';
+import process from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
@@ -12,6 +12,7 @@ export async function describeBase(
   let title: string | undefined;
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;
+  let success = true;
 
   const { reporter } = GLOBAL;
 
@@ -34,18 +35,23 @@ export async function describeBase(
 
   if (!hasCB) return;
 
-  const start = hrtime();
-  const resultCb = cb!();
+  const start = process.hrtime();
 
-  if (resultCb instanceof Promise) await resultCb;
+  try {
+    const resultCb = cb!();
+    if (resultCb instanceof Promise) await resultCb;
+  } catch {
+    process.exitCode = 1;
+    success = false;
+  }
 
-  const end = hrtime(start);
+  const end = process.hrtime(start);
 
   if (!title) return;
 
   const duration = end[0] * 1e3 + end[1] / 1e6;
 
-  reporter.onDescribeEnd({ title, duration });
+  reporter.onDescribeEnd({ title, duration, success });
 
   GLOBAL.runAsOnly = false;
 }
