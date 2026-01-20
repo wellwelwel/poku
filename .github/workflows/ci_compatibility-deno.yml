@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        deno-version: ['v1.x', 'v2.x', 'canary']
+        deno-version: ['v1.x', 'v2.x']
     name: ${{ matrix.deno-version }}
     steps:
       - name: ➕ Actions - Checkout

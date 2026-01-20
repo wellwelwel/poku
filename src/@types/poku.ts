@@ -156,9 +156,17 @@ export type ReporterPlugin = (configs?: Configs) => {
   onRunStart: () => void;
   onDescribeAsTitle: (title: string, options: DescribeOptions) => void;
   onDescribeStart: (options: { title?: string }) => void;
-  onDescribeEnd: (options: { title?: string; duration: number }) => void;
+  onDescribeEnd: (options: {
+    duration: number;
+    success?: boolean;
+    title?: string;
+  }) => void;
   onItStart: (options: { title?: string }) => void;
-  onItEnd: (options: { title?: string; duration: number }) => void;
+  onItEnd: (options: {
+    duration: number;
+    success?: boolean;
+    title?: string;
+  }) => void;
   onAssertionSuccess: (options: { message: string }) => void;
   onAssertionFailure: (options: {
     assertOptions: ProcessAssertionOptions;

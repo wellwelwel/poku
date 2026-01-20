@@ -14,6 +14,7 @@ export async function itBase(
   try {
     let title: string | undefined;
     let cb: () => unknown | Promise<unknown>;
+    let success = true;
 
     if (typeof args[0] === 'string') {
       title = args[0];
@@ -29,9 +30,14 @@ export async function itBase(
     }
 
     const start = hrtime();
-    const resultCb = cb();
 
-    if (resultCb instanceof Promise) await resultCb;
+    try {
+      const resultCb = cb!();
+      if (resultCb instanceof Promise) await resultCb;
+    } catch {
+      process.exitCode = 1;
+      success = false;
+    }
 
     const end = hrtime(start);
 
@@ -45,7 +51,7 @@ export async function itBase(
 
     const duration = end[0] * 1e3 + end[1] / 1e6;
 
-    GLOBAL.reporter.onItEnd({ title, duration });
+    GLOBAL.reporter.onItEnd({ title, duration, success });
   } catch (error) {
     indentation.hasItOrTest = false;
 
