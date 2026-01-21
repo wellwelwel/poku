@@ -25,10 +25,10 @@ jobs:
     name: Windows
     steps:
       - name: ➕ Actions - Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: ➕ Actions - Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           check-latest: true
           node-version: lts/*

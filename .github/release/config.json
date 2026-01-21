@@ -1,0 +1,10 @@
+{
+  "packages": {
+    ".": {
+      "changelog-path": "CHANGELOG.md",
+      "include-component-in-tag": false,
+      "package-name": "poku",
+      "release-type": "node"
+    }
+  }
+}
