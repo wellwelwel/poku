@@ -6,10 +6,10 @@ import { GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
-export async function itBase(
+export const itBase = async (
   titleOrCallback: string | (() => unknown | Promise<unknown>),
   callback?: () => unknown | Promise<unknown>
-): Promise<void> {
+): Promise<void> => {
   try {
     let title: string | undefined;
     let cb: (() => unknown | Promise<unknown>) | undefined;
@@ -73,7 +73,7 @@ export async function itBase(
 
     throw error;
   }
-}
+};
 
 async function itCore(title: string, cb: () => Promise<unknown>): Promise<void>;
 function itCore(title: string, cb: () => unknown): void;

@@ -6,10 +6,10 @@ import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { onlyDescribe, skip, todo } from './modifiers.js';
 
-export async function describeBase(
+export const describeBase = async (
   titleOrCallback: string | (() => unknown | Promise<unknown>),
   callbackOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
-): Promise<void> {
+): Promise<void> => {
   let title: string | undefined;
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;
@@ -66,7 +66,7 @@ export async function describeBase(
   reporter.onDescribeEnd({ title, duration, success });
 
   GLOBAL.runAsOnly = false;
-}
+};
 
 async function describeCore(
   message: string,
