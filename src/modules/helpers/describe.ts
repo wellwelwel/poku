@@ -4,39 +4,33 @@ import process from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
+import { getCallback, getTitle } from './it/core.js';
 import { onlyDescribe, skip, todo } from './modifiers.js';
 
+const getOptions = (input: unknown): DescribeOptions | undefined =>
+  !input || typeof input !== 'object' ? undefined : input;
+
 export const describeBase = async (
-  titleOrCallback: string | (() => unknown | Promise<unknown>),
+  titleOrCb: string | (() => unknown | Promise<unknown>),
   callbackOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
 ): Promise<void> => {
-  let title: string | undefined;
-  let cb: (() => unknown | Promise<unknown>) | undefined;
-  let options: DescribeOptions | undefined;
-  let success = true;
-
   const { reporter } = GLOBAL;
-
-  if (typeof titleOrCallback === 'string') {
-    title = titleOrCallback;
-
-    if (typeof callbackOrOptions === 'function') cb = callbackOrOptions;
-    else options = callbackOrOptions;
-  } else if (typeof titleOrCallback === 'function') {
-    cb = titleOrCallback;
-    options = callbackOrOptions as DescribeOptions;
-  }
-
+  const title = getTitle(titleOrCb);
+  const hasTitle = typeof title === 'string';
+  const cb = hasTitle ? getCallback(callbackOrOptions) : getCallback(titleOrCb);
   const hasCB = typeof cb === 'function';
+  const options = hasCB ? undefined : getOptions(callbackOrOptions);
 
-  if (title) {
+  let success = true;
+  let start: [number, number];
+  let end: [number, number];
+
+  if (hasTitle) {
     if (hasCB) reporter.onDescribeStart({ title });
-    else reporter.onDescribeAsTitle(title, options as DescribeOptions);
+    else reporter.onDescribeAsTitle(title, options);
   }
 
   if (!hasCB) return;
-
-  const start = process.hrtime();
 
   const onError = (error: unknown) => {
     process.exitCode = 1;
@@ -47,17 +41,19 @@ export const describeBase = async (
   process.once('uncaughtException', onError);
   process.once('unhandledRejection', onError);
 
+  start = process.hrtime();
+
   try {
     const resultCb = cb!();
     if (resultCb instanceof Promise) await resultCb;
   } catch (error) {
     onError(error);
   } finally {
+    end = process.hrtime(start);
+
     process.removeListener('uncaughtException', onError);
     process.removeListener('unhandledRejection', onError);
   }
-
-  const end = process.hrtime(start);
 
   if (!title) return;
 
