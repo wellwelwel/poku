@@ -27,7 +27,7 @@ export const describeBase = async (
 
   if (hasTitle) {
     if (hasCB) reporter.onDescribeStart({ title });
-    else reporter.onDescribeAsTitle(title, options ?? Object.create(null));
+    else reporter.onDescribeAsTitle(title, options);
   }
 
   if (!hasCB) return;
