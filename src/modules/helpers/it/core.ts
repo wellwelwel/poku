@@ -1,4 +1,5 @@
-import { hrtime } from 'node:process';
+import { AssertionError } from 'node:assert';
+import process from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { GLOBAL } from '../../../configs/poku.js';
@@ -29,17 +30,28 @@ export async function itBase(
       if (beforeResult instanceof Promise) await beforeResult;
     }
 
-    const start = hrtime();
+    const start = process.hrtime();
+
+    const onError = (error: unknown) => {
+      process.exitCode = 1;
+      success = false;
+      if (!(error instanceof AssertionError)) console.error(error);
+    };
+
+    process.once('uncaughtException', onError);
+    process.once('unhandledRejection', onError);
 
     try {
       const resultCb = cb!();
       if (resultCb instanceof Promise) await resultCb;
-    } catch {
-      process.exitCode = 1;
-      success = false;
+    } catch (error) {
+      onError(error);
+    } finally {
+      process.removeListener('uncaughtException', onError);
+      process.removeListener('unhandledRejection', onError);
     }
 
-    const end = hrtime(start);
+    const end = process.hrtime(start);
 
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();
