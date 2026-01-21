@@ -1,5 +1,5 @@
 import { AssertionError } from 'node:assert';
-import { hrtime } from 'node:process';
+import process from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { GLOBAL } from '../../../configs/poku.js';
@@ -30,7 +30,7 @@ export async function itBase(
       if (beforeResult instanceof Promise) await beforeResult;
     }
 
-    const start = hrtime();
+    const start = process.hrtime();
 
     const onError = (error: unknown) => {
       process.exitCode = 1;
@@ -51,7 +51,7 @@ export async function itBase(
       process.removeListener('unhandledRejection', onError);
     }
 
-    const end = hrtime(start);
+    const end = process.hrtime(start);
 
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();
