@@ -6,10 +6,10 @@ import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { onlyDescribe, skip, todo } from './modifiers.js';
 
-export async function describeBase(
-  arg1: string | (() => unknown | Promise<unknown>),
-  arg2?: (() => unknown | Promise<unknown>) | DescribeOptions
-): Promise<void> {
+export const describeBase = async (
+  titleOrCallback: string | (() => unknown | Promise<unknown>),
+  callbackOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
+): Promise<void> => {
   let title: string | undefined;
   let cb: (() => unknown | Promise<unknown>) | undefined;
   let options: DescribeOptions | undefined;
@@ -17,14 +17,14 @@ export async function describeBase(
 
   const { reporter } = GLOBAL;
 
-  if (typeof arg1 === 'string') {
-    title = arg1;
+  if (typeof titleOrCallback === 'string') {
+    title = titleOrCallback;
 
-    if (typeof arg2 === 'function') cb = arg2;
-    else options = arg2;
-  } else if (typeof arg1 === 'function') {
-    cb = arg1;
-    options = arg2 as DescribeOptions;
+    if (typeof callbackOrOptions === 'function') cb = callbackOrOptions;
+    else options = callbackOrOptions;
+  } else if (typeof titleOrCallback === 'function') {
+    cb = titleOrCallback;
+    options = callbackOrOptions as DescribeOptions;
   }
 
   const hasCB = typeof cb === 'function';
@@ -66,7 +66,7 @@ export async function describeBase(
   reporter.onDescribeEnd({ title, duration, success });
 
   GLOBAL.runAsOnly = false;
-}
+};
 
 async function describeCore(
   message: string,
