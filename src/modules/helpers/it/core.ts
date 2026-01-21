@@ -6,19 +6,28 @@ import { GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
+export const getTitle = (input: unknown): string | undefined =>
+  typeof input === 'string' ? input : undefined;
+
+export const getCallback = (
+  input: unknown
+): (() => unknown) | (() => Promise<unknown>) | undefined =>
+  typeof input === 'function'
+    ? (input as (() => unknown) | (() => Promise<unknown>))
+    : undefined;
+
 export const itBase = async (
-  titleOrCallback: string | (() => unknown | Promise<unknown>),
+  titleOrCb: string | (() => unknown | Promise<unknown>),
   callback?: () => unknown | Promise<unknown>
 ): Promise<void> => {
   try {
-    let title: string | undefined;
-    let cb: (() => unknown | Promise<unknown>) | undefined;
-    let success = true;
+    const title = getTitle(titleOrCb);
+    const hasTitle = typeof title === 'string';
+    const cb = hasTitle ? getCallback(callback) : getCallback(titleOrCb);
 
-    if (typeof titleOrCallback === 'string') {
-      title = titleOrCallback;
-      cb = callback as () => unknown | Promise<unknown>;
-    } else cb = titleOrCallback as () => unknown | Promise<unknown>;
+    let success = true;
+    let start;
+    let end;
 
     GLOBAL.reporter.onItStart({ title });
 
@@ -27,8 +36,6 @@ export const itBase = async (
 
       if (beforeResult instanceof Promise) await beforeResult;
     }
-
-    const start = process.hrtime();
 
     const onError = (error: unknown) => {
       process.exitCode = 1;
@@ -39,17 +46,19 @@ export const itBase = async (
     process.once('uncaughtException', onError);
     process.once('unhandledRejection', onError);
 
+    start = process.hrtime();
+
     try {
       const resultCb = cb!();
       if (resultCb instanceof Promise) await resultCb;
     } catch (error) {
       onError(error);
     } finally {
+      end = process.hrtime(start);
+
       process.removeListener('uncaughtException', onError);
       process.removeListener('unhandledRejection', onError);
     }
-
-    const end = process.hrtime(start);
 
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();
