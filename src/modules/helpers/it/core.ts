@@ -7,20 +7,18 @@ import { hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
 export async function itBase(
-  ...args: [
-    string | (() => unknown | Promise<unknown>),
-    (() => unknown | Promise<unknown>)?,
-  ]
+  titleOrCallback: string | (() => unknown | Promise<unknown>),
+  callback?: () => unknown | Promise<unknown>
 ): Promise<void> {
   try {
     let title: string | undefined;
-    let cb: () => unknown | Promise<unknown>;
+    let cb: (() => unknown | Promise<unknown>) | undefined;
     let success = true;
 
-    if (typeof args[0] === 'string') {
-      title = args[0];
-      cb = args[1] as () => unknown | Promise<unknown>;
-    } else cb = args[0] as () => unknown | Promise<unknown>;
+    if (typeof titleOrCallback === 'string') {
+      title = titleOrCallback;
+      cb = callback as () => unknown | Promise<unknown>;
+    } else cb = titleOrCallback as () => unknown | Promise<unknown>;
 
     GLOBAL.reporter.onItStart({ title });
 
