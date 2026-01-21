@@ -21,12 +21,12 @@ jobs:
     name: Compare
     steps:
       - name: ➕ Actions - Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: ➕ Actions - Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           check-latest: true
           node-version: lts/*
@@ -40,14 +40,14 @@ jobs:
         run: cargo install --locked hyperfine
 
       - name: ➕ Cache dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: npm-linux-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-linux-
 
       - name: ➕ Cache dependencies (Benchmark)
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: npm-benchmark-${{ hashFiles('benchmark/package-lock.json') }}

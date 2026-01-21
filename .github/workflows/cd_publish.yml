@@ -19,51 +19,51 @@ jobs:
     name: Release Please
     steps:
       - name: 🤝 Release Please
-        uses: google-github-actions/release-please-action@v3
+        uses: googleapis/release-please-action@v4
         id: release
         with:
           token: ${{ secrets.PAT }}
-          release-type: node
-          package-name: poku
-          changelog-path: 'CHANGELOG.md'
+          config-file: .github/release/config.json
+          manifest-file: .github/release/manifest.json
 
       - name: ➕ Actions - Checkout
-        uses: actions/checkout@v4
-        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions/checkout@v6
+        if: ${{ steps.release.outputs.release_created }}
 
       - name: ➕ Actions - Setup Node.js
-        uses: actions/setup-node@v4
-        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions/setup-node@v6
+        if: ${{ steps.release.outputs.release_created }}
         with:
           check-latest: true
           node-version: lts/*
           registry-url: 'https://registry.npmjs.org'
 
       - name: ➕ Cache dependencies
-        uses: actions/cache@v4
-        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions/cache@v5
+        if: ${{ steps.release.outputs.release_created }}
         with:
           path: ~/.npm
           key: npm-linux-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-linux-
 
       - name: 📦 Installing Dependencies
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.release_created }}
         run: npm ci
 
       - name: 🚀 Building Poku
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.release_created }}
+
         run: npm run build
 
       - name: 📥 Publishing Package
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.release_created }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --provenance
 
       - name: 🔗 Triggering — Website Publish
-        if: ${{ steps.release.outputs.releases_created }}
-        uses: actions/github-script@v7
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.PAT }}
           script: |
