@@ -26,8 +26,8 @@ export const itBase = async (
     const cb = hasTitle ? getCallback(callback) : getCallback(titleOrCb);
 
     let success = true;
-    let start;
-    let end;
+    let start: [number, number];
+    let end: [number, number];
 
     GLOBAL.reporter.onItStart({ title });
 

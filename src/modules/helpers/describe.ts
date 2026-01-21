@@ -22,8 +22,8 @@ export const describeBase = async (
   const options = hasCB ? undefined : getOptions(callbackOrOptions);
 
   let success = true;
-  let start;
-  let end;
+  let start: [number, number];
+  let end: [number, number];
 
   if (hasTitle) {
     if (hasCB) reporter.onDescribeStart({ title });
