@@ -1,4 +1,5 @@
 import type { DescribeOptions } from '../../@types/describe.js';
+import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
@@ -37,12 +38,23 @@ export async function describeBase(
 
   const start = process.hrtime();
 
+  const onError = (error: unknown) => {
+    process.exitCode = 1;
+    success = false;
+    if (!(error instanceof AssertionError)) console.error(error);
+  };
+
+  process.once('uncaughtException', onError);
+  process.once('unhandledRejection', onError);
+
   try {
     const resultCb = cb!();
     if (resultCb instanceof Promise) await resultCb;
-  } catch {
-    process.exitCode = 1;
-    success = false;
+  } catch (error) {
+    onError(error);
+  } finally {
+    process.removeListener('uncaughtException', onError);
+    process.removeListener('unhandledRejection', onError);
   }
 
   const end = process.hrtime(start);
