@@ -64,7 +64,8 @@
         "useAwait": "error",
         "useIsArray": "error",
         "noMisplacedAssertion": "off",
-        "noConsole": "off"
+        "noConsole": "off",
+        "noControlCharactersInRegex": "off"
       },
       "style": {
         "all": true,
