@@ -4,7 +4,7 @@ import { describe } from '../../src/modules/helpers/describe.js';
 
 describe('Nested Logs', async () => {
   const results = await inspectPoku('', {
-    cwd: 'test/__fixtures__/e2e/logs/',
+    cwd: 'test/__fixtures__/e2e/logs',
   });
 
   if (results.exitCode !== 0) {

@@ -91,7 +91,6 @@ export const inspectPoku = (
   const basePath =
     typeof options?.cwd === 'string'
       ? options.cwd
-          .replace(/[/\\]/, '')
           .split(/\/|\\/)
           .map(() => '../')
           .join('')
@@ -116,7 +115,6 @@ export const watchCLI = (
   const basePath =
     typeof options?.cwd === 'string'
       ? options.cwd
-          .replace(/[/\\]/, '')
           .split(/\/|\\/)
           .map(() => '../')
           .join('')
