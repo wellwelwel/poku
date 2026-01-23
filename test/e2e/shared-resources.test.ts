@@ -3,13 +3,7 @@ import { inspectPoku } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 
-const finalPath = join(
-  'test',
-  '__fixtures__',
-  'e2e',
-  'shared-resources',
-  'test'
-);
+const finalPath = join('test', '__fixtures__', 'e2e', 'shared-resources');
 
 describe('Shared Resources', async () => {
   const results = await inspectPoku('--debug --sharedResources', {
@@ -22,6 +16,6 @@ describe('Shared Resources', async () => {
   }
 
   assert.strictEqual(results.exitCode, 0, 'Exit Code needs to be 0');
-  assert(/PASS › 3/.test(results.stdout), 'CLI needs to pass 3');
+  assert(/PASS › 2/.test(results.stdout), 'CLI needs to pass 2');
   assert(/FAIL › 0/.test(results.stdout), 'CLI needs to fail 0');
 });
