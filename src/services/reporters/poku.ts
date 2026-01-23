@@ -36,8 +36,6 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onDescribeStart({ title }) {
       if (!title) return;
 
-      indentation.hasDescribe = true;
-
       const indent = '  '.repeat(
         indentation.describeDepth + indentation.itDepth
       );
@@ -51,8 +49,6 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
         indentation.describeDepth + indentation.itDepth
       );
 
-      indentation.hasDescribe = indentation.describeDepth > 0;
-
       log(
         `${indent}${format(`● ${title}`)[status]().bold()} ${format(
           `› ${duration.toFixed(6)}ms`
@@ -64,8 +60,6 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onItStart({ title }) {
       if (!title) return;
 
-      indentation.hasItOrTest = true;
-
       const indent = '  '.repeat(
         indentation.describeDepth + indentation.itDepth
       );
@@ -74,8 +68,6 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     },
     onItEnd({ title, duration, success = true }) {
       const status = success ? 'success' : 'fail';
-
-      indentation.hasItOrTest = indentation.itDepth > 0;
 
       const indent = '  '.repeat(
         indentation.describeDepth + indentation.itDepth

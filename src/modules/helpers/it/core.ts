@@ -78,8 +78,6 @@ export const itBase = async (
   } catch (error) {
     if (indentation.itDepth > 0) indentation.itDepth--;
 
-    indentation.hasItOrTest = indentation.itDepth > 0;
-
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();
 
