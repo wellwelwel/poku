@@ -154,7 +154,7 @@ type Path = {
 
 export type ReporterPlugin = (configs?: Configs) => {
   onRunStart: () => void;
-  onDescribeAsTitle: (title: string, options: DescribeOptions) => void;
+  onDescribeAsTitle: (title: string, options?: DescribeOptions) => void;
   onDescribeStart: (options: { title?: string }) => void;
   onDescribeEnd: (options: {
     duration: number;

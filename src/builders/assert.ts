@@ -191,9 +191,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
         )
           await nodeAssert.rejects(block, errorOrMessage, message);
         else {
-          const msg =
-            typeof errorOrMessage === 'string' ? errorOrMessage : message;
-          await nodeAssert.rejects(block, msg);
+          await nodeAssert.rejects(block);
         }
       },
       {
@@ -227,7 +225,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
           typeof errorOrMessage === 'object'
         )
           await nodeAssert.doesNotReject(block, errorOrMessage, message);
-        else await nodeAssert.doesNotReject(block, message);
+        else await nodeAssert.doesNotReject(block);
       },
       {
         message: typeof errorOrMessage === 'string' ? errorOrMessage : message,

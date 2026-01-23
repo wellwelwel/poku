@@ -1,42 +1,39 @@
 import type { DescribeOptions } from '../../@types/describe.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
+import { indentation } from '../../configs/indentation.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
+import { getCallback, getTitle } from './it/core.js';
 import { onlyDescribe, skip, todo } from './modifiers.js';
 
-export async function describeBase(
-  arg1: string | (() => unknown | Promise<unknown>),
-  arg2?: (() => unknown | Promise<unknown>) | DescribeOptions
-): Promise<void> {
-  let title: string | undefined;
-  let cb: (() => unknown | Promise<unknown>) | undefined;
-  let options: DescribeOptions | undefined;
-  let success = true;
+const getOptions = (input: unknown): DescribeOptions | undefined =>
+  !input || typeof input !== 'object' ? undefined : input;
 
+export const describeBase = async (
+  titleOrCb: string | (() => unknown | Promise<unknown>),
+  callbackOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
+): Promise<void> => {
   const { reporter } = GLOBAL;
-
-  if (typeof arg1 === 'string') {
-    title = arg1;
-
-    if (typeof arg2 === 'function') cb = arg2;
-    else options = arg2;
-  } else if (typeof arg1 === 'function') {
-    cb = arg1;
-    options = arg2 as DescribeOptions;
-  }
-
+  const title = getTitle(titleOrCb);
+  const hasTitle = typeof title === 'string';
+  const cb = hasTitle ? getCallback(callbackOrOptions) : getCallback(titleOrCb);
   const hasCB = typeof cb === 'function';
+  const options = hasCB ? undefined : getOptions(callbackOrOptions);
 
-  if (title) {
-    if (hasCB) reporter.onDescribeStart({ title });
-    else reporter.onDescribeAsTitle(title, options as DescribeOptions);
+  let success = true;
+  let start: [number, number];
+  let end: [number, number];
+
+  if (hasTitle) {
+    if (hasCB) {
+      reporter.onDescribeStart({ title });
+      indentation.describeDepth++;
+    } else reporter.onDescribeAsTitle(title, options);
   }
 
   if (!hasCB) return;
-
-  const start = process.hrtime();
 
   const onError = (error: unknown) => {
     process.exitCode = 1;
@@ -47,26 +44,29 @@ export async function describeBase(
   process.once('uncaughtException', onError);
   process.once('unhandledRejection', onError);
 
+  start = process.hrtime();
+
   try {
     const resultCb = cb!();
     if (resultCb instanceof Promise) await resultCb;
   } catch (error) {
     onError(error);
   } finally {
+    end = process.hrtime(start);
+
     process.removeListener('uncaughtException', onError);
     process.removeListener('unhandledRejection', onError);
   }
-
-  const end = process.hrtime(start);
 
   if (!title) return;
 
   const duration = end[0] * 1e3 + end[1] / 1e6;
 
+  indentation.describeDepth--;
   reporter.onDescribeEnd({ title, duration, success });
 
   GLOBAL.runAsOnly = false;
-}
+};
 
 async function describeCore(
   message: string,

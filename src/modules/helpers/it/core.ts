@@ -6,31 +6,38 @@ import { GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
-export async function itBase(
-  ...args: [
-    string | (() => unknown | Promise<unknown>),
-    (() => unknown | Promise<unknown>)?,
-  ]
-): Promise<void> {
-  try {
-    let title: string | undefined;
-    let cb: () => unknown | Promise<unknown>;
-    let success = true;
+export const getTitle = (input: unknown): string | undefined =>
+  typeof input === 'string' ? input : undefined;
 
-    if (typeof args[0] === 'string') {
-      title = args[0];
-      cb = args[1] as () => unknown | Promise<unknown>;
-    } else cb = args[0] as () => unknown | Promise<unknown>;
+export const getCallback = (
+  input: unknown
+): (() => unknown) | (() => Promise<unknown>) | undefined =>
+  typeof input === 'function'
+    ? (input as (() => unknown) | (() => Promise<unknown>))
+    : undefined;
+
+export const itBase = async (
+  titleOrCb: string | (() => unknown | Promise<unknown>),
+  callback?: () => unknown | Promise<unknown>
+): Promise<void> => {
+  try {
+    const title = getTitle(titleOrCb);
+    const hasTitle = typeof title === 'string';
+    const cb = hasTitle ? getCallback(callback) : getCallback(titleOrCb);
+
+    let success = true;
+    let start: [number, number];
+    let end: [number, number];
 
     GLOBAL.reporter.onItStart({ title });
+
+    if (hasTitle) indentation.itDepth++;
 
     if (typeof each.before.cb === 'function') {
       const beforeResult = each.before.cb();
 
       if (beforeResult instanceof Promise) await beforeResult;
     }
-
-    const start = process.hrtime();
 
     const onError = (error: unknown) => {
       process.exitCode = 1;
@@ -41,17 +48,19 @@ export async function itBase(
     process.once('uncaughtException', onError);
     process.once('unhandledRejection', onError);
 
+    start = process.hrtime();
+
     try {
       const resultCb = cb!();
       if (resultCb instanceof Promise) await resultCb;
     } catch (error) {
       onError(error);
     } finally {
+      end = process.hrtime(start);
+
       process.removeListener('uncaughtException', onError);
       process.removeListener('unhandledRejection', onError);
     }
-
-    const end = process.hrtime(start);
 
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();
@@ -63,9 +72,10 @@ export async function itBase(
 
     const duration = end[0] * 1e3 + end[1] / 1e6;
 
+    indentation.itDepth--;
     GLOBAL.reporter.onItEnd({ title, duration, success });
   } catch (error) {
-    indentation.hasItOrTest = false;
+    if (indentation.itDepth > 0) indentation.itDepth--;
 
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();
@@ -75,7 +85,7 @@ export async function itBase(
 
     throw error;
   }
-}
+};
 
 async function itCore(title: string, cb: () => Promise<unknown>): Promise<void>;
 function itCore(title: string, cb: () => unknown): void;
