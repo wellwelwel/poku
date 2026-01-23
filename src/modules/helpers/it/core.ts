@@ -31,6 +31,8 @@ export const itBase = async (
 
     GLOBAL.reporter.onItStart({ title });
 
+    if (hasTitle) indentation.itDepth++;
+
     if (typeof each.before.cb === 'function') {
       const beforeResult = each.before.cb();
 
@@ -70,9 +72,13 @@ export const itBase = async (
 
     const duration = end[0] * 1e3 + end[1] / 1e6;
 
+    indentation.itDepth--;
+
     GLOBAL.reporter.onItEnd({ title, duration, success });
   } catch (error) {
-    indentation.hasItOrTest = false;
+    if (indentation.itDepth > 0) indentation.itDepth--;
+
+    indentation.hasItOrTest = indentation.itDepth > 0;
 
     if (typeof each.after.cb === 'function') {
       const afterResult = each.after.cb();

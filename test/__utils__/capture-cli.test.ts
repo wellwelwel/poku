@@ -13,6 +13,8 @@ export const isBuild = process.env.NODE_ENV === 'build';
 
 export const ext = isBuild ? 'js' : 'ts';
 
+export const stripAnsi = (str: string) => str.replace(/\x1B\[[0-9;]*m/g, '');
+
 type InspectCLIResult = {
   stdout: string;
   stderr: string;
@@ -89,6 +91,7 @@ export const inspectPoku = (
   const basePath =
     typeof options?.cwd === 'string'
       ? options.cwd
+          .replace(/[/\\]/, '')
           .split(/\/|\\/)
           .map(() => '../')
           .join('')
@@ -113,6 +116,7 @@ export const watchCLI = (
   const basePath =
     typeof options?.cwd === 'string'
       ? options.cwd
+          .replace(/[/\\]/, '')
           .split(/\/|\\/)
           .map(() => '../')
           .join('')

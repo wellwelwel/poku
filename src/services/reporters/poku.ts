@@ -34,17 +34,27 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
         );
     },
     onDescribeStart({ title }) {
+      if (!title) return;
+
       indentation.hasDescribe = true;
 
-      log(format(`◌ ${title}`).bold().dim());
+      const indent = '  '.repeat(
+        indentation.describeDepth + indentation.itDepth
+      );
+
+      log(`${indent}${format(`◌ ${title}`).bold().dim()}`);
     },
     onDescribeEnd({ title, duration, success = true }) {
       const status = success ? 'success' : 'fail';
 
-      indentation.hasDescribe = false;
+      const indent = '  '.repeat(
+        indentation.describeDepth + indentation.itDepth
+      );
+
+      indentation.hasDescribe = indentation.describeDepth > 0;
 
       log(
-        `${format(`● ${title}`)[status]().bold()} ${format(
+        `${indent}${format(`● ${title}`)[status]().bold()} ${format(
           `› ${duration.toFixed(6)}ms`
         )
           [status]()
@@ -52,21 +62,27 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       );
     },
     onItStart({ title }) {
-      if (title) {
-        indentation.hasItOrTest = true;
+      if (!title) return;
 
-        log(
-          `${indentation.hasDescribe ? '  ' : ''}${format(`◌ ${title}`).dim()}`
-        );
-      }
+      indentation.hasItOrTest = true;
+
+      const indent = '  '.repeat(
+        indentation.describeDepth + indentation.itDepth
+      );
+
+      log(`${indent}${format(`◌ ${title}`).dim()}`);
     },
     onItEnd({ title, duration, success = true }) {
       const status = success ? 'success' : 'fail';
 
-      indentation.hasItOrTest = false;
+      indentation.hasItOrTest = indentation.itDepth > 0;
+
+      const indent = '  '.repeat(
+        indentation.describeDepth + indentation.itDepth
+      );
 
       log(
-        `${indentation.hasDescribe ? '  ' : ''}${format(`● ${title}`)[status]().bold()} ${format(
+        `${indent}${format(`● ${title}`)[status]().bold()} ${format(
           `› ${duration.toFixed(6)}ms`
         )
           [status]()
@@ -74,10 +90,9 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       );
     },
     onAssertionSuccess({ message }) {
-      let preIdentation = '';
-
-      if (indentation.hasDescribe) preIdentation += '  ';
-      if (indentation.hasItOrTest) preIdentation += '  ';
+      const preIdentation = '  '.repeat(
+        indentation.describeDepth + indentation.itDepth
+      );
 
       const output = `${preIdentation}${format(`✔ ${message}`).success().bold()}`;
 
@@ -86,14 +101,13 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onAssertionFailure({ assertOptions: options, error }) {
       const { cwd } = GLOBAL;
 
-      let preIdentation = '';
+      let preIdentation = '  '.repeat(
+        indentation.describeDepth + indentation.itDepth
+      );
 
       const { code, actual, expected, operator } = error;
       const absolutePath = findFile(error).replace(regexFile, '');
       const file = relative(resolve(cwd), absolutePath);
-
-      if (indentation.hasDescribe) preIdentation += '  ';
-      if (indentation.hasItOrTest) preIdentation += '  ';
 
       let message = '';
 
@@ -142,14 +156,18 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(format(`◯ ${message}`).info().bold());
     },
     onSkipModifier({ message }) {
-      log(
-        `${indentation.hasDescribe ? '  ' : ''}${format(`◯ ${message}`).info().bold()}`
+      const indent = '  '.repeat(
+        indentation.describeDepth + indentation.itDepth
       );
+
+      log(`${indent}${format(`◯ ${message}`).info().bold()}`);
     },
     onTodoModifier({ message }) {
-      log(
-        `${indentation.hasDescribe ? '  ' : ''}${format(`● ${message}`).cyan().bold()}`
+      const indent = '  '.repeat(
+        indentation.describeDepth + indentation.itDepth
       );
+
+      log(`${indent}${format(`● ${message}`).cyan().bold()}`);
     },
     onFileResult({ status, path, duration, output }) {
       stdout.write('\n');

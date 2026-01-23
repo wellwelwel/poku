@@ -1,6 +1,7 @@
 import type { DescribeOptions } from '../../@types/describe.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
+import { indentation } from '../../configs/indentation.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
@@ -26,8 +27,10 @@ export const describeBase = async (
   let end: [number, number];
 
   if (hasTitle) {
-    if (hasCB) reporter.onDescribeStart({ title });
-    else reporter.onDescribeAsTitle(title, options);
+    if (hasCB) {
+      reporter.onDescribeStart({ title });
+      indentation.describeDepth++;
+    } else reporter.onDescribeAsTitle(title, options);
   }
 
   if (!hasCB) return;
@@ -58,6 +61,8 @@ export const describeBase = async (
   if (!title) return;
 
   const duration = end[0] * 1e3 + end[1] / 1e6;
+
+  indentation.describeDepth--;
 
   reporter.onDescribeEnd({ title, duration, success });
 
