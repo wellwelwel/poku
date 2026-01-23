@@ -73,7 +73,6 @@ export const itBase = async (
     const duration = end[0] * 1e3 + end[1] / 1e6;
 
     indentation.itDepth--;
-
     GLOBAL.reporter.onItEnd({ title, duration, success });
   } catch (error) {
     if (indentation.itDepth > 0) indentation.itDepth--;

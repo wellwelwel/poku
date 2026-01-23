@@ -63,7 +63,6 @@ export const describeBase = async (
   const duration = end[0] * 1e3 + end[1] / 1e6;
 
   indentation.describeDepth--;
-
   reporter.onDescribeEnd({ title, duration, success });
 
   GLOBAL.runAsOnly = false;

@@ -36,7 +36,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onDescribeStart({ title }) {
       if (!title) return;
 
-      const indent = '  '.repeat(
+      const indent = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
 
@@ -45,7 +45,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onDescribeEnd({ title, duration, success = true }) {
       const status = success ? 'success' : 'fail';
 
-      const indent = '  '.repeat(
+      const indent = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
 
@@ -60,7 +60,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onItStart({ title }) {
       if (!title) return;
 
-      const indent = '  '.repeat(
+      const indent = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
 
@@ -69,7 +69,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onItEnd({ title, duration, success = true }) {
       const status = success ? 'success' : 'fail';
 
-      const indent = '  '.repeat(
+      const indent = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
 
@@ -82,7 +82,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       );
     },
     onAssertionSuccess({ message }) {
-      const preIdentation = '  '.repeat(
+      const preIdentation = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
 
@@ -93,7 +93,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onAssertionFailure({ assertOptions: options, error }) {
       const { cwd } = GLOBAL;
 
-      let preIdentation = '  '.repeat(
+      let preIdentation = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
 
@@ -148,14 +148,14 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(format(`◯ ${message}`).info().bold());
     },
     onSkipModifier({ message }) {
-      const indent = '  '.repeat(
+      const indent = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
 
       log(`${indent}${format(`◯ ${message}`).info().bold()}`);
     },
     onTodoModifier({ message }) {
-      const indent = '  '.repeat(
+      const indent = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
 
