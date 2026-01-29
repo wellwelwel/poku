@@ -1,5 +1,35 @@
 # Changelog
 
+## [4.0.0](https://github.com/wellwelwel/poku/compare/v3.0.2...v4.0.0) (2026-01-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate Docker functionality to a dedicated package ([#1027](https://github.com/wellwelwel/poku/issues/1027))
+* drop support for Node.js v14 ([#1005](https://github.com/wellwelwel/poku/issues/1005))
+
+### Features
+
+* add dynamic indentation for nested `describe`, `it`, and `test` ([#1039](https://github.com/wellwelwel/poku/issues/1039)) ([c443b1b](https://github.com/wellwelwel/poku/commit/c443b1b8117e89933ea19dea0642781125c1e0f4))
+* support shared resources between isolated processes ([#1008](https://github.com/wellwelwel/poku/issues/1008)) ([60ff5ce](https://github.com/wellwelwel/poku/commit/60ff5ce22358207e1dd0c6701c282bcc7a9d11e5))
+
+
+### Bug Fixes
+
+* adapt to the breaking change in Deno v2.6.6 ([24dfb51](https://github.com/wellwelwel/poku/commit/24dfb51d9bbd2f2bebfa400aa8cfef876dafa464))
+* defer execution of shared resource cleanup to after all tests complete ([#1013](https://github.com/wellwelwel/poku/issues/1013)) ([a7d925b](https://github.com/wellwelwel/poku/commit/a7d925b0ab4db074f3f585a06e40f031959615f2))
+* doesn't interrupt the next `test`, `it` or `describe` on failure ([#1034](https://github.com/wellwelwel/poku/issues/1034)) ([7516449](https://github.com/wellwelwel/poku/commit/75164492331443493b7fa05aa5ca3ba48adc12c1))
+* handle uncaught exceptions and unhandled rejections in `describe`, `it` and `test` methods ([#1035](https://github.com/wellwelwel/poku/issues/1035)) ([c425028](https://github.com/wellwelwel/poku/commit/c425028c24ea897f8e54d4f3a01bc04ec6db5c1a))
+* improve `tsx` handling ([#1020](https://github.com/wellwelwel/poku/issues/1020)) ([ed0d601](https://github.com/wellwelwel/poku/commit/ed0d6014bcb2f0f6340a72c80db15d5600e8ee83))
+* **shared resources:** improve serialization and Windows support ([#1021](https://github.com/wellwelwel/poku/issues/1021)) ([ffab456](https://github.com/wellwelwel/poku/commit/ffab456256ebbac32fbc33d0f076d9ffd076b729))
+* temp adapt to the breaking change in Deno v2.6.6 ([#1040](https://github.com/wellwelwel/poku/issues/1040)) ([24dfb51](https://github.com/wellwelwel/poku/commit/24dfb51d9bbd2f2bebfa400aa8cfef876dafa464))
+
+
+### Miscellaneous Chores
+
+* drop support for Node.js v14 ([#1005](https://github.com/wellwelwel/poku/issues/1005)) ([4b9d2ac](https://github.com/wellwelwel/poku/commit/4b9d2ac26f782741a19c4d86c190b8121fc90dc6))
+* migrate Docker functionality to a dedicated package ([#1027](https://github.com/wellwelwel/poku/issues/1027)) ([86e2832](https://github.com/wellwelwel/poku/commit/86e2832e08313d89f133d54ceae8a151aa488c2e))
+
 ## [3.0.2](https://github.com/wellwelwel/poku/compare/v3.0.1...v3.0.2) (2025-03-19)
 
 
