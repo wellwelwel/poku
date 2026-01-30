@@ -1,31 +1,34 @@
 import type { ChildProcess } from 'node:child_process';
 import type {
   ArgumentsOf,
-  Cleanup,
   IPCEventEmitter,
-  IPCGetMessage,
-  IPCListenable,
   IPCMessage,
   IPCRemoteProcedureCallMessage,
   IPCRemoteProcedureCallResultMessage,
-  IPCResourceNotFoundMessage,
+  IPCRequestResourceMessage,
   IPCResourceResultMessage,
-  IPCResourceUpdatedMessage,
   IPCResponse,
+  MessageHandler,
   MethodsOf,
   MethodsToRPC,
+  ResourceContext,
   ReturnTypeOf,
   RPCResult,
+  SendIPCMessageOptions,
   SharedResource,
   SharedResourceEntry,
 } from '../../@types/shared-resources.js';
+import { readFile } from 'node:fs/promises';
+import { dirname, isAbsolute, resolve } from 'node:path';
 import process, { env } from 'node:process';
+import { pathToFileURL } from 'node:url';
+import { findFile } from '../../parsers/find-file-from-process-arguments.js';
+import { parseImports } from '../../parsers/imports.js';
+import { ResourceRegistry } from './resource-registry.js';
 
 export const SHARED_RESOURCE_MESSAGE_TYPES = {
-  GET_RESOURCE: 'shared_resources_getResource',
+  REQUEST_RESOURCE: 'shared_resources_requestResource',
   RESOURCE_RESULT: 'shared_resources_resourceResult',
-  RESOURCE_NOT_FOUND: 'shared_resources_resourceNotFound',
-  RESOURCE_UPDATED: 'shared_resources_resourceUpdated',
   REMOTE_PROCEDURE_CALL: 'shared_resources_remoteProcedureCall',
   REMOTE_PROCEDURE_CALL_RESULT: 'shared_resources_remoteProcedureCallResult',
 } as const;
@@ -38,25 +41,115 @@ export const assertSharedResourcesActive = () => {
   }
 };
 
-export const createSharedResource = async <T>(
-  name: string,
-  factory: () => T | Promise<T>,
-  cleanup?: Cleanup<T>
-): Promise<{
-  entry: SharedResourceEntry<T>;
-  name: string;
-  cleanup?: Cleanup<T>;
-}> => {
-  const state = await factory();
-  const entry: SharedResourceEntry<T> = {
-    state,
-    subscribers: new Set<(state: T) => void>(),
-  };
+const resourceRegistry = new ResourceRegistry<SharedResourceEntry<unknown>>();
+export const globalRegistry = resourceRegistry.getRegistry();
+export const clearGlobalRegistry = () => resourceRegistry.clear();
 
-  return { entry, name, cleanup };
+export const shared = async <T>(
+  context: ResourceContext<T>
+): Promise<MethodsToRPC<T>> => {
+  const { name } = context;
+
+  // Parent Process (Host)
+  if (!process.send || resourceRegistry.getIsRegistering()) {
+    if (resourceRegistry.has(name)) {
+      return resourceRegistry.get(name)!.state as MethodsToRPC<T>;
+    }
+
+    const state = await context.factory();
+    resourceRegistry.register(name, {
+      state,
+      cleanup: context.cleanup as
+        | ((instance: unknown) => void | Promise<void>)
+        | undefined,
+    });
+
+    return state as MethodsToRPC<T>;
+  }
+
+  const filePath = findFile();
+
+  // Child Process (Test)
+  assertSharedResourcesActive();
+
+  return requestResource(name, filePath) as unknown as MethodsToRPC<T>;
 };
 
-export const remoteProcedureCall = <
+export const sendIPCMessage = <TResponse>(
+  options: SendIPCMessageOptions<TResponse>
+): Promise<TResponse> => {
+  const {
+    message,
+    validator,
+    timeout,
+    emitter = process,
+    sender = process.send?.bind(process),
+  } = options;
+
+  return new Promise((resolve, reject) => {
+    if (!sender) {
+      reject(new Error('IPC sender is not available'));
+      return;
+    }
+
+    let timer: NodeJS.Timeout | undefined;
+
+    const handleMessage = (response: unknown) => {
+      if (validator(response)) {
+        cleanup();
+        resolve(response);
+      }
+    };
+
+    const cleanup = () => {
+      if (timer) clearTimeout(timer);
+      emitter.off('message', handleMessage);
+    };
+
+    if (typeof timeout === 'number' && timeout > 0) {
+      timer = setTimeout(() => {
+        cleanup();
+        reject(new Error(`IPC request timed out after ${timeout}ms`));
+      }, timeout);
+    }
+
+    emitter.on('message', handleMessage);
+
+    try {
+      sender(message);
+    } catch (error) {
+      cleanup();
+      reject(error);
+    }
+  });
+};
+
+const requestResource = async <
+  T extends SharedResource,
+  TResult extends IPCResourceResultMessage<T> = IPCResourceResultMessage<T>,
+>(
+  name: string,
+  filePath: string
+): Promise<MethodsToRPC<T>> => {
+  const requestId = `${name}-${Date.now()}-${Math.random()}`;
+
+  const response = await sendIPCMessage<TResult>({
+    message: {
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REQUEST_RESOURCE,
+      name,
+      filePath,
+      id: requestId,
+    },
+    validator: (message): message is TResult =>
+      (message as TResult)?.type ===
+        SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT &&
+      (message as TResult)?.id === requestId,
+  });
+
+  return constructSharedResourceWithRPCs(response.value, response.rpcs, name);
+};
+
+export const remoteProcedureCall = async <
   TResource,
   TMethod extends MethodsOf<TResource>,
   TMessage extends IPCRemoteProcedureCallResultMessage<
@@ -71,33 +164,35 @@ export const remoteProcedureCall = <
   assertSharedResourcesActive();
   const requestId = `${name}-${String(method)}-${Date.now()}-${Math.random()}`;
 
-  return new Promise((resolve, reject) => {
-    const handleResponse = (message: TMessage) => {
-      if (message.id !== requestId) {
-        return;
-      }
-
-      process.off('message', handleResponse);
-
-      if (message.error) reject(new Error(message.error));
-      else resolve(message.value!);
-    };
-
-    process.on('message', handleResponse);
-
-    process.send?.({
+  const response = await sendIPCMessage<TMessage>({
+    message: {
       type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL,
       name,
       method,
       args,
       id: requestId,
-    } satisfies IPCRemoteProcedureCallMessage);
+    } satisfies IPCRemoteProcedureCallMessage,
+    validator: (message): message is TMessage =>
+      (message as TMessage)?.id === requestId,
   });
+
+  if (response.error) {
+    throw new Error(response.error);
+  }
+
+  return response.value!;
 };
+
+const functionNamesCache = new Map<object, string[]>();
 
 export const extractFunctionNames = <T extends Record<string, unknown>>(
   obj: T
 ) => {
+  const objConstructor = obj.constructor;
+  if (objConstructor && functionNamesCache.has(objConstructor)) {
+    return functionNamesCache.get(objConstructor) as MethodsOf<T>[];
+  }
+
   const seen = new Set<string>();
   let current = obj;
 
@@ -114,44 +209,118 @@ export const extractFunctionNames = <T extends Record<string, unknown>>(
     current = Object.getPrototypeOf(current);
   }
 
-  return Array.from(seen) as MethodsOf<T>[];
+  const result = Array.from(seen) as MethodsOf<T>[];
+  if (objConstructor) {
+    functionNamesCache.set(objConstructor, result as string[]);
+  }
+
+  return result;
 };
 
-export const setupSharedResourceIPC = <T>(
+const messageHandlers: Record<string, MessageHandler> = {
+  [SHARED_RESOURCE_MESSAGE_TYPES.REQUEST_RESOURCE]: (
+    message,
+    registry,
+    child
+  ) =>
+    handleRequestResource(
+      message as IPCRequestResourceMessage,
+      registry,
+      child
+    ),
+  [SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL]: (
+    message,
+    registry,
+    child
+  ) =>
+    handleRemoteProcedureCall(
+      message as IPCRemoteProcedureCallMessage,
+      registry,
+      child
+    ),
+};
+
+export const setupSharedResourceIPC = (
   child: IPCEventEmitter | ChildProcess,
-  registry?: Record<string, SharedResourceEntry<T>>
+  registry: Record<string, SharedResourceEntry<unknown>> = globalRegistry
 ): void => {
-  if (!registry) return;
-
   child.on('message', async (message: IPCMessage) => {
-    switch (message.type) {
-      case SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE: {
-        await handleGetResource(message, registry, child);
-        break;
-      }
-
-      case SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL: {
-        await handleRemoteProcedureCall(message, registry, child);
-        break;
-      }
-
-      default:
-        break;
+    const handler = messageHandlers[message.type];
+    if (handler) {
+      await handler(message, registry, child);
     }
   });
 };
 
-export const handleGetResource = async <T>(
-  message: IPCGetMessage,
-  registry: Record<string, SharedResourceEntry<T>>,
+export const loadResourceFromFile = async (
+  name: string,
+  filePath: string,
+  deps: {
+    readFile?: typeof readFile;
+    importer?: (url: string) => Promise<unknown>;
+    platform?: string;
+  } = Object.create(null)
+): Promise<void> => {
+  const {
+    readFile: readFileFn = readFile,
+    importer = (url: string) => import(url),
+    platform = process.platform,
+  } = deps;
+
+  const content = await readFileFn(filePath, 'utf-8');
+  const imports = parseImports(content);
+  const dir = dirname(filePath);
+
+  for (const imp of imports) {
+    let targetUrl: string;
+
+    if (imp.module.startsWith('.')) {
+      const absolutePath = resolve(dir, imp.module);
+      targetUrl =
+        platform === 'win32' ? pathToFileURL(absolutePath).href : absolutePath;
+    } else if (isAbsolute(imp.module)) {
+      targetUrl =
+        platform === 'win32' ? pathToFileURL(imp.module).href : imp.module;
+    } else {
+      targetUrl = imp.module;
+    }
+
+    const module = (await importer(targetUrl)) as Record<string, unknown>;
+
+    for (const key in module) {
+      if (Object.prototype.hasOwnProperty.call(module, key)) {
+        const exported = module[key] as { name?: unknown; factory?: unknown };
+        if (
+          exported &&
+          typeof exported === 'object' &&
+          exported.name === name &&
+          typeof exported.factory === 'function'
+        ) {
+          await shared(exported as unknown as ResourceContext<unknown>);
+          break;
+        }
+      }
+    }
+  }
+};
+
+export const handleRequestResource = async (
+  message: IPCRequestResourceMessage,
+  registry: Record<string, SharedResourceEntry<unknown>>,
   child: IPCEventEmitter | ChildProcess
 ) => {
+  if (!registry[message.name]) {
+    resourceRegistry.setIsRegistering(true);
+
+    try {
+      await loadResourceFromFile(message.name, message.filePath);
+    } finally {
+      resourceRegistry.setIsRegistering(false);
+    }
+  }
+
   const entry = registry[message.name];
   if (!entry) {
-    child.send({
-      type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND,
-      name: message.name,
-    } satisfies IPCResourceNotFoundMessage);
     return;
   }
 
@@ -163,150 +332,96 @@ export const handleGetResource = async <T>(
     value: entry.state,
     rpcs,
     id: message.id,
-  } satisfies IPCResourceResultMessage<T>);
-
-  const subscriber = (state: T) => {
-    child.send({
-      type: SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED,
-      name: message.name,
-      value: state,
-      rpcs,
-    } satisfies IPCResourceUpdatedMessage<T>);
-  };
-
-  entry.subscribers.add(subscriber);
-  const cleanup = () => entry.subscribers.delete(subscriber);
-  child.once('exit', cleanup);
-  child.once('disconnect', cleanup);
+  } satisfies IPCResourceResultMessage<unknown>);
 };
 
-export const handleRemoteProcedureCall = async <T>(
+export const handleRemoteProcedureCall = async (
   message: IPCRemoteProcedureCallMessage,
-  registry: Record<string, SharedResourceEntry<T>>,
+  registry: Record<string, SharedResourceEntry<unknown>>,
   child: IPCEventEmitter | ChildProcess
 ) => {
   const entry = registry[message.name];
-  if (!entry) return;
+  if (!entry) {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      error: `Resource "${message.name}" not found`,
+    } satisfies IPCResponse);
+    return;
+  }
 
   const methodKey = message.method as MethodsOf<typeof entry.state>;
-  if (!methodKey) return;
+  if (!methodKey) {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      error: 'Method name is missing',
+    } satisfies IPCResponse);
+    return;
+  }
 
-  const methodCandidate = entry.state[methodKey];
-  if (typeof methodCandidate !== 'function') return;
+  const methodCandidate = (entry.state as Record<string, unknown>)[
+    methodKey as string
+  ];
+  if (typeof methodCandidate !== 'function') {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      error: `Method "${String(methodKey)}" not found on resource "${message.name}"`,
+    } satisfies IPCResponse);
+    return;
+  }
 
-  const method = methodCandidate.bind(entry.state);
-  const result = await method(...(message.args || []));
+  try {
+    const method = methodCandidate.bind(entry.state);
+    const result = await method(...(message.args || []));
 
-  for (const subscriber of entry.subscribers) subscriber(entry.state);
-
-  child.send({
-    type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
-    id: message.id,
-    value: {
-      result,
-      latest: entry.state,
-    },
-  } satisfies IPCResponse);
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      value: {
+        result,
+        latest: entry.state,
+      },
+    } satisfies IPCResponse);
+  } catch (error) {
+    child.send({
+      type: SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL_RESULT,
+      id: message.id,
+      error: error instanceof Error ? error.message : String(error),
+    } satisfies IPCResponse);
+  }
 };
 
-const functionToRPC = <T extends object, K extends MethodsOf<T>>(
-  resource: T,
-  key: K,
-  name: string
-) => {
-  return async (...args: ArgumentsOf<T[K]>) => {
-    const rpcResult = await remoteProcedureCall<T, K>(name, key, ...args);
-    if (!rpcResult) {
-      throw new Error(
-        `Failed to call remote procedure ${String(key)} on resource ${name}`
-      );
-    }
-
-    Object.assign(resource, rpcResult.latest);
-    return rpcResult.result;
-  };
-};
-
-export const constructSharedResourceWithRPCs = <T extends object>(
+export const constructSharedResourceWithRPCs = <T extends SharedResource>(
   resource: T,
   rpcs: MethodsOf<T>[],
   name: string
 ): MethodsToRPC<T> => {
   if (rpcs.length === 0) return resource as MethodsToRPC<T>;
 
-  for (const key of rpcs)
-    Object.assign(resource, { [key]: functionToRPC(resource, key, name) });
+  return new Proxy(resource, {
+    get(target, prop, receiver) {
+      if (rpcs.includes(prop as MethodsOf<T>)) {
+        return async (...args: ArgumentsOf<T[MethodsOf<T>]>) => {
+          const rpcResult = await remoteProcedureCall<T, MethodsOf<T>>(
+            name,
+            prop as MethodsOf<T>,
+            ...args
+          );
 
-  return resource as MethodsToRPC<T>;
-};
+          for (const rpcKey of rpcs) {
+            if (rpcKey in rpcResult.latest) {
+              delete rpcResult.latest[rpcKey];
+            }
+          }
 
-export const getSharedResource = <
-  T extends SharedResource,
-  TResult extends IPCListenable<T> = IPCListenable<T>,
->(
-  name: string
-): Promise<[MethodsToRPC<T>, () => void]> => {
-  assertSharedResourcesActive();
+          Object.assign(target, rpcResult.latest);
+          return rpcResult.result;
+        };
+      }
 
-  let resourceProxy: MethodsToRPC<T> = Object.create(null);
-  let resolved = false;
-
-  const requestId = `${name}-${Date.now()}-${Math.random()}`;
-
-  const handleResponse = (
-    response: TResult,
-    callback: (value: MethodsToRPC<T>) => void
-  ) => {
-    if (
-      response.type === SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT &&
-      response.id === requestId &&
-      !resolved
-    ) {
-      resourceProxy = constructSharedResourceWithRPCs(
-        response.value as T,
-        response.rpcs,
-        name
-      );
-
-      resolved = true;
-      callback(resourceProxy);
-      return;
-    }
-
-    if (
-      response.type === SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED &&
-      response.name === name &&
-      resourceProxy
-    ) {
-      Object.assign(
-        resourceProxy,
-        constructSharedResourceWithRPCs(
-          response.value as T,
-          response.rpcs,
-          name
-        )
-      );
-    }
-  };
-
-  return new Promise<[MethodsToRPC<T>, () => void]>((resolve) => {
-    const handleResponseWrapper = (message: unknown) => {
-      handleResponse(message as TResult, (value) => {
-        resolve([
-          value,
-          () => {
-            process.removeListener('message', handleResponseWrapper);
-          },
-        ]);
-      });
-    };
-
-    process.on('message', handleResponseWrapper);
-
-    process.send?.({
-      type: SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE,
-      name,
-      id: requestId,
-    } satisfies IPCGetMessage);
-  });
+      return Reflect.get(target, prop, receiver);
+    },
+  }) as MethodsToRPC<T>;
 };

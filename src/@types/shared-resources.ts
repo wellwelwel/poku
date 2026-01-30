@@ -1,4 +1,4 @@
-import type { Serializable } from 'node:child_process';
+import type { ChildProcess, Serializable } from 'node:child_process';
 import type EventEmitter from 'node:events';
 import type { SHARED_RESOURCE_MESSAGE_TYPES } from '../modules/helpers/shared-resources.js';
 
@@ -6,18 +6,31 @@ export interface IPCEventEmitter extends EventEmitter {
   send: (message: unknown, ...args: unknown[]) => boolean;
 }
 
+export type ResourceContext<T> = {
+  name: string;
+  factory: () => T | Promise<T>;
+  cleanup?: (instance: T) => void | Promise<void>;
+};
+
 export interface SharedResourceEntry<T = unknown> {
   state: T;
-  subscribers: Set<(state: T) => void>;
+  cleanup?: (instance: T) => void | Promise<void>;
 }
 
 export type SharedResource = Record<string, unknown>;
 
-export type IPCGetMessage = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.GET_RESOURCE;
+export type IPCRequestResourceMessage = {
+  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REQUEST_RESOURCE;
   name: string;
+  filePath: string;
   id: string;
 };
+
+export type MessageHandler = (
+  message: IPCMessage,
+  registry: Record<string, SharedResourceEntry<unknown>>,
+  child: IPCEventEmitter | ChildProcess
+) => Promise<void>;
 
 export type IPCRemoteProcedureCallMessage = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL;
@@ -27,28 +40,22 @@ export type IPCRemoteProcedureCallMessage = {
   args: unknown[];
 };
 
-export type IPCMessage = IPCGetMessage | IPCRemoteProcedureCallMessage;
+export type IPCMessage =
+  | IPCRequestResourceMessage
+  | IPCRemoteProcedureCallMessage;
 
-export type IPCResourceNotFoundMessage = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_NOT_FOUND;
-  name: string;
+export type SendIPCMessageOptions<TResponse> = {
+  message: { id: string; [key: string]: unknown };
+  validator: (response: unknown) => response is TResponse;
+  timeout?: number;
+  emitter?: EventEmitter | IPCEventEmitter | ChildProcess;
+  sender?: (message: unknown) => void;
 };
 
 export type IPCResourceResultMessage<T = unknown> = {
   type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_RESULT;
   name: string;
   id: string;
-  value: T;
-  rpcs: MethodsOf<T>[];
-};
-
-export type IPCListenable<T> =
-  | IPCResourceResultMessage<T>
-  | IPCResourceUpdatedMessage<T>;
-
-export type IPCResourceUpdatedMessage<T = unknown> = {
-  type: typeof SHARED_RESOURCE_MESSAGE_TYPES.RESOURCE_UPDATED;
-  name: string;
   value: T;
   rpcs: MethodsOf<T>[];
 };
@@ -62,7 +69,6 @@ export type IPCRemoteProcedureCallResultMessage<T = unknown> = {
 
 export type IPCResponse =
   | IPCResourceResultMessage
-  | IPCResourceUpdatedMessage
   | IPCRemoteProcedureCallResultMessage;
 
 export type RPCResult<TResult, TResource> = {
@@ -103,3 +109,28 @@ export type Cleanup<T = SharedResourceEntry> = (
 ) => void | Promise<void>;
 
 export type Registry = Record<string, SharedResourceEntry>;
+
+export type ImportMember = {
+  name: string;
+  alias: string;
+  type: 'default' | 'named' | 'namespace';
+};
+
+export type ImportDefinition = {
+  module: string;
+  members: ImportMember[];
+  kind: 'esm' | 'cjs' | 'dynamic';
+};
+
+export type RequireDefinition = {
+  result?: ImportDefinition;
+  newIndex: number;
+};
+
+export type TokenType = 'keyword' | 'identifier' | 'string' | 'punctuation';
+
+export type Token = {
+  type: TokenType;
+  value: string;
+  index: number;
+};
