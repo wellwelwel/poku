@@ -22,7 +22,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { dirname, isAbsolute, resolve } from 'node:path';
 import process, { env } from 'node:process';
 import { pathToFileURL } from 'node:url';
-import { findFile } from '../../parsers/find-file-from-process-arguments.js';
+import { GLOBAL } from '../../configs/poku.js';
 import { parseImports } from '../../parsers/imports.js';
 import { ResourceRegistry } from './resource-registry.js';
 
@@ -67,12 +67,14 @@ export const shared = async <T>(
     return state as MethodsToRPC<T>;
   }
 
-  const filePath = findFile();
-
-  // Child Process (Test)
   assertSharedResourcesActive();
 
-  return requestResource(name, filePath) as unknown as MethodsToRPC<T>;
+  // GLOBAL may be removed in a future version; for now, we use it to get the current file path
+  // for the process requesting the shared resource.
+  if (!GLOBAL.FILE)
+    throw new Error('POKU_FILE is not defined in the environment.');
+
+  return requestResource(name, GLOBAL.FILE) as unknown as MethodsToRPC<T>;
 };
 
 export const sendIPCMessage = <TResponse>(
