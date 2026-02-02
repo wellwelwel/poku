@@ -12,183 +12,218 @@ import { Stability } from '@site/src/components/Stability';
   records={[
     {
       version: '3.0.3-canary.60ff5ce2',
-      changes: [<>Introduce Shared Resources.</>],
+      changes: [<>Introdução de Recursos Compartilhados.</>],
     },
     {
       version: '3.0.3-canary.ffab4562',
-      changes: [<>Improved serialization and Windows support.</>],
+      changes: [<>Serialização melhorada e suporte a Windows.</>],
+    },
+    {
+      version: '3.0.3+',
+      changes: [<>API refatorizada com limpeza automática, lazy loading e inferência de tipos.</>],
     },
   ]}
 />
 
 <Stability level={1} />
 
-Compartilhe estado e métodos entre arquivos e processos de teste, permitindo padrões avançados de integração e testes end-to-end.
+Compartilhe estado e métodos entre arquivos de teste e processos, habilitando padrões avançados de testes de integração e end-to-end.
 
 ## O que são Recursos Compartilhados?
 
-**Recursos Compartilhados** permitem que você defina um recurso (objeto, estado ou API) em um único arquivo e acesse ou altere esse recurso a partir de múltiplos arquivos ou processos de teste. Isso é útil para cenários como:
+**Recursos Compartilhados** permitem que você defina um recurso com estado uma vez e o acesse a partir de múltiplos arquivos de teste e processos. Cada teste obtém a mesma instância de recurso, permitindo que você:
 
-- Compartilhar uma conexão de banco de dados ou armazenamento em memória.
-- Coordenar estado entre testes paralelos ou sequenciais.
-- Implementar lógica de setup/teardown entre arquivos.
+- Compartilhe conexões de banco de dados, armazenamentos em memória ou clientes de API entre testes.
+- Coordene estado e asserções entre testes paralelos ou sequenciais.
+- Gerencie a lógica de setup e teardown em um único lugar.
+
+O sistema de recursos lida automaticamente com comunicação entre processos, serialização e limpeza — para que você possa focar em escrever testes.
 
 ## Uso Básico
 
-### 1. Defina um Recurso Compartilhado
+### 1. Defina um Contexto de Recurso
 
-Crie um arquivo `.resource.ts` e exporte um recurso compartilhado usando `createSharedResource`:
+Crie um arquivo de recurso e exporte um objeto de contexto:
 
 ```ts
-import { createSharedResource } from 'poku';
-
-export default createSharedResource('sharedCounter', () => {
-  let count = 0;
-  return {
-    getCount: () => count,
-    increment: () => ++count,
-    reset: () => {
-      count = 0;
+// counter.ts
+export const CounterContext = {
+  name: 'shared-counter',
+  factory: () => ({
+    count: 0,
+    inc() {
+      this.count++;
+      return this.count;
     },
-  };
+    get() {
+      return this.count;
+    },
+  }),
+};
+```
+
+O contexto possui duas propriedades:
+- **`name`**: Um identificador único para o recurso compartilhado
+- **`factory`**: Uma função que retorna o objeto de recurso com métodos
+
+### 2. Acesse o Recurso nos Testes
+
+Use a função `shared()` para obter o recurso. Ela lida automaticamente com a limpeza:
+
+```ts
+import { test, assert, shared } from 'poku';
+import { CounterContext } from './counter';
+
+test('incrementar contador', async () => {
+  const counter = await shared(CounterContext);
+
+  const current = await counter.get();
+  assert.equal(current, 0);
+
+  await counter.inc();
+  assert.equal(await counter.get(), 1);
 });
 ```
 
-### 2. Acesse o Recurso Compartilhado nos Testes
+### 3. Métodos são Chamadas de Procedimento Remoto
 
-Use `getSharedResource` em qualquer arquivo de teste para acessar e chamar métodos do recurso compartilhado:
+Todos os métodos no seu recurso se tornam RPCs assíncronos que funcionam entre processos. O estado é sincronizado automaticamente:
 
 ```ts
-import { getSharedResource, test, assert } from 'poku';
+test('estado compartilhado entre testes', async () => {
+  const counter = await shared(CounterContext);
 
-test('incrementa o contador', async () => {
-  const [counter, detach] = await getSharedResource('sharedCounter');
-  await counter.increment();
-  assert.equal(await counter.getCount(), 1);
-  detach();
+  // Isto obtém o estado atual do recurso
+  const value = await counter.get();
+  assert.equal(value, 1); // reflete mudanças de outros testes
+
+  // Isto muta o estado compartilhado
+  await counter.inc();
 });
 ```
 
-### 3. Métodos se Tornam Chamadas de Procedimento Remoto
+## Exemplo do Mundo Real
 
-Todas as funções do seu recurso se tornam chamadas de procedimento remoto (RPCs), então você pode alterar ou ler o estado compartilhado com segurança entre processos.
+Aqui está um exemplo completo de dois testes compartilhando um contador:
 
-É importante notar que os argumentos são serializados usando JSON Serialization durante a comunicação entre diferentes processos,
-o que significa que alguns tipos complexos (como funções) não são suportados neste momento.
-
-### 4. Desanexando o Recurso
-
-Quando você chama `getSharedResource`, ele retorna uma tupla com o recurso e uma função `detach`.
-**É essencial sempre chamar `detach` ao final do seu teste**: isso cancela a inscrição do seu processo de teste
-nas atualizações do recurso compartilhado, garantindo a limpeza adequada e prevenindo vazamentos de memória.
-Se você não chamar `detach`, seu processo permanecerá inscrito, o que pode levar a vazamentos de recursos,
-uso desnecessário de memória e problemas de isolamento de testes. Ao sempre chamar `detach`, você mantém
-seu ambiente de teste limpo, previsível e livre de efeitos colaterais causados por inscrições remanescentes.
+**counter.ts**
 
 ```ts
-test('desanexa o recurso', async () => {
-  const [counter, detach] = await getSharedResource('sharedCounter');
-  await counter.increment();
-  assert.equal(await counter.getCount(), 1);
-  detach(); // Limpa o recurso
+export const CounterContext = {
+  name: 'shared-counter',
+  factory: () => ({
+    count: 0,
+    inc() {
+      this.count++;
+      return this.count;
+    },
+    get() {
+      return this.count;
+    },
+  }),
+};
+```
+
+**test-a.test.ts**
+
+```ts
+import { assert, test, shared } from 'poku';
+import { CounterContext } from './counter';
+
+test('Test A: Incrementar Contador', async () => {
+  const counter = await shared(CounterContext);
+
+  const current = await counter.get();
+  assert.strictEqual(current, 0, 'Deve iniciar em 0');
+
+  await counter.inc();
+  assert.strictEqual(await counter.get(), 1, 'Deve ser 1 após incremento');
 });
 ```
 
-### 5. Lógica de Limpeza
-
-Você pode definir uma função de limpeza ao criar o recurso. Ela será chamada quando o recurso não for mais necessário:
+**test-b.test.ts**
 
 ```ts
-export default createSharedResource(
-  'sharedCounter',
-  () => {
-    let count = 0;
-    return {
-      getCount: () => count,
-      increment: () => ++count,
-      reset: () => {
-        count = 0;
-      },
-    };
-  },
-  (resource) => {
-    // Lógica de limpeza
-    resource.reset();
-  }
-);
-```
+import { assert, test, shared, waitForExpectedResult } from 'poku';
+import { CounterContext } from './counter';
 
-## Exemplos do Mundo Real
+test('Test B: Verificar Estado do Contador', async () => {
+  const counter = await shared(CounterContext);
 
-### 1. Cache LRU Compartilhado (`lru.min`)
+  // Se você precisar que o resultado do Test A esteja pronto antes de prosseguir,
+  // é recomendado aguardar o estado esperado para evitar instabilidade.
+  await waitForExpectedResult(counter.get, 1);
 
-Compartilhe um cache LRU em memória entre testes:
-
-**lru.resource.ts**
-
-```ts
-import { createSharedResource } from 'poku';
-import { createLRU } from 'lru.min';
-
-export default createSharedResource('lru', () => {
-  const cache = createLRU({ max: 3 });
-  return cache;
+  await counter.inc();
+  assert.strictEqual(await counter.get(), 2, 'Deve ser 2 após incremento');
 });
 ```
 
-**cache.test.ts**
+Quando estes testes são executados, eles compartilham a mesma instância do contador. O Test B vê as mudanças de estado feitas pelo Test A.
+
+## Uso Avançado
+
+### Inicialização Assíncrona
+
+Recursos podem ser inicializados de forma assíncrona:
 
 ```ts
-import { getSharedResource, test, assert } from 'poku';
-
-test('pode compartilhar cache', async () => {
-  const [cache, detach] = await getSharedResource('lru');
-  await cache.set('foo', 123);
-  assert((await cache.get('foo')) === 123);
-  detach();
-});
-```
-
----
-
-### 2. Conexão MySQL Compartilhada (`mysql2`)
-
-Compartilhe uma única conexão MySQL entre testes:
-
-**mysql.resource.ts**
-
-```ts
-import { createSharedResource } from 'poku';
 import mysql from 'mysql2/promise';
 
-export default createSharedResource(
-  'mysql',
-  async () => {
+export const DatabaseContext = {
+  name: 'shared-db',
+  factory: async () => {
     const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
       database: 'test',
     });
-    return connection;
+
+    return {
+      query: (sql) => connection.query(sql),
+      close: () => connection.end(),
+    };
   },
-  (connection) => {
-    // Função de limpeza para fechar a conexão
-    return connection.destroy();
-  }
-);
+  cleanup: async (db) => {
+    await db.close();
+  },
+};
 ```
 
-**db.test.ts**
+### Limpeza de Recurso
+
+Para executar limpeza quando o recurso é destruído, use uma função de limpeza opcional na factory:
 
 ```ts
-import { getSharedResource, test, assert } from 'poku';
+export const CacheContext = {
+  name: 'shared-cache',
+  factory: () => {
+    const cache = new Map();
 
-test('pode consultar usuários', async () => {
-  const [db, detach] = await getSharedResource('mysql');
-  const [rows] = await db.query('SELECT * FROM users LIMIT 10');
+    const resource = {
+      set: (key, value) => cache.set(key, value),
+      get: (key) => cache.get(key),
+    };
 
-  assert(Array.isArray(rows));
-  assert.equal(rows.length, 10);
-  detach();
-});
+    return resource;
+  },
+  // Função de limpeza opcional
+  cleanup: (resource) => {
+    resource.clear();
+  },
+};
 ```
+
+## Notas Importantes
+
+### Serialização
+
+Argumentos e valores de retorno são serializados usando serialização JSON quando comunicados entre processos. Tipos complexos como funções, referências circulares ou instâncias de classes personalizadas não são suportados. Mantenha seus métodos de recurso simples com tipos básicos: strings, números, booleanos, arrays e objetos.
+
+### Nomenclatura
+
+Cada recurso deve ter um `name` único. Reutilizar o mesmo nome em contextos diferentes fará com que compartilhem estado, o que pode ser útil para testes de integração, mas pode ser inesperado.
+
+### Carregamento Preguiçoso
+
+Recursos são criados sob demanda na primeira vez que você chama `shared(ResourceContext)`. Se um teste nunca acessa um recurso, ele nunca é criado.

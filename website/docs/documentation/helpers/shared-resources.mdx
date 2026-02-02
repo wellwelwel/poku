@@ -18,6 +18,10 @@ import { Stability } from '@site/src/components/Stability';
       version: '3.0.3-canary.ffab4562',
       changes: [<>Improved serialization and Windows support.</>],
     },
+    {
+      version: '3.0.3+',
+      changes: [<>Refactored API with automatic cleanup, lazy loading, and type inference.</>],
+    },
   ]}
 />
 
@@ -27,168 +31,199 @@ Share state and methods between test files and processes, enabling advanced inte
 
 ## What are Shared Resources?
 
-**Shared Resources** allow you to define a resource (object, state, or API) in a single file and access or mutate it from multiple test files or processes. This is useful for scenarios like:
+**Shared Resources** enable you to define a stateful resource once and access it from multiple test files and processes. Each test gets the same resource instance, allowing you to:
 
-- Sharing a database connection or in-memory store.
-- Coordinating state between parallel or sequential tests.
-- Implementing cross-file setup/teardown logic.
+- Share database connections, in-memory stores, or API clients across tests.
+- Coordinate state and assertions between parallel or sequential tests.
+- Manage setup and teardown logic in one place.
+
+The resource system automatically handles inter-process communication, serialization, and cleanup — so you can focus on writing tests.
 
 ## Basic Usage
 
-### 1. Define a Shared Resource
+### 1. Define a Resource Context
 
-Create a `.resource.ts` file and export a shared resource using `createSharedResource` :
+Create a resource file and export a context object:
 
 ```ts
-import { createSharedResource } from 'poku';
-
-export default createSharedResource('sharedCounter', () => {
-  let count = 0;
-  return {
-    getCount: () => count,
-    increment: () => ++count,
-    reset: () => {
-      count = 0;
+// counter.ts
+export const CounterContext = {
+  name: 'shared-counter',
+  factory: () => ({
+    count: 0,
+    inc() {
+      this.count++;
+      return this.count;
     },
-  };
+    get() {
+      return this.count;
+    },
+  }),
+};
+```
+
+The context has two properties:
+- **`name`**: A unique identifier for the shared resource
+- **`factory`**: A function that returns the resource object with methods
+
+### 2. Access the Resource in Tests
+
+Use the `shared()` function to get the resource. It automatically handles cleanup:
+
+```ts
+import { test, assert, shared } from 'poku';
+import { CounterContext } from './counter';
+
+test('increment counter', async () => {
+  const counter = await shared(CounterContext);
+
+  const current = await counter.get();
+  assert.equal(current, 0);
+
+  await counter.inc();
+  assert.equal(await counter.get(), 1);
 });
 ```
 
-### 2. Access the Shared Resource in Tests
+### 3. Methods are Remote Procedure Calls
 
-Use `getSharedResource` in any test file to access and call methods on the shared resource:
+All methods on your resource become async RPCs that work across processes. State is automatically synchronized:
 
 ```ts
-import { getSharedResource, test, assert } from 'poku';
+test('shared state across tests', async () => {
+  const counter = await shared(CounterContext);
 
-test('increments the counter', async () => {
-  const [counter, detach] = await getSharedResource('sharedCounter');
-  await counter.increment();
-  assert.equal(await counter.getCount(), 1);
-  detach();
+  // This gets the current state from the resource
+  const value = await counter.get();
+  assert.equal(value, 1); // reflects changes from other tests
+
+  // This mutates the shared state
+  await counter.inc();
 });
 ```
 
-### 3. Methods Become Remote Procedure Calls
+## Real-World Example
 
-All functions on your resource become remote procedure calls (RPCs), so you can safely mutate or read shared state across processes.
+Here's a complete example of two tests sharing a counter:
 
-It's important to notice that arguments are serialized using JSON Serialization during communication between different procceses,
-meaning some complex types (as functions) are not supported at this time.
-
-### 4. Detach the Resource
-
-When you call `getSharedResource`, it returns a tuple with the resource and a `detach` function.
-**It is essential to always call `detach` at the end of your test**: this unsubscribes your test
-process from updates to the shared resource, ensuring proper cleanup and preventing memory leaks.
-If you do not call `detach`, your process will remain subscribed, which can lead to resource
-leaks, unnecessary memory usage, and test isolation issues. By always calling `detach`, you keep
-your test environment clean, predictable, and free from side effects caused by lingering subscriptions.
+**counter.ts**
 
 ```ts
-test('detaches of the resource', async () => {
-  const [counter, detach] = await getSharedResource('sharedCounter');
-  await counter.increment();
-  assert.equal(await counter.getCount(), 1);
-  detach(); // Clean up the resource
+export const CounterContext = {
+  name: 'shared-counter',
+  factory: () => ({
+    count: 0,
+    inc() {
+      this.count++;
+      return this.count;
+    },
+    get() {
+      return this.count;
+    },
+  }),
+};
+```
+
+**test-a.test.ts**
+
+```ts
+import { assert, test, shared } from 'poku';
+import { CounterContext } from './counter';
+
+test('Test A: Increment Counter', async () => {
+  const counter = await shared(CounterContext);
+
+  const current = await counter.get();
+  assert.strictEqual(current, 0, 'Should start at 0');
+
+  await counter.inc();
+  assert.strictEqual(await counter.get(), 1, 'Should be 1 after increment');
 });
 ```
 
-### 5. Cleanup Logic
-
-You can define a cleanup function when creating the resource. This will be called when the resource is no longer needed:
+**test-b.test.ts**
 
 ```ts
-export default createSharedResource(
-  'sharedCounter',
-  () => {
-    let count = 0;
-    return {
-      getCount: () => count,
-      increment: () => ++count,
-      reset: () => {
-        count = 0;
-      },
-    };
-  },
-  (resource) => {
-    // Cleanup logic
-    resource.reset();
-  }
-);
-```
+import { assert, test, shared, waitForExpectedResult } from 'poku';
+import { CounterContext } from './counter';
 
-## Real-World Examples
+test('Test B: Verify Counter State', async () => {
+  const counter = await shared(CounterContext);
 
-### 1. Shared LRU Cache ( `lru.min` )
+  // If you need the outcome of Test A to be ready before proceeding,
+  // It is recommended to wait for the expected state to avoid flakiness.
+  await waitForExpectedResult(counter.get, 1);
 
-Share an in-memory LRU cache between tests:
-
-**lru.resource.ts**
-
-```ts
-import { createSharedResource } from 'poku';
-import { createLRU } from 'lru.min';
-
-export default createSharedResource('lru', () => {
-  const cache = createLRU({ max: 3 });
-  return cache;
+  await counter.inc();
+  assert.strictEqual(await counter.get(), 2, 'Should be 2 after increment');
 });
 ```
 
-**cache.test.ts**
+When these tests run, they share the same counter instance. Test B sees the state changes made by Test A.
+
+## Advanced Usage
+
+### Async Initialization
+
+Resources can be initialized asynchronously:
 
 ```ts
-import { getSharedResource, test, assert } from 'poku';
-
-test('can share cache', async () => {
-  const [cache, detach] = await getSharedResource('lru');
-  await cache.set('foo', 123);
-  assert((await cache.get('foo')) === 123);
-  detach();
-});
-```
-
----
-
-### 2. Shared MySQL Connection ( `mysql2` )
-
-Share a single MySQL connection across tests:
-
-**mysql.resource.ts**
-
-```ts
-import { createSharedResource } from 'poku';
 import mysql from 'mysql2/promise';
 
-export default createSharedResource(
-  'mysql',
-  async () => {
+export const DatabaseContext = {
+  name: 'shared-db',
+  factory: async () => {
     const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
       database: 'test',
     });
-    return connection;
+
+    return {
+      query: (sql) => connection.query(sql),
+      close: () => connection.end(),
+    };
   },
-  (connection) => {
-    // Cleanup function to close the connection
-    return connection.destroy();
-  }
-);
+  cleanup: async (db) => {
+    await db.close();
+  },
+};
 ```
 
-**db.test.ts**
+### Resource Cleanup
+
+To perform cleanup when the resource is destroyed, use an optional cleanup function in the factory:
 
 ```ts
-import { getSharedResource, test, assert } from 'poku';
+export const CacheContext = {
+  name: 'shared-cache',
+  factory: () => {
+    const cache = new Map();
 
-test('can query users', async () => {
-  const [db, detach] = await getSharedResource('mysql');
-  const [rows] = await db.query('SELECT * FROM users LIMIT 10');
+    const resource = {
+      set: (key, value) => cache.set(key, value),
+      get: (key) => cache.get(key),
+    };
 
-  assert(Array.isArray(rows));
-  assert.equal(rows.length, 10);
-  detach();
-});
+    return resource;
+  },
+  // Optional cleanup function
+  cleanup: (instance) => {
+    instance.clear();
+  },
+};
 ```
+
+## Important Notes
+
+### Serialization
+
+Arguments and return values are serialized using JSON serialization when communicated between processes. Complex types like functions, circular references, or custom class instances are not supported. Keep your resource methods simple with basic types: strings, numbers, booleans, arrays, and objects.
+
+### Naming
+
+Each resource must have a unique `name`. Reusing the same name in different contexts will cause them to share state, which can be useful for integration tests but may be unexpected.
+
+### Lazy Loading
+
+Resources are created on-demand the first time you call `shared(ResourceContext)`. If a test never accesses a resource, it's never created.
