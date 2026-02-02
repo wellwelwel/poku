@@ -9,15 +9,10 @@ import { test } from '../../src/modules/helpers/test.js';
 
 const testDir = 'test/__fixtures__/.temp/shared-resources-extension-resolution';
 
-const createTestSetup = async (
-  baseFileName: string,
-  actualExt: string,
-  importExt: string
-) => {
+const createTestSetup = async (actualExt: string, importExt: string) => {
   await mkdir(testDir, { recursive: true });
 
-  // Create the actual source file with actualExt
-  const sourcePath = join(testDir, `${baseFileName}${actualExt}`);
+  const sourcePath = join(testDir, `resource${actualExt}`);
   await writeFile(
     sourcePath,
     `export const TestResource = {
@@ -26,8 +21,7 @@ const createTestSetup = async (
 };`
   );
 
-  // Create the test file that imports with importExt
-  const testPath = join(testDir, `test-${baseFileName}${importExt}.ts`);
+  const testPath = join(testDir, `test-resource${importExt}.ts`);
   await writeFile(
     testPath,
     `import { TestResource } from './resource${importExt}';
@@ -86,7 +80,6 @@ test(async () => {
     for (const testCase of testCases) {
       await it(testCase.name, async () => {
         const { testPath } = await createTestSetup(
-          'resource',
           testCase.actualExt,
           testCase.importExt
         );
