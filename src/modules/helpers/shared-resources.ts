@@ -18,7 +18,7 @@ import type {
   SharedResource,
   SharedResourceEntry,
 } from '../../@types/shared-resources.js';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { dirname, isAbsolute, resolve } from 'node:path';
 import process, { env } from 'node:process';
 import { pathToFileURL } from 'node:url';
@@ -252,6 +252,51 @@ export const setupSharedResourceIPC = (
   });
 };
 
+const extensions = [
+  '.js',
+  '.cjs',
+  '.mjs',
+  '.ts',
+  '.cts',
+  '.mts',
+  '.jsx',
+  '.tsx',
+];
+
+const extensionsRegex = /\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)$/;
+
+const resolveFileWithExtension = async (
+  basePath: string,
+  statFn: typeof stat = stat
+): Promise<string | null> => {
+  try {
+    await statFn(basePath);
+    return basePath;
+  } catch {}
+
+  for (const ext of extensions) {
+    const pathWithExt = `${basePath}${ext}`;
+    try {
+      await statFn(pathWithExt);
+      return pathWithExt;
+    } catch {}
+  }
+
+  const hasExtension = extensionsRegex.test(basePath);
+  if (hasExtension) {
+    const withoutExt = basePath.replace(extensionsRegex, '');
+    for (const ext of extensions) {
+      const pathWithExt = `${withoutExt}${ext}`;
+      try {
+        await statFn(pathWithExt);
+        return pathWithExt;
+      } catch {}
+    }
+  }
+
+  return null;
+};
+
 export const loadResourceFromFile = async (
   name: string,
   filePath: string,
@@ -259,12 +304,14 @@ export const loadResourceFromFile = async (
     readFile?: typeof readFile;
     importer?: (url: string) => Promise<unknown>;
     platform?: string;
+    stat?: typeof stat;
   } = Object.create(null)
 ): Promise<void> => {
   const {
     readFile: readFileFn = readFile,
     importer = (url: string) => import(url),
     platform = process.platform,
+    stat: statFn = stat,
   } = deps;
 
   const content = await readFileFn(filePath, 'utf-8');
@@ -273,14 +320,21 @@ export const loadResourceFromFile = async (
 
   for (const imp of imports) {
     let targetUrl: string;
+    let resolvedPath: string | null = null;
 
     if (imp.module.startsWith('.')) {
       const absolutePath = resolve(dir, imp.module);
+      // Try to resolve the actual file with proper extension
+      resolvedPath = await resolveFileWithExtension(absolutePath, statFn);
+      const finalPath = resolvedPath || absolutePath;
       targetUrl =
-        platform === 'win32' ? pathToFileURL(absolutePath).href : absolutePath;
+        platform === 'win32' ? pathToFileURL(finalPath).href : finalPath;
     } else if (isAbsolute(imp.module)) {
+      // Try to resolve the actual file with proper extension
+      resolvedPath = await resolveFileWithExtension(imp.module, statFn);
+      const finalPath = resolvedPath || imp.module;
       targetUrl =
-        platform === 'win32' ? pathToFileURL(imp.module).href : imp.module;
+        platform === 'win32' ? pathToFileURL(finalPath).href : finalPath;
     } else {
       targetUrl = imp.module;
     }
