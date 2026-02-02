@@ -1,8 +1,11 @@
 import process from 'node:process';
 
+const extensionsRegex = /\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)$/;
+
 export const findFile = (): string => {
-  for (const path of process.argv) {
-    if (path.endsWith('.test.ts') || path.endsWith('.test.js')) return path;
+  for (let i = process.argv.length - 1; i >= 0; i--) {
+    const path = process.argv[i];
+    if (extensionsRegex.test(path)) return path;
   }
 
   throw new Error(
