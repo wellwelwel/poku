@@ -20,7 +20,12 @@ import { Stability } from '@site/src/components/Stability';
     },
     {
       version: '3.0.3+',
-      changes: [<>Refactored API with automatic cleanup, lazy loading, and type inference.</>],
+      changes: [
+        <>
+          Refactored API with automatic cleanup, lazy loading, and type
+          inference.
+        </>,
+      ],
     },
   ]}
 />
@@ -63,6 +68,7 @@ export const CounterContext = {
 ```
 
 The context has two properties:
+
 - **`name`**: A unique identifier for the shared resource
 - **`factory`**: A function that returns the resource object with methods
 
