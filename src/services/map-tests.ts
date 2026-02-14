@@ -6,7 +6,7 @@ const importMap = new Map<string, Set<string>>();
 const processedFiles = new Set<string>();
 
 const regex = {
-  extFilter: /\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)$/,
+  extFilter: /\.(js|cjs|mjs|ts|cts|mts)$/,
   dependecy: /['"](\.{1,2}\/[^'"]+)['"]/,
   dotBar: /(\.\/)/g,
   sep: /[/\\]+/g,
