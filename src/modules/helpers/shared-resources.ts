@@ -13,9 +13,11 @@ import type {
   SharedResourceEntry,
 } from '../../@types/shared-resources.js';
 import process from 'node:process';
+import { pathToFileURL } from 'node:url';
 import { GLOBAL } from '../../configs/poku.js';
 import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
 import { hasArg } from '../../parsers/get-arg.js';
+import { isWindows } from '../../parsers/os.js';
 import { ResourceRegistry } from '../../services/resource-registry.js';
 
 if (hasArg('sharedResources')) GLOBAL.configs.sharedResources = true;
@@ -247,7 +249,11 @@ export const handleRequestResource = async (
       resourceRegistry.setIsRegistering(true);
 
       try {
-        const mod: Record<string, unknown> = await import(message.module);
+        const modulePath = isWindows
+          ? pathToFileURL(message.module).href
+          : message.module;
+
+        const mod: Record<string, unknown> = await import(modulePath);
 
         for (const key in mod) {
           if (Object.prototype.hasOwnProperty.call(mod, key)) {
