@@ -9,34 +9,38 @@ export const getArg = (
   baseArgs = processArgs
 ): string | undefined => {
   const argPattern = `${prefix}${arg}=`;
-  const argValue = baseArgs.find((a) => a.startsWith(argPattern));
+  const patternLen = argPattern.length;
 
-  if (!argValue) return;
-
-  return argValue.slice(argPattern.length).replace(regexQuotes, '');
+  for (let i = 0; i < baseArgs.length; i++) {
+    if (baseArgs[i].startsWith(argPattern))
+      return baseArgs[i].slice(patternLen).replace(regexQuotes, '');
+  }
 };
 
 export const hasArg = (
   arg: string,
   prefix = '--',
   baseArgs = processArgs
-): boolean => baseArgs.some((a) => a.startsWith(`${prefix}${arg}`));
+): boolean => {
+  const pattern = `${prefix}${arg}`;
+
+  for (let i = 0; i < baseArgs.length; i++)
+    if (baseArgs[i].startsWith(pattern)) return true;
+
+  return false;
+};
 
 export const getPaths = (
   prefix = '--',
   baseArgs = processArgs
 ): string[] | undefined => {
-  let hasPaths = false;
   const paths: string[] = [];
+  const length = baseArgs.length;
 
-  for (const arg of baseArgs) {
-    if (arg.startsWith(prefix)) continue;
-    if (!hasPaths) hasPaths = true;
+  for (let i = 0; i < length; i++)
+    if (!baseArgs[i].startsWith(prefix)) paths.push(baseArgs[i]);
 
-    paths.push(arg);
-  }
-
-  return hasPaths ? paths : undefined;
+  return paths.length > 0 ? paths : undefined;
 };
 
 export const argToArray = (
@@ -44,13 +48,10 @@ export const argToArray = (
   prefix = '--',
   baseArgs = processArgs
 ): string[] | undefined => {
-  const hasArgument = hasArg(arg, prefix, baseArgs);
-  if (!hasArgument) return;
-
   const argValue = getArg(arg, prefix, baseArgs);
-  if (!argValue) return [];
-
-  return argValue.split(',').filter((a) => a);
+  if (argValue !== undefined) return argValue.split(',').filter((a) => a);
+  if (!hasArg(arg, prefix, baseArgs)) return;
+  return [];
 };
 
 export const hasOnly = hasArg('only');
