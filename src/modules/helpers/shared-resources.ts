@@ -43,11 +43,19 @@ export const globalRegistry = resourceRegistry.getRegistry();
 
 const create = <T>(
   factory: () => T,
-  options?: { onDestroy?: (instance: Awaited<T>) => void | Promise<void> }
+  options?: {
+    module?: string;
+    onDestroy?: (instance: Awaited<T>) => void | Promise<void>;
+  }
 ): ResourceContext<Awaited<T>> => {
-  const err = { stack: '' };
-  Error.captureStackTrace(err, create);
-  const module = findFileFromStack(err.stack);
+  let module: string;
+
+  if (options?.module) module = options.module;
+  else {
+    const err = { stack: '' };
+    Error.captureStackTrace(err, create);
+    module = findFileFromStack(err.stack);
+  }
 
   const count = (moduleCounters.get(module) ?? 0) + 1;
   moduleCounters.set(module, count);

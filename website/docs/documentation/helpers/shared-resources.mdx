@@ -87,12 +87,12 @@ export const CounterContext = resource.create(() => ({
 > **Troubleshooting:** If `resource.create()` fails to detect the module path automatically, you can set `module` explicitly as a fallback:
 >
 > ```ts
-> export const CounterContext = {
->   module: __filename, // or import.meta.url for ESM
->   factory: () => ({
+> export const CounterContext = resource.create(
+>   () => ({
 >     /* ... */
 >   }),
-> };
+>   { module: __filename } // or import.meta.url for ESM
+> );
 > ```
 
 ### 2. Access the Resource in Tests
