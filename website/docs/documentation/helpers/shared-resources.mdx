@@ -199,9 +199,9 @@ When these tests run, they share the same counter instance. Test B sees the stat
 
 ## Advanced Usage
 
-### Resource Cleanup
+### Resource Lifecycle
 
-To perform cleanup when the resource is destroyed, use an optional cleanup function in the factory:
+To perform an action when the resource is destroyed, use the `onDestroy` option:
 
 ```ts
 import { createConnection } from 'mysql2/promise';
@@ -215,7 +215,7 @@ export const DatabaseContext = resource.create(
       database: 'test',
     }),
   {
-    cleanup: (connection) => connection.end(), // Close the database connection when the resource is destroyed
+    onDestroy: (connection) => connection.end(),
   }
 );
 ```

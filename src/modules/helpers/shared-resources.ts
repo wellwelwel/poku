@@ -43,7 +43,7 @@ export const globalRegistry = resourceRegistry.getRegistry();
 
 const create = <T>(
   factory: () => T,
-  options?: { cleanup?: (instance: Awaited<T>) => void | Promise<void> }
+  options?: { onDestroy?: (instance: Awaited<T>) => void | Promise<void> }
 ): ResourceContext<Awaited<T>> => {
   const err = { stack: '' };
   Error.captureStackTrace(err, create);
@@ -55,7 +55,7 @@ const create = <T>(
 
   return {
     factory,
-    cleanup: options?.cleanup,
+    onDestroy: options?.onDestroy,
     name,
     module,
   } as ResourceContext<Awaited<T>>;
@@ -78,7 +78,7 @@ const use = async <T>(
     const state = await context.factory();
     resourceRegistry.register(name, {
       state,
-      cleanup: context.cleanup as
+      onDestroy: context.onDestroy as
         | ((instance: unknown) => void | Promise<void>)
         | undefined,
     });
@@ -229,13 +229,12 @@ export const setupSharedResourceIPC = (
   registry: Record<string, SharedResourceEntry> = globalRegistry
 ): void => {
   child.on('message', async (message: IPCMessage) => {
-    if (message.type === SHARED_RESOURCE_MESSAGE_TYPES.REQUEST_RESOURCE) {
+    if (message.type === SHARED_RESOURCE_MESSAGE_TYPES.REQUEST_RESOURCE)
       await handleRequestResource(message, registry, child);
-    } else if (
+    else if (
       message.type === SHARED_RESOURCE_MESSAGE_TYPES.REMOTE_PROCEDURE_CALL
-    ) {
+    )
       await handleRemoteProcedureCall(message, registry, child);
-    }
   });
 };
 

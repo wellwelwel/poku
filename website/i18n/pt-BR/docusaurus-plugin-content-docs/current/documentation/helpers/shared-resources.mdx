@@ -191,9 +191,9 @@ Quando estes testes são executados, eles compartilham a mesma instância do con
 
 ## Uso Avançado
 
-### Limpeza de Recurso
+### Ciclo de Vida do Recurso
 
-Para executar limpeza quando o recurso é destruído, use uma função de limpeza opcional na factory:
+Para executar uma ação quando o recurso é destruído, use a opção `onDestroy`:
 
 ```ts
 import { createConnection } from 'mysql2/promise';
@@ -207,7 +207,7 @@ export const DatabaseContext = resource.create(
       database: 'test',
     }),
   {
-    cleanup: (connection) => connection.end(), // Fecha a conexão com o banco de dados quando o recurso é destruído
+    onDestroy: (connection) => connection.end(),
   }
 );
 ```

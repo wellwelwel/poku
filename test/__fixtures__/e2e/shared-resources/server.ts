@@ -33,6 +33,6 @@ export const ServerContext = resource.create(
     };
   },
   {
-    cleanup: (instance) => instance.close(),
+    onDestroy: (instance) => instance.close(),
   }
 );

@@ -10,12 +10,12 @@ export type ResourceContext<T> = {
   name: string;
   module?: string;
   factory: () => T | Promise<T>;
-  cleanup?: (instance: T) => void | Promise<void>;
+  onDestroy?: (instance: T) => void | Promise<void>;
 };
 
 export type SharedResourceEntry<T = unknown> = {
   state: T;
-  cleanup?: (instance: T) => void | Promise<void>;
+  onDestroy?: (instance: T) => void | Promise<void>;
 };
 
 export type IPCRequestResourceMessage = {

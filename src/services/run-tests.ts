@@ -34,7 +34,7 @@ export const runTests = async (files: string[]): Promise<boolean> => {
       if (GLOBAL.configs.sharedResources) {
         const entries = Object.values(globalRegistry);
         for (const entry of entries) {
-          if (entry.cleanup) await entry.cleanup(entry.state);
+          if (entry.onDestroy) await entry.onDestroy(entry.state);
         }
       }
 
