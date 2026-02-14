@@ -44,7 +44,7 @@ import { hr, log } from '../services/write.js';
 
     for (const dir of dirs)
       files.push(
-        ...listFiles(dir, {
+        ...(await listFiles(dir, {
           filter:
             typeof filter === 'string'
               ? new RegExp(escapeRegExp(filter))
@@ -53,7 +53,7 @@ import { hr, log } from '../services/write.js';
             typeof exclude === 'string'
               ? new RegExp(escapeRegExp(exclude))
               : exclude,
-        })
+        }))
       );
 
     log(

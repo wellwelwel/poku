@@ -11,13 +11,17 @@ GLOBAL.configs.quiet = true;
 describe('Service: runTests', async () => {
   await Promise.all([
     it(async () => {
-      const code = await runTests(listFiles('test/__fixtures__/e2e/fail'));
+      const code = await runTests(
+        await listFiles('test/__fixtures__/e2e/fail')
+      );
 
       assert.deepStrictEqual(code, false, 'Failure test directory case');
     }),
 
     it(async () => {
-      const code = await runTests(listFiles('test/__fixtures__/e2e/success'));
+      const code = await runTests(
+        await listFiles('test/__fixtures__/e2e/success')
+      );
 
       assert.deepStrictEqual(code, true, 'Success test directory case');
     }),
