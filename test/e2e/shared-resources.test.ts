@@ -8,7 +8,7 @@ const basePath = join('test', '__fixtures__', 'e2e', 'shared-resources');
 
 describe('Shared Resources', async () => {
   await it('Parallel tests', async () => {
-    const results = await inspectPoku('--debug --sharedResources', {
+    const results = await inspectPoku('--debug --sharedResources --concurrency=0', {
       cwd: `${basePath}/parallel`,
     });
 
