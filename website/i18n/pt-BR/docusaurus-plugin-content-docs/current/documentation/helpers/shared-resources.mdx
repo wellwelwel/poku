@@ -44,6 +44,22 @@ Compartilhe estado e métodos entre arquivos de teste e processos, habilitando p
 
 O sistema de recursos lida automaticamente com comunicação entre processos, serialização e limpeza — para que você possa focar em escrever testes.
 
+## Habilitando Recursos Compartilhados
+
+Para usar Recursos Compartilhados, passe a flag `--sharedResources` ao executar o **Poku**:
+
+```bash
+poku --sharedResources
+```
+
+Ou em um arquivo de configuração:
+
+```json
+{
+  "sharedResources": true
+}
+```
+
 ## Uso Básico
 
 ### 1. Defina um Contexto de Recurso
