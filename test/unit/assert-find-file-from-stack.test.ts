@@ -1,13 +1,6 @@
 import { assert } from '../../src/modules/essentials/assert.js';
 import { test } from '../../src/modules/helpers/test.js';
-import { findFile } from '../../src/parsers/find-file-from-stack.js';
-
-const setStack = (stack?: string): Error => {
-  const error = new Error('Test error');
-  error.stack = stack;
-
-  return error;
-};
+import { findFileFromStack } from '../../src/parsers/find-file-from-stack.js';
 
 const testCases = [
   {
@@ -93,8 +86,7 @@ const testCases = [
 
 test('Assert: Find file from stack', () => {
   for (const { description, stack, expected } of testCases) {
-    const error = setStack(stack);
-    const result = findFile(error);
+    const result = findFileFromStack(stack, { skipInternal: true });
 
     assert.deepStrictEqual(result, expected, description);
   }

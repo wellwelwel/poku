@@ -12,183 +12,235 @@ import { Stability } from '@site/src/components/Stability';
   records={[
     {
       version: '3.0.3-canary.60ff5ce2',
-      changes: [<>Introduce Shared Resources.</>],
+      changes: [<>Introdução de Recursos Compartilhados.</>],
     },
     {
       version: '3.0.3-canary.ffab4562',
-      changes: [<>Improved serialization and Windows support.</>],
+      changes: [<>Serialização melhorada e suporte a Windows.</>],
+    },
+    {
+      version: '3.0.3+',
+      changes: [
+        <>
+          API refatorizada com limpeza automática, lazy loading e inferência de
+          tipos.
+        </>,
+      ],
     },
   ]}
 />
 
 <Stability level={1} />
 
-Compartilhe estado e métodos entre arquivos e processos de teste, permitindo padrões avançados de integração e testes end-to-end.
+Compartilhe estado e métodos entre arquivos de teste e processos, habilitando padrões avançados de testes de integração e end-to-end.
 
 ## O que são Recursos Compartilhados?
 
-**Recursos Compartilhados** permitem que você defina um recurso (objeto, estado ou API) em um único arquivo e acesse ou altere esse recurso a partir de múltiplos arquivos ou processos de teste. Isso é útil para cenários como:
+**Recursos Compartilhados** permitem que você defina um recurso com estado uma vez e o acesse a partir de múltiplos arquivos de teste e processos. Cada teste obtém a mesma instância de recurso, permitindo que você:
 
-- Compartilhar uma conexão de banco de dados ou armazenamento em memória.
-- Coordenar estado entre testes paralelos ou sequenciais.
-- Implementar lógica de setup/teardown entre arquivos.
+- Compartilhe conexões de banco de dados, armazenamentos em memória ou clientes de API entre testes.
+- Coordene estado e asserções entre testes paralelos ou sequenciais.
+- Gerencie a lógica de setup e teardown em um único lugar.
+
+O sistema de recursos lida automaticamente com comunicação entre processos, serialização e limpeza — para que você possa focar em escrever testes.
+
+## Habilitando Recursos Compartilhados
+
+Para usar Recursos Compartilhados, passe a flag `--sharedResources` ao executar o **Poku**:
+
+```bash
+poku --sharedResources
+```
+
+Ou em um arquivo de configuração:
+
+```json
+{
+  "sharedResources": true
+}
+```
 
 ## Uso Básico
 
-### 1. Defina um Recurso Compartilhado
+### 1. Defina um Contexto de Recurso
 
-Crie um arquivo `.resource.ts` e exporte um recurso compartilhado usando `createSharedResource`:
-
-```ts
-import { createSharedResource } from 'poku';
-
-export default createSharedResource('sharedCounter', () => {
-  let count = 0;
-  return {
-    getCount: () => count,
-    increment: () => ++count,
-    reset: () => {
-      count = 0;
-    },
-  };
-});
-```
-
-### 2. Acesse o Recurso Compartilhado nos Testes
-
-Use `getSharedResource` em qualquer arquivo de teste para acessar e chamar métodos do recurso compartilhado:
+Crie um arquivo de recurso usando `resource.create()`:
 
 ```ts
-import { getSharedResource, test, assert } from 'poku';
+// counter.ts
+import { resource } from 'poku';
 
-test('incrementa o contador', async () => {
-  const [counter, detach] = await getSharedResource('sharedCounter');
-  await counter.increment();
-  assert.equal(await counter.getCount(), 1);
-  detach();
-});
-```
-
-### 3. Métodos se Tornam Chamadas de Procedimento Remoto
-
-Todas as funções do seu recurso se tornam chamadas de procedimento remoto (RPCs), então você pode alterar ou ler o estado compartilhado com segurança entre processos.
-
-É importante notar que os argumentos são serializados usando JSON Serialization durante a comunicação entre diferentes processos,
-o que significa que alguns tipos complexos (como funções) não são suportados neste momento.
-
-### 4. Desanexando o Recurso
-
-Quando você chama `getSharedResource`, ele retorna uma tupla com o recurso e uma função `detach`.
-**É essencial sempre chamar `detach` ao final do seu teste**: isso cancela a inscrição do seu processo de teste
-nas atualizações do recurso compartilhado, garantindo a limpeza adequada e prevenindo vazamentos de memória.
-Se você não chamar `detach`, seu processo permanecerá inscrito, o que pode levar a vazamentos de recursos,
-uso desnecessário de memória e problemas de isolamento de testes. Ao sempre chamar `detach`, você mantém
-seu ambiente de teste limpo, previsível e livre de efeitos colaterais causados por inscrições remanescentes.
-
-```ts
-test('desanexa o recurso', async () => {
-  const [counter, detach] = await getSharedResource('sharedCounter');
-  await counter.increment();
-  assert.equal(await counter.getCount(), 1);
-  detach(); // Limpa o recurso
-});
-```
-
-### 5. Lógica de Limpeza
-
-Você pode definir uma função de limpeza ao criar o recurso. Ela será chamada quando o recurso não for mais necessário:
-
-```ts
-export default createSharedResource(
-  'sharedCounter',
-  () => {
-    let count = 0;
-    return {
-      getCount: () => count,
-      increment: () => ++count,
-      reset: () => {
-        count = 0;
-      },
-    };
+export const CounterContext = resource.create(() => ({
+  count: 0,
+  increment() {
+    this.count++;
+    return this.count;
   },
-  (resource) => {
-    // Lógica de limpeza
-    resource.reset();
-  }
-);
+  getCount() {
+    return this.count;
+  },
+}));
 ```
 
-## Exemplos do Mundo Real
+`resource.create()` detecta automaticamente o caminho do arquivo do seu módulo de recurso. Ele recebe uma função factory como primeiro argumento — uma função que retorna o objeto de recurso com métodos.
 
-### 1. Cache LRU Compartilhado (`lru.min`)
+> **Solução de problemas:** Se o `resource.create()` não conseguir detectar o caminho do módulo automaticamente, você pode definir `module` explicitamente como fallback:
+>
+> ```ts
+> export const CounterContext = resource.create(
+>   () => ({
+>     /* ... */
+>   }),
+>   { module: __filename } // ou import.meta.url para ESM
+> );
+> ```
 
-Compartilhe um cache LRU em memória entre testes:
+### 2. Acesse o Recurso nos Testes
 
-**lru.resource.ts**
+Use `resource.use()` para obter o recurso:
 
 ```ts
-import { createSharedResource } from 'poku';
-import { createLRU } from 'lru.min';
+import { test, assert, resource } from 'poku';
+import { CounterContext } from './counter';
 
-export default createSharedResource('lru', () => {
-  const cache = createLRU({ max: 3 });
-  return cache;
+test('incrementar contador', async () => {
+  const counter = await resource.use(CounterContext);
+
+  const current = await counter.getCount();
+  assert.equal(current, 0);
+
+  await counter.increment();
+  assert.equal(await counter.getCount(), 1);
 });
 ```
 
-**cache.test.ts**
+### 3. Métodos são Chamadas de Procedimento Remoto
+
+Todos os métodos no seu recurso se tornam RPCs assíncronos que funcionam entre processos. O estado é sincronizado automaticamente:
 
 ```ts
-import { getSharedResource, test, assert } from 'poku';
+test('estado compartilhado entre testes', async () => {
+  const counter = await resource.use(CounterContext);
 
-test('pode compartilhar cache', async () => {
-  const [cache, detach] = await getSharedResource('lru');
-  await cache.set('foo', 123);
-  assert((await cache.get('foo')) === 123);
-  detach();
+  // Isto obtém o estado atual do recurso
+  const value = await counter.getCount();
+  assert.equal(value, 1); // reflete mudanças de outros testes
+
+  // Isto muta o estado compartilhado
+  await counter.increment();
 });
 ```
 
----
+## Exemplo do Mundo Real
 
-### 2. Conexão MySQL Compartilhada (`mysql2`)
+Aqui está um exemplo completo de dois testes compartilhando um contador:
 
-Compartilhe uma única conexão MySQL entre testes:
-
-**mysql.resource.ts**
+**counter.ts**
 
 ```ts
-import { createSharedResource } from 'poku';
-import mysql from 'mysql2/promise';
+import { resource } from 'poku';
 
-export default createSharedResource(
-  'mysql',
-  async () => {
-    const connection = await mysql.createConnection({
+export const CounterContext = resource.create(() => ({
+  count: 0,
+  increment() {
+    this.count++;
+    return this.count;
+  },
+  getCount() {
+    return this.count;
+  },
+}));
+```
+
+**test-a.test.ts**
+
+```ts
+import { assert, test, resource } from 'poku';
+import { CounterContext } from './counter';
+
+test('Test A: Incrementar Contador', async () => {
+  const counter = await resource.use(CounterContext);
+
+  const current = await counter.getCount();
+  assert.strictEqual(current, 0, 'Deve iniciar em 0');
+
+  await counter.increment();
+  assert.strictEqual(await counter.getCount(), 1, 'Deve ser 1 após incremento');
+});
+```
+
+**test-b.test.ts**
+
+```ts
+import { assert, test, resource, waitForExpectedResult } from 'poku';
+import { CounterContext } from './counter';
+
+test('Test B: Verificar Estado do Contador', async () => {
+  const counter = await resource.use(CounterContext);
+
+  // Se você precisar que o resultado do Test A esteja pronto antes de prosseguir,
+  // é recomendado aguardar o estado esperado para evitar instabilidade.
+  await waitForExpectedResult(counter.getCount, 1);
+
+  await counter.increment();
+  assert.strictEqual(await counter.getCount(), 2, 'Deve ser 2 após incremento');
+});
+```
+
+Quando estes testes são executados, eles compartilham a mesma instância do contador. O Test B vê as mudanças de estado feitas pelo Test A.
+
+## Uso Avançado
+
+### Ciclo de Vida do Recurso
+
+Para executar uma ação quando o recurso é destruído, use a opção `onDestroy`:
+
+```ts
+import { createConnection } from 'mysql2/promise';
+import { resource } from 'poku';
+
+export const DatabaseContext = resource.create(
+  () =>
+    createConnection({
       host: 'localhost',
       user: 'root',
       database: 'test',
-    });
-    return connection;
-  },
-  (connection) => {
-    // Função de limpeza para fechar a conexão
-    return connection.destroy();
+    }),
+  {
+    onDestroy: (connection) => connection.end(),
   }
 );
 ```
 
-**db.test.ts**
-
 ```ts
-import { getSharedResource, test, assert } from 'poku';
+import type { RowDataPacket } from 'mysql2/promise';
+import { test, assert, resource } from 'poku';
+import { DatabaseContext } from './db.js';
 
-test('pode consultar usuários', async () => {
-  const [db, detach] = await getSharedResource('mysql');
-  const [rows] = await db.query('SELECT * FROM users LIMIT 10');
+type QueryResult = RowDataPacket & {
+  total: number;
+};
 
-  assert(Array.isArray(rows));
-  assert.equal(rows.length, 10);
-  detach();
+await test('Connection', async () => {
+  const connection = await resource.use(DatabaseContext);
+  const [rows] = await connection.execute<QueryResult[]>(
+    'SELECT 1 + 1 AS total'
+  );
+
+  assert.strictEqual(rows[0].total, 2);
 });
 ```
+
+:::tip
+Recursos podem ser inicializados de forma assíncrona.
+:::
+
+## Notas Importantes
+
+### Serialização
+
+Argumentos e valores de retorno são serializados usando JSON quando comunicados entre processos. Referências circulares e valores não serializáveis (como sockets, streams e Buffers) não são suportados. Instâncias de classes são reduzidas às suas propriedades enumeráveis, perdendo sua cadeia de protótipos. Mantenha seus métodos de recurso simples com tipos básicos: strings, números, booleanos, arrays e objetos simples.
+
+### Carregamento Preguiçoso
+
+Recursos são criados sob demanda na primeira vez que você chama `resource.use()`. Se um teste nunca acessa um recurso, ele nunca é criado.

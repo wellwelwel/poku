@@ -2,7 +2,7 @@ import type { Configs } from '../../@types/list-files.js';
 import { stat as fsStat, readdir } from 'node:fs/promises';
 import { join, sep } from 'node:path';
 import { env } from 'node:process';
-import { GLOBAL, states } from '../../configs/poku.js';
+import { states } from '../../configs/poku.js';
 
 const regex = {
   sep: /[/\\]+/g,
@@ -10,7 +10,6 @@ const regex = {
   unusualChars: /[<>|^?*]+/g,
   absolutePath: /^[/\\]/,
   safeRegExp: /[.*{}[\]\\]/g,
-  resourceFilter: /\.(test|spec|resource)\./i,
   defaultFilter: /\.(test|spec)\./i,
 } as const;
 
@@ -59,7 +58,6 @@ export const getAllFiles = async (
   const filter: RegExp = (() => {
     if (envFilter) return envFilter;
     if (configs?.filter instanceof RegExp) return configs.filter;
-    if (GLOBAL.configs.sharedResources) return regex.resourceFilter;
     return regex.defaultFilter;
   })();
 
