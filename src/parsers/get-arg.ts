@@ -11,9 +11,9 @@ export const getArg = (
   const argPattern = `${prefix}${arg}=`;
   const patternLen = argPattern.length;
 
-  for (let i = 0; i < baseArgs.length; i++) {
-    if (baseArgs[i].startsWith(argPattern))
-      return baseArgs[i].slice(patternLen).replace(regexQuotes, '');
+  for (const arg of baseArgs) {
+    if (arg.startsWith(argPattern))
+      return arg.slice(patternLen).replace(regexQuotes, '');
   }
 };
 
