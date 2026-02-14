@@ -1,10 +1,8 @@
 import { GLOBAL, results } from '../configs/poku.js';
 
-const regex = {
-  ansi: /u001b\[0m|\n/i,
-  skip: /\\u001b\[94m\\u001b\[1m◯/gi,
-  todo: /\\u001b\[96m\\u001b\[1m●/gi,
-} as const;
+const ANSI_RESET = /\x1b\[0m/;
+const SKIP_MARKER = /\x1b\[94m\x1b\[1m◯/g;
+const TODO_MARKER = /\x1b\[96m\x1b\[1m●/g;
 
 export const serialize = (value: unknown): unknown => {
   if (
@@ -28,28 +26,32 @@ export const serialize = (value: unknown): unknown => {
 
 export const parserOutput = (options: { output: string; result: boolean }) => {
   const { output, result } = options;
-  const normalizedOutput = JSON.stringify(output);
 
-  const hasSkip = normalizedOutput.match(regex.skip);
+  const hasSkip = output.match(SKIP_MARKER);
   if (hasSkip) results.skipped += hasSkip.length;
 
-  const hasTodo = normalizedOutput.match(regex.todo);
+  const hasTodo = output.match(TODO_MARKER);
   if (hasTodo) results.todo += hasTodo.length;
 
-  const pad = '  ';
-  const splittedOutput = output.split('\n');
+  const lines = output.split('\n');
+  const showAll = GLOBAL.configs.debug || !result;
+  const outputs: string[] = [];
+  const length = lines.length;
 
-  const outputs = (
-    GLOBAL.configs.debug || !result
-      ? splittedOutput
-      : splittedOutput.filter((current) => {
-          if (current.indexOf('Exited with code') !== -1) return false;
+  for (let i = 0; i < length; i++) {
+    const line = lines[i];
+    if (line.trim().length === 0) continue;
 
-          return regex.ansi.test(JSON.stringify(current)) || current === '';
-        })
-  ).filter((line) => line?.trim().length > 0);
+    if (showAll) {
+      outputs.push(`  ${line}`);
+      continue;
+    }
+
+    if (line.includes('Exited with code')) continue;
+    if (ANSI_RESET.test(line)) outputs.push(`  ${line}`);
+  }
 
   if (outputs.length === 0) return;
 
-  return outputs.map((current) => `${pad}${current}`);
+  return outputs;
 };
