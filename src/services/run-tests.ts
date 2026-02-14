@@ -16,18 +16,14 @@ if (GLOBAL.configs.sharedResources) deepOptions.push('--sharedResources');
 export const runTests = async (files: string[]): Promise<boolean> => {
   let allPassed = true;
   let activeTests = 0;
+  let fileIndex = 0;
   let resolveDone: (value: boolean) => void;
 
   const { configs } = GLOBAL;
-  const showLogs = !configs.quiet;
-  const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
-  const concurrency: number = (() => {
-    if (configs.sequential) return 1;
-    const limit =
-      configs.concurrency ?? Math.max(availableParallelism() - 1, 1);
-    return limit <= 0 ? files.length || 1 : limit;
-  })();
-  const isSequential = concurrency === 1;
+  const limit = configs.sequential
+    ? 1
+    : (configs.concurrency ?? Math.max(availableParallelism() - 1, 1));
+  const concurrency = limit <= 0 ? files.length || 1 : limit;
 
   const done = new Promise<boolean>((resolve) => {
     resolveDone = async (passed: boolean) => {
@@ -43,13 +39,14 @@ export const runTests = async (files: string[]): Promise<boolean> => {
   });
 
   const runNext = async () => {
-    if (files.length === 0 && activeTests === 0) {
+    if (fileIndex >= files.length && activeTests === 0) {
       resolveDone(allPassed);
       return;
     }
 
-    const filePath = files.shift();
-    if (typeof filePath === 'undefined') return;
+    if (fileIndex >= files.length) return;
+
+    const filePath = files[fileIndex++];
 
     activeTests++;
 
@@ -61,9 +58,11 @@ export const runTests = async (files: string[]): Promise<boolean> => {
       allPassed = false;
 
       if (configs.failFast) {
-        if (showLogs) {
+        if (!configs.quiet) {
           hr();
-          console.error(failFastError);
+          console.error(
+            `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`
+          );
           log(
             `\n    ${format('File:').bold()} ${format(`./${relative(cwd, filePath)}`).fail()}`
           );
@@ -75,12 +74,10 @@ export const runTests = async (files: string[]): Promise<boolean> => {
     }
 
     activeTests--;
-
-    isSequential ? await runNext() : runNext();
+    runNext();
   };
 
-  for (let i = 0; i < concurrency; i++)
-    isSequential ? await runNext() : runNext();
+  for (let i = 0; i < concurrency; i++) runNext();
 
   return done;
 };

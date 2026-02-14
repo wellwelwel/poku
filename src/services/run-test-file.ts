@@ -9,9 +9,8 @@ import { afterEach, beforeEach } from './each.js';
 
 export const runTestFile = async (path: string): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
-  const runtimeOptions = runner(path);
-  const runtime = runtimeOptions.shift()!;
-  const runtimeArguments = [
+  const [runtime, ...runtimeOptions] = runner(path);
+  const args = [
     ...runtimeOptions,
     /* c8 ignore next 5 */ // Varies Platform
     configs.deno?.cjs === true ||
@@ -19,10 +18,12 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       configs.deno.cjs.some((ext) => path.includes(ext)))
       ? `https://cdn.jsdelivr.net/npm/poku${VERSION ? `@${VERSION}` : ''}/lib/polyfills/deno.mjs`
       : path,
+    ...deepOptions,
   ];
 
   const file = relative(cwd, path);
   const showLogs = !configs.quiet;
+  const pathInfo = { relative: file, absolute: path };
 
   let output = '';
 
@@ -31,27 +32,20 @@ export const runTestFile = async (path: string): Promise<boolean> => {
   };
 
   const start = hrtime();
-  let end: ReturnType<typeof hrtime>;
 
   if (!(await beforeEach(file))) return false;
 
-  reporter.onFileStart({
-    path: {
-      relative: file,
-      absolute: path,
-    },
-  });
+  reporter.onFileStart({ path: pathInfo });
 
   return new Promise((resolve) => {
-    const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
-      stdio: GLOBAL.configs.sharedResources
+    const child = spawn(runtime, args, {
+      stdio: configs.sharedResources
         ? ['inherit', 'pipe', 'pipe', 'ipc']
         : ['inherit', 'pipe', 'pipe'],
       shell: false,
       env: {
         ...env,
         POKU_FILE: file,
-        POKU_RUNTIME: env.POKU_RUNTIME,
         POKU_REPORTER: configs.reporter,
       },
     });
@@ -64,8 +58,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     if (configs.sharedResources) setupSharedResourceIPC(child);
 
     child.on('close', async (code) => {
-      end = hrtime(start);
-
+      const end = hrtime(start);
       const result = code === 0;
 
       if (showLogs) {
@@ -74,15 +67,10 @@ export const runTestFile = async (path: string): Promise<boolean> => {
           result,
         })?.join('\n');
 
-        const total = end[0] * 1e3 + end[1] / 1e6;
-
         reporter.onFileResult({
           status: result,
-          path: {
-            relative: file,
-            absolute: path,
-          },
-          duration: total,
+          path: pathInfo,
+          duration: end[0] * 1e3 + end[1] / 1e6,
           output: parsedOutputs,
         });
       }
@@ -96,19 +84,14 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     });
 
     child.on('error', (err) => {
-      end = hrtime(start);
-
-      const total = end[0] * 1e3 + end[1] / 1e6;
+      const end = hrtime(start);
 
       if (showLogs) console.error(`Failed to start test: ${path}`, err);
 
       reporter.onFileResult({
         status: false,
-        path: {
-          relative: file,
-          absolute: path,
-        },
-        duration: total,
+        path: pathInfo,
+        duration: end[0] * 1e3 + end[1] / 1e6,
       });
 
       resolve(false);

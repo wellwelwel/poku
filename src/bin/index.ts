@@ -21,7 +21,6 @@ import { hr, log } from '../services/write.js';
     return;
   }
 
-  const enforce = hasArg('enforce') || hasArg('x', '-');
   const configFile = getArg('config') || getArg('c', '-');
 
   GLOBAL.configsFromFile = await getConfigs(configFile);
@@ -34,43 +33,11 @@ import { hr, log } from '../services/write.js';
       : ['.']);
   const filter = getArg('filter') ?? configsFromFile?.filter;
   const exclude = getArg('exclude') ?? configsFromFile?.exclude;
-  const killPort = getArg('killPort');
-  const killRange = getArg('killRange');
-  const killPID = getArg('killPid');
-  const reporter =
-    getArg('reporter') ??
-    getArg('r', '-') ??
-    GLOBAL.configsFromFile.reporter ??
-    'poku';
-  /* c8 ignore start */ // Deno
-  const denoAllow = argToArray('denoAllow') ?? configsFromFile?.deno?.allow;
-  const denoDeny = argToArray('denoDeny') ?? configsFromFile?.deno?.deny;
-  const denoCJS =
-    getArg('denoCjs')
-      ?.split(',')
-      .map((a) => a.trim())
-      .filter((a) => a) ||
-    hasArg('denoCjs') ||
-    configsFromFile?.deno?.cjs;
-  /* c8 ignore stop */
-  const quiet = hasArg('quiet') || hasArg('q', '-') || configsFromFile?.quiet;
-  const debug = hasArg('debug') || hasArg('d', '-') || configsFromFile?.debug;
-  const failFast = hasArg('failFast') || configsFromFile?.failFast;
-  const watchMode = hasArg('watch') || hasArg('w', '-');
-  const hasEnvFile = hasArg('envFile');
-  const concurrency = (() => {
-    const value = Number(getArg('concurrency'));
-    return Number.isNaN(value) ? configsFromFile?.concurrency : value;
-  })();
-  const sequential = hasArg('sequential');
-  const sharedResources =
-    hasArg('sharedResources') || configsFromFile?.sharedResources;
 
   if (dirs.length === 1) states.isSinglePath = true;
 
   if (hasArg('listFiles')) {
     const { listFiles } = await import('../modules/helpers/list-files.js');
-
     const files: string[] = [];
 
     hr();
@@ -102,6 +69,34 @@ import { hr, log } from '../services/write.js';
     return;
   }
 
+  const reporter =
+    getArg('reporter') ??
+    getArg('r', '-') ??
+    configsFromFile?.reporter ??
+    'poku';
+  /* c8 ignore start */ // Deno
+  const denoAllow = argToArray('denoAllow') ?? configsFromFile?.deno?.allow;
+  const denoDeny = argToArray('denoDeny') ?? configsFromFile?.deno?.deny;
+  const denoCJS =
+    getArg('denoCjs')
+      ?.split(',')
+      .map((a) => a.trim())
+      .filter((a) => a) ||
+    hasArg('denoCjs') ||
+    configsFromFile?.deno?.cjs;
+  /* c8 ignore stop */
+  const quiet = hasArg('quiet') || hasArg('q', '-') || configsFromFile?.quiet;
+  const debug = hasArg('debug') || hasArg('d', '-') || configsFromFile?.debug;
+  const failFast = hasArg('failFast') || configsFromFile?.failFast;
+  const watchMode = hasArg('watch') || hasArg('w', '-');
+  const concurrencyArg = Number(getArg('concurrency'));
+  const concurrency = Number.isNaN(concurrencyArg)
+    ? configsFromFile?.concurrency
+    : concurrencyArg;
+  const sequential = hasArg('sequential');
+  const sharedResources =
+    hasArg('sharedResources') || configsFromFile?.sharedResources;
+
   GLOBAL.configFile = configFile;
   GLOBAL.configs = {
     filter:
@@ -129,11 +124,17 @@ import { hr, log } from '../services/write.js';
 
   const tasks: Promise<unknown>[] = [];
 
-  if (hasEnvFile || configsFromFile?.envFile) {
+  if (hasArg('envFile') || configsFromFile?.envFile) {
     GLOBAL.envFile = getArg('envFile') ?? configsFromFile?.envFile ?? '.env';
   }
 
+  const enforce = hasArg('enforce') || hasArg('x', '-');
+
   if (enforce) (await import('../services/enforce.js')).enforce();
+
+  const killPort = getArg('killPort');
+  const killRange = getArg('killRange');
+  const killPID = getArg('killPid');
 
   if (killPort || configsFromFile?.kill?.port) {
     const ports =
@@ -149,16 +150,13 @@ import { hr, log } from '../services/write.js';
 
     for (const range of ranges) {
       const ports = range.split('-').map(Number);
-      const startsAt = ports[0];
-      const endsAt = ports[1];
-      tasks.push(kill.range(startsAt, endsAt));
+      tasks.push(kill.range(ports[0], ports[1]));
     }
   }
 
   if (killPID || configsFromFile?.kill?.pid) {
     const PIDs =
       killPID?.split(',').map(Number) || configsFromFile?.kill?.pid || [];
-
     tasks.push(kill.pid(PIDs));
   }
 
