@@ -1,7 +1,7 @@
+import { GLOBAL } from '../../../../src/configs/poku.js';
 import { resource } from '../../../../src/modules/index.js';
 
-// @ts-expect-error
-const module = typeof __filename === 'string' ? __filename : import.meta.url;
+const { runtime } = GLOBAL;
 
 export const CounterContext = resource.create(() => ({
   count: 0,
@@ -26,6 +26,6 @@ export const FlagContext = resource.create(
     },
   }),
   {
-    module,
+    module: runtime === 'deno' ? undefined : __filename,
   }
 );
