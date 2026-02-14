@@ -1,6 +1,7 @@
 import type { ConfigFile, ConfigJSONFile } from '../@types/poku.js';
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
-import { join, normalize } from 'node:path';
+import { join } from 'node:path';
 import { GLOBAL } from '../configs/poku.js';
 import { JSONC } from '../polyfills/jsonc.js';
 import { isWindows } from './os.js';
@@ -10,22 +11,16 @@ export const getConfigs = async (
 ): Promise<ConfigFile | ConfigJSONFile> => {
   const expectedFiles = customPath
     ? [customPath]
-    : new Set([
-        'poku.config.js',
-        'poku.config.cjs',
-        '.pokurc.json',
-        '.pokurc.jsonc',
-      ]);
+    : ['poku.config.js', '.pokurc.json', '.pokurc.jsonc'];
 
   for (const file of expectedFiles) {
     const filePath = join(GLOBAL.cwd, file);
-    let path = '';
-
-    if (isWindows) path += 'file://';
-    path += normalize(filePath);
+    const path = isWindows ? `file://${filePath}` : filePath;
 
     try {
-      if (filePath.endsWith('.js') || filePath.endsWith('.cjs')) {
+      if (!existsSync(filePath)) continue;
+
+      if (filePath.endsWith('js') || filePath.endsWith('ts')) {
         const mod = await import(path);
 
         return mod?.default ?? mod;
