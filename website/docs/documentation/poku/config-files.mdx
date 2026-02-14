@@ -132,6 +132,9 @@ module.exports = defineConfig({
 
 Create a `.pokurc.json` (or `.pokurc.jsonc`) in your project's root directory, for example:
 
+<Tabs>
+  <TabItem default value='jsonc' label='JSONC'>
+
 ```js
 {
   "$schema": "https://poku.io/schemas/configs.json",
@@ -159,13 +162,48 @@ Create a `.pokurc.json` (or `.pokurc.jsonc`) in your project's root directory, f
     "cjs": [".js", ".cjs"], // specific extensions
     // "cjs": true // all extensions
     // "cjs": false // no polyfill
+  },
+}
+```
+
+  </TabItem>
+  <TabItem value='json' label='JSON'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "include": ["."],
+  "sequential": true,
+  "debug": false,
+  "filter": ".test.|.spec.",
+  "exclude": "",
+  "failFast": false,
+  "concurrency": 0,
+  "quiet": false,
+  "envFile": ".env",
+  "kill": {
+    "port": [3000],
+    "range": [
+      [3000, 3003],
+      [4000, 4002]
+    ],
+    "pid": [612]
+  },
+  "platform": "node",
+  "deno": {
+    "allow": ["run", "env", "read", "net"],
+    "deny": [],
+    "cjs": [".js", ".cjs"]
   }
 }
 ```
 
+  </TabItem>
+</Tabs>
+
 :::tip
 
-- The `$schema` property allows an _JSON_ intellisense to assist you customize **Poku**.
+- The `$schema` property allows a _JSON_ intellisense to assist you customize **Poku**.
 - All options are optional.
 - [See details of all the options](/docs/category/-options).
 
@@ -197,20 +235,14 @@ Shares the same limitations as _CLI_ flags.
 ## Custom File
 
 ```sh
-npx poku --config='my-file.json'
-```
-
-```sh
-npx poku --config='my-file.jsonc'
-```
-
-```sh
-npx poku --config='my-file.js'
-npx poku --config='my-file.cjs'
-npx poku --config='my-file.mjs'
-npx poku --config='my-file.ts'
-npx poku --config='my-file.cts'
-npx poku --config='my-file.mts'
+npx poku --config='<file>.json'
+npx poku --config='<file>.jsonc'
+npx poku --config='<file>.js'
+npx poku --config='<file>.cjs'
+npx poku --config='<file>.mjs'
+npx poku --config='<file>.ts'
+npx poku --config='<file>.cts'
+npx poku --config='<file>.mts'
 ```
 
 - Short flag: `-c`.
