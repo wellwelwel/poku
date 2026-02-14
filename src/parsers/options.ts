@@ -10,12 +10,7 @@ export const getConfigs = async (
 ): Promise<ConfigFile | ConfigJSONFile> => {
   const expectedFiles = customPath
     ? [customPath]
-    : new Set([
-        'poku.config.js',
-        'poku.config.cjs',
-        '.pokurc.json',
-        '.pokurc.jsonc',
-      ]);
+    : new Set(['poku.config.js', '.pokurc.json', '.pokurc.jsonc']);
 
   for (const file of expectedFiles) {
     const filePath = join(GLOBAL.cwd, file);
@@ -25,7 +20,7 @@ export const getConfigs = async (
     path += normalize(filePath);
 
     try {
-      if (filePath.endsWith('.js') || filePath.endsWith('.cjs')) {
+      if (filePath.endsWith('js') || filePath.endsWith('ts')) {
         const mod = await import(path);
 
         return mod?.default ?? mod;

@@ -4,6 +4,8 @@ sidebar_position: 2
 
 import { History } from '@site/src/components/History';
 import { Stability } from '@site/src/components/Stability';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # ⚙️ Config Files
 
@@ -11,6 +13,18 @@ By default, **Poku** comes with the most common usage pre-set, but you can confi
 
 <History
   records={[
+    {
+      version: 'Canary',
+      changes: [
+        <>
+          Add support for <strong>ES Modules</strong> and{' '}
+          <strong>TypeScript</strong> config files.
+        </>,
+        <>
+          Remove <code>poku.config.cjs</code> from auto-search.
+        </>,
+      ],
+    },
     {
       version: '2.2.0',
       changes: [
@@ -23,10 +37,12 @@ By default, **Poku** comes with the most common usage pre-set, but you can confi
       version: '2.1.0',
       changes: [
         <>
-          Support for config files (<code>js</code> and <code>cjs</code>).
+          Support for CommonJS config files (<code>.js</code> and{' '}
+          <code>.cjs</code>).
         </>,
         <>
-          Support for config files (<code>json</code> and <code>jsonc</code>).
+          Support for JSON and JSONC config files (<code>.json</code> and{' '}
+          <code>.jsonc</code>).
         </>,
       ],
     },
@@ -35,21 +51,46 @@ By default, **Poku** comes with the most common usage pre-set, but you can confi
 
 ## JavaScript
 
-<Stability
-  level={2}
-  message={
-    <>
-      <div>
-        <strong>Pros:</strong> Supports functions and regex.
-      </div>
-      <div>
-        <strong>Cons:</strong> Needs to be a CommonJS file.
-      </div>
-    </>
-  }
-/>
+Create a `poku.config.js` in your project's root directory, for example:
 
-Create a `poku.config.js` (or `poku.config.cjs` when using `"type": "module"` in your _package.json_) in your project's root directory, for example:
+<Tabs>
+  <TabItem default value='esm' label='ES Modules'>
+
+```js
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  include: ['.'], // Doesn't support glob patterns
+  sequential: true,
+  debug: false,
+  filter: /\.(test.|.spec)\./,
+  exclude: [], // regex
+  failFast: false,
+  concurrency: 0, // No limit
+  quiet: false,
+  envFile: '.env',
+  kill: {
+    port: [3000],
+    range: [
+      [3000, 3003],
+      [4000, 4002],
+    ],
+    pid: [612],
+  },
+  deno: {
+    allow: ['run', 'env', 'read', 'net'],
+    deny: [], // Same as allow
+    cjs: ['.js', '.cjs'], // specific extensions
+    // "cjs": true // all extensions
+    // "cjs": false // no polyfill
+  },
+  beforeEach: () => true, // Before each test file
+  afterEach: () => true, // After each test file
+});
+```
+
+  </TabItem>
+  <TabItem value='cjs' label='CommonJS'>
 
 ```js
 const { defineConfig } = require('poku');
@@ -84,22 +125,10 @@ module.exports = defineConfig({
 });
 ```
 
-## JSON and JSONC
+  </TabItem>
+</Tabs>
 
-<Stability
-  level={2}
-  message={
-    <>
-      <div>
-        <strong>Pros:</strong> Universal file for both CommonJS, ES Modules and
-        TypeScript.
-      </div>
-      <div>
-        <strong>Cons:</strong> Doesn't support functions and regex.
-      </div>
-    </>
-  }
-/>
+## JSON and JSONC
 
 Create a `.pokurc.json` (or `.pokurc.jsonc`) in your project's root directory, for example:
 
@@ -153,7 +182,6 @@ Shares the same limitations as _CLI_ flags.
 > In priority order.
 
 - `poku.config.js`
-- `poku.config.cjs`
 - `.pokurc.json`
 - `.pokurc.jsonc`
 
@@ -177,7 +205,12 @@ npx poku --config='my-file.jsonc'
 ```
 
 ```sh
-npx poku --config='my-file'
+npx poku --config='my-file.js'
+npx poku --config='my-file.cjs'
+npx poku --config='my-file.mjs'
+npx poku --config='my-file.ts'
+npx poku --config='my-file.cts'
+npx poku --config='my-file.mts'
 ```
 
 - Short flag: `-c`.

@@ -28,6 +28,26 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
     assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
   });
 
+  await it('Custom (TypeScript)', async () => {
+    const output = await inspectPoku('--config=custom.ts', {
+      cwd: 'test/__fixtures__/e2e/config-files/ts-file',
+    });
+
+    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
+    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
+    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
+  });
+
+  await it('Custom (ES Modules)', async () => {
+    const output = await inspectPoku('--config=custom.mjs', {
+      cwd: 'test/__fixtures__/e2e/config-files/mjs-file',
+    });
+
+    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
+    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
+    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
+  });
+
   await it('Custom (JSON)', async () => {
     const output = await inspectPoku('--config=custom.json', {
       cwd: 'test/__fixtures__/e2e/config-files/custom-file',
@@ -50,8 +70,8 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
     assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
   });
 
-  await it('poku.config.cjs', async () => {
-    const output = await inspectPoku('', {
+  await it('Custom (CJS)', async () => {
+    const output = await inspectPoku('--config=custom.cjs', {
       cwd: 'test/__fixtures__/e2e/config-files/poku-config-cjs',
     });
 
