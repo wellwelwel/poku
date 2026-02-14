@@ -1,5 +1,5 @@
 import type { AddressInfo } from 'node:net';
-import { createServer } from 'node:http';
+import { createServer, get } from 'node:http';
 import { resource } from '../../../../src/modules/index.js';
 
 export const ServerContext = resource.create(
@@ -17,9 +17,15 @@ export const ServerContext = resource.create(
       getPort() {
         return port;
       },
-      async query(path: string) {
-        const response = await fetch(`http://localhost:${port}${path}`);
-        return response.json() as Promise<Record<string, unknown>>;
+      query(path: string): Promise<Record<string, unknown>> {
+        return new Promise((resolve, reject) => {
+          get(`http://localhost:${port}${path}`, (res) => {
+            let data = '';
+
+            res.on('data', (chunk) => (data += chunk));
+            res.on('end', () => resolve(JSON.parse(data)));
+          }).on('error', reject);
+        });
       },
       close() {
         server.close();
