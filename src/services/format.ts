@@ -17,64 +17,81 @@ export const backgroundColor = {
 } as const;
 
 const ESC = '\x1b[';
+const RESET = '\x1b[0m';
+
+const BOLD = '\x1b[1m';
+const DIM = '\x1b[2m';
+const ITALIC = '\x1b[3m';
+const UNDERLINE = '\x1b[4m';
+
+const SUCCESS = '\x1b[32m';
+const GRAY = '\x1b[90m';
+const FAIL = '\x1b[91m';
+const INFO = '\x1b[94m';
+const CYAN = '\x1b[96m';
 
 export class Formatter {
-  private parts = '';
+  private prefix = '';
   private text: string;
 
   constructor(text: string) {
     this.text = text;
   }
 
-  code(code: string) {
-    this.parts += `${ESC}${code}m`;
+  code(value: string) {
+    this.prefix += `${ESC}${value}m`;
     return this;
   }
 
-  static create(text: string) {
-    return new Formatter(text);
-  }
-
-  counter(current: number, total: number, pad = '0') {
+  counter(current: number, total: number, padChar = '0') {
     const totalDigits = String(total).length;
-    this.parts += String(current).padStart(totalDigits, pad);
+    this.prefix += String(current).padStart(totalDigits, padChar);
     return this;
   }
 
   dim() {
-    return this.code('2');
+    this.prefix += DIM;
+    return this;
   }
 
   bold() {
-    return this.code('1');
+    this.prefix += BOLD;
+    return this;
   }
 
   underline() {
-    return this.code('4');
+    this.prefix += UNDERLINE;
+    return this;
   }
 
   info() {
-    return this.code('94');
+    this.prefix += INFO;
+    return this;
   }
 
   italic() {
-    return this.code('3');
+    this.prefix += ITALIC;
+    return this;
   }
 
   success() {
-    return this.code('32');
+    this.prefix += SUCCESS;
+    return this;
   }
 
   fail() {
-    return this.code('91');
+    this.prefix += FAIL;
+    return this;
   }
 
   gray() {
-    return this.code('90');
+    this.prefix += GRAY;
+    return this;
   }
 
   cyan() {
-    return this.code('96');
+    this.prefix += CYAN;
+    return this;
   }
 
   bg(color: keyof typeof backgroundColor) {
@@ -82,11 +99,18 @@ export class Formatter {
   }
 
   [Symbol.toPrimitive]() {
-    return `${this.parts}${this.text}${ESC}0m`;
+    return `${this.prefix}${this.text}${RESET}`;
   }
 }
 
-export const format = (text: string) => Formatter.create(text);
+export const format = (text: string) => new Formatter(text);
 
-export const getLargestStringLength = (arr: string[]): number =>
-  arr.reduce((max, current) => Math.max(max, current.length), 0);
+export const getLargestStringLength = (strings: string[]): number => {
+  let maxLength = 0;
+  const count = strings.length;
+
+  for (let i = 0; i < count; i++)
+    if (strings[i].length > maxLength) maxLength = strings[i].length;
+
+  return maxLength;
+};
