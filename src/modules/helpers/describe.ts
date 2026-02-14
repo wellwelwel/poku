@@ -1,6 +1,6 @@
 import type { DescribeOptions } from '../../@types/describe.js';
 import { AssertionError } from 'node:assert';
-import process from 'node:process';
+import process, { hrtime } from 'node:process';
 import { indentation } from '../../configs/indentation.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
@@ -44,7 +44,7 @@ export const describeBase = async (
   process.once('uncaughtException', onError);
   process.once('unhandledRejection', onError);
 
-  start = process.hrtime();
+  start = hrtime();
 
   try {
     const resultCb = cb!();
@@ -52,7 +52,7 @@ export const describeBase = async (
   } catch (error) {
     onError(error);
   } finally {
-    end = process.hrtime(start);
+    end = hrtime(start);
 
     process.removeListener('uncaughtException', onError);
     process.removeListener('unhandledRejection', onError);
@@ -89,11 +89,6 @@ async function describeCore(
     );
 
     if (!hasItOnly) return;
-
-    if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
-      return describeBase(messageOrCb, cbOrOptions);
-
-    if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
   }
 
   if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')

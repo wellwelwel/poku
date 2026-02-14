@@ -1,12 +1,7 @@
-const pad = (num: number) => String(num).padStart(2, '0');
+const pad = (num: number) => (num < 10 ? `0${num}` : `${num}`);
 
-export const parseTime = (date: Date): string => {
-  const hours = pad(date.getHours());
-  const minutes = pad(date.getMinutes());
-  const seconds = pad(date.getSeconds());
-
-  return `${hours}:${minutes}:${seconds}`;
-};
+export const parseTime = (date: Date): string =>
+  `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
 
 export const parseTimeToSecs = (milliseconds: number): string =>
   (milliseconds / 1000).toFixed(2);

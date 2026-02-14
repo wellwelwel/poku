@@ -1,5 +1,5 @@
 import { AssertionError } from 'node:assert';
-import process from 'node:process';
+import process, { hrtime } from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { GLOBAL } from '../../../configs/poku.js';
@@ -25,11 +25,13 @@ export const itBase = async (
     const hasTitle = typeof title === 'string';
     const cb = hasTitle ? getCallback(callback) : getCallback(titleOrCb);
 
+    const { reporter } = GLOBAL;
+
     let success = true;
     let start: [number, number];
     let end: [number, number];
 
-    GLOBAL.reporter.onItStart({ title });
+    reporter.onItStart({ title });
 
     if (hasTitle) indentation.itDepth++;
 
@@ -48,7 +50,7 @@ export const itBase = async (
     process.once('uncaughtException', onError);
     process.once('unhandledRejection', onError);
 
-    start = process.hrtime();
+    start = hrtime();
 
     try {
       const resultCb = cb!();
@@ -56,7 +58,7 @@ export const itBase = async (
     } catch (error) {
       onError(error);
     } finally {
-      end = process.hrtime(start);
+      end = hrtime(start);
 
       process.removeListener('uncaughtException', onError);
       process.removeListener('unhandledRejection', onError);
@@ -73,7 +75,7 @@ export const itBase = async (
     const duration = end[0] * 1e3 + end[1] / 1e6;
 
     indentation.itDepth--;
-    GLOBAL.reporter.onItEnd({ title, duration, success });
+    reporter.onItEnd({ title, duration, success });
   } catch (error) {
     if (indentation.itDepth > 0) indentation.itDepth--;
 
@@ -95,14 +97,7 @@ async function itCore(
   titleOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
-  if (hasOnly) {
-    if (!GLOBAL.runAsOnly) return;
-
-    if (typeof titleOrCb === 'string' && typeof cb === 'function')
-      return itBase(titleOrCb, cb);
-
-    if (typeof titleOrCb === 'function') return itBase(titleOrCb);
-  }
+  if (hasOnly && !GLOBAL.runAsOnly) return;
 
   if (typeof titleOrCb === 'string' && cb) return itBase(titleOrCb, cb);
   if (typeof titleOrCb === 'function') return itBase(titleOrCb);
