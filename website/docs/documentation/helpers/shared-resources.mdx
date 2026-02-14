@@ -44,6 +44,22 @@ Share state and methods between test files and processes, enabling advanced inte
 
 The resource system automatically handles inter-process communication, serialization, and cleanup — so you can focus on writing tests.
 
+## Enabling Shared Resources
+
+To use Shared Resources, pass the `--sharedResources` flag when running **Poku**:
+
+```bash
+poku --sharedResources
+```
+
+Or in a configuration file:
+
+```json
+{
+  "sharedResources": true
+}
+```
+
 ## Basic Usage
 
 ### 1. Define a Resource Context
