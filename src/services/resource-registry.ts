@@ -15,11 +15,10 @@ export class ResourceRegistry<T> {
   }
 
   clear() {
-    for (const key in this.registry) {
+    for (const key in this.registry)
       if (Object.prototype.hasOwnProperty.call(this.registry, key)) {
         delete this.registry[key];
       }
-    }
   }
 
   getIsRegistering() {

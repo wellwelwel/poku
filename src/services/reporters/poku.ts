@@ -5,12 +5,10 @@ import { stdout } from 'node:process';
 import { indentation } from '../../configs/indentation.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { parseResultType } from '../../parsers/assert.js';
-import { findFile } from '../../parsers/find-file-from-stack.js';
+import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 import { format } from '../format.js';
 import { hr, log } from '../write.js';
-
-const regexFile = /file:(\/\/)?/;
 
 export const errors: { file: string; output?: string }[] = [];
 
@@ -98,7 +96,11 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       );
 
       const { code, actual, expected, operator } = error;
-      const absolutePath = findFile(error).replace(regexFile, '');
+      const fileRef = findFileFromStack(error.stack, {
+        skipInternal: true,
+      });
+      const absolutePath =
+        fileRef.indexOf('file://') === 0 ? fileRef.slice(7) : fileRef;
       const file = relative(resolve(cwd), absolutePath);
 
       let message = '';

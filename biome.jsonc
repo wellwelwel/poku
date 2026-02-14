@@ -35,6 +35,7 @@
       "correctness": {
         "all": true,
         "noNodejsModules": "off",
+        "useHookAtTopLevel": "off", // Biome confuses `use[...]` with React hooks.
         "useImportExtensions": "error"
       },
       "nursery": {
@@ -103,6 +104,16 @@
         "rules": {
           "suspicious": {
             "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["src/@types/shared-resources.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off" // It's expected to have `any` types to support any resource shape, especially overloaded functions.
           }
         }
       }

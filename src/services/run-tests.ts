@@ -11,6 +11,7 @@ import { runTestFile } from './run-test-file.js';
 const { cwd } = GLOBAL;
 
 if (hasOnly) deepOptions.push('--only');
+if (GLOBAL.configs.sharedResources) deepOptions.push('--sharedResources');
 
 export const runTests = async (files: string[]): Promise<boolean> => {
   let allPassed = true;

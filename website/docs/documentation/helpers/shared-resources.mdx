@@ -64,46 +64,53 @@ Or in a configuration file:
 
 ### 1. Define a Resource Context
 
-Create a resource file and export a context object:
+Create a resource file using `resource.create()`:
 
 ```ts
 // counter.ts
-export const CounterContext = {
-  name: 'shared-counter',
-  factory: () => ({
-    count: 0,
-    inc() {
-      this.count++;
-      return this.count;
-    },
-    get() {
-      return this.count;
-    },
-  }),
-};
+import { resource } from 'poku';
+
+export const CounterContext = resource.create(() => ({
+  count: 0,
+  increment() {
+    this.count++;
+    return this.count;
+  },
+  getCount() {
+    return this.count;
+  },
+}));
 ```
 
-The context has two properties:
+`resource.create()` automatically detects the file path of your resource module. It takes a factory function as its first argument — a function that returns the resource object with methods.
 
-- **`name`**: A unique identifier for the shared resource
-- **`factory`**: A function that returns the resource object with methods
+> **Troubleshooting:** If `resource.create()` fails to detect the module path automatically, you can set `module` explicitly as a fallback:
+>
+> ```ts
+> export const CounterContext = {
+>   module: __filename, // or import.meta.url for ESM
+>   factory: () => ({
+>     /* ... */
+>   }),
+> };
+> ```
 
 ### 2. Access the Resource in Tests
 
-Use the `shared()` function to get the resource. It automatically handles cleanup:
+Use `resource.use()` to get the resource:
 
 ```ts
-import { test, assert, shared } from 'poku';
+import { test, assert, resource } from 'poku';
 import { CounterContext } from './counter';
 
 test('increment counter', async () => {
-  const counter = await shared(CounterContext);
+  const counter = await resource.use(CounterContext);
 
-  const current = await counter.get();
+  const current = await counter.getCount();
   assert.equal(current, 0);
 
-  await counter.inc();
-  assert.equal(await counter.get(), 1);
+  await counter.increment();
+  assert.equal(await counter.getCount(), 1);
 });
 ```
 
@@ -113,14 +120,14 @@ All methods on your resource become async RPCs that work across processes. State
 
 ```ts
 test('shared state across tests', async () => {
-  const counter = await shared(CounterContext);
+  const counter = await resource.use(CounterContext);
 
   // This gets the current state from the resource
-  const value = await counter.get();
-  assert.equal(value, 1); // reflects changes from other tests
+  const value = await counter.getCount();
+  assert.equal(value, 1); // reflects changes from other test
 
   // This mutates the shared state
-  await counter.inc();
+  await counter.increment();
 });
 ```
 
@@ -131,53 +138,60 @@ Here's a complete example of two tests sharing a counter:
 **counter.ts**
 
 ```ts
-export const CounterContext = {
-  name: 'shared-counter',
-  factory: () => ({
-    count: 0,
-    inc() {
-      this.count++;
-      return this.count;
-    },
-    get() {
-      return this.count;
-    },
-  }),
-};
+import { resource } from 'poku';
+
+export const CounterContext = resource.create(() => ({
+  count: 0,
+  increment() {
+    this.count++;
+    return this.count;
+  },
+  getCount() {
+    return this.count;
+  },
+}));
 ```
 
 **test-a.test.ts**
 
 ```ts
-import { assert, test, shared } from 'poku';
+import { assert, test, resource } from 'poku';
 import { CounterContext } from './counter';
 
 test('Test A: Increment Counter', async () => {
-  const counter = await shared(CounterContext);
+  const counter = await resource.use(CounterContext);
 
-  const current = await counter.get();
+  const current = await counter.getCount();
   assert.strictEqual(current, 0, 'Should start at 0');
 
-  await counter.inc();
-  assert.strictEqual(await counter.get(), 1, 'Should be 1 after increment');
+  await counter.increment();
+  assert.strictEqual(
+    await counter.getCount(),
+    1,
+    'Should be 1 after increment'
+  );
 });
 ```
 
 **test-b.test.ts**
 
 ```ts
-import { assert, test, shared, waitForExpectedResult } from 'poku';
+import { assert, test, resource, waitForExpectedResult } from 'poku';
 import { CounterContext } from './counter';
 
 test('Test B: Verify Counter State', async () => {
-  const counter = await shared(CounterContext);
+  const counter = await resource.use(CounterContext);
 
   // If you need the outcome of Test A to be ready before proceeding,
   // It is recommended to wait for the expected state to avoid flakiness.
-  await waitForExpectedResult(counter.get, 1);
+  await waitForExpectedResult(counter.getCount, 1);
 
-  await counter.inc();
-  assert.strictEqual(await counter.get(), 2, 'Should be 2 after increment');
+  await counter.increment();
+  assert.strictEqual(
+    await counter.getCount(),
+    2,
+    'Should be 2 after increment'
+  );
 });
 ```
 
@@ -185,67 +199,56 @@ When these tests run, they share the same counter instance. Test B sees the stat
 
 ## Advanced Usage
 
-### Async Initialization
-
-Resources can be initialized asynchronously:
-
-```ts
-import mysql from 'mysql2/promise';
-
-export const DatabaseContext = {
-  name: 'shared-db',
-  factory: async () => {
-    const connection = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      database: 'test',
-    });
-
-    return {
-      query: (sql) => connection.query(sql),
-      close: () => connection.end(),
-    };
-  },
-  cleanup: async (db) => {
-    await db.close();
-  },
-};
-```
-
 ### Resource Cleanup
 
 To perform cleanup when the resource is destroyed, use an optional cleanup function in the factory:
 
 ```ts
-export const CacheContext = {
-  name: 'shared-cache',
-  factory: () => {
-    const cache = new Map();
+import { createConnection } from 'mysql2/promise';
+import { resource } from 'poku';
 
-    const resource = {
-      set: (key, value) => cache.set(key, value),
-      get: (key) => cache.get(key),
-    };
-
-    return resource;
-  },
-  // Optional cleanup function
-  cleanup: (instance) => {
-    instance.clear();
-  },
-};
+export const DatabaseContext = resource.create(
+  () =>
+    createConnection({
+      host: 'localhost',
+      user: 'root',
+      database: 'test',
+    }),
+  {
+    cleanup: (connection) => connection.end(), // Close the database connection when the resource is destroyed
+  }
+);
 ```
+
+```ts
+import type { RowDataPacket } from 'mysql2/promise';
+import { test, assert, resource } from 'poku';
+import { DatabaseContext } from './db.js';
+
+type QueryResult = RowDataPacket & {
+  total: number;
+};
+
+await test('Connection', async () => {
+  const connection = await resource.use(DatabaseContext);
+  const [rows] = await connection.execute<QueryResult[]>(
+    'SELECT 1 + 1 AS total'
+  );
+
+  assert.strictEqual(rows[0].total, 2);
+});
+```
+
+:::tip
+Resources can be initialized asynchronously.
+:::
 
 ## Important Notes
 
 ### Serialization
 
-Arguments and return values are serialized using JSON serialization when communicated between processes. Complex types like functions, circular references, or custom class instances are not supported. Keep your resource methods simple with basic types: strings, numbers, booleans, arrays, and objects.
-
-### Naming
-
-Each resource must have a unique `name`. Reusing the same name in different contexts will cause them to share state, which can be useful for integration tests but may be unexpected.
+Arguments and return values are serialized using JSON when communicated between processes. Circular references and non-serializable values (such as sockets, streams, and Buffers) are not supported. Class instances are reduced to their enumerable properties, losing their prototype chain. Keep your resource methods simple with basic types: strings, numbers, booleans, arrays, and plain objects.
 
 ### Lazy Loading
 
-Resources are created on-demand the first time you call `shared(ResourceContext)`. If a test never accesses a resource, it's never created.
+Resources are created on-demand the first time you call `resource.use()`. If a test never accesses a resource, it's never created.

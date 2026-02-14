@@ -1,6 +1,6 @@
 import { assert } from '../../src/modules/essentials/assert.js';
-import { ResourceRegistry } from '../../src/modules/helpers/resource-registry.js';
 import { test } from '../../src/modules/helpers/test.js';
+import { ResourceRegistry } from '../../src/services/resource-registry.js';
 
 test('ResourceRegistry', () => {
   const registry = new ResourceRegistry<string>();
