@@ -37,6 +37,7 @@ jobs:
              [[ "$MESSAGE" =~ chore\(benchmark\) ]] ||
              [[ "$MESSAGE" =~ chore:\ update\ dependencies ]] ||
              [[ "$MESSAGE" =~ docs: ]] ||
+             [[ "$MESSAGE" =~ test: ]] ||
              [[ "$MESSAGE" =~ ci: ]] ||
              [[ "$MESSAGE" =~ cd: ]] ||
              [[ "$MESSAGE" =~ docs\(.*\): ]] ||
