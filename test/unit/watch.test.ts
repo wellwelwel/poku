@@ -47,7 +47,7 @@ describe('Watcher Service', async () => {
       currentWatcher.stop();
       currentWatcher = null;
     }
-    // Let in-flight async watcher callbacks settle before removing the directory
+
     await sleep(humanDelay);
     callbackResults = [];
     cleanTempDir();
