@@ -15,7 +15,7 @@ const { runtime } = GLOBAL;
 if (runtime === 'deno') skip();
 
 const tmpDir = path.resolve('.', 'test/__fixtures__/.temp/watch');
-const humanDelay = 750;
+const humanDelay = 100;
 
 const createTempDir = () => {
   if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
@@ -31,6 +31,7 @@ const cleanTempDir = () => {
 
 describe('Watcher Service', async () => {
   let callbackResults: { file: string; event: string }[] = [];
+  let currentWatcher: { stop: () => void } | null = null;
 
   const callback: WatchCallback = (file, event) => {
     callbackResults.push({ file, event });
@@ -41,7 +42,13 @@ describe('Watcher Service', async () => {
     callbackResults = [];
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    if (currentWatcher) {
+      currentWatcher.stop();
+      currentWatcher = null;
+    }
+
+    await sleep(humanDelay);
     callbackResults = [];
     cleanTempDir();
   });
@@ -49,6 +56,7 @@ describe('Watcher Service', async () => {
   await it('should watch for file changes', async () => {
     callbackResults = [];
     const watcher = await watch(tmpDir, callback);
+    currentWatcher = watcher;
     const filePath = path.join(tmpDir, 'file1.test.js');
 
     fs.writeFileSync(filePath, 'export default {};');
@@ -71,6 +79,7 @@ describe('Watcher Service', async () => {
     );
 
     watcher.stop();
+    currentWatcher = null;
   });
 
   await it('should watch for new files in directory', async () => {
@@ -81,6 +90,7 @@ describe('Watcher Service', async () => {
     callbackResults = [];
 
     const watcher = await watch(tmpDir, callback);
+    currentWatcher = watcher;
     const newFilePath = path.join(tmpDir, 'file3.test.js');
 
     fs.writeFileSync(newFilePath, ''); // create (empty)
@@ -103,12 +113,17 @@ describe('Watcher Service', async () => {
     );
 
     watcher.stop();
+    currentWatcher = null;
   });
 
   await it('should stop watching files', async () => {
     callbackResults = [];
     const watcher = await watch(tmpDir, callback);
     watcher.stop();
+
+    await sleep(humanDelay);
+    callbackResults = [];
+
     const filePath = path.join(tmpDir, 'file1.test.js');
     fs.writeFileSync(filePath, 'export default { stopped: true };');
 
@@ -128,6 +143,7 @@ describe('Watcher Service', async () => {
 
     callbackResults = [];
     const watcher = await watch(tmpDir, callback);
+    currentWatcher = watcher;
     const subDirPath = path.join(tmpDir, 'subdir');
     const newFilePath = path.join(subDirPath, 'file4.test.js');
 
@@ -155,6 +171,7 @@ describe('Watcher Service', async () => {
     );
 
     watcher.stop();
+    currentWatcher = null;
   });
 
   await it('should watch for changes in nested subdirectories', async () => {
@@ -164,6 +181,7 @@ describe('Watcher Service', async () => {
 
     callbackResults = [];
     const watcher = await watch(tmpDir, callback);
+    currentWatcher = watcher;
     const nestedSubDirPath = path.join(tmpDir, 'subdir', 'nestedsubdir');
     const newNestedFilePath = path.join(nestedSubDirPath, 'file5.test.js');
 
@@ -194,6 +212,7 @@ describe('Watcher Service', async () => {
     );
 
     watcher.stop();
+    currentWatcher = null;
   });
 
   await it('should watch a single file directly', async () => {
@@ -207,6 +226,7 @@ describe('Watcher Service', async () => {
     fs.writeFileSync(filePath, '');
 
     const watcher = await watch(filePath, callback);
+    currentWatcher = watcher;
 
     await sleep(humanDelay);
 
@@ -226,5 +246,6 @@ describe('Watcher Service', async () => {
     );
 
     watcher.stop();
+    currentWatcher = null;
   });
 });
