@@ -2,9 +2,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const { test } = await import('../../../../../src/modules/helpers/test.js');
-const { assert } = await import(
-  '../../../../../src/modules/essentials/assert.js'
-);
+const { assert } =
+  await import('../../../../../src/modules/essentials/assert.js');
 
 test(() => {
   const __filename = fileURLToPath(import.meta.url);

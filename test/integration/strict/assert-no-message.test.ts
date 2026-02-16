@@ -2,9 +2,8 @@ import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
 
 describe('Strict Suite (No Message)', async () => {
-  const { strict: assert } = await import(
-    '../../../src/modules/essentials/strict.js'
-  );
+  const { strict: assert } =
+    await import('../../../src/modules/essentials/strict.js');
 
   it(() => {
     assert(true);
