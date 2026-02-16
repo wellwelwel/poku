@@ -1,26 +1,31 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "files": {
-    "include": ["**/**"],
-    "ignore": [
-      "benchmark",
-      "ci",
-      "coverage",
-      "lib",
-      "node_modules",
-      "test/__fixtures__",
-      "website"
-    ]
+  "$schema": "https://biomejs.dev/schemas/2.4.0/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "off"
+      }
+    }
   },
-  "organizeImports": {
-    "enabled": false
+  "files": {
+    "includes": [
+      "**",
+      "!!benchmark",
+      "!!ci",
+      "!!coverage",
+      "!!lib",
+      "!!node_modules",
+      "!!test/__fixtures__",
+      "!!website"
+    ],
+    "ignoreUnknown": true
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "all": true,
+      "recommended": true,
       "complexity": {
-        "all": true,
+        "recommended": true,
         "noExcessiveCognitiveComplexity": {
           "level": "error",
           "options": {
@@ -30,50 +35,43 @@
         }
       },
       "a11y": {
-        "all": true
+        "recommended": true
       },
       "correctness": {
-        "all": true,
-        "noNodejsModules": "off",
-        "useHookAtTopLevel": "off", // Biome confuses `use[...]` with React hooks.
-        "useImportExtensions": "error"
+        "recommended": true,
+        "noNodejsModules": "off"
       },
       "nursery": {
-        "all": true,
-        "useImportRestrictions": "off",
-        "noProcessEnv": "off",
-        "noCommonJs": "off",
-        "noSecrets": "off",
+        "recommended": true,
         "useExplicitType": "off"
       },
       "performance": {
-        "all": true,
+        "recommended": true,
         "noAccumulatingSpread": "error",
         "noBarrelFile": "error",
         "noDelete": "error",
         "noReExportAll": "error"
       },
       "security": {
-        "all": true,
+        "recommended": true,
         "noGlobalEval": "error"
       },
       "suspicious": {
-        "all": true,
+        "recommended": true,
         "noEmptyBlockStatements": "off",
-        "noConsoleLog": "off",
         "noAsyncPromiseExecutor": "error",
         "useAwait": "error",
         "useIsArray": "error",
         "noMisplacedAssertion": "off",
         "noConsole": "off",
+        "noPrototypeBuiltins": "off",
         "noControlCharactersInRegex": "off"
       },
       "style": {
-        "all": true,
+        "recommended": true,
         "noNonNullAssertion": "off",
         "useNamingConvention": "off",
         "useNodeAssertStrict": "off",
-        "noNamespaceImport": "off",
         "useBlockStatements": "off"
       }
     }
@@ -83,7 +81,7 @@
   },
   "overrides": [
     {
-      "include": ["test", "tools"],
+      "includes": ["test/**", "tools/**"],
       "linter": {
         "rules": {
           "complexity": {
@@ -92,14 +90,14 @@
           "performance": {
             "useTopLevelRegex": "off"
           },
-          "nursery": {
+          "suspicious": {
             "noTemplateCurlyInString": "off"
           }
         }
       }
     },
     {
-      "include": ["src/polyfills/**/**"],
+      "includes": ["src/polyfills/**", "src/@types/shared-resources.ts"],
       "linter": {
         "rules": {
           "suspicious": {
@@ -109,17 +107,7 @@
       }
     },
     {
-      "include": ["src/@types/shared-resources.ts"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noExplicitAny": "off" // It's expected to have `any` types to support any resource shape, especially overloaded functions.
-          }
-        }
-      }
-    },
-    {
-      "include": ["src/modules/index.ts"],
+      "includes": ["src/modules/index.ts"],
       "linter": {
         "rules": {
           "performance": {
@@ -129,7 +117,7 @@
       }
     },
     {
-      "include": [
+      "includes": [
         "src/modules/helpers/modifiers.ts",
         "src/modules/helpers/describe.ts",
         "src/modules/helpers/it/core.ts"
@@ -143,7 +131,7 @@
       }
     },
     {
-      "include": ["src/bin/index.ts"],
+      "includes": ["src/bin/index.ts"],
       "linter": {
         "rules": {
           "complexity": {

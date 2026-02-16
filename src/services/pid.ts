@@ -70,7 +70,7 @@ export const getPIDs = {
         const output = data.toString().trim();
         const lines = output.trim().split('\n');
 
-        lines.map((line) => {
+        for (const line of lines) {
           const tokens = line.trim().split(regex.sequentialSpaces);
           const stateIndex = tokens.indexOf('LISTENING');
 
@@ -79,7 +79,7 @@ export const getPIDs = {
 
             if (!Number.isNaN(pid)) PIDs.add(pid);
           }
-        });
+        }
       });
 
       service.on('close', () => resolve(Array.from(PIDs)));

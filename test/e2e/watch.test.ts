@@ -44,7 +44,7 @@ describe('Watch Mode', async () => {
   const results = watcher.getOutput();
   await watcher.kill();
 
-  await it('Top path', async () => {
+  it('Top path', () => {
     const watched = results.stdout
       .split('\n')
       .filter((result) => /test\/a\.test\.ts/.test(result)).length;
@@ -52,7 +52,7 @@ describe('Watch Mode', async () => {
     assert(watched >= 1);
   });
 
-  await it('Sub path', async () => {
+  it('Sub path', () => {
     const watched = results.stdout
       .split('\n')
       .filter((result) => /test\/sub\/b\.test\.ts/.test(result)).length;
