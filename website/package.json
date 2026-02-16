@@ -18,7 +18,7 @@
     "lint:fix": "prettier --write .",
     "test:unit": "poku test/unit",
     "test": "npm run typecheck && npm run lint && npm run test:unit && npm run clear && npm run build",
-    "update": "pu minor && npm i && (npm audit fix || true)",
+    "update": "pu && npm i && npm update && (npm audit fix || true)",
     "postupdate": "npm run lint:fix"
   },
   "dependencies": {
@@ -30,25 +30,25 @@
     "clsx": "^2.1.1",
     "docusaurus-plugin-sass": "^0.2.6",
     "jsonc.min": "^1.1.0",
-    "lucide-react": "^0.554.0",
+    "lucide-react": "^0.564.0",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.2.0",
+    "react": "^19.2.4",
     "react-confetti": "^6.4.0",
-    "react-dom": "^19.2.0",
+    "react-dom": "^19.2.4",
     "react-typed": "^2.0.12",
-    "sass": "^1.94.2",
+    "sass": "^1.97.3",
     "sonner": "^2.0.7"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.9.2",
     "@docusaurus/tsconfig": "^3.9.2",
     "@docusaurus/types": "^3.9.2",
-    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
-    "@types/node": "^24.10.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "@types/node": "^25.2.3",
     "packages-update": "^2.0.0",
     "poku": "^3.0.2",
-    "prettier": "^3.6.2",
-    "tsx": "^4.20.6",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "browserslist": {
