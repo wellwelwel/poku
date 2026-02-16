@@ -1,8 +1,9 @@
-import type { ChildProcess } from 'node:child_process';
+import type { ChildProcess, ChildProcessEventMap } from 'node:child_process';
 import type EventEmitter from 'node:events';
+import type { InternalEventEmitter } from 'node:events';
 import type { SHARED_RESOURCE_MESSAGE_TYPES } from '../modules/helpers/shared-resources.js';
 
-export type IPCEventEmitter = EventEmitter & {
+export type IPCEventEmitter = InternalEventEmitter<ChildProcessEventMap> & {
   send: (message: unknown, ...args: unknown[]) => boolean;
 };
 
