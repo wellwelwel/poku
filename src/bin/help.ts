@@ -34,6 +34,7 @@ const summary: [string, string][] = [
   ['--quiet, -q', 'Run tests with no logs.'],
   ['--sharedResources', 'Share state and methods between isolated test files.'],
   ['--sequential', 'Run tests files sequentially.'],
+  ['--timeout', 'Set the maximum time (ms) for each test file.'],
   ['--version, -v', "Show Poku's installed version."],
   ['--watch, -w', 'Watch for test events.'],
   ['--watchInterval', 'Set an interval for watch events.'],

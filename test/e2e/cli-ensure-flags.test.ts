@@ -9,7 +9,7 @@ if (isBuild) skip();
 describe('Enforce Option', async () => {
   await it('--enforce', async () => {
     const output = await inspectPoku(
-      '--enforce -D --paralell --concurrency=g --config=test.json --envFile --debug=test --watchInterval',
+      '--enforce -D --paralell --concurrency=g --timeout=g --config=test.json --envFile --debug=test --watchInterval',
       {
         cwd: 'test/__fixtures__/e2e/no-tests',
       }
@@ -48,12 +48,16 @@ describe('Enforce Option', async () => {
     assert(
       /--concurrency: expects for a valid integer./.test(output.stdout),
       'Wrong value'
+    );
+    assert(
+      /--timeout: expects for a valid integer./.test(output.stdout),
+      'Wrong timeout value'
     );
   });
 
   await it('-x', async () => {
     const output = await inspectPoku(
-      '-x -D --paralell --concurrency=g --config=test.json --envFile --debug=test --watchInterval',
+      '-x -D --paralell --concurrency=g --timeout=g --config=test.json --envFile --debug=test --watchInterval',
       {
         cwd: 'test/__fixtures__/e2e/no-tests',
       }
@@ -92,6 +96,10 @@ describe('Enforce Option', async () => {
     assert(
       /--concurrency: expects for a valid integer./.test(output.stdout),
       'Wrong value'
+    );
+    assert(
+      /--timeout: expects for a valid integer./.test(output.stdout),
+      'Wrong timeout value'
     );
   });
 

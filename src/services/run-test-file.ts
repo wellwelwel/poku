@@ -6,6 +6,7 @@ import { setupSharedResourceIPC } from '../modules/helpers/shared-resources.js';
 import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
+import { format } from './format.js';
 
 export const runTestFile = async (path: string): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
@@ -63,10 +64,27 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
     if (configs.sharedResources) setupSharedResourceIPC(child);
 
+    let timedOut = false;
+    let killTimer: ReturnType<typeof setTimeout> | undefined;
+
+    if (configs.timeout) {
+      killTimer = setTimeout(() => {
+        timedOut = true;
+        output += format(
+          `● Timeout: test file exceeded ${configs.timeout}ms limit`
+        )
+          .fail()
+          .bold();
+        child.kill('SIGKILL');
+      }, configs.timeout);
+    }
+
     child.on('close', async (code) => {
+      if (killTimer) clearTimeout(killTimer);
+
       end = hrtime(start);
 
-      const result = code === 0;
+      const result = timedOut ? false : code === 0;
 
       if (showLogs) {
         const parsedOutputs = parserOutput({
@@ -96,6 +114,8 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     });
 
     child.on('error', (err) => {
+      if (killTimer) clearTimeout(killTimer);
+
       end = hrtime(start);
 
       const total = end[0] * 1e3 + end[1] / 1e6;

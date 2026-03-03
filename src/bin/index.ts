@@ -62,6 +62,10 @@ import { hr, log } from '../services/write.js';
     const value = Number(getArg('concurrency'));
     return Number.isNaN(value) ? configsFromFile?.concurrency : value;
   })();
+  const timeout = (() => {
+    const value = Number(getArg('timeout'));
+    return Number.isNaN(value) ? configsFromFile?.timeout : value;
+  })();
   const sequential = hasArg('sequential');
   const sharedResources =
     hasArg('sharedResources') || configsFromFile?.sharedResources;
@@ -109,6 +113,7 @@ import { hr, log } from '../services/write.js';
     exclude:
       typeof exclude === 'string' ? new RegExp(escapeRegExp(exclude)) : exclude,
     concurrency,
+    timeout,
     sequential,
     quiet,
     debug,

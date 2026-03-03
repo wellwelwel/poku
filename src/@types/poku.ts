@@ -63,6 +63,12 @@ export type Configs = {
    */
   concurrency?: number;
   /**
+   * Sets the maximum time in milliseconds that each test file is allowed to run.
+   *
+   * @default undefined
+   */
+  timeout?: number;
+  /**
    * @default "poku"
    */
   reporter?: Reporter;
