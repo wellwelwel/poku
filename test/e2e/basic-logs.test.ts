@@ -25,7 +25,6 @@ describe('Basic logs with Runner', async () => {
       {
         env: {
           ...process.env,
-          POKU: '1',
           POKU_RUNTIME: env.POKU_RUNTIME,
         },
       }

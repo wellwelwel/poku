@@ -46,7 +46,6 @@ export const GLOBAL = {
   configFile: undefined as string | undefined,
   configsFromFile: Object.create(null) as ConfigFile | ConfigJSONFile,
   reporter: reporter[env.POKU_REPORTER || 'poku'](),
-  isPoku: env.POKU === '1',
   envFile: undefined as string | undefined,
   runtime: (env.POKU_RUNTIME || getRuntime()) as Runtime,
   runAsOnly: false,

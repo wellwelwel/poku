@@ -4,7 +4,7 @@ import process from 'node:process';
 import { GLOBAL } from '../configs/poku.js';
 
 const assertProcessor = () => {
-  const { isPoku, reporter } = GLOBAL;
+  const { reporter } = GLOBAL;
 
   const handleSuccess = ({ message }: ProcessAssertionOptions) => {
     if (typeof message === 'string') reporter.onAssertionSuccess({ message });
@@ -16,7 +16,7 @@ const assertProcessor = () => {
     if (error instanceof AssertionError)
       reporter.onAssertionFailure({ assertOptions: options, error });
 
-    if (isPoku) throw error;
+    throw error;
   };
 
   const processAssert = (cb: () => void, options: ProcessAssertionOptions) => {
