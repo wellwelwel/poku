@@ -1,0 +1,139 @@
+---
+sidebar_position: 4
+tags:
+  [
+    plugin,
+    utility,
+    definePlugin,
+    createReporter,
+    inspectPoku,
+    findFileFromStack,
+    testing,
+  ]
+---
+
+# 🛠️ Plugin Utilities
+
+**Poku** provides utility functions via `poku/plugins` to help with plugin development and testing.
+
+```ts
+import {
+  definePlugin,
+  createReporter,
+  inspectPoku,
+  findFileFromStack,
+} from 'poku/plugins';
+```
+
+## `definePlugin`
+
+> `definePlugin(plugin: PokuPlugin): PokuPlugin`
+
+An identity function that provides type checking and IDE autocompletion when creating plugins. Returns the plugin object as-is — no runtime transformation.
+
+```ts
+import { definePlugin } from 'poku/plugins';
+
+export default definePlugin({
+  name: 'my-plugin',
+  setup({ configs, runtime, cwd }) {
+    // fully typed
+  },
+});
+```
+
+See [Creating Plugins](/docs/documentation/plugins/creating-plugins) for the full guide.
+
+## `createReporter`
+
+> `createReporter(events: ReporterEvents): ReporterPlugin`
+
+Creates a reporter plugin by merging your event handlers with the default `poku` reporter. Only override the events you need.
+
+```ts
+import { createReporter } from 'poku/plugins';
+
+export const myReporter = createReporter({
+  onFileResult({ status }) {
+    process.stdout.write(status ? '.' : 'F');
+  },
+});
+```
+
+See [Custom Reporters](/docs/documentation/plugins/reporters) for the full guide and event reference.
+
+## `inspectPoku`
+
+> `inspectPoku(options: { command: string; spawnOptions?: SpawnOptionsWithoutStdio; bin?: string }): Promise<InspectCLIResult>`
+
+Runs a **Poku** CLI execution programmatically and returns the result. Useful for plugin authors who need to test their plugins against real test runs.
+
+```ts
+type InspectCLIResult = {
+  stdout: string;
+  stderr: string;
+  exitCode: number;
+  process: ChildProcessWithoutNullStreams;
+  PID: number;
+  kill: () => Promise<void>;
+};
+```
+
+### Example
+
+```ts
+import { inspectPoku } from 'poku/plugins';
+
+const result = await inspectPoku({
+  command: '--sequential ./test',
+  spawnOptions: { cwd: './fixtures' },
+});
+
+console.log(result.stdout);
+console.log(result.exitCode); // 0 or 1
+await result.kill();
+```
+
+### Options
+
+| Option         | Type                       | Description                                                       |
+| -------------- | -------------------------- | ----------------------------------------------------------------- |
+| `command`      | `string`                   | CLI arguments to pass to **Poku** (e.g., `'--sequential ./test'`) |
+| `spawnOptions` | `SpawnOptionsWithoutStdio` | Options passed to `child_process.spawn` (e.g., `{ cwd }`)         |
+| `bin`          | `string`                   | Path to the **Poku** binary. Auto-detected by default             |
+
+## `findFileFromStack`
+
+> `findFileFromStack(stack: string | undefined, options?: { skipInternal?: boolean }): string`
+
+Parses a stack trace string and extracts the first file path found. Supports `file://` URLs, Unix absolute paths, and Windows absolute paths.
+
+When `skipInternal` is `true`, lines containing `poku/lib/` are skipped — useful for finding the caller's file instead of **Poku** internals.
+
+Returns the file path string, or an empty string if no path is found.
+
+### Example
+
+```ts
+import { findFileFromStack } from 'poku/plugins';
+
+const file = findFileFromStack(new Error().stack, {
+  skipInternal: true,
+});
+
+console.log(file); // '/path/to/your/test-file.ts'
+```
+
+## Exported Types
+
+All types are available from `poku/plugins`:
+
+```ts
+import type {
+  PokuPlugin,
+  PluginContext,
+  ReporterPlugin,
+  ReporterEvents,
+  InspectCLIResult,
+} from 'poku/plugins';
+```

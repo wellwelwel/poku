@@ -1,0 +1,172 @@
+---
+sidebar_position: 2
+tags: [plugin, custom, create, hook, lifecycle, setup, teardown, runner, ipc]
+---
+
+# 💡 Creating Plugins
+
+## `definePlugin`
+
+> `definePlugin(plugin: PokuPlugin): PokuPlugin`
+
+Use `definePlugin` from `poku/plugins` to create a plugin with full type safety and IDE autocompletion.
+
+```ts
+import { definePlugin } from 'poku/plugins';
+
+export const myPlugin = definePlugin({
+  name: 'my-plugin',
+  async setup({ runtime, cwd }) {
+    // runs before the test suite
+  },
+  async teardown() {
+    // runs after the test suite
+  },
+});
+```
+
+## PokuPlugin Type
+
+```ts
+type PokuPlugin = {
+  /** Unique name for the plugin */
+  name: string;
+  /** Modify the command array before spawning a test file process */
+  runner?: (command: string[], file: string) => string[];
+  /** Run before the test suite begins */
+  setup?: (context: PluginContext) => void | Promise<void>;
+  /** Run after the test suite completes */
+  teardown?: (context: PluginContext) => void | Promise<void>;
+  /** Enable IPC channel for child processes */
+  ipc?: boolean;
+  /** Called after each test file process is spawned */
+  onTestProcess?: (child: ChildProcess, file: string) => void;
+};
+```
+
+## PluginContext
+
+Both `setup` and `teardown` receive a `PluginContext` with readonly access to the current execution environment:
+
+```ts
+type PluginContext = {
+  readonly configs: Configs;
+  readonly runtime: Runtime; // 'node' | 'bun' | 'deno'
+  readonly cwd: string;
+};
+```
+
+## Hook Reference
+
+### `name`
+
+Required. A unique string identifier for the plugin.
+
+### `setup(context)`
+
+Runs once before the test suite begins. Use it for initialization — starting services, creating temp directories, preparing resources.
+
+```ts
+export const myPlugin = definePlugin({
+  name: 'my-setup',
+  async setup({ configs, runtime, cwd }) {
+    console.log(`Running on ${runtime} from ${cwd}`);
+    // start a server, seed a database, etc.
+  },
+});
+```
+
+### `teardown(context)`
+
+Runs once after all tests complete. Use it for cleanup — stopping services, removing temp files, releasing connections.
+
+```ts
+export const myPlugin = definePlugin({
+  name: 'my-cleanup',
+  async teardown() {
+    // stop servers, close connections, etc.
+  },
+});
+```
+
+### `runner(command, file)`
+
+Modifies the command array used to spawn each test file process. Receives the original command (e.g., `['node', '--some-flag']`) and the file path. Must return the modified command array.
+
+```ts
+export const myPlugin = definePlugin({
+  name: 'my-runner',
+  runner(command, file) {
+    if (file.endsWith('.custom.ts')) {
+      return ['my-runtime', ...command.slice(1)];
+    }
+    return command;
+  },
+});
+```
+
+:::note
+Only the first plugin in the `plugins` array that defines a `runner` hook will be used. Subsequent `runner` hooks are ignored.
+:::
+
+### `ipc`
+
+When set to `true`, spawned test processes get an IPC channel, enabling communication between **Poku** (parent) and test files (children) via `process.send()` and `process.on('message')`.
+
+:::note
+If **any** plugin in the `plugins` array sets `ipc: true`, all test processes will have IPC enabled.
+:::
+
+### `onTestProcess(child, file)`
+
+Called after each test file process is spawned. Receives the `ChildProcess` instance and the absolute file path. Use it to attach IPC listeners, monitor processes, or collect metrics.
+
+```ts
+export const myPlugin = definePlugin({
+  name: 'my-ipc',
+  ipc: true,
+  onTestProcess(child, file) {
+    child.on('message', (msg) => {
+      console.log(`Message from ${file}:`, msg);
+    });
+  },
+});
+```
+
+## Complete Example
+
+A plugin that logs timing information for the test suite and each test file:
+
+```ts
+import { definePlugin } from 'poku/plugins';
+
+export const timingPlugin = definePlugin({
+  name: 'timing',
+  async setup({ runtime }) {
+    console.log(`\n[timing] Suite starting on ${runtime}`);
+  },
+  onTestProcess(child, file) {
+    const start = Date.now();
+    child.on('close', () => {
+      console.log(`[timing] ${file}: ${Date.now() - start}ms`);
+    });
+  },
+  async teardown() {
+    console.log('[timing] Suite complete\n');
+  },
+});
+```
+
+```ts
+// poku.config.ts
+import { defineConfig } from 'poku';
+import { timingPlugin } from './plugins/timing';
+
+export default defineConfig({
+  plugins: [timingPlugin],
+});
+```
+
+:::tip
+See the [@pokujs/shared-resources](https://github.com/pokujs/plugin-shared) plugin for a production example using `ipc`, `onTestProcess`, and `teardown`.
+:::
