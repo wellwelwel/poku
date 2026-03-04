@@ -52,6 +52,24 @@ Para usuários de **TypeScript**, não é necessário instalar **tsx** para o **
 
 <hr />
 
+## Sobrescrevendo o runtime {#overriding-the-runtime}
+
+Se você enfrentar problemas em ambientes com múltiplos runtimes instalados, você pode usar a variável de ambiente `POKU_RUNTIME` para definir explicitamente o runtime:
+
+```sh
+POKU_RUNTIME=node poku
+```
+
+```sh
+POKU_RUNTIME=bun poku
+```
+
+```sh
+POKU_RUNTIME=deno poku
+```
+
+<hr />
+
 ### Recomendações {#recommendations}
 
 :::tip
