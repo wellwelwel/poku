@@ -188,11 +188,14 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
             .dim()}`
         );
 
-      if (!status)
+      if (!status) {
         errors.push({
           file: path.relative,
           output,
         });
+
+        if (output) log(output);
+      }
     },
     onRunResult() {
       if (errors.length === 0) return;

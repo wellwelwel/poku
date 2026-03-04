@@ -46,7 +46,7 @@ export async function poku(
     )
   ).flat(1);
 
-  if (typeof plugin === 'string' && plugin !== 'poku')
+  if (typeof plugin === 'string' && plugin !== 'poku' && plugin in reporter)
     GLOBAL.reporter = reporter[plugin]();
 
   if (showLogs) GLOBAL.reporter.onRunStart();

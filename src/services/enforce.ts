@@ -3,6 +3,7 @@ import { argv, exit } from 'node:process';
 import { GLOBAL } from '../configs/poku.js';
 import { getArg, hasArg } from '../parsers/get-arg.js';
 import { format } from './format.js';
+import { reporter } from './reporter.js';
 import { hr, log } from './write.js';
 
 const errors: string[] = [];
@@ -46,6 +47,7 @@ const checkFlags = () => {
     '--killRange',
     '--only',
     '--quiet',
+    '--reporter',
     '--sequential',
     '--timeout',
     '--watch',
@@ -53,6 +55,7 @@ const checkFlags = () => {
     '-c',
     '-d',
     '-q',
+    '-r',
     '-w',
     '-x',
   ]);
@@ -88,9 +91,11 @@ const checkValues = async () => {
     'config',
     'killPid',
     'killPort',
+    'reporter',
     'timeout',
     'watchInterval',
     'c',
+    'r',
   ])
     checkRequiredValue(flag);
 
@@ -105,6 +110,12 @@ const checkValues = async () => {
 
   if (getArg('timeout') && typeof GLOBAL.configs.timeout === 'undefined')
     errors.push('--timeout: expects for a valid integer.');
+
+  const reporterValue = getArg('reporter') ?? getArg('r', '-');
+  if (reporterValue && !(reporterValue in reporter))
+    errors.push(
+      `--reporter: "${reporterValue}" is not a valid reporter. Available: ${Object.keys(reporter).join(', ')}.`
+    );
 };
 
 const checkConfigFile = () => {

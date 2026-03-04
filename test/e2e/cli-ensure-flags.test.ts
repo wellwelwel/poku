@@ -103,6 +103,31 @@ describe('Enforce Option', async () => {
     );
   });
 
+  await it('Invalid reporter with enforce', async () => {
+    const output = await inspectPoku('--enforce --reporter=invalid', {
+      cwd: 'test/__fixtures__/e2e/no-tests',
+    });
+
+    assert.strictEqual(output.exitCode, 1, 'Exit Code needs to be 1');
+    assert(/Ensure Enabled/.test(output.stdout), '"ensure" is enabled');
+    assert(
+      /--reporter: "invalid" is not a valid reporter/.test(output.stdout),
+      'Invalid reporter error message'
+    );
+  });
+
+  await it('Invalid reporter without enforce', async () => {
+    const output = await inspectPoku('--reporter=invalid', {
+      cwd: 'test/__fixtures__/e2e/no-tests',
+    });
+
+    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
+    assert(
+      !/Ensure Enabled/.test(output.stdout),
+      'Fallback to poku reporter without error'
+    );
+  });
+
   await it('No ensure', async () => {
     const output = await inspectPoku('-D --paralell', {
       cwd: 'test/__fixtures__/e2e/no-tests',
