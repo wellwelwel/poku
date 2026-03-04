@@ -48,6 +48,7 @@ const checkFlags = () => {
     '--only',
     '--quiet',
     '--sequential',
+    '--timeout',
     '--watch',
     '--watchInterval',
     '-c',
@@ -88,6 +89,7 @@ const checkValues = async () => {
     'config',
     'killPid',
     'killPort',
+    'timeout',
     'watchInterval',
     'c',
   ])
@@ -101,6 +103,9 @@ const checkValues = async () => {
     typeof GLOBAL.configs.concurrency === 'undefined'
   )
     errors.push('--concurrency: expects for a valid integer.');
+
+  if (getArg('timeout') && typeof GLOBAL.configs.timeout === 'undefined')
+    errors.push('--timeout: expects for a valid integer.');
 };
 
 const checkConfigFile = () => {
@@ -117,6 +122,7 @@ const checkConfigFile = () => {
     'failFast',
     'concurrency',
     'quiet',
+    'timeout',
     'envFile',
     'kill',
     'platform',
