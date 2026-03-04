@@ -254,11 +254,11 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 ### Performance
 
-**Poku** is [continuously tested](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) to ensure the following expectations for basic usage:
+**Poku** is [continuously tested](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) to ensure the following average expectations for basic usage:
 
-- ~**4.4x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.2.0)
-- ~**3.4x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.0.8)
-- ~**1.1x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.5) — _even with test file isolation_ 🚀
+- ~**4.6x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.2.0)
+- ~**3.5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.0.8)
+- ~**1.4x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.5) — _even with test file isolation_ 🚀
 
 > - You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
 > - [Comparing **Poku** and native test runners _(discussion)_](https://github.com/wellwelwel/poku/discussions/740).
@@ -279,7 +279,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 ## Security Policy
 
-[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f368e0)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/work flow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f368e0)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
 
 Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
 

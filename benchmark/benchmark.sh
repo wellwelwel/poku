@@ -4,11 +4,11 @@ SHORT_SHA=$(git rev-parse --short HEAD)
 
 HR="\n---\n"
 
-BIN_POKU="node --predictable ./node_modules/poku/lib/bin/index.js"
-BIN_MOCHA="node --predictable ./node_modules/mocha/bin/mocha.js --parallel"
-BIN_JEST="node --predictable --experimental-vm-modules ./node_modules/jest/bin/jest.js"
-BIN_VITEST="node --predictable ./node_modules/vitest/vitest.mjs run"
-BIN_NODE="node --predictable --test"
+BIN_POKU="node ./node_modules/poku/lib/bin/index.js"
+BIN_MOCHA="node ./node_modules/mocha/bin/mocha.js --parallel"
+BIN_JEST="node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
+BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
+BIN_NODE="node --test"
 
 rm -rf results
 
@@ -96,21 +96,22 @@ execution() {
 
 h1 "🎖️ Benchmarks"
 
-h2 "🏃🏻‍♀️ 1/4 Execution Tests"
+h2 "🏃🏻‍♀️ Execution Tests"
 
-quote "[!NOTE]"
-quote ""
-quote "Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from **Node.js** and searches for files in four levels of depth."
-quote ""
-quote "- **success:** a suite of 5 tests that will pass."
-quote "- **failure:** a suite of 5 tests that will fail."
-quote "- **balanced:** a suite of 10 tests where 5 tests will fail and 5 tests will pass."
-
+echo "<!-- SUMMARY_TABLE -->"
 echo ""
+
 echo "<details>"
 echo "<summary>"
-echo "See Results"
+echo "<strong>ℹ Extensive Details</strong>"
 echo "</summary>"
+echo "<br />"
+echo ""
+echo "Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from **Node.js** and searches for files in four levels of depth."
+echo ""
+echo "- **success:** a suite of 5 tests that will pass."
+echo "- **failure:** a suite of 5 tests that will fail."
+echo "- **balanced:** a suite of 10 tests where 5 tests will fail and 5 tests will pass."
 
 h3 "🃏 [Jest](https://github.com/jestjs/jest)"
 execution "jest" "$BIN_JEST" "success" "jest"
@@ -134,9 +135,7 @@ execution "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
 
 echo ""
 echo "</details>"
-
-echo "$HR"
+echo ""
 
 quote "[!IMPORTANT]"
-quote ""
-quote "Please take into consideration that benchmarks do not indicate the competitiveness of one over the other; rather, they serve as a metric to monitor and objectively assess the current performance state of the project."
+quote "Benchmarks do not indicate competitiveness; they serve as a metric to monitor the project performance."

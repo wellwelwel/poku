@@ -18,7 +18,7 @@ The testers to be compared are chosen based on the three most downloaded test ru
 
 ---
 
-**Poku** is continuously tested ([**CI**](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml)) to ensure the following expectations for basic usage:
+**Poku** is continuously tested ([**CI**](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml)) to ensure the following average expectations for basic usage:
 
 ## 🏃🏻‍♀️ Execution Tests
 
@@ -30,9 +30,9 @@ The testers to be compared are chosen based on the three most downloaded test ru
 > - **failure:** a suite of 5 tests that will fail.
 > - **balanced:** a suite of 10 tests where 5 tests will fail and 5 tests will pass.
 
-- ~**4.4x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.2.0)
-- ~**3.4x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.0.8)
-- ~**1.1x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.5) — _even with test file isolation_ 🚀
+- ~**4.6x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.2.0)
+- ~**3.5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.0.8)
+- ~**1.4x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.5) — _even with test file isolation_ 🚀
 
 ---
 

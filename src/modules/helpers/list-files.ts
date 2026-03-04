@@ -34,10 +34,11 @@ const envFilter = env.FILTER?.trim()
   ? new RegExp(escapeRegExp(env.FILTER), 'i')
   : undefined;
 
-export const getAllFiles = async (
+const getAllFilesInner = async (
   dirPath: string,
-  files: Set<string> = new Set(),
-  configs?: Configs
+  files: Set<string>,
+  filter: RegExp,
+  exclude: RegExp[] | undefined
 ): Promise<Set<string>> => {
   let isFullPath = false;
 
@@ -53,18 +54,6 @@ export const getAllFiles = async (
       console.error(error);
       process.exit(1);
     }
-  })();
-
-  const filter: RegExp = (() => {
-    if (envFilter) return envFilter;
-    if (configs?.filter instanceof RegExp) return configs.filter;
-    return regex.defaultFilter;
-  })();
-
-  const exclude: Configs['exclude'] = (() => {
-    if (!configs?.exclude) return undefined;
-    if (Array.isArray(configs.exclude)) return configs.exclude;
-    return [configs.exclude];
   })();
 
   await Promise.all(
@@ -87,11 +76,30 @@ export const getAllFiles = async (
 
       if (filter.test(fullPath)) return files.add(fullPath);
 
-      if (stat.isDirectory()) await getAllFiles(fullPath, files, configs);
+      if (stat.isDirectory())
+        await getAllFilesInner(fullPath, files, filter, exclude);
     })
   );
 
   return files;
+};
+
+export const getAllFiles = (
+  dirPath: string,
+  files: Set<string> = new Set(),
+  configs?: Configs
+): Promise<Set<string>> => {
+  const filter: RegExp =
+    envFilter ??
+    (configs?.filter instanceof RegExp ? configs.filter : regex.defaultFilter);
+
+  const exclude: RegExp[] | undefined = configs?.exclude
+    ? Array.isArray(configs.exclude)
+      ? configs.exclude
+      : [configs.exclude]
+    : undefined;
+
+  return getAllFilesInner(dirPath, files, filter, exclude);
 };
 
 export const listFiles = async (

@@ -31,11 +31,6 @@ jobs:
           check-latest: true
           node-version: lts/*
 
-      - name: ➕ Actions - Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: ${{ matrix.bun-version }}
-
       - name: ➕ Actions — Setup Hyperfine
         run: cargo install --locked hyperfine
 
@@ -59,7 +54,7 @@ jobs:
       - name: 🚀 Building Poku
         run: |
           npm run build
-          cd benchmark && npm ci
+          npm --prefix benchmark ci
 
       - name: 🎖️ Rock it
         run: npm run benchmark
@@ -69,8 +64,3 @@ jobs:
         with:
           update-if-includes: 'Benchmarks'
           comment-from-file: './benchmark/output.md'
-
-      - name: 🐷 Ensure Poku
-        run: |
-          cd benchmark
-          npm run compare

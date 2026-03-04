@@ -10,6 +10,9 @@ import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 import { format } from '../format.js';
 import { hr, log } from '../write.js';
 
+const ARROW_PASS = '\x1b[32m\x1b[1m›\x1b[0m';
+const ARROW_FAIL = '\x1b[91m\x1b[1m›\x1b[0m';
+
 export const errors: { file: string; output?: string }[] = [];
 
 export const poku: ReturnType<ReporterPlugin> = (() => {
@@ -168,7 +171,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       if (status) {
         log(
-          `${format('›').success().bold()} ${format(path.relative).success().underline()} ${format(
+          `${ARROW_PASS} ${format(path.relative).success().underline()} ${format(
             `› ${duration.toFixed(6)}ms`
           )
             .success()
@@ -178,7 +181,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
         if (output) log(output);
       } else
         log(
-          `${format('›').fail().bold()} ${format(path.relative).fail().underline()} ${format(
+          `${ARROW_FAIL} ${format(path.relative).fail().underline()} ${format(
             `› ${duration.toFixed(6)}ms`
           )
             .fail()

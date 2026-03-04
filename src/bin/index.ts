@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+import { env } from 'node:process';
 import { GLOBAL, states, VERSION } from '../configs/poku.js';
 import { poku } from '../modules/essentials/poku.js';
 import { envFile } from '../modules/helpers/env.js';
@@ -100,6 +101,10 @@ import { hr, log } from '../services/write.js';
   }
 
   GLOBAL.configFile = configFile;
+
+  env.POKU_RUNTIME = GLOBAL.runtime;
+  env.POKU_REPORTER = typeof reporter === 'string' ? reporter : 'poku';
+
   GLOBAL.configs = {
     filter:
       typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,

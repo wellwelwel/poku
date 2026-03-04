@@ -1,7 +1,7 @@
 import type { Code } from '../../@types/code.js';
 import type { Configs } from '../../@types/poku.js';
 import { join } from 'node:path';
-import process from 'node:process';
+import { env, hrtime, stdout } from 'node:process';
 import { GLOBAL, results, timespan } from '../../configs/poku.js';
 import { reporter } from '../../services/reporter.js';
 import { runTests } from '../../services/run-tests.js';
@@ -9,7 +9,7 @@ import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
 
 /* c8 ignore next 1 */ // Process-based
-export const onSigint = () => process.stdout.write('\u001B[?25h');
+export const onSigint = () => stdout.write('\u001B[?25h');
 
 process.once('SIGINT', onSigint);
 
@@ -27,9 +27,14 @@ export async function poku(
 ): Promise<Code | undefined> {
   if (configs) GLOBAL.configs = { ...GLOBAL.configs, ...configs };
 
+  env.POKU_RUNTIME = GLOBAL.runtime;
+
+  if (typeof GLOBAL.configs.reporter === 'string')
+    env.POKU_REPORTER = GLOBAL.configs.reporter;
+
   timespan.started = new Date();
 
-  const start = process.hrtime();
+  const start = hrtime();
   const paths: string[] = Array.prototype.concat(targetPaths);
   const showLogs = !GLOBAL.configs.quiet;
   const { reporter: plugin } = GLOBAL.configs;
@@ -48,7 +53,7 @@ export async function poku(
 
   const result = await runTests(testFiles);
   const code: Code = result ? 0 : 1;
-  const end = process.hrtime(start);
+  const end = hrtime(start);
   const total = end[0] * 1e3 + end[1] / 1e6;
 
   timespan.duration = total;
