@@ -25,19 +25,20 @@ export const runner = (filename: string): string[] => {
   }
 
   // Node.js
-  return ['.ts', '.mts', '.cts'].includes(extname(filename))
+  const ext = extname(filename);
+  return ext === '.ts' || ext === '.mts' || ext === '.cts'
     ? ['node', '--import=tsx']
     : ['node'];
 };
 
-export const scriptRunner = (runner: Runner): string[] => {
-  const commands: Record<Runner, string[]> = {
-    npm: [isWindows ? 'npm.cmd' : 'npm', 'run'],
-    bun: ['bun', 'run'],
-    deno: ['deno', 'task'],
-    yarn: ['yarn'],
-    pnpm: ['pnpm', 'run'],
-  } as const;
-
-  return commands?.[runner] ?? commands['npm' as Runner];
+const SCRIPT_COMMANDS: Record<Runner, readonly string[]> = {
+  npm: [isWindows ? 'npm.cmd' : 'npm', 'run'],
+  bun: ['bun', 'run'],
+  deno: ['deno', 'task'],
+  yarn: ['yarn'],
+  pnpm: ['pnpm', 'run'],
 };
+
+export const scriptRunner = (runner: Runner): string[] => [
+  ...(SCRIPT_COMMANDS[runner] ?? SCRIPT_COMMANDS.npm),
+];

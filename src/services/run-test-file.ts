@@ -1,3 +1,4 @@
+import type { StdioOptions } from 'node:child_process';
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
 import { env, hrtime } from 'node:process';
@@ -7,6 +8,9 @@ import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
 import { format } from './format.js';
+
+const STDIO_IPC: StdioOptions = ['inherit', 'pipe', 'pipe', 'ipc'];
+const STDIO_DEFAULT: StdioOptions = ['inherit', 'pipe', 'pipe'];
 
 export const runTestFile = async (path: string): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
@@ -19,8 +23,8 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   let output = '';
 
-  const stdOut = (data: Buffer): void => {
-    output += String(data);
+  const stdOut = (data: string): void => {
+    output += data;
   };
 
   const start = hrtime();
@@ -36,17 +40,11 @@ export const runTestFile = async (path: string): Promise<boolean> => {
   });
 
   return new Promise((resolve) => {
+    env.POKU_FILE = file;
+
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
-      stdio: GLOBAL.configs.sharedResources
-        ? ['inherit', 'pipe', 'pipe', 'ipc']
-        : ['inherit', 'pipe', 'pipe'],
+      stdio: configs.sharedResources ? STDIO_IPC : STDIO_DEFAULT,
       shell: false,
-      env: {
-        ...env,
-        POKU_FILE: file,
-        POKU_RUNTIME: GLOBAL.runtime,
-        POKU_REPORTER: configs.reporter,
-      },
     });
 
     child.stdout!.setEncoding('utf8');

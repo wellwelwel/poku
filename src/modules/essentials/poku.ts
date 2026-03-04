@@ -27,6 +27,11 @@ export async function poku(
 ): Promise<Code | undefined> {
   if (configs) GLOBAL.configs = { ...GLOBAL.configs, ...configs };
 
+  process.env.POKU_RUNTIME = GLOBAL.runtime;
+
+  if (typeof GLOBAL.configs.reporter === 'string')
+    process.env.POKU_REPORTER = GLOBAL.configs.reporter;
+
   timespan.started = new Date();
 
   const start = process.hrtime();

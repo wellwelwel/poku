@@ -100,6 +100,10 @@ import { hr, log } from '../services/write.js';
   }
 
   GLOBAL.configFile = configFile;
+
+  process.env.POKU_RUNTIME = GLOBAL.runtime;
+  process.env.POKU_REPORTER = typeof reporter === 'string' ? reporter : 'poku';
+
   GLOBAL.configs = {
     filter:
       typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
