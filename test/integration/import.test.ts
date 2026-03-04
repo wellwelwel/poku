@@ -15,6 +15,7 @@ test(async () => {
     index.assert.ok(index.getPIDs, 'Importing getPIDs helper');
     index.assert.ok(index.kill, 'Importing kill helper');
     index.assert.ok(index.describe, 'Importing describe helper');
+    index.assert.ok(index.it, 'Importing it helper');
     index.assert.ok(index.beforeEach, 'Importing beforeEach helper');
     index.assert.ok(index.afterEach, 'Importing afterEach helper');
     index.assert.ok(index.log, 'Importing log helper');
@@ -30,7 +31,15 @@ test(async () => {
     index.assert.ok(index.listFiles, 'Importing listFiles helper');
     index.assert.ok(
       typeof index.version === 'string',
-      'Importing listFiles helper'
+      'Importing version string'
     );
+  });
+
+  const plugins = await import('../../src/modules/plugins.js');
+
+  index.test('Plugin Import Suite', () => {
+    index.assert.ok(plugins.definePlugin, 'Importing definePlugin method');
+    index.assert.ok(plugins.createReporter, 'Importing createReporter method');
+    index.assert.ok(plugins.inspectPoku, 'Importing inspectPoku method');
   });
 });

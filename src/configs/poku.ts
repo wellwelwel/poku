@@ -37,7 +37,6 @@ export const GLOBAL = {
     debug: undefined,
     failFast: undefined,
     deno: undefined,
-    sharedResources: undefined,
     noExit: undefined,
     reporter: undefined,
     beforeEach: undefined,

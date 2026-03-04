@@ -97,7 +97,7 @@
       }
     },
     {
-      "includes": ["src/polyfills/**", "src/@types/shared-resources.ts"],
+      "includes": ["src/polyfills/**"],
       "linter": {
         "rules": {
           "suspicious": {
@@ -107,7 +107,7 @@
       }
     },
     {
-      "includes": ["src/modules/index.ts"],
+      "includes": ["src/modules/index.ts", "src/modules/plugins.ts"],
       "linter": {
         "rules": {
           "performance": {

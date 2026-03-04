@@ -1,5 +1,5 @@
 import type { Code } from '../../@types/code.js';
-import type { Configs } from '../../@types/poku.js';
+import type { Configs, PluginContext } from '../../@types/poku.js';
 import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
 import { GLOBAL, results, timespan } from '../../configs/poku.js';
@@ -46,8 +46,29 @@ export async function poku(
     )
   ).flat(1);
 
-  if (typeof plugin === 'string' && plugin !== 'poku' && plugin in reporter)
+  if (typeof plugin === 'function') {
+    GLOBAL.reporter = plugin(GLOBAL.configs);
+  } else if (
+    typeof plugin === 'string' &&
+    plugin !== 'poku' &&
+    plugin in reporter
+  ) {
     GLOBAL.reporter = reporter[plugin]();
+  }
+
+  const plugins = GLOBAL.configs.plugins;
+  let pluginContext: PluginContext | undefined;
+
+  if (plugins?.length) {
+    pluginContext = {
+      configs: GLOBAL.configs,
+      runtime: GLOBAL.runtime,
+      cwd: GLOBAL.cwd,
+    };
+
+    for (const plugin of plugins)
+      if (plugin.setup) await plugin.setup(pluginContext);
+  }
 
   if (showLogs) GLOBAL.reporter.onRunStart();
 
@@ -60,6 +81,12 @@ export async function poku(
   timespan.finished = new Date();
 
   if (showLogs) GLOBAL.reporter.onRunResult({ code, timespan, results });
+
+  if (plugins?.length && pluginContext) {
+    for (const plugin of plugins)
+      if (plugin.teardown) await plugin.teardown(pluginContext);
+  }
+
   if (GLOBAL.configs.noExit) return code;
 
   exit(code, GLOBAL.configs.quiet);

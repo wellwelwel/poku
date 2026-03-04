@@ -61,8 +61,6 @@ import { hr, log } from '../services/write.js';
     return Number.isNaN(value) ? configsFromFile?.timeout : value;
   })();
   const sequential = hasArg('sequential');
-  const sharedResources =
-    hasArg('sharedResources') || configsFromFile?.sharedResources;
 
   if (dirs.length === 1) states.isSinglePath = true;
 
@@ -120,13 +118,13 @@ import { hr, log } from '../services/write.js';
       allow: denoAllow,
       deny: denoDeny,
     },
-    sharedResources,
     noExit: watchMode,
     reporter,
     beforeEach:
       'beforeEach' in configsFromFile ? configsFromFile.beforeEach : undefined,
     afterEach:
       'afterEach' in configsFromFile ? configsFromFile.afterEach : undefined,
+    plugins: 'plugins' in configsFromFile ? configsFromFile.plugins : undefined,
   };
 
   const tasks: Promise<unknown>[] = [];

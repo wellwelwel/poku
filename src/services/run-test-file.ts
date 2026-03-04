@@ -3,7 +3,6 @@ import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
 import { hrtime } from 'node:process';
 import { deepOptions, GLOBAL } from '../configs/poku.js';
-import { setupSharedResourceIPC } from '../modules/helpers/shared-resources.js';
 import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
@@ -15,8 +14,18 @@ const STDIO_DEFAULT: StdioOptions = ['inherit', 'pipe', 'pipe'];
 export const runTestFile = async (path: string): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
-  const runtime = runtimeOptions.shift()!;
-  const runtimeArguments = [...runtimeOptions, path];
+  let command = [...runtimeOptions, path, ...deepOptions];
+
+  const plugins = configs.plugins;
+  if (plugins?.length) {
+    for (const plugin of plugins)
+      if (plugin.runner) {
+        command = plugin.runner(command, path);
+        break;
+      }
+  }
+
+  const runtime = command.shift()!;
 
   const file = relative(cwd, path);
   const showLogs = !configs.quiet;
@@ -40,8 +49,8 @@ export const runTestFile = async (path: string): Promise<boolean> => {
   });
 
   return new Promise((resolve) => {
-    const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
-      stdio: configs.sharedResources ? STDIO_IPC : STDIO_DEFAULT,
+    const child = spawn(runtime, command, {
+      stdio: plugins?.some((plugin) => plugin.ipc) ? STDIO_IPC : STDIO_DEFAULT,
       shell: false,
     });
 
@@ -50,7 +59,10 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     child.stdout!.on('data', stdOut);
     child.stderr!.on('data', stdOut);
 
-    if (configs.sharedResources) setupSharedResourceIPC(child);
+    if (plugins?.length) {
+      for (const plugin of plugins)
+        if (plugin.onTestProcess) plugin.onTestProcess(child, path);
+    }
 
     let timedOut = false;
     let killTimer: ReturnType<typeof setTimeout> | undefined;
