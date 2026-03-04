@@ -31,11 +31,6 @@ jobs:
           check-latest: true
           node-version: lts/*
 
-      - name: ➕ Actions - Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: ${{ matrix.bun-version }}
-
       - name: ➕ Actions — Setup Hyperfine
         run: cargo install --locked hyperfine
 
