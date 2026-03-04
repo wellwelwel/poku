@@ -50,6 +50,24 @@ For **TypeScript** users, there's no need to install **tsx** for **Bun** and **D
 
 <hr />
 
+## Overriding the runtime
+
+If you face issues in environments with multiple runtimes installed, you can use the `POKU_RUNTIME` environment variable to explicitly set the runtime:
+
+```sh
+POKU_RUNTIME=node poku
+```
+
+```sh
+POKU_RUNTIME=bun poku
+```
+
+```sh
+POKU_RUNTIME=deno poku
+```
+
+<hr />
+
 ### Recommendations
 
 :::tip
