@@ -100,7 +100,7 @@
       "type": "string",
       "description": "Specify the reporter for test execution.\nhttps://poku.io/docs/documentation/poku/options/reporter",
       "default": "poku",
-      "enum": ["poku", "dot", "compact", "focus", "verbose", "classic"]
+      "enum": ["poku", "dot", "compact", "focus", "classic"]
     },
     "deno": {
       "type": "object",

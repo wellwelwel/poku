@@ -10,8 +10,6 @@ describe('Reporters', async () => {
   for (const flag of [
     '--reporter=poku',
     '-r=poku',
-    '--reporter=verbose',
-    '-r=verbose',
     '--reporter=classic',
     '-r=classic',
     '--reporter=dot',
@@ -132,4 +130,25 @@ describe('Reporters', async () => {
       );
     });
   }
+
+  await it('Invalid reporter fallback: --reporter=invalid', async () => {
+    const output = await inspectPoku('--reporter=invalid', {
+      cwd: 'test/__fixtures__/e2e/reporters/success',
+    });
+
+    if (output.exitCode !== 0) {
+      console.log(output.stdout);
+      console.log(output.stderr);
+    }
+
+    assert.strictEqual(output.exitCode, 0, 'Passed');
+    assert(
+      /PASS › 4/.test(output.stdout),
+      'Fallback to poku: CLI needs to pass 4'
+    );
+    assert(
+      /FAIL › 0/.test(output.stdout),
+      'Fallback to poku: CLI needs to fail 0'
+    );
+  });
 });

@@ -3,6 +3,7 @@ sidebar_position: 1
 tags: [reporter, reporters, dot, tap]
 ---
 
+import { History } from '@site/src/components/History';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -10,12 +11,26 @@ import TabItem from '@theme/TabItem';
 
 Specify the reporter for test execution.
 
+<History
+  records={[
+    {
+      version: '4.0.0 (Canary)',
+      changes: [
+        <>
+          Remove <code>verbose</code> reporter. Its behavior is now the default
+          in the <code>poku</code> reporter.
+        </>,
+      ],
+    },
+  ]}
+/>
+
 ## Reporters
 
 ### `poku` _(default)_
 
 - Logs all `describe`, `it`, `test` and `assert` titles and messages, including their modifiers.
-- Logs only the file name for errors during the execution, then lists all logs for each failed file at the running end.
+- Logs errors both in real time and at the running end.
 
 ### `dot` (inspired by [Mocha](https://github.com/mochajs/mocha))
 
@@ -29,10 +44,6 @@ Specify the reporter for test execution.
 ### `focus`
 
 - Logs only errors (in real time). If there is no error, it just logs a small footnote resume.
-
-### `verbose`
-
-- Just like the default (`poku`), but logs errors both in real time and also at the running end.
 
 ### `classic`
 
@@ -70,13 +81,6 @@ npx poku --reporter=compact
   
 ```bash
 npx poku --reporter=focus
-```
-
-  </TabItem>
-  <TabItem default value='verbose'>
-  
-```bash
-npx poku --reporter=verbose
 ```
 
   </TabItem>
@@ -166,24 +170,6 @@ module.exports = defineConfig({
 ```
 
   </TabItem>
-  <TabItem default value='verbose'>
-  
-```ts
-{
-  // "$schema": "https://poku.io/schemas/configs.json",
-  "reporter": "verbose"
-}
-```
-
-```ts
-const { defineConfig } = require('poku');
-
-module.exports = defineConfig({
-  reporter: 'verbose',
-});
-```
-
-  </TabItem>
   <TabItem default value='classic'>
   
 ```ts
@@ -239,15 +225,6 @@ await poku('./test', {
 ```ts
 await poku('./test', {
   reporter: 'focus',
-});
-```
-
-  </TabItem>
-  <TabItem default value='verbose'>
-  
-```ts
-await poku('./test', {
-  reporter: 'verbose',
 });
 ```
 

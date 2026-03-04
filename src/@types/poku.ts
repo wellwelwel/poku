@@ -17,7 +17,6 @@ export type Reporter =
   | 'poku'
   | 'focus'
   | 'dot'
-  | 'verbose'
   | 'compact'
   | 'classic'
   | CustomString;
