@@ -1,14 +1,8 @@
 import { assert } from '../../src/modules/essentials/assert.js';
 import { test } from '../../src/modules/helpers/test.js';
-import { format, getLargestStringLength } from '../../src/services/format.js';
+import { format } from '../../src/services/format.js';
 
 test('Format', () => {
-  assert.strictEqual(
-    `${format('').counter(3, 100)}`,
-    '003\u001b[0m',
-    'counter'
-  );
-
   assert.strictEqual(
     `${format('dim text').dim()}`,
     '\x1b[2mdim text\x1b[0m',
@@ -67,37 +61,5 @@ test('Format', () => {
     `${format('combined text').bold().underline().dim()}`,
     '\u001b[1m\u001b[4m\u001b[2mcombined text\u001b[0m',
     'chainable'
-  );
-});
-
-test('Format: Get the largest string length', () => {
-  assert.strictEqual(getLargestStringLength([]), 0, 'Empty array');
-
-  assert.strictEqual(getLargestStringLength(['']), 0, 'Empty String');
-
-  assert.strictEqual(getLargestStringLength(['a']), 1, 'One array item');
-
-  assert.strictEqual(
-    getLargestStringLength(['short', 'longer', 'longest']),
-    7,
-    'Should return the length of the longest string'
-  );
-
-  assert.strictEqual(
-    getLargestStringLength(['short', 'longer', 'longest']),
-    7,
-    'Should return the length of the longest string'
-  );
-
-  assert.strictEqual(
-    getLargestStringLength(['short', 'longer', 'longest'].reverse()),
-    7,
-    'Should return the length of the longest string (reverse)'
-  );
-
-  assert.strictEqual(
-    getLargestStringLength(['same', 'same']),
-    4,
-    'Should return the length of the longest string (same size)'
   );
 });

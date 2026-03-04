@@ -16,7 +16,23 @@ export const backgroundColor = {
   brightCyan: 106,
 } as const;
 
-const ESC = '\x1b[';
+const BG_CODES: Record<keyof typeof backgroundColor, string> = {
+  white: '\x1b[7m\x1b[1m',
+  black: '\x1b[40m\x1b[1m',
+  grey: '\x1b[100m\x1b[1m',
+  red: '\x1b[41m\x1b[1m',
+  green: '\x1b[42m\x1b[1m',
+  yellow: '\x1b[43m\x1b[1m',
+  blue: '\x1b[44m\x1b[1m',
+  magenta: '\x1b[45m\x1b[1m',
+  cyan: '\x1b[46m\x1b[1m',
+  brightRed: '\x1b[101m\x1b[1m',
+  brightGreen: '\x1b[102m\x1b[1m',
+  brightYellow: '\x1b[103m\x1b[1m',
+  brightBlue: '\x1b[104m\x1b[1m',
+  brightMagenta: '\x1b[105m\x1b[1m',
+  brightCyan: '\x1b[106m\x1b[1m',
+} as const;
 
 export class Formatter {
   private parts = '';
@@ -27,66 +43,63 @@ export class Formatter {
   }
 
   code(code: string) {
-    this.parts += `${ESC}${code}m`;
-    return this;
-  }
-
-  static create(text: string) {
-    return new Formatter(text);
-  }
-
-  counter(current: number, total: number, pad = '0') {
-    const totalDigits = String(total).length;
-    this.parts += String(current).padStart(totalDigits, pad);
+    this.parts += `\x1b[${code}m`;
     return this;
   }
 
   dim() {
-    return this.code('2');
+    this.parts += '\x1b[2m';
+    return this;
   }
 
   bold() {
-    return this.code('1');
+    this.parts += '\x1b[1m';
+    return this;
   }
 
   underline() {
-    return this.code('4');
+    this.parts += '\x1b[4m';
+    return this;
   }
 
   info() {
-    return this.code('94');
+    this.parts += '\x1b[94m';
+    return this;
   }
 
   italic() {
-    return this.code('3');
+    this.parts += '\x1b[3m';
+    return this;
   }
 
   success() {
-    return this.code('32');
+    this.parts += '\x1b[32m';
+    return this;
   }
 
   fail() {
-    return this.code('91');
+    this.parts += '\x1b[91m';
+    return this;
   }
 
   gray() {
-    return this.code('90');
+    this.parts += '\x1b[90m';
+    return this;
   }
 
   cyan() {
-    return this.code('96');
+    this.parts += '\x1b[96m';
+    return this;
   }
 
   bg(color: keyof typeof backgroundColor) {
-    return this.code(String(backgroundColor[color])).bold();
+    this.parts += BG_CODES[color];
+    return this;
   }
 
   [Symbol.toPrimitive]() {
-    return `${this.parts}${this.text}${ESC}0m`;
+    return `${this.parts}${this.text}\x1b[0m`;
   }
 }
 
-export const format = (text: string) => Formatter.create(text);
-
-export const getLargestStringLength = (arr: string[]): number =>
-  arr.reduce((max, current) => Math.max(max, current.length), 0);
+export const format = (text: string) => new Formatter(text);
