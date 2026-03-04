@@ -3,7 +3,7 @@ import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 
 describe('Timeout', async () => {
-  const results = await inspectPoku('--timeout=500', {
+  const results = await inspectPoku('--timeout=1000', {
     cwd: 'test/__fixtures__/e2e/timeout',
   });
 
