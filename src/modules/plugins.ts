@@ -1,7 +1,6 @@
 import type { SpawnOptionsWithoutStdio } from 'node:child_process';
 import type { InspectCLIResult, PokuPlugin } from '../@types/plugin.js';
 import { spawn } from 'node:child_process';
-import { join } from 'node:path';
 import { env } from 'node:process';
 import { kill as pokuKill } from '../modules/helpers/kill.js';
 import { runner } from '../parsers/get-runner.js';
@@ -21,9 +20,15 @@ export type {
 /** 🐷 Auxiliary function to define a Poku plugin */
 export const definePlugin = (plugin: PokuPlugin): PokuPlugin => plugin;
 
-/** Resolved path to the poku CLI binary */
-export const pokuBin = join(__dirname, '..', 'bin', 'index.js');
+const pokuBin: string = (() => {
+  try {
+    return require.resolve('../bin/index.js');
+  } catch {
+    return '';
+  }
+})();
 
+/** 🐽 Auxiliary function to inspect a Poku CLI execution */
 export const inspectPoku = (options: {
   command: string;
   spawnOptions?: SpawnOptionsWithoutStdio;
