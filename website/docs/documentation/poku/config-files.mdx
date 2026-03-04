@@ -67,6 +67,7 @@ export default defineConfig({
   exclude: [], // regex
   failFast: false,
   concurrency: 0, // No limit
+  timeout: 5000, // Per test file (ms)
   quiet: false,
   envFile: '.env',
   kill: {
@@ -103,6 +104,7 @@ module.exports = defineConfig({
   exclude: [], // regex
   failFast: false,
   concurrency: 0, // No limit
+  timeout: 5000, // Per test file (ms)
   quiet: false,
   envFile: '.env',
   kill: {
@@ -145,6 +147,7 @@ Create a `.pokurc.json` (or `.pokurc.jsonc`) in your project's root directory, f
   "exclude": "", // regex as string
   "failFast": false,
   "concurrency": 0, // No limit
+  "timeout": 5000, // Per test file (ms)
   "quiet": false,
   "envFile": ".env",
   "kill": {
@@ -179,6 +182,7 @@ Create a `.pokurc.json` (or `.pokurc.jsonc`) in your project's root directory, f
   "exclude": "",
   "failFast": false,
   "concurrency": 0,
+  "timeout": 5000,
   "quiet": false,
   "envFile": ".env",
   "kill": {

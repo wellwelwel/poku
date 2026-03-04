@@ -45,6 +45,10 @@
       "description": "Limits the number of tests running concurrently.\nhttps://poku.io/docs/documentation/poku/options/concurrency",
       "default": 0
     },
+    "timeout": {
+      "type": "number",
+      "description": "Sets the maximum time in milliseconds that each test file is allowed to run.\nhttps://poku.io/docs/documentation/poku/options/timeout"
+    },
     "failFast": {
       "type": "boolean",
       "description": "Stops the tests at the first failure.\nhttps://poku.io/docs/documentation/poku/options/fail-fast",

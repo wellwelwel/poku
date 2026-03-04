@@ -1,0 +1,27 @@
+---
+sidebar_position: 8.1
+---
+
+# `timeout`
+
+Sets the maximum time in milliseconds that each test file is allowed to run.
+
+## CLI
+
+```bash
+npx poku --timeout=5000 ./test
+```
+
+## API
+
+```ts
+await poku('./test', {
+  timeout: 5000,
+});
+```
+
+<hr />
+
+:::tip
+When no timeout is set, test files can run indefinitely.
+:::
