@@ -136,8 +136,6 @@ execution "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
 echo ""
 echo "</details>"
 
-echo "$HR"
-
 quote "[!IMPORTANT]"
 quote ""
 quote "Benchmarks do not indicate the competitiveness of one tool over another; they serve as a metric to monitor and objectively assess the current performance of the project."
