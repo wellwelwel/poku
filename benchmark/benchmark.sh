@@ -103,7 +103,7 @@ echo ""
 
 echo "<details>"
 echo "<summary>"
-echo "<strong>See Details</strong>"
+echo "<strong>ℹ Extensive Details</strong>"
 echo "</summary>"
 echo "<br />"
 echo ""

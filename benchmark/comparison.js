@@ -43,7 +43,7 @@ for (const runner of runners) {
 
   headerCells.push(` ${runner.label} `);
   separatorCells.push('---');
-  avgCells.push(` ~${avg.toFixed(2)}x ${faster} `);
+  avgCells.push(` **~${avg.toFixed(2)}x** ${faster} `);
 
   if (runner.expectedRatio && avg < runner.expectedRatio) {
     failures.push(
