@@ -31,8 +31,12 @@ export const focus: ReporterPlugin = (() => {
     onExit({ timespan, results }) {
       if (countFails > 0) hr();
 
-      log(`${format(String(results.passed)).bold().dim()} ${LABEL_FILES_PASSED}`);
-      log(`${format(String(results.failed)).bold().dim()} ${LABEL_FILES_FAILED}`);
+      log(
+        `${format(String(results.passed)).bold().dim()} ${LABEL_FILES_PASSED}`
+      );
+      log(
+        `${format(String(results.failed)).bold().dim()} ${LABEL_FILES_FAILED}`
+      );
       log(
         `${format(`Finished in ±${parseTimeToSecs(timespan.duration)} seconds`).dim()}`
       );
