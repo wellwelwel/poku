@@ -57,7 +57,7 @@ The resource system automatically handles inter-process communication, serializa
 ## Install
 
 ```sh
-npm i -D @pokujs/plugin-shared-resources
+npm i -D @pokujs/shared-resources
 ```
 
 ## Enabling the Plugin
@@ -66,7 +66,7 @@ Add the plugin to your **Poku** configuration file:
 
 ```ts
 // poku.config.ts
-import { sharedResources } from '@pokujs/plugin-shared-resources';
+import { sharedResources } from '@pokujs/shared-resources';
 import { defineConfig } from 'poku';
 
 export default defineConfig({
@@ -82,7 +82,7 @@ Create a resource file using `resource.create()`:
 
 ```ts
 // counter.ts
-import { resource } from '@pokujs/plugin-shared-resources';
+import { resource } from '@pokujs/shared-resources';
 
 export const CounterContext = resource.create(() => ({
   count: 0,
@@ -115,7 +115,7 @@ Use `resource.use()` to get the resource:
 
 ```ts
 import { assert, test } from 'poku';
-import { resource } from '@pokujs/plugin-shared-resources';
+import { resource } from '@pokujs/shared-resources';
 import { CounterContext } from './counter';
 
 test('increment counter', async () => {
@@ -153,7 +153,7 @@ Here's a complete example of two tests sharing a counter:
 **counter.ts**
 
 ```ts
-import { resource } from '@pokujs/plugin-shared-resources';
+import { resource } from '@pokujs/shared-resources';
 
 export const CounterContext = resource.create(() => ({
   count: 0,
@@ -171,7 +171,7 @@ export const CounterContext = resource.create(() => ({
 
 ```ts
 import { assert, test } from 'poku';
-import { resource } from '@pokujs/plugin-shared-resources';
+import { resource } from '@pokujs/shared-resources';
 import { CounterContext } from './counter';
 
 test('Test A: Increment Counter', async () => {
@@ -193,7 +193,7 @@ test('Test A: Increment Counter', async () => {
 
 ```ts
 import { assert, test, waitForExpectedResult } from 'poku';
-import { resource } from '@pokujs/plugin-shared-resources';
+import { resource } from '@pokujs/shared-resources';
 import { CounterContext } from './counter';
 
 test('Test B: Verify Counter State', async () => {
@@ -222,7 +222,7 @@ To perform an action when the resource is destroyed, use the `onDestroy` option:
 
 ```ts
 import { createConnection } from 'mysql2/promise';
-import { resource } from '@pokujs/plugin-shared-resources';
+import { resource } from '@pokujs/shared-resources';
 
 export const DatabaseContext = resource.create(
   () =>
@@ -240,7 +240,7 @@ export const DatabaseContext = resource.create(
 ```ts
 import type { RowDataPacket } from 'mysql2/promise';
 import { assert, test } from 'poku';
-import { resource } from '@pokujs/plugin-shared-resources';
+import { resource } from '@pokujs/shared-resources';
 import { DatabaseContext } from './db.js';
 
 type QueryResult = RowDataPacket & {
