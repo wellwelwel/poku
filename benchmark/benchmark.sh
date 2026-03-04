@@ -4,11 +4,11 @@ SHORT_SHA=$(git rev-parse --short HEAD)
 
 HR="\n---\n"
 
-BIN_POKU="node ./node_modules/poku/lib/bin/index.js"
-BIN_MOCHA="node ./node_modules/mocha/bin/mocha.js --parallel"
-BIN_JEST="node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
-BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
-BIN_NODE="node --test"
+BIN_POKU="node --no-turbo-inlining ./node_modules/poku/lib/bin/index.js"
+BIN_MOCHA="node --no-turbo-inlining ./node_modules/mocha/bin/mocha.js --parallel"
+BIN_JEST="node --no-turbo-inlining --experimental-vm-modules ./node_modules/jest/bin/jest.js"
+BIN_VITEST="node --no-turbo-inlining ./node_modules/vitest/vitest.mjs run"
+BIN_NODE="node --no-turbo-inlining --test"
 
 rm -rf results
 
