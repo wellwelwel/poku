@@ -13,7 +13,7 @@ const { cwd } = GLOBAL;
 if (hasOnly) deepOptions.push('--only');
 if (GLOBAL.configs.sharedResources) deepOptions.push('--sharedResources');
 
-export const runTests = async (files: string[]): Promise<boolean> => {
+export const runTests = (files: string[]): Promise<boolean> => {
   let allPassed = true;
   let activeTests = 0;
   let resolveDone: (value: boolean) => void;
@@ -27,7 +27,6 @@ export const runTests = async (files: string[]): Promise<boolean> => {
       configs.concurrency ?? Math.max(availableParallelism() - 1, 1);
     return limit <= 0 ? files.length || 1 : limit;
   })();
-  const isSequential = concurrency === 1;
 
   const done = new Promise<boolean>((resolve) => {
     resolveDone = async (passed: boolean) => {
@@ -76,11 +75,10 @@ export const runTests = async (files: string[]): Promise<boolean> => {
 
     activeTests--;
 
-    isSequential ? await runNext() : runNext();
+    runNext();
   };
 
-  for (let i = 0; i < concurrency; i++)
-    isSequential ? await runNext() : runNext();
+  for (let i = 0; i < concurrency; i++) runNext();
 
   return done;
 };
