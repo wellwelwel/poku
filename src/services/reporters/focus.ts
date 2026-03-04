@@ -13,11 +13,6 @@ export const focus: ReporterPlugin = (() => {
   return createReporter({
     onRunStart() {},
     onDescribeAsTitle() {},
-    onDescribeStart() {},
-    onDescribeEnd() {},
-    onItStart() {},
-    onItEnd() {},
-    onAssertionSuccess() {},
     onTodoModifier() {},
     onSkipModifier() {},
     onSkipFile() {},
