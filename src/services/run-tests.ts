@@ -1,7 +1,6 @@
 import { relative } from 'node:path';
 import { exit } from 'node:process';
 import { deepOptions, GLOBAL, results } from '../configs/poku.js';
-import { globalRegistry } from '../modules/helpers/shared-resources.js';
 import { hasOnly } from '../parsers/get-arg.js';
 import { availableParallelism } from '../polyfills/os.js';
 import { hr, log } from '../services/write.js';
@@ -11,7 +10,6 @@ import { runTestFile } from './run-test-file.js';
 const { cwd } = GLOBAL;
 
 if (hasOnly) deepOptions.push('--only');
-if (GLOBAL.configs.sharedResources) deepOptions.push('--sharedResources');
 
 export const runTests = (files: string[]): Promise<boolean> => {
   let allPassed = true;
@@ -29,14 +27,7 @@ export const runTests = (files: string[]): Promise<boolean> => {
   })();
 
   const done = new Promise<boolean>((resolve) => {
-    resolveDone = async (passed: boolean) => {
-      if (GLOBAL.configs.sharedResources) {
-        const entries = Object.values(globalRegistry);
-        for (const entry of entries) {
-          if (entry.onDestroy) await entry.onDestroy(entry.state);
-        }
-      }
-
+    resolveDone = (passed: boolean) => {
       resolve(passed);
     };
   });

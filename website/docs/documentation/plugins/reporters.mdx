@@ -1,0 +1,296 @@
+---
+sidebar_position: 3
+tags: [reporter, custom, plugin, output, format, events]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# 📊 Custom Reporters
+
+**Poku** ships with built-in reporters (`poku`, `dot`, `compact`, `focus`, `classic`) — see the [reporter option](/docs/documentation/poku/options/reporter) for details. You can also create your own reporter to fully control test output.
+
+> `createReporter(events: ReporterEvents): ReporterPlugin`
+
+`createReporter` merges your event handlers with the default `poku` reporter. You only need to override the events you care about — the rest fall back to defaults.
+
+```ts
+import { createReporter } from 'poku/plugins';
+
+export const myReporter = createReporter({
+  onFileResult({ status, path }) {
+    process.stdout.write(status ? '.' : 'F');
+  },
+  onRunResult() {
+    process.stdout.write('\n');
+  },
+});
+```
+
+## Usage
+
+Set your custom reporter via the `reporter` config option:
+
+```ts
+// poku.config.ts
+import { defineConfig } from 'poku';
+import { myReporter } from './reporters/my-reporter';
+
+export default defineConfig({
+  reporter: myReporter,
+});
+```
+
+```ts
+// Or via the API
+import { poku } from 'poku';
+import { myReporter } from './reporters/my-reporter';
+
+await poku('./test', {
+  reporter: myReporter,
+});
+```
+
+:::note
+Reporter plugins are set via the `reporter` config option, **not** the `plugins` array. The `plugins` array is for `PokuPlugin` instances.
+:::
+
+## ReporterPlugin Type
+
+A `ReporterPlugin` is a function that optionally receives the **Poku** config and returns an object with event handlers:
+
+```ts
+type ReporterPlugin = (configs?: Configs) => {
+  onRunStart: () => void;
+  onDescribeAsTitle: (title: string, options?: DescribeOptions) => void;
+  onDescribeStart: (options: { title?: string }) => void;
+  onDescribeEnd: (options: {
+    duration: number;
+    success?: boolean;
+    title?: string;
+  }) => void;
+  onItStart: (options: { title?: string }) => void;
+  onItEnd: (options: {
+    duration: number;
+    success?: boolean;
+    title?: string;
+  }) => void;
+  onAssertionSuccess: (options: { message: string }) => void;
+  onAssertionFailure: (options: {
+    assertOptions: ProcessAssertionOptions;
+    error: AssertionError;
+  }) => void;
+  onSkipFile: (options: { message: string }) => void;
+  onSkipModifier: (options: { message: string }) => void;
+  onTodoModifier: (options: { message: string }) => void;
+  onFileStart: (options: { path: Path }) => void;
+  onFileResult: (options: {
+    status: boolean;
+    path: Path;
+    duration: number;
+    output?: string;
+  }) => void;
+  onRunResult: (options: Results) => void;
+  onExit: (options: Results) => void;
+};
+```
+
+`ReporterEvents` is `Partial<ReturnType<ReporterPlugin>>` — you can provide any subset of the event handlers.
+
+## Event Reference
+
+<FAQ title='Suite Events' open>
+
+### `onRunStart()`
+
+Called when the test suite begins.
+
+### `onRunResult(options)`
+
+Called after all tests complete.
+
+```ts
+type options = {
+  code: number;
+  timespan: Timespan;
+  results: typeof results;
+};
+```
+
+### `onExit(options)`
+
+Called just before **Poku** exits with final results. Use it for summary output or writing report files.
+
+Receives the same options as `onRunResult`.
+
+</FAQ>
+
+<FAQ title='File Events'>
+
+### `onFileStart(options)`
+
+Called when a test file begins.
+
+```ts
+type options = {
+  path: {
+    absolute: string;
+    relative: string;
+  };
+};
+```
+
+### `onFileResult(options)`
+
+Called when a test file completes.
+
+```ts
+type options = {
+  status: boolean;
+  path: {
+    absolute: string;
+    relative: string;
+  };
+  duration: number;
+  output?: string;
+};
+```
+
+### `onSkipFile(options)`
+
+Called when a file is skipped.
+
+```ts
+type options = {
+  message: string;
+};
+```
+
+</FAQ>
+
+<FAQ title='Describe and It Events'>
+
+### `onDescribeAsTitle(title, options?)`
+
+Called when `describe` is used as a title (top-level grouping).
+
+### `onDescribeStart(options)`
+
+Called when a `describe` block starts.
+
+```ts
+type options = {
+  title?: string;
+};
+```
+
+### `onDescribeEnd(options)`
+
+Called when a `describe` block ends.
+
+```ts
+type options = {
+  duration: number;
+  success?: boolean;
+  title?: string;
+};
+```
+
+### `onItStart(options)`
+
+Called when an `it` block starts. Same shape as `onDescribeStart`.
+
+### `onItEnd(options)`
+
+Called when an `it` block ends. Same shape as `onDescribeEnd`.
+
+</FAQ>
+
+<FAQ title='Assertion Events'>
+
+### `onAssertionSuccess(options)`
+
+Called when an assertion passes.
+
+```ts
+type options = {
+  message: string;
+};
+```
+
+### `onAssertionFailure(options)`
+
+Called when an assertion fails.
+
+```ts
+type options = {
+  assertOptions: ProcessAssertionOptions;
+  error: AssertionError;
+};
+```
+
+</FAQ>
+
+<FAQ title='Modifier Events'>
+
+### `onSkipModifier(options)`
+
+Called when a `skip` modifier is used.
+
+```ts
+type options = {
+  message: string;
+};
+```
+
+### `onTodoModifier(options)`
+
+Called when a `todo` modifier is used.
+
+```ts
+type options = {
+  message: string;
+};
+```
+
+</FAQ>
+
+## Example: JSON Reporter
+
+A reporter that writes test results to a JSON file:
+
+```ts
+import { writeFileSync } from 'node:fs';
+import { createReporter } from 'poku/plugins';
+
+type FileResult = {
+  path: string;
+  status: boolean;
+  duration: number;
+};
+
+const fileResults: FileResult[] = [];
+
+export const jsonReporter = createReporter({
+  onFileResult({ status, path, duration }) {
+    fileResults.push({ path: path.relative, status, duration });
+  },
+  onExit({ code, timespan }) {
+    writeFileSync(
+      'test-results.json',
+      JSON.stringify(
+        {
+          code,
+          duration: timespan.duration,
+          files: fileResults,
+        },
+        null,
+        2
+      )
+    );
+  },
+});
+```
+
+:::tip
+When using `createReporter`, any events you don't override will fall back to the default `poku` reporter behavior.
+:::

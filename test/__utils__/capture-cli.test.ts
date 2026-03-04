@@ -2,37 +2,14 @@ import type {
   ChildProcessWithoutNullStreams,
   SpawnOptionsWithoutStdio,
 } from 'node:child_process';
+import type { InspectCLIResult } from '../../src/@types/plugin.js';
 import { spawn } from 'node:child_process';
 import process, { env } from 'node:process';
 import { kill as pokuKill } from '../../src/modules/helpers/kill.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
+import { inspectPoku as inspectPokuInner } from '../../src/modules/plugins.js';
 import { runner } from '../../src/parsers/get-runner.js';
 import { isWindows } from '../../src/parsers/os.js';
-
-export const isBuild = process.env.NODE_ENV === 'build';
-
-export const ext = isBuild ? 'js' : 'ts';
-
-export const stripAnsi = (str: string) => str.replace(/\x1B\[[0-9;]*m/g, '');
-
-type InspectCLIResult = {
-  stdout: string;
-  stderr: string;
-  exitCode: number;
-  process: ChildProcessWithoutNullStreams;
-  PID: number;
-  kill: () => Promise<void>;
-};
-
-type WatchCLIResult = {
-  process: ChildProcessWithoutNullStreams;
-  PID: number;
-  kill: () => Promise<void>;
-  getOutput: () => {
-    stdout: string;
-    stderr: string;
-  };
-};
 
 export const inspectCLI = (
   command: string,
@@ -82,29 +59,31 @@ export const inspectCLI = (
     });
   });
 
+export const isBuild = process.env.NODE_ENV === 'build';
+
+export const ext = isBuild ? 'js' : 'ts';
+
+export const stripAnsi = (str: string) => str.replace(/\x1B\[[0-9;]*m/g, '');
+
+type WatchCLIResult = {
+  process: ChildProcessWithoutNullStreams;
+  PID: number;
+  kill: () => Promise<void>;
+  getOutput: () => {
+    stdout: string;
+    stderr: string;
+  };
+};
+
 export const inspectPoku = (
   command: string,
   options?: SpawnOptionsWithoutStdio
-): Promise<InspectCLIResult> => {
-  const cmd = runner(`_.${ext}`).join(' ');
-  const binFile = `src/bin/index.${ext}`;
-  const basePath =
-    typeof options?.cwd === 'string'
-      ? options.cwd
-          .split(/\/|\\/)
-          .map(() => '../')
-          .join('')
-      : './';
-
-  return inspectCLI(`${cmd} ${basePath}${binFile} ${command}`, {
-    ...options,
-    shell: isWindows,
-    env: {
-      ...(options?.env || env),
-      POKU_RUNTIME: env.POKU_RUNTIME,
-    },
+) =>
+  inspectPokuInner({
+    bin: `src/bin/index.${ext}`,
+    command,
+    spawnOptions: options,
   });
-};
 
 export const watchCLI = (
   command: string,

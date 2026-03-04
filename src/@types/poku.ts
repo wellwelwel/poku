@@ -1,8 +1,12 @@
-import type { AssertionError } from 'node:assert';
-import type { results } from '../configs/poku.js';
-import type { ProcessAssertionOptions } from './assert.js';
-import type { DescribeOptions } from './describe.js';
 import type { Configs as ListFilesConfigs } from './list-files.js';
+import type { PokuPlugin, ReporterPlugin } from './plugin.js';
+
+export type {
+  PluginContext,
+  PokuPlugin,
+  ReporterPlugin,
+  ReporterEvents,
+} from './plugin.js';
 
 type CustomString = string & NonNullable<unknown>;
 
@@ -19,6 +23,7 @@ export type Reporter =
   | 'dot'
   | 'compact'
   | 'classic'
+  | ReporterPlugin
   | CustomString;
 
 export type Configs = {
@@ -71,12 +76,6 @@ export type Configs = {
    */
   reporter?: Reporter;
   /**
-   * By default, **Poku** runs in full isolation mode. Sharing resources allows IPC-based sharing of resources between test files.
-   *
-   * @default false
-   */
-  sharedResources?: boolean;
-  /**
    * You can use this option to run a **callback** or a **file** before each test file on your suite.
    *
    * Ex.:
@@ -105,6 +104,12 @@ export type Configs = {
    */
   afterEach?: () => unknown | Promise<unknown>;
   deno?: DenoOptions;
+  /**
+   * Plugins to extend Poku's behavior.
+   *
+   * @default undefined
+   */
+  plugins?: PokuPlugin[];
 } & ListFilesConfigs;
 
 export type Timespan = {
@@ -139,55 +144,8 @@ export type ConfigJSONFile = {
   exclude?: string;
 } & Omit<
   Configs,
-  'beforeEach' | 'afterEach' | 'noExit' | 'filter' | 'exclude'
+  'beforeEach' | 'afterEach' | 'noExit' | 'filter' | 'exclude' | 'plugins'
 > &
   cliConfigs;
 
 export type ConfigFile = Omit<Configs, 'noExit'> & cliConfigs;
-
-type Results = {
-  code: number;
-  timespan: Timespan;
-  results: typeof results;
-};
-
-type Path = {
-  absolute: string;
-  relative: string;
-};
-
-export type ReporterPlugin = (configs?: Configs) => {
-  onRunStart: () => void;
-  onDescribeAsTitle: (title: string, options?: DescribeOptions) => void;
-  onDescribeStart: (options: { title?: string }) => void;
-  onDescribeEnd: (options: {
-    duration: number;
-    success?: boolean;
-    title?: string;
-  }) => void;
-  onItStart: (options: { title?: string }) => void;
-  onItEnd: (options: {
-    duration: number;
-    success?: boolean;
-    title?: string;
-  }) => void;
-  onAssertionSuccess: (options: { message: string }) => void;
-  onAssertionFailure: (options: {
-    assertOptions: ProcessAssertionOptions;
-    error: AssertionError;
-  }) => void;
-  onSkipFile: (options: { message: string }) => void;
-  onSkipModifier: (options: { message: string }) => void;
-  onTodoModifier: (options: { message: string }) => void;
-  onFileStart: (options: { path: Path }) => void;
-  onFileResult: (options: {
-    status: boolean;
-    path: Path;
-    duration: number;
-    output?: string;
-  }) => void;
-  onRunResult: (options: Results) => void;
-  onExit: (options: Results) => void;
-};
-
-export type ReporterEvents = Partial<ReturnType<ReporterPlugin>>;

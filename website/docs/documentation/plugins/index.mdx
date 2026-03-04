@@ -1,0 +1,64 @@
+---
+sidebar_position: 1
+tags: [plugin, plugins, extend, hooks, lifecycle]
+---
+
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
+# 🥷🏻 Using Plugins
+
+<History
+  records={[
+    {
+      version: '4.0.0 (Canary)',
+      changes: [<>Introduce the Plugin System.</>],
+    },
+  ]}
+/>
+
+<Stability level={1.2} />
+
+Extend **Poku**'s behavior with plugins — hook into the test lifecycle, customize how test files are spawned, enable inter-process communication, and more.
+
+## What Can Plugins Do?
+
+- Run setup logic before the test suite begins.
+- Run teardown logic after the test suite completes.
+- Modify the command used to spawn each test file process.
+- Enable IPC channels between **Poku** and test processes.
+- React to each test process being spawned.
+- Customize output with [custom reporters](/docs/documentation/plugins/reporters).
+
+## Quick Start
+
+Add plugins to your **Poku** configuration file via the `plugins` option:
+
+```ts
+// poku.config.ts
+import { defineConfig } from 'poku';
+import { myPlugin } from './my-plugin';
+
+export default defineConfig({
+  plugins: [myPlugin],
+});
+```
+
+## Plugin Lifecycle
+
+Plugins are executed in the following order:
+
+1. **`setup()`** is called for each plugin, sequentially in array order.
+2. For each test file:
+   - **`runner()`** modifies the spawn command _(only the first plugin with a `runner` hook is used)_.
+   - The process is spawned — with an IPC channel if any plugin sets `ipc: true`.
+   - **`onTestProcess()`** is called for every plugin that defines it.
+3. After all tests complete: **`teardown()`** is called for each plugin, sequentially in array order.
+
+## Existing Plugins
+
+- [**@pokujs/shared-resources**](https://github.com/pokujs/plugin-shared) — Share state, servers, database connections, and more between parallel test files. See the [documentation](/docs/documentation/helpers/shared-resources).
+
+:::tip
+Use [`definePlugin`](/docs/documentation/plugins/creating-plugins) for type safety when creating plugins, and [`createReporter`](/docs/documentation/plugins/reporters) for custom output formatting.
+:::

@@ -20,7 +20,7 @@ describe('CLI Flags', async () => {
   });
 
   await it('Camel flags', async () => {
-    const output = await inspectPoku('--debug --failFast --sharedResources', {
+    const output = await inspectPoku('--debug --failFast', {
       cwd: 'test/__fixtures__/e2e/no-tests',
     });
 
@@ -32,10 +32,6 @@ describe('CLI Flags', async () => {
     assert(
       /failFast(.+)?:(.+)?true/.test(output.stdout),
       'CLI needs to able "failFast"'
-    );
-    assert(
-      /sharedResources(.+)?:(.+)?true/.test(output.stdout),
-      'CLI needs to able "sharedResources"'
     );
   });
 });
