@@ -1,7 +1,7 @@
 import type { StdioOptions } from 'node:child_process';
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
-import { env, hrtime } from 'node:process';
+import { hrtime } from 'node:process';
 import { deepOptions, GLOBAL } from '../configs/poku.js';
 import { setupSharedResourceIPC } from '../modules/helpers/shared-resources.js';
 import { runner } from '../parsers/get-runner.js';
@@ -40,8 +40,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
   });
 
   return new Promise((resolve) => {
-    env.POKU_FILE = file;
-
     const child = spawn(runtime, [...runtimeArguments, ...deepOptions], {
       stdio: configs.sharedResources ? STDIO_IPC : STDIO_DEFAULT,
       shell: false,

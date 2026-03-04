@@ -27,6 +27,7 @@ export async function poku(
 ): Promise<Code | undefined> {
   if (configs) GLOBAL.configs = { ...GLOBAL.configs, ...configs };
 
+  process.env.POKU = '1';
   process.env.POKU_RUNTIME = GLOBAL.runtime;
 
   if (typeof GLOBAL.configs.reporter === 'string')
