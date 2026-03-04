@@ -3,52 +3,69 @@
  * Built-in test runners are not part of the comparison that should fail the CI.
  */
 
-import { readFile } from 'node:fs/promises';
-import { exit } from 'node:process';
+import { readFile, writeFile } from 'node:fs/promises';
+import { env, exit } from 'node:process';
 
-const compare = async (resultPath, expectedRatio) => {
-  const raw = await readFile(resultPath, 'utf-8');
+const isCI = !!env.GITHUB_ACTIONS;
+
+const runners = [
+  { name: 'jest', label: '🃏 Jest', expectedRatio: 3 },
+  { name: 'vitest', label: '⚡️ Vitest', expectedRatio: 3 },
+  { name: 'mocha', label: '☕️ Mocha', expectedRatio: 1 },
+  { name: 'node', label: '🐢 Node.js' },
+];
+
+const scenarios = ['success', 'failure', 'balanced'];
+
+const getRatio = async (runner, scenario) => {
+  const raw = await readFile(
+    `./results/execution/${scenario}/${runner}.json`,
+    'utf-8'
+  );
   const { results } = JSON.parse(raw);
-  const pokuResult = results.find(({ command }) => command.includes('Poku'));
+  const poku = results.find(({ command }) => command.includes('Poku'));
+  const other = results.find(({ command }) => !command.includes('Poku'));
 
-  const failedComparisons = results
-    .filter(({ command }) => !command.includes('Poku'))
-    .map(({ mean }) => ({
-      expectedRatio,
-      actualRatio: mean / pokuResult.mean,
-    }))
-    .filter(({ expectedRatio, actualRatio }) => actualRatio < expectedRatio);
-
-  if (failedComparisons.length > 0) {
-    failedComparisons.forEach(({ expectedRatio, actualRatio }) => {
-      console.warn(
-        `${pokuResult.command} failed in "${resultPath}" benchmark: ${actualRatio.toFixed(2)}x < ${expectedRatio}x.`
-      );
-    });
-
-    return false;
-  }
-
-  return true;
+  return other.mean / poku.mean;
 };
 
-const results = await Promise.all([
-  // Execution — Jest
-  compare('./results/execution/balanced/jest.json', 3),
-  compare('./results/execution/failure/jest.json', 3),
-  compare('./results/execution/success/jest.json', 3),
+const headerCells = [];
+const separatorCells = [];
+const avgCells = [];
+const failures = [];
 
-  // Execution — Vitest
-  compare('./results/execution/balanced/vitest.json', 3),
-  compare('./results/execution/failure/vitest.json', 3),
-  compare('./results/execution/success/vitest.json', 3),
+for (const runner of runners) {
+  const ratios = await Promise.all(
+    scenarios.map((scenario) => getRatio(runner.name, scenario))
+  );
+  const avg = ratios.reduce((a, b) => a + b, 0) / ratios.length;
+  const faster = avg <= 1 ? '~~faster~~' : 'faster';
 
-  // Execution — Mocha
-  compare('./results/execution/balanced/mocha.json', 1),
-  compare('./results/execution/failure/mocha.json', 1),
-  compare('./results/execution/success/mocha.json', 1),
-]);
+  headerCells.push(` ${runner.label} `);
+  separatorCells.push('---');
+  avgCells.push(` ~${avg.toFixed(2)}x ${faster} `);
 
-const hasFailures = results.some((result) => !result);
+  if (runner.expectedRatio && avg < runner.expectedRatio) {
+    failures.push(
+      `${runner.label} failed benchmark: ${avg.toFixed(2)}x < ${runner.expectedRatio}x.`
+    );
+  }
+}
 
-exit(hasFailures ? 1 : 0);
+const table = [
+  `| |${headerCells.join('|')}|`,
+  `|---|${separatorCells.join('|')}|`,
+  `| 🐷 |${avgCells.join('|')}|`,
+].join('\n');
+
+const output = await readFile('./output.md', 'utf-8');
+
+await writeFile('./output.md', output.replace('<!-- SUMMARY_TABLE -->', table));
+
+if (failures.length > 0) {
+  if (isCI) {
+    failures.forEach((msg) => console.warn(msg));
+  }
+
+  exit(isCI ? 1 : 0);
+}

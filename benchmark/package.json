@@ -1,8 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "start": "sh benchmark.sh | tee output.md",
-    "compare": "node comparison.js"
+    "start": "sh benchmark.sh | tee output.md && node comparison.js"
   },
   "devDependencies": {
     "jest": "30.2.0",
