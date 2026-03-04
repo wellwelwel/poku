@@ -52,6 +52,12 @@ test('Format', () => {
   );
 
   assert.strictEqual(
+    `${format('custom code').code('31')}`,
+    '\x1b[31mcustom code\x1b[0m',
+    'code'
+  );
+
+  assert.strictEqual(
     `${format(' bg text ').bg('red')}`,
     '\x1b[41m\x1b[1m bg text \x1b[0m',
     'bg'
