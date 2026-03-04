@@ -35,7 +35,6 @@ const checkFlags = () => {
     '--config',
     '--debug',
     '--denoAllow',
-    '--denoCjs',
     '--denoDeny',
     '--enforce',
     '--envFile',

@@ -14,7 +14,6 @@ const summary: [string, string][] = [
   ['--config, -c', 'Specify a configuration file.'],
   ['--debug, -d', 'Show detailed logs.'],
   ['--denoAllow', 'Allow permissions for Deno.'],
-  ['--denoCjs', 'Support CommonJS in Deno.'],
   ['--denoDeny', 'Deny permissions for Deno.'],
   ['--enforce, -x', 'Validate options before running tests.'],
   ['--envFile', 'Read and set an environment file.'],

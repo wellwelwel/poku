@@ -45,13 +45,6 @@ import { hr, log } from '../services/write.js';
   /* c8 ignore start */ // Deno
   const denoAllow = argToArray('denoAllow') ?? configsFromFile?.deno?.allow;
   const denoDeny = argToArray('denoDeny') ?? configsFromFile?.deno?.deny;
-  const denoCJS =
-    getArg('denoCjs')
-      ?.split(',')
-      .map((a) => a.trim())
-      .filter((a) => a) ||
-    hasArg('denoCjs') ||
-    configsFromFile?.deno?.cjs;
   /* c8 ignore stop */
   const quiet = hasArg('quiet') || hasArg('q', '-') || configsFromFile?.quiet;
   const debug = hasArg('debug') || hasArg('d', '-') || configsFromFile?.debug;
@@ -121,7 +114,6 @@ import { hr, log } from '../services/write.js';
     deno: {
       allow: denoAllow,
       deny: denoDeny,
-      cjs: denoCJS,
     },
     sharedResources,
     noExit: watchMode,

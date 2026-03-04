@@ -34,7 +34,6 @@ test('Before and After Each: updating an external file', async () => {
       afterEach: () => resetService(),
       deno: {
         allow: runtime === 'deno' ? ['all'] : undefined,
-        cjs: runtime === 'deno' ? true : undefined,
       },
     }
   );

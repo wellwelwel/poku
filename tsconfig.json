@@ -1,6 +1,6 @@
 {
   "include": ["src"],
-  "exclude": ["test", "tools", "src/@types", "src/polyfills/deno.mts"],
+  "exclude": ["test", "tools", "src/@types"],
   "compilerOptions": {
     "target": "ES2021",
     "lib": ["ES2021"],

@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
 import { env, hrtime } from 'node:process';
-import { deepOptions, GLOBAL, VERSION } from '../configs/poku.js';
+import { deepOptions, GLOBAL } from '../configs/poku.js';
 import { setupSharedResourceIPC } from '../modules/helpers/shared-resources.js';
 import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
@@ -12,15 +12,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
   const runtime = runtimeOptions.shift()!;
-  const runtimeArguments = [
-    ...runtimeOptions,
-    /* c8 ignore next 5 */ // Varies Platform
-    configs.deno?.cjs === true ||
-    (Array.isArray(configs.deno?.cjs) &&
-      configs.deno.cjs.some((ext) => path.includes(ext)))
-      ? `https://cdn.jsdelivr.net/npm/poku${VERSION ? `@${VERSION}` : ''}/lib/polyfills/deno.mjs`
-      : path,
-  ];
+  const runtimeArguments = [...runtimeOptions, path];
 
   const file = relative(cwd, path);
   const showLogs = !configs.quiet;
