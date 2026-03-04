@@ -75,7 +75,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
         )
           .fail()
           .bold();
-        child.kill('SIGKILL');
+        child.kill('SIGTERM');
       }, configs.timeout);
     }
 
