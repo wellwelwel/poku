@@ -39,7 +39,7 @@ for (const runner of runners) {
     scenarios.map((scenario) => getRatio(runner.name, scenario))
   );
   const avg = ratios.reduce((a, b) => a + b, 0) / ratios.length;
-  const faster = avg <= 1 ? '~~faster~~' : 'faster';
+  const faster = avg <= 1 ? '~~faster~~ ⚠' : 'faster ✔';
 
   headerCells.push(` ${runner.label} `);
   separatorCells.push('---');

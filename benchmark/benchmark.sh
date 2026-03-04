@@ -138,4 +138,4 @@ echo "</details>"
 echo ""
 
 quote "[!IMPORTANT]"
-quote "Benchmarks do not indicate the competitiveness of one tool over another; they serve as a metric to monitor the current performance of the project."
+quote "Benchmarks do not indicate competitiveness; they serve as a metric to monitor the project performance."
