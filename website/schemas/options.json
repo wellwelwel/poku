@@ -119,13 +119,6 @@
             "type": "string"
           },
           "description": "Deny list for Deno permissions.\nhttps://poku.io/docs/documentation/poku/options/deno#deny"
-        },
-        "cjs": {
-          "type": ["boolean", "array"],
-          "items": {
-            "type": "string"
-          },
-          "description": "CommonJS compatibility for Deno v1.\nhttps://poku.io/docs/documentation/poku/options/deno#cjs"
         }
       },
       "additionalProperties": false,

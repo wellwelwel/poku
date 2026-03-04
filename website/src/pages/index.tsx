@@ -254,7 +254,7 @@ const Home = () => {
                   <p>
                     It's intended to be fully compatible from{' '}
                     <strong>Node.js</strong> <code>v16.x</code>,{' '}
-                    <strong>Deno</strong> <code>v1.x</code>, and{' '}
+                    <strong>Deno</strong> <code>v2.x</code>, and{' '}
                     <strong>Bun</strong> <code>v1.x</code> onwards.
                   </p>
                 </div>

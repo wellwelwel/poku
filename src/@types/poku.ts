@@ -9,7 +9,6 @@ type CustomString = string & NonNullable<unknown>;
 export type DenoOptions = {
   allow?: string[];
   deny?: string[];
-  cjs?: boolean | string[];
 };
 
 export type Runtime = 'node' | 'bun' | 'deno';

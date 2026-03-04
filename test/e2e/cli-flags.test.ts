@@ -20,12 +20,9 @@ describe('CLI Flags', async () => {
   });
 
   await it('Camel flags', async () => {
-    const output = await inspectPoku(
-      '--debug --failFast --sharedResources --denoCjs=js,cjs',
-      {
-        cwd: 'test/__fixtures__/e2e/no-tests',
-      }
-    );
+    const output = await inspectPoku('--debug --failFast --sharedResources', {
+      cwd: 'test/__fixtures__/e2e/no-tests',
+    });
 
     assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
     assert(
@@ -37,12 +34,8 @@ describe('CLI Flags', async () => {
       'CLI needs to able "failFast"'
     );
     assert(
-      /cjs(.+)?:(.+)?js(.+)?cjs/.test(output.stdout),
-      'CLI needs to able "Deno CJS Pollyfill"'
-    );
-    assert(
       /sharedResources(.+)?:(.+)?true/.test(output.stdout),
-      'CLI needs to able "Deno CJS Pollyfill"'
+      'CLI needs to able "sharedResources"'
     );
   });
 });

@@ -2,9 +2,27 @@
 sidebar_position: 98
 ---
 
+import { History } from '@site/src/components/History';
+
 # `deno`
 
 Opções exclusivas para a plataforma **Deno**.
+
+<History
+  records={[
+    {
+      version: '4.0.0 (canary)',
+      changes: [
+        <>
+          Remoção do suporte ao <strong>Deno</strong> <code>v1</code>.
+        </>,
+        <>
+          Remoção da opção <code>cjs</code> e da flag <code>--denoCjs</code>.
+        </>,
+      ],
+    },
+  ]}
+/>
 
 ## `allow`
 
@@ -86,56 +104,6 @@ poku('./test', {
 poku('./test', {
   deno: {
     deny: ['env=HOME', 'write' /* ... */],
-  },
-});
-```
-
-<hr />
-
-## `cjs` (Deno `v1`)
-
-> `poku(targetPaths: string | string[], configs?: Configs)`
->
-> `cjs: boolean | string[]`
-
-:::danger Important
-
-From **Deno** `v2`, simply set the type to `commonjs` in your **package.json** or use the `.cjs` extension.
-
-For **Deno** `v1`, you can follow the instructions bellow.
-
-:::
-
-Agora é possível executar testes que utilizam `require`, `module.exports` e `module` diretamente com o **Deno** 🎉
-
-É uma ótima funcionalidade para testar se um projeto criado, principalmente em **Node.js** ou **Bun**, também é compatível com o **Deno** sem a necessidade de transpilar o código ou usar gambiarras.
-
-Para executar o **CommonJS** com o **Deno**, você pode usar:
-
-### CLI
-
-```bash
-deno run npm:poku --denoCjs
-```
-
-```bash
-deno run npm:poku --denoCjs='.js,.cjs'
-```
-
-### API
-
-```ts
-await poku('./test', {
-  deno: {
-    cjs: true,
-  },
-});
-```
-
-```ts
-await poku('./test', {
-  deno: {
-    cjs: ['.js', '.cjs' /* ... */],
   },
 });
 ```
