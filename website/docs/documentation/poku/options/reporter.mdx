@@ -14,7 +14,7 @@ Specify the reporter for test execution.
 <History
   records={[
     {
-      version: '4.0.0 (Canary)',
+      version: '3.0.3-canary.a1456563',
       changes: [
         <>
           Remove <code>verbose</code> reporter. Its behavior is now the default
@@ -64,28 +64,28 @@ npx poku --reporter=poku # default
 
   </TabItem>
   <TabItem default value='dot'>
-  
+
 ```bash
 npx poku --reporter=dot
 ```
 
   </TabItem>
   <TabItem default value='compact'>
-  
+
 ```bash
 npx poku --reporter=compact
 ```
 
   </TabItem>
   <TabItem default value='focus'>
-  
+
 ```bash
 npx poku --reporter=focus
 ```
 
   </TabItem>
   <TabItem default value='classic'>
-  
+
 ```bash
 npx poku --reporter=classic
 ```
@@ -99,7 +99,7 @@ npx poku --reporter=classic
 
 <Tabs groupId="reporters">
   <TabItem default value='poku'>
-  
+
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
@@ -117,7 +117,7 @@ module.exports = defineConfig({
 
   </TabItem>
   <TabItem default value='dot'>
-  
+
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
@@ -135,7 +135,7 @@ module.exports = defineConfig({
 
   </TabItem>
   <TabItem default value='compact'>
-  
+
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
@@ -153,7 +153,7 @@ module.exports = defineConfig({
 
   </TabItem>
   <TabItem default value='focus'>
-  
+
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
@@ -171,7 +171,7 @@ module.exports = defineConfig({
 
   </TabItem>
   <TabItem default value='classic'>
-  
+
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
@@ -203,7 +203,7 @@ await poku('./test', {
 
   </TabItem>
   <TabItem default value='dot'>
-  
+
 ```ts
 await poku('./test', {
   reporter: 'dot',
@@ -212,7 +212,7 @@ await poku('./test', {
 
   </TabItem>
   <TabItem default value='compact'>
-  
+
 ```ts
 await poku('./test', {
   reporter: 'compact',
@@ -221,7 +221,7 @@ await poku('./test', {
 
   </TabItem>
   <TabItem default value='focus'>
-  
+
 ```ts
 await poku('./test', {
   reporter: 'focus',
@@ -230,7 +230,7 @@ await poku('./test', {
 
   </TabItem>
   <TabItem default value='classic'>
-  
+
 ```ts
 await poku('./test', {
   reporter: 'classic',
