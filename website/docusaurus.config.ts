@@ -42,7 +42,7 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
-              label: 'v4.x.x (Canary)',
+              label: 'v4.x.x',
               badge: true,
             },
             '3.x.x': {
