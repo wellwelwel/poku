@@ -46,7 +46,7 @@
     "build": "tsc && cd test && tsc",
     "postbuild": "tsx tools/compatibility/comments.ts && tsx tools/build/version.ts && cp test/__fixtures__/e2e/server/package.json ci/test/__fixtures__/e2e/server/package.json && rm -f ./lib/@types/*.js ./lib/bin/*.ts && chmod +x lib/bin/index.js",
     "lint": "biome lint --error-on-warnings && prettier --check .",
-    "lint:fix": "biome lint --write && prettier --write .github/workflows/*.yml .",
+    "lint:fix": "biome lint --write && prettier --write .github/workflows/*.yml . && npm --prefix website run lint:fix",
     "update": "pu && npm i && npm update && (npm audit fix || true)",
     "postupdate": "npm run lint:fix",
     "benchmark": "npm --prefix benchmark start"
