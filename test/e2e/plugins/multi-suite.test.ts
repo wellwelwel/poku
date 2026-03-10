@@ -1,3 +1,4 @@
+import { mkdir } from 'node:fs/promises';
 import { GLOBAL, results } from '../../../src/configs/poku.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { poku } from '../../../src/modules/essentials/poku.js';
@@ -37,6 +38,8 @@ const runPlugin = async (
 };
 
 describe('Plugin: multi-suite', async () => {
+  await mkdir(OUTER_DIR, { recursive: true });
+
   await it('defaults to "." when include is omitted', async () => {
     const { exitCode } = await runPlugin([{ filter: /^$/ }]);
 
