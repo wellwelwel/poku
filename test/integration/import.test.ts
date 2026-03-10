@@ -41,5 +41,7 @@ test(async () => {
     index.assert.ok(plugins.definePlugin, 'Importing definePlugin method');
     index.assert.ok(plugins.createReporter, 'Importing createReporter method');
     index.assert.ok(plugins.inspectPoku, 'Importing inspectPoku method');
+    index.assert.ok(plugins.onSigint, 'Importing onSigint method');
+    index.assert.ok(plugins.reporterRegistry, 'Importing reporterRegistry');
   });
 });
