@@ -1,15 +1,11 @@
-import { isBuild } from '../../__utils__/capture-cli.test.js';
 import { GLOBAL, results } from '../../../src/configs/poku.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { poku } from '../../../src/modules/essentials/poku.js';
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
-import { skip } from '../../../src/modules/helpers/skip.js';
 import { multiSuite } from '../../../src/plugins/multi-suite/index.js';
 import { reporter as reporterRegistry } from '../../../src/services/reporter.js';
 import { errors } from '../../../src/services/reporters/poku.js';
-
-if (isBuild) skip();
 
 const OUTER_DIR = 'test/__fixtures__/e2e/plugins/multi-suite/empty';
 
@@ -42,7 +38,6 @@ const runPlugin = async (
 
 describe('Plugin: multi-suite', async () => {
   await it('defaults to "." when include is omitted', async () => {
-    // filter: /^$/ prevents any file from matching — just exercises the dirs = ['.'] branch
     const { exitCode } = await runPlugin([{ filter: /^$/ }]);
 
     assert.strictEqual(exitCode, 0);
