@@ -22,7 +22,7 @@ export { log } from './helpers/log.js';
 export { listFiles } from './helpers/list-files.js';
 export { VERSION as version } from '../configs/poku.js';
 export type { Code } from '../@types/code.js';
-export type { Configs } from '../@types/poku.js';
+export type { Configs, ConfigFile } from '../@types/poku.js';
 export type {
   StartServiceOptions,
   StartScriptOptions,
