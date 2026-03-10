@@ -1,12 +1,16 @@
 import { mkdir } from 'node:fs/promises';
+import { isBuild } from '../../__utils__/capture-cli.test.js';
 import { GLOBAL, results } from '../../../src/configs/poku.js';
 import { assert } from '../../../src/modules/essentials/assert.js';
 import { poku } from '../../../src/modules/essentials/poku.js';
 import { describe } from '../../../src/modules/helpers/describe.js';
 import { it } from '../../../src/modules/helpers/it/core.js';
+import { skip } from '../../../src/modules/helpers/skip.js';
 import { multiSuite } from '../../../src/plugins/multi-suite/index.js';
 import { reporter as reporterRegistry } from '../../../src/services/reporter.js';
 import { errors } from '../../../src/services/reporters/poku.js';
+
+if (isBuild) skip();
 
 const OUTER_DIR = 'test/__fixtures__/e2e/plugins/multi-suite/empty';
 
@@ -15,7 +19,7 @@ const runPlugin = async (
 ): Promise<{ exitCode: 0 | 1; passed: number; failed: number }> => {
   results.passed = results.failed = results.skipped = results.todo = 0;
   errors.length = 0;
-  GLOBAL.configs = {} as (typeof GLOBAL)['configs'];
+  GLOBAL.configs = Object.create(null) as (typeof GLOBAL)['configs'];
   GLOBAL.reporter = reporterRegistry.poku();
 
   const originalExit = process.exit;
