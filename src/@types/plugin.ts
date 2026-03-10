@@ -15,8 +15,8 @@ export type PluginContext = {
 };
 
 export type PokuPlugin = {
-  /** Unique name for the plugin */
-  name: string;
+  /** Plugin name */
+  name?: string;
   /** Modify the command array before spawning a test file process */
   runner?: (command: string[], file: string) => string[];
   /** Run before the test suite begins */
