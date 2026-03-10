@@ -1,14 +1,16 @@
+import { isBuild } from '../../__utils__/capture-cli.test.js';
 import { GLOBAL, results } from '../../../src/configs/poku.js';
+import { assert } from '../../../src/modules/essentials/assert.js';
 import { poku } from '../../../src/modules/essentials/poku.js';
+import { describe } from '../../../src/modules/helpers/describe.js';
+import { it } from '../../../src/modules/helpers/it/core.js';
+import { skip } from '../../../src/modules/helpers/skip.js';
 import { multiSuite } from '../../../src/plugins/multi-suite/index.js';
 import { reporter as reporterRegistry } from '../../../src/services/reporter.js';
 import { errors } from '../../../src/services/reporters/poku.js';
-import { assert } from '../../../src/modules/essentials/assert.js';
-import { describe } from '../../../src/modules/helpers/describe.js';
-import { it } from '../../../src/modules/helpers/it/core.js';
 
-// Empty dir prevents the outer poku from scanning and running any test files.
-// The inner suites use their own `include` paths.
+if (isBuild) skip();
+
 const OUTER_DIR = 'test/__fixtures__/e2e/plugins/multi-suite/empty';
 
 const runPlugin = async (
@@ -17,13 +19,14 @@ const runPlugin = async (
   results.passed = results.failed = results.skipped = results.todo = 0;
   errors.length = 0;
   GLOBAL.configs = {} as (typeof GLOBAL)['configs'];
-  GLOBAL.reporter = reporterRegistry['poku']();
+  GLOBAL.reporter = reporterRegistry.poku();
 
   const originalExit = process.exit;
   let exitCode: 0 | 1 = 0;
 
-  (process as NodeJS.Process).exit = ((code?: number) =>
-    void (exitCode = code === 0 ? 0 : 1)) as typeof process.exit;
+  (process as NodeJS.Process).exit = ((code?: number) => {
+    exitCode = code === 0 ? 0 : 1;
+  }) as typeof process.exit;
 
   try {
     await poku(OUTER_DIR, {
@@ -60,7 +63,8 @@ describe('Plugin: multi-suite', async () => {
   await it('processes kill options (port, range, pid) before running the suite', async () => {
     const { exitCode, passed } = await runPlugin([
       {
-        include: 'test/__fixtures__/e2e/plugins/multi-suite/accumulated-results/suite-b',
+        include:
+          'test/__fixtures__/e2e/plugins/multi-suite/accumulated-results/suite-b',
         kill: {
           port: [59998],
           range: [[59996, 59997]],
@@ -75,8 +79,14 @@ describe('Plugin: multi-suite', async () => {
 
   await it('accumulates results across all suites', async () => {
     const { exitCode, passed, failed } = await runPlugin([
-      { include: 'test/__fixtures__/e2e/plugins/multi-suite/accumulated-results/suite-a' },
-      { include: 'test/__fixtures__/e2e/plugins/multi-suite/accumulated-results/suite-b' },
+      {
+        include:
+          'test/__fixtures__/e2e/plugins/multi-suite/accumulated-results/suite-a',
+      },
+      {
+        include:
+          'test/__fixtures__/e2e/plugins/multi-suite/accumulated-results/suite-b',
+      },
     ]);
 
     assert.strictEqual(exitCode, 0);
@@ -86,11 +96,19 @@ describe('Plugin: multi-suite', async () => {
 
   await it('suite B runs even when suite A fails (isolation)', async () => {
     const { exitCode, passed, failed } = await runPlugin([
-      { include: 'test/__fixtures__/e2e/plugins/multi-suite/isolation/suite-a' },
-      { include: 'test/__fixtures__/e2e/plugins/multi-suite/isolation/suite-b' },
+      {
+        include: 'test/__fixtures__/e2e/plugins/multi-suite/isolation/suite-a',
+      },
+      {
+        include: 'test/__fixtures__/e2e/plugins/multi-suite/isolation/suite-b',
+      },
     ]);
 
-    assert.strictEqual(exitCode, 1, 'Exit code must reflect the failure in suite A');
+    assert.strictEqual(
+      exitCode,
+      1,
+      'Exit code must reflect the failure in suite A'
+    );
     assert.strictEqual(passed, 2, 'Suite B results must be counted');
     assert.strictEqual(failed, 1, 'Suite A failure must be counted');
   });
