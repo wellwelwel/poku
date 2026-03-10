@@ -3,7 +3,7 @@ import type {
   ChildProcess,
   ChildProcessWithoutNullStreams,
 } from 'node:child_process';
-import type { results } from '../configs/poku.js';
+import type { results, timespan } from '../configs/poku.js';
 import type { ProcessAssertionOptions } from './assert.js';
 import type { DescribeOptions } from './describe.js';
 import type { Configs, Runtime, Timespan } from './poku.js';
@@ -12,6 +12,11 @@ export type PluginContext = {
   readonly configs: Configs;
   readonly runtime: Runtime;
   readonly cwd: string;
+  readonly configFile: string | undefined;
+  readonly runAsOnly: boolean;
+  readonly results: typeof results;
+  readonly timespan: typeof timespan;
+  readonly reporter: ReturnType<ReporterPlugin>;
 };
 
 export type PokuPlugin = {

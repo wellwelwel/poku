@@ -64,6 +64,11 @@ export async function poku(
       configs: GLOBAL.configs,
       runtime: GLOBAL.runtime,
       cwd: GLOBAL.cwd,
+      configFile: GLOBAL.configFile,
+      runAsOnly: GLOBAL.runAsOnly,
+      results,
+      timespan,
+      reporter: GLOBAL.reporter,
     };
 
     for (const plugin of plugins)
