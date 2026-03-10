@@ -60,7 +60,7 @@ import { hr, log } from '../services/write.js';
     const value = Number(getArg('timeout'));
     return Number.isNaN(value) ? configsFromFile?.timeout : value;
   })();
-  const sequential = hasArg('sequential');
+  const sequential = hasArg('sequential') || configsFromFile?.sequential;
 
   if (dirs.length === 1) states.isSinglePath = true;
 
