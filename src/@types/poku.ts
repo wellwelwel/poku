@@ -123,7 +123,7 @@ export type States = {
   isSinglePath?: boolean;
 };
 
-type cliConfigs = {
+type CliConfigs = {
   /** By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it. */
   include?: string | string[];
   /** Reads an environment file and sets the environment variables. */
@@ -146,6 +146,6 @@ export type ConfigJSONFile = {
   Configs,
   'beforeEach' | 'afterEach' | 'noExit' | 'filter' | 'exclude' | 'plugins'
 > &
-  cliConfigs;
+  CliConfigs;
 
-export type ConfigFile = Omit<Configs, 'noExit'> & cliConfigs;
+export type ConfigFile = Omit<Configs, 'noExit'> & CliConfigs;

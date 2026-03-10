@@ -1,4 +1,5 @@
 import type { Code } from '../../@types/code.js';
+import type { PokuPlugin } from '../../@types/plugin.js';
 import type { Configs, PluginContext } from '../../@types/poku.js';
 import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
@@ -40,12 +41,6 @@ export async function poku(
   const { reporter: plugin } = GLOBAL.configs;
   const { cwd } = GLOBAL;
 
-  const testFiles = (
-    await Promise.all(
-      paths.map((dir) => listFiles(join(cwd, dir), GLOBAL.configs))
-    )
-  ).flat(1);
-
   if (typeof plugin === 'function') {
     GLOBAL.reporter = plugin(GLOBAL.configs);
   } else if (
@@ -58,6 +53,7 @@ export async function poku(
 
   const plugins = GLOBAL.configs.plugins;
   let pluginContext: PluginContext | undefined;
+  let fileDiscoverer: PokuPlugin['discoverFiles'];
 
   if (plugins?.length) {
     pluginContext = {
@@ -71,9 +67,21 @@ export async function poku(
       reporter: GLOBAL.reporter,
     };
 
-    for (const plugin of plugins)
+    for (const plugin of plugins) {
+      if (!fileDiscoverer && plugin.discoverFiles)
+        fileDiscoverer = plugin.discoverFiles;
+
       if (plugin.setup) await plugin.setup(pluginContext);
+    }
   }
+
+  const testFiles =
+    (fileDiscoverer ? await fileDiscoverer(paths, pluginContext!) : null) ??
+    (
+      await Promise.all(
+        paths.map((dir) => listFiles(join(cwd, dir), GLOBAL.configs))
+      )
+    ).flat(1);
 
   if (showLogs) GLOBAL.reporter.onRunStart();
 
