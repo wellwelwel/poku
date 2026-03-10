@@ -29,10 +29,10 @@ describe('Ensure sequential runs', async () => {
       }
     );
 
-    // if (results.exitCode !== 0) {
-    console.log(results.stdout);
-    console.log(results.stderr);
-    // }
+    if (results.exitCode !== 0) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
 
     assert.strictEqual(results.exitCode, 0, 'Exit Code needs to be 0');
     assert(
