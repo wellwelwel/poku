@@ -29,8 +29,8 @@ export const myPlugin = definePlugin({
 
 ```ts
 type PokuPlugin = {
-  /** Unique name for the plugin */
-  name: string;
+  /** Plugin name */
+  name?: string;
   /** Modify the command array before spawning a test file process */
   runner?: (command: string[], file: string) => string[];
   /** Run before the test suite begins */
@@ -41,6 +41,11 @@ type PokuPlugin = {
   ipc?: boolean;
   /** Called after each test file process is spawned */
   onTestProcess?: (child: ChildProcess, file: string) => void;
+  /** Intercept file discovery. Return the file paths to use. */
+  discoverFiles?: (
+    paths: string[],
+    context: PluginContext
+  ) => string[] | Promise<string[]>;
 };
 ```
 
@@ -53,6 +58,16 @@ type PluginContext = {
   readonly configs: Configs;
   readonly runtime: Runtime; // 'node' | 'bun' | 'deno'
   readonly cwd: string;
+  readonly configFile: string | undefined;
+  readonly runAsOnly: boolean;
+  readonly results: {
+    passed: number;
+    failed: number;
+    skipped: number;
+    todo: number;
+  };
+  readonly timespan: { started: Date; finished: Date; duration: number };
+  readonly reporter: ReturnType<ReporterPlugin>;
 };
 ```
 
@@ -60,7 +75,7 @@ type PluginContext = {
 
 ### `name`
 
-Required. A unique string identifier for the plugin.
+An optional string identifier for the plugin.
 
 ### `setup(context)`
 
@@ -132,6 +147,34 @@ export const myPlugin = definePlugin({
   },
 });
 ```
+
+### `discoverFiles(paths, context)`
+
+Intercepts file discovery. Receives the resolved directory paths and the plugin context. Return the file paths to use.
+
+```ts
+export const myPlugin = definePlugin({
+  name: 'my-discovery',
+  discoverFiles(paths, context) {
+    // Return custom file paths
+    return ['test/unit/a.test.ts', 'test/unit/b.test.ts'];
+  },
+});
+```
+
+```ts
+export const skipDiscovery = definePlugin({
+  name: 'skip-discovery',
+  discoverFiles() {
+    // Return empty array to skip file discovery entirely
+    return [];
+  },
+});
+```
+
+:::note
+Only the first plugin in the `plugins` array that defines a `discoverFiles` hook will be used.
+:::
 
 ## Complete Example
 
