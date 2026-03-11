@@ -1,0 +1,156 @@
+---
+sidebar_position: 12
+tags: [multi-suite, suites, runner, orchestration, plugin]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+import { Plugin } from '@site/src/components/Plugin';
+
+# 🧬 Multi Suite
+
+Run multiple independent test suites — each with its own configuration — as a single, unified execution.
+
+<Plugin repo='multi-suite' />
+
+<History
+  records={[
+    {
+      version: '4.1.0',
+      changes: [
+        <>
+          Introduce{' '}
+          <a href='https://github.com/pokujs/multi-suite'>Multi Suite</a>{' '}
+          plugin.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+## What is Multi Suite?
+
+**Multi Suite** lets you define multiple test suites in a single config file, each with independent settings. This allows you to:
+
+- Run unit, integration, and e2e tests with different concurrency settings.
+- Apply different reporters, plugins, or env files per suite.
+- Kill ports or processes before specific suites.
+- Get a single consolidated report at the end.
+
+Suites run **sequentially**, one after the other. Each suite is a fully independent `poku` execution — if one suite fails, the next still runs.
+
+## Install
+
+```sh
+npm i -D @pokujs/multi-suite
+```
+
+## Enabling the Plugin
+
+Add the plugin to your **Poku** configuration file:
+
+```ts
+// poku.config.ts
+import { defineConfig } from 'poku';
+import { multiSuite } from '@pokujs/multi-suite';
+
+export default defineConfig({
+  plugins: [
+    multiSuite([
+      { include: 'test/unit', concurrency: 8 },
+      { include: 'test/integration', sequential: true },
+    ]),
+  ],
+});
+```
+
+## Suite Options
+
+Each suite accepts all [**poku config file options**](/docs/documentation/poku/config-files), applied independently. This means you can configure `include`, `filter`, `exclude`, `concurrency`, `sequential`, `reporter`, `plugins`, `envFile`, `kill`, `quiet`, and more — per suite.
+
+## Examples
+
+### Different concurrency per suite
+
+```ts
+import { defineConfig } from 'poku';
+import { multiSuite } from '@pokujs/multi-suite';
+
+export default defineConfig({
+  plugins: [
+    multiSuite([
+      { include: 'test/unit', concurrency: 16 },
+      { include: 'test/e2e', sequential: true },
+    ]),
+  ],
+});
+```
+
+### Load env files per suite
+
+```ts
+multiSuite([
+  { include: 'test/unit', envFile: '.env.test' },
+  { include: 'test/integration', envFile: '.env.integration' },
+]);
+```
+
+### Scoped plugins per suite
+
+```ts
+import { sharedResources } from '@pokujs/shared-resources';
+
+multiSuite([
+  { include: 'test/unit' },
+  { include: 'test/integration', plugins: [sharedResources()] },
+]);
+```
+
+### Different reporter per suite
+
+```ts
+multiSuite([
+  { include: 'test/unit', reporter: 'dot' },
+  { include: 'test/integration', reporter: 'compact' },
+]);
+```
+
+### Kill ports before a suite
+
+```ts
+multiSuite([
+  { include: 'test/unit' },
+  {
+    include: 'test/integration',
+    kill: { port: [3000, 5432] },
+  },
+]);
+```
+
+## How It Works
+
+- Suites run **sequentially**, one after the other.
+- Each suite is a fully independent `poku` execution with its own configuration.
+- Live file results are shown as they happen, using each suite's configured reporter.
+- A single consolidated failure report and summary badge are shown at the end.
+- If any suite fails, the final exit code reflects the failure — but all suites still run.
+- `Ctrl+C` stops everything immediately.
+
+## Important Notes
+
+### Suite Isolation
+
+Each suite runs as a separate `poku()` call. This means:
+
+- Results (passed, failed, skipped) accumulate across all suites.
+- A failure in one suite does **not** prevent subsequent suites from running.
+- The final exit code is `1` if any suite failed, `0` if all passed.
+
+### Default Directory
+
+If `include` is omitted from a suite, it defaults to `"."` (current directory). Always set `include` explicitly to avoid running unintended test files.
+
+### Reporter Behavior
+
+Each suite can have its own reporter. Individual file results are displayed live using each suite's reporter, but `onRunResult` and `onExit` are suppressed per suite — only the final consolidated report calls them.

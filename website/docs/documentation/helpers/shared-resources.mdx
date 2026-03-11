@@ -6,8 +6,13 @@ tags: [shared, state, resources, e2e, integration, plugin]
 import { FAQ } from '@site/src/components/FAQ';
 import { History } from '@site/src/components/History';
 import { Stability } from '@site/src/components/Stability';
+import { Plugin } from '@site/src/components/Plugin';
 
 # 🪢 Shared Resources
+
+Share state, servers, database connections, and more between parallel test files — no duplicated setup, no conflicts.
+
+<Plugin repo='shared-resources' />
 
 <History
   records={[
@@ -40,10 +45,6 @@ import { Stability } from '@site/src/components/Stability';
     },
   ]}
 />
-
-<Stability level={2} />
-
-Share state, servers, database connections, and more between parallel test files — no duplicated setup, no conflicts.
 
 ## What are Shared Resources?
 

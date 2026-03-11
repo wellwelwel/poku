@@ -5,8 +5,7 @@
   "main": "./lib/modules/index.js",
   "exports": {
     ".": "./lib/modules/index.js",
-    "./plugins": "./lib/modules/plugins.js",
-    "./plugins/multi-suite": "./lib/plugins/multi-suite/index.js"
+    "./plugins": "./lib/modules/plugins.js"
   },
   "license": "MIT",
   "bin": {

@@ -243,3 +243,4 @@ html[data-theme='dark'] {
 @include load-css('personal');
 @include load-css('history');
 @include load-css('stability/main');
+@include load-css('plugin');
