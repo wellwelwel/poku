@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.1.0](https://github.com/wellwelwel/poku/compare/v4.0.0...v4.1.0) (2026-03-11)
+
+
+### Features
+
+* custom file discovery for plugins ([#1059](https://github.com/wellwelwel/poku/issues/1059)) ([2bac677](https://github.com/wellwelwel/poku/commit/2bac67746b6b18cfb0d3f908f146d538110d8647))
+* improve plugin API ([#1058](https://github.com/wellwelwel/poku/issues/1058)) ([76cf2c4](https://github.com/wellwelwel/poku/commit/76cf2c4b6aebfcfacddf1acf00c2743f5aa42008))
+
+
+### Bug Fixes
+
+* ensure `sequential` option in config files ([#1055](https://github.com/wellwelwel/poku/issues/1055)) ([9bfbf27](https://github.com/wellwelwel/poku/commit/9bfbf272542c8cfed8fd3f8b5370ad6e50664f81))
+* make `name` optional for plugins ([#1057](https://github.com/wellwelwel/poku/issues/1057)) ([90d4ddc](https://github.com/wellwelwel/poku/commit/90d4ddc14f8bbaa1825ab960ac6aa5bf9f631ce5))
+
 ## [4.0.0](https://github.com/wellwelwel/poku/compare/v3.0.2...v4.0.0) (2026-03-05)
 
 
