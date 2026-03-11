@@ -32,6 +32,11 @@ export type PokuPlugin = {
   ipc?: boolean;
   /** Called after each test file process is spawned */
   onTestProcess?: (child: ChildProcess, file: string) => void;
+  /** Intercept file discovery. Return the file paths to use. */
+  discoverFiles?: (
+    paths: string[],
+    context: PluginContext
+  ) => string[] | Promise<string[]>;
 };
 
 type Results = {

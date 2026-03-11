@@ -6,6 +6,7 @@ import { onSigint, reporterRegistry } from '../../modules/plugins.js';
 
 export const multiSuite = (suites: ConfigFile[]): PokuPlugin => ({
   name: 'multi-suite',
+  discoverFiles: () => [],
   setup: async (context: PluginContext) => {
     const overallStart = new Date();
     const overallHrtime = process.hrtime();

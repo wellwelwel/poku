@@ -24,6 +24,7 @@ Extend **Poku**'s behavior with plugins — hook into the test lifecycle, custom
 ## What Can Plugins Do?
 
 - Run setup logic before the test suite begins.
+- Intercept or customize file discovery.
 - Run teardown logic after the test suite completes.
 - Modify the command used to spawn each test file process.
 - Enable IPC channels between **Poku** and test processes.
@@ -49,11 +50,12 @@ export default defineConfig({
 Plugins are executed in the following order:
 
 1. **`setup()`** is called for each plugin, sequentially in array order.
-2. For each test file:
+2. **`discoverFiles()`** from the first plugin that defines it determines the test files _(if no plugin defines it, **Poku** scans the configured directories)_.
+3. For each test file:
    - **`runner()`** modifies the spawn command _(only the first plugin with a `runner` hook is used)_.
    - The process is spawned — with an IPC channel if any plugin sets `ipc: true`.
    - **`onTestProcess()`** is called for every plugin that defines it.
-3. After all tests complete: **`teardown()`** is called for each plugin, sequentially in array order.
+4. After all tests complete: **`teardown()`** is called for each plugin, sequentially in array order.
 
 ## Existing Plugins
 
