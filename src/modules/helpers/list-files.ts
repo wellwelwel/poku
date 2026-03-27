@@ -76,9 +76,7 @@ const getAllFilesInner = async (
         if (exclude)
           for (const pattern of exclude) if (pattern.test(fullPath)) return;
 
-        if (filter.test(fullPath)) {
-          files.add(fullPath);
-        }
+        if (filter.test(fullPath)) files.add(fullPath);
 
         return;
       }

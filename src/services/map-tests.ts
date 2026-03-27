@@ -43,20 +43,18 @@ export const findMatchingFiles = (
   const normalizedWithExtEntries: { normalized: string; original: string }[] =
     [];
 
-  for (const fileWithExt of srcFilesWithExt) {
+  for (const fileWithExt of srcFilesWithExt)
     normalizedWithExtEntries.push({
       normalized: normalizePath(fileWithExt),
       original: fileWithExt,
     });
-  }
 
   for (const srcFile of srcFilesWithoutExt) {
     const normalizedSrcFile = normalizePath(srcFile);
 
-    for (const entry of normalizedWithExtEntries) {
+    for (const entry of normalizedWithExtEntries)
       if (entry.normalized.indexOf(normalizedSrcFile) !== -1)
         matchingFiles.add(entry.original);
-    }
   }
 
   return matchingFiles;
@@ -129,9 +127,8 @@ export const createImportMap = async (
   );
 
   const normalizedSrcMap = new Map<string, string>();
-  for (const srcFile of intersectedSrcFiles) {
+  for (const srcFile of intersectedSrcFiles)
     normalizedSrcMap.set(srcFile, normalizePath(srcFile));
-  }
 
   await Promise.all(
     Array.from(allTestFiles).map(async (testFile) => {
