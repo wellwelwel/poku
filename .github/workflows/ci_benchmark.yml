@@ -16,7 +16,7 @@ jobs:
   bench-execution:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    name: Execution
+    name: Test Runner
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v6
@@ -69,7 +69,7 @@ jobs:
   bench-assertions:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    name: Assertions
+    name: Assertion
     steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v6
