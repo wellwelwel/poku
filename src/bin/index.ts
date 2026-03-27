@@ -180,5 +180,8 @@ import { hr, log } from '../services/write.js';
   await Promise.all(tasks);
   await poku(dirs);
 
-  if (watchMode) import('./watch.js').then((mod) => mod.startWatch(dirs));
+  if (watchMode)
+    import('./watch.js').then((mod) => {
+      mod.startWatch(dirs);
+    });
 })();

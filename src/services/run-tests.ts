@@ -14,16 +14,18 @@ if (hasOnly) deepOptions.push('--only');
 export const runTests = (files: string[]): Promise<boolean> => {
   let allPassed = true;
   let activeTests = 0;
+  let nextIndex = 0;
   let resolveDone: (value: boolean) => void;
 
   const { configs } = GLOBAL;
   const showLogs = !configs.quiet;
   const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
+  const totalFiles = files.length;
   const concurrency: number = (() => {
     if (configs.sequential) return 1;
     const limit =
       configs.concurrency ?? Math.max(availableParallelism() - 1, 1);
-    return limit <= 0 ? files.length || 1 : limit;
+    return limit <= 0 ? totalFiles || 1 : limit;
   })();
 
   const done = new Promise<boolean>((resolve) => {
@@ -32,14 +34,15 @@ export const runTests = (files: string[]): Promise<boolean> => {
     };
   });
 
-  const runNext = async () => {
-    if (files.length === 0 && activeTests === 0) {
+  const runNext = async (): Promise<void> => {
+    if (nextIndex >= totalFiles && activeTests === 0) {
       resolveDone(allPassed);
       return;
     }
 
-    const filePath = files.shift();
-    if (typeof filePath === 'undefined') return;
+    if (nextIndex >= totalFiles) return;
+
+    const filePath = files[nextIndex++];
 
     activeTests++;
 

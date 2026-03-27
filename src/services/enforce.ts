@@ -30,7 +30,7 @@ const checkRequiredValue = (arg: string): void => {
     errors.push(`${prefix}${arg}: this flag require a value.`);
 };
 
-const checkFlags = () => {
+const checkFlags = (): void => {
   const allowedFlags = new Set([
     '--concurrency',
     '--config',
@@ -70,7 +70,7 @@ const checkFlags = () => {
   }
 };
 
-const checkValues = async () => {
+const checkValues = async (): Promise<void> => {
   for (const flag of [
     'debug',
     'enforce',
@@ -118,7 +118,7 @@ const checkValues = async () => {
     );
 };
 
-const checkConfigFile = () => {
+const checkConfigFile = (): void => {
   const allowedProps = new Set([
     '$schema',
     'include',
@@ -145,7 +145,7 @@ const checkConfigFile = () => {
   }
 };
 
-export const enforce = async () => {
+export const enforce = async (): Promise<void> => {
   checkFlags();
   checkConfigFile();
   await checkValues();

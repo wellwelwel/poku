@@ -28,15 +28,15 @@ export const beforeEach = (
     if (each.before.status) return callback();
   };
 
-  const pause = () => {
+  const pause = (): void => {
     each.before.status = false;
   };
 
-  const continueFunc = () => {
+  const continueFunc = (): void => {
     each.before.status = true;
   };
 
-  const reset = () => {
+  const reset = (): void => {
     each.before.cb = undefined;
   };
 
@@ -65,15 +65,15 @@ export const afterEach = (callback: () => unknown): Control => {
     if (each.after.status) return callback();
   };
 
-  const pause = () => {
+  const pause = (): void => {
     each.after.status = false;
   };
 
-  const continueFunc = () => {
+  const continueFunc = (): void => {
     each.after.status = true;
   };
 
-  const reset = () => {
+  const reset = (): void => {
     each.after.cb = undefined;
   };
 

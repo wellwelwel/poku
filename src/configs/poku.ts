@@ -10,9 +10,13 @@ import { cwd, env } from 'node:process';
 import { getRuntime } from '../parsers/get-runtime.js';
 import { reporter } from '../services/reporter.js';
 
-export const states = Object.create(null) as States;
+export const states: States = { isSinglePath: undefined };
 
-export const timespan = Object.create(null) as Timespan;
+export const timespan: Timespan = {
+  started: undefined!,
+  finished: undefined!,
+  duration: 0,
+};
 
 export const results = {
   passed: 0,

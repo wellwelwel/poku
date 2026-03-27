@@ -83,7 +83,7 @@ ${bullet} ${b('Poku')} is made with ${b('love')} and ${b('care')} in every detai
 ${bullet} Give him a ${b('star')} to show your support 🌟
 `;
 
-export const help = () => {
+export const help = (): void => {
   hr();
   log(header.trim());
   hr();

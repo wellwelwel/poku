@@ -1,3 +1,4 @@
+import type { Dirent } from 'node:fs';
 import type { Configs } from '../../@types/list-files.js';
 import { stat as fsStat, readdir } from 'node:fs/promises';
 import { join, sep } from 'node:path';
@@ -40,26 +41,50 @@ const getAllFilesInner = async (
   filter: RegExp,
   exclude: RegExp[] | undefined
 ): Promise<Set<string>> => {
+  let entries: Dirent[] | string[];
   let isFullPath = false;
 
-  const currentFiles = await (async () => {
-    try {
-      if (await isFile(dirPath)) {
-        isFullPath = true;
-        return [sanitizePath(dirPath)];
-      }
+  try {
+    const stat = await fsStat(dirPath);
 
-      return readdir(sanitizePath(dirPath));
-    } catch (error) {
-      console.error(error);
-      process.exit(1);
-    }
-  })();
+    if (stat.isFile()) {
+      isFullPath = true;
+      entries = [sanitizePath(dirPath)];
+    } else
+      entries = await readdir(sanitizePath(dirPath), { withFileTypes: true });
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
 
   await Promise.all(
-    currentFiles.map(async (file) => {
-      const fullPath = isFullPath ? dirPath : join(dirPath, file);
-      const stat = await fsStat(fullPath);
+    entries.map(async (entry) => {
+      if (isFullPath) {
+        const fullPath = entry as string;
+
+        if (
+          fullPath.indexOf('node_modules') !== -1 ||
+          fullPath.indexOf('.git/') !== -1
+        )
+          return;
+
+        if (states?.isSinglePath) {
+          files.add(fullPath);
+          return;
+        }
+
+        if (exclude)
+          for (const pattern of exclude) if (pattern.test(fullPath)) return;
+
+        if (filter.test(fullPath)) {
+          files.add(fullPath);
+        }
+
+        return;
+      }
+
+      const dirent = entry as Dirent;
+      const fullPath = join(dirPath, dirent.name);
 
       if (
         fullPath.indexOf('node_modules') !== -1 ||
@@ -67,16 +92,12 @@ const getAllFilesInner = async (
       )
         return;
 
-      if (isFullPath && states?.isSinglePath) return files.add(fullPath);
-
       if (exclude)
-        for (const pattern of exclude) {
-          if (pattern.test(fullPath)) return;
-        }
+        for (const pattern of exclude) if (pattern.test(fullPath)) return;
 
-      if (filter.test(fullPath)) return files.add(fullPath);
-
-      if (stat.isDirectory())
+      if (dirent.isFile()) {
+        if (filter.test(fullPath)) files.add(fullPath);
+      } else if (dirent.isDirectory())
         await getAllFilesInner(fullPath, files, filter, exclude);
     })
   );
