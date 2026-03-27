@@ -1,28 +1,28 @@
-import assert from 'node:assert';
+import { expect } from 'chai';
 import { it } from 'mocha';
 
 it('ok (pass)', () => {
-  for (let i = 0; i < 500; i++) assert.ok(true);
+  for (let i = 0; i < 500; i++) expect(true).to.be.ok;
 });
 
-it('strictEqual (pass)', () => {
-  for (let i = 0; i < 500; i++) assert.strictEqual(i, i);
+it('equal (pass)', () => {
+  for (let i = 0; i < 500; i++) expect(i).to.equal(i);
 });
 
-it('deepStrictEqual (pass)', () => {
+it('deepEqual (pass)', () => {
   const a = { x: 1, y: { z: 2 } };
   const b = { x: 1, y: { z: 2 } };
-  for (let i = 0; i < 500; i++) assert.deepStrictEqual(a, b);
+  for (let i = 0; i < 500; i++) expect(a).to.deep.equal(b);
 });
 
 it('ok (fail)', () => {
-  assert.ok(false);
+  expect(false).to.be.ok;
 });
 
-it('strictEqual (fail)', () => {
-  assert.strictEqual(0, 1);
+it('equal (fail)', () => {
+  expect(0).to.equal(1);
 });
 
-it('deepStrictEqual (fail)', () => {
-  assert.deepStrictEqual({ x: 1 }, { x: 2 });
+it('deepEqual (fail)', () => {
+  expect({ x: 1 }).to.deep.equal({ x: 2 });
 });

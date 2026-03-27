@@ -6,6 +6,7 @@
     "bench:assertions": "sh benchmark.sh assertions | tee output.md && node comparison.js assertions"
   },
   "devDependencies": {
+    "chai": "^6.2.2",
     "jest": "30.2.0",
     "mocha": "11.7.5",
     "poku": "file:..",

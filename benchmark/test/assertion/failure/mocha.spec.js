@@ -1,14 +1,14 @@
-import assert from 'node:assert';
+import { expect } from 'chai';
 import { it } from 'mocha';
 
 it('ok', () => {
-  assert.ok(false);
+  expect(false).to.be.ok;
 });
 
-it('strictEqual', () => {
-  assert.strictEqual(0, 1);
+it('equal', () => {
+  expect(0).to.equal(1);
 });
 
-it('deepStrictEqual', () => {
-  assert.deepStrictEqual({ x: 1 }, { x: 2 });
+it('deepEqual', () => {
+  expect({ x: 1 }).to.deep.equal({ x: 2 });
 });
