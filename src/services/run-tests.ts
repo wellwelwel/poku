@@ -23,8 +23,7 @@ export const runTests = (files: string[]): Promise<boolean> => {
   const totalFiles = files.length;
   const concurrency: number = (() => {
     if (configs.sequential) return 1;
-    const limit =
-      configs.concurrency ?? Math.max(availableParallelism() - 1, 1);
+    const limit = configs.concurrency ?? availableParallelism();
     return limit <= 0 ? totalFiles || 1 : limit;
   })();
 
