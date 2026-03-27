@@ -19,9 +19,13 @@ elif [ "$MODE" = "assertions" ]; then
   rm -rf results/assertions
 elif [ "$MODE" = "nesting" ]; then
   rm -rf results/nesting
+elif [ "$MODE" = "general" ]; then
+  rm -rf results/general
 fi
 
-mkdir -p results/generalist
+mkdir -p results/general/success
+mkdir -p results/general/failure
+mkdir -p results/general/balanced
 mkdir -p results/assertions/success
 mkdir -p results/assertions/failure
 mkdir -p results/assertions/balanced
@@ -144,6 +148,27 @@ nesting() {
   hyperfine -i --warmup 5 --runs 10 --export-json "results/nesting/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" 2>/dev/null |
+    awk '/ ran/ {flag=1} flag'
+  echo "\`\`\`"
+  echo ""
+  grid "$cmd_src" "$cmd_poku"
+}
+
+general() {
+  local name=$1
+  local bin=$2
+  local dir=$3
+  local path=$4
+  local cmd_src="$bin \"./test/general/${dir}/${path}\""
+  local cmd_poku="$BIN_POKU \"./test/general/${dir}/poku\""
+
+  echo ""
+  li "${dir}"
+  echo ""
+  echo "\`\`\`"
+  hyperfine -i --warmup 5 --runs 10 --export-json "results/general/${dir}/${name}.json" \
+    --command-name "$name" "$cmd_src" \
+    --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/general/${dir}/poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
   echo "\`\`\`"
   echo ""
@@ -289,7 +314,52 @@ echo ""
 echo "</details>"
 echo ""
 
-quote "[!IMPORTANT]"
-quote "Benchmarks do not indicate competitiveness; they serve as a metric to monitor the project performance."
+fi
+
+if [ "$MODE" = "all" ] || [ "$MODE" = "general" ]; then
+
+h2 "🧨 General Exhaustive Testing"
+
+echo "<!-- GENERAL_SUMMARY_TABLE -->"
+echo ""
+
+echo "<details>"
+echo "<summary>"
+echo "<strong>ℹ Extensive Details</strong>"
+echo "</summary>"
+echo "<br />"
+echo ""
+echo "Combines everything: multi-file execution across four levels of depth, nested \`describe\` blocks (3 levels deep), flat tests, and varied runner-native assertions (ok, strictEqual/toBe, deepStrictEqual/toStrictEqual)."
+echo ""
+echo "- **success:** a suite of 5 exhaustive tests that will pass."
+echo "- **failure:** a suite of 5 exhaustive tests that will fail."
+echo "- **balanced:** a suite of 10 exhaustive tests where 5 tests will fail and 5 tests will pass."
+
+h3 "🃏 [Jest](https://github.com/jestjs/jest)"
+general "jest" "$BIN_JEST" "success" "jest"
+general "jest" "$BIN_JEST" "failure" "jest"
+general "jest" "$BIN_JEST" "balanced" "jest"
+
+h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
+general "vitest" "$BIN_VITEST" "success" "vitest"
+general "vitest" "$BIN_VITEST" "failure" "vitest"
+general "vitest" "$BIN_VITEST" "balanced" "vitest"
+
+h3 "☕️ [Mocha](https://github.com/mochajs/mocha)"
+general "mocha" "$BIN_MOCHA" "success" "mocha/**"
+general "mocha" "$BIN_MOCHA" "failure" "mocha/**"
+general "mocha" "$BIN_MOCHA" "balanced" "mocha/**"
+
+h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
+general "node" "$BIN_NODE" "success" "node/**/**.spec.js"
+general "node" "$BIN_NODE" "failure" "node/**/**.spec.js"
+general "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
+
+echo ""
+echo "</details>"
+echo ""
 
 fi
+
+quote "[!IMPORTANT]"
+quote "Benchmarks do not indicate competitiveness; they serve as a metric to monitor the project performance."
