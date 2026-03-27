@@ -33,16 +33,16 @@ mkdir -p results/nesting/failure
 mkdir -p results/nesting/balanced
 
 h1() {
-  echo "# $1\n"
+  echo "## $1\n"
 }
 
 h2() {
-  echo "## $1\n"
+  echo "### $1\n"
 }
 
 h3() {
   echo "$HR"
-  echo "### $1"
+  echo "#### $1"
 }
 
 quote() {
