@@ -1,12 +1,15 @@
 {
   "type": "module",
   "scripts": {
-    "start": "sh benchmark.sh | tee output.md && node comparison.js"
+    "start": "sh benchmark.sh | tee output.md && node comparison.js",
+    "bench:execution": "sh benchmark.sh execution | tee output.md && node comparison.js execution",
+    "bench:assertions": "sh benchmark.sh assertions | tee output.md && node comparison.js assertions"
   },
   "devDependencies": {
-    "jest": "30.2.0",
+    "chai": "^6.2.2",
+    "jest": "30.3.0",
     "mocha": "11.7.5",
     "poku": "file:..",
-    "vitest": "4.0.8"
+    "vitest": "4.1.2"
   }
 }

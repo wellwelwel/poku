@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SHORT_SHA=$(git rev-parse --short HEAD)
+MODE=${1:-all}
 
 HR="\n---\n"
 
@@ -10,10 +11,18 @@ BIN_JEST="node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
 BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
 BIN_NODE="node --test"
 
-rm -rf results
+if [ "$MODE" = "all" ]; then
+  rm -rf results
+elif [ "$MODE" = "execution" ]; then
+  rm -rf results/execution
+elif [ "$MODE" = "assertions" ]; then
+  rm -rf results/assertions
+fi
 
 mkdir -p results/generalist
-mkdir -p results/assertions
+mkdir -p results/assertions/success
+mkdir -p results/assertions/failure
+mkdir -p results/assertions/balanced
 mkdir -p results/execution/success
 mkdir -p results/execution/balanced
 mkdir -p results/execution/failure
@@ -94,9 +103,34 @@ execution() {
   grid "$cmd_src" "$cmd_poku"
 }
 
-h1 "🎖️ Benchmarks"
+assertion() {
+  local name=$1
+  local bin=$2
+  local dir=$3
+  local file=$4
+  local cmd_src="$bin \"./test/assertion/${dir}/${file}\""
+  local cmd_poku="$BIN_POKU \"./test/assertion/${dir}/poku.spec.js\""
 
-h2 "🏃🏻‍♀️ Execution Tests"
+  echo ""
+  li "${dir}"
+  echo ""
+  echo "\`\`\`"
+  hyperfine -i --warmup 5 --runs 10 --export-json "results/assertions/${dir}/${name}.json" \
+    --command-name "$name" "$cmd_src" \
+    --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" 2>/dev/null |
+    awk '/ ran/ {flag=1} flag'
+  echo "\`\`\`"
+  echo ""
+  grid "$cmd_src" "$cmd_poku"
+}
+
+if [ "$MODE" = "all" ]; then
+  h1 "🎖️ Benchmarks"
+fi
+
+if [ "$MODE" = "all" ] || [ "$MODE" = "execution" ]; then
+
+h2 "🏃🏻‍♀️ Test Runner"
 
 echo "<!-- SUMMARY_TABLE -->"
 echo ""
@@ -137,5 +171,54 @@ echo ""
 echo "</details>"
 echo ""
 
+fi
+
+if [ "$MODE" = "all" ] || [ "$MODE" = "assertions" ]; then
+
+h2 "🧪 Assertion"
+
+echo "<!-- ASSERTION_SUMMARY_TABLE -->"
+echo ""
+
+echo "<details>"
+echo "<summary>"
+echo "<strong>ℹ Extensive Details</strong>"
+echo "</summary>"
+echo "<br />"
+echo ""
+echo "Focuses solely in assertions, using each runner's own assertion API with 1 test file per runner per scenario (no file discovery involved)."
+echo ""
+echo "- **success:** 1.000 iterations × 3 assertion types (ok, strictEqual, deepStrictEqual) — all passing."
+echo "- **failure:** a suite of 3 tests, one per assertion type, all failing."
+echo "- **balanced:** a suite of 6 tests where 3 tests will fail and 3 tests will pass."
+echo ""
+echo "> **Note:** Jest, Vitest, Mocha, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
+
+h3 "🃏 [Jest](https://github.com/jestjs/jest)"
+assertion "jest" "$BIN_JEST" "success" "jest.spec.js"
+assertion "jest" "$BIN_JEST" "failure" "jest.spec.js"
+assertion "jest" "$BIN_JEST" "balanced" "jest.spec.js"
+
+h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
+assertion "vitest" "$BIN_VITEST" "success" "vitest.spec.js"
+assertion "vitest" "$BIN_VITEST" "failure" "vitest.spec.js"
+assertion "vitest" "$BIN_VITEST" "balanced" "vitest.spec.js"
+
+h3 "☕️ [Mocha](https://github.com/mochajs/mocha)"
+assertion "mocha" "$BIN_MOCHA" "success" "mocha.spec.js"
+assertion "mocha" "$BIN_MOCHA" "failure" "mocha.spec.js"
+assertion "mocha" "$BIN_MOCHA" "balanced" "mocha.spec.js"
+
+h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
+assertion "node" "$BIN_NODE" "success" "node.spec.js"
+assertion "node" "$BIN_NODE" "failure" "node.spec.js"
+assertion "node" "$BIN_NODE" "balanced" "node.spec.js"
+
+echo ""
+echo "</details>"
+echo ""
+
 quote "[!IMPORTANT]"
 quote "Benchmarks do not indicate competitiveness; they serve as a metric to monitor the project performance."
+
+fi
