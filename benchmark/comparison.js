@@ -113,6 +113,50 @@ if (mode === 'all' || mode === 'assertions') {
   output = output.replace('<!-- ASSERTION_SUMMARY_TABLE -->', assertionTable);
 }
 
+if (mode === 'all' || mode === 'nesting') {
+  const nestingRunners = [
+    { name: 'jest', label: '🃏 Jest' },
+    { name: 'vitest', label: '⚡️ Vitest' },
+    { name: 'mocha', label: '☕️ Mocha' },
+    { name: 'node', label: '🐢 Node.js' },
+  ];
+
+  const getNestingRatio = async (runner, scenario) => {
+    const raw = await readFile(
+      `./results/nesting/${scenario}/${runner}.json`,
+      'utf-8'
+    );
+    const { results } = JSON.parse(raw);
+    const poku = results.find(({ command }) => command.includes('Poku'));
+    const other = results.find(({ command }) => !command.includes('Poku'));
+    return other.mean / poku.mean;
+  };
+
+  const nestingHeaderCells = [];
+  const nestingSeparatorCells = [];
+  const nestingRatioCells = [];
+
+  for (const runner of nestingRunners) {
+    const ratios = await Promise.all(
+      scenarios.map((scenario) => getNestingRatio(runner.name, scenario))
+    );
+    const avg = ratios.reduce((a, b) => a + b, 0) / ratios.length;
+    const faster = avg <= 1 ? '~~faster~~ ⚠' : 'faster ✔';
+
+    nestingHeaderCells.push(` ${runner.label} `);
+    nestingSeparatorCells.push('---');
+    nestingRatioCells.push(` **~${avg.toFixed(2)}x** ${faster} `);
+  }
+
+  const nestingTable = [
+    `| |${nestingHeaderCells.join('|')}|`,
+    `|---|${nestingSeparatorCells.join('|')}|`,
+    `| 🐷 |${nestingRatioCells.join('|')}|`,
+  ].join('\n');
+
+  output = output.replace('<!-- NESTING_SUMMARY_TABLE -->', nestingTable);
+}
+
 await writeFile('./output.md', output);
 
 if (failures.length > 0) {
