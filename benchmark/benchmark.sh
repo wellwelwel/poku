@@ -128,7 +128,7 @@ h1 "🎖️ Benchmarks"
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "execution" ]; then
 
-h2 "🏃🏻‍♀️ Execution Tests"
+h2 "🏃🏻‍♀️ Test Runner"
 
 echo "<!-- SUMMARY_TABLE -->"
 echo ""
@@ -173,7 +173,7 @@ fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "assertions" ]; then
 
-h2 "💡 Assertion Overhead"
+h2 "🧪 Assertion"
 
 echo "<!-- ASSERTION_SUMMARY_TABLE -->"
 echo ""
@@ -189,14 +189,13 @@ echo ""
 echo "- **success**: 1.000 iterations × 3 assertion types (3k assertions per run)"
 echo "- **failure**: 3 test cases, one per assertion type, all failing"
 echo "- **balanced**: 3 passing test cases (500 iterations each) + 3 failing test cases"
-echo ""
+echo "$HR"
 echo "- **Jest / Vitest**: \`expect(v).toBeTruthy()\`, \`expect(a).toBe(b)\`, \`expect(a).toStrictEqual(b)\`"
 echo "- **Mocha**: \`expect(v).to.be.ok\`, \`expect(a).to.equal(b)\`, \`expect(a).to.deep.equal(b)\` from \`chai\`"
 echo "- **Node.js**: \`assert.ok()\`, \`assert.strictEqual()\`, \`assert.deepStrictEqual()\` from \`node:assert\`"
 echo "- **Poku**: \`assert.ok()\`, \`assert.strictEqual()\`, \`assert.deepStrictEqual()\` from \`poku\`"
 echo ""
-echo "> [!NOTE]"
-echo "> Jest, Vitest, Mocha, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
+echo "> **Note:** Jest, Vitest, Mocha, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
 
 h3 "🃏 [Jest](https://github.com/jestjs/jest)"
 assertion "jest" "$BIN_JEST" "success" "jest.spec.js"
