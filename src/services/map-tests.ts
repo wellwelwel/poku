@@ -2,9 +2,6 @@ import { readFile, stat } from 'node:fs/promises';
 import { dirname, relative } from 'node:path';
 import { listFiles } from '../modules/helpers/list-files.js';
 
-const importMap = new Map<string, Set<string>>();
-const processedFiles = new Set<string>();
-
 const regex = {
   extFilter: /\.(js|cjs|mjs|ts|cts|mts)$/,
   dependecy: /['"](\.{1,2}\/[^'"]+)['"]/,
@@ -43,16 +40,21 @@ export const findMatchingFiles = (
   srcFilesWithExt: Set<string>
 ): Set<string> => {
   const matchingFiles = new Set<string>();
+  const normalizedWithExtEntries: { normalized: string; original: string }[] =
+    [];
+
+  for (const fileWithExt of srcFilesWithExt)
+    normalizedWithExtEntries.push({
+      normalized: normalizePath(fileWithExt),
+      original: fileWithExt,
+    });
 
   for (const srcFile of srcFilesWithoutExt) {
     const normalizedSrcFile = normalizePath(srcFile);
 
-    for (const fileWithExt of srcFilesWithExt) {
-      const normalizedFileWithExt = normalizePath(fileWithExt);
-
-      if (normalizedFileWithExt.indexOf(normalizedSrcFile) !== -1)
-        matchingFiles.add(fileWithExt);
-    }
+    for (const entry of normalizedWithExtEntries)
+      if (entry.normalized.indexOf(normalizedSrcFile) !== -1)
+        matchingFiles.add(entry.original);
   }
 
   return matchingFiles;
@@ -88,8 +90,10 @@ const collectTestFiles = async (
 export const processDeepImports = async (
   srcFile: string,
   testFile: string,
-  intersectedSrcFiles: Set<string>
-) => {
+  intersectedSrcFiles: Set<string>,
+  importMap: Map<string, Set<string>>,
+  processedFiles: Set<string>
+): Promise<void> => {
   if (processedFiles.has(srcFile)) return;
 
   processedFiles.add(srcFile);
@@ -102,17 +106,29 @@ export const processDeepImports = async (
     if (!importMap.has(deepImport)) importMap.set(deepImport, new Set());
 
     importMap.get(deepImport)!.add(normalizePath(testFile));
-    await processDeepImports(deepImport, testFile, intersectedSrcFiles);
+    await processDeepImports(
+      deepImport,
+      testFile,
+      intersectedSrcFiles,
+      importMap,
+      processedFiles
+    );
   }
 };
 
 export const createImportMap = async (
   allTestFiles: Set<string>,
-  allSrcFiles: Set<string>
-) => {
+  allSrcFiles: Set<string>,
+  importMap: Map<string, Set<string>>,
+  processedFiles: Set<string>
+): Promise<void> => {
   const intersectedSrcFiles = new Set(
     Array.from(allSrcFiles).filter((srcFile) => !allTestFiles.has(srcFile))
   );
+
+  const normalizedSrcMap = new Map<string, string>();
+  for (const srcFile of intersectedSrcFiles)
+    normalizedSrcMap.set(srcFile, normalizePath(srcFile));
 
   await Promise.all(
     Array.from(allTestFiles).map(async (testFile) => {
@@ -122,7 +138,7 @@ export const createImportMap = async (
         const relativePath = normalizePath(
           relative(dirname(testFile), srcFile)
         );
-        const normalizedSrcFile = normalizePath(srcFile);
+        const normalizedSrcFile = normalizedSrcMap.get(srcFile)!;
 
         if (
           content.indexOf(relativePath.replace(regex.extFilter, '')) !== -1 ||
@@ -132,7 +148,13 @@ export const createImportMap = async (
             importMap.set(normalizedSrcFile, new Set());
 
           importMap.get(normalizedSrcFile)?.add(normalizePath(testFile));
-          await processDeepImports(srcFile, testFile, intersectedSrcFiles);
+          await processDeepImports(
+            srcFile,
+            testFile,
+            intersectedSrcFiles,
+            importMap,
+            processedFiles
+          );
         }
       }
     })
@@ -145,6 +167,9 @@ export const mapTests = async (
   testFilter?: RegExp,
   exclude?: RegExp | RegExp[]
 ) => {
+  const importMap = new Map<string, Set<string>>();
+  const processedFiles = new Set<string>();
+
   const [allTestFiles, allSrcFiles] = await Promise.all([
     collectTestFiles(testPaths, testFilter, exclude),
     listFiles(srcDir, {
@@ -153,7 +178,12 @@ export const mapTests = async (
     }),
   ]);
 
-  await createImportMap(allTestFiles, new Set(allSrcFiles));
+  await createImportMap(
+    allTestFiles,
+    new Set(allSrcFiles),
+    importMap,
+    processedFiles
+  );
 
   return importMap;
 };

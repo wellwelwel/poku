@@ -6,11 +6,14 @@ import { GLOBAL } from '../configs/poku.js';
 const assertProcessor = () => {
   const { reporter } = GLOBAL;
 
-  const handleSuccess = ({ message }: ProcessAssertionOptions) => {
+  const handleSuccess = ({ message }: ProcessAssertionOptions): void => {
     if (typeof message === 'string') reporter.onAssertionSuccess({ message });
   };
 
-  const handleError = (error: unknown, options: ProcessAssertionOptions) => {
+  const handleError = (
+    error: unknown,
+    options: ProcessAssertionOptions
+  ): never => {
     process.exitCode = 1;
 
     if (error instanceof AssertionError)
@@ -19,7 +22,10 @@ const assertProcessor = () => {
     throw error;
   };
 
-  const processAssert = (cb: () => void, options: ProcessAssertionOptions) => {
+  const processAssert = (
+    cb: () => void,
+    options: ProcessAssertionOptions
+  ): void => {
     try {
       cb();
       handleSuccess(options);
@@ -31,7 +37,7 @@ const assertProcessor = () => {
   const processAsyncAssert = async (
     cb: () => Promise<void>,
     options: ProcessAssertionOptions
-  ) => {
+  ): Promise<void> => {
     try {
       await cb();
       handleSuccess(options);

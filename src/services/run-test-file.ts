@@ -29,11 +29,10 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   const file = relative(cwd, path);
   const showLogs = !configs.quiet;
-
-  let output = '';
+  const outputChunks: string[] = [];
 
   const stdOut = (data: string): void => {
-    output += data;
+    outputChunks.push(data);
   };
 
   const start = hrtime();
@@ -70,11 +69,9 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     if (configs.timeout) {
       killTimer = setTimeout(() => {
         timedOut = true;
-        output += format(
-          `● Timeout: test file exceeded ${configs.timeout}ms limit`
-        )
-          .fail()
-          .bold();
+        outputChunks.push(
+          `${format(`● Timeout: test file exceeded ${configs.timeout}ms limit`).fail().bold()}`
+        );
 
         setTimeout(() => child.kill('SIGTERM'), 250);
       }, configs.timeout);
@@ -88,6 +85,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       const result = timedOut ? false : code === 0;
 
       if (showLogs) {
+        const output = outputChunks.join('');
         const parsedOutputs = parserOutput({
           output,
           result,

@@ -18,15 +18,15 @@ export const startWatch = async (dirs: string[]) => {
   const executing = new Set<string>();
   const interval = Number(getArg('watchInterval')) || 1500;
 
-  const setIsRunning = (value: boolean) => {
+  const setIsRunning = (value: boolean): void => {
     isRunning = value;
   };
 
-  const resultsClear = () => {
+  const resultsClear = (): void => {
     errors.length = 0;
   };
 
-  const listenStdin = async (input: Buffer | string) => {
+  const listenStdin = async (input: Buffer | string): Promise<void> => {
     if (isRunning || executing.size > 0) return;
 
     if (String(input).trim() === 'rs') {
@@ -76,7 +76,9 @@ export const startWatch = async (dirs: string[]) => {
       }
     });
 
-    currentWatcher.then((watcher) => watchers.add(watcher));
+    currentWatcher.then((watcher) => {
+      watchers.add(watcher);
+    });
   }
 
   for (const dir of dirs) {
@@ -97,7 +99,9 @@ export const startWatch = async (dirs: string[]) => {
       }
     });
 
-    currentWatcher.then((watcher) => watchers.add(watcher));
+    currentWatcher.then((watcher) => {
+      watchers.add(watcher);
+    });
   }
 
   hr();

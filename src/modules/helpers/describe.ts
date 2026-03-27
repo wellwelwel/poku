@@ -35,7 +35,7 @@ export const describeBase = async (
 
   if (!hasCB) return;
 
-  const onError = (error: unknown) => {
+  const onError = (error: unknown): void => {
     process.exitCode = 1;
     success = false;
     if (!(error instanceof AssertionError)) console.error(error);

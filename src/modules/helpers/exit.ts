@@ -3,7 +3,7 @@ import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { GLOBAL, results, timespan } from '../../configs/poku.js';
 
-export const exit = (code: Code, quiet?: boolean) => {
+export const exit = (code: Code, quiet?: boolean): void => {
   const isPoku = results.passed > 0 || results.failed > 0;
 
   if (!quiet && isPoku)
