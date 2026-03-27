@@ -124,7 +124,9 @@ assertion() {
   grid "$cmd_src" "$cmd_poku"
 }
 
-h1 "🎖️ Benchmarks"
+if [ "$MODE" = "all" ]; then
+  h1 "🎖️ Benchmarks"
+fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "execution" ]; then
 
