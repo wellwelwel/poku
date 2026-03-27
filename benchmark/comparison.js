@@ -69,7 +69,7 @@ if (mode === 'all' || mode === 'assertions') {
   const assertionRunners = [
     { name: 'jest', label: '🃏 Jest' },
     { name: 'vitest', label: '⚡️ Vitest' },
-    { name: 'mocha', label: '☕️ Mocha' },
+    { name: 'mocha', label: '☕️ Mocha + Chai' },
     { name: 'node', label: '🐢 Node.js' },
   ];
 
