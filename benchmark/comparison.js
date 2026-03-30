@@ -13,6 +13,7 @@ const runners = [
   { name: 'jest', label: '🃏 Jest', expectedRatio: 3 },
   { name: 'vitest', label: '⚡️ Vitest', expectedRatio: 3 },
   { name: 'node', label: '🐢 Node.js' },
+  { name: 'bun', label: '🍞 Bun' },
 ];
 
 const scenarios = ['success', 'failure', 'balanced'];
@@ -69,6 +70,7 @@ if (mode === 'all' || mode === 'assertions') {
     { name: 'jest', label: '🃏 Jest' },
     { name: 'vitest', label: '⚡️ Vitest' },
     { name: 'node', label: '🐢 Node.js' },
+    { name: 'bun', label: '🍞 Bun' },
   ];
 
   const assertionScenarios = ['success', 'failure', 'balanced'];
@@ -116,6 +118,7 @@ if (mode === 'all' || mode === 'nesting') {
     { name: 'jest', label: '🃏 Jest' },
     { name: 'vitest', label: '⚡️ Vitest' },
     { name: 'node', label: '🐢 Node.js' },
+    { name: 'bun', label: '🍞 Bun' },
   ];
 
   const getNestingRatio = async (runner, scenario) => {
@@ -159,6 +162,7 @@ if (mode === 'general') {
     { name: 'jest', label: '🃏 Jest' },
     { name: 'vitest', label: '⚡️ Vitest' },
     { name: 'node', label: '🐢 Node.js' },
+    { name: 'bun', label: '🍞 Bun' },
   ];
 
   const generalScenarios = ['success', 'failure', 'balanced'];

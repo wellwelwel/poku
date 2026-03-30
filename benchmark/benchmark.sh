@@ -9,6 +9,8 @@ BIN_POKU="node ./node_modules/poku/lib/bin/index.js"
 BIN_JEST="node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
 BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
 BIN_NODE="node --test"
+BIN_BUN="bun test"
+BIN_POKU_BUN="bun ./node_modules/poku/lib/bin/index.js"
 
 if [ "$MODE" = "all" ]; then
   rm -rf results
@@ -95,8 +97,9 @@ execution() {
   local bin=$2
   local dir=$3
   local path=$4
+  local poku_bin=${5:-$BIN_POKU}
   local cmd_src="$bin \"./test/execution/${dir}/${path}\""
-  local cmd_poku="$BIN_POKU \"./test/execution/${dir}/poku\""
+  local cmd_poku="$poku_bin \"./test/execution/${dir}/poku\""
 
   echo ""
   li "${dir}"
@@ -104,7 +107,7 @@ execution() {
   echo "\`\`\`"
   hyperfine -i --warmup 5 --runs 10 --export-json "results/execution/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
-    --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/execution/${dir}/poku" 2>/dev/null |
+    --command-name "🐷 Poku ($SHORT_SHA)" "$poku_bin ./test/execution/${dir}/poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
   echo "\`\`\`"
   echo ""
@@ -116,8 +119,9 @@ assertion() {
   local bin=$2
   local dir=$3
   local file=$4
+  local poku_bin=${5:-$BIN_POKU}
   local cmd_src="$bin \"./test/assertion/${dir}/${file}\""
-  local cmd_poku="$BIN_POKU \"./test/assertion/${dir}/poku.spec.js\""
+  local cmd_poku="$poku_bin \"./test/assertion/${dir}/poku.spec.js\""
 
   echo ""
   li "${dir}"
@@ -137,8 +141,9 @@ nesting() {
   local bin=$2
   local dir=$3
   local file=$4
+  local poku_bin=${5:-$BIN_POKU}
   local cmd_src="$bin \"./test/nesting/${dir}/${file}\""
-  local cmd_poku="$BIN_POKU \"./test/nesting/${dir}/poku.spec.js\""
+  local cmd_poku="$poku_bin \"./test/nesting/${dir}/poku.spec.js\""
 
   echo ""
   li "${dir}"
@@ -158,8 +163,9 @@ general() {
   local bin=$2
   local dir=$3
   local path=$4
+  local poku_bin=${5:-$BIN_POKU}
   local cmd_src="$bin \"./test/general/${dir}/${path}\""
-  local cmd_poku="$BIN_POKU \"./test/general/${dir}/poku\""
+  local cmd_poku="$poku_bin \"./test/general/${dir}/poku\""
 
   echo ""
   li "${dir}"
@@ -167,7 +173,7 @@ general() {
   echo "\`\`\`"
   hyperfine -i --warmup 5 --runs 10 --export-json "results/general/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
-    --command-name "🐷 Poku ($SHORT_SHA)" "$BIN_POKU ./test/general/${dir}/poku" 2>/dev/null |
+    --command-name "🐷 Poku ($SHORT_SHA)" "$poku_bin ./test/general/${dir}/poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
   echo "\`\`\`"
   echo ""
@@ -212,6 +218,11 @@ execution "node" "$BIN_NODE" "success" "node/**/**.spec.js"
 execution "node" "$BIN_NODE" "failure" "node/**/**.spec.js"
 execution "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
 
+h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
+execution "bun" "$BIN_BUN" "success" "bun" "$BIN_POKU_BUN"
+execution "bun" "$BIN_BUN" "failure" "bun" "$BIN_POKU_BUN"
+execution "bun" "$BIN_BUN" "balanced" "bun" "$BIN_POKU_BUN"
+
 echo ""
 echo "</details>"
 echo ""
@@ -237,7 +248,7 @@ echo "- **success:** 1.000 iterations × 3 assertion types (ok, strictEqual, dee
 echo "- **failure:** a suite of 3 tests, one per assertion type, all failing."
 echo "- **balanced:** a suite of 6 tests where 3 tests will fail and 3 tests will pass."
 echo ""
-echo "> **Note:** Jest, Vitest, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
+echo "> **Note:** Jest, Vitest, Bun, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
 
 h3 "🃏 [Jest](https://github.com/jestjs/jest)"
 assertion "jest" "$BIN_JEST" "success" "jest.spec.js"
@@ -253,6 +264,11 @@ h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 assertion "node" "$BIN_NODE" "success" "node.spec.js"
 assertion "node" "$BIN_NODE" "failure" "node.spec.js"
 assertion "node" "$BIN_NODE" "balanced" "node.spec.js"
+
+h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
+assertion "bun" "$BIN_BUN" "success" "bun.spec.js" "$BIN_POKU_BUN"
+assertion "bun" "$BIN_BUN" "failure" "bun.spec.js" "$BIN_POKU_BUN"
+assertion "bun" "$BIN_BUN" "balanced" "bun.spec.js" "$BIN_POKU_BUN"
 
 echo ""
 echo "</details>"
@@ -293,6 +309,11 @@ h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 nesting "node" "$BIN_NODE" "success" "node.spec.js"
 nesting "node" "$BIN_NODE" "failure" "node.spec.js"
 nesting "node" "$BIN_NODE" "balanced" "node.spec.js"
+
+h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
+nesting "bun" "$BIN_BUN" "success" "bun.spec.js" "$BIN_POKU_BUN"
+nesting "bun" "$BIN_BUN" "failure" "bun.spec.js" "$BIN_POKU_BUN"
+nesting "bun" "$BIN_BUN" "balanced" "bun.spec.js" "$BIN_POKU_BUN"
 
 echo ""
 echo "</details>"
@@ -335,6 +356,11 @@ h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 general "node" "$BIN_NODE" "success" "node/**/**.spec.js"
 general "node" "$BIN_NODE" "failure" "node/**/**.spec.js"
 general "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
+
+h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
+general "bun" "$BIN_BUN" "success" "bun" "$BIN_POKU_BUN"
+general "bun" "$BIN_BUN" "failure" "bun" "$BIN_POKU_BUN"
+general "bun" "$BIN_BUN" "balanced" "bun" "$BIN_POKU_BUN"
 
 echo ""
 echo "</details>"
