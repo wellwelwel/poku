@@ -12,9 +12,8 @@ const mode = process.argv[2] ?? 'all';
 const scenarios = ['success', 'failure', 'balanced'];
 
 const formatRatio = (avg) => {
-  if (avg >= 0.95 && avg <= 1.05) return `**~1.00x** tie ➖`;
   if (avg > 1) return `**~${avg.toFixed(2)}x** faster ✔`;
-
+  if (avg === 1) return `**~1.00x** tie ➖`;
   return `**~${(1 / avg).toFixed(2)}x** slower ⚠`;
 };
 
@@ -55,7 +54,7 @@ const buildTable = async (resultsDir, runners) => {
   return [
     `| |${headerCells.join('|')}|`,
     `|---|${separatorCells.join('|')}|`,
-    `| 🐷 **Poku** |${avgCells.join('|')}|`,
+    `| 🐷 **Poku ›** |${avgCells.join('|')}|`,
   ].join('\n');
 };
 
