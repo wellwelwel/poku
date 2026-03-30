@@ -20,13 +20,8 @@ elif [ "$MODE" = "assertions" ]; then
   rm -rf results/assertions
 elif [ "$MODE" = "nesting" ]; then
   rm -rf results/nesting
-elif [ "$MODE" = "general" ]; then
-  rm -rf results/general
 fi
 
-mkdir -p results/general/success
-mkdir -p results/general/failure
-mkdir -p results/general/balanced
 mkdir -p results/assertions/success
 mkdir -p results/assertions/failure
 mkdir -p results/assertions/balanced
@@ -152,28 +147,6 @@ nesting() {
   hyperfine -i --warmup 5 --runs 10 --export-json "results/nesting/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" 2>/dev/null |
-    awk '/ ran/ {flag=1} flag'
-  echo "\`\`\`"
-  echo ""
-  grid "$cmd_src" "$cmd_poku"
-}
-
-general() {
-  local name=$1
-  local bin=$2
-  local dir=$3
-  local path=$4
-  local poku_bin=${5:-$BIN_POKU}
-  local cmd_src="$bin \"./test/general/${dir}/${path}\""
-  local cmd_poku="$poku_bin \"./test/general/${dir}/poku\""
-
-  echo ""
-  li "${dir}"
-  echo ""
-  echo "\`\`\`"
-  hyperfine -i --warmup 5 --runs 10 --export-json "results/general/${dir}/${name}.json" \
-    --command-name "$name" "$cmd_src" \
-    --command-name "🐷 Poku ($SHORT_SHA)" "$poku_bin ./test/general/${dir}/poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
   echo "\`\`\`"
   echo ""
@@ -314,53 +287,6 @@ h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
 nesting "bun" "$BIN_BUN" "success" "bun.spec.js" "$BIN_POKU_BUN"
 nesting "bun" "$BIN_BUN" "failure" "bun.spec.js" "$BIN_POKU_BUN"
 nesting "bun" "$BIN_BUN" "balanced" "bun.spec.js" "$BIN_POKU_BUN"
-
-echo ""
-echo "</details>"
-echo ""
-
-fi
-
-# This benchmark is not included in CI due to excessive runtime.
-# To run it manually, execute: `cd benchmark && npm run bench:general`.
-if [ "$MODE" = "general" ]; then
-
-h2 "🧨 General Exhaustive Testing"
-
-echo "<!-- GENERAL_SUMMARY_TABLE -->"
-echo ""
-
-echo "<details>"
-echo "<summary>"
-echo "<strong>ℹ Extensive Details</strong>"
-echo "</summary>"
-echo "<br />"
-echo ""
-echo "Combines everything: multi-file execution across four levels of depth, nested \`describe\` blocks (3 levels deep), flat tests, and varied runner-native assertions (ok, strictEqual/toBe, deepStrictEqual/toStrictEqual). No loops are used — each file contains only direct tests and assertions."
-echo ""
-echo "- **success:** a suite of 20 tests that will pass."
-echo "- **failure:** a suite of 20 tests that will fail."
-echo "- **balanced:** a suite of 20 tests where 10 tests will fail and 10 tests will pass."
-
-h3 "🃏 [Jest](https://github.com/jestjs/jest)"
-general "jest" "$BIN_JEST" "success" "jest"
-general "jest" "$BIN_JEST" "failure" "jest"
-general "jest" "$BIN_JEST" "balanced" "jest"
-
-h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
-general "vitest" "$BIN_VITEST" "success" "vitest"
-general "vitest" "$BIN_VITEST" "failure" "vitest"
-general "vitest" "$BIN_VITEST" "balanced" "vitest"
-
-h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
-general "node" "$BIN_NODE" "success" "node/**/**.spec.js"
-general "node" "$BIN_NODE" "failure" "node/**/**.spec.js"
-general "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
-
-h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
-general "bun" "$BIN_BUN" "success" "bun" "$BIN_POKU_BUN"
-general "bun" "$BIN_BUN" "failure" "bun" "$BIN_POKU_BUN"
-general "bun" "$BIN_BUN" "balanced" "bun" "$BIN_POKU_BUN"
 
 echo ""
 echo "</details>"

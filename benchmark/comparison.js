@@ -90,11 +90,6 @@ if (mode === 'all' || mode === 'nesting') {
   output = output.replace('<!-- NESTING_SUMMARY_TABLE -->', table);
 }
 
-if (mode === 'general') {
-  const table = await buildTable('general', runnersWithoutThresholds);
-  output = output.replace('<!-- GENERAL_SUMMARY_TABLE -->', table);
-}
-
 await writeFile('./output.md', output);
 
 if (failures.length > 0) {
