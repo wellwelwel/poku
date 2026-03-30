@@ -11,6 +11,8 @@ BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
 BIN_NODE="node --test"
 BIN_BUN="bun test"
 BIN_POKU_BUN="bun ./node_modules/poku/lib/bin/index.js"
+BIN_DENO="deno test"
+BIN_POKU_DENO="deno run --allow-all ./node_modules/poku/lib/bin/index.js"
 
 if [ "$MODE" = "all" ]; then
   rm -rf results
@@ -196,6 +198,11 @@ execution "bun" "$BIN_BUN" "success" "bun" "$BIN_POKU_BUN"
 execution "bun" "$BIN_BUN" "failure" "bun" "$BIN_POKU_BUN"
 execution "bun" "$BIN_BUN" "balanced" "bun" "$BIN_POKU_BUN"
 
+h3 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
+execution "deno" "$BIN_DENO" "success" "deno" "$BIN_POKU_DENO"
+execution "deno" "$BIN_DENO" "failure" "deno" "$BIN_POKU_DENO"
+execution "deno" "$BIN_DENO" "balanced" "deno" "$BIN_POKU_DENO"
+
 echo ""
 echo "</details>"
 echo ""
@@ -221,7 +228,7 @@ echo "- **success:** 1.000 iterations × 3 assertion types (ok, strictEqual, dee
 echo "- **failure:** a suite of 3 tests, one per assertion type, all failing."
 echo "- **balanced:** a suite of 6 tests where 3 tests will fail and 3 tests will pass."
 echo ""
-echo "> **Note:** Jest, Vitest, Bun, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
+echo "> **Note:** Jest, Vitest, Bun, Deno, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
 
 h3 "🃏 [Jest](https://github.com/jestjs/jest)"
 assertion "jest" "$BIN_JEST" "success" "jest.spec.js"
@@ -242,6 +249,11 @@ h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
 assertion "bun" "$BIN_BUN" "success" "bun.spec.js" "$BIN_POKU_BUN"
 assertion "bun" "$BIN_BUN" "failure" "bun.spec.js" "$BIN_POKU_BUN"
 assertion "bun" "$BIN_BUN" "balanced" "bun.spec.js" "$BIN_POKU_BUN"
+
+h3 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
+assertion "deno" "$BIN_DENO" "success" "deno.test.js" "$BIN_POKU_DENO"
+assertion "deno" "$BIN_DENO" "failure" "deno.test.js" "$BIN_POKU_DENO"
+assertion "deno" "$BIN_DENO" "balanced" "deno.test.js" "$BIN_POKU_DENO"
 
 echo ""
 echo "</details>"
@@ -287,6 +299,11 @@ h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
 nesting "bun" "$BIN_BUN" "success" "bun.spec.js" "$BIN_POKU_BUN"
 nesting "bun" "$BIN_BUN" "failure" "bun.spec.js" "$BIN_POKU_BUN"
 nesting "bun" "$BIN_BUN" "balanced" "bun.spec.js" "$BIN_POKU_BUN"
+
+h3 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
+nesting "deno" "$BIN_DENO" "success" "deno.test.js" "$BIN_POKU_DENO"
+nesting "deno" "$BIN_DENO" "failure" "deno.test.js" "$BIN_POKU_DENO"
+nesting "deno" "$BIN_DENO" "balanced" "deno.test.js" "$BIN_POKU_DENO"
 
 echo ""
 echo "</details>"

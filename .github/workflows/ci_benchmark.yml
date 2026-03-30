@@ -32,6 +32,9 @@ jobs:
       - name: ➕ Actions - Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      - name: ➕ Actions - Setup Deno
+        uses: denoland/setup-deno@v2
+
       - name: ➕ Actions — Setup Hyperfine
         run: cargo install --locked hyperfine
 
@@ -88,6 +91,9 @@ jobs:
       - name: ➕ Actions - Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      - name: ➕ Actions - Setup Deno
+        uses: denoland/setup-deno@v2
+
       - name: ➕ Actions — Setup Hyperfine
         run: cargo install --locked hyperfine
 
@@ -143,6 +149,9 @@ jobs:
 
       - name: ➕ Actions - Setup Bun
         uses: oven-sh/setup-bun@v2
+
+      - name: ➕ Actions - Setup Deno
+        uses: denoland/setup-deno@v2
 
       - name: ➕ Actions — Setup Hyperfine
         run: cargo install --locked hyperfine

@@ -63,6 +63,7 @@ const runners = [
   { name: 'vitest', label: '⚡️ Vitest', expectedRatio: 3 },
   { name: 'node', label: '🐢 Node.js' },
   { name: 'bun', label: '🍞 Bun' },
+  { name: 'deno', label: '🦕 Deno' },
 ];
 
 const runnersWithoutThresholds = [
@@ -70,6 +71,7 @@ const runnersWithoutThresholds = [
   { name: 'vitest', label: '⚡️ Vitest' },
   { name: 'node', label: '🐢 Node.js' },
   { name: 'bun', label: '🍞 Bun' },
+  { name: 'deno', label: '🦕 Deno' },
 ];
 
 let output = await readFile('./output.md', 'utf-8');
