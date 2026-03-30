@@ -102,7 +102,7 @@ execution() {
   li "${dir}"
   echo ""
   echo "\`\`\`"
-  hyperfine -i --warmup 5 --runs 10 --export-json "results/execution/${dir}/${name}.json" \
+  hyperfine -i --warmup 3 --runs 10 --export-json "results/execution/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$poku_bin ./test/execution/${dir}/poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
@@ -124,7 +124,7 @@ assertion() {
   li "${dir}"
   echo ""
   echo "\`\`\`"
-  hyperfine -i --warmup 5 --runs 10 --export-json "results/assertions/${dir}/${name}.json" \
+  hyperfine -i --warmup 3 --runs 10 --export-json "results/assertions/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
@@ -146,7 +146,7 @@ nesting() {
   li "${dir}"
   echo ""
   echo "\`\`\`"
-  hyperfine -i --warmup 5 --runs 10 --export-json "results/nesting/${dir}/${name}.json" \
+  hyperfine -i --warmup 3 --runs 10 --export-json "results/nesting/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
@@ -228,7 +228,7 @@ echo "- **success:** 1.000 iterations × 3 assertion types (ok, strictEqual, dee
 echo "- **failure:** a suite of 3 tests, one per assertion type, all failing."
 echo "- **balanced:** a suite of 6 tests where 3 tests will fail and 3 tests will pass."
 echo ""
-echo "> **Note:** Jest, Vitest, Bun, Deno, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
+echo "> **Note:** **Jest**, **Vitest**, **Bun**, **Deno**, and **Node.js** assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
 
 h3 "🃏 [Jest](https://github.com/jestjs/jest)"
 assertion "jest" "$BIN_JEST" "success" "jest.spec.js"
