@@ -318,7 +318,7 @@ fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "general" ]; then
 
-h2 "🧨 General Exhaustive Testing"
+h2 "🧨 General"
 
 echo "<!-- GENERAL_SUMMARY_TABLE -->"
 echo ""
@@ -331,9 +331,9 @@ echo "<br />"
 echo ""
 echo "Combines everything: multi-file execution across four levels of depth, nested \`describe\` blocks (3 levels deep), flat tests, and varied runner-native assertions (ok, strictEqual/toBe, deepStrictEqual/toStrictEqual)."
 echo ""
-echo "- **success:** a suite of 5 exhaustive tests that will pass."
-echo "- **failure:** a suite of 5 exhaustive tests that will fail."
-echo "- **balanced:** a suite of 10 exhaustive tests where 5 tests will fail and 5 tests will pass."
+echo "- **success:** a suite of 20 tests that will pass."
+echo "- **failure:** a suite of 20 tests that will fail."
+echo "- **balanced:** a suite of 20 tests where 10 tests will fail and 10 tests will pass."
 
 h3 "🃏 [Jest](https://github.com/jestjs/jest)"
 general "jest" "$BIN_JEST" "success" "jest"
