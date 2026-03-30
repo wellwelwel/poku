@@ -214,7 +214,7 @@ jobs:
 
       - name: 📝 Assemble output
         run: |
-          { printf "## 🎖️ Benchmarks\n\n"; cat benchmark/partial-execution.md; cat benchmark/partial-assertions.md; cat benchmark/partial-nesting.md; printf "\n> [!IMPORTANT]\n> Benchmarks do not indicate competitiveness; they serve as a metric to monitor the project performance.\n"; } > benchmark/output.md
+          { printf "## 🎖️ Benchmarks\n\n"; cat benchmark/partial-execution.md; cat benchmark/partial-assertions.md; cat benchmark/partial-nesting.md; } > benchmark/output.md
 
       - name: 📊 Compare
         run: cd benchmark && node comparison.js
