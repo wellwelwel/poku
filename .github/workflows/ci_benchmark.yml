@@ -172,61 +172,8 @@ jobs:
             benchmark/partial-nesting.md
             benchmark/results/nesting
 
-  bench-general:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    name: General Exhaustive Testing
-    steps:
-      - name: ➕ Actions - Checkout
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: ➕ Actions - Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          check-latest: true
-          node-version: lts/*
-
-      - name: ➕ Actions — Setup Hyperfine
-        run: cargo install --locked hyperfine
-
-      - name: ➕ Cache dependencies
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: npm-linux-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-linux-
-
-      - name: ➕ Cache dependencies (Benchmark)
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: npm-benchmark-${{ hashFiles('benchmark/package-lock.json') }}
-          restore-keys: npm-benchmark-
-
-      - name: 📦 Installing Dependencies
-        run: npm ci
-
-      - name: 🚀 Building Poku
-        run: |
-          npm run build
-          npm --prefix benchmark ci
-
-      - name: 🎖️ Rock it
-        run: cd benchmark && sh benchmark.sh general | tee partial-general.md
-
-      - name: ➕ Upload artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: bench-general
-          retention-days: 1
-          path: |
-            benchmark/partial-general.md
-            benchmark/results/general
-
   compare:
-    needs: [bench-execution, bench-assertions, bench-nesting, bench-general]
+    needs: [bench-execution, bench-assertions, bench-nesting]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     name: Compare
@@ -249,7 +196,7 @@ jobs:
 
       - name: 📝 Assemble output
         run: |
-          { printf "## 🎖️ Benchmarks\n\n"; cat benchmark/partial-execution.md; cat benchmark/partial-assertions.md; cat benchmark/partial-nesting.md; cat benchmark/partial-general.md; } > benchmark/output.md
+          { printf "## 🎖️ Benchmarks\n\n"; cat benchmark/partial-execution.md; cat benchmark/partial-assertions.md; cat benchmark/partial-nesting.md; } > benchmark/output.md
 
       - name: 📊 Compare
         run: cd benchmark && node comparison.js

@@ -13,7 +13,6 @@
 The testers to be compared are chosen based on the three most downloaded test runners according to the **npm** weekly statistics _(2024/06/09)_:
 
 - [**Jest**](https://www.npmjs.com/package/jest): 23,549,369
-- [**Mocha**](https://www.npmjs.com/package/mocha): 8,053,244
 - [**Vitest**](https://www.npmjs.com/package/vitest): 4,840,171
 
 ---
@@ -32,7 +31,6 @@ The testers to be compared are chosen based on the three most downloaded test ru
 
 - ~**4.6x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.3.0)
 - ~**3.5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.1.2)
-- ~**1.4x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.5) — _even with test file isolation_ 🚀
 
 ---
 

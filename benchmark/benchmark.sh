@@ -6,7 +6,6 @@ MODE=${1:-all}
 HR="\n---\n"
 
 BIN_POKU="node ./node_modules/poku/lib/bin/index.js"
-BIN_MOCHA="node ./node_modules/mocha/bin/mocha.js --parallel"
 BIN_JEST="node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
 BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
 BIN_NODE="node --test"
@@ -208,11 +207,6 @@ execution "vitest" "$BIN_VITEST" "success" "vitest"
 execution "vitest" "$BIN_VITEST" "failure" "vitest"
 execution "vitest" "$BIN_VITEST" "balanced" "vitest"
 
-h3 "☕️ [Mocha](https://github.com/mochajs/mocha)"
-execution "mocha" "$BIN_MOCHA" "success" "mocha/**"
-execution "mocha" "$BIN_MOCHA" "failure" "mocha/**"
-execution "mocha" "$BIN_MOCHA" "balanced" "mocha/**"
-
 h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 execution "node" "$BIN_NODE" "success" "node/**/**.spec.js"
 execution "node" "$BIN_NODE" "failure" "node/**/**.spec.js"
@@ -243,7 +237,7 @@ echo "- **success:** 1.000 iterations × 3 assertion types (ok, strictEqual, dee
 echo "- **failure:** a suite of 3 tests, one per assertion type, all failing."
 echo "- **balanced:** a suite of 6 tests where 3 tests will fail and 3 tests will pass."
 echo ""
-echo "> **Note:** Jest, Vitest, Mocha, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
+echo "> **Note:** Jest, Vitest, and Node.js assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
 
 h3 "🃏 [Jest](https://github.com/jestjs/jest)"
 assertion "jest" "$BIN_JEST" "success" "jest.spec.js"
@@ -254,11 +248,6 @@ h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
 assertion "vitest" "$BIN_VITEST" "success" "vitest.spec.js"
 assertion "vitest" "$BIN_VITEST" "failure" "vitest.spec.js"
 assertion "vitest" "$BIN_VITEST" "balanced" "vitest.spec.js"
-
-h3 "☕️ [Mocha](https://github.com/mochajs/mocha)"
-assertion "mocha" "$BIN_MOCHA" "success" "mocha.spec.js"
-assertion "mocha" "$BIN_MOCHA" "failure" "mocha.spec.js"
-assertion "mocha" "$BIN_MOCHA" "balanced" "mocha.spec.js"
 
 h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 assertion "node" "$BIN_NODE" "success" "node.spec.js"
@@ -300,11 +289,6 @@ nesting "vitest" "$BIN_VITEST" "success" "vitest.spec.js"
 nesting "vitest" "$BIN_VITEST" "failure" "vitest.spec.js"
 nesting "vitest" "$BIN_VITEST" "balanced" "vitest.spec.js"
 
-h3 "☕️ [Mocha](https://github.com/mochajs/mocha)"
-nesting "mocha" "$BIN_MOCHA" "success" "mocha.spec.js"
-nesting "mocha" "$BIN_MOCHA" "failure" "mocha.spec.js"
-nesting "mocha" "$BIN_MOCHA" "balanced" "mocha.spec.js"
-
 h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 nesting "node" "$BIN_NODE" "success" "node.spec.js"
 nesting "node" "$BIN_NODE" "failure" "node.spec.js"
@@ -317,7 +301,7 @@ echo ""
 fi
 
 # This benchmark is not included in CI due to excessive runtime.
-# To run it locally, execute: `cd benchmark && npm run bench:general`
+# To run it manually, execute: `cd benchmark && npm run bench:general`.
 if [ "$MODE" = "general" ]; then
 
 h2 "🧨 General Exhaustive Testing"
@@ -346,11 +330,6 @@ h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
 general "vitest" "$BIN_VITEST" "success" "vitest"
 general "vitest" "$BIN_VITEST" "failure" "vitest"
 general "vitest" "$BIN_VITEST" "balanced" "vitest"
-
-h3 "☕️ [Mocha](https://github.com/mochajs/mocha)"
-general "mocha" "$BIN_MOCHA" "success" "mocha/**"
-general "mocha" "$BIN_MOCHA" "failure" "mocha/**"
-general "mocha" "$BIN_MOCHA" "balanced" "mocha/**"
 
 h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 general "node" "$BIN_NODE" "success" "node/**/**.spec.js"

@@ -12,7 +12,6 @@ const mode = process.argv[2] ?? 'all';
 const runners = [
   { name: 'jest', label: '🃏 Jest', expectedRatio: 3 },
   { name: 'vitest', label: '⚡️ Vitest', expectedRatio: 3 },
-  { name: 'mocha', label: '☕️ Mocha', expectedRatio: 1 },
   { name: 'node', label: '🐢 Node.js' },
 ];
 
@@ -69,7 +68,6 @@ if (mode === 'all' || mode === 'assertions') {
   const assertionRunners = [
     { name: 'jest', label: '🃏 Jest' },
     { name: 'vitest', label: '⚡️ Vitest' },
-    { name: 'mocha', label: '☕️ Mocha + Chai' },
     { name: 'node', label: '🐢 Node.js' },
   ];
 
@@ -117,7 +115,6 @@ if (mode === 'all' || mode === 'nesting') {
   const nestingRunners = [
     { name: 'jest', label: '🃏 Jest' },
     { name: 'vitest', label: '⚡️ Vitest' },
-    { name: 'mocha', label: '☕️ Mocha' },
     { name: 'node', label: '🐢 Node.js' },
   ];
 
@@ -161,7 +158,6 @@ if (mode === 'all' || mode === 'general') {
   const generalRunners = [
     { name: 'jest', label: '🃏 Jest' },
     { name: 'vitest', label: '⚡️ Vitest' },
-    { name: 'mocha', label: '☕️ Mocha' },
     { name: 'node', label: '🐢 Node.js' },
   ];
 
