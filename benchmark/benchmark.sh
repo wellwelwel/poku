@@ -318,7 +318,7 @@ fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "general" ]; then
 
-h2 "🧨 General"
+h2 "🧨 General Exhaustive Testing"
 
 echo "<!-- GENERAL_SUMMARY_TABLE -->"
 echo ""
@@ -329,7 +329,7 @@ echo "<strong>ℹ Extensive Details</strong>"
 echo "</summary>"
 echo "<br />"
 echo ""
-echo "Combines everything: multi-file execution across four levels of depth, nested \`describe\` blocks (3 levels deep), flat tests, and varied runner-native assertions (ok, strictEqual/toBe, deepStrictEqual/toStrictEqual)."
+echo "Combines everything: multi-file execution across four levels of depth, nested \`describe\` blocks (3 levels deep), flat tests, and varied runner-native assertions (ok, strictEqual/toBe, deepStrictEqual/toStrictEqual). No loops are used — each file contains only direct tests and assertions."
 echo ""
 echo "- **success:** a suite of 20 tests that will pass."
 echo "- **failure:** a suite of 20 tests that will fail."
