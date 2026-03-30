@@ -118,6 +118,7 @@ jobs:
         run: |
           npm run build
           npm --prefix benchmark ci
+          cd benchmark && deno install
 
       - name: 🎖️ Rock it
         run: cd benchmark && sh benchmark.sh assertions | tee partial-assertions.md
