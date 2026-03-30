@@ -61,17 +61,17 @@ const buildTable = async (resultsDir, runners) => {
 const runners = [
   { name: 'jest', label: '🃏 Jest', expectedRatio: 3 },
   { name: 'vitest', label: '⚡️ Vitest', expectedRatio: 3 },
+  { name: 'deno', label: '🦕 Deno' },
   { name: 'node', label: '🐢 Node.js' },
   { name: 'bun', label: '🍞 Bun' },
-  { name: 'deno', label: '🦕 Deno' },
 ];
 
 const runnersWithoutThresholds = [
   { name: 'jest', label: '🃏 Jest' },
   { name: 'vitest', label: '⚡️ Vitest' },
+  { name: 'deno', label: '🦕 Deno' },
   { name: 'node', label: '🐢 Node.js' },
   { name: 'bun', label: '🍞 Bun' },
-  { name: 'deno', label: '🦕 Deno' },
 ];
 
 let output = await readFile('./output.md', 'utf-8');
