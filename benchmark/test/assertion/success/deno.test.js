@@ -1,4 +1,4 @@
-import { assert, assertEquals, assertStrictEquals } from 'jsr:@std/assert';
+import { assert, assertEquals, assertStrictEquals } from '@std/assert';
 
 Deno.test('assertions', () => {
   const a = { x: 1, y: { z: 2 } };
