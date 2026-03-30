@@ -12,9 +12,9 @@ const mode = process.argv[2] ?? 'all';
 const scenarios = ['success', 'failure', 'balanced'];
 
 const formatRatio = (avg) => {
-  if (avg > 1) return `**~${avg.toFixed(2)}x** faster ✔`;
-  if (avg === 1) return `**~1.00x** tie ➖`;
-  return `**~${(1 / avg).toFixed(2)}x** slower ⚠`;
+  if (avg > 1) return `**~${avg.toFixed(2)}x** 🟢`;
+  if (avg === 1) return `**~1.00x** 🟡`;
+  return `**~${(1 / avg).toFixed(2)}x** 🔴`;
 };
 
 const getRatio = async (resultsDir, runner, scenario) => {
