@@ -9,18 +9,17 @@ import { env, exit } from 'node:process';
 const isCI = !!env.GITHUB_ACTIONS;
 const mode = process.argv[2] ?? 'all';
 
-const runners = [
-  { name: 'jest', label: '🃏 Jest', expectedRatio: 3 },
-  { name: 'vitest', label: '⚡️ Vitest', expectedRatio: 3 },
-  { name: 'mocha', label: '☕️ Mocha', expectedRatio: 1 },
-  { name: 'node', label: '🐢 Node.js' },
-];
-
 const scenarios = ['success', 'failure', 'balanced'];
 
-const getRatio = async (runner, scenario) => {
+const formatRatio = (avg) => {
+  if (avg === 1) return `**${avg.toFixed(2)}x**`;
+  if (avg > 1) return `**${avg.toFixed(2)}x** ▲`;
+  return `**-${(1 / avg).toFixed(2)}x** ▼`;
+};
+
+const getRatio = async (resultsDir, runner, scenario) => {
   const raw = await readFile(
-    `./results/execution/${scenario}/${runner}.json`,
+    `./results/${resultsDir}/${scenario}/${runner}.json`,
     'utf-8'
   );
   const { results } = JSON.parse(raw);
@@ -30,24 +29,20 @@ const getRatio = async (runner, scenario) => {
   return other.mean / poku.mean;
 };
 
-let output = await readFile('./output.md', 'utf-8');
-const failures = [];
-
-if (mode === 'all' || mode === 'execution') {
+const buildTable = async (resultsDir, runners) => {
   const headerCells = [];
   const separatorCells = [];
   const avgCells = [];
 
   for (const runner of runners) {
     const ratios = await Promise.all(
-      scenarios.map((scenario) => getRatio(runner.name, scenario))
+      scenarios.map((scenario) => getRatio(resultsDir, runner.name, scenario))
     );
     const avg = ratios.reduce((a, b) => a + b, 0) / ratios.length;
-    const faster = avg <= 1 ? '~~faster~~ ⚠' : 'faster ✔';
 
     headerCells.push(` ${runner.label} `);
     separatorCells.push('---');
-    avgCells.push(` **~${avg.toFixed(2)}x** ${faster} `);
+    avgCells.push(` ${formatRatio(avg)} `);
 
     if (runner.expectedRatio && avg < runner.expectedRatio) {
       failures.push(
@@ -56,105 +51,45 @@ if (mode === 'all' || mode === 'execution') {
     }
   }
 
-  const table = [
+  return [
     `| |${headerCells.join('|')}|`,
     `|---|${separatorCells.join('|')}|`,
-    `| 🐷 |${avgCells.join('|')}|`,
+    `| 🐷 **Poku ›** |${avgCells.join('|')}|`,
   ].join('\n');
+};
 
+const runners = [
+  { name: 'jest', label: '🃏 Jest', expectedRatio: 3 },
+  { name: 'vitest', label: '⚡️ Vitest', expectedRatio: 3 },
+  { name: 'deno', label: '🦕 Deno' },
+  { name: 'node', label: '🐢 Node.js' },
+  { name: 'bun', label: '🍞 Bun' },
+];
+
+const runnersWithoutThresholds = [
+  { name: 'jest', label: '🃏 Jest' },
+  { name: 'vitest', label: '⚡️ Vitest' },
+  { name: 'deno', label: '🦕 Deno' },
+  { name: 'node', label: '🐢 Node.js' },
+  { name: 'bun', label: '🍞 Bun' },
+];
+
+let output = await readFile('./output.md', 'utf-8');
+const failures = [];
+
+if (mode === 'all' || mode === 'execution') {
+  const table = await buildTable('execution', runners);
   output = output.replace('<!-- SUMMARY_TABLE -->', table);
 }
 
 if (mode === 'all' || mode === 'assertions') {
-  const assertionRunners = [
-    { name: 'jest', label: '🃏 Jest' },
-    { name: 'vitest', label: '⚡️ Vitest' },
-    { name: 'mocha', label: '☕️ Mocha + Chai' },
-    { name: 'node', label: '🐢 Node.js' },
-  ];
-
-  const assertionScenarios = ['success', 'failure', 'balanced'];
-
-  const getAssertionRatio = async (runner, scenario) => {
-    const raw = await readFile(
-      `./results/assertions/${scenario}/${runner}.json`,
-      'utf-8'
-    );
-    const { results } = JSON.parse(raw);
-    const poku = results.find(({ command }) => command.includes('Poku'));
-    const other = results.find(({ command }) => !command.includes('Poku'));
-    return other.mean / poku.mean;
-  };
-
-  const assertionHeaderCells = [];
-  const assertionSeparatorCells = [];
-  const assertionRatioCells = [];
-
-  for (const runner of assertionRunners) {
-    const ratios = await Promise.all(
-      assertionScenarios.map((scenario) =>
-        getAssertionRatio(runner.name, scenario)
-      )
-    );
-    const avg = ratios.reduce((a, b) => a + b, 0) / ratios.length;
-    const faster = avg <= 1 ? '~~faster~~ ⚠' : 'faster ✔';
-
-    assertionHeaderCells.push(` ${runner.label} `);
-    assertionSeparatorCells.push('---');
-    assertionRatioCells.push(` **~${avg.toFixed(2)}x** ${faster} `);
-  }
-
-  const assertionTable = [
-    `| |${assertionHeaderCells.join('|')}|`,
-    `|---|${assertionSeparatorCells.join('|')}|`,
-    `| 🐷 |${assertionRatioCells.join('|')}|`,
-  ].join('\n');
-
-  output = output.replace('<!-- ASSERTION_SUMMARY_TABLE -->', assertionTable);
+  const table = await buildTable('assertions', runnersWithoutThresholds);
+  output = output.replace('<!-- ASSERTION_SUMMARY_TABLE -->', table);
 }
 
 if (mode === 'all' || mode === 'nesting') {
-  const nestingRunners = [
-    { name: 'jest', label: '🃏 Jest' },
-    { name: 'vitest', label: '⚡️ Vitest' },
-    { name: 'mocha', label: '☕️ Mocha' },
-    { name: 'node', label: '🐢 Node.js' },
-  ];
-
-  const getNestingRatio = async (runner, scenario) => {
-    const raw = await readFile(
-      `./results/nesting/${scenario}/${runner}.json`,
-      'utf-8'
-    );
-    const { results } = JSON.parse(raw);
-    const poku = results.find(({ command }) => command.includes('Poku'));
-    const other = results.find(({ command }) => !command.includes('Poku'));
-    return other.mean / poku.mean;
-  };
-
-  const nestingHeaderCells = [];
-  const nestingSeparatorCells = [];
-  const nestingRatioCells = [];
-
-  for (const runner of nestingRunners) {
-    const ratios = await Promise.all(
-      scenarios.map((scenario) => getNestingRatio(runner.name, scenario))
-    );
-    const avg = ratios.reduce((a, b) => a + b, 0) / ratios.length;
-    const faster = avg <= 1 ? '~~faster~~ ⚠' : 'faster ✔';
-
-    nestingHeaderCells.push(` ${runner.label} `);
-    nestingSeparatorCells.push('---');
-    nestingRatioCells.push(` **~${avg.toFixed(2)}x** ${faster} `);
-  }
-
-  const nestingTable = [
-    `| |${nestingHeaderCells.join('|')}|`,
-    `|---|${nestingSeparatorCells.join('|')}|`,
-    `| 🐷 |${nestingRatioCells.join('|')}|`,
-  ].join('\n');
-
-  output = output.replace('<!-- NESTING_SUMMARY_TABLE -->', nestingTable);
+  const table = await buildTable('nesting', runnersWithoutThresholds);
+  output = output.replace('<!-- NESTING_SUMMARY_TABLE -->', table);
 }
 
 await writeFile('./output.md', output);

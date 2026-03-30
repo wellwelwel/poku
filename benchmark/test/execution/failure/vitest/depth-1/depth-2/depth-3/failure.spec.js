@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import { test } from 'vitest';
 
-test('', () => {
+test('test', () => {
   assert(false);
 });

@@ -7,9 +7,7 @@
     "bench:nesting": "sh benchmark.sh nesting | tee output.md && node comparison.js nesting"
   },
   "devDependencies": {
-    "chai": "^6.2.2",
     "jest": "30.3.0",
-    "mocha": "11.7.5",
     "poku": "file:..",
     "vitest": "4.1.2"
   }

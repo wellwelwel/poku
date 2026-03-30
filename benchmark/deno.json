@@ -1,0 +1,6 @@
+{
+  "unstable": ["detect-cjs"],
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.19"
+  }
+}

@@ -258,7 +258,6 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 - ~**4.6x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.3.0)
 - ~**3.5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.1.2)
-- ~**1.4x** _faster_ than [**Mocha**](https://github.com/mochajs/mocha) (v11.7.5) — _even with test file isolation_ 🚀
 
 > - You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
 > - [Comparing **Poku** and native test runners _(discussion)_](https://github.com/wellwelwel/poku/discussions/740).
