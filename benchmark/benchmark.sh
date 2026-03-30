@@ -316,7 +316,9 @@ echo ""
 
 fi
 
-if [ "$MODE" = "all" ] || [ "$MODE" = "general" ]; then
+# This benchmark is not included in CI due to excessive runtime.
+# To run it locally, execute: `cd benchmark && npm run bench:general`
+if [ "$MODE" = "general" ]; then
 
 h2 "🧨 General Exhaustive Testing"
 
