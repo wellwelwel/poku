@@ -154,7 +154,7 @@ if (mode === 'all' || mode === 'nesting') {
   output = output.replace('<!-- NESTING_SUMMARY_TABLE -->', nestingTable);
 }
 
-if (mode === 'all' || mode === 'general') {
+if (mode === 'general') {
   const generalRunners = [
     { name: 'jest', label: '🃏 Jest' },
     { name: 'vitest', label: '⚡️ Vitest' },
