@@ -54,7 +54,7 @@ const buildTable = async (resultsDir, runners) => {
   return [
     `| |${headerCells.join('|')}|`,
     `|---|${separatorCells.join('|')}|`,
-    `| 🐷 **Poku** |${avgCells.join('|')}|`,
+    `| 🐷 **Poku ›** |${avgCells.join('|')}|`,
   ].join('\n');
 };
 
