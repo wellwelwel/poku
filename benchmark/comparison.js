@@ -55,22 +55,22 @@ const buildTable = async (resultsDir, runners) => {
   return [
     `| |${headerCells.join('|')}|`,
     `|---|${separatorCells.join('|')}|`,
-    `| 🐷 |${avgCells.join('|')}|`,
+    `| 🐷 **Poku** |${avgCells.join('|')}|`,
   ].join('\n');
 };
 
 const runners = [
   { name: 'jest', label: '🃏 Jest', expectedRatio: 3 },
   { name: 'vitest', label: '⚡️ Vitest', expectedRatio: 3 },
-  { name: 'bun', label: '🍞 Bun' },
   { name: 'node', label: '🐢 Node.js' },
+  { name: 'bun', label: '🍞 Bun' },
 ];
 
 const runnersWithoutThresholds = [
   { name: 'jest', label: '🃏 Jest' },
   { name: 'vitest', label: '⚡️ Vitest' },
-  { name: 'bun', label: '🍞 Bun' },
   { name: 'node', label: '🐢 Node.js' },
+  { name: 'bun', label: '🍞 Bun' },
 ];
 
 let output = await readFile('./output.md', 'utf-8');
