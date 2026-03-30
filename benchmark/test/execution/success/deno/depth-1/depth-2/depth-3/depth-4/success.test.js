@@ -1,2 +1,5 @@
 import assert from 'node:assert';
-Deno.test('test', () => { assert(true); });
+
+Deno.test('test', () => {
+  assert(true);
+});
