@@ -310,6 +310,3 @@ echo "</details>"
 echo ""
 
 fi
-
-quote "[!IMPORTANT]"
-quote "Benchmarks do not indicate competitiveness; they serve as a metric to monitor the project performance."
