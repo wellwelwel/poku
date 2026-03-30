@@ -12,7 +12,14 @@ const STDIO_IPC: StdioOptions = ['inherit', 'pipe', 'pipe', 'ipc'];
 const STDIO_DEFAULT: StdioOptions = ['inherit', 'pipe', 'pipe'];
 
 export const runTestFile = async (path: string): Promise<boolean> => {
-  const { cwd, configs, reporter } = GLOBAL;
+  const { configs } = GLOBAL;
+
+  if (configs.noIsolate) {
+    const { runTestInProcess } = await import('./run-test-in-process.js');
+    return runTestInProcess(path);
+  }
+
+  const { cwd, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
   let command = [...runtimeOptions, path, ...deepOptions];
 
@@ -26,7 +33,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
   }
 
   const runtime = command.shift()!;
-
   const file = relative(cwd, path);
   const showLogs = !configs.quiet;
   const outputChunks: string[] = [];

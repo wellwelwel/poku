@@ -61,6 +61,7 @@ import { hr, log } from '../services/write.js';
     return Number.isNaN(value) ? configsFromFile?.timeout : value;
   })();
   const sequential = hasArg('sequential') || configsFromFile?.sequential;
+  const noIsolate = hasArg('noIsolate') || configsFromFile?.noIsolate;
 
   if (dirs.length === 1) states.isSinglePath = true;
 
@@ -111,6 +112,7 @@ import { hr, log } from '../services/write.js';
     concurrency,
     timeout,
     sequential,
+    noIsolate,
     quiet,
     debug,
     failFast,

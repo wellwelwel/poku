@@ -40,6 +40,7 @@ export const GLOBAL = {
     quiet: undefined,
     debug: undefined,
     failFast: undefined,
+    noIsolate: undefined,
     deno: undefined,
     noExit: undefined,
     reporter: undefined,
