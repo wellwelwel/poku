@@ -56,7 +56,9 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
       const timeoutPromise = new Promise<never>((_, reject) => {
         killTimer = setTimeout(() => {
           timedOut = true;
-          reject(new Error(`Timeout: test file exceeded ${configs.timeout}ms limit`));
+          reject(
+            new Error(`Timeout: test file exceeded ${configs.timeout}ms limit`)
+          );
         }, configs.timeout);
       });
 
@@ -64,7 +66,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
     } else {
       await testPromise;
     }
-  } catch (error) {
+  } catch {
     if (timedOut) {
       outputChunks.push(
         `${format(`● Timeout: test file exceeded ${configs.timeout}ms limit`).fail().bold()}`
