@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Github } from 'lucide-react';
+import { FaGithub } from 'react-icons/fa';
 
 export type PluginProps = {
   repo: string;
@@ -12,7 +12,7 @@ export const Plugin: FC<PluginProps> = ({ repo }) => (
     target='_blank'
     rel='noopener noreferrer'
   >
-    <Github />
+    <FaGithub />
     Plugin
   </a>
 );

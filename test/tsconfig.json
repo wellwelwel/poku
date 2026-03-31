@@ -12,6 +12,7 @@
     "__fixtures__/e2e/sintax/invalid-file.js"
   ],
   "compilerOptions": {
+    "rootDir": "..",
     "outDir": "../ci",
     "declaration": false,
     "allowJs": true,
