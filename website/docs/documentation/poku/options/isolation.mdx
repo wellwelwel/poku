@@ -3,12 +3,22 @@ sidebar_position: 1.2
 tags: [isolation, no-isolate, debug, inspect, runInBand, test-isolation]
 ---
 
+import { History } from '@site/src/components/History';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # `isolation`
 
 Controls process isolation for test files.
+
+<History
+  records={[
+    {
+      version: '4.2.0',
+      changes: [<>Introduces test isolation modes.</>],
+    },
+  ]}
+/>
 
 By default, **Poku** runs each test file in a separate child process. This ensures full isolation between tests — each file gets its own `process.exitCode`, module cache, and global state.
 
@@ -111,7 +121,7 @@ This works because all tests run in the same process as the debugger. With the d
 
 <hr />
 
-## Intentional Limitations
+### Intentional Limitations
 
 When running without isolation, all test files share the same process. This comes with some intentional limitations:
 
@@ -119,11 +129,14 @@ When running without isolation, all test files share the same process. This come
 - **Different module structures may conflict.** `.ts`, `.cjs`, and `.mjs` files sharing the same process may not work depending on the runtime and version. With process isolation, each file runs in its own context and this is handled naturally.
 - **Global state is shared.** Environment variables, global objects, and module caches are shared across all test files.
 - **`process.exit()` in a test file will terminate the entire run.** With process isolation, only the child process is affected.
+- **`console.error()` output is not captured by the reporter.** Only `stdout` is intercepted. Any `stderr` output from test files will appear directly in the terminal, outside the reporter's formatted output.
+- **Timed out tests may continue running in the background.** Unlike process isolation where the child process is killed, there is no way to stop a module that is already being evaluated. Output from a timed out test may leak into the terminal after the timeout is reported.
 
 <hr />
 
 :::tip
-When debugging, you typically run a small number of test files. Use [`--filter`](/docs/documentation/poku/options/filter) to narrow down the files:
+
+When debugging, you typically run a small number of test files. You can use [`--filter`](/docs/documentation/poku/options/filter) to narrow down the files, for example:
 
 ```bash
 node --inspect-brk ./node_modules/.bin/poku --isolation=none --filter=my-test ./test
