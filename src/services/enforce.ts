@@ -42,10 +42,10 @@ const checkFlags = (): void => {
     '--exclude',
     '--failFast',
     '--filter',
+    '--isolation',
     '--killPid',
     '--killPort',
     '--killRange',
-    '--noIsolate',
     '--only',
     '--quiet',
     '--reporter',
@@ -76,7 +76,6 @@ const checkValues = async (): Promise<void> => {
     'debug',
     'enforce',
     'failFast',
-    'noIsolate',
     'only',
     'quiet',
     'sequential',
@@ -91,6 +90,7 @@ const checkValues = async (): Promise<void> => {
   for (const flag of [
     'concurrency',
     'config',
+    'isolation',
     'killPid',
     'killPort',
     'reporter',
@@ -112,6 +112,16 @@ const checkValues = async (): Promise<void> => {
 
   if (getArg('timeout') && typeof GLOBAL.configs.timeout === 'undefined')
     errors.push('--timeout: expects for a valid integer.');
+
+  const isolationValue = getArg('isolation');
+  if (
+    isolationValue &&
+    isolationValue !== 'none' &&
+    isolationValue !== 'process'
+  )
+    errors.push(
+      `--isolation: "${isolationValue}" is not valid. Available: none, process.`
+    );
 
   const reporterValue = getArg('reporter') ?? getArg('r', '-');
   if (reporterValue && !(reporterValue in reporter))
@@ -137,7 +147,7 @@ const checkConfigFile = (): void => {
     'timeout',
     'envFile',
     'kill',
-    'noIsolate',
+    'isolation',
     'platform',
     'deno',
   ]);

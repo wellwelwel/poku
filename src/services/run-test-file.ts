@@ -14,7 +14,7 @@ const STDIO_DEFAULT: StdioOptions = ['inherit', 'pipe', 'pipe'];
 export const runTestFile = async (path: string): Promise<boolean> => {
   const { configs } = GLOBAL;
 
-  if (configs.noIsolate) {
+  if (configs.isolation === 'none') {
     const { runTestInProcess } = await import('./run-test-in-process.js');
     return runTestInProcess(path);
   }

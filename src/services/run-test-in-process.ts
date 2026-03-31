@@ -47,9 +47,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
   let result = true;
 
   try {
-    const testPromise = await import(
-      `${pathToFileURL(path).href}?t=${Date.now()}`
-    );
+    const testPromise = import(`${pathToFileURL(path).href}?t=${Date.now()}`);
 
     if (configs.timeout) {
       const timeoutPromise = new Promise<never>((_, reject) => {

@@ -54,12 +54,14 @@ export type Configs = {
    */
   sequential?: boolean;
   /**
-   * Disables process isolation, running test files in the same process.
-   * Useful for debugging with `--inspect`.
+   * Controls process isolation for test files.
    *
-   * @default false
+   * - `'process'` (default): each test file runs in a separate child process.
+   * - `'none'`: all test files run in the same process (useful for debugging with `--inspect`).
+   *
+   * @default 'process'
    */
-  noIsolate?: boolean;
+  isolation?: 'none' | 'process' | (string & NonNullable<unknown>);
   /**
    * Stops the tests at the first failure.
    *

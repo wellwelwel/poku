@@ -25,7 +25,7 @@ const summary: [string, string][] = [
   ['--killPort', 'Terminate the specified ports.'],
   ['--killRange', 'Terminate the specified port ranges.'],
   ['--listFiles', 'Display all the files returned in the terminal.'],
-  ['--noIsolate', 'Run tests in the same process (useful for debugging).'],
+  ['--isolation', 'Set test isolation mode (none, process). Default: process.'],
   [
     '--reporter, -r',
     'Specify the reporter: poku, dot, compact, focus, classic.',

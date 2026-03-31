@@ -22,7 +22,7 @@ export const runTests = (files: string[]): Promise<boolean> => {
   const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
   const totalFiles = files.length;
   const concurrency: number = (() => {
-    if (configs.sequential || configs.noIsolate) return 1;
+    if (configs.sequential || configs.isolation === 'none') return 1;
     const limit = configs.concurrency ?? availableParallelism();
     return limit <= 0 ? totalFiles || 1 : limit;
   })();

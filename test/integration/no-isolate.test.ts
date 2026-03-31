@@ -24,7 +24,11 @@ const resetState = () => {
 describe('Service: runTestInProcess', async () => {
   await it('pass', async () => {
     resetState();
-    GLOBAL.configs = { ...savedConfigs, noIsolate: true, quiet: true };
+    GLOBAL.configs = {
+      ...savedConfigs,
+      isolation: 'none',
+      quiet: true,
+    };
 
     const result = await runTestInProcess(fixture('pass.test.ts'));
     assert.strictEqual(result, true, 'Pass fixture should succeed');
@@ -32,7 +36,11 @@ describe('Service: runTestInProcess', async () => {
 
   await it('exit-code failure', async () => {
     resetState();
-    GLOBAL.configs = { ...savedConfigs, noIsolate: true, quiet: true };
+    GLOBAL.configs = {
+      ...savedConfigs,
+      isolation: 'none',
+      quiet: true,
+    };
 
     const result = await runTestInProcess(fixture('exit-code.test.ts'));
     assert.strictEqual(result, false, 'exit-code fixture should fail');
@@ -42,7 +50,7 @@ describe('Service: runTestInProcess', async () => {
     resetState();
     GLOBAL.configs = {
       ...savedConfigs,
-      noIsolate: true,
+      isolation: 'none',
       quiet: true,
       timeout: 500,
     };
@@ -55,7 +63,7 @@ describe('Service: runTestInProcess', async () => {
     resetState();
     GLOBAL.configs = {
       ...savedConfigs,
-      noIsolate: true,
+      isolation: 'none',
       quiet: true,
       beforeEach: () => {
         throw new Error('beforeEach failed');
@@ -70,7 +78,7 @@ describe('Service: runTestInProcess', async () => {
     resetState();
     GLOBAL.configs = {
       ...savedConfigs,
-      noIsolate: true,
+      isolation: 'none',
       quiet: true,
       afterEach: () => {
         throw new Error('afterEach failed');

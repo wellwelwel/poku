@@ -3,6 +3,6 @@
 module.exports = {
   include: ['../no-isolate'],
   filter: 'pass',
-  noIsolate: true,
+  isolation: 'none',
   debug: true,
 };
