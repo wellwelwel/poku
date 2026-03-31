@@ -54,6 +54,12 @@
       "description": "Stops the tests at the first failure.\nhttps://poku.io/docs/documentation/poku/options/fail-fast",
       "default": false
     },
+    "isolation": {
+      "type": "string",
+      "description": "Controls process isolation for test files.\nhttps://poku.io/docs/documentation/poku/options/isolation",
+      "default": "process",
+      "enum": ["none", "process"]
+    },
     "envFile": {
       "type": "string",
       "description": "Reads an environment file and sets the environment variables.\nhttps://poku.io/docs/documentation/helpers/env",
