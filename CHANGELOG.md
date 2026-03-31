@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.2.0](https://github.com/wellwelwel/poku/compare/v4.1.0...v4.2.0) (2026-03-31)
+
+
+### Features
+
+* filter and skip tests by title pattern ([#1067](https://github.com/wellwelwel/poku/issues/1067)) ([1d1e52e](https://github.com/wellwelwel/poku/commit/1d1e52e9c9a216e9c764e9180d2f6deb6736b3e6))
+* support test isolation modes ([#1066](https://github.com/wellwelwel/poku/issues/1066)) ([6e72129](https://github.com/wellwelwel/poku/commit/6e72129229cc405c6cff93dcdf00503bb17dff19))
+
+
+### Bug Fixes
+
+* fix teardown order ([#1069](https://github.com/wellwelwel/poku/issues/1069)) ([cd59677](https://github.com/wellwelwel/poku/commit/cd596776b8a58e71ee48d23c1f45c67cdcae3f2d))
+
+
+### Performance Improvements
+
+* improve runtime efficiency ([#1061](https://github.com/wellwelwel/poku/issues/1061)) ([5e61d02](https://github.com/wellwelwel/poku/commit/5e61d0219d4f97c5d98b5fd2bb034dc64f35902e))
+
 ## [4.1.0](https://github.com/wellwelwel/poku/compare/v4.0.0...v4.1.0) (2026-03-11)
 
 
