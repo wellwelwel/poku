@@ -136,6 +136,42 @@ describe('Enforce Option', async () => {
     );
   });
 
+  await it('--testNamePattern without value', async () => {
+    const output = await inspectPoku('--enforce --testNamePattern', {
+      cwd: 'test/__fixtures__/e2e/no-tests',
+    });
+
+    assert.strictEqual(output.exitCode, 1, 'Exit Code needs to be 1');
+    assert(
+      /--testNamePattern: this flag require a value./.test(output.stdout),
+      'Missing testNamePattern value'
+    );
+  });
+
+  await it('--testSkipPattern without value', async () => {
+    const output = await inspectPoku('--enforce --testSkipPattern', {
+      cwd: 'test/__fixtures__/e2e/no-tests',
+    });
+
+    assert.strictEqual(output.exitCode, 1, 'Exit Code needs to be 1');
+    assert(
+      /--testSkipPattern: this flag require a value./.test(output.stdout),
+      'Missing testSkipPattern value'
+    );
+  });
+
+  await it('-t without value', async () => {
+    const output = await inspectPoku('--enforce -t', {
+      cwd: 'test/__fixtures__/e2e/no-tests',
+    });
+
+    assert.strictEqual(output.exitCode, 1, 'Exit Code needs to be 1');
+    assert(
+      /-t: this flag require a value./.test(output.stdout),
+      'Missing -t value'
+    );
+  });
+
   await it('No ensure', async () => {
     const output = await inspectPoku('-D --paralell', {
       cwd: 'test/__fixtures__/e2e/no-tests',

@@ -119,6 +119,18 @@ export type Configs = {
    * @default undefined
    */
   plugins?: PokuPlugin[];
+  /**
+   * Only run tests whose title matches the given regex pattern.
+   *
+   * @default undefined
+   */
+  testNamePattern?: RegExp;
+  /**
+   * Skip tests whose title matches the given regex pattern.
+   *
+   * @default undefined
+   */
+  testSkipPattern?: RegExp;
 } & ListFilesConfigs;
 
 export type Timespan = {
@@ -151,9 +163,18 @@ type CliConfigs = {
 export type ConfigJSONFile = {
   filter?: string;
   exclude?: string;
+  testNamePattern?: string;
+  testSkipPattern?: string;
 } & Omit<
   Configs,
-  'beforeEach' | 'afterEach' | 'noExit' | 'filter' | 'exclude' | 'plugins'
+  | 'beforeEach'
+  | 'afterEach'
+  | 'noExit'
+  | 'filter'
+  | 'exclude'
+  | 'plugins'
+  | 'testNamePattern'
+  | 'testSkipPattern'
 > &
   CliConfigs;
 

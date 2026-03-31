@@ -7,6 +7,7 @@ import type {
   Timespan,
 } from '../@types/poku.js';
 import { cwd, env } from 'node:process';
+import { escapeRegExp } from '../modules/helpers/list-files.js';
 import { getRuntime } from '../parsers/get-runtime.js';
 import { reporter } from '../services/reporter.js';
 
@@ -46,6 +47,12 @@ export const GLOBAL = {
     reporter: undefined,
     beforeEach: undefined,
     afterEach: undefined,
+    testNamePattern: env.POKU_TEST_NAME_PATTERN
+      ? new RegExp(escapeRegExp(env.POKU_TEST_NAME_PATTERN))
+      : undefined,
+    testSkipPattern: env.POKU_TEST_SKIP_PATTERN
+      ? new RegExp(escapeRegExp(env.POKU_TEST_SKIP_PATTERN))
+      : undefined,
   } as Configs,
   configFile: undefined as string | undefined,
   configsFromFile: Object.create(null) as ConfigFile | ConfigJSONFile,

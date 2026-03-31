@@ -50,6 +50,8 @@ const checkFlags = (): void => {
     '--quiet',
     '--reporter',
     '--sequential',
+    '--testNamePattern',
+    '--testSkipPattern',
     '--timeout',
     '--watch',
     '--watchInterval',
@@ -57,6 +59,7 @@ const checkFlags = (): void => {
     '-d',
     '-q',
     '-r',
+    '-t',
     '-w',
     '-x',
   ]);
@@ -94,10 +97,13 @@ const checkValues = async (): Promise<void> => {
     'killPid',
     'killPort',
     'reporter',
+    'testNamePattern',
+    'testSkipPattern',
     'timeout',
     'watchInterval',
     'c',
     'r',
+    't',
   ])
     checkRequiredValue(flag);
 
@@ -150,6 +156,8 @@ const checkConfigFile = (): void => {
     'isolation',
     'platform',
     'deno',
+    'testNamePattern',
+    'testSkipPattern',
   ]);
 
   for (const prop in GLOBAL.configsFromFile) {

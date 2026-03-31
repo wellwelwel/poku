@@ -33,6 +33,8 @@ const summary: [string, string][] = [
   ['--only', 'Enable selective execution of tests.'],
   ['--quiet, -q', 'Run tests with no logs.'],
   ['--sequential', 'Run tests files sequentially.'],
+  ['--testNamePattern, -t', 'Run only tests matching the given regex.'],
+  ['--testSkipPattern', 'Skip tests matching the given regex.'],
   ['--timeout', 'Set the maximum time (ms) for each test file.'],
   ['--version, -v', "Show Poku's installed version."],
   ['--watch, -w', 'Watch for test events.'],

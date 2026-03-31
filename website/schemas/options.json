@@ -96,6 +96,14 @@
       "required": [],
       "additionalProperties": false
     },
+    "testNamePattern": {
+      "type": "string",
+      "description": "Only run tests whose title matches the given regex pattern.\nhttps://poku.io/docs/documentation/poku/options/testNamePattern"
+    },
+    "testSkipPattern": {
+      "type": "string",
+      "description": "Skip tests whose title matches the given regex pattern.\nhttps://poku.io/docs/documentation/poku/options/testSkipPattern"
+    },
     "reporter": {
       "type": "string",
       "description": "Specify the reporter for test execution.\nhttps://poku.io/docs/documentation/poku/options/reporter",
