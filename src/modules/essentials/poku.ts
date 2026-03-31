@@ -97,12 +97,12 @@ export async function poku(
 
   if (showLogs) GLOBAL.reporter.onRunResult({ code, timespan, results });
 
+  if (!GLOBAL.configs.noExit) exit(code, GLOBAL.configs.quiet);
+
   if (plugins?.length && pluginContext) {
     for (const plugin of plugins)
       if (plugin.teardown) await plugin.teardown(pluginContext);
   }
 
   if (GLOBAL.configs.noExit) return code;
-
-  exit(code, GLOBAL.configs.quiet);
 }
