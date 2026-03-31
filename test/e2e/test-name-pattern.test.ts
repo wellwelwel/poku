@@ -19,8 +19,8 @@ describe('Test Name Pattern', async () => {
     const output = stripAnsi(results.stdout);
 
     assert.match(output, /Bun: should pass/, 'Bun test ran');
-    assert.doesNotMatch(output, /● Node: should pass/, 'Node test skipped');
-    assert.doesNotMatch(output, /● Deno: should pass/, 'Deno test skipped');
+    assert.doesNotMatch(output, /Node: should pass/, 'Node test skipped');
+    assert.doesNotMatch(output, /Deno: should pass/, 'Deno test skipped');
   });
 
   await it('-t alias', async () => {
@@ -38,8 +38,8 @@ describe('Test Name Pattern', async () => {
     const output = stripAnsi(results.stdout);
 
     assert.match(output, /Deno: should pass/, 'Deno test ran');
-    assert.doesNotMatch(output, /● Node: should pass/, 'Node test skipped');
-    assert.doesNotMatch(output, /● Bun: should pass/, 'Bun test skipped');
+    assert.doesNotMatch(output, /Node: should pass/, 'Node test skipped');
+    assert.doesNotMatch(output, /Bun: should pass/, 'Bun test skipped');
   });
 
   await it('--testSkipPattern', async () => {
@@ -58,7 +58,7 @@ describe('Test Name Pattern', async () => {
 
     assert.match(output, /Bun: should pass/, 'Bun test ran');
     assert.match(output, /Deno: should pass/, 'Deno test ran');
-    assert.doesNotMatch(output, /● Node: should pass/, 'Node test skipped');
+    assert.doesNotMatch(output, /Node: should pass/, 'Node test skipped');
   });
 
   await it('--testNamePattern matches literally', async () => {
