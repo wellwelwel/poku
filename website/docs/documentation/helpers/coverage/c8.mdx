@@ -1,0 +1,168 @@
+---
+sidebar_position: 1
+tags: [coverage, c8, v8, istanbul, monocart, plugin, codecov]
+---
+
+import { History } from '@site/src/components/History';
+import { Plugin } from '@site/src/components/Plugin';
+
+# c8
+
+V8 code coverage for your test suite using [**c8**](https://github.com/bcoe/c8).
+
+<Plugin repo='c8' />
+
+## What is @pokujs/c8?
+
+**@pokujs/c8** is a **Poku** plugin that collects V8 code coverage from your tests and generates reports — with zero config needed. It supports:
+
+- All [Istanbul reporters](https://istanbul.js.org/docs/advanced/alternative-reporters/) (`text`, `lcov`, `html`, `json`, etc.).
+- Coverage thresholds to enforce minimum coverage.
+- TypeScript source map support out of the box.
+- [Monocart](https://github.com/nicolo-ribaudo/monocart-coverage-reports) reporters as an experimental option.
+
+:::important
+This plugin relies on **Node.js**' built-in `NODE_V8_COVERAGE` environment variable. **Bun** and **Deno** do not support this mechanism, so coverage data will not be collected when running tests with these runtimes.
+:::
+
+## Install
+
+```sh
+npm i -D @pokujs/c8
+```
+
+## Enabling the Plugin
+
+Add the plugin to your **Poku** configuration file:
+
+```ts
+// poku.config.ts
+import { coverage } from '@pokujs/c8';
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  plugins: [coverage()],
+});
+```
+
+That's it! Run `poku` and a coverage summary will be printed after your test results.
+
+## Options
+
+```ts
+coverage({
+  // Reporters
+  reporter: ['text', 'lcov'], // default: ['text']
+
+  // File selection
+  include: ['src/**'], // default: [] (all files)
+  exclude: ['**/*.test.ts'], // default: c8 defaults
+  extension: ['.ts', '.js'], // default: c8 defaults
+
+  // Thresholds
+  checkCoverage: true, // default: false
+  lines: 80, // default: 0
+  branches: 80, // default: 0
+  functions: 80, // default: 0
+  statements: 80, // default: 0
+  perFile: false, // default: false
+
+  // Include untested files
+  all: true, // default: false
+  src: ['src'], // default: [cwd]
+
+  // Experimental
+  experimental: ['monocart'], // default: []
+
+  // Output
+  reportsDirectory: './coverage', // default: './coverage'
+  skipFull: false, // default: false
+
+  // Advanced
+  excludeAfterRemap: false, // default: false
+  mergeAsync: false, // default: false
+  clean: true, // default: true
+});
+```
+
+## Examples
+
+### Basic text coverage
+
+```ts
+import { coverage } from '@pokujs/c8';
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  plugins: [
+    coverage({
+      include: ['src/**'],
+    }),
+  ],
+});
+```
+
+### Generate HTML and LCOV reports
+
+```ts
+coverage({
+  include: ['src/**'],
+  reporter: ['text', 'html', 'lcov'],
+});
+```
+
+### Enforce coverage thresholds
+
+Set a single threshold for all metrics at once by passing a `number`:
+
+```ts
+coverage({
+  include: ['src/**'],
+  checkCoverage: 100,
+});
+```
+
+Or use `true` to set individual thresholds for each metric:
+
+```ts
+coverage({
+  include: ['src/**'],
+  checkCoverage: true,
+  lines: 95,
+  branches: 90,
+  functions: 85,
+  statements: 95,
+});
+```
+
+### TypeScript coverage
+
+```ts
+coverage({
+  include: ['src/**'],
+  extension: ['.ts'],
+  all: true,
+});
+```
+
+### Extending Monocart reporters
+
+Install the optional dependency:
+
+```sh
+npm i -D monocart-coverage-reports
+```
+
+```ts
+coverage({
+  include: ['src/**'],
+  reporter: ['v8', 'console-details', 'codecov'],
+  experimental: ['monocart'],
+});
+```
+
+## How It Works
+
+- **`setup`** creates a temp directory and sets `NODE_V8_COVERAGE` — every test process spawned by **Poku** automatically writes V8 coverage data.
+- **`teardown`** uses **c8** to generate reports from the collected data, optionally checks thresholds, then cleans up.
+- No modification to test commands or runner configuration needed.
