@@ -9,7 +9,7 @@ if (isBuild) skip();
 describe('Enforce Option', async () => {
   await it('--enforce', async () => {
     const output = await inspectPoku(
-      '--enforce -D --paralell --concurrency=g --timeout=g --config=test.json --envFile --debug=test --watchInterval',
+      '--enforce --isolation=invalid -D --paralell --concurrency=g --timeout=g --config=test.json --envFile --debug=test --watchInterval',
       {
         cwd: 'test/__fixtures__/e2e/no-tests',
       }
@@ -52,12 +52,16 @@ describe('Enforce Option', async () => {
     assert(
       /--timeout: expects for a valid integer./.test(output.stdout),
       'Wrong timeout value'
+    );
+    assert(
+      /--isolation: "invalid" is not valid/.test(output.stdout),
+      'Invalid isolation value'
     );
   });
 
   await it('-x', async () => {
     const output = await inspectPoku(
-      '-x -D --paralell --concurrency=g --timeout=g --config=test.json --envFile --debug=test --watchInterval',
+      '-x --isolation -D --paralell --concurrency=g --timeout=g --config=test.json --envFile --debug=test --watchInterval',
       {
         cwd: 'test/__fixtures__/e2e/no-tests',
       }
@@ -100,6 +104,10 @@ describe('Enforce Option', async () => {
     assert(
       /--timeout: expects for a valid integer./.test(output.stdout),
       'Wrong timeout value'
+    );
+    assert(
+      /--isolation: this flag require a value./.test(output.stdout),
+      'Missing isolation value'
     );
   });
 
