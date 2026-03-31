@@ -4,13 +4,13 @@ import Heading from '@theme/Heading';
 import {
   Album,
   DatabaseZap,
-  Github,
   Heart,
   HeartHandshake,
   Notebook,
   PiggyBank,
   Plus,
 } from 'lucide-react';
+import { FaGithub } from 'react-icons/fa';
 import { ReactTyped } from 'react-typed';
 import { ConfettiButton } from '@site/src/components/Confetti';
 import Bun from '@site/static/img/bun.svg';
@@ -67,7 +67,7 @@ const Home = () => {
                 aria-label={"Poku's GitHub"}
                 to='https://github.com/wellwelwel/poku'
               >
-                <Github width={18} height={18} />
+                <FaGithub size={18} />
               </Link>
               <Link
                 aria-label={"Poku's NPM"}
