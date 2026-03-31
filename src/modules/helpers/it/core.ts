@@ -95,6 +95,14 @@ async function itCore(
   titleOrCb: string | (() => unknown) | (() => Promise<unknown>),
   cb?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
+  if (GLOBAL.configs.testNamePattern && typeof titleOrCb === 'string') {
+    if (!GLOBAL.configs.testNamePattern.test(titleOrCb)) return;
+  }
+
+  if (GLOBAL.configs.testSkipPattern && typeof titleOrCb === 'string') {
+    if (GLOBAL.configs.testSkipPattern.test(titleOrCb)) return;
+  }
+
   if (hasOnly) {
     if (!GLOBAL.runAsOnly) return;
 

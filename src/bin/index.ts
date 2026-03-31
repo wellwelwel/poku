@@ -62,6 +62,12 @@ import { hr, log } from '../services/write.js';
   })();
   const sequential = hasArg('sequential') || configsFromFile?.sequential;
   const isolation = getArg('isolation') || configsFromFile?.isolation;
+  const testNamePattern =
+    getArg('testNamePattern') ??
+    getArg('t', '-') ??
+    configsFromFile?.testNamePattern;
+  const testSkipPattern =
+    getArg('testSkipPattern') ?? configsFromFile?.testSkipPattern;
 
   if (dirs.length === 1) states.isSinglePath = true;
 
@@ -122,12 +128,25 @@ import { hr, log } from '../services/write.js';
     },
     noExit: watchMode,
     reporter,
+    testNamePattern:
+      typeof testNamePattern === 'string'
+        ? new RegExp(escapeRegExp(testNamePattern))
+        : testNamePattern,
+    testSkipPattern:
+      typeof testSkipPattern === 'string'
+        ? new RegExp(escapeRegExp(testSkipPattern))
+        : testSkipPattern,
     beforeEach:
       'beforeEach' in configsFromFile ? configsFromFile.beforeEach : undefined,
     afterEach:
       'afterEach' in configsFromFile ? configsFromFile.afterEach : undefined,
     plugins: 'plugins' in configsFromFile ? configsFromFile.plugins : undefined,
   };
+
+  if (typeof testNamePattern === 'string')
+    env.POKU_TEST_NAME_PATTERN = testNamePattern;
+  if (typeof testSkipPattern === 'string')
+    env.POKU_TEST_SKIP_PATTERN = testSkipPattern;
 
   const tasks: Promise<unknown>[] = [];
 

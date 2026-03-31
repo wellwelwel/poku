@@ -1,0 +1,108 @@
+---
+sidebar_position: 3.1
+tags: [test-skip-pattern, testSkipPattern, skip, exclude-test]
+---
+
+import { History } from '@site/src/components/History';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# `testSkipPattern`
+
+Skip tests whose title matches the given pattern.
+
+<History
+  records={[
+    {
+      version: '4.2.0',
+      changes: [
+        <>
+          Introduces <code>testSkipPattern</code> option.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+Unlike [`exclude`](/docs/documentation/poku/options/exclude) which excludes **file paths**, `testSkipPattern` skips individual **test titles** (`it` and `test` blocks).
+
+## CLI
+
+```bash
+# Skip tests containing "legacy" in the title
+
+npx poku --testSkipPattern='legacy' ./test
+```
+
+## Config File
+
+<Tabs>
+  <TabItem default value='json'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "testSkipPattern": "legacy"
+}
+```
+
+  </TabItem>
+  <TabItem value='js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  testSkipPattern: /legacy/,
+});
+```
+
+  </TabItem>
+</Tabs>
+
+## API
+
+```ts
+await poku('./test', {
+  testSkipPattern: /legacy/,
+});
+```
+
+<hr />
+
+## Example
+
+Given a test file:
+
+```ts
+import { test, assert } from 'poku';
+
+test('Auth: login with valid credentials', () => {
+  assert(true);
+});
+
+test('Auth: reject invalid token', () => {
+  assert(true);
+});
+
+test('Users: list all users', () => {
+  assert(true);
+});
+```
+
+Running with `--testSkipPattern='Auth:'` will skip the two `Auth` tests and only execute `Users: list all users`:
+
+```bash
+npx poku --testSkipPattern='Auth:' ./test
+```
+
+<hr />
+
+:::tip
+To run only specific tests by title instead, see [`testNamePattern`](/docs/documentation/poku/options/testNamePattern).
+To exclude by **file path**, see [`exclude`](/docs/documentation/poku/options/exclude).
+:::
+
+:::info
+This option is inspired by **Node.js**' [`--test-skip-pattern`](https://nodejs.org/api/cli.html#--test-skip-pattern).
+:::
