@@ -45,6 +45,7 @@ const checkFlags = (): void => {
     '--killPid',
     '--killPort',
     '--killRange',
+    '--noIsolate',
     '--only',
     '--quiet',
     '--reporter',
@@ -75,6 +76,7 @@ const checkValues = async (): Promise<void> => {
     'debug',
     'enforce',
     'failFast',
+    'noIsolate',
     'only',
     'quiet',
     'sequential',
@@ -135,6 +137,7 @@ const checkConfigFile = (): void => {
     'timeout',
     'envFile',
     'kill',
+    'noIsolate',
     'platform',
     'deno',
   ]);

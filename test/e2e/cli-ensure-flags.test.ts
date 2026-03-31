@@ -9,7 +9,7 @@ if (isBuild) skip();
 describe('Enforce Option', async () => {
   await it('--enforce', async () => {
     const output = await inspectPoku(
-      '--enforce -D --paralell --concurrency=g --timeout=g --config=test.json --envFile --debug=test --watchInterval',
+      '--enforce --noIsolate -D --paralell --concurrency=g --timeout=g --config=test.json --envFile --debug=test --watchInterval',
       {
         cwd: 'test/__fixtures__/e2e/no-tests',
       }

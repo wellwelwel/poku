@@ -71,9 +71,9 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
 
     result = false;
   } finally {
-    if (killTimer) clearTimeout(killTimer);
     if (process.exitCode !== 0) result = false;
 
+    if (killTimer) clearTimeout(killTimer);
     cleanup();
   }
 
