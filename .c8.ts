@@ -8,7 +8,7 @@ export default defineConfig({
       reporter: ['v8', 'codecov', 'console-details'],
       experimental: ['monocart'],
       extension: ['.ts'],
-      checkCoverage: 90,
+      checkCoverage: 95,
       all: true,
       clean: true,
       exclude: [
