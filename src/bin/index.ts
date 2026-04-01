@@ -140,42 +140,6 @@ import { hr, log } from '../services/write.js';
     plugins: 'plugins' in configsFromFile ? configsFromFile.plugins : undefined,
   };
 
-  if (hasArg('coverage')) {
-    const customPkg = getArg('coverage');
-    const coveragePackages = customPkg
-      ? [customPkg]
-      : ['@pokujs/istanbul', '@pokujs/c8'];
-
-    const existingPlugins = GLOBAL.configs.plugins ?? [];
-    const alreadyHasCoverage = existingPlugins.some((p) =>
-      coveragePackages.includes(p.name!)
-    );
-
-    if (!alreadyHasCoverage) {
-      let loaded = false;
-
-      for (const pkg of coveragePackages) {
-        try {
-          const { coverage } = await import(pkg);
-
-          GLOBAL.configs.plugins = existingPlugins;
-          GLOBAL.configs.plugins.push(coverage());
-          loaded = true;
-          break;
-        } catch {}
-      }
-
-      if (!loaded) {
-        log(
-          customPkg
-            ? `Coverage plugin not found: ${customPkg}`
-            : `To use --coverage, install a coverage plugin: npm i -D ${coveragePackages[0]}`
-        );
-        process.exit(1);
-      }
-    }
-  }
-
   if (typeof testNamePattern === 'string')
     env.POKU_TEST_NAME_PATTERN = testNamePattern;
   if (typeof testSkipPattern === 'string')
