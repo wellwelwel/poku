@@ -11,7 +11,6 @@ import { format } from '../services/format.js';
 import { hr, log } from '../services/write.js';
 
 (async () => {
-  /* c8 ignore next 4 */ // Version is tested during build process: "../../tools/build/version.ts"
   if (hasArg('version') || hasArg('v', '-')) {
     log(VERSION);
     return;
@@ -43,10 +42,8 @@ import { hr, log } from '../services/write.js';
     getArg('r', '-') ??
     GLOBAL.configsFromFile.reporter ??
     'poku';
-  /* c8 ignore start */ // Deno
   const denoAllow = argToArray('denoAllow') ?? configsFromFile?.deno?.allow;
   const denoDeny = argToArray('denoDeny') ?? configsFromFile?.deno?.deny;
-  /* c8 ignore stop */
   const quiet = hasArg('quiet') || hasArg('q', '-') || configsFromFile?.quiet;
   const debug = hasArg('debug') || hasArg('d', '-') || configsFromFile?.debug;
   const failFast = hasArg('failFast') || configsFromFile?.failFast;
@@ -142,6 +139,42 @@ import { hr, log } from '../services/write.js';
       'afterEach' in configsFromFile ? configsFromFile.afterEach : undefined,
     plugins: 'plugins' in configsFromFile ? configsFromFile.plugins : undefined,
   };
+
+  if (hasArg('coverage')) {
+    const customPkg = getArg('coverage');
+    const coveragePackages = customPkg
+      ? [customPkg]
+      : ['@pokujs/istanbul', '@pokujs/c8'];
+
+    const existingPlugins = GLOBAL.configs.plugins ?? [];
+    const alreadyHasCoverage = existingPlugins.some((p) =>
+      coveragePackages.includes(p.name!)
+    );
+
+    if (!alreadyHasCoverage) {
+      let loaded = false;
+
+      for (const pkg of coveragePackages) {
+        try {
+          const { coverage } = await import(pkg);
+
+          GLOBAL.configs.plugins = existingPlugins;
+          GLOBAL.configs.plugins.push(coverage());
+          loaded = true;
+          break;
+        } catch {}
+      }
+
+      if (!loaded) {
+        log(
+          customPkg
+            ? `Coverage plugin not found: ${customPkg}`
+            : `To use --coverage, install a coverage plugin: npm i -D ${coveragePackages[0]}`
+        );
+        process.exit(1);
+      }
+    }
+  }
 
   if (typeof testNamePattern === 'string')
     env.POKU_TEST_NAME_PATTERN = testNamePattern;
