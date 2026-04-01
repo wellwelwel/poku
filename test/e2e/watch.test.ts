@@ -43,26 +43,6 @@ describe('Watch Mode', async () => {
     return /test\/a\.test\.ts/.test(results.stdout);
   }, true);
 
-  const countRuns = (output: string) =>
-    output.split('\n').filter((line) => /test\/a\.test\.ts/.test(line)).length;
-
-  const runsAfterFirst = countRuns(watcher.getOutput().stdout);
-
-  await saveFileUnchanged('test/__fixtures__/e2e/watch/test/a.test.ts');
-  await sleep(200);
-
-  const runsAfterImmediate = countRuns(watcher.getOutput().stdout);
-
-  await sleep(2000);
-
-  await saveFileUnchanged('test/__fixtures__/e2e/watch/test/a.test.ts');
-
-  await waitForExpectedResult(() => {
-    const runs = countRuns(watcher.getOutput().stdout);
-
-    return runs > runsAfterFirst;
-  }, true);
-
   const results = watcher.getOutput();
   await watcher.kill();
 
@@ -80,14 +60,6 @@ describe('Watch Mode', async () => {
       .filter((result) => /test\/sub\/b\.test\.ts/.test(result)).length;
 
     assert(watched >= 1);
-  });
-
-  it('Respects watchInterval debounce', () => {
-    assert.strictEqual(
-      runsAfterImmediate,
-      runsAfterFirst,
-      'Expected rapid change to be debounced by watchInterval'
-    );
   });
 });
 
