@@ -90,7 +90,6 @@ export const watchCLI = (
   options?: SpawnOptionsWithoutStdio
 ): WatchCLIResult => {
   const cmd = runner(`_.${ext}`);
-  console.log(cmd);
   const binFile = `src/bin/index.${ext}`;
   const basePath =
     typeof options?.cwd === 'string'

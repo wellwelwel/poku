@@ -20,7 +20,7 @@ const saveFileUnchanged = async (filename: string) => {
 };
 
 describe('Watch Mode', async () => {
-  const watcher = watchCLI('--watchInterval=500', {
+  const watcher = watchCLI('--watchInterval=1500', {
     cwd: 'test/__fixtures__/e2e/watch',
   });
 
@@ -53,7 +53,7 @@ describe('Watch Mode', async () => {
 
   const runsAfterImmediate = countRuns(watcher.getOutput().stdout);
 
-  await sleep(1000);
+  await sleep(2000);
 
   await saveFileUnchanged('test/__fixtures__/e2e/watch/test/a.test.ts');
 
