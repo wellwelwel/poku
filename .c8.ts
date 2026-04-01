@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [
     coverage({
       include: ['src/**'],
-      reporter: ['v8', 'codecov', 'console-details'],
+      reporter: ['v8', 'codecov', 'text'],
       experimental: ['monocart'],
       extension: ['.ts'],
       checkCoverage: 95,
@@ -14,7 +14,6 @@ export default defineConfig({
       exclude: [
         'src/@types', // Typings exports only
         'src/globals.d.ts', // Typings exports only
-        'src/bin/watch.ts', // Blocked by TSX
       ],
     }),
   ],

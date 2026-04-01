@@ -107,6 +107,11 @@ export const startWatch = async (dirs: string[]) => {
   hr();
   log(`${format('Watching:').bold()} ${format(dirs.join(', ')).underline()}`);
 
+  process.on('SIGTERM', () => {
+    for (const watcher of watchers) watcher.stop();
+    process.exit(0);
+  });
+
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', listenStdin);
 };

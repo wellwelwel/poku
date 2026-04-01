@@ -90,6 +90,7 @@ export const watchCLI = (
   options?: SpawnOptionsWithoutStdio
 ): WatchCLIResult => {
   const cmd = runner(`_.${ext}`);
+  console.log(cmd);
   const binFile = `src/bin/index.${ext}`;
   const basePath =
     typeof options?.cwd === 'string'
@@ -124,10 +125,16 @@ export const watchCLI = (
   const PID = childProcess.pid!;
 
   const kill = async () => {
-    childProcess.kill('SIGTERM');
-    await sleep(250);
+    const closed = new Promise<void>((resolve) => {
+      childProcess.on('close', () => resolve());
+    });
 
-    if (!childProcess.killed) await pokuKill.pid(PID);
+    childProcess.kill('SIGTERM');
+
+    const timeout = sleep(1000).then(() => 'timeout' as const);
+    const result = await Promise.race([closed, timeout]);
+
+    if (result === 'timeout') await pokuKill.pid(PID);
   };
 
   const getOutput = () => {
