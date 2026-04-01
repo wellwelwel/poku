@@ -1,5 +1,5 @@
 import { coverage } from '@pokujs/c8';
-import { defineConfig } from 'poku';
+import { defineConfig } from './src/modules/index.js';
 
 export default defineConfig({
   plugins: [
