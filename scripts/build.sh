@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo '◯ prebuild'
 rm -rf lib ci coverage .temp test-tests
 echo '◉ prebuild'
