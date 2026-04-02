@@ -1,8 +1,12 @@
+import { isBuild } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { isFile } from '../../src/modules/helpers/list-files.js';
+import { skip } from '../../src/modules/helpers/skip.js';
 import { test } from '../../src/modules/helpers/test.js';
+
+if (isBuild) skip();
 
 test(async () => {
   await describe('isFile', async () => {
