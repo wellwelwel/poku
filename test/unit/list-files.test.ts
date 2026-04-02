@@ -41,7 +41,7 @@ test(async () => {
     });
   });
 
-  await describe('listFiles: exclude as single RegExp', async () => {
+  await describe('listFiles: exclude configs', async () => {
     await it('should accept a single RegExp as exclude config', async () => {
       mkdirSync(tempDir, { recursive: true });
       writeFileSync(join(tempDir, 'a.test.js'), '');
@@ -53,6 +53,26 @@ test(async () => {
       assert.ok(
         files.some((f) => f.includes('b.test')),
         'b.test.js included'
+      );
+
+      rmSync(tempDir, { recursive: true, force: true });
+    });
+
+    await it('should accept an array of RegExp as exclude config', async () => {
+      mkdirSync(tempDir, { recursive: true });
+      writeFileSync(join(tempDir, 'a.test.js'), '');
+      writeFileSync(join(tempDir, 'b.test.js'), '');
+      writeFileSync(join(tempDir, 'c.test.js'), '');
+
+      const files = await listFiles(tempDir, {
+        exclude: [/a\.test/, /b\.test/],
+      });
+
+      assert.ok(!files.some((f) => f.includes('a.test')), 'a.test.js excluded');
+      assert.ok(!files.some((f) => f.includes('b.test')), 'b.test.js excluded');
+      assert.ok(
+        files.some((f) => f.includes('c.test')),
+        'c.test.js included'
       );
 
       rmSync(tempDir, { recursive: true, force: true });
