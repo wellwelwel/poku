@@ -47,7 +47,8 @@ export class Watcher {
       if (filename) {
         const fullPath = join(dir, filename);
 
-        this.files = await listFiles(this.rootDir);
+        this.files = listFiles(this.rootDir);
+        await new Promise<void>((resolve) => setTimeout(resolve, 0));
         this.watchFiles(this.files);
 
         try {
@@ -73,7 +74,7 @@ export class Watcher {
     const stats = await stat(this.rootDir);
 
     if (stats.isDirectory()) {
-      this.files = await listFiles(this.rootDir);
+      this.files = listFiles(this.rootDir);
 
       this.watchFiles(this.files);
       await this.watchDirectory(this.rootDir);
