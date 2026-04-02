@@ -19,6 +19,15 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     return runTestInProcess(path);
   }
 
+  if (
+    configs.isolation === 'worker' &&
+    GLOBAL.workerPool &&
+    !/\.[mc]?ts$/.test(path)
+  ) {
+    const { runTestInWorker } = await import('./run-test-in-worker.js');
+    return runTestInWorker(path);
+  }
+
   const { cwd, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
   let command = [...runtimeOptions, path, ...deepOptions];

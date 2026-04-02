@@ -57,11 +57,12 @@ export type Configs = {
    * Controls process isolation for test files.
    *
    * - `'process'` (default): each test file runs in a separate child process.
+   * - `'worker'`: test files run in a pool of reusable worker threads (faster startup, shared memory). TypeScript files fallback to `'process'`.
    * - `'none'`: all test files run in the same process (useful for debugging with `--inspect`).
    *
    * @default 'process'
    */
-  isolation?: 'none' | 'process' | (string & NonNullable<unknown>);
+  isolation?: 'none' | 'process' | 'worker' | (string & NonNullable<unknown>);
   /**
    * Stops the tests at the first failure.
    *
