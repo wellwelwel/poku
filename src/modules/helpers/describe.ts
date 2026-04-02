@@ -5,6 +5,7 @@ import { indentation } from '../../configs/indentation.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
+import { currentErrorHandler, pushErrorHandler, popErrorHandler } from './error-handler.js';
 import { getCallback, getTitle } from './it/core.js';
 import { onlyDescribe, skip, todo } from './modifiers.js';
 
@@ -35,14 +36,11 @@ export const describeBase = async (
 
   if (!hasCB) return;
 
-  const onError = (error: unknown): void => {
+  pushErrorHandler((error: unknown): void => {
     process.exitCode = 1;
     success = false;
     if (!(error instanceof AssertionError)) console.error(error);
-  };
-
-  process.once('uncaughtException', onError);
-  process.once('unhandledRejection', onError);
+  });
 
   start = process.hrtime();
 
@@ -50,12 +48,10 @@ export const describeBase = async (
     const resultCb = cb!();
     if (resultCb instanceof Promise) await resultCb;
   } catch (error) {
-    onError(error);
+    currentErrorHandler()?.(error);
   } finally {
     end = process.hrtime(start);
-
-    process.removeListener('uncaughtException', onError);
-    process.removeListener('unhandledRejection', onError);
+    popErrorHandler();
   }
 
   if (!title) return;

@@ -10,3 +10,9 @@ export const parseTime = (date: Date): string => {
 
 export const parseTimeToSecs = (milliseconds: number): string =>
   (milliseconds / 1000).toFixed(2);
+
+export const formatDuration = (ms: number): string => {
+  const whole = Math.trunc(ms);
+  const frac = Math.round((ms - whole) * 1e6);
+  return `${whole}.${String(frac).padStart(6, '0')}`;
+};

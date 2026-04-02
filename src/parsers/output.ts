@@ -1,10 +1,8 @@
 import { GLOBAL, results } from '../configs/poku.js';
 
-const regex = {
-  ansi: /\x1b\[0m/,
-  skip: /\x1b\[94m\x1b\[1m◯/g,
-  todo: /\x1b\[96m\x1b\[1m●/g,
-} as const;
+const SKIP_MARKER = '\x1b[94m\x1b[1m\u25ef';
+const TODO_MARKER = '\x1b[96m\x1b[1m\u25cf';
+const ANSI_RESET = '\x1b[0m';
 
 export const serialize = (value: unknown): unknown => {
   if (
@@ -26,27 +24,59 @@ export const serialize = (value: unknown): unknown => {
   return value;
 };
 
+const countOccurrences = (str: string, search: string): number => {
+  let count = 0;
+  let pos = 0;
+  while ((pos = str.indexOf(search, pos)) !== -1) {
+    count++;
+    pos += search.length;
+  }
+  return count;
+};
+
+const isBlankLine = (line: string): boolean => {
+  for (let i = 0; i < line.length; i++) {
+    const c = line.charCodeAt(i);
+    if (c !== 32 && c !== 9 && c !== 13) return false;
+  }
+  return true;
+};
+
+const countMarkers = (output: string): void => {
+  const skipCount = countOccurrences(output, SKIP_MARKER);
+  if (skipCount) results.skipped += skipCount;
+
+  const todoCount = countOccurrences(output, TODO_MARKER);
+  if (todoCount) results.todo += todoCount;
+};
+
 export const parserOutput = (options: { output: string; result: boolean }) => {
   const { output, result } = options;
 
-  const hasSkip = output.match(regex.skip);
-  if (hasSkip) results.skipped += hasSkip.length;
-
-  const hasTodo = output.match(regex.todo);
-  if (hasTodo) results.todo += hasTodo.length;
+  countMarkers(output);
 
   const pad = '  ';
   const isDebugOrFailed = GLOBAL.configs.debug || !result;
-  const splittedOutput = output.split('\n');
   const outputs: string[] = [];
+  let start = 0;
 
-  for (const line of splittedOutput) {
-    if (!line || line.trim().length === 0) continue;
-    if (!isDebugOrFailed) {
-      if (line.indexOf('Exited with code') !== -1) continue;
-      if (!regex.ansi.test(line)) continue;
+  for (let i = 0; i <= output.length; i++) {
+    if (i === output.length || output.charCodeAt(i) === 10) {
+      if (i > start) {
+        const line = output.substring(start, i);
+
+        if (!isBlankLine(line)) {
+          if (isDebugOrFailed) {
+            outputs.push(`${pad}${line}`);
+          } else if (line.indexOf(ANSI_RESET) !== -1) {
+            if (line.indexOf('Exited with code') === -1) {
+              outputs.push(`${pad}${line}`);
+            }
+          }
+        }
+      }
+      start = i + 1;
     }
-    outputs.push(`${pad}${line}`);
   }
 
   if (outputs.length === 0) return;

@@ -4,6 +4,7 @@ import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
+import { currentErrorHandler, pushErrorHandler, popErrorHandler } from '../error-handler.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
 export const getTitle = (input: unknown): string | undefined =>
@@ -39,14 +40,11 @@ export const itBase = async (
       if (beforeResult instanceof Promise) await beforeResult;
     }
 
-    const onError = (error: unknown): void => {
+    pushErrorHandler((error: unknown): void => {
       process.exitCode = 1;
       success = false;
       if (!(error instanceof AssertionError)) console.error(error);
-    };
-
-    process.once('uncaughtException', onError);
-    process.once('unhandledRejection', onError);
+    });
 
     start = process.hrtime();
 
@@ -54,12 +52,10 @@ export const itBase = async (
       const resultCb = cb!();
       if (resultCb instanceof Promise) await resultCb;
     } catch (error) {
-      onError(error);
+      currentErrorHandler()?.(error);
     } finally {
       end = process.hrtime(start);
-
-      process.removeListener('uncaughtException', onError);
-      process.removeListener('unhandledRejection', onError);
+      popErrorHandler();
     }
 
     if (typeof each.after.cb === 'function') {

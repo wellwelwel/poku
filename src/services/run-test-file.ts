@@ -11,25 +11,51 @@ import { format } from './format.js';
 const STDIO_IPC: StdioOptions = ['inherit', 'pipe', 'pipe', 'ipc'];
 const STDIO_DEFAULT: StdioOptions = ['inherit', 'pipe', 'pipe'];
 
+let cachedRunTestInProcess:
+  | typeof import('./run-test-in-process.js')
+  | undefined;
+
+let cachedPluginRunner:
+  | ((command: string[], path: string) => string[])
+  | null
+  | undefined;
+let cachedHasIPC: boolean | undefined;
+let cachedProcessPlugins:
+  | { onTestProcess: NonNullable<NonNullable<typeof GLOBAL.configs.plugins>[number]['onTestProcess']> }[]
+  | undefined;
+
+const resolvePluginCache = () => {
+  const plugins = GLOBAL.configs.plugins;
+  if (cachedPluginRunner !== undefined) return;
+  if (!plugins?.length) {
+    cachedPluginRunner = null;
+    cachedHasIPC = false;
+    cachedProcessPlugins = undefined;
+    return;
+  }
+  cachedPluginRunner =
+    plugins.find((p) => p.runner)?.runner ?? null;
+  cachedHasIPC = plugins.some((p) => p.ipc);
+  const pp = plugins.filter((p) => p.onTestProcess);
+  cachedProcessPlugins = pp.length > 0 ? (pp as typeof cachedProcessPlugins) : undefined;
+};
+
 export const runTestFile = async (path: string): Promise<boolean> => {
   const { configs } = GLOBAL;
 
   if (configs.isolation === 'none') {
-    const { runTestInProcess } = await import('./run-test-in-process.js');
-    return runTestInProcess(path);
+    cachedRunTestInProcess ??= await import('./run-test-in-process.js');
+    return cachedRunTestInProcess.runTestInProcess(path);
   }
+
+  resolvePluginCache();
 
   const { cwd, reporter } = GLOBAL;
   const runtimeOptions = runner(path);
-  let command = [...runtimeOptions, path, ...deepOptions];
+  let command = runtimeOptions.concat(path, deepOptions);
 
-  const plugins = configs.plugins;
-  if (plugins?.length) {
-    for (const plugin of plugins)
-      if (plugin.runner) {
-        command = plugin.runner(command, path);
-        break;
-      }
+  if (cachedPluginRunner) {
+    command = cachedPluginRunner(command, path);
   }
 
   const runtime = command.shift()!;
@@ -55,7 +81,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   return new Promise((resolve) => {
     const child = spawn(runtime, command, {
-      stdio: plugins?.some((plugin) => plugin.ipc) ? STDIO_IPC : STDIO_DEFAULT,
+      stdio: cachedHasIPC ? STDIO_IPC : STDIO_DEFAULT,
       shell: false,
     });
 
@@ -64,9 +90,9 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     child.stdout!.on('data', stdOut);
     child.stderr!.on('data', stdOut);
 
-    if (plugins?.length) {
-      for (const plugin of plugins)
-        if (plugin.onTestProcess) plugin.onTestProcess(child, path);
+    if (cachedProcessPlugins) {
+      for (const plugin of cachedProcessPlugins)
+        plugin.onTestProcess(child, path);
     }
 
     let timedOut = false;
@@ -91,13 +117,12 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       const result = timedOut ? false : code === 0;
 
       if (showLogs) {
-        const output = outputChunks.join('');
-        const parsedOutputs = parserOutput({
-          output,
-          result,
-        })?.join('\n');
-
+        const output =
+          outputChunks.length === 1
+            ? outputChunks[0]
+            : outputChunks.join('');
         const total = end[0] * 1e3 + end[1] / 1e6;
+        const parsedOutputs = parserOutput({ output, result })?.join('\n');
 
         reporter.onFileResult({
           status: result,
@@ -108,6 +133,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
           duration: total,
           output: parsedOutputs,
         });
+
       }
 
       if (!(await afterEach(file))) {

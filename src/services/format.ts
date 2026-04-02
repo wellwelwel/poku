@@ -103,3 +103,19 @@ export class Formatter {
 }
 
 export const format = (text: string) => new Formatter(text);
+
+// Fast-path formatters: avoid Formatter allocation in hot paths
+export const fmtBold = (text: string) => `\x1b[1m${text}\x1b[0m`;
+export const fmtDim = (text: string) => `\x1b[2m${text}\x1b[0m`;
+export const fmtBoldDim = (text: string) => `\x1b[1m\x1b[2m${text}\x1b[0m`;
+export const fmtSuccessBold = (text: string) => `\x1b[32m\x1b[1m${text}\x1b[0m`;
+export const fmtSuccessDim = (text: string) => `\x1b[32m\x1b[2m${text}\x1b[0m`;
+export const fmtSuccessUnderline = (text: string) =>
+  `\x1b[32m\x1b[4m${text}\x1b[0m`;
+export const fmtFailBold = (text: string) => `\x1b[91m\x1b[1m${text}\x1b[0m`;
+export const fmtFailDim = (text: string) => `\x1b[91m\x1b[2m${text}\x1b[0m`;
+export const fmtFailUnderline = (text: string) =>
+  `\x1b[91m\x1b[4m${text}\x1b[0m`;
+export const fmtInfoBold = (text: string) => `\x1b[94m\x1b[1m${text}\x1b[0m`;
+export const fmtCyanBold = (text: string) => `\x1b[96m\x1b[1m${text}\x1b[0m`;
+export const fmtGray = (text: string) => `\x1b[90m${text}\x1b[0m`;

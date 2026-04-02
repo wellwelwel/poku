@@ -78,11 +78,7 @@ export async function poku(
 
   const testFiles = fileDiscoverer
     ? await fileDiscoverer(paths, pluginContext!)
-    : (
-        await Promise.all(
-          paths.map((dir) => listFiles(join(cwd, dir), GLOBAL.configs))
-        )
-      ).flat(1);
+    : paths.flatMap((dir) => listFiles(join(cwd, dir), GLOBAL.configs));
 
   if (showLogs) GLOBAL.reporter.onRunStart();
 

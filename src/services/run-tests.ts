@@ -33,45 +33,40 @@ export const runTests = (files: string[]): Promise<boolean> => {
     };
   });
 
-  const runNext = async (): Promise<void> => {
-    if (nextIndex >= totalFiles && activeTests === 0) {
-      resolveDone(allPassed);
-      return;
-    }
+  const runWorker = async (): Promise<void> => {
+    while (nextIndex < totalFiles) {
+      const filePath = files[nextIndex++];
 
-    if (nextIndex >= totalFiles) return;
+      activeTests++;
 
-    const filePath = files[nextIndex++];
+      const testPassed = await runTestFile(filePath);
 
-    activeTests++;
+      if (testPassed) ++results.passed;
+      else {
+        ++results.failed;
+        allPassed = false;
 
-    const testPassed = await runTestFile(filePath);
+        if (configs.failFast) {
+          if (showLogs) {
+            hr();
+            console.error(failFastError);
+            log(
+              `\n    ${format('File:').bold()} ${format(`./${relative(cwd, filePath)}`).fail()}`
+            );
+            hr();
+          }
 
-    if (testPassed) ++results.passed;
-    else {
-      ++results.failed;
-      allPassed = false;
-
-      if (configs.failFast) {
-        if (showLogs) {
-          hr();
-          console.error(failFastError);
-          log(
-            `\n    ${format('File:').bold()} ${format(`./${relative(cwd, filePath)}`).fail()}`
-          );
-          hr();
+          exit(1);
         }
-
-        exit(1);
       }
+
+      activeTests--;
     }
 
-    activeTests--;
-
-    runNext();
+    if (activeTests === 0) resolveDone(allPassed);
   };
 
-  for (let i = 0; i < concurrency; i++) runNext();
+  for (let i = 0; i < concurrency; i++) runWorker();
 
   return done;
 };

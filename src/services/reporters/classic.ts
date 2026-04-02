@@ -1,6 +1,7 @@
 import type { ReporterPlugin } from '../../@types/poku.js';
 import { createReporter } from '../../builders/reporter.js';
 import { indentation } from '../../configs/indentation.js';
+import { formatDuration } from '../../parsers/time.js';
 import { format } from '../format.js';
 import { hr, log } from '../write.js';
 import { poku } from './poku.js';
@@ -31,7 +32,7 @@ export const classic: ReporterPlugin = (() => {
           Array.from(files.passed)
             .map(
               ([file, time]) =>
-                `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${time.toFixed(6)}ms`).success()}`).dim()}`
+                `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${formatDuration(time)}ms`).success()}`).dim()}`
             )
             .join('\n')
         );
@@ -44,7 +45,7 @@ export const classic: ReporterPlugin = (() => {
           Array.from(files.failed)
             .map(
               ([file, time]) =>
-                `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time.toFixed(6)}ms`).fail()}`).dim()}`
+                `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${formatDuration(time)}ms`).fail()}`).dim()}`
             )
             .join('\n')
         );

@@ -6,6 +6,8 @@ import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
 import { format } from './format.js';
 
+let importCounter = 0;
+
 const stdoutWrite = process.stdout.write.bind(process.stdout);
 
 const cleanup = () => {
@@ -47,7 +49,9 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
   let result = true;
 
   try {
-    const testPromise = import(`${pathToFileURL(path).href}?t=${Date.now()}`);
+    const testPromise = import(
+      `${pathToFileURL(path).href}?t=${++importCounter}`
+    );
 
     if (configs.timeout) {
       const timeoutPromise = new Promise<never>((_, reject) => {
@@ -78,13 +82,11 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
   const end = process.hrtime(start);
 
   if (showLogs) {
-    const output = outputChunks.join('');
-    const parsedOutputs = parserOutput({
-      output,
-      result,
-    })?.join('\n');
-
+    const output =
+      outputChunks.length === 1 ? outputChunks[0] : outputChunks.join('');
     const total = end[0] * 1e3 + end[1] / 1e6;
+
+    const parsedOutputs = parserOutput({ output, result })?.join('\n');
 
     reporter.onFileResult({
       status: result,
@@ -95,6 +97,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
       duration: total,
       output: parsedOutputs,
     });
+
   }
 
   if (!(await afterEach(file))) return false;

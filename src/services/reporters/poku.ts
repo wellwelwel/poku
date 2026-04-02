@@ -6,8 +6,20 @@ import { indentation } from '../../configs/indentation.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { parseResultType } from '../../parsers/assert.js';
 import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
-import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
-import { format } from '../format.js';
+import { formatDuration, parseTime, parseTimeToSecs } from '../../parsers/time.js';
+import {
+  format,
+  fmtBoldDim,
+  fmtCyanBold,
+  fmtDim,
+  fmtFailBold,
+  fmtFailDim,
+  fmtFailUnderline,
+  fmtInfoBold,
+  fmtSuccessBold,
+  fmtSuccessDim,
+  fmtSuccessUnderline,
+} from '../format.js';
 import { hr, log } from '../write.js';
 
 const ARROW_PASS = '\x1b[32m\x1b[1m›\x1b[0m';
@@ -37,66 +49,36 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onDescribeStart({ title }) {
       if (!title) return;
 
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
-
-      log(`${indent}${format(`◌ ${title}`).bold().dim()}`);
+      log(`${indentation.indent}${fmtBoldDim(`◌ ${title}`)}`);
     },
     onDescribeEnd({ title, duration, success = true }) {
-      const status = success ? 'success' : 'fail';
+      const indent = indentation.indent;
+      const dur = `› ${formatDuration(duration)}ms`;
 
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
-
-      log(
-        `${indent}${format(`● ${title}`)[status]().bold()} ${format(
-          `› ${duration.toFixed(6)}ms`
-        )
-          [status]()
-          .dim()}`
-      );
+      if (success)
+        log(`${indent}${fmtSuccessBold(`● ${title}`)} ${fmtSuccessDim(dur)}`);
+      else log(`${indent}${fmtFailBold(`● ${title}`)} ${fmtFailDim(dur)}`);
     },
     onItStart({ title }) {
       if (!title) return;
 
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
-
-      log(`${indent}${format(`◌ ${title}`).dim()}`);
+      log(`${indentation.indent}${fmtDim(`◌ ${title}`)}`);
     },
     onItEnd({ title, duration, success = true }) {
-      const status = success ? 'success' : 'fail';
+      const indent = indentation.indent;
+      const dur = `› ${formatDuration(duration)}ms`;
 
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
-
-      log(
-        `${indent}${format(`● ${title}`)[status]().bold()} ${format(
-          `› ${duration.toFixed(6)}ms`
-        )
-          [status]()
-          .dim()}`
-      );
+      if (success)
+        log(`${indent}${fmtSuccessBold(`● ${title}`)} ${fmtSuccessDim(dur)}`);
+      else log(`${indent}${fmtFailBold(`● ${title}`)} ${fmtFailDim(dur)}`);
     },
     onAssertionSuccess({ message }) {
-      const preIdentation = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
-
-      const output = `${preIdentation}${format(`✔ ${message}`).success().bold()}`;
-
-      log(output);
+      log(`${indentation.indent}${fmtSuccessBold(`✔ ${message}`)}`);
     },
     onAssertionFailure({ assertOptions: options, error }) {
       const { cwd } = GLOBAL;
 
-      let preIdentation = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      let preIdentation = indentation.indent;
 
       const { code, actual, expected, operator } = error;
       const fileRef = findFileFromStack(error.stack, {
@@ -150,45 +132,28 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       }
     },
     onSkipFile({ message }) {
-      log(format(`◯ ${message}`).info().bold());
+      log(fmtInfoBold(`◯ ${message}`));
     },
     onSkipModifier({ message }) {
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
-
-      log(`${indent}${format(`◯ ${message}`).info().bold()}`);
+      log(`${indentation.indent}${fmtInfoBold(`◯ ${message}`)}`);
     },
     onTodoModifier({ message }) {
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
-
-      log(`${indent}${format(`● ${message}`).cyan().bold()}`);
+      log(`${indentation.indent}${fmtCyanBold(`● ${message}`)}`);
     },
     onFileResult({ status, path, duration, output }) {
-      stdout.write('\n');
+      const dur = `› ${formatDuration(duration)}ms`;
 
       if (status) {
         log(
-          `${ARROW_PASS} ${format(path.relative).success().underline()} ${format(
-            `› ${duration.toFixed(6)}ms`
-          )
-            .success()
-            .dim()}`
+          `\n${ARROW_PASS} ${fmtSuccessUnderline(path.relative)} ${fmtSuccessDim(dur)}`
         );
 
         if (output) log(output);
-      } else
+      } else {
         log(
-          `${ARROW_FAIL} ${format(path.relative).fail().underline()} ${format(
-            `› ${duration.toFixed(6)}ms`
-          )
-            .fail()
-            .dim()}`
+          `\n${ARROW_FAIL} ${fmtFailUnderline(path.relative)} ${fmtFailDim(dur)}`
         );
 
-      if (!status) {
         errors.push({
           file: path.relative,
           output,
@@ -252,7 +217,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       );
       log(
         `${format('Duration  ›  ').dim()}${format(
-          `${timespan.duration.toFixed(6)}ms`
+          `${formatDuration(timespan.duration)}ms`
         )
           .bold()
           .dim()} ${format(`(±${parseTimeToSecs(timespan.duration)} seconds)`).dim()}`

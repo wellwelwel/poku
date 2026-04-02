@@ -1,6 +1,6 @@
-import type { Dirent } from 'node:fs';
 import type { Configs } from '../../@types/list-files.js';
-import { stat as fsStat, readdir } from 'node:fs/promises';
+import { readdirSync, statSync } from 'node:fs';
+import { stat as fsStat } from 'node:fs/promises';
 import { join, sep } from 'node:path';
 import { env } from 'node:process';
 import { states } from '../../configs/poku.js';
@@ -35,79 +35,11 @@ const envFilter = env.FILTER?.trim()
   ? new RegExp(escapeRegExp(env.FILTER), 'i')
   : undefined;
 
-const getAllFilesInner = async (
-  dirPath: string,
-  files: Set<string>,
-  filter: RegExp,
-  exclude: RegExp[] | undefined
-): Promise<Set<string>> => {
-  let entries: Dirent[] | string[];
-  let isFullPath = false;
-
-  try {
-    const stat = await fsStat(dirPath);
-
-    if (stat.isFile()) {
-      isFullPath = true;
-      entries = [sanitizePath(dirPath)];
-    } else
-      entries = await readdir(sanitizePath(dirPath), { withFileTypes: true });
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-
-  await Promise.all(
-    entries.map(async (entry) => {
-      if (isFullPath) {
-        const fullPath = entry as string;
-
-        if (
-          fullPath.indexOf('node_modules') !== -1 ||
-          fullPath.indexOf('.git/') !== -1
-        )
-          return;
-
-        if (states?.isSinglePath) {
-          files.add(fullPath);
-          return;
-        }
-
-        if (exclude)
-          for (const pattern of exclude) if (pattern.test(fullPath)) return;
-
-        if (filter.test(fullPath)) files.add(fullPath);
-
-        return;
-      }
-
-      const dirent = entry as Dirent;
-      const fullPath = join(dirPath, dirent.name);
-
-      if (
-        fullPath.indexOf('node_modules') !== -1 ||
-        fullPath.indexOf('.git/') !== -1
-      )
-        return;
-
-      if (exclude)
-        for (const pattern of exclude) if (pattern.test(fullPath)) return;
-
-      if (dirent.isFile()) {
-        if (filter.test(fullPath)) files.add(fullPath);
-      } else if (dirent.isDirectory())
-        await getAllFilesInner(fullPath, files, filter, exclude);
-    })
-  );
-
-  return files;
-};
-
 export const getAllFiles = (
   dirPath: string,
   files: Set<string> = new Set(),
   configs?: Configs
-): Promise<Set<string>> => {
+): Set<string> => {
   const filter: RegExp =
     envFilter ??
     (configs?.filter instanceof RegExp ? configs.filter : regex.defaultFilter);
@@ -118,11 +50,75 @@ export const getAllFiles = (
       : [configs.exclude]
     : undefined;
 
-  return getAllFilesInner(dirPath, files, filter, exclude);
+  const sanitized = sanitizePath(dirPath);
+
+  try {
+    const stat = statSync(sanitized);
+
+    if (stat.isFile()) {
+      const fullPath = sanitized;
+
+      if (
+        fullPath.indexOf('node_modules') !== -1 ||
+        fullPath.indexOf('.git/') !== -1
+      )
+        return files;
+
+      if (states?.isSinglePath) {
+        files.add(fullPath);
+        return files;
+      }
+
+      if (exclude)
+        for (const pattern of exclude) if (pattern.test(fullPath)) return files;
+
+      if (filter.test(fullPath)) files.add(fullPath);
+      return files;
+    }
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+
+  const entries = readdirSync(sanitized, {
+    withFileTypes: true,
+    recursive: true,
+  });
+
+  for (const entry of entries) {
+    if (!entry.isFile()) continue;
+
+    const parentPath =
+      'parentPath' in entry
+        ? (entry.parentPath as string)
+        : (entry as { path?: string }).path ?? sanitized;
+    const fullPath = join(parentPath, entry.name);
+
+    if (
+      fullPath.indexOf('node_modules') !== -1 ||
+      fullPath.indexOf('.git/') !== -1
+    )
+      continue;
+
+    if (exclude) {
+      let excluded = false;
+      for (const pattern of exclude) {
+        if (pattern.test(fullPath)) {
+          excluded = true;
+          break;
+        }
+      }
+      if (excluded) continue;
+    }
+
+    if (filter.test(fullPath)) files.add(fullPath);
+  }
+
+  return files;
 };
 
-export const listFiles = async (
+export const listFiles = (
   targetDir: string,
   configs?: Configs
-): Promise<string[]> =>
-  Array.from(await getAllFiles(sanitizePath(targetDir), new Set(), configs));
+): string[] =>
+  Array.from(getAllFiles(sanitizePath(targetDir), new Set(), configs));
