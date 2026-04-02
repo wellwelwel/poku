@@ -132,7 +132,7 @@ npm run test:deno             # Test with the locally installed Deno version
 
 ### ☔️ Coverage
 
-The coverage target is **98%**.
+The coverage target is **97%** for Unix-like systems and **95%** for Windows.
 
 ```sh
 npm run test:coverage
