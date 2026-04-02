@@ -3,21 +3,12 @@ import { extname } from 'node:path';
 import { GLOBAL } from '../configs/poku.js';
 import { isWindows } from './os.js';
 
-const runnerCache = new Map<string, string[]>();
-
 export const runner = (filename: string): string[] => {
   const { configs, runtime } = GLOBAL;
-  const ext = extname(filename);
-  const cacheKey = `${runtime}:${ext}`;
 
-  const cached = runnerCache.get(cacheKey);
-  if (cached) return cached.slice();
+  if (runtime === 'bun') return ['bun'];
 
-  let result: string[];
-
-  if (runtime === 'bun') {
-    result = ['bun'];
-  } else if (runtime === 'deno') {
+  if (runtime === 'deno') {
     const denoAllow = configs.deno?.allow
       ? configs.deno.allow
           .map((allow) => (allow ? `--allow-${allow}` : ''))
@@ -30,17 +21,14 @@ export const runner = (filename: string): string[] => {
           .filter((deny) => deny)
       : [];
 
-    result = ['deno', 'run', ...denoAllow, ...denoDeny];
-  } else {
-    // Node.js
-    result =
-      ext === '.ts' || ext === '.mts' || ext === '.cts'
-        ? ['node', '--import=tsx']
-        : ['node'];
+    return ['deno', 'run', ...denoAllow, ...denoDeny];
   }
 
-  runnerCache.set(cacheKey, result);
-  return result.slice();
+  // Node.js
+  const ext = extname(filename);
+  return ext === '.ts' || ext === '.mts' || ext === '.cts'
+    ? ['node', '--import=tsx']
+    : ['node'];
 };
 
 const SCRIPT_COMMANDS: Record<Runner, readonly string[]> = {
