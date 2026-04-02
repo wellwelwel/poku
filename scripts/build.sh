@@ -10,8 +10,7 @@ echo '◉ build'
 
 echo '◯ postbuild'
 concurrently \
-  -n "comments,version,fixtures,cleanup,chmod" \
-  "tsx tools/compatibility/comments.ts" \
+  -n "version,fixtures,cleanup,chmod" \
   "tsx tools/build/version.ts" \
   "cp test/__fixtures__/e2e/server/package.json ci/test/__fixtures__/e2e/server/package.json" \
   "rm -f ./lib/@types/*.js ./lib/bin/*.ts" \
