@@ -91,7 +91,7 @@ export const getAllFiles = (
     const parentPath =
       'parentPath' in entry
         ? (entry.parentPath as string)
-        : (entry as { path?: string }).path ?? sanitized;
+        : ((entry as { path?: string }).path ?? sanitized);
     const fullPath = join(parentPath, entry.name);
 
     if (
@@ -117,8 +117,5 @@ export const getAllFiles = (
   return files;
 };
 
-export const listFiles = (
-  targetDir: string,
-  configs?: Configs
-): string[] =>
+export const listFiles = (targetDir: string, configs?: Configs): string[] =>
   Array.from(getAllFiles(sanitizePath(targetDir), new Set(), configs));

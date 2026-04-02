@@ -4,7 +4,11 @@ import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
-import { currentErrorHandler, pushErrorHandler, popErrorHandler } from '../error-handler.js';
+import {
+  currentErrorHandler,
+  popErrorHandler,
+  pushErrorHandler,
+} from '../error-handler.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
 export const getTitle = (input: unknown): string | undefined =>

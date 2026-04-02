@@ -21,7 +21,11 @@ let cachedPluginRunner:
   | undefined;
 let cachedHasIPC: boolean | undefined;
 let cachedProcessPlugins:
-  | { onTestProcess: NonNullable<NonNullable<typeof GLOBAL.configs.plugins>[number]['onTestProcess']> }[]
+  | {
+      onTestProcess: NonNullable<
+        NonNullable<typeof GLOBAL.configs.plugins>[number]['onTestProcess']
+      >;
+    }[]
   | undefined;
 
 const resolvePluginCache = () => {
@@ -33,11 +37,11 @@ const resolvePluginCache = () => {
     cachedProcessPlugins = undefined;
     return;
   }
-  cachedPluginRunner =
-    plugins.find((p) => p.runner)?.runner ?? null;
+  cachedPluginRunner = plugins.find((p) => p.runner)?.runner ?? null;
   cachedHasIPC = plugins.some((p) => p.ipc);
   const pp = plugins.filter((p) => p.onTestProcess);
-  cachedProcessPlugins = pp.length > 0 ? (pp as typeof cachedProcessPlugins) : undefined;
+  cachedProcessPlugins =
+    pp.length > 0 ? (pp as typeof cachedProcessPlugins) : undefined;
 };
 
 export const runTestFile = async (path: string): Promise<boolean> => {
@@ -118,9 +122,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
       if (showLogs) {
         const output =
-          outputChunks.length === 1
-            ? outputChunks[0]
-            : outputChunks.join('');
+          outputChunks.length === 1 ? outputChunks[0] : outputChunks.join('');
         const total = end[0] * 1e3 + end[1] / 1e6;
         const parsedOutputs = parserOutput({ output, result })?.join('\n');
 
@@ -133,7 +135,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
           duration: total,
           output: parsedOutputs,
         });
-
       }
 
       if (!(await afterEach(file))) {

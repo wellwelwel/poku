@@ -26,10 +26,10 @@ export const serialize = (value: unknown): unknown => {
 
 const countOccurrences = (str: string, search: string): number => {
   let count = 0;
-  let pos = 0;
-  while ((pos = str.indexOf(search, pos)) !== -1) {
+  let pos = str.indexOf(search);
+  while (pos !== -1) {
     count++;
-    pos += search.length;
+    pos = str.indexOf(search, pos + search.length);
   }
   return count;
 };

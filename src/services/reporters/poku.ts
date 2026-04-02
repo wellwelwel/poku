@@ -6,9 +6,12 @@ import { indentation } from '../../configs/indentation.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { parseResultType } from '../../parsers/assert.js';
 import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
-import { formatDuration, parseTime, parseTimeToSecs } from '../../parsers/time.js';
 import {
-  format,
+  formatDuration,
+  parseTime,
+  parseTimeToSecs,
+} from '../../parsers/time.js';
+import {
   fmtBoldDim,
   fmtCyanBold,
   fmtDim,
@@ -19,6 +22,7 @@ import {
   fmtSuccessBold,
   fmtSuccessDim,
   fmtSuccessUnderline,
+  format,
 } from '../format.js';
 import { hr, log } from '../write.js';
 

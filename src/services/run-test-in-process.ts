@@ -97,7 +97,6 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
       duration: total,
       output: parsedOutputs,
     });
-
   }
 
   if (!(await afterEach(file))) return false;

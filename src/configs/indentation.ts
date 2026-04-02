@@ -7,9 +7,8 @@ export const indentation = {
   itDepth: 0,
   get indent(): string {
     const depth = this.describeDepth + this.itDepth;
-    return (
-      indentCache[depth] ??
-      (indentCache[depth] = this.test.repeat(depth))
-    );
+    if (indentCache[depth] === undefined)
+      indentCache[depth] = this.test.repeat(depth);
+    return indentCache[depth];
   },
 };

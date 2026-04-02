@@ -5,7 +5,11 @@ import { indentation } from '../../configs/indentation.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
-import { currentErrorHandler, pushErrorHandler, popErrorHandler } from './error-handler.js';
+import {
+  currentErrorHandler,
+  popErrorHandler,
+  pushErrorHandler,
+} from './error-handler.js';
 import { getCallback, getTitle } from './it/core.js';
 import { onlyDescribe, skip, todo } from './modifiers.js';
 
