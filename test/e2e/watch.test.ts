@@ -20,7 +20,7 @@ const saveFileUnchanged = async (filename: string) => {
 };
 
 describe('Watch Mode', async () => {
-  const watcher = watchCLI('--watchInterval=500', {
+  const watcher = watchCLI('--watchInterval=1500', {
     cwd: 'test/__fixtures__/e2e/watch',
   });
 
@@ -35,11 +35,13 @@ describe('Watch Mode', async () => {
   await Promise.all([
     saveFileUnchanged('test/__fixtures__/e2e/watch/test/a.test.ts'),
     saveFileUnchanged('test/__fixtures__/e2e/watch/test/sub/b.test.ts'),
-    saveFileUnchanged('test/__fixtures__/e2e/watch/test/a.test.ts'),
-    saveFileUnchanged('test/__fixtures__/e2e/watch/test/sub/b.test.ts'),
   ]);
 
-  await sleep(100);
+  await waitForExpectedResult(() => {
+    const results = watcher.getOutput();
+
+    return /test\/a\.test\.ts/.test(results.stdout);
+  }, true);
 
   const results = watcher.getOutput();
   await watcher.kill();
@@ -58,5 +60,34 @@ describe('Watch Mode', async () => {
       .filter((result) => /test\/sub\/b\.test\.ts/.test(result)).length;
 
     assert(watched >= 1);
+  });
+});
+
+describe('Watch Mode Default Interval', async () => {
+  const watcher = watchCLI('test', {
+    cwd: 'test/__fixtures__/e2e/watch',
+  });
+
+  await waitForExpectedResult(() => {
+    const results = watcher.getOutput();
+
+    return /Watching:/.test(results.stdout);
+  }, true);
+
+  await sleep(100);
+
+  await saveFileUnchanged('test/__fixtures__/e2e/watch/test/a.test.ts');
+
+  await waitForExpectedResult(() => {
+    const results = watcher.getOutput();
+
+    return /test\/a\.test\.ts/.test(results.stdout);
+  }, true);
+
+  const results = watcher.getOutput();
+  await watcher.kill();
+
+  it('Uses default interval', () => {
+    assert(/Watching:/.test(results.stdout), 'Expected "Watching:" in stdout');
   });
 });

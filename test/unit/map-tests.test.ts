@@ -186,6 +186,30 @@ test(async () => {
     });
   });
 
+  await describe('Circular Imports', async () => {
+    await it('should handle circular imports without infinite loop', async () => {
+      createDirSync(join(testSrcDir, 'circular'));
+      createDirSync(testTestDir);
+      createFileSync(join(testSrcDir, 'circular', 'a.js'), 'import "./b.js";');
+      createFileSync(join(testSrcDir, 'circular', 'b.js'), 'import "./a.js";');
+      createFileSync(
+        join(testTestDir, 'circular.test.js'),
+        `import "../map-tests/circular/a.js";`
+      );
+
+      const importMap = await mapTests(join(testSrcDir, 'circular'), [
+        testTestDir,
+      ]);
+
+      assert.ok(
+        importMap instanceof Map,
+        'Circular imports should not cause infinite loop'
+      );
+
+      removeDirSync(join(testSrcDir, 'circular'));
+    });
+  });
+
   describe('Match Files', () => {
     it('should find matching files based on normalized paths', () => {
       const srcFilesWithoutExt = new Set([

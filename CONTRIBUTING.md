@@ -132,17 +132,11 @@ npm run test:deno             # Test with the locally installed Deno version
 
 ### ☔️ Coverage
 
-The coverage target is **95%**.
+The coverage target is **97%** for Unix-like systems and **95%** for Windows.
 
 ```sh
 npm run test:coverage
 ```
-
-> [!tip]
->
-> Don't be intimidated by high coverage, methods that vary according to platform, platform versions, _OS_ and processes _(`process.exit`, `process.once`, etc.)_ aren't tested against the coverage rate 🙋🏻‍♂️
->
-> See more details in [**./.nycrc**](https://github.com/wellwelwel/poku/tree/main/.nycrc).
 
 ---
 

@@ -56,6 +56,18 @@ describe('--isolation=none', async () => {
     assert.strictEqual(results.exitCode, 1, 'Exit code needs to be 1');
   });
 
+  await it('timeout message (ESM)', async () => {
+    const results = await inspectPoku(
+      '--debug --isolation=none --filter=slow-timeout --timeout=500',
+      {
+        cwd: 'test/__fixtures__/e2e/no-isolate',
+      }
+    );
+
+    assert.strictEqual(results.exitCode, 1, 'Exit code needs to be 1');
+    assert(results.stdout.includes('Timeout'), 'Needs to show Timeout message');
+  });
+
   await it('quiet mode via CLI flag', async () => {
     const results = await inspectPoku(
       '--quiet --isolation=none --filter=pass',
@@ -74,6 +86,18 @@ describe('--isolation=none', async () => {
     });
 
     assert.strictEqual(results.exitCode, 1, 'Exit code needs to be 1');
+  });
+
+  await it('uncaughtException (async throw)', async () => {
+    const results = await inspectPoku('uncaught.test.mts --isolation=none', {
+      cwd: 'test/__fixtures__/e2e/no-isolate',
+    });
+
+    assert.strictEqual(results.exitCode, 1, 'Exit code needs to be 1');
+    assert(
+      results.stderr.includes('uncaughtException'),
+      'Needs to show uncaughtException message'
+    );
   });
 
   await it('beforeEach failure', async () => {

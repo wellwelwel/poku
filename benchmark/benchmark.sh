@@ -10,7 +10,7 @@ BIN_JEST="node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
 BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
 BIN_NODE="node --test"
 BIN_BUN="bun test"
-BIN_POKU_BUN="bun ./node_modules/poku/lib/bin/index.js"
+BIN_POKU_BUN="bun --bun ./node_modules/poku/lib/bin/index.js"
 BIN_DENO="deno test"
 BIN_POKU_DENO="deno run --allow-all ./node_modules/poku/lib/bin/index.js"
 
@@ -34,17 +34,13 @@ mkdir -p results/nesting/success
 mkdir -p results/nesting/failure
 mkdir -p results/nesting/balanced
 
-h1() {
-  echo "## $1\n"
-}
-
 h2() {
-  echo "### $1\n"
+  echo "## $1\n"
 }
 
 h3() {
   echo "$HR"
-  echo "#### $1"
+  echo "### $1"
 }
 
 quote() {
@@ -156,12 +152,10 @@ nesting() {
 }
 
 if [ "$MODE" = "all" ]; then
-  h1 "🎖️ Benchmarks"
+  h2 "🎖️ Benchmarks"
 fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "execution" ]; then
-
-h2 "🏃🏻‍♀️ Test Runner"
 
 echo "<!-- SUMMARY_TABLE -->"
 echo ""
@@ -210,8 +204,6 @@ echo ""
 fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "assertions" ]; then
-
-h2 "🧪 Assertion"
 
 echo "<!-- ASSERTION_SUMMARY_TABLE -->"
 echo ""
@@ -262,8 +254,6 @@ echo ""
 fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "nesting" ]; then
-
-h2 "🔗 Nesting"
 
 echo "<!-- NESTING_SUMMARY_TABLE -->"
 echo ""

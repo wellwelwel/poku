@@ -149,15 +149,15 @@ describe('Watcher Service', async () => {
 
     fs.mkdirSync(subDirPath);
 
-    await sleep(humanDelay);
+    await sleep(humanDelay * 3);
 
     fs.writeFileSync(newFilePath, ''); // create (empty)
 
-    await sleep(humanDelay);
+    await sleep(humanDelay * 2);
 
     fs.writeFileSync(newFilePath, 'export default {};'); // update
 
-    await sleep(humanDelay);
+    await sleep(humanDelay * 2);
 
     assert(
       callbackResults.length > 0,

@@ -78,6 +78,15 @@ const testCases = [
     expected: '/workdir/test/some.test.js:3:8',
   },
   {
+    description: 'Unix absolute path at line start',
+    stack: `
+    Error: test
+/workdir/test/some.test.js:3:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:262:25)
+    `,
+    expected: '/workdir/test/some.test.js:3:8',
+  },
+  {
     description: 'Invalid Stack',
     stack: undefined,
     expected: '',
