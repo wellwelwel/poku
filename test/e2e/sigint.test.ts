@@ -19,6 +19,7 @@ test(async () => {
       const args = [
         ...cmd,
         `src/bin/index.${ext}`,
+        '--debug',
         '--filter=slow-timeout',
         'test/__fixtures__/e2e/no-isolate',
       ];
@@ -32,9 +33,17 @@ test(async () => {
 
           let stdout = '';
           let stderr = '';
+          let sigintSent = false;
 
           child.stdout.on('data', (data: Buffer) => {
             stdout += String(data);
+
+            if (!sigintSent && stdout.length > 0) {
+              sigintSent = true;
+              sleep(250).then(() => {
+                child.kill('SIGINT');
+              });
+            }
           });
 
           child.stderr.on('data', (data: Buffer) => {
@@ -43,10 +52,6 @@ test(async () => {
 
           child.on('close', () => {
             resolve({ stdout, stderr });
-          });
-
-          sleep(500).then(() => {
-            child.kill('SIGINT');
           });
         }
       );
