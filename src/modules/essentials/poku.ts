@@ -1,9 +1,10 @@
 import type { Code } from '../../@types/code.js';
 import type { PokuPlugin } from '../../@types/plugin.js';
 import type { Configs, PluginContext } from '../../@types/poku.js';
-import { join } from 'node:path';
+import { join, resolve as resolvePath } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
-import { GLOBAL, results, timespan } from '../../configs/poku.js';
+import { deepOptions, GLOBAL, results, timespan } from '../../configs/poku.js';
+import { availableParallelism } from '../../polyfills/os.js';
 import { reporter } from '../../services/reporter.js';
 import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
@@ -80,9 +81,30 @@ export async function poku(
     ? await fileDiscoverer(paths, pluginContext!)
     : paths.flatMap((dir) => listFiles(join(cwd, dir), GLOBAL.configs));
 
+  if (GLOBAL.configs.isolation === 'worker' && GLOBAL.runtime === 'node') {
+    const { WorkerPool } = await import('../../services/worker-pool.js');
+    const poolSize = GLOBAL.configs.sequential
+      ? 1
+      : (GLOBAL.configs.concurrency ?? availableParallelism());
+    const workerScript = resolvePath(
+      __dirname,
+      '../../services/worker-entry.js'
+    );
+    GLOBAL.workerPool = new WorkerPool(poolSize, workerScript, deepOptions, [
+      '--import=tsx',
+    ]);
+    await GLOBAL.workerPool.init();
+  }
+
   if (showLogs) GLOBAL.reporter.onRunStart();
 
   const result = await runTests(testFiles);
+
+  if (GLOBAL.workerPool) {
+    await GLOBAL.workerPool.destroy();
+    GLOBAL.workerPool = undefined;
+  }
+
   const code: Code = result ? 0 : 1;
   const end = hrtime(start);
   const total = end[0] * 1e3 + end[1] / 1e6;

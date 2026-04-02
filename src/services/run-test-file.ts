@@ -44,12 +44,57 @@ const resolvePluginCache = () => {
     pp.length > 0 ? (pp as typeof cachedProcessPlugins) : undefined;
 };
 
+let workerSeq = 0;
+
+const runTestInWorker = async (path: string): Promise<boolean> => {
+  const { cwd, configs, reporter } = GLOBAL;
+  const file = relative(cwd, path);
+  const showLogs = !configs.quiet;
+
+  const start = hrtime();
+
+  if (!(await beforeEach(file))) return false;
+
+  reporter.onFileStart({
+    path: { relative: file, absolute: path },
+  });
+
+  const { exitCode, output } = await GLOBAL.workerPool!.runFile(
+    path,
+    ++workerSeq,
+    configs.timeout
+  );
+
+  const end = hrtime(start);
+  const result = exitCode === 0;
+
+  if (showLogs) {
+    const total = end[0] * 1e3 + end[1] / 1e6;
+    const parsedOutputs = parserOutput({ output, result })?.join('\n');
+
+    reporter.onFileResult({
+      status: result,
+      path: { relative: file, absolute: path },
+      duration: total,
+      output: parsedOutputs,
+    });
+  }
+
+  if (!(await afterEach(file))) return false;
+
+  return result;
+};
+
 export const runTestFile = async (path: string): Promise<boolean> => {
   const { configs } = GLOBAL;
 
   if (configs.isolation === 'none') {
     cachedRunTestInProcess ??= await import('./run-test-in-process.js');
     return cachedRunTestInProcess.runTestInProcess(path);
+  }
+
+  if (configs.isolation === 'worker' && GLOBAL.workerPool) {
+    return runTestInWorker(path);
   }
 
   resolvePluginCache();
