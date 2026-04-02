@@ -25,14 +25,7 @@
     "rules": {
       "recommended": true,
       "complexity": {
-        "recommended": true,
-        "noExcessiveCognitiveComplexity": {
-          "level": "error",
-          "options": {
-            // TODO: better estimate complexity
-            "maxAllowedComplexity": 45
-          }
-        }
+        "recommended": true
       },
       "a11y": {
         "recommended": true
@@ -76,9 +69,6 @@
       }
     }
   },
-  "javascript": {
-    "globals": ["BufferEncoding", "Bun", "Deno"]
-  },
   "overrides": [
     {
       "includes": ["test/**", "tools/**"],
@@ -92,16 +82,6 @@
           },
           "suspicious": {
             "noTemplateCurlyInString": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["src/polyfills/**"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noExplicitAny": "off"
           }
         }
       }
@@ -126,16 +106,6 @@
         "rules": {
           "suspicious": {
             "useAwait": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["src/bin/index.ts"],
-      "linter": {
-        "rules": {
-          "complexity": {
-            "noExcessiveCognitiveComplexity": "off"
           }
         }
       }

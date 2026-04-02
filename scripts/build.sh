@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo '◯ prebuild'
-rm -rf lib ci coverage .temp test-src test-tests
+rm -rf lib ci coverage .temp test-tests
 echo '◉ prebuild'
 
 echo '◯ build'
