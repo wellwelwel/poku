@@ -40,13 +40,10 @@
     "test:coverage": "npm test -- -c=.c8.ts",
     "test:docker:node": "bun test/ci.test.ts",
     "clear": "rm -rf lib ci coverage .temp test-src test-tests",
-    "prebuild": "npm run clear",
-    "build": "tsc && cd test && tsc",
-    "postbuild": "tsx tools/compatibility/comments.ts && tsx tools/build/version.ts && cp test/__fixtures__/e2e/server/package.json ci/test/__fixtures__/e2e/server/package.json && rm -f ./lib/@types/*.js ./lib/bin/*.ts && chmod +x lib/bin/index.js",
+    "build": "bash scripts/build.sh",
     "lint": "biome lint --error-on-warnings && prettier --check .",
-    "lint:fix": "biome lint --write && prettier --write .github/workflows/*.yml . && npm --prefix website run lint:fix",
-    "update": "pu && npm i && npm update && (npm audit fix || true)",
-    "postupdate": "npm run lint:fix",
+    "lint:fix": "bash scripts/lint-fix.sh",
+    "update": "bash scripts/update.sh",
     "benchmark": "npm --prefix benchmark start"
   },
   "devDependencies": {
@@ -55,15 +52,13 @@
     "@pokujs/c8": "^1.0.2",
     "@pokujs/docker": "^1.0.0",
     "@types/node": "^25.5.0",
+    "concurrently": "^9.2.1",
     "jsonc.min": "^1.1.2",
     "monocart-coverage-reports": "^2.12.9",
     "packages-update": "^2.0.0",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2"
-  },
-  "overrides": {
-    "yargs": "^18.0.0"
   },
   "keywords": [
     "🐷",
