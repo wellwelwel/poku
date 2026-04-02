@@ -12,3 +12,4 @@
 node_modules/
 
 !/test/__fixtures__/e2e/env/.env
+/log.txt
