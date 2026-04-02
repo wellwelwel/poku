@@ -278,7 +278,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 ## Security Policy
 
-[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/work flow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f368e0)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f368e0)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
 
 Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
 
