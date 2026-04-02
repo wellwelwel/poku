@@ -13,6 +13,10 @@ on:
       - 'package.json'
   workflow_dispatch:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deno:
     runs-on: ubuntu-latest

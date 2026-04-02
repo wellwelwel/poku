@@ -8,6 +8,10 @@ on:
       - 'src/**'
   workflow_dispatch:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   issues: write
   pull-requests: write

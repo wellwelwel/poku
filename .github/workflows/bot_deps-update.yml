@@ -4,6 +4,10 @@ name: '⏫ Bot — Dependencies'
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   TITLE: 'chore: update dependencies'
   BRANCH: 'deps'
