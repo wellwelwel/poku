@@ -80,38 +80,41 @@ export const getAllFiles = (
     process.exit(1);
   }
 
-  const entries = readdirSync(sanitized, {
-    withFileTypes: true,
-    recursive: true,
-  });
+  const dirs = [sanitized];
 
-  for (const entry of entries) {
-    if (!entry.isFile()) continue;
+  while (dirs.length > 0) {
+    const dir = dirs.pop()!;
+    const entries = readdirSync(dir, { withFileTypes: true });
 
-    const parentPath =
-      'parentPath' in entry
-        ? (entry.parentPath as string)
-        : ((entry as { path?: string }).path ?? sanitized);
-    const fullPath = join(parentPath, entry.name);
+    for (const entry of entries) {
+      const fullPath = join(dir, entry.name);
 
-    if (
-      fullPath.indexOf('node_modules') !== -1 ||
-      fullPath.indexOf('.git/') !== -1
-    )
-      continue;
+      if (
+        fullPath.indexOf('node_modules') !== -1 ||
+        fullPath.indexOf('.git/') !== -1
+      )
+        continue;
 
-    if (exclude) {
-      let excluded = false;
-      for (const pattern of exclude) {
-        if (pattern.test(fullPath)) {
-          excluded = true;
-          break;
-        }
+      if (entry.isDirectory()) {
+        dirs.push(fullPath);
+        continue;
       }
-      if (excluded) continue;
-    }
 
-    if (filter.test(fullPath)) files.add(fullPath);
+      if (!entry.isFile()) continue;
+
+      if (exclude) {
+        let excluded = false;
+        for (const pattern of exclude) {
+          if (pattern.test(fullPath)) {
+            excluded = true;
+            break;
+          }
+        }
+        if (excluded) continue;
+      }
+
+      if (filter.test(fullPath)) files.add(fullPath);
+    }
   }
 
   return files;
