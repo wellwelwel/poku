@@ -57,4 +57,43 @@ test(async () => {
       );
     });
   });
+
+  await describe('SIGINT cleanup for background processes', async () => {
+    await it('should run create-service SIGINT handler', async () => {
+      const cmd = runner(`_.${ext}`);
+      const runtime = cmd.shift()!;
+      const args = [...cmd, 'test/__fixtures__/e2e/sigint/start-and-wait.ts'];
+
+      const result = await new Promise<{
+        stdout: string;
+        exitCode: number | null;
+      }>((resolve) => {
+        const child = spawn(runtime, args);
+
+        child.stdout.setEncoding('utf8');
+        child.stderr.setEncoding('utf8');
+
+        let stdout = '';
+
+        child.stdout.on('data', (data: Buffer) => {
+          stdout += String(data);
+
+          if (stdout.includes('service-started')) {
+            sleep(250).then(() => {
+              child.kill('SIGINT');
+            });
+          }
+        });
+
+        child.on('close', (code) => {
+          resolve({ stdout, exitCode: code });
+        });
+      });
+
+      assert(
+        result.stdout.includes('service-started'),
+        'Service should have started'
+      );
+    });
+  });
 });

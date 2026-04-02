@@ -58,6 +58,19 @@ test(async () => {
       rmSync(tempDir, { recursive: true, force: true });
     });
 
+    await it('should apply exclude to direct file paths (fullPath branch)', async () => {
+      mkdirSync(tempDir, { recursive: true });
+      writeFileSync(join(tempDir, 'a.test.js'), '');
+
+      const files = await listFiles(join(tempDir, 'a.test.js'), {
+        exclude: /a\.test/,
+      });
+
+      assert.strictEqual(files.length, 0, 'File excluded by pattern');
+
+      rmSync(tempDir, { recursive: true, force: true });
+    });
+
     await it('should accept an array of RegExp as exclude config', async () => {
       mkdirSync(tempDir, { recursive: true });
       writeFileSync(join(tempDir, 'a.test.js'), '');
