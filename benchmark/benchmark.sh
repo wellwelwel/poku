@@ -161,8 +161,6 @@ fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "execution" ]; then
 
-h2 "🏃🏻‍♀️ Test Runner"
-
 echo "<!-- SUMMARY_TABLE -->"
 echo ""
 
@@ -210,8 +208,6 @@ echo ""
 fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "assertions" ]; then
-
-h2 "🧪 Assertion"
 
 echo "<!-- ASSERTION_SUMMARY_TABLE -->"
 echo ""
@@ -262,8 +258,6 @@ echo ""
 fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "nesting" ]; then
-
-h2 "🔗 Nesting"
 
 echo "<!-- NESTING_SUMMARY_TABLE -->"
 echo ""

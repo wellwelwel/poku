@@ -29,7 +29,7 @@ const getRatio = async (resultsDir, runner, scenario) => {
   return other.mean / poku.mean;
 };
 
-const buildTable = async (resultsDir, runners) => {
+const buildTable = async (resultsDir, runners, title) => {
   const headerCells = [];
   const separatorCells = [];
   const avgCells = [];
@@ -52,7 +52,7 @@ const buildTable = async (resultsDir, runners) => {
   }
 
   return [
-    `| |${headerCells.join('|')}|`,
+    `| ${title} |${headerCells.join('|')}|`,
     `|---|${separatorCells.join('|')}|`,
     `| 🐷 **Poku ›** |${avgCells.join('|')}|`,
   ].join('\n');
@@ -78,17 +78,25 @@ let output = await readFile('./output.md', 'utf-8');
 const failures = [];
 
 if (mode === 'all' || mode === 'execution') {
-  const table = await buildTable('execution', runners);
+  const table = await buildTable('execution', runners, '🏃🏻‍♀️ Test Runner');
   output = output.replace('<!-- SUMMARY_TABLE -->', table);
 }
 
 if (mode === 'all' || mode === 'assertions') {
-  const table = await buildTable('assertions', runnersWithoutThresholds);
+  const table = await buildTable(
+    'assertions',
+    runnersWithoutThresholds,
+    '🧪 Assertion'
+  );
   output = output.replace('<!-- ASSERTION_SUMMARY_TABLE -->', table);
 }
 
 if (mode === 'all' || mode === 'nesting') {
-  const table = await buildTable('nesting', runnersWithoutThresholds);
+  const table = await buildTable(
+    'nesting',
+    runnersWithoutThresholds,
+    '🔗 Nesting'
+  );
   output = output.replace('<!-- NESTING_SUMMARY_TABLE -->', table);
 }
 
