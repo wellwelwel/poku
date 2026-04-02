@@ -11,7 +11,7 @@ import { getPIDs } from '../../src/modules/helpers/get-pids.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { kill } from '../../src/modules/helpers/kill.js';
 import { test } from '../../src/modules/helpers/test.js';
-import { waitForPort } from '../../src/modules/helpers/wait-for.js';
+import { sleep, waitForPort } from '../../src/modules/helpers/wait-for.js';
 
 test(async () => {
   const { runtime } = GLOBAL;
@@ -221,6 +221,7 @@ test(async () => {
       await waitForPort(4000, { timeout: 10000, delay: 100 });
 
       await server.end(4000);
+      await sleep(250);
       await server.end(4000);
     });
   });
@@ -238,6 +239,21 @@ test(async () => {
 
       assert.ok(pids.length > 0, 'Should find at least one PID');
       await kill.pid(pids[0]);
+    });
+  });
+
+  await describe('kill.port', async () => {
+    await it(async () => {
+      await startService(`server-a.${ext}`, {
+        startAfter: 'ready',
+        cwd: 'test/__fixtures__/e2e/server',
+      });
+
+      await waitForPort(4000, { timeout: 10000, delay: 100 });
+      const res = await legacyFetch('localhost', 4000);
+
+      assert.strictEqual(res?.statusCode, 200, 'Service is on before kill');
+      await kill.port(4000);
     });
   });
 

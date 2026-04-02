@@ -69,8 +69,8 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
 
   if (GLOBAL.runtime === 'deno') return;
 
-  await it('Config without default export', async () => {
-    const output = await inspectPoku('', {
+  await it('Config without default export (ESM named exports)', async () => {
+    const output = await inspectPoku('--config=custom.mjs', {
       cwd: 'test/__fixtures__/e2e/config-files/no-default',
     });
 
