@@ -7,7 +7,9 @@ import {
   startService,
 } from '../../src/modules/helpers/create-service.js';
 import { describe } from '../../src/modules/helpers/describe.js';
+import { getPIDs } from '../../src/modules/helpers/get-pids.js';
 import { it } from '../../src/modules/helpers/it/core.js';
+import { kill } from '../../src/modules/helpers/kill.js';
 import { test } from '../../src/modules/helpers/test.js';
 import { waitForPort } from '../../src/modules/helpers/wait-for.js';
 
@@ -183,6 +185,59 @@ test(async () => {
       );
 
       await server.end([4001]);
+    });
+  });
+
+  await describe('Start Service (No "cwd")', async () => {
+    await it(async () => {
+      const server = await startService(
+        `test/__fixtures__/e2e/server/server-a.${ext}`,
+        {
+          startAfter: 'ready',
+        }
+      );
+
+      await waitForPort(4000, { timeout: 10000, delay: 100 });
+      const res = await legacyFetch('localhost', 4000);
+
+      assert.strictEqual(res?.statusCode, 200, 'Service is on');
+      assert.deepStrictEqual(
+        JSON.parse(res?.body),
+        { name: 'Poku' },
+        'Poku service is online'
+      );
+
+      await server.end(4000);
+    });
+  });
+
+  await describe('Start Service (Double end)', async () => {
+    await it(async () => {
+      const server = await startService(`server-a.${ext}`, {
+        startAfter: 'ready',
+        cwd: 'test/__fixtures__/e2e/server',
+      });
+
+      await waitForPort(4000, { timeout: 10000, delay: 100 });
+
+      await server.end(4000);
+      await server.end(4000);
+    });
+  });
+
+  await describe('kill.pid (via getPIDs)', async () => {
+    await it(async () => {
+      await startService(`server-a.${ext}`, {
+        startAfter: 'ready',
+        cwd: 'test/__fixtures__/e2e/server',
+      });
+
+      await waitForPort(4000, { timeout: 10000, delay: 100 });
+
+      const pids = await getPIDs(4000);
+
+      assert.ok(pids.length > 0, 'Should find at least one PID');
+      await kill.pid(pids[0]);
     });
   });
 

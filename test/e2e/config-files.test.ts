@@ -58,7 +58,26 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
     assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
   });
 
+  await it('Broken config file (silently ignored)', async () => {
+    const output = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/config-files/broken',
+    });
+
+    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
+    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
+  });
+
   if (GLOBAL.runtime === 'deno') return;
+
+  await it('Config without default export', async () => {
+    const output = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/config-files/no-default',
+    });
+
+    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
+    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
+    assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
+  });
 
   await it('poku.config.js', async () => {
     const output = await inspectPoku('', {

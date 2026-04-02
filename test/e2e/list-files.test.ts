@@ -116,6 +116,35 @@ describe('List Files command', async () => {
     );
   });
 
+  await it('FILTER env var', async () => {
+    const output = await inspectPoku('--listFiles', {
+      cwd: 'test/__fixtures__/e2e/list-files',
+      env: { ...process.env, FILTER: '.spec.' },
+    });
+
+    if (output.exitCode !== 0) {
+      console.log(output.stdout);
+      console.log(output.stderr);
+    }
+
+    assert.strictEqual(output.exitCode, 0, 'Passed');
+    assert.ok(!output.stdout.includes('.test.'), 'Only .spec. files');
+  });
+
+  await it('Single exclude pattern', async () => {
+    const output = await inspectPoku('--listFiles --exclude=depth-1', {
+      cwd: 'test/__fixtures__/e2e/list-files',
+    });
+
+    if (output.exitCode !== 0) {
+      console.log(output.stdout);
+      console.log(output.stderr);
+    }
+
+    assert.strictEqual(output.exitCode, 0, 'Passed');
+    assert.ok(!output.stdout.includes('depth-1'), 'Excluded depth-1');
+  });
+
   await it('Default', async () => {
     const output = await inspectPoku(
       '--listFiles --filter=.spec. --exclude=ts',
