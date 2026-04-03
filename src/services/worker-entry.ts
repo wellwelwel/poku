@@ -10,6 +10,8 @@ const isWorkerExit = (e: unknown): boolean =>
 const { options } = workerData ?? {};
 if (options) for (const opt of options as string[]) process.argv.push(opt);
 
+process.exitCode = 0;
+
 process.exit = ((code?: number): never => {
   process.exitCode = code ?? process.exitCode ?? 0;
   throw WORKER_EXIT;
@@ -25,9 +27,7 @@ process.on('unhandledRejection', (reason) => {
   process.exitCode = 1;
 });
 
-parentPort!.on('message', async (msg: { file: string }) => {
-  process.exitCode = 0;
-
+parentPort!.once('message', async (msg: { file: string }) => {
   try {
     await import(pathToFileURL(msg.file).href);
   } catch (error) {

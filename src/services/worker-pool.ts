@@ -85,7 +85,6 @@ export const runInWorker = async (
   timeout?: number
 ): Promise<WorkerResult> => {
   const pw = await acquire();
-  pw.outputChunks.length = 0;
 
   return new Promise((resolve) => {
     let settled = false;
@@ -96,27 +95,28 @@ export const runInWorker = async (
       pw.worker.removeListener('error', onError);
     };
 
-    const settle = (exitCode: number, timedOut: boolean, replace: boolean) => {
+    const settle = (exitCode: number, timedOut: boolean) => {
       if (settled) return;
       settled = true;
       if (timer) clearTimeout(timer);
       cleanup();
       const output = pw.outputChunks.join('');
-      release(replace ? replaceWorker(pw) : pw);
+      // Single-use: always replace after each test
+      release(replaceWorker(pw));
       resolve({ exitCode, output, timedOut });
     };
 
     const onMessage = (msg: { type: string; exitCode: number }) => {
-      if (msg.type === 'done') settle(msg.exitCode, false, false);
+      if (msg.type === 'done') settle(msg.exitCode, false);
     };
 
-    const onError = () => settle(1, false, true);
+    const onError = () => settle(1, false);
 
     pw.worker.on('message', onMessage);
     pw.worker.once('error', onError);
 
     if (timeout) {
-      timer = setTimeout(() => settle(1, true, true), timeout);
+      timer = setTimeout(() => settle(1, true), timeout);
     }
 
     pw.worker.postMessage({ file });
