@@ -12,6 +12,19 @@ process.exit = ((code?: number): never => {
   throw WORKER_EXIT;
 }) as typeof process.exit;
 
+const isWorkerExit = (e: unknown): boolean =>
+  e !== null && typeof e === 'object' && '__workerExit' in e;
+
+process.on('uncaughtException', (error) => {
+  if (isWorkerExit(error)) return;
+  process.exitCode = 1;
+});
+
+process.on('unhandledRejection', (reason) => {
+  if (isWorkerExit(reason)) return;
+  process.exitCode = 1;
+});
+
 (async () => {
   try {
     await import(pathToFileURL(file).href);
