@@ -20,21 +20,41 @@ export const runInWorker = (
       stderr: true,
     });
 
-    w.stdout.setEncoding('utf8');
-    w.stderr.setEncoding('utf8');
-    w.stdout.on('data', (chunk: string) => outputChunks.push(chunk));
-    w.stderr.on('data', (chunk: string) => outputChunks.push(chunk));
+    if (w.stdout) {
+      w.stdout.setEncoding('utf8');
+      w.stdout.on('data', (chunk: string) => outputChunks.push(chunk));
+    }
+
+    if (w.stderr) {
+      w.stderr.setEncoding('utf8');
+      w.stderr.on('data', (chunk: string) => outputChunks.push(chunk));
+    }
+
+    w.once('error', (error) => {
+      if (resolved) return;
+      resolved = true;
+      if (timer) clearTimeout(timer);
+      outputChunks.push(String(error));
+      resolve({ exitCode: 1, output: outputChunks.join('') });
+    });
 
     w.once('exit', (code) => {
       if (resolved) return;
       resolved = true;
       if (timer) clearTimeout(timer);
-      resolve({ exitCode: code ?? 1, output: outputChunks.join('') });
+      resolve({
+        exitCode: code ?? 1,
+        output: outputChunks.join(''),
+      });
     });
 
     if (timeout) {
       timer = setTimeout(() => {
-        if (!resolved) w.terminate();
+        if (!resolved) {
+          resolved = true;
+          w.terminate();
+          resolve({ exitCode: 1, output: outputChunks.join('') });
+        }
       }, timeout);
     }
   });
