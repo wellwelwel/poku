@@ -42,8 +42,7 @@ Compartilhe estado, servidores, conexões de banco de dados e mais entre arquivo
       changes: [
         <>
           Migração de <strong>Recursos Compartilhados</strong> para um{' '}
-          <a href='https://github.com/pokujs/plugin-shared'>plugin dedicado</a>
-          .
+          <a href='https://github.com/pokujs/plugin-shared'>plugin dedicado</a>.
         </>,
       ],
     },
@@ -234,11 +233,7 @@ test('Test A: Incrementar Contador', async () => {
   assert.strictEqual(current, 0, 'Deve iniciar em 0');
 
   await counter.increment();
-  assert.strictEqual(
-    await counter.getCount(),
-    1,
-    'Deve ser 1 após incremento'
-  );
+  assert.strictEqual(await counter.getCount(), 1, 'Deve ser 1 após incremento');
 });
 ```
 
@@ -257,11 +252,7 @@ test('Test B: Verificar Estado do Contador', async () => {
   await waitForExpectedResult(counter.getCount, 1);
 
   await counter.increment();
-  assert.strictEqual(
-    await counter.getCount(),
-    2,
-    'Deve ser 2 após incremento'
-  );
+  assert.strictEqual(await counter.getCount(), 2, 'Deve ser 2 após incremento');
 });
 ```
 
