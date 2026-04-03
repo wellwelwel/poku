@@ -84,10 +84,8 @@ export async function poku(
         )
       ).flat(1);
 
-  // if (!GLOBAL.configs.isolation)
-  //   GLOBAL.configs.isolation = testFiles.length > 1 ? 'worker' : 'process';
-
-  if (!GLOBAL.configs.isolation) GLOBAL.configs.isolation = 'worker';
+  if (!GLOBAL.configs.isolation)
+    GLOBAL.configs.isolation = testFiles.length > 1 ? 'worker' : 'process';
 
   if (GLOBAL.configs.isolation === 'worker') {
     const ext = isBuild ? '.js' : '.ts';
