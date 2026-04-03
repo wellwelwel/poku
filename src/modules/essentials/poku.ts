@@ -3,9 +3,17 @@ import type { PokuPlugin } from '../../@types/plugin.js';
 import type { Configs, PluginContext } from '../../@types/poku.js';
 import { join, resolve } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
-import { GLOBAL, isBuild, results, timespan } from '../../configs/poku.js';
+import {
+  deepOptions,
+  GLOBAL,
+  isBuild,
+  results,
+  timespan,
+} from '../../configs/poku.js';
+import { availableParallelism } from '../../polyfills/os.js';
 import { reporter } from '../../services/reporter.js';
 import { runTests } from '../../services/run-tests.js';
+import { initPool, terminatePool } from '../../services/worker-pool.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
 
@@ -84,8 +92,10 @@ export async function poku(
         )
       ).flat(1);
 
-  if (!GLOBAL.configs.isolation)
-    GLOBAL.configs.isolation = testFiles.length > 1 ? 'worker' : 'process';
+  // if (!GLOBAL.configs.isolation)
+  //   GLOBAL.configs.isolation = testFiles.length > 1 ? 'worker' : 'process';
+
+  if (!GLOBAL.configs.isolation) GLOBAL.configs.isolation = 'worker';
 
   if (GLOBAL.configs.isolation === 'worker') {
     const ext = isBuild ? '.js' : '.ts';
@@ -104,6 +114,14 @@ export async function poku(
       GLOBAL.workerScript = workerScript;
       GLOBAL.workerExecArgv =
         !isBuild && GLOBAL.runtime === 'node' ? ['--import=tsx'] : undefined;
+
+      const concurrency = (() => {
+        if (GLOBAL.configs.sequential) return 1;
+        const limit = GLOBAL.configs.concurrency ?? availableParallelism();
+        return limit <= 0 ? testFiles.length || 1 : limit;
+      })();
+
+      initPool(concurrency, workerScript, GLOBAL.workerExecArgv, deepOptions);
     }
   }
 
@@ -111,6 +129,7 @@ export async function poku(
 
   const result = await runTests(testFiles);
 
+  await terminatePool();
   GLOBAL.workerScript = undefined;
   GLOBAL.workerExecArgv = undefined;
 

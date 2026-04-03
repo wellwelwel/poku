@@ -1,21 +1,19 @@
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
-import { workerData } from 'node:worker_threads';
+import { parentPort, workerData } from 'node:worker_threads';
 
-const { file, options } = workerData;
 const WORKER_EXIT = Object.freeze({ __workerExit: true });
 
-if (options) for (const opt of options as string[]) process.argv.push(opt);
+const isWorkerExit = (e: unknown): boolean =>
+  e !== null && typeof e === 'object' && '__workerExit' in e;
 
-process.exitCode = 0;
+const { options } = workerData ?? {};
+if (options) for (const opt of options as string[]) process.argv.push(opt);
 
 process.exit = ((code?: number): never => {
   process.exitCode = code ?? process.exitCode ?? 0;
   throw WORKER_EXIT;
 }) as typeof process.exit;
-
-const isWorkerExit = (e: unknown): boolean =>
-  e !== null && typeof e === 'object' && '__workerExit' in e;
 
 process.on('uncaughtException', (error) => {
   if (isWorkerExit(error)) return;
@@ -27,13 +25,17 @@ process.on('unhandledRejection', (reason) => {
   process.exitCode = 1;
 });
 
-(async () => {
+parentPort!.on('message', async (msg: { file: string }) => {
+  process.exitCode = 0;
+
   try {
-    await import(pathToFileURL(file).href);
+    await import(pathToFileURL(msg.file).href);
   } catch (error) {
     if (!isWorkerExit(error)) {
       process.exitCode = 1;
       console.error(error);
     }
   }
-})();
+
+  parentPort!.postMessage({ type: 'done', exitCode: process.exitCode ?? 0 });
+});
