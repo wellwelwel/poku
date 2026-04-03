@@ -14,12 +14,9 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "lint": "prettier --check .",
-    "lint:fix": "prettier --write .",
     "test:unit": "poku test/unit",
-    "test": "npm run typecheck && npm run lint && npm run test:unit && npm run clear && npm run build",
-    "update": "pu && npm i && npm update && (npm audit fix || true)",
-    "postupdate": "npm run lint:fix"
+    "test": "npm run typecheck && npm run test:unit && npm run clear && npm run build",
+    "update": "pu && npm i && npm update && (npm audit fix || true)"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.2",

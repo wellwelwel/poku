@@ -40,13 +40,10 @@
     "test:coverage": "npm test -- -c=.c8.ts",
     "test:docker:node": "bun test/ci.test.ts",
     "build": "bash scripts/build.sh",
-    "lint": "bash scripts/lint.sh",
-    "lint:fix": "bash scripts/lint-fix.sh",
     "update": "bash scripts/update.sh",
     "benchmark": "npm --prefix benchmark start"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.10",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@pokujs/c8": "^1.0.2",
     "@pokujs/docker": "^1.0.0",

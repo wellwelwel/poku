@@ -99,9 +99,6 @@ cd website
 # Installing dependencies
 npm ci
 
-# Fixing lint rules
-npm run lint:fix
-
 # Testing
 npm run test
 ```
@@ -137,17 +134,3 @@ The coverage target is **97%** for Unix-like systems and **95%** for Windows.
 ```sh
 npm run test:coverage
 ```
-
----
-
-### 👔 Lint
-
-```sh
-npm run lint
-```
-
-> Also
->
-> ```sh
-> npm run lint:fix
-> ```
