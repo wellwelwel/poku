@@ -86,7 +86,7 @@ export async function poku(
       ).flat(1);
 
   if (GLOBAL.configs.isolation === 'worker') {
-    const { WorkerPool } = await import('../../services/worker-pool.js');
+    const { createWorkerPool } = await import('../../services/worker-pool.js');
     const poolSize = GLOBAL.configs.sequential
       ? 1
       : (GLOBAL.configs.concurrency ?? availableParallelism());
@@ -94,8 +94,7 @@ export async function poku(
       __dirname,
       '../../services/worker-entry.js'
     );
-    GLOBAL.workerPool = new WorkerPool(poolSize, workerScript, {});
-    await GLOBAL.workerPool.init();
+    GLOBAL.workerPool = createWorkerPool(poolSize, workerScript, undefined);
   }
 
   if (showLogs) GLOBAL.reporter.onRunStart();

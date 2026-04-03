@@ -6,59 +6,53 @@ const port = parentPort!;
 
 const stdoutWrite = process.stdout.write.bind(process.stdout);
 const stderrWrite = process.stderr.write.bind(process.stderr);
-const originalExit = process.exit.bind(process);
 
-class WorkerExit {
-  code: number;
-  constructor(code: number) {
-    this.code = code;
-  }
-}
+const WORKER_EXIT = { code: 0 };
 
-const cleanup = () => {
-  process.stdout.write = stdoutWrite;
-  process.stderr.write = stderrWrite;
-  process.exitCode = 0;
+let outputChunks: string[] = [];
+let capturing = false;
+
+process.stdout.write = (
+  chunk: string | Uint8Array,
+  ..._args: unknown[]
+): boolean => {
+  if (capturing) outputChunks.push(String(chunk));
+  else stdoutWrite(chunk);
+  return true;
 };
+
+process.stderr.write = (
+  chunk: string | Uint8Array,
+  ..._args: unknown[]
+): boolean => {
+  if (capturing) outputChunks.push(String(chunk));
+  else stderrWrite(chunk);
+  return true;
+};
+
+process.exit = ((code?: number): never => {
+  WORKER_EXIT.code = code ?? 0;
+  throw WORKER_EXIT;
+}) as typeof process.exit;
 
 port.on('message', async (msg: { type: string; file: string; seq: number }) => {
   if (msg.type !== 'run') return;
 
-  cleanup();
-  const outputChunks: string[] = [];
-
-  process.stdout.write = (
-    chunk: string | Uint8Array,
-    ..._args: unknown[]
-  ): boolean => {
-    outputChunks.push(String(chunk));
-    return true;
-  };
-
-  process.stderr.write = (
-    chunk: string | Uint8Array,
-    ..._args: unknown[]
-  ): boolean => {
-    outputChunks.push(String(chunk));
-    return true;
-  };
-
-  process.exit = ((code?: number): never => {
-    throw new WorkerExit(code ?? 0);
-  }) as typeof process.exit;
+  outputChunks = [];
+  capturing = true;
+  process.exitCode = 0;
 
   let exitCode = 0;
   try {
     await import(`${pathToFileURL(msg.file).href}?t=${msg.seq}`);
   } catch (error) {
-    if (error instanceof WorkerExit) exitCode = error.code;
+    if (error === WORKER_EXIT) exitCode = WORKER_EXIT.code;
     else exitCode = 1;
   }
 
   if (process.exitCode !== 0) exitCode = process.exitCode as number;
 
-  process.exit = originalExit;
-  cleanup();
+  capturing = false;
 
   port.postMessage({
     type: 'result',

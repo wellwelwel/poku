@@ -2,118 +2,113 @@ import { Worker } from 'node:worker_threads';
 
 type WorkerResult = { file: string; exitCode: number; output: string };
 
-export class WorkerPool {
-  private size: number;
-  private workers: Worker[] = [];
-  private available: Worker[] = [];
-  private waitQueue: Array<(worker: Worker) => void> = [];
-  private seq = 0;
-  private workerScript: string;
-  private workerOptions: { execArgv?: string[] };
+export const createWorkerPool = (
+  maxSize: number,
+  workerScript: string,
+  execArgv: string[] | undefined
+) => {
+  let spawned = 0;
+  let seq = 0;
+  let destroyed = false;
+  const allWorkers: Worker[] = [];
+  const idle: Worker[] = [];
+  const waiters: Array<(worker: Worker) => void> = [];
 
-  constructor(
-    size: number,
-    workerScript: string,
-    workerOptions: { execArgv?: string[] }
-  ) {
-    this.size = size;
-    this.workerScript = workerScript;
-    this.workerOptions = workerOptions;
-  }
-
-  async init(): Promise<void> {
-    const ready: Promise<Worker>[] = [];
-    for (let i = 0; i < this.size; i++) ready.push(this.spawnWorker());
-    await Promise.all(ready);
-  }
-
-  private spawnWorker(): Promise<Worker> {
-    return new Promise((resolve) => {
-      const worker = new Worker(this.workerScript, {
-        execArgv: this.workerOptions.execArgv,
-      });
+  const spawnWorker = (): Promise<Worker> =>
+    new Promise((resolve) => {
+      const w = new Worker(workerScript, { execArgv });
+      ++spawned;
 
       const onReady = (msg: { type: string }) => {
-        if (msg.type === 'ready') {
-          worker.off('message', onReady);
-          this.workers.push(worker);
-          this.available.push(worker);
-          resolve(worker);
-        }
+        if (msg.type !== 'ready') return;
+        w.off('message', onReady);
+        allWorkers.push(w);
+        resolve(w);
       };
 
-      worker.on('message', onReady);
+      w.on('message', onReady);
     });
-  }
 
-  async runFile(file: string, timeout?: number): Promise<WorkerResult> {
-    const seq = ++this.seq;
-    const worker = await this.acquire();
-
-    return await new Promise((resolve) => {
-      let timer: ReturnType<typeof setTimeout> | undefined;
-
-      const done = () => {
-        worker.off('message', onMessage);
-        worker.removeAllListeners('exit');
-        if (timer) clearTimeout(timer);
-      };
-
-      const onMessage = (msg_1: WorkerResult & { type: string }) => {
-        if (msg_1.type !== 'result') return;
-        done();
-        this.release(worker);
-        resolve(msg_1);
-      };
-
-      const onExit = (code_1: number) => {
-        done();
-        this.replaceWorker(worker);
-        resolve({ file, exitCode: code_1 ?? 1, output: '' });
-      };
-
-      worker.once('exit', onExit);
-      worker.on('message', onMessage);
-
-      if (timeout) {
-        timer = setTimeout(() => {
-          done();
-          worker.terminate();
-          this.replaceWorker(worker);
-          resolve({ file, exitCode: 1, output: '' });
-        }, timeout);
-      }
-
-      worker.postMessage({ type: 'run', file, seq });
-    });
-  }
-
-  private acquire(): Promise<Worker> {
-    const w = this.available.pop();
-    if (w) return Promise.resolve(w);
-    return new Promise((resolve) => this.waitQueue.push(resolve));
-  }
-
-  private release(worker: Worker): void {
-    const waiter = this.waitQueue.shift();
+  const release = (worker: Worker): void => {
+    if (destroyed) return;
+    const waiter = waiters.shift();
     if (waiter) waiter(worker);
-    else this.available.push(worker);
-  }
+    else idle.push(worker);
+  };
 
-  private async replaceWorker(dead: Worker): Promise<void> {
-    const idx = this.workers.indexOf(dead);
-    if (idx !== -1) this.workers.splice(idx, 1);
-    const fresh = await this.spawnWorker();
-    this.release(fresh);
-  }
+  const removeWorker = (dead: Worker): void => {
+    const idx = allWorkers.indexOf(dead);
+    if (idx !== -1) allWorkers.splice(idx, 1);
+    --spawned;
+    if (waiters.length > 0) spawnWorker().then(release);
+  };
 
-  destroy(): void {
-    for (const w of this.workers) {
-      w.removeAllListeners();
-      w.terminate();
+  const acquire = (): Promise<Worker> => {
+    const w = idle.pop();
+    if (w) return Promise.resolve(w);
+    if (spawned < maxSize) return spawnWorker();
+    return new Promise((resolve) => {
+      waiters.push(resolve);
+    });
+  };
+
+  const runFile = (file: string, timeout?: number): Promise<WorkerResult> => {
+    const s = ++seq;
+
+    return acquire().then(
+      (worker) =>
+        new Promise((resolve) => {
+          let timer: ReturnType<typeof setTimeout> | undefined;
+
+          const cleanup = () => {
+            worker.off('message', onMessage);
+            worker.off('exit', onExit);
+            if (timer) clearTimeout(timer);
+          };
+
+          const onMessage = (msg: WorkerResult & { type: string }) => {
+            if (msg.type !== 'result') return;
+            cleanup();
+            release(worker);
+            resolve(msg);
+          };
+
+          const onExit = (code: number) => {
+            cleanup();
+            removeWorker(worker);
+            resolve({ file, exitCode: code ?? 1, output: '' });
+          };
+
+          worker.on('message', onMessage);
+          worker.once('exit', onExit);
+
+          if (timeout) {
+            timer = setTimeout(() => {
+              cleanup();
+              worker.terminate();
+              removeWorker(worker);
+              resolve({ file, exitCode: 1, output: '' });
+            }, timeout);
+          }
+
+          worker.postMessage({ type: 'run', file, seq: s });
+        })
+    );
+  };
+
+  const destroy = (): void => {
+    destroyed = true;
+    for (let i = 0; i < allWorkers.length; ++i) {
+      allWorkers[i].removeAllListeners();
+      allWorkers[i].terminate();
     }
-    this.workers = [];
-    this.available = [];
-    this.waitQueue = [];
-  }
-}
+    allWorkers.length = 0;
+    idle.length = 0;
+    waiters.length = 0;
+    spawned = 0;
+  };
+
+  return { runFile, destroy };
+};
+
+export type WorkerPool = ReturnType<typeof createWorkerPool>;
