@@ -3,6 +3,7 @@ import { hrtime } from 'node:process';
 import { deepOptions, GLOBAL } from '../configs/poku.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
+import { format } from './format.js';
 import { runInWorker } from './worker-pool.js';
 
 export const runTestInWorker = async (path: string): Promise<boolean> => {
@@ -15,7 +16,7 @@ export const runTestInWorker = async (path: string): Promise<boolean> => {
 
   reporter.onFileStart({ path: { relative: file, absolute: path } });
 
-  const { exitCode, output } = await runInWorker(
+  const { exitCode, output, timedOut } = await runInWorker(
     path,
     GLOBAL.workerScript!,
     GLOBAL.workerExecArgv,
@@ -24,11 +25,20 @@ export const runTestInWorker = async (path: string): Promise<boolean> => {
   );
 
   const end = hrtime(start);
-  const result = exitCode === 0;
+
+  const result = timedOut ? false : exitCode === 0;
 
   if (showLogs) {
     const total = end[0] * 1e3 + end[1] / 1e6;
-    const parsedOutputs = parserOutput({ output, result })?.join('\n');
+
+    const fullOutput = timedOut
+      ? `${output}${format(`● Timeout: test file exceeded ${configs.timeout}ms limit`).fail().bold()}`
+      : output;
+
+    const parsedOutputs = parserOutput({
+      output: fullOutput,
+      result,
+    })?.join('\n');
 
     reporter.onFileResult({
       status: result,

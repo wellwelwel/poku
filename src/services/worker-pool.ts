@@ -1,6 +1,6 @@
 import { Worker } from 'node:worker_threads';
 
-type WorkerResult = { exitCode: number; output: string };
+type WorkerResult = { exitCode: number; output: string; timedOut: boolean };
 
 export const runInWorker = (
   file: string,
@@ -36,7 +36,7 @@ export const runInWorker = (
       resolved = true;
       if (timer) clearTimeout(timer);
       outputChunks.push(String(error));
-      resolve({ exitCode: 1, output: outputChunks.join('') });
+      resolve({ exitCode: 1, output: outputChunks.join(''), timedOut: false });
     });
 
     w.once('exit', (code) => {
@@ -46,6 +46,7 @@ export const runInWorker = (
       resolve({
         exitCode: code ?? 1,
         output: outputChunks.join(''),
+        timedOut: false,
       });
     });
 
@@ -54,7 +55,11 @@ export const runInWorker = (
         if (!resolved) {
           resolved = true;
           w.terminate();
-          resolve({ exitCode: 1, output: outputChunks.join('') });
+          resolve({
+            exitCode: 1,
+            output: outputChunks.join(''),
+            timedOut: true,
+          });
         }
       }, timeout);
     }
