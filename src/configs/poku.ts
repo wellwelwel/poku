@@ -67,7 +67,6 @@ export const GLOBAL = {
   envFile: undefined as string | undefined,
   runtime: (env.POKU_RUNTIME || getRuntime()) as Runtime,
   runAsOnly: false,
-  workerPool: undefined as
-    | import('../services/worker-pool.js').WorkerPool
-    | undefined,
+  workerScript: undefined as string | undefined,
+  workerExecArgv: undefined as string[] | undefined,
 };

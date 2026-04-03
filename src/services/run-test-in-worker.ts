@@ -3,6 +3,7 @@ import { hrtime } from 'node:process';
 import { GLOBAL } from '../configs/poku.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
+import { runInWorker } from './worker-pool.js';
 
 export const runTestInWorker = async (path: string): Promise<boolean> => {
   const { cwd, configs, reporter } = GLOBAL;
@@ -14,8 +15,10 @@ export const runTestInWorker = async (path: string): Promise<boolean> => {
 
   reporter.onFileStart({ path: { relative: file, absolute: path } });
 
-  const { exitCode, output } = await GLOBAL.workerPool!.runFile(
+  const { exitCode, output } = await runInWorker(
     path,
+    GLOBAL.workerScript!,
+    GLOBAL.workerExecArgv,
     configs.timeout
   );
 

@@ -21,7 +21,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   if (
     configs.isolation === 'worker' &&
-    GLOBAL.workerPool &&
+    GLOBAL.workerScript &&
     !/\.[mc]?ts$/.test(path)
   ) {
     const { runTestInWorker } = await import('./run-test-in-worker.js');
