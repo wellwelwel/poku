@@ -31,6 +31,9 @@ process.on('unhandledRejection', (reason) => {
   try {
     await import(pathToFileURL(file).href);
   } catch (error) {
-    if (error !== WORKER_EXIT) process.exitCode = 1;
+    if (!isWorkerExit(error)) {
+      process.exitCode = 1;
+      console.error(error);
+    }
   }
 })();
