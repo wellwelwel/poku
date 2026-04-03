@@ -85,6 +85,9 @@ export async function poku(
         )
       ).flat(1);
 
+  if (!GLOBAL.configs.isolation)
+    GLOBAL.configs.isolation = testFiles.length > 1 ? 'worker' : 'process';
+
   if (GLOBAL.configs.isolation === 'worker') {
     const { createWorkerPool } = await import('../../services/worker-pool.js');
     const poolSize = GLOBAL.configs.sequential

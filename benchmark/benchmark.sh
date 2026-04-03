@@ -5,14 +5,14 @@ MODE=${1:-all}
 
 HR="\n---\n"
 
-BIN_POKU="node ./node_modules/poku/lib/bin/index.js --isolation=worker"
+BIN_POKU="node ./node_modules/poku/lib/bin/index.js"
 BIN_JEST="node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
 BIN_VITEST="node ./node_modules/vitest/vitest.mjs run"
 BIN_NODE="node --test"
 BIN_BUN="bun test"
-BIN_POKU_BUN="bun --bun ./node_modules/poku/lib/bin/index.js --isolation=worker"
+BIN_POKU_BUN="bun --bun ./node_modules/poku/lib/bin/index.js"
 BIN_DENO="deno test"
-BIN_POKU_DENO="deno run --allow-all ./node_modules/poku/lib/bin/index.js --isolation=worker"
+BIN_POKU_DENO="deno run --allow-all ./node_modules/poku/lib/bin/index.js"
 
 if [ "$MODE" = "all" ]; then
   rm -rf results
