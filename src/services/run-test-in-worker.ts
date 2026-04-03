@@ -14,20 +14,10 @@ export const runTestInWorker = async (path: string): Promise<boolean> => {
 
   reporter.onFileStart({ path: { relative: file, absolute: path } });
 
-  let exitCode: number;
-  let output: string;
-
-  try {
-    const workerResult = await GLOBAL.workerPool!.runFile(
-      path,
-      configs.timeout
-    );
-    exitCode = workerResult.exitCode;
-    output = workerResult.output;
-  } catch {
-    exitCode = 1;
-    output = '';
-  }
+  const { exitCode, output } = await GLOBAL.workerPool!.runFile(
+    path,
+    configs.timeout
+  );
 
   const end = hrtime(start);
   const result = exitCode === 0;
