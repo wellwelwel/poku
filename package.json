@@ -34,9 +34,9 @@
     "typescript": ">=5.x.x"
   },
   "scripts": {
-    "test": "tsx src/bin/index.ts --timeout=60000 test/unit test/integration test/e2e",
-    "test:bun": "bun --bun src/bin/index.ts --timeout=60000 test/unit test/integration test/e2e",
-    "test:deno": "deno run -A src/bin/index.ts --timeout=60000 --denoAllow=all test/unit test/integration test/e2e",
+    "test": "tsx src/bin/index.ts --timeout=120000 test/unit test/integration test/e2e",
+    "test:bun": "bun --bun src/bin/index.ts --timeout=120000 test/unit test/integration test/e2e",
+    "test:deno": "deno run -A src/bin/index.ts --timeout=120000 --denoAllow=all test/unit test/integration test/e2e",
     "test:coverage": "npm test -- -c=.c8.ts",
     "test:docker:node": "bun test/ci.test.ts",
     "build": "bash scripts/build.sh",

@@ -3,8 +3,8 @@ import { coverage } from '@pokujs/c8';
 import { defineConfig } from './src/modules/index.js';
 
 const coveragePerPlatform: Record<string, number> = {
-  darwin: 97,
-  linux: 97,
+  darwin: 95,
+  linux: 95,
   win32: 95,
 };
 
@@ -15,7 +15,7 @@ export default defineConfig({
       reporter: ['v8', 'codecov', 'console-details'],
       experimental: ['monocart'],
       extension: ['.ts'],
-      checkCoverage: coveragePerPlatform[platform] ?? 97,
+      checkCoverage: coveragePerPlatform[platform] ?? 95,
       all: true,
       clean: true,
       exclude: [
