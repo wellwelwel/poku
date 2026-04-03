@@ -1,0 +1,393 @@
+---
+sidebar_position: 1
+tags: [react, testing, dom, plugin, happy-dom, jsdom, metrics]
+---
+
+import { History } from '@site/src/components/History';
+import { Plugin } from '@site/src/components/Plugin';
+import { Stability } from '@site/src/components/Stability';
+
+# ⚛️ React
+
+Execute testes de componentes React com um ambiente DOM real — zero configuração, suporte automático a TSX e métricas de renderização opcionais.
+
+<Plugin repo='react' />
+
+<History
+  records={[
+    {
+      version: '1.2.0',
+      changes: [
+        <>
+          Refatoração dos internos do plugin e estabilização do suporte a{' '}
+          <code>isolation: none</code>.
+        </>,
+      ],
+    },
+    {
+      version: '1.1.0',
+      changes: [
+        <>Otimização do runtime de testes React e integração com Prettier.</>,
+      ],
+    },
+    {
+      version: '1.0.0',
+      changes: [<>Versão inicial.</>],
+    },
+  ]}
+/>
+
+## O que é `@pokujs/react`?
+
+**`@pokujs/react`** é um plugin para o [Poku](https://github.com/wellwelwel/poku) que permite renderizar e fazer asserções em componentes React diretamente nos testes. O plugin automaticamente:
+
+- Configura um ambiente DOM (happy-dom ou jsdom) por processo de teste.
+- Injeta o carregador de TSX/JSX para que arquivos `.tsx` e `.jsx` funcionem sem configuração extra.
+- Expõe os utilitários familiares do Testing Library (`render`, `screen`, `fireEvent`, `cleanup`, `act`, `renderHook`).
+- Coleta opcionalmente métricas de duração de renderização em toda a suíte.
+
+## Instalação
+
+```sh
+npm i -D @pokujs/react
+```
+
+Instale ao menos um adaptador DOM:
+
+<table>
+<tr>
+<td width="280">
+
+```bash
+# happy-dom (recomendado)
+npm i -D happy-dom \
+  @happy-dom/global-registrator
+```
+
+</td>
+<td width="240">
+
+```bash
+# jsdom
+npm i -D jsdom
+```
+
+</td>
+</tr>
+</table>
+
+## Habilitando o Plugin
+
+Adicione `reactTestingPlugin` ao seu arquivo de configuração do **Poku**:
+
+```js
+// poku.config.js
+import { reactTestingPlugin } from '@pokujs/react/plugin';
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  plugins: [
+    reactTestingPlugin({
+      dom: 'happy-dom',
+    }),
+  ],
+});
+```
+
+## Escrevendo Testes
+
+```tsx
+// tests/meu-componente.test.tsx
+import { cleanup, render, screen } from '@pokujs/react';
+import { afterEach, assert, test } from 'poku';
+
+afterEach(cleanup);
+
+test('renderiza um título', () => {
+  render(<h1>Olá</h1>);
+  assert.strictEqual(screen.getByRole('heading').textContent, 'Olá');
+});
+```
+
+Sem flags extras de tsconfig, sem configuração manual de loader — o plugin injeta tudo no início de cada processo de teste.
+
+---
+
+## Adaptadores DOM
+
+### `happy-dom` (padrão)
+
+Implementação DOM leve e rápida. Recomendada para a maioria dos testes de componentes.
+
+```js
+reactTestingPlugin({ dom: 'happy-dom' });
+```
+
+Requer `happy-dom` e `@happy-dom/global-registrator` como dependências de desenvolvimento.
+
+### `jsdom`
+
+Maior compatibilidade com APIs do navegador. Use quando precisar de APIs que o happy-dom ainda não implementa.
+
+```js
+reactTestingPlugin({ dom: 'jsdom' });
+```
+
+Requer `jsdom` como dependência de desenvolvimento.
+
+### Setup DOM personalizado
+
+Aponte para seu próprio módulo que configura `window`, `document` e outros globais:
+
+```js
+reactTestingPlugin({
+  dom: { setupModule: './tests/setup/custom.ts' },
+});
+```
+
+O módulo é importado antes da execução de cada processo de teste.
+
+---
+
+## Compatibilidade
+
+### Runtime × Adaptador DOM
+
+|                       | Node.js ≥ 20 | Bun ≥ 1 | Deno ≥ 2 |
+| --------------------- | :----------: | :-----: | :------: |
+| **happy-dom**         |      ✅      |   ✅    |    ✅    |
+| **jsdom**             |      ✅      |   ✅    |    ⚠️    |
+| **setup customizado** |      ✅      |   ✅    |    ✅    |
+
+:::note
+O `jsdom` no Deno pode ser instável dependendo da camada de compatibilidade npm do Deno na versão atual do `jsdom`. Para projetos Deno, prefira `happy-dom`.
+:::
+
+---
+
+## Opções do Plugin
+
+```ts
+reactTestingPlugin({
+  /**
+   * Adaptador DOM a ser utilizado.
+   * - 'happy-dom'     — rápido, recomendado para a maioria dos testes (padrão)
+   * - 'jsdom'         — maior cobertura de APIs do navegador
+   * - { setupModule } — caminho para um módulo de setup DOM personalizado
+   */
+  dom: 'happy-dom',
+
+  /** URL base atribuída ao ambiente DOM. Padrão: 'http://localhost:3000/' */
+  domUrl: 'http://localhost:3000/',
+
+  /**
+   * Métricas de renderização. Desativadas por padrão.
+   * Passe `true` para usar os padrões, ou um objeto para controle detalhado.
+   */
+  metrics: {
+    enabled: true,
+    topN: 5,
+    minDurationMs: 0,
+    reporter(summary) {
+      console.log(summary.topSlowest);
+    },
+  },
+});
+```
+
+---
+
+## Utilitários de Teste
+
+Todos os utilitários são exportados de `@pokujs/react`:
+
+```ts
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+} from '@pokujs/react';
+```
+
+### `render(ui, options?)`
+
+Renderiza um elemento React em um container gerenciado, adicionado ao `document.body`. Retorna queries DOM vinculadas ao container, além dos helpers `rerender` e `unmount`.
+
+```tsx
+const { getByText, rerender, unmount } = render(<Contador valorInicial={0} />);
+```
+
+**Opções:**
+
+| Opção         | Tipo            | Descrição                                                            |
+| ------------- | --------------- | -------------------------------------------------------------------- |
+| `container`   | `HTMLElement`   | Container personalizado. Criado automaticamente se omitido.          |
+| `baseElement` | `HTMLElement`   | Elemento ao qual as queries são vinculadas. Padrão: `document.body`. |
+| `wrapper`     | `ComponentType` | Envolve o elemento renderizado (ex.: provedores de contexto).        |
+| `disableAct`  | `boolean`       | Desativa o envolvimento com `act()` para renderizações assíncronas.  |
+
+### `screen`
+
+Queries vinculadas ao `document.body`. Todas as queries do Testing Library estão disponíveis.
+
+```tsx
+screen.getByRole('button', { name: /enviar/i });
+screen.queryAllByText('Erro');
+```
+
+### `fireEvent`
+
+Todos os métodos `fireEvent` do Testing Library, envolvidos em `act()` para que o estado do React seja atualizado de forma síncrona.
+
+```tsx
+fireEvent.click(screen.getByRole('button'));
+fireEvent.change(screen.getByRole('textbox'), { target: { value: 'olá' } });
+```
+
+### `cleanup()`
+
+Desmonta todos os roots renderizados e remove os containers do documento. Chame em `afterEach` para manter os testes isolados:
+
+```tsx
+import { cleanup } from '@pokujs/react';
+import { afterEach } from 'poku';
+
+afterEach(cleanup);
+```
+
+### `renderHook(hook, options?)`
+
+Renderiza um hook personalizado em um harness isolado e expõe `result.current`.
+
+```tsx
+const { result, rerender, unmount } = renderHook(
+  (props) => useContador(props.inicial),
+  { initialProps: { inicial: 0 } }
+);
+
+assert.equal(result.current.count, 0);
+```
+
+### `act`
+
+`act` do React re-exportado para orquestração assíncrona explícita quando você precisa forçar a atualização de estado fora de `render` ou `fireEvent`.
+
+---
+
+## Métricas de Renderização
+
+O plugin pode registrar o tempo de cada chamada `render()` e reportar os componentes mais lentos ao final da suíte.
+
+### Ativação rápida
+
+```js
+reactTestingPlugin({
+  dom: 'happy-dom',
+  metrics: true,
+});
+```
+
+Saída padrão ao final da suíte:
+
+```
+[poku-react-testing] Slowest component renders
+  - MeuComponentePesado in tests/pesado.test.tsx: 24.31ms
+  - OutroComponente in tests/lista.test.tsx: 11.07ms
+```
+
+### Controle detalhado
+
+```js
+reactTestingPlugin({
+  dom: 'happy-dom',
+  metrics: {
+    enabled: true,
+    topN: 10, // exibe os 10 renders mais lentos
+    minDurationMs: 5, // ignora renders mais rápidos que 5 ms
+    reporter(summary) {
+      // relatório personalizado — ex.: salvar em arquivo, enviar para métricas de CI
+      console.table(summary.topSlowest);
+    },
+  },
+});
+```
+
+**Estrutura de `ReactMetricsSummary`:**
+
+```ts
+type ReactMetricsSummary = {
+  totalCaptured: number; // total de renders registrados
+  totalReported: number; // renders que passaram pelos filtros
+  topSlowest: {
+    file: string;
+    componentName: string;
+    durationMs: number;
+  }[];
+};
+```
+
+---
+
+## Usando com `isolation: 'none'`
+
+Quando o Poku executa testes no mesmo processo (`isolation: 'none'`), o plugin:
+
+1. Registra o loader ESM do `tsx` no processo atual (somente Node.js).
+2. Importa o módulo de setup do DOM diretamente no processo corrente.
+3. Ignora o roteamento por IPC, pois todos os testes compartilham o mesmo processo.
+
+```js
+// poku.config.js
+export default defineConfig({
+  isolation: 'none',
+  plugins: [reactTestingPlugin({ dom: 'happy-dom' })],
+});
+```
+
+---
+
+## Setup DOM Personalizado
+
+Se você precisar de controle total sobre o setup do DOM — por exemplo, configurar globais personalizados ou mockar APIs do navegador — forneça um caminho de módulo:
+
+```ts
+// tests/setup/custom.ts
+import { GlobalRegistrator } from '@happy-dom/global-registrator';
+
+GlobalRegistrator.register({ url: 'http://localhost:3000/' });
+
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+```
+
+```js
+// poku.config.js
+reactTestingPlugin({
+  dom: { setupModule: './tests/setup/custom.ts' },
+});
+```
+
+---
+
+## Provedores de Contexto (Wrapper)
+
+Envolva componentes renderizados em um provedor usando a opção `wrapper`:
+
+```tsx
+import { render, screen } from '@pokujs/react';
+import { createContext, useContext } from 'react';
+
+const TemaContext = createContext('claro');
+
+const ProvedorTema = ({ children }) => (
+  <TemaContext.Provider value='escuro'>{children}</TemaContext.Provider>
+);
+
+const ExibirTema = () => <span>{useContext(TemaContext)}</span>;
+
+render(<ExibirTema />, { wrapper: ProvedorTema });
+
+assert.strictEqual(screen.getByText('escuro').textContent, 'escuro');
+```
