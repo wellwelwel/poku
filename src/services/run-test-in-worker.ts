@@ -1,6 +1,6 @@
 import { relative } from 'node:path';
 import { hrtime } from 'node:process';
-import { GLOBAL } from '../configs/poku.js';
+import { deepOptions, GLOBAL } from '../configs/poku.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
 import { runInWorker } from './worker-pool.js';
@@ -19,7 +19,8 @@ export const runTestInWorker = async (path: string): Promise<boolean> => {
     path,
     GLOBAL.workerScript!,
     GLOBAL.workerExecArgv,
-    configs.timeout
+    configs.timeout,
+    deepOptions
   );
 
   const end = hrtime(start);

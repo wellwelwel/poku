@@ -6,7 +6,8 @@ export const runInWorker = (
   file: string,
   workerScript: string,
   execArgv: string[] | undefined,
-  timeout?: number
+  timeout?: number,
+  options?: string[]
 ): Promise<WorkerResult> =>
   new Promise((resolve) => {
     const outputChunks: string[] = [];
@@ -14,7 +15,7 @@ export const runInWorker = (
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     const w = new Worker(workerScript, {
-      workerData: { file },
+      workerData: { file, options },
       execArgv,
       stdout: true,
       stderr: true,

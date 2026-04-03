@@ -2,8 +2,10 @@ import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { workerData } from 'node:worker_threads';
 
-const { file } = workerData;
+const { file, options } = workerData;
 const WORKER_EXIT = Object.freeze({ __workerExit: true });
+
+if (options) for (const opt of options as string[]) process.argv.push(opt);
 
 process.exitCode = 0;
 
