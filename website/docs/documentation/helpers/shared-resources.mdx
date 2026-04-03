@@ -3,10 +3,9 @@ sidebar_position: 11
 tags: [shared, state, resources, e2e, integration, plugin]
 ---
 
-import { FAQ } from '@site/src/components/FAQ';
 import { History } from '@site/src/components/History';
-import { Stability } from '@site/src/components/Stability';
 import { Plugin } from '@site/src/components/Plugin';
+import { Stability } from '@site/src/components/Stability';
 
 # 🪢 Shared Resources
 
@@ -16,6 +15,28 @@ Share state, servers, database connections, and more between parallel test files
 
 <History
   records={[
+    {
+      version: '1.1.1',
+      changes: [
+        <>
+          Fixed execution under <code>isolation: none</code> by forcing
+          in-process mode and skipping IPC wiring.
+        </>,
+      ],
+    },
+    {
+      version: '1.1.0',
+      changes: [
+        <>
+          Added reference mutation write-back through IPC for nested objects and
+          special types.
+        </>,
+        <>
+          Introduced the <strong>ArgCodec</strong> system with symbol tags,
+          built-in codecs, and configurable custom codecs.
+        </>,
+      ],
+    },
     {
       version: '3.0.3-canary.68e71482',
       changes: [
@@ -76,6 +97,24 @@ export default defineConfig({
 });
 ```
 
+You can also register custom codecs at plugin setup time:
+
+```ts
+// poku.config.ts
+import { sharedResources } from '@pokujs/shared-resources';
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  plugins: [
+    sharedResources({
+      codecs: [
+        // custom ArgCodec values
+      ],
+    }),
+  ],
+});
+```
+
 ## Basic Usage
 
 ### 1. Define a Resource Context
@@ -116,8 +155,8 @@ export const CounterContext = resource.create(() => ({
 Use `resource.use()` to get the resource:
 
 ```ts
-import { assert, test } from 'poku';
 import { resource } from '@pokujs/shared-resources';
+import { assert, test } from 'poku';
 import { CounterContext } from './counter';
 
 test('increment counter', async () => {
@@ -148,6 +187,18 @@ test('shared state across tests', async () => {
 });
 ```
 
+On `isolation: 'none'`, the plugin automatically switches to **in-process mode**.
+In this mode, methods are still exposed as async functions, but calls execute directly in the same process (no IPC).
+
+## Execution Modes
+
+The plugin chooses the execution mode from Poku isolation settings:
+
+- `isolation: 'process'` (or other process-based isolation) uses IPC mode.
+- `isolation: 'none'` uses in-process mode and skips IPC wiring.
+
+This means Shared Resources work consistently in both modes without additional configuration.
+
 ## Real-World Example
 
 Here's a complete example of two tests sharing a counter:
@@ -172,8 +223,8 @@ export const CounterContext = resource.create(() => ({
 **test-a.test.ts**
 
 ```ts
-import { assert, test } from 'poku';
 import { resource } from '@pokujs/shared-resources';
+import { assert, test } from 'poku';
 import { CounterContext } from './counter';
 
 test('Test A: Increment Counter', async () => {
@@ -194,8 +245,8 @@ test('Test A: Increment Counter', async () => {
 **test-b.test.ts**
 
 ```ts
-import { assert, test, waitForExpectedResult } from 'poku';
 import { resource } from '@pokujs/shared-resources';
+import { assert, test, waitForExpectedResult } from 'poku';
 import { CounterContext } from './counter';
 
 test('Test B: Verify Counter State', async () => {
@@ -223,8 +274,8 @@ When these tests run, they share the same counter instance. Test B sees the stat
 To perform an action when the resource is destroyed, use the `onDestroy` option:
 
 ```ts
-import { createConnection } from 'mysql2/promise';
 import { resource } from '@pokujs/shared-resources';
+import { createConnection } from 'mysql2/promise';
 
 export const DatabaseContext = resource.create(
   () =>
@@ -241,8 +292,8 @@ export const DatabaseContext = resource.create(
 
 ```ts
 import type { RowDataPacket } from 'mysql2/promise';
-import { assert, test } from 'poku';
 import { resource } from '@pokujs/shared-resources';
+import { assert, test } from 'poku';
 import { DatabaseContext } from './db.js';
 
 type QueryResult = RowDataPacket & {
@@ -267,7 +318,50 @@ Resources can be initialized asynchronously.
 
 ### Serialization
 
-Arguments and return values are serialized using JSON when communicated between processes. Circular references and non-serializable values (such as sockets, streams, and Buffers) are not supported. Class instances are reduced to their enumerable properties, losing their prototype chain. Keep your resource methods simple with basic types: strings, numbers, booleans, arrays, and plain objects.
+Arguments and return values are serialized through a codec pipeline.
+
+Built-in codecs support:
+
+- `undefined`
+- `bigint`
+- `Date`
+- `Map`
+- `Set`
+- Arrays and objects (including nested combinations)
+
+Class instances are serialized as own enumerable data properties by default.
+When values cross process boundaries, prototype chains are not reconstructed automatically.
+
+If you need custom reconstruction behavior, register an `ArgCodec`.
+
+### Custom Codecs (`ArgCodec`)
+
+Use codecs for custom types that cannot be represented faithfully by default JSON semantics.
+
+```ts
+import type { ArgCodec } from '@pokujs/shared-resources';
+import { resource } from '@pokujs/shared-resources';
+
+class Token {
+  constructor(public value: string) {}
+}
+
+const tokenCodec: ArgCodec<Token> = {
+  tag: Symbol.for('example:Token'),
+  is: (v): v is Token => v instanceof Token,
+  encode: (v) => ({ value: v.value }),
+  decode: (v) => new Token((v as { value: string }).value),
+};
+
+resource.configure({
+  codecs: [tokenCodec],
+});
+```
+
+`resource.configure({ codecs })` is the safest place to register codecs because resource modules are evaluated in both parent and child processes.
+
+`sharedResources({ codecs })` configures codecs in the parent process.
+Use both only when your setup requires it.
 
 ### Lazy Loading
 

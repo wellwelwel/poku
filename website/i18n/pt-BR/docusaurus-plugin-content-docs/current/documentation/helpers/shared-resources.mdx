@@ -1,15 +1,52 @@
 ---
 sidebar_position: 11
-tags: [shared, state, resources, e2e, integration]
+tags: [shared, state, resources, e2e, integration, plugin]
 ---
 
 import { History } from '@site/src/components/History';
+import { Plugin } from '@site/src/components/Plugin';
 import { Stability } from '@site/src/components/Stability';
 
 # 🪢 Recursos Compartilhados
 
+Compartilhe estado, servidores, conexões de banco de dados e mais entre arquivos de teste paralelos, sem setup duplicado e sem conflitos.
+
+<Plugin repo='shared-resources' />
+
 <History
   records={[
+    {
+      version: '1.1.1',
+      changes: [
+        <>
+          Corrigida a execução em <code>isolation: none</code> forçando o modo
+          in-process e pulando o wiring de IPC.
+        </>,
+      ],
+    },
+    {
+      version: '1.1.0',
+      changes: [
+        <>
+          Adicionado write-back de mutações por referência via IPC para objetos
+          aninhados e tipos especiais.
+        </>,
+        <>
+          Introduzido o sistema <strong>ArgCodec</strong> com tags de símbolo,
+          codecs embutidos e codecs customizados configuráveis.
+        </>,
+      ],
+    },
+    {
+      version: '3.0.3-canary.68e71482',
+      changes: [
+        <>
+          Migração de <strong>Recursos Compartilhados</strong> para um{' '}
+          <a href='https://github.com/pokujs/plugin-shared'>plugin dedicado</a>
+          .
+        </>,
+      ],
+    },
     {
       version: '3.0.3-canary.5b54775d',
       changes: [
@@ -30,10 +67,6 @@ import { Stability } from '@site/src/components/Stability';
   ]}
 />
 
-<Stability level={1} />
-
-Compartilhe estado e métodos entre arquivos de teste e processos, habilitando padrões avançados de testes de integração e end-to-end.
-
 ## O que são Recursos Compartilhados?
 
 **Recursos Compartilhados** permitem que você defina um recurso com estado uma vez e o acesse a partir de múltiplos arquivos de teste e processos. Cada teste obtém a mesma instância de recurso, permitindo que você:
@@ -44,20 +77,42 @@ Compartilhe estado e métodos entre arquivos de teste e processos, habilitando p
 
 O sistema de recursos lida automaticamente com comunicação entre processos, serialização e limpeza — para que você possa focar em escrever testes.
 
-## Habilitando Recursos Compartilhados
+## Instalação
 
-Para usar Recursos Compartilhados, passe a flag `--sharedResources` ao executar o **Poku**:
-
-```bash
-poku --sharedResources
+```sh
+npm i -D @pokujs/shared-resources
 ```
 
-Ou em um arquivo de configuração:
+## Habilitando o Plugin
 
-```json
-{
-  "sharedResources": true
-}
+Adicione o plugin no arquivo de configuração do **Poku**:
+
+```ts
+// poku.config.ts
+import { sharedResources } from '@pokujs/shared-resources';
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  plugins: [sharedResources()],
+});
+```
+
+Você também pode registrar codecs customizados no setup do plugin:
+
+```ts
+// poku.config.ts
+import { sharedResources } from '@pokujs/shared-resources';
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  plugins: [
+    sharedResources({
+      codecs: [
+        // valores ArgCodec customizados
+      ],
+    }),
+  ],
+});
 ```
 
 ## Uso Básico
@@ -68,7 +123,7 @@ Crie um arquivo de recurso usando `resource.create()`:
 
 ```ts
 // counter.ts
-import { resource } from 'poku';
+import { resource } from '@pokujs/shared-resources';
 
 export const CounterContext = resource.create(() => ({
   count: 0,
@@ -100,7 +155,8 @@ export const CounterContext = resource.create(() => ({
 Use `resource.use()` para obter o recurso:
 
 ```ts
-import { test, assert, resource } from 'poku';
+import { resource } from '@pokujs/shared-resources';
+import { assert, test } from 'poku';
 import { CounterContext } from './counter';
 
 test('incrementar contador', async () => {
@@ -131,6 +187,18 @@ test('estado compartilhado entre testes', async () => {
 });
 ```
 
+Em `isolation: 'none'`, o plugin muda automaticamente para **modo in-process**.
+Nesse modo, os métodos continuam sendo expostos como funções assíncronas, mas as chamadas executam diretamente no mesmo processo (sem IPC).
+
+## Modos de Execução
+
+O plugin escolhe o modo de execução com base nas configurações de isolamento do Poku:
+
+- `isolation: 'process'` (ou outro isolamento baseado em processo) usa modo IPC.
+- `isolation: 'none'` usa modo in-process e ignora o wiring de IPC.
+
+Isso significa que Recursos Compartilhados funcionam de forma consistente nos dois modos sem configuração adicional.
+
 ## Exemplo do Mundo Real
 
 Aqui está um exemplo completo de dois testes compartilhando um contador:
@@ -138,7 +206,7 @@ Aqui está um exemplo completo de dois testes compartilhando um contador:
 **counter.ts**
 
 ```ts
-import { resource } from 'poku';
+import { resource } from '@pokujs/shared-resources';
 
 export const CounterContext = resource.create(() => ({
   count: 0,
@@ -155,7 +223,8 @@ export const CounterContext = resource.create(() => ({
 **test-a.test.ts**
 
 ```ts
-import { assert, test, resource } from 'poku';
+import { resource } from '@pokujs/shared-resources';
+import { assert, test } from 'poku';
 import { CounterContext } from './counter';
 
 test('Test A: Incrementar Contador', async () => {
@@ -165,14 +234,19 @@ test('Test A: Incrementar Contador', async () => {
   assert.strictEqual(current, 0, 'Deve iniciar em 0');
 
   await counter.increment();
-  assert.strictEqual(await counter.getCount(), 1, 'Deve ser 1 após incremento');
+  assert.strictEqual(
+    await counter.getCount(),
+    1,
+    'Deve ser 1 após incremento'
+  );
 });
 ```
 
 **test-b.test.ts**
 
 ```ts
-import { assert, test, resource, waitForExpectedResult } from 'poku';
+import { resource } from '@pokujs/shared-resources';
+import { assert, test, waitForExpectedResult } from 'poku';
 import { CounterContext } from './counter';
 
 test('Test B: Verificar Estado do Contador', async () => {
@@ -183,7 +257,11 @@ test('Test B: Verificar Estado do Contador', async () => {
   await waitForExpectedResult(counter.getCount, 1);
 
   await counter.increment();
-  assert.strictEqual(await counter.getCount(), 2, 'Deve ser 2 após incremento');
+  assert.strictEqual(
+    await counter.getCount(),
+    2,
+    'Deve ser 2 após incremento'
+  );
 });
 ```
 
@@ -197,7 +275,7 @@ Para executar uma ação quando o recurso é destruído, use a opção `onDestro
 
 ```ts
 import { createConnection } from 'mysql2/promise';
-import { resource } from 'poku';
+import { resource } from '@pokujs/shared-resources';
 
 export const DatabaseContext = resource.create(
   () =>
@@ -214,7 +292,8 @@ export const DatabaseContext = resource.create(
 
 ```ts
 import type { RowDataPacket } from 'mysql2/promise';
-import { test, assert, resource } from 'poku';
+import { resource } from '@pokujs/shared-resources';
+import { assert, test } from 'poku';
 import { DatabaseContext } from './db.js';
 
 type QueryResult = RowDataPacket & {
@@ -239,7 +318,50 @@ Recursos podem ser inicializados de forma assíncrona.
 
 ### Serialização
 
-Argumentos e valores de retorno são serializados usando JSON quando comunicados entre processos. Referências circulares e valores não serializáveis (como sockets, streams e Buffers) não são suportados. Instâncias de classes são reduzidas às suas propriedades enumeráveis, perdendo sua cadeia de protótipos. Mantenha seus métodos de recurso simples com tipos básicos: strings, números, booleanos, arrays e objetos simples.
+Argumentos e valores de retorno são serializados por um pipeline de codecs.
+
+Os codecs embutidos dão suporte a:
+
+- `undefined`
+- `bigint`
+- `Date`
+- `Map`
+- `Set`
+- Arrays e objetos (incluindo combinações aninhadas)
+
+Instâncias de classe são serializadas como propriedades de dados próprias e enumeráveis por padrão.
+Quando os valores atravessam fronteiras de processo, cadeias de protótipo não são reconstruídas automaticamente.
+
+Se você precisa de um comportamento de reconstrução customizado, registre um `ArgCodec`.
+
+### Codecs Customizados (`ArgCodec`)
+
+Use codecs para tipos customizados que não podem ser representados fielmente pela semântica JSON padrão.
+
+```ts
+import type { ArgCodec } from '@pokujs/shared-resources';
+import { resource } from '@pokujs/shared-resources';
+
+class Token {
+  constructor(public value: string) {}
+}
+
+const tokenCodec: ArgCodec<Token> = {
+  tag: Symbol.for('example:Token'),
+  is: (v): v is Token => v instanceof Token,
+  encode: (v) => ({ value: v.value }),
+  decode: (v) => new Token((v as { value: string }).value),
+};
+
+resource.configure({
+  codecs: [tokenCodec],
+});
+```
+
+`resource.configure({ codecs })` é o local mais seguro para registrar codecs, porque módulos de recurso são avaliados tanto no processo pai quanto nos processos filhos.
+
+`sharedResources({ codecs })` configura codecs no processo pai.
+Use ambos apenas quando seu setup exigir.
 
 ### Carregamento Preguiçoso
 
