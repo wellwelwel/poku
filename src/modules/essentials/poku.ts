@@ -95,7 +95,7 @@ export async function poku(
 
     const workerEntry = `../../services/worker-entry${ext}`;
     const workerScript =
-      typeof __dirname !== 'undefined'
+      typeof __dirname === 'string'
         ? resolve(__dirname, workerEntry)
         : undefined;
 

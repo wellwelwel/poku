@@ -28,7 +28,7 @@ export const results = {
 
 export const VERSION = '';
 
-export const isBuild = VERSION !== '';
+export const isBuild = Boolean(VERSION);
 
 export const deepOptions: string[] = [];
 
