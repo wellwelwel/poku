@@ -15,18 +15,34 @@ export const createWorkerPool = (
   const waiters: Array<(worker: Worker) => void> = [];
 
   const spawnWorker = (): Promise<Worker> =>
-    new Promise((resolve) => {
-      const w = new Worker(workerScript, { execArgv });
+    new Promise((resolve, reject) => {
+      let w: Worker;
+
+      try {
+        w = new Worker(workerScript, { execArgv });
+      } catch (error) {
+        reject(error);
+        return;
+      }
+
       ++spawned;
 
       const onReady = (msg: { type: string }) => {
         if (msg.type !== 'ready') return;
         w.off('message', onReady);
+        w.off('error', onError);
         allWorkers.push(w);
         resolve(w);
       };
 
+      const onError = (error: Error) => {
+        w.off('message', onReady);
+        --spawned;
+        reject(error);
+      };
+
       w.on('message', onReady);
+      w.on('error', onError);
     });
 
   const release = (worker: Worker): void => {
