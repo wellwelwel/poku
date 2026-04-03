@@ -129,7 +129,6 @@ export async function poku(
 
   const result = await runTests(testFiles);
 
-  await terminatePool();
   GLOBAL.workerScript = undefined;
   GLOBAL.workerExecArgv = undefined;
 
@@ -143,6 +142,8 @@ export async function poku(
   if (showLogs) GLOBAL.reporter.onRunResult({ code, timespan, results });
 
   if (!GLOBAL.configs.noExit) exit(code, GLOBAL.configs.quiet);
+
+  await terminatePool();
 
   if (plugins?.length && pluginContext) {
     for (const plugin of plugins)

@@ -54,7 +54,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasBun &&
     (await it('Bun', async () => {
       const output = await inspectCLI(
-        'bun src/bin/index.ts test/__fixtures__/e2e/extensions -d'
+        'bun --bun src/bin/index.ts test/__fixtures__/e2e/extensions -d'
       );
 
       if (output.exitCode !== 0) {
