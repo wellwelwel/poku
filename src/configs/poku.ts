@@ -28,6 +28,8 @@ export const results = {
 
 export const VERSION = '';
 
+export const isBuild = VERSION !== '';
+
 export const deepOptions: string[] = [];
 
 export const GLOBAL = {

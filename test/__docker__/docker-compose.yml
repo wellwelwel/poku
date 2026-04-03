@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   node-16:
     container_name: 'node-16'

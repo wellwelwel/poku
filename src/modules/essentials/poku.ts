@@ -1,9 +1,9 @@
 import type { Code } from '../../@types/code.js';
 import type { PokuPlugin } from '../../@types/plugin.js';
 import type { Configs, PluginContext } from '../../@types/poku.js';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
-import { GLOBAL, results, timespan, VERSION } from '../../configs/poku.js';
+import { GLOBAL, isBuild, results, timespan } from '../../configs/poku.js';
 import { availableParallelism } from '../../polyfills/os.js';
 import { reporter } from '../../services/reporter.js';
 import { runTests } from '../../services/run-tests.js';
@@ -90,16 +90,16 @@ export async function poku(
     const poolSize = GLOBAL.configs.sequential
       ? 1
       : (GLOBAL.configs.concurrency ?? availableParallelism());
-    const isBuild = VERSION !== '';
+
     const ext = isBuild ? '.js' : '.ts';
 
-    let workerScript: string | undefined;
+    const workerEntry = `../../services/worker-entry${ext}`;
+    const workerScript =
+      typeof __dirname !== 'undefined'
+        ? resolve(__dirname, workerEntry)
+        : undefined;
 
-    try {
-      workerScript = require.resolve(`../../services/worker-entry${ext}`);
-    } catch {}
-
-    if (workerScript) {
+    if (workerScript !== undefined) {
       const execArgv =
         !isBuild && GLOBAL.runtime === 'node' ? ['--import=tsx'] : undefined;
       GLOBAL.workerPool = createWorkerPool(poolSize, workerScript, execArgv);
