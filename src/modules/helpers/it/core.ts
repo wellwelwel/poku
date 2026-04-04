@@ -1,9 +1,8 @@
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { each } from '../../../configs/each.js';
-import { errorScope } from '../../../configs/error-scope.js';
 import { indentation } from '../../../configs/indentation.js';
-import { GLOBAL } from '../../../configs/poku.js';
+import { errorHoist, GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
@@ -40,7 +39,7 @@ export const itBase = async (
       if (beforeResult instanceof Promise) await beforeResult;
     }
 
-    const insideDescribe = errorScope.depth > 0;
+    const insideDescribe = errorHoist.depth > 0;
 
     let onError: ((error: unknown) => void) | undefined;
 
@@ -53,7 +52,7 @@ export const itBase = async (
 
       process.once('uncaughtException', onError);
       process.once('unhandledRejection', onError);
-    } else errorScope.failed = false;
+    } else errorHoist.failed = false;
 
     start = process.hrtime();
 
@@ -70,9 +69,9 @@ export const itBase = async (
       if (onError) {
         process.removeListener('uncaughtException', onError);
         process.removeListener('unhandledRejection', onError);
-      } else if (errorScope.failed) {
+      } else if (errorHoist.failed) {
         success = false;
-        errorScope.failed = false;
+        errorHoist.failed = false;
       }
     }
 

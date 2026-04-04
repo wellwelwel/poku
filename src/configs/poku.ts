@@ -19,6 +19,11 @@ export const timespan: Timespan = {
   duration: 0,
 };
 
+export const errorHoist = {
+  depth: 0,
+  failed: false,
+};
+
 export const results = {
   passed: 0,
   failed: 0,
