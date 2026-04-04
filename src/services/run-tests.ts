@@ -31,18 +31,20 @@ export const runTests = async (inputFiles: string[]): Promise<boolean> => {
   let files: string[];
 
   if (concurrency > 1 && totalFiles > 1) {
-    const sizes = await Promise.all(
-      inputFiles.map(async (f) => {
+    const fileSizes = await Promise.all(
+      inputFiles.map(async (filePath) => {
         try {
-          return (await stat(f)).size;
+          return (await stat(filePath)).size;
         } catch {
           return 0;
         }
       })
     );
-    const indexed = inputFiles.map((f, i) => [f, sizes[i]] as const);
-    indexed.sort((a, b) => b[1] - a[1]);
-    files = indexed.map((x) => x[0]);
+
+    files = inputFiles
+      .map((filePath, i) => ({ filePath, size: fileSizes[i] }))
+      .sort((a, b) => b.size - a.size)
+      .map((entry) => entry.filePath);
   } else {
     files = inputFiles;
   }

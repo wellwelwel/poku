@@ -75,16 +75,7 @@ const getAllFilesInner = async (
 
       const fullPath = join(dirPath, entry.name);
 
-      if (exclude) {
-        let excluded = false;
-        for (const pattern of exclude) {
-          if (pattern.test(fullPath)) {
-            excluded = true;
-            break;
-          }
-        }
-        if (excluded) continue;
-      }
+      if (exclude?.some((pattern) => pattern.test(fullPath))) continue;
 
       if (entry.isFile()) {
         if (filter.test(fullPath)) files.add(fullPath);

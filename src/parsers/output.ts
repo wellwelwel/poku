@@ -31,14 +31,14 @@ export const parserOutput = (options: { output: string; result: boolean }) => {
   const isDebugOrFailed = GLOBAL.configs.debug || !result;
   const outputs: string[] = [];
 
-  let start = 0;
+  let offset = 0;
 
-  while (start < output.length) {
-    const end = output.indexOf('\n', start);
-    const lineEnd = end === -1 ? output.length : end;
+  while (offset < output.length) {
+    const nextNewline = output.indexOf('\n', offset);
+    const lineEnd = nextNewline === -1 ? output.length : nextNewline;
 
-    if (lineEnd > start) {
-      const line = output.substring(start, lineEnd);
+    if (lineEnd > offset) {
+      const line = output.substring(offset, lineEnd);
 
       if (line.includes(SKIP_MARKER)) results.skipped++;
       if (line.includes(TODO_MARKER)) results.todo++;
@@ -53,7 +53,7 @@ export const parserOutput = (options: { output: string; result: boolean }) => {
       }
     }
 
-    start = lineEnd + 1;
+    offset = lineEnd + 1;
   }
 
   if (outputs.length === 0) return;
