@@ -41,36 +41,39 @@ const getAllFilesInner = async (
   exclude: RegExp[] | undefined
 ): Promise<Set<string>> => {
   try {
-    const sanitized = sanitizePath(dirPath);
-    const stat = await fsStat(sanitized);
+    const stat = await fsStat(dirPath);
 
     if (stat.isFile()) {
+      const fullPath = sanitizePath(dirPath);
+
       if (
-        sanitized.indexOf('node_modules') !== -1 ||
-        sanitized.indexOf('.git/') !== -1
+        fullPath.indexOf('node_modules') !== -1 ||
+        fullPath.indexOf('.git/') !== -1
       )
         return files;
 
       if (states?.isSinglePath) {
-        files.add(sanitized);
+        files.add(fullPath);
         return files;
       }
 
       if (exclude)
-        for (const pattern of exclude)
-          if (pattern.test(sanitized)) return files;
+        for (const pattern of exclude) if (pattern.test(fullPath)) return files;
 
-      if (filter.test(sanitized)) files.add(sanitized);
+      if (filter.test(fullPath)) files.add(fullPath);
 
       return files;
     }
 
-    const entries = await readdir(sanitized, { recursive: true });
+    const entries = await readdir(sanitizePath(dirPath), {
+      withFileTypes: true,
+    });
+    const subdirs: Promise<Set<string>>[] = [];
 
     for (const entry of entries) {
-      if (entry.includes('node_modules') || entry.includes('.git')) continue;
+      if (entry.name === 'node_modules' || entry.name === '.git') continue;
 
-      const fullPath = join(dirPath, entry);
+      const fullPath = join(dirPath, entry.name);
 
       if (exclude) {
         let excluded = false;
@@ -83,8 +86,14 @@ const getAllFilesInner = async (
         if (excluded) continue;
       }
 
-      if (filter.test(fullPath)) files.add(fullPath);
+      if (entry.isFile()) {
+        if (filter.test(fullPath)) files.add(fullPath);
+      } else if (entry.isDirectory()) {
+        subdirs.push(getAllFilesInner(fullPath, files, filter, exclude));
+      }
     }
+
+    if (subdirs.length > 0) await Promise.all(subdirs);
 
     return files;
   } catch (error) {
