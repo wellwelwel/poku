@@ -202,5 +202,5 @@ import { hr, log } from '../services/write.js';
     import('./watch.js').then((mod) => {
       mod.startWatch(dirs);
     });
-  else setImmediate(() => exit());
+  else setImmediate(exit);
 })();
