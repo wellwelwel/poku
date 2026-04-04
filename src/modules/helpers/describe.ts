@@ -43,8 +43,8 @@ export const describeBase = async (
   };
 
   errorHoist.depth++;
-  process.on('uncaughtException', onError);
-  process.on('unhandledRejection', onError);
+  process.once('uncaughtException', onError);
+  process.once('unhandledRejection', onError);
 
   start = process.hrtime();
 
