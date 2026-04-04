@@ -123,10 +123,11 @@ const checkValues = async (): Promise<void> => {
   if (
     isolationValue &&
     isolationValue !== 'none' &&
-    isolationValue !== 'process'
+    isolationValue !== 'process' &&
+    isolationValue !== 'worker'
   )
     errors.push(
-      `--isolation: "${isolationValue}" is not valid. Available: none, process.`
+      `--isolation: "${isolationValue}" is not valid. Available: none, process, worker.`
     );
 
   const reporterValue = getArg('reporter') ?? getArg('r', '-');

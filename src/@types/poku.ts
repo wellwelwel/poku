@@ -57,11 +57,12 @@ export type Configs = {
    * Controls process isolation for test files.
    *
    * - `'process'` (default): each test file runs in a separate child process.
+   * - `'worker'`: each test file runs in a worker thread (reusable pool). Faster than process but not available on Deno.
    * - `'none'`: all test files run in the same process (useful for debugging with `--inspect`).
    *
    * @default 'process'
    */
-  isolation?: 'none' | 'process' | (string & NonNullable<unknown>);
+  isolation?: 'none' | 'process' | 'worker' | (string & NonNullable<unknown>);
   /**
    * Stops the tests at the first failure.
    *

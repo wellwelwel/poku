@@ -58,7 +58,7 @@
       "type": "string",
       "description": "Controls process isolation for test files.\nhttps://poku.io/docs/documentation/poku/options/isolation",
       "default": "process",
-      "enum": ["none", "process"]
+      "enum": ["none", "process", "worker"]
     },
     "envFile": {
       "type": "string",

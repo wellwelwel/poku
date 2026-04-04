@@ -1,4 +1,4 @@
-import { exit } from 'node:process';
+import process from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
 import { CheckNoOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
@@ -51,7 +51,7 @@ export async function onlyDescribe(
 ): Promise<void> {
   if (!hasOnly) {
     log(format("Can't run `describe.only` tests without `--only` flag").fail());
-    exit(1);
+    process.exit(1);
   }
 
   const noItOnly = CheckNoOnly(
@@ -82,7 +82,7 @@ export async function onlyIt(
         "Can't run `it.only` and `test.only` tests without `--only` flag"
       ).fail()
     );
-    exit(1);
+    process.exit(1);
   }
 
   if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);

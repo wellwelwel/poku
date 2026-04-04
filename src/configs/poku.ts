@@ -33,6 +33,8 @@ export const results = {
 
 export const VERSION = '';
 
+export const isBuild = Boolean(VERSION);
+
 export const deepOptions: string[] = [];
 
 export const GLOBAL = {

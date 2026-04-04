@@ -34,8 +34,8 @@
     "typescript": ">=5.x.x"
   },
   "scripts": {
-    "test": "tsx src/bin/index.ts test/unit test/integration test/e2e",
-    "test:bun": "bun src/bin/index.ts test/unit test/integration test/e2e",
+    "test": "tsx src/bin/index.ts --timeout=30000 test/unit test/integration test/e2e",
+    "test:bun": "bun src/bin/index.ts --timeout=30000 test/unit test/integration test/e2e",
     "test:deno": "deno run -A src/bin/index.ts --denoAllow=all test/unit test/integration test/e2e",
     "test:coverage": "npm test -- -c=.c8.ts",
     "test:docker:node": "bun test/ci.test.ts",

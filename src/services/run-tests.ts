@@ -1,5 +1,5 @@
 import { relative } from 'node:path';
-import { exit } from 'node:process';
+import process from 'node:process';
 import { deepOptions, GLOBAL, results } from '../configs/poku.js';
 import { hasOnly } from '../parsers/get-arg.js';
 import { availableParallelism } from '../polyfills/os.js';
@@ -62,7 +62,7 @@ export const runTests = (files: string[]): Promise<boolean> => {
           hr();
         }
 
-        exit(1);
+        process.exit(1);
       }
     }
 
