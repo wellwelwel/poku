@@ -36,9 +36,13 @@ export const runTestFile = async (path: string): Promise<boolean> => {
   const file = relative(cwd, path);
   const showLogs = !configs.quiet;
   const outputChunks: string[] = [];
+  let outputSize = 0;
 
   const stdOut = (data: string): void => {
-    outputChunks.push(data);
+    if (outputSize < 10_485_760) {
+      outputChunks.push(data);
+      outputSize += data.length;
+    }
   };
 
   const start = hrtime();
