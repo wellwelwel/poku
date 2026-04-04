@@ -1,3 +1,4 @@
+import { stat } from 'node:fs/promises';
 import { relative } from 'node:path';
 import { exit } from 'node:process';
 import { deepOptions, GLOBAL, results } from '../configs/poku.js';
@@ -11,7 +12,7 @@ const { cwd } = GLOBAL;
 
 if (hasOnly) deepOptions.push('--only');
 
-export const runTests = (files: string[]): Promise<boolean> => {
+export const runTests = async (inputFiles: string[]): Promise<boolean> => {
   let allPassed = true;
   let activeTests = 0;
   let nextIndex = 0;
@@ -20,12 +21,31 @@ export const runTests = (files: string[]): Promise<boolean> => {
   const { configs } = GLOBAL;
   const showLogs = !configs.quiet;
   const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
-  const totalFiles = files.length;
+  const totalFiles = inputFiles.length;
   const concurrency: number = (() => {
     if (configs.sequential || configs.isolation === 'none') return 1;
     const limit = configs.concurrency ?? availableParallelism();
     return limit <= 0 ? totalFiles || 1 : limit;
   })();
+
+  let files: string[];
+
+  if (concurrency > 1 && totalFiles > 1) {
+    const sizes = await Promise.all(
+      inputFiles.map(async (f) => {
+        try {
+          return (await stat(f)).size;
+        } catch {
+          return 0;
+        }
+      })
+    );
+    const indexed = inputFiles.map((f, i) => [f, sizes[i]] as const);
+    indexed.sort((a, b) => b[1] - a[1]);
+    files = indexed.map((x) => x[0]);
+  } else {
+    files = inputFiles;
+  }
 
   const done = new Promise<boolean>((resolve) => {
     resolveDone = (passed: boolean) => {
