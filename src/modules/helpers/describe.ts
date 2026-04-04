@@ -2,7 +2,7 @@ import type { DescribeOptions } from '../../@types/describe.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { indentation } from '../../configs/indentation.js';
-import { GLOBAL } from '../../configs/poku.js';
+import { errorHoist, GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { getCallback, getTitle } from './it/core.js';
@@ -38,9 +38,13 @@ export const describeBase = async (
   const onError = (error: unknown): void => {
     process.exitCode = 1;
     success = false;
+    errorHoist.failed = true;
     if (!(error instanceof AssertionError)) console.error(error);
   };
 
+  const initialExitCode = process.exitCode;
+
+  errorHoist.depth++;
   process.once('uncaughtException', onError);
   process.once('unhandledRejection', onError);
 
@@ -56,6 +60,9 @@ export const describeBase = async (
 
     process.removeListener('uncaughtException', onError);
     process.removeListener('unhandledRejection', onError);
+    errorHoist.depth--;
+
+    if (process.exitCode !== initialExitCode) success = false;
   }
 
   if (!title) return;

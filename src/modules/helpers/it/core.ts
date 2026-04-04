@@ -2,7 +2,7 @@ import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
-import { GLOBAL } from '../../../configs/poku.js';
+import { errorHoist, GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
@@ -39,14 +39,20 @@ export const itBase = async (
       if (beforeResult instanceof Promise) await beforeResult;
     }
 
-    const onError = (error: unknown): void => {
-      process.exitCode = 1;
-      success = false;
-      if (!(error instanceof AssertionError)) console.error(error);
-    };
+    const insideDescribe = errorHoist.depth > 0;
 
-    process.once('uncaughtException', onError);
-    process.once('unhandledRejection', onError);
+    let onError: ((error: unknown) => void) | undefined;
+
+    if (!insideDescribe) {
+      onError = (error: unknown): void => {
+        process.exitCode = 1;
+        success = false;
+        if (!(error instanceof AssertionError)) console.error(error);
+      };
+
+      process.once('uncaughtException', onError);
+      process.once('unhandledRejection', onError);
+    } else errorHoist.failed = false;
 
     start = process.hrtime();
 
@@ -54,12 +60,19 @@ export const itBase = async (
       const resultCb = cb!();
       if (resultCb instanceof Promise) await resultCb;
     } catch (error) {
-      onError(error);
+      process.exitCode = 1;
+      success = false;
+      if (!(error instanceof AssertionError)) console.error(error);
     } finally {
       end = process.hrtime(start);
 
-      process.removeListener('uncaughtException', onError);
-      process.removeListener('unhandledRejection', onError);
+      if (onError) {
+        process.removeListener('uncaughtException', onError);
+        process.removeListener('unhandledRejection', onError);
+      } else if (errorHoist.failed) {
+        success = false;
+        errorHoist.failed = false;
+      }
     }
 
     if (typeof each.after.cb === 'function') {
