@@ -1,6 +1,7 @@
 import type { DescribeOptions } from '../../@types/describe.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
+import { errorScope } from '../../configs/error-scope.js';
 import { indentation } from '../../configs/indentation.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
@@ -38,11 +39,13 @@ export const describeBase = async (
   const onError = (error: unknown): void => {
     process.exitCode = 1;
     success = false;
+    errorScope.failed = true;
     if (!(error instanceof AssertionError)) console.error(error);
   };
 
-  process.once('uncaughtException', onError);
-  process.once('unhandledRejection', onError);
+  errorScope.depth++;
+  process.on('uncaughtException', onError);
+  process.on('unhandledRejection', onError);
 
   start = process.hrtime();
 
@@ -56,6 +59,7 @@ export const describeBase = async (
 
     process.removeListener('uncaughtException', onError);
     process.removeListener('unhandledRejection', onError);
+    errorScope.depth--;
   }
 
   if (!title) return;
