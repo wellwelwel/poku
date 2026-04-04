@@ -3,29 +3,17 @@ import type { PokuPlugin } from '../../@types/plugin.js';
 import type { Configs, PluginContext } from '../../@types/poku.js';
 import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
-import {
-  activeProcesses,
-  GLOBAL,
-  results,
-  timespan,
-} from '../../configs/poku.js';
+import { GLOBAL, results, timespan } from '../../configs/poku.js';
 import { reporter } from '../../services/reporter.js';
 import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
 
 export const onSigint = (): void => {
-  for (const pid of activeProcesses) {
-    try {
-      process.kill(pid, 'SIGTERM');
-    } catch {}
-  }
-  activeProcesses.clear();
   stdout.write('\u001B[?25h');
 };
 
 process.once('SIGINT', onSigint);
-process.once('SIGTERM', onSigint);
 
 export async function poku(
   targetPaths: string | string[],

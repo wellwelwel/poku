@@ -30,8 +30,6 @@ export const VERSION = '';
 
 export const deepOptions: string[] = [];
 
-export const activeProcesses = new Set<number>();
-
 export const GLOBAL = {
   cwd: cwd(),
   configs: {

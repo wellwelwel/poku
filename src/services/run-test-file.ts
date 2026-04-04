@@ -2,7 +2,7 @@ import type { StdioOptions } from 'node:child_process';
 import { spawn } from 'node:child_process';
 import { relative } from 'node:path';
 import { hrtime } from 'node:process';
-import { activeProcesses, deepOptions, GLOBAL } from '../configs/poku.js';
+import { deepOptions, GLOBAL } from '../configs/poku.js';
 import { runner } from '../parsers/get-runner.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
@@ -63,8 +63,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
       shell: false,
     });
 
-    if (child.pid) activeProcesses.add(child.pid);
-
     child.stdout!.setEncoding('utf8');
     child.stderr!.setEncoding('utf8');
     child.stdout!.on('data', stdOut);
@@ -90,7 +88,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     }
 
     child.on('close', async (code) => {
-      if (child.pid) activeProcesses.delete(child.pid);
       if (killTimer) clearTimeout(killTimer);
 
       end = hrtime(start);
@@ -126,7 +123,6 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     });
 
     child.on('error', (err) => {
-      if (child.pid) activeProcesses.delete(child.pid);
       if (killTimer) clearTimeout(killTimer);
 
       end = hrtime(start);
