@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-import { env } from 'node:process';
+import { env, exit } from 'node:process';
 import { GLOBAL, states, VERSION } from '../configs/poku.js';
 import { poku } from '../modules/essentials/poku.js';
 import { envFile } from '../modules/helpers/env.js';
@@ -202,4 +202,5 @@ import { hr, log } from '../services/write.js';
     import('./watch.js').then((mod) => {
       mod.startWatch(dirs);
     });
+  else setImmediate(() => exit());
 })();
