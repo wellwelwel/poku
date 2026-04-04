@@ -42,6 +42,8 @@ export const describeBase = async (
     if (!(error instanceof AssertionError)) console.error(error);
   };
 
+  const initialExitCode = process.exitCode;
+
   errorHoist.depth++;
   process.once('uncaughtException', onError);
   process.once('unhandledRejection', onError);
@@ -59,6 +61,8 @@ export const describeBase = async (
     process.removeListener('uncaughtException', onError);
     process.removeListener('unhandledRejection', onError);
     errorHoist.depth--;
+
+    if (process.exitCode !== initialExitCode) success = false;
   }
 
   if (!title) return;
