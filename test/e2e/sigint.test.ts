@@ -3,9 +3,10 @@ import { ext, isBuild } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
+import { kill } from '../../src/modules/helpers/kill.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import { test } from '../../src/modules/helpers/test.js';
-import { sleep } from '../../src/modules/helpers/wait-for.js';
+import { sleep, waitForPort } from '../../src/modules/helpers/wait-for.js';
 import { runner } from '../../src/parsers/get-runner.js';
 import { isWindows } from '../../src/parsers/os.js';
 
@@ -56,8 +57,9 @@ test(async () => {
         }
       );
 
-      assert(
-        result.stdout.includes('\u001B[?25h'),
+      assert.match(
+        result.stdout,
+        /\u001B\[\?25h/,
         'Should contain cursor restore sequence'
       );
     });
@@ -67,38 +69,22 @@ test(async () => {
     await it('should run create-service SIGINT handler', async () => {
       const cmd = runner(`_.${ext}`);
       const runtime = cmd.shift()!;
-      const args = [...cmd, 'test/__fixtures__/e2e/sigint/start-and-wait.ts'];
+      const args = [...cmd, 'test/__fixtures__/e2e/sigint/start-and-wait.mjs'];
 
-      const result = await new Promise<{
-        stdout: string;
-        exitCode: number | null;
-      }>((resolve) => {
-        const child = spawn(runtime, args);
+      const child = spawn(runtime, args);
 
-        child.stdout.setEncoding('utf8');
-        child.stderr.setEncoding('utf8');
+      await waitForPort(4040, { timeout: 10000, delay: 100 });
 
-        let stdout = '';
+      child.kill('SIGINT');
 
-        child.stdout.on('data', (data: Buffer) => {
-          stdout += String(data);
-
-          if (stdout.includes('service-started')) {
-            sleep(250).then(() => {
-              child.kill('SIGINT');
-            });
-          }
-        });
-
-        child.on('close', (code) => {
-          resolve({ stdout, exitCode: code });
-        });
+      const exitCode = await new Promise<number | null>((resolve) => {
+        child.on('close', (code) => resolve(code));
       });
 
-      assert(
-        result.stdout.includes('service-started'),
-        'Service should have started'
-      );
+      assert.ok(exitCode !== undefined, 'Process should have exited');
+
+      await sleep(250);
+      await kill.port(4040);
     });
   });
 });

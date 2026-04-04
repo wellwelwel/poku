@@ -1,4 +1,3 @@
-import type { Dirent } from 'node:fs';
 import type { Configs } from '../../@types/list-files.js';
 import { stat as fsStat, readdir } from 'node:fs/promises';
 import { join, sep } from 'node:path';
@@ -41,66 +40,57 @@ const getAllFilesInner = async (
   filter: RegExp,
   exclude: RegExp[] | undefined
 ): Promise<Set<string>> => {
-  let entries: Dirent[] | string[];
-  let isFullPath = false;
-
   try {
     const stat = await fsStat(dirPath);
 
     if (stat.isFile()) {
-      isFullPath = true;
-      entries = [sanitizePath(dirPath)];
-    } else
-      entries = await readdir(sanitizePath(dirPath), { withFileTypes: true });
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-
-  await Promise.all(
-    entries.map(async (entry) => {
-      if (isFullPath) {
-        const fullPath = entry as string;
-
-        if (
-          fullPath.indexOf('node_modules') !== -1 ||
-          fullPath.indexOf('.git/') !== -1
-        )
-          return;
-
-        if (states?.isSinglePath) {
-          files.add(fullPath);
-          return;
-        }
-
-        if (exclude)
-          for (const pattern of exclude) if (pattern.test(fullPath)) return;
-
-        if (filter.test(fullPath)) files.add(fullPath);
-
-        return;
-      }
-
-      const dirent = entry as Dirent;
-      const fullPath = join(dirPath, dirent.name);
+      const fullPath = sanitizePath(dirPath);
 
       if (
         fullPath.indexOf('node_modules') !== -1 ||
         fullPath.indexOf('.git/') !== -1
       )
-        return;
+        return files;
+
+      if (states?.isSinglePath) {
+        files.add(fullPath);
+        return files;
+      }
 
       if (exclude)
-        for (const pattern of exclude) if (pattern.test(fullPath)) return;
+        for (const pattern of exclude) if (pattern.test(fullPath)) return files;
 
-      if (dirent.isFile()) {
+      if (filter.test(fullPath)) files.add(fullPath);
+
+      return files;
+    }
+
+    const entries = await readdir(sanitizePath(dirPath), {
+      withFileTypes: true,
+    });
+    const subdirs: Promise<Set<string>>[] = [];
+
+    for (const entry of entries) {
+      if (entry.name === 'node_modules' || entry.name === '.git') continue;
+
+      const fullPath = join(dirPath, entry.name);
+
+      if (exclude?.some((pattern) => pattern.test(fullPath))) continue;
+
+      if (entry.isFile()) {
         if (filter.test(fullPath)) files.add(fullPath);
-      } else if (dirent.isDirectory())
-        await getAllFilesInner(fullPath, files, filter, exclude);
-    })
-  );
+      } else if (entry.isDirectory()) {
+        subdirs.push(getAllFilesInner(fullPath, files, filter, exclude));
+      }
+    }
 
-  return files;
+    if (subdirs.length > 0) await Promise.all(subdirs);
+
+    return files;
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
 };
 
 export const getAllFiles = (

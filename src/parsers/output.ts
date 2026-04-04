@@ -1,10 +1,8 @@
 import { GLOBAL, results } from '../configs/poku.js';
 
-const regex = {
-  ansi: /\x1b\[0m/,
-  skip: /\x1b\[94m\x1b\[1m◯/g,
-  todo: /\x1b\[96m\x1b\[1m●/g,
-} as const;
+const SKIP_MARKER = '\x1b[94m\x1b[1m◯';
+const TODO_MARKER = '\x1b[96m\x1b[1m●';
+const ANSI_RESET = '\x1b[0m';
 
 export const serialize = (value: unknown): unknown => {
   if (
@@ -29,24 +27,33 @@ export const serialize = (value: unknown): unknown => {
 export const parserOutput = (options: { output: string; result: boolean }) => {
   const { output, result } = options;
 
-  const hasSkip = output.match(regex.skip);
-  if (hasSkip) results.skipped += hasSkip.length;
-
-  const hasTodo = output.match(regex.todo);
-  if (hasTodo) results.todo += hasTodo.length;
-
   const pad = '  ';
   const isDebugOrFailed = GLOBAL.configs.debug || !result;
-  const splittedOutput = output.split('\n');
   const outputs: string[] = [];
 
-  for (const line of splittedOutput) {
-    if (!line || line.trim().length === 0) continue;
-    if (!isDebugOrFailed) {
-      if (line.indexOf('Exited with code') !== -1) continue;
-      if (!regex.ansi.test(line)) continue;
+  let offset = 0;
+
+  while (offset < output.length) {
+    const nextNewline = output.indexOf('\n', offset);
+    const lineEnd = nextNewline === -1 ? output.length : nextNewline;
+
+    if (lineEnd > offset) {
+      const line = output.substring(offset, lineEnd);
+
+      if (line.includes(SKIP_MARKER)) results.skipped++;
+      if (line.includes(TODO_MARKER)) results.todo++;
+
+      if (line.trim().length > 0) {
+        if (
+          isDebugOrFailed ||
+          (line.indexOf('Exited with code') === -1 && line.includes(ANSI_RESET))
+        ) {
+          outputs.push(`${pad}${line}`);
+        }
+      }
     }
-    outputs.push(`${pad}${line}`);
+
+    offset = lineEnd + 1;
   }
 
   if (outputs.length === 0) return;
