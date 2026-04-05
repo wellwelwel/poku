@@ -35,8 +35,9 @@ const formatTime = (mean, pokuMean) => {
 const getCategoryData = async (resultsDir, runners) => {
   let pokuMeanSum = 0;
   let pokuSha = '';
-  const runnerResults = [];
   let pokuCollected = false;
+
+  const runnerResults = [];
 
   for (const runner of runners) {
     let otherMeanSum = 0;
@@ -157,9 +158,9 @@ const output = [
   '',
   table,
   '',
-  `> **OS:** ${platform()} ${arch()}  `,
-  `> **CPU:** ${cpus()[0].model.trim()} (${cpus().length} cores)  `,
-  `> **RAM:** ${(totalmem() / 1024 ** 3).toFixed(2)} GB`,
+  `- **OS:** ${platform()} ${arch()}  `,
+  `- **CPU:** ${cpus()[0].model.trim()} (${cpus().length} cores)  `,
+  `- **RAM:** ${(totalmem() / 1024 ** 3).toFixed(2)} GB`,
   '',
   '---',
   '',
