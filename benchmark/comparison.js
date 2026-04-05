@@ -14,22 +14,19 @@ const scenarios = ['success', 'failure', 'balanced'];
 const latex = (color, value) =>
   '$' + '{' + `\\color{${color}}\\textsf{${value}}` + '}$';
 
-const formatDelta = (mean, pokuMean) => {
-  const deltaMs = Math.round((mean - pokuMean) * 1000);
-  if (deltaMs > 0) return `+${deltaMs}ms`;
-  if (deltaMs < 0) return `-${Math.abs(deltaMs)}ms`;
-  return '0ms';
-};
+const roundTo3 = (v) => Math.round(v * 1000) / 1000;
 
 const formatTime = (mean, pokuMean) => {
-  const time = `${mean.toFixed(3)}s`;
+  const rounded = roundTo3(mean);
+  const time = `${rounded.toFixed(3)}s`;
   if (pokuMean === undefined)
     return `${latex('gray', time)}<br>${latex('gray', '(baseline)')}`;
-  const deltaMs = Math.round((mean - pokuMean) * 1000);
+  const roundedPoku = roundTo3(pokuMean);
+  const deltaMs = Math.round((rounded - roundedPoku) * 1000);
   if (deltaMs > 0)
-    return `${latex('red', time)}<br>${latex('red', `(${formatDelta(mean, pokuMean)})`)}`;
+    return `${latex('red', time)}<br>${latex('red', `(+${deltaMs}ms)`)}`;
   if (deltaMs < 0)
-    return `${latex('green', time)}<br>${latex('green', `(${formatDelta(mean, pokuMean)})`)}`;
+    return `${latex('green', time)}<br>${latex('green', `(-${Math.abs(deltaMs)}ms)`)}`;
   return latex('gray', time);
 };
 
