@@ -26,10 +26,10 @@ const formatTime = (mean, pokuMean) => {
   const roundedPoku = roundTo3(pokuMean);
   const deltaMs = Math.round((rounded - roundedPoku) * 1000);
   if (deltaMs > 0)
-    return `${latex('red', time)}<br>${latex('red', `(+${deltaMs}ms)`)}`;
+    return `${plain(time)}<br>${latex('red', `(+${deltaMs}ms)`)}`;
   if (deltaMs < 0)
-    return `${latex('green', time)}<br>${latex('green', `(-${Math.abs(deltaMs)}ms)`)}`;
-  return latex('gray', time);
+    return `${plain(time)}<br>${latex('green', `(-${Math.abs(deltaMs)}ms)`)}`;
+  return plain(time);
 };
 
 const getCategoryData = async (resultsDir, runners) => {
