@@ -21,7 +21,8 @@ const roundTo3 = (v) => Math.round(v * 1000) / 1000;
 const formatTime = (mean, pokuMean) => {
   const rounded = roundTo3(mean);
   const time = `${rounded.toFixed(3)}s`;
-  if (pokuMean === undefined) return `${plain(time)}<br>${plain('(baseline)')}`;
+  if (pokuMean === undefined)
+    return `${plain(time)}<br>${latex('gray', '(baseline)')}`;
   const roundedPoku = roundTo3(pokuMean);
   const deltaMs = Math.round((rounded - roundedPoku) * 1000);
   if (deltaMs > 0)
