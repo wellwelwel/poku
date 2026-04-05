@@ -23,12 +23,12 @@ const formatDelta = (mean, pokuMean) => {
 const formatTime = (mean, pokuMean) => {
   const time = `${mean.toFixed(3)}s`;
   if (pokuMean === undefined)
-    return `${latex('gray', time)} ${latex('gray', '(baseline)')}`;
+    return `${latex('gray', time)}<br>${latex('gray', '(baseline)')}`;
   const deltaMs = Math.round((mean - pokuMean) * 1000);
   if (deltaMs > 0)
-    return `${latex('red', time)} ${latex('red', `(${formatDelta(mean, pokuMean)})`)}`;
+    return `${latex('red', time)}<br>${latex('red', `(${formatDelta(mean, pokuMean)})`)}`;
   if (deltaMs < 0)
-    return `${latex('green', time)} ${latex('green', `(${formatDelta(mean, pokuMean)})`)}`;
+    return `${latex('green', time)}<br>${latex('green', `(${formatDelta(mean, pokuMean)})`)}`;
   return latex('gray', time);
 };
 
@@ -157,9 +157,9 @@ const output = [
   '',
   table,
   '',
-  `> 🖥️ **OS:** ${platform()} ${arch()}  `,
-  `> 🔲 **CPU:** ${cpus()[0].model.trim()} (${cpus().length} cores)  `,
-  `> ⚡ **RAM:** ${(totalmem() / 1024 ** 3).toFixed(2)} GB`,
+  `> **OS:** ${platform()} ${arch()}  `,
+  `> **CPU:** ${cpus()[0].model.trim()} (${cpus().length} cores)  `,
+  `> **RAM:** ${(totalmem() / 1024 ** 3).toFixed(2)} GB`,
   '',
   '---',
   '',
