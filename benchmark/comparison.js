@@ -14,20 +14,21 @@ const scenarios = ['success', 'failure', 'balanced'];
 const latex = (color, value) =>
   '$' + '{' + `\\color{${color}}\\textsf{${value}}` + '}$';
 
+const plain = (value) => `$\\textsf{${value}}$`;
+
 const roundTo3 = (v) => Math.round(v * 1000) / 1000;
 
 const formatTime = (mean, pokuMean) => {
   const rounded = roundTo3(mean);
   const time = `${rounded.toFixed(3)}s`;
-  if (pokuMean === undefined)
-    return `${latex('gray', time)}<br>${latex('gray', '(baseline)')}`;
+  if (pokuMean === undefined) return `${plain(time)}<br>${plain('(baseline)')}`;
   const roundedPoku = roundTo3(pokuMean);
   const deltaMs = Math.round((rounded - roundedPoku) * 1000);
   if (deltaMs > 0)
     return `${latex('red', time)}<br>${latex('red', `(+${deltaMs}ms)`)}`;
   if (deltaMs < 0)
     return `${latex('green', time)}<br>${latex('green', `(-${Math.abs(deltaMs)}ms)`)}`;
-  return latex('gray', time);
+  return plain(time);
 };
 
 const getCategoryData = async (resultsDir, runners) => {
