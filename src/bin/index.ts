@@ -150,9 +150,7 @@ import { hr, log } from '../services/write.js';
       exit(1);
     }
 
-    const coveragePackages = customPkg
-      ? [customPkg]
-      : ['@pokujs/istanbul', '@pokujs/c8'];
+    const coveragePackages = customPkg ? [customPkg] : ['@pokujs/c8'];
 
     const existingPlugins = GLOBAL.configs.plugins ?? [];
     const alreadyHasCoverage = existingPlugins.some(
