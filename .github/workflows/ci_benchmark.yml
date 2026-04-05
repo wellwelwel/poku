@@ -219,7 +219,7 @@ jobs:
 
       - name: 📝 Assemble output
         run: |
-          { printf "## 🎖️ Benchmarks\n\n"; cat benchmark/partial-execution.md; cat benchmark/partial-assertions.md; cat benchmark/partial-nesting.md; } > benchmark/output.md
+          { cat benchmark/partial-execution.md; cat benchmark/partial-assertions.md; cat benchmark/partial-nesting.md; } > benchmark/output.md
 
       - name: 📊 Compare
         run: cd benchmark && node comparison.js

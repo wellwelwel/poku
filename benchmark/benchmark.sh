@@ -34,13 +34,9 @@ mkdir -p results/nesting/success
 mkdir -p results/nesting/failure
 mkdir -p results/nesting/balanced
 
-h2() {
-  echo "## $1\n"
-}
-
-h3() {
+h4() {
   echo "$HR"
-  echo "### $1"
+  echo "#### $1"
 }
 
 quote() {
@@ -151,20 +147,9 @@ nesting() {
   grid "$cmd_src" "$cmd_poku"
 }
 
-if [ "$MODE" = "all" ]; then
-  h2 "🎖️ Benchmarks"
-fi
-
 if [ "$MODE" = "all" ] || [ "$MODE" = "execution" ]; then
 
-echo "<!-- SUMMARY_TABLE -->"
-echo ""
-
-echo "<details>"
-echo "<summary>"
-echo "<strong>ℹ Extensive Details</strong>"
-echo "</summary>"
-echo "<br />"
+echo "### 🏃🏻‍♀️ Test Runner"
 echo ""
 echo "Focuses solely in execution, using a simple \`assert(true)\` or \`assert(false)\` from **Node.js** and searches for files in four levels of depth."
 echo ""
@@ -172,47 +157,36 @@ echo "- **success:** a suite of 5 tests that will pass."
 echo "- **failure:** a suite of 5 tests that will fail."
 echo "- **balanced:** a suite of 10 tests where 5 tests will fail and 5 tests will pass."
 
-h3 "🃏 [Jest](https://github.com/jestjs/jest)"
+h4 "🃏 [Jest](https://github.com/jestjs/jest)"
 execution "jest" "$BIN_JEST" "success" "jest"
 execution "jest" "$BIN_JEST" "failure" "jest"
 execution "jest" "$BIN_JEST" "balanced" "jest"
 
-h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
+h4 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
 execution "vitest" "$BIN_VITEST" "success" "vitest"
 execution "vitest" "$BIN_VITEST" "failure" "vitest"
 execution "vitest" "$BIN_VITEST" "balanced" "vitest"
 
-h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
+h4 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 execution "node" "$BIN_NODE" "success" "node/**/**.spec.js"
 execution "node" "$BIN_NODE" "failure" "node/**/**.spec.js"
 execution "node" "$BIN_NODE" "balanced" "node/**/**.spec.js"
 
-h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
+h4 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
 execution "bun" "$BIN_BUN" "success" "bun" "$BIN_POKU_BUN"
 execution "bun" "$BIN_BUN" "failure" "bun" "$BIN_POKU_BUN"
 execution "bun" "$BIN_BUN" "balanced" "bun" "$BIN_POKU_BUN"
 
-h3 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
+h4 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
 execution "deno" "$BIN_DENO" "success" "deno" "$BIN_POKU_DENO"
 execution "deno" "$BIN_DENO" "failure" "deno" "$BIN_POKU_DENO"
 execution "deno" "$BIN_DENO" "balanced" "deno" "$BIN_POKU_DENO"
-
-echo ""
-echo "</details>"
-echo ""
 
 fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "assertions" ]; then
 
-echo "<!-- ASSERTION_SUMMARY_TABLE -->"
-echo ""
-
-echo "<details>"
-echo "<summary>"
-echo "<strong>ℹ Extensive Details</strong>"
-echo "</summary>"
-echo "<br />"
+echo "### 🧪 Assertion"
 echo ""
 echo "Focuses solely in assertions, using each runner's own assertion API with 1 test file per runner per scenario (no file discovery involved)."
 echo ""
@@ -222,47 +196,36 @@ echo "- **balanced:** a suite of 6 tests where 3 tests will fail and 3 tests wil
 echo ""
 echo "> **Note:** **Jest**, **Vitest**, **Bun**, **Deno**, and **Node.js** assertion libraries are not independently executable and require their own runtime environments. Consequently, results include the runner's startup and harness overhead in addition to assertion execution cost."
 
-h3 "🃏 [Jest](https://github.com/jestjs/jest)"
+h4 "🃏 [Jest](https://github.com/jestjs/jest)"
 assertion "jest" "$BIN_JEST" "success" "jest.spec.js"
 assertion "jest" "$BIN_JEST" "failure" "jest.spec.js"
 assertion "jest" "$BIN_JEST" "balanced" "jest.spec.js"
 
-h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
+h4 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
 assertion "vitest" "$BIN_VITEST" "success" "vitest.spec.js"
 assertion "vitest" "$BIN_VITEST" "failure" "vitest.spec.js"
 assertion "vitest" "$BIN_VITEST" "balanced" "vitest.spec.js"
 
-h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
+h4 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 assertion "node" "$BIN_NODE" "success" "node.spec.js"
 assertion "node" "$BIN_NODE" "failure" "node.spec.js"
 assertion "node" "$BIN_NODE" "balanced" "node.spec.js"
 
-h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
+h4 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
 assertion "bun" "$BIN_BUN" "success" "bun.spec.js" "$BIN_POKU_BUN"
 assertion "bun" "$BIN_BUN" "failure" "bun.spec.js" "$BIN_POKU_BUN"
 assertion "bun" "$BIN_BUN" "balanced" "bun.spec.js" "$BIN_POKU_BUN"
 
-h3 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
+h4 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
 assertion "deno" "$BIN_DENO" "success" "deno.test.js" "$BIN_POKU_DENO"
 assertion "deno" "$BIN_DENO" "failure" "deno.test.js" "$BIN_POKU_DENO"
 assertion "deno" "$BIN_DENO" "balanced" "deno.test.js" "$BIN_POKU_DENO"
-
-echo ""
-echo "</details>"
-echo ""
 
 fi
 
 if [ "$MODE" = "all" ] || [ "$MODE" = "nesting" ]; then
 
-echo "<!-- NESTING_SUMMARY_TABLE -->"
-echo ""
-
-echo "<details>"
-echo "<summary>"
-echo "<strong>ℹ Extensive Details</strong>"
-echo "</summary>"
-echo "<br />"
+echo "### 🔗 Nesting"
 echo ""
 echo "Focuses on nested test suite overhead using \`describe\` blocks (3 levels deep, 100 suites), using **Node.js** \`assert\` for all runners."
 echo ""
@@ -270,33 +233,30 @@ echo "- **success:** 100 suites × 3-level deep nesting — all passing."
 echo "- **failure:** 100 suites × 3-level deep nesting — all failing."
 echo "- **balanced:** 50 suites passing + 50 suites failing."
 
-h3 "🃏 [Jest](https://github.com/jestjs/jest)"
+h4 "🃏 [Jest](https://github.com/jestjs/jest)"
 nesting "jest" "$BIN_JEST" "success" "jest.spec.js"
 nesting "jest" "$BIN_JEST" "failure" "jest.spec.js"
 nesting "jest" "$BIN_JEST" "balanced" "jest.spec.js"
 
-h3 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
+h4 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
 nesting "vitest" "$BIN_VITEST" "success" "vitest.spec.js"
 nesting "vitest" "$BIN_VITEST" "failure" "vitest.spec.js"
 nesting "vitest" "$BIN_VITEST" "balanced" "vitest.spec.js"
 
-h3 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
+h4 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
 nesting "node" "$BIN_NODE" "success" "node.spec.js"
 nesting "node" "$BIN_NODE" "failure" "node.spec.js"
 nesting "node" "$BIN_NODE" "balanced" "node.spec.js"
 
-h3 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
+h4 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
 nesting "bun" "$BIN_BUN" "success" "bun.spec.js" "$BIN_POKU_BUN"
 nesting "bun" "$BIN_BUN" "failure" "bun.spec.js" "$BIN_POKU_BUN"
 nesting "bun" "$BIN_BUN" "balanced" "bun.spec.js" "$BIN_POKU_BUN"
 
-h3 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
+h4 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
 nesting "deno" "$BIN_DENO" "success" "deno.test.js" "$BIN_POKU_DENO"
 nesting "deno" "$BIN_DENO" "failure" "deno.test.js" "$BIN_POKU_DENO"
 nesting "deno" "$BIN_DENO" "balanced" "deno.test.js" "$BIN_POKU_DENO"
 
-echo ""
-echo "</details>"
-echo ""
-
 fi
+

@@ -1,9 +1,9 @@
 /**
  * No benchmarking is performed in this script, only the comparison of benchmark results.
- * Built-in test runners are not part of the comparison that should fail the CI.
  */
 
 import { readFile, writeFile } from 'node:fs/promises';
+import { arch, cpus, platform, totalmem } from 'node:os';
 import { env, exit } from 'node:process';
 
 const isCI = !!env.GITHUB_ACTIONS;
@@ -11,51 +11,71 @@ const mode = process.argv[2] ?? 'all';
 
 const scenarios = ['success', 'failure', 'balanced'];
 
-const formatRatio = (avg) => {
-  if (avg === 1) return `**${avg.toFixed(2)}x**`;
-  if (avg > 1) return `**${avg.toFixed(2)}x** ▲`;
-  return `**-${(1 / avg).toFixed(2)}x** ▼`;
+const latex = (color, value) =>
+  '$' + '{' + `\\color{${color}}\\textsf{${value}}` + '}$';
+
+const plain = (value) => `$\\textsf{${value}}$`;
+
+const roundTo3 = (v) => Math.round(v * 1000) / 1000;
+
+const formatTime = (mean, pokuMean) => {
+  const rounded = roundTo3(mean);
+  const time = `${rounded.toFixed(3)}s`;
+  if (pokuMean === undefined)
+    return `${plain(time)}<br>${latex('gray', '(baseline)')}`;
+  const roundedPoku = roundTo3(pokuMean);
+  const deltaMs = Math.round((rounded - roundedPoku) * 1000);
+  if (deltaMs > 0)
+    return `${latex('red', time)}<br>${latex('red', `(+${deltaMs}ms)`)}`;
+  if (deltaMs < 0)
+    return `${latex('green', time)}<br>${latex('green', `(-${Math.abs(deltaMs)}ms)`)}`;
+  return latex('gray', time);
 };
 
-const getRatio = async (resultsDir, runner, scenario) => {
-  const raw = await readFile(
-    `./results/${resultsDir}/${scenario}/${runner}.json`,
-    'utf-8'
-  );
-  const { results } = JSON.parse(raw);
-  const poku = results.find(({ command }) => command.includes('Poku'));
-  const other = results.find(({ command }) => !command.includes('Poku'));
-
-  return other.mean / poku.mean;
-};
-
-const buildTable = async (resultsDir, runners, title) => {
-  const headerCells = [];
-  const separatorCells = [];
-  const avgCells = [];
+const getCategoryData = async (resultsDir, runners) => {
+  let pokuMeanSum = 0;
+  let pokuSha = '';
+  const runnerResults = [];
+  let pokuCollected = false;
 
   for (const runner of runners) {
-    const ratios = await Promise.all(
-      scenarios.map((scenario) => getRatio(resultsDir, runner.name, scenario))
-    );
-    const avg = ratios.reduce((a, b) => a + b, 0) / ratios.length;
+    let otherMeanSum = 0;
+    let ratioSum = 0;
 
-    headerCells.push(` ${runner.label} `);
-    separatorCells.push('---');
-    avgCells.push(` ${formatRatio(avg)} `);
-
-    if (runner.expectedRatio && avg < runner.expectedRatio) {
-      failures.push(
-        `${runner.label} failed benchmark: ${avg.toFixed(2)}x < ${runner.expectedRatio}x.`
+    for (const scenario of scenarios) {
+      const raw = await readFile(
+        `./results/${resultsDir}/${scenario}/${runner.name}.json`,
+        'utf-8'
       );
+      const { results } = JSON.parse(raw);
+      const poku = results.find(({ command }) => command.includes('Poku'));
+      const other = results.find(({ command }) => !command.includes('Poku'));
+
+      if (!pokuCollected) {
+        pokuMeanSum += poku.mean;
+        if (!pokuSha) {
+          const match = poku.command.match(/\((\w+)\)/);
+          if (match) pokuSha = match[1];
+        }
+      }
+
+      otherMeanSum += other.mean;
+      ratioSum += other.mean / poku.mean;
     }
+
+    pokuCollected = true;
+    runnerResults.push({
+      runner,
+      avgMean: otherMeanSum / scenarios.length,
+      avgRatio: ratioSum / scenarios.length,
+    });
   }
 
-  return [
-    `| ${title} |${headerCells.join('|')}|`,
-    `|---|${separatorCells.join('|')}|`,
-    `| 🐷 **Poku ›** |${avgCells.join('|')}|`,
-  ].join('\n');
+  return {
+    pokuMean: pokuMeanSum / scenarios.length,
+    pokuSha,
+    runnerResults,
+  };
 };
 
 const runners = [
@@ -74,31 +94,85 @@ const runnersWithoutThresholds = [
   { name: 'bun', label: '🍞 Bun' },
 ];
 
-let output = await readFile('./output.md', 'utf-8');
-const failures = [];
+const categories = [];
 
 if (mode === 'all' || mode === 'execution') {
-  const table = await buildTable('execution', runners, '🏃🏻‍♀️ Test Runner');
-  output = output.replace('<!-- SUMMARY_TABLE -->', table);
+  categories.push({
+    label: '🏃🏻‍♀️ Test Runner',
+    resultsDir: 'execution',
+    runners,
+  });
 }
 
 if (mode === 'all' || mode === 'assertions') {
-  const table = await buildTable(
-    'assertions',
-    runnersWithoutThresholds,
-    '🧪 Assertion'
-  );
-  output = output.replace('<!-- ASSERTION_SUMMARY_TABLE -->', table);
+  categories.push({
+    label: '🧪 Assertion',
+    resultsDir: 'assertions',
+    runners: runnersWithoutThresholds,
+  });
 }
 
 if (mode === 'all' || mode === 'nesting') {
-  const table = await buildTable(
-    'nesting',
-    runnersWithoutThresholds,
-    '🔗 Nesting'
-  );
-  output = output.replace('<!-- NESTING_SUMMARY_TABLE -->', table);
+  categories.push({
+    label: '🔗 Nesting',
+    resultsDir: 'nesting',
+    runners: runnersWithoutThresholds,
+  });
 }
+
+const details = await readFile('./output.md', 'utf-8');
+const failures = [];
+let pokuSha = '';
+
+const rows = [];
+
+for (const cat of categories) {
+  const data = await getCategoryData(cat.resultsDir, cat.runners);
+  if (!pokuSha) pokuSha = data.pokuSha;
+
+  const pokuCell = formatTime(data.pokuMean);
+  const runnerCells = data.runnerResults.map(
+    ({ runner, avgMean, avgRatio }) => {
+      if (runner.expectedRatio && avgRatio < runner.expectedRatio) {
+        failures.push(
+          `${runner.label} failed benchmark: ${avgRatio.toFixed(2)}x < ${runner.expectedRatio}x.`
+        );
+      }
+      return formatTime(avgMean, data.pokuMean);
+    }
+  );
+
+  rows.push(`| **${cat.label}** | ${pokuCell} | ${runnerCells.join(' | ')} |`);
+}
+
+const header =
+  '| | 🐷 Poku | 🃏 Jest | ⚡️ Vitest | 🦕 Deno | 🐢 Node.js | 🍞 Bun |';
+const separator = '| :--- | :---: | :---: | :---: | :---: | :---: | :---: |';
+const table = [header, separator, ...rows].join('\n');
+
+const output = [
+  '## 🎖️ Benchmarks',
+  '',
+  `- ${pokuSha}`,
+  '',
+  table,
+  '',
+  `> **OS:** ${platform()} ${arch()}  `,
+  `> **CPU:** ${cpus()[0].model.trim()} (${cpus().length} cores)  `,
+  `> **RAM:** ${(totalmem() / 1024 ** 3).toFixed(2)} GB`,
+  '',
+  '---',
+  '',
+  '<details>',
+  '<summary>',
+  '<strong>ℹ Extensive Details</strong>',
+  '</summary>',
+  '',
+  details.trim(),
+  '',
+  '</details>',
+  '',
+].join('\n');
 
 await writeFile('./output.md', output);
 
