@@ -3,6 +3,7 @@
  */
 
 import { readFile, writeFile } from 'node:fs/promises';
+import { arch, cpus, platform, totalmem } from 'node:os';
 import { env, exit } from 'node:process';
 
 const isCI = !!env.GITHUB_ACTIONS;
@@ -146,6 +147,10 @@ const output = [
   '',
   table,
   '',
+  [
+    `> **Platform:** ${platform()} ${arch()} · **CPU:** ${cpus()[0].model.trim()} (${cpus().length} cores) · **RAM:** ${(totalmem() / 1024 ** 3).toFixed(2)} GB`,
+    '',
+  ],
   '---',
   '',
   '<details>',
