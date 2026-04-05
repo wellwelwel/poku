@@ -146,7 +146,7 @@ for (const cat of categories) {
 }
 
 const header =
-  '| Category | 🐷 Poku | 🃏 Jest | ⚡️ Vitest | 🦕 Deno | 🐢 Node.js | 🍞 Bun |';
+  '| | 🐷 Poku | 🃏 Jest | ⚡️ Vitest | 🦕 Deno | 🐢 Node.js | 🍞 Bun |';
 const separator = '| :--- | :---: | :---: | :---: | :---: | :---: | :---: |';
 const table = [header, separator, ...rows].join('\n');
 
