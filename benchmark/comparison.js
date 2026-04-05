@@ -11,12 +11,13 @@ const mode = process.argv[2] ?? 'all';
 
 const scenarios = ['success', 'failure', 'balanced'];
 
-const latex = (color, value) => '$' + '{' + `\\color{${color}}${value}` + '}$';
+const latex = (color, value) =>
+  '$' + '{' + `\\color{${color}}\\textsf{${value}}` + '}$';
 
 const formatDelta = (mean, pokuMean) => {
   const deltaMs = Math.round((mean - pokuMean) * 1000);
-  if (deltaMs > 0) return `{+}${deltaMs}ms`;
-  if (deltaMs < 0) return `{-}${Math.abs(deltaMs)}ms`;
+  if (deltaMs > 0) return `+${deltaMs}ms`;
+  if (deltaMs < 0) return `-${Math.abs(deltaMs)}ms`;
   return '0ms';
 };
 
