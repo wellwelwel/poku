@@ -140,6 +140,51 @@ import { hr, log } from '../services/write.js';
     plugins: 'plugins' in configsFromFile ? configsFromFile.plugins : undefined,
   };
 
+  if (hasArg('coverage')) {
+    const customPkg = getArg('coverage');
+
+    if (customPkg && /^[./]/.test(customPkg)) {
+      log(
+        'Coverage plugin must be an npm package name. Local paths are not supported for security concerns.'
+      );
+      exit(1);
+    }
+
+    const coveragePackages = customPkg
+      ? [customPkg]
+      : ['@pokujs/istanbul', '@pokujs/c8'];
+
+    const existingPlugins = GLOBAL.configs.plugins ?? [];
+    const alreadyHasCoverage = existingPlugins.some(
+      (plugin) =>
+        plugin.name !== undefined && coveragePackages.includes(plugin.name)
+    );
+
+    if (!alreadyHasCoverage) {
+      let loaded = false;
+
+      for (const pkg of coveragePackages) {
+        try {
+          const { coverage } = await import(pkg);
+
+          GLOBAL.configs.plugins = existingPlugins;
+          GLOBAL.configs.plugins.push(coverage());
+          loaded = true;
+          break;
+        } catch {}
+      }
+
+      if (!loaded) {
+        log(
+          customPkg
+            ? `Coverage plugin not found: ${customPkg}`
+            : `To use --coverage, install a coverage plugin: npm i -D ${coveragePackages.join(' or npm i -D ')}`
+        );
+        exit(1);
+      }
+    }
+  }
+
   if (typeof testNamePattern === 'string')
     env.POKU_TEST_NAME_PATTERN = testNamePattern;
   if (typeof testSkipPattern === 'string')
