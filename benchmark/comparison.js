@@ -29,7 +29,7 @@ const formatTime = (mean, pokuMean) => {
     return `${latex('red', time)}<br>${latex('red', `(+${deltaMs}ms)`)}`;
   if (deltaMs < 0)
     return `${latex('green', time)}<br>${latex('green', `(-${Math.abs(deltaMs)}ms)`)}`;
-  return plain(time);
+  return latex('gray', time);
 };
 
 const getCategoryData = async (resultsDir, runners) => {
