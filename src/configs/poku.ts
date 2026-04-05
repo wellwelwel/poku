@@ -35,6 +35,8 @@ export const VERSION = '';
 
 export const isBuild = Boolean(VERSION);
 
+export const isSubprocess = Boolean(env.POKU_RUNTIME);
+
 export const deepOptions: string[] = [];
 
 export const GLOBAL = {

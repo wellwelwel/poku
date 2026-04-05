@@ -167,35 +167,24 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(`${indent}${format(`● ${message}`).cyan().bold()}`);
     },
     onFileResult({ status, path, duration, output }) {
-      stdout.write('\n');
+      const arrow = status ? ARROW_PASS : ARROW_FAIL;
+      const style = status ? 'success' : 'fail';
+      const header = `${arrow} ${format(path.relative)[style]().underline()} ${format(
+        `› ${duration.toFixed(6)}ms`
+      )
+        [style]()
+        .dim()}`;
 
-      if (status) {
-        log(
-          `${ARROW_PASS} ${format(path.relative).success().underline()} ${format(
-            `› ${duration.toFixed(6)}ms`
-          )
-            .success()
-            .dim()}`
-        );
+      const parts = ['\n', `${header}\n`];
+      if (output) parts.push(`${output}\n`);
 
-        if (output) log(output);
-      } else
-        log(
-          `${ARROW_FAIL} ${format(path.relative).fail().underline()} ${format(
-            `› ${duration.toFixed(6)}ms`
-          )
-            .fail()
-            .dim()}`
-        );
+      stdout.write(parts.join(''));
 
-      if (!status) {
+      if (!status)
         errors.push({
           file: path.relative,
           output,
         });
-
-        if (output) log(output);
-      }
     },
     onRunResult() {
       if (errors.length === 0) return;

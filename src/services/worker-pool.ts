@@ -133,11 +133,16 @@ class WorkerPool {
       }
     };
 
-    const onMessage = (msg: { type: string; exitCode?: number }): void => {
+    const onMessage = (msg: {
+      type: string;
+      exitCode?: number;
+      output?: string;
+    }): void => {
       if (msg.type === 'done') {
+        const pipeOutput = pooled.outputChunks.join('');
         settle({
           exitCode: msg.exitCode ?? 1,
-          output: pooled.outputChunks.join(''),
+          output: pipeOutput || msg.output || '',
           timedOut: false,
         });
       }

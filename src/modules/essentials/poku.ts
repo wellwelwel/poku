@@ -3,7 +3,13 @@ import type { PokuPlugin } from '../../@types/plugin.js';
 import type { Configs, PluginContext } from '../../@types/poku.js';
 import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
-import { GLOBAL, isBuild, results, timespan } from '../../configs/poku.js';
+import {
+  GLOBAL,
+  isBuild,
+  isSubprocess,
+  results,
+  timespan,
+} from '../../configs/poku.js';
 import { availableParallelism } from '../../polyfills/os.js';
 import { reporter } from '../../services/reporter.js';
 import { runTests } from '../../services/run-tests.js';
@@ -85,7 +91,8 @@ export async function poku(
         )
       ).flat(1);
 
-  if (!GLOBAL.configs.isolation) GLOBAL.configs.isolation = 'worker';
+  if (!GLOBAL.configs.isolation)
+    GLOBAL.configs.isolation = isSubprocess ? 'process' : 'worker';
 
   if (GLOBAL.configs.isolation === 'worker') {
     const ext = isBuild ? '.js' : '.ts';
