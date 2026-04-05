@@ -15,8 +15,8 @@ const latex = (color, value) => '$' + '{' + `\\color{${color}}${value}` + '}$';
 
 const formatDelta = (mean, pokuMean) => {
   const deltaMs = Math.round((mean - pokuMean) * 1000);
-  if (deltaMs > 0) return `+${deltaMs}ms`;
-  if (deltaMs < 0) return `${deltaMs}ms`;
+  if (deltaMs > 0) return `{+}${deltaMs}ms`;
+  if (deltaMs < 0) return `{-}${Math.abs(deltaMs)}ms`;
   return '0ms';
 };
 
@@ -24,9 +24,10 @@ const formatTime = (mean, pokuMean) => {
   const time = `${mean.toFixed(3)}s`;
   if (pokuMean === undefined)
     return `${latex('gray', time)} ${latex('gray', '(baseline)')}`;
-  if (mean > pokuMean)
+  const deltaMs = Math.round((mean - pokuMean) * 1000);
+  if (deltaMs > 0)
     return `${latex('red', time)} ${latex('red', `(${formatDelta(mean, pokuMean)})`)}`;
-  if (mean < pokuMean)
+  if (deltaMs < 0)
     return `${latex('green', time)} ${latex('green', `(${formatDelta(mean, pokuMean)})`)}`;
   return latex('gray', time);
 };
