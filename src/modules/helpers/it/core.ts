@@ -6,11 +6,6 @@ import { errorHoist, GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
-// ---------------------------------------------------------------------------
-// Generic per-test scope hook.
-// Poku core is agnostic: any plugin/runtime may register a scope provider
-// under this symbol. If absent, poku runs exactly as before.
-// ---------------------------------------------------------------------------
 const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
 type ScopeHooks = {
   createHolder: () => { scope: unknown };
