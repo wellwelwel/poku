@@ -65,7 +65,7 @@ describe("itBase generic scope hooks", async () => {
 				await itBase(async () => {
 					const storeBefore = als.getStore();
 					if (!storeBefore) {
-						throw new Error(`${label}: store exists before await`);
+            assert.fail(`${label}: store exists before await`);
 					}
 
 					seenIds.set(label, storeBefore.id);
@@ -77,7 +77,7 @@ describe("itBase generic scope hooks", async () => {
 
 					const storeAfter = als.getStore();
 					if (!storeAfter) {
-						throw new Error(`${label}: store exists after await`);
+            assert.fail(`${label}: store exists after await`);
 					}
 
 					assert.strictEqual(
