@@ -220,6 +220,10 @@ deno run npm:poku
     <td><a href="https://poku.io/docs/documentation/poku/config-files">config</a></td>
     <td>⚙️ Customize your Poku options in a config file.</td>
   </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/category/%EF%B8%8F-coverage">coverage</a></td>
+    <td>☔️ Enable coverage collection using a coverage plugin.</td>
+  </tr>
 </table>
 
 > _and much more_ 👇🏻
