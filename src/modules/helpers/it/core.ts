@@ -14,8 +14,23 @@ type ScopeHooks = {
     fn: () => Promise<unknown> | unknown
   ) => Promise<void>;
 };
-const getScopeHooks = (): ScopeHooks | undefined =>
-  (globalThis as Record<symbol, ScopeHooks | undefined>)[SCOPE_HOOKS_KEY];
+
+let hasInitializedScopeHooks = false;
+let cachedScopeHooks: ScopeHooks | undefined;
+
+const getScopeHooks = (): ScopeHooks | undefined => {
+  if (hasInitializedScopeHooks) return cachedScopeHooks;
+
+  const hooks = (globalThis as Record<symbol, ScopeHooks | undefined>)[
+    SCOPE_HOOKS_KEY
+  ];
+
+  if (!hooks) return undefined;
+
+  cachedScopeHooks = hooks;
+  hasInitializedScopeHooks = true;
+  return hooks;
+};
 
 export const getTitle = (input: unknown): string | undefined =>
   typeof input === 'string' ? input : undefined;
