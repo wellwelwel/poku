@@ -152,7 +152,7 @@ import { hr, log } from '../services/write.js';
 
     const coveragePackages = customPkg
       ? [customPkg]
-      : ['@pokujs/c8', '@pokujs/istanbul'];
+      : ['@pokujs/c8', '@pokujs/monocart', '@pokujs/istanbul'];
 
     const existingPlugins = GLOBAL.configs.plugins ?? [];
     const alreadyHasCoverage = existingPlugins.some(
@@ -175,11 +175,13 @@ import { hr, log } from '../services/write.js';
       }
 
       if (!loaded) {
+        hr();
         log(
           customPkg
-            ? `Coverage plugin not found: ${customPkg}`
-            : `To use --coverage, install a coverage plugin: npm i -D ${coveragePackages.join(' or npm i -D ')}`
+            ? `Coverage plugin not found: ${format(customPkg).bold()}`
+            : `To use ${format('--coverage').bold()}, install a coverage plugin, for example:\n\n${coveragePackages.map((pkg) => `  ${format('npm i -D').dim()} ${format(pkg).underline()}`).join('\n')}`
         );
+        hr();
         exit(1);
       }
     }
