@@ -6,6 +6,22 @@ import { errorHoist, GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
+// ---------------------------------------------------------------------------
+// Generic per-test scope hook.
+// Poku core is agnostic: any plugin/runtime may register a scope provider
+// under this symbol. If absent, poku runs exactly as before.
+// ---------------------------------------------------------------------------
+const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
+type ScopeHooks = {
+  createHolder: () => { scope: unknown };
+  runScoped: (
+    holder: { scope: unknown },
+    fn: () => Promise<unknown> | unknown
+  ) => Promise<void>;
+};
+const getScopeHooks = (): ScopeHooks | undefined =>
+  (globalThis as Record<symbol, ScopeHooks | undefined>)[SCOPE_HOOKS_KEY];
+
 export const getTitle = (input: unknown): string | undefined =>
   typeof input === 'string' ? input : undefined;
 
@@ -57,8 +73,14 @@ export const itBase = async (
     start = process.hrtime();
 
     try {
-      const resultCb = cb!();
-      if (resultCb instanceof Promise) await resultCb;
+      const hooks = getScopeHooks();
+      if (hooks) {
+        const holder = hooks.createHolder();
+        await hooks.runScoped(holder, () => cb!());
+      } else {
+        const resultCb = cb!();
+        if (resultCb instanceof Promise) await resultCb;
+      }
     } catch (error) {
       process.exitCode = 1;
       success = false;
