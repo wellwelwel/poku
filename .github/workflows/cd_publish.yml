@@ -22,7 +22,7 @@ jobs:
         uses: googleapis/release-please-action@v4
         id: release
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           config-file: .github/release/config.json
           manifest-file: .github/release/manifest.json
 
@@ -60,16 +60,3 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --provenance
-
-      - name: 🔗 Triggering — Website Publish
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ secrets.PAT }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'cd_docs-deploy.yml',
-              ref: 'main'
-            });
