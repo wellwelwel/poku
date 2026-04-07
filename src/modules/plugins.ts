@@ -17,11 +17,7 @@ export type {
   PokuPlugin,
   PluginContext,
   InspectCLIResult,
-  ScopeHookHolder,
-  ScopeHookProvider,
-  ScopeHooks,
 } from '../@types/plugin.js';
-export { composeScopeHooks } from './plugins/scope-hooks.js';
 
 /** 🐷 Auxiliary function to define a Poku plugin */
 export const definePlugin = (plugin: PokuPlugin): PokuPlugin => plugin;

@@ -39,10 +39,6 @@ test(async () => {
 
   index.test('Plugin Import Suite', () => {
     index.assert.ok(plugins.definePlugin, 'Importing definePlugin method');
-    index.assert.ok(
-      plugins.composeScopeHooks,
-      'Importing composeScopeHooks method'
-    );
     index.assert.ok(plugins.createReporter, 'Importing createReporter method');
     index.assert.ok(plugins.inspectPoku, 'Importing inspectPoku method');
     index.assert.ok(plugins.onSigint, 'Importing onSigint method');

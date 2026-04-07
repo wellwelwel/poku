@@ -94,31 +94,3 @@ export type InspectCLIResult = {
   PID: number;
   kill: () => Promise<void>;
 };
-
-export type ScopeHookHolder = { scope: unknown };
-
-export type ScopeHooks = {
-  createHolder: () => ScopeHookHolder;
-  runScoped: (
-    holder: ScopeHookHolder,
-    fn: () => Promise<unknown> | unknown
-  ) => Promise<void>;
-};
-
-export type ScopeHookProvider = ScopeHooks & {
-  /** Stable provider id for deterministic dedupe/composition. */
-  name: string;
-};
-
-// Internal composition helpers used by the plugins runtime.
-export type ScopeHookComposedHolder = ScopeHookHolder & {
-  __pokuProviders?: ScopeHookHolder[];
-};
-
-export type ScopeHooksWithProviders = ScopeHooks & {
-  [key: symbol]: ScopeHookProvider[] | undefined;
-};
-
-export type ScopeHooksGlobal = typeof globalThis & {
-  [key: symbol]: ScopeHooksWithProviders | undefined;
-};
