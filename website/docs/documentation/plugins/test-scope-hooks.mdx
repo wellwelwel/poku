@@ -1,16 +1,6 @@
 ---
 sidebar_position: 5
-tags:
-  [
-    plugin,
-    scope,
-    isolation,
-    concurrency,
-    async,
-    lifecycle,
-    hooks,
-    advanced,
-  ]
+tags: [plugin, scope, isolation, concurrency, async, lifecycle, hooks, advanced]
 ---
 
 # Scoped Test Lifecycle Hooks
@@ -37,7 +27,7 @@ Typical failure modes:
 Poku checks for a global symbol key:
 
 ```ts
-Symbol.for('@pokujs/poku.test-scope-hooks')
+Symbol.for('@pokujs/poku.test-scope-hooks');
 ```
 
 If a provider exists, the test callback runs through it. If not, Poku uses the default execution path.

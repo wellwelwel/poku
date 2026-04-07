@@ -37,7 +37,7 @@ Falhas tipicas:
 O Poku verifica a chave global:
 
 ```ts
-Symbol.for('@pokujs/poku.test-scope-hooks')
+Symbol.for('@pokujs/poku.test-scope-hooks');
 ```
 
 Se existir um provider, o callback do teste e executado por ele. Se nao existir, o Poku usa o fluxo padrao.
