@@ -5,6 +5,7 @@ tags:
     plugin,
     utility,
     definePlugin,
+    composeScopeHooks,
     createReporter,
     inspectPoku,
     findFileFromStack,
@@ -19,6 +20,7 @@ tags:
 ```ts
 import {
   definePlugin,
+  composeScopeHooks,
   createReporter,
   inspectPoku,
   findFileFromStack,
@@ -43,6 +45,35 @@ export default definePlugin({
 ```
 
 See [Creating Plugins](/docs/documentation/plugins/creating-plugins) for the full guide.
+
+## `composeScopeHooks`
+
+> `composeScopeHooks(provider: ScopeHookProvider): ScopeHooks`
+
+Composes a per-test scope hook provider into the active runtime chain used by `it` execution.
+
+Use this when your plugin needs scoped async context or scoped cleanup logic under concurrent test callbacks.
+
+```ts
+import { composeScopeHooks } from 'poku/plugins';
+
+composeScopeHooks({
+  name: '@acme/my-plugin.scope-hooks',
+  createHolder: () => ({ scope: undefined }),
+  runScoped: async (holder, fn) => {
+    const result = fn();
+    if (result instanceof Promise) await result;
+  },
+});
+```
+
+Behavior guarantees:
+
+- Deterministic order: providers compose in registration order.
+- Idempotent by provider name: duplicate names are ignored.
+- Backward-safe: if a legacy provider was already present, it is treated as the first provider in the composed chain.
+
+This is the supported API for scope-provider registration in plugins.
 
 ## `createReporter`
 
@@ -135,5 +166,7 @@ import type {
   ReporterPlugin,
   ReporterEvents,
   InspectCLIResult,
+  ScopeHookProvider,
+  ScopeHooks,
 } from 'poku/plugins';
 ```

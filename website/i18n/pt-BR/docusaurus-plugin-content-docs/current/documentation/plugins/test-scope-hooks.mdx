@@ -1,0 +1,154 @@
+---
+sidebar_position: 5
+tags:
+  [
+    plugin,
+    escopo,
+    isolamento,
+    concorrencia,
+    async,
+    ciclo-de-vida,
+    hooks,
+    avancado,
+  ]
+---
+
+# Hooks de Ciclo de Vida com Escopo por Teste
+
+O Poku oferece um contrato opcional e generico para que plugins executem callbacks de teste dentro de um escopo gerenciado pelo proprio plugin.
+
+Esse recurso foi projetado para plugins que mantem estado mutavel em memoria e precisam de fronteiras estritas por teste, mesmo com concorrencia.
+
+## Por Que Isso Existe
+
+Dentro de um `describe`, varios callbacks `it` podem rodar em paralelo quando sao registrados de forma sincronica.
+
+Se um plugin guarda recursos em estado de modulo (`Set`, `Map`, registries), um teste pode mutar ou limpar recursos criados por outro teste.
+
+Falhas tipicas:
+
+- vazamento de estado entre testes
+- comportamento flakey sob concorrencia
+- corridas de cleanup
+- falhas nao deterministicas
+
+## Contrato
+
+O Poku verifica a chave global:
+
+```ts
+Symbol.for('@pokujs/poku.test-scope-hooks')
+```
+
+Se existir um provider, o callback do teste e executado por ele. Se nao existir, o Poku usa o fluxo padrao.
+
+Formato do provider:
+
+```ts
+type ScopeHooks = {
+  createHolder: () => { scope: unknown };
+  runScoped: (
+    holder: { scope: unknown },
+    fn: () => Promise<unknown> | unknown
+  ) => Promise<void>;
+};
+```
+
+## API de Registro
+
+Providers de escopo devem ser conectados via `composeScopeHooks` de `poku/plugins`.
+
+```ts
+import { composeScopeHooks } from 'poku/plugins';
+
+composeScopeHooks({
+  name: '@acme/meu-plugin.scope-hooks',
+  createHolder: () => ({ scope: undefined }),
+  runScoped: async (holder, fn) => {
+    const result = fn();
+    if (result instanceof Promise) await result;
+  },
+});
+```
+
+Regras de composicao:
+
+- providers compoem em ordem de registro
+- nomes de provider duplicados sao ignorados
+- hooks legados de provider unico sao tratados como o primeiro provider da cadeia
+
+## Como o Core Usa Isso
+
+Fluxo equivalente na execucao de `it`:
+
+```ts
+const hooks = getScopeHooks();
+
+if (hooks) {
+  const holder = hooks.createHolder();
+  await hooks.runScoped(holder, () => cb());
+} else {
+  await cb();
+}
+```
+
+Isso mantem o core agnostico de plugin e, ao mesmo tempo, permite estrategias de contexto async e teardown controladas pelo plugin.
+
+## Exemplo de Plugin (AsyncLocalStorage)
+
+```ts
+import { AsyncLocalStorage } from 'node:async_hooks';
+import { composeScopeHooks } from 'poku/plugins';
+
+type ScopeHooks = {
+  createHolder: () => { scope: unknown };
+  runScoped: (
+    holder: { scope: unknown },
+    fn: () => Promise<unknown> | unknown
+  ) => Promise<void>;
+};
+
+const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
+const als = new AsyncLocalStorage<{ id: number }>();
+
+let idSeed = 0;
+
+composeScopeHooks({
+  name: '@acme/meu-plugin.scope-hooks',
+  createHolder: () => ({ scope: undefined }),
+  runScoped: async (holder, fn) => {
+    const id = ++idSeed;
+    holder.scope = { id };
+
+    await als.run({ id }, async () => {
+      const result = fn();
+      if (result instanceof Promise) await result;
+    });
+  },
+});
+```
+
+## Recomendacoes Para Autores de Plugin
+
+1. Registre providers uma unica vez no bootstrap do plugin com `composeScopeHooks`.
+2. Mantenha `createHolder` simples e sincronico.
+3. Garanta que `runScoped` sempre aguarde `fn` antes de retornar.
+4. Mantenha estado local ao teste; nao reutilize holders mutaveis entre testes.
+5. Rode cleanup com semantica de `finally` dentro do runtime de escopo.
+
+## Observacoes Importantes
+
+- Compativel com versoes anteriores: sem provider, o comportamento antigo permanece.
+- Opcional e aditivo: plugins podem adotar gradualmente.
+- Esse contrato e avancado e voltado a autores de plugin/runtime, nao a autores de teste comuns.
+- Troca dinamica de provider durante a execucao nao e suportada e deve ser evitada.
+
+## Validacao
+
+O comportamento do ciclo de vida com escopo possui cobertura de testes:
+
+- caminho de fallback funciona sem hooks
+- execucoes concorrentes recebem stores independentes
+- a identidade do store permanece estavel atraves de fronteiras async
+
+Veja a cobertura em `test/unit/scope-hooks.test.ts` no pacote Poku.
