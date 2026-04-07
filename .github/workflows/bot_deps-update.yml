@@ -76,13 +76,13 @@ jobs:
           git commit -m "${{ env.TITLE }}"
           git push origin HEAD:refs/heads/${{ env.BRANCH }} --force
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🧙🏻 Creating Pull Request
         if: steps.check_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ env.BRANCH }}
           title: '${{ env.TITLE }}'
           body: ${{ env.BODY }}
