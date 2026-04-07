@@ -3,6 +3,7 @@ import { GLOBAL } from '../../src/configs/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it, itBase } from '../../src/modules/helpers/it/core.js';
+import { sleep } from '../../src/modules/helpers/wait-for.js';
 
 const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
 
@@ -16,8 +17,6 @@ type ScopeHooks = {
 
 type GlobalWithScopeHooks = typeof globalThis &
   Record<symbol, ScopeHooks | undefined>;
-
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 GLOBAL.configs.noExit = true;
 GLOBAL.configs.quiet = true;
