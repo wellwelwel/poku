@@ -94,3 +94,11 @@ export type InspectCLIResult = {
   PID: number;
   kill: () => Promise<void>;
 };
+
+export type ScopeHook = {
+  createHolder: () => { scope: unknown };
+  runScoped: (
+    holder: { scope: unknown },
+    fn: (params?: Record<string, unknown>) => Promise<unknown> | unknown
+  ) => Promise<void>;
+};

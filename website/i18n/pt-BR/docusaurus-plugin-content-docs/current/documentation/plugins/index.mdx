@@ -1,0 +1,73 @@
+---
+sidebar_position: 1
+tags: [plugin, plugins, extend, hooks, lifecycle]
+---
+
+import { History } from '@site/src/components/History';
+import { Stability } from '@site/src/components/Stability';
+
+# 🥷🏻 Usando Plugins
+
+<History
+  records={[
+    {
+      version: '3.0.3-canary.68e71482',
+      changes: [<>Introduz o sistema de Plugins.</>],
+    },
+  ]}
+/>
+
+<Stability level={2} />
+
+Estenda o comportamento do **Poku** com plugins: conecte no ciclo de vida dos testes, customize como os arquivos de teste sao executados em processos e habilite comunicacao entre processos.
+
+## O Que Plugins Podem Fazer?
+
+- Executar logica de setup antes da suite iniciar.
+- Interceptar ou customizar a descoberta de arquivos.
+- Executar teardown depois que a suite terminar.
+- Modificar o comando usado para executar cada arquivo de teste.
+- Habilitar canais IPC entre o **Poku** e os processos de teste.
+- Reagir a cada processo de teste criado.
+- Customizar a saida com [reporters customizados](/docs/documentation/plugins/reporters).
+
+## Inicio Rapido
+
+Adicione plugins ao arquivo de configuracao do **Poku** usando a opcao `plugins`:
+
+```ts
+// poku.config.ts
+import { defineConfig } from 'poku';
+import { myPlugin } from './my-plugin';
+
+export default defineConfig({
+  plugins: [myPlugin],
+});
+```
+
+## Ciclo de Vida dos Plugins
+
+Os plugins sao executados na seguinte ordem:
+
+1. **`setup()`** e chamado para cada plugin, sequencialmente na ordem do array.
+2. **`discoverFiles()`** do primeiro plugin que definir esse hook determina os arquivos de teste _(se nenhum plugin definir, o **Poku** faz o scan dos diretorios configurados)_.
+3. Para cada arquivo de teste:
+   - **`runner()`** modifica o comando de execucao _(apenas o primeiro plugin com hook `runner` e usado)_.
+   - O processo e criado, com canal IPC se algum plugin definir `ipc: true`.
+   - **`onTestProcess()`** e chamado para todo plugin que definir esse hook.
+4. Depois que todos os testes terminam, **`teardown()`** e chamado para cada plugin, sequencialmente na ordem do array.
+
+## Plugins Existentes
+
+- [**@pokujs/shared-resources**](https://github.com/pokujs/plugin-shared) — Compartilhe estado, servidores, conexoes de banco e mais entre arquivos de teste paralelos. Veja a [documentacao](/docs/documentation/helpers/shared-resources).
+
+## Ciclo de Vida Avancado: Hooks de Escopo por Teste
+
+O Poku suporta um contrato opcional de escopo por teste para autores de plugin que precisam de isolamento estrito de estado em execucoes concorrentes de `it`.
+
+- Leia o guia completo: [Test Scope Hooks](/docs/documentation/plugins/test-scope-hooks)
+- Use isso quando o plugin tiver estado mutavel interno (`Set`, `Map`, registries, handles) que nunca pode vazar entre callbacks de teste.
+
+:::tip
+Use [`definePlugin`](/docs/documentation/plugins/creating-plugins) para tipagem segura ao criar plugins e [`createReporter`](/docs/documentation/plugins/reporters) para formatacao de saida customizada.
+:::
