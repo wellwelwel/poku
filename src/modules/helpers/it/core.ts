@@ -1,3 +1,4 @@
+import type { ScopeHook } from '../../../@types/plugin.js';
 import type { TestCallback } from '../../../@types/poku.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
@@ -14,6 +15,11 @@ export const getTitle = (input: unknown): string | undefined =>
 
 export const getCallback = (input: unknown): TestCallback | undefined =>
   typeof input === 'function' ? (input as TestCallback) : undefined;
+
+const getScopeHook = (): ScopeHook | undefined =>
+  (globalThis as Record<symbol, unknown>)[SCOPE_HOOKS_KEY] as
+    | ScopeHook
+    | undefined;
 
 export const itBase = async (
   titleOrCb: string | TestCallback,
@@ -56,17 +62,8 @@ export const itBase = async (
     start = process.hrtime();
 
     try {
-      const hooks = (globalThis as Record<symbol, unknown>)[SCOPE_HOOKS_KEY] as
-        | {
-            createHolder: () => { scope: unknown };
-            runScoped: (
-              holder: { scope: unknown },
-              fn: (
-                params?: Record<string, unknown>
-              ) => Promise<unknown> | unknown
-            ) => Promise<void>;
-          }
-        | undefined;
+      const hooks = getScopeHook();
+
       if (hooks) {
         const holder = hooks.createHolder();
         await hooks.runScoped(holder, (params) => cb!(params));
