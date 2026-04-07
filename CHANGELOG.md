@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.2.1](https://github.com/wellwelwel/poku/compare/v4.2.0...v4.2.1) (2026-04-07)
+
+
+### Bug Fixes
+
+* **deno:** ensure process exits in TTY terminals ([#1077](https://github.com/wellwelwel/poku/issues/1077)) ([dc90ba6](https://github.com/wellwelwel/poku/commit/dc90ba6f091ca5b5326b0ea4590a3398aeb6de6b))
+
+
+### Performance Improvements
+
+* hoist error handlers ([#1079](https://github.com/wellwelwel/poku/issues/1079)) ([9e04329](https://github.com/wellwelwel/poku/commit/9e04329bec546f69acc4c800019727cf6b0209c0))
+
 ## [4.2.0](https://github.com/wellwelwel/poku/compare/v4.1.0...v4.2.0) (2026-03-31)
 
 
