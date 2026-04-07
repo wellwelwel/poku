@@ -1,6 +1,9 @@
 name: '🚀 CD (Website) — Publish'
 
 on:
+  push:
+    branches:
+      - 'main'
   workflow_dispatch:
 
 jobs:
