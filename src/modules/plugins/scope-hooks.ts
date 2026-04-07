@@ -1,21 +1,16 @@
 import type {
+  ScopeHookComposedHolder,
   ScopeHookHolder,
   ScopeHookProvider,
   ScopeHooks,
+  ScopeHooksGlobal,
+  ScopeHooksWithProviders,
 } from '../../@types/plugin.js';
 
 const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
 const SCOPE_HOOKS_PROVIDERS_KEY = Symbol.for(
   '@pokujs/poku.test-scope-hooks.providers'
 );
-
-type ScopeHooksWithProviders = ScopeHooks & {
-  [SCOPE_HOOKS_PROVIDERS_KEY]?: ScopeHookProvider[];
-};
-
-type ScopeHooksGlobal = {
-  [SCOPE_HOOKS_KEY]?: ScopeHooksWithProviders;
-};
 
 const scopeHooksGlobal = globalThis as ScopeHooksGlobal;
 
@@ -34,7 +29,9 @@ const normalizeProviders = (
 ): ScopeHookProvider[] => {
   if (!hooks) return [];
 
-  const existingProviders = hooks[SCOPE_HOOKS_PROVIDERS_KEY];
+  const existingProviders = hooks[SCOPE_HOOKS_PROVIDERS_KEY] as
+    | ScopeHookProvider[]
+    | undefined;
   if (existingProviders?.length) return [...existingProviders];
 
   return [
@@ -49,13 +46,9 @@ const normalizeProviders = (
 const createComposedHooks = (
   providers: ScopeHookProvider[]
 ): ScopeHooksWithProviders => {
-  type ComposedHolder = ScopeHookHolder & {
-    __pokuProviders?: ScopeHookHolder[];
-  };
-
   const hooks: ScopeHooksWithProviders = {
     createHolder: (): ScopeHookHolder => {
-      const holder: ComposedHolder = {
+      const holder: ScopeHookComposedHolder = {
         scope: undefined,
         __pokuProviders: providers.map((provider) => provider.createHolder()),
       };
@@ -64,7 +57,7 @@ const createComposedHooks = (
     },
 
     runScoped: async (holder, fn) => {
-      const composedHolder = holder as ComposedHolder;
+      const composedHolder = holder as ScopeHookComposedHolder;
       const providerHolders =
         composedHolder.__pokuProviders ??
         providers.map((provider) => provider.createHolder());
