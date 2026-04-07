@@ -13,7 +13,18 @@ tags:
   ]
 ---
 
+import { History } from '@site/src/components/History';
+
 # Hooks de Ciclo de Vida com Escopo por Teste
+
+<History
+  records={[
+    {
+      version: '4.3.0',
+      changes: ['Introduz hooks de ciclo de vida com escopo para plugins.'],
+    },
+  ]}
+/>
 
 O Poku oferece um contrato opcional e generico para que plugins executem callbacks de teste dentro de um escopo gerenciado pelo proprio plugin.
 
@@ -54,7 +65,7 @@ type ScopeHooks = {
 };
 ```
 
-## API de Registro
+## 🚧 API de Registro
 
 Providers de escopo devem ser conectados via `composeScopeHooks` de `poku/plugins`.
 

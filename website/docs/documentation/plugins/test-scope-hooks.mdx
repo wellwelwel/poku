@@ -3,7 +3,18 @@ sidebar_position: 5
 tags: [plugin, scope, isolation, concurrency, async, lifecycle, hooks, advanced]
 ---
 
+import { History } from '@site/src/components/History';
+
 # Scoped Test Lifecycle Hooks
+
+<History
+  records={[
+    {
+      version: '4.3.0',
+      changes: ['Introduce scoped test lifecycle hooks for plugins.'],
+    },
+  ]}
+/>
 
 Poku provides an optional, generic hook contract that lets plugins execute test callbacks inside a plugin-managed scope.
 
@@ -44,7 +55,7 @@ type ScopeHooks = {
 };
 ```
 
-## Registration API
+## 🚧 Registration API
 
 Scope providers should be attached via `composeScopeHooks` from `poku/plugins`.
 

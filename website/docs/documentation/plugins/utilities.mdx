@@ -13,6 +13,8 @@ tags:
   ]
 ---
 
+import { History } from '@site/src/components/History';
+
 # 🛠️ Plugin Utilities
 
 **Poku** provides utility functions via `poku/plugins` to help with plugin development and testing.
@@ -46,9 +48,18 @@ export default definePlugin({
 
 See [Creating Plugins](/docs/documentation/plugins/creating-plugins) for the full guide.
 
-## `composeScopeHooks`
+## 🚧 `composeScopeHooks`
 
 > `composeScopeHooks(provider: ScopeHookProvider): ScopeHooks`
+
+<History
+  records={[
+    {
+      version: '4.3.0',
+      changes: ['Introduce composeScopeHooks utility for plugins.'],
+    },
+  ]}
+/>
 
 Composes a per-test scope hook provider into the active runtime chain used by `it` execution.
 
