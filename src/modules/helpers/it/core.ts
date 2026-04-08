@@ -112,10 +112,18 @@ export const itBase = async (
   }
 };
 
-async function itCore(title: string, cb: TestCallback): Promise<void>;
-function itCore(title: string, cb: TestCallback): void;
-async function itCore(cb: TestCallback): Promise<void>;
-function itCore(cb: TestCallback): void;
+async function itCore(
+  title: string,
+  cb: (params?: Record<string, unknown>) => Promise<unknown>
+): Promise<void>;
+function itCore(
+  title: string,
+  cb: (params?: Record<string, unknown>) => unknown
+): void;
+async function itCore(
+  cb: (params?: Record<string, unknown>) => Promise<unknown>
+): Promise<void>;
+function itCore(cb: (params?: Record<string, unknown>) => unknown): void;
 async function itCore(
   titleOrCb: string | TestCallback,
   cb?: TestCallback
