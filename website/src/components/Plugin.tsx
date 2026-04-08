@@ -3,9 +3,10 @@ import { FaGithub } from 'react-icons/fa';
 
 export type PluginProps = {
   repo: string;
+  name?: string;
 };
 
-export const Plugin: FC<PluginProps> = ({ repo }) => (
+export const Plugin: FC<PluginProps> = ({ repo, name }) => (
   <a
     className='plugin-badge'
     href={`https://github.com/pokujs/${repo}`}
@@ -13,6 +14,6 @@ export const Plugin: FC<PluginProps> = ({ repo }) => (
     rel='noopener noreferrer'
   >
     <FaGithub />
-    Plugin
+    {name ?? 'Plugin'}
   </a>
 );

@@ -231,6 +231,16 @@ html[data-theme='dark'] {
       opacity: 0.5;
     }
   }
+
+  .menu__list-item.hidden {
+    display: none;
+  }
+
+  .menu__list:not(:first-child):has(> .menu__list-item.hidden):not(
+      :has(> .menu__list-item:not(.hidden))
+    ) {
+    display: none;
+  }
 }
 
 .theme-doc-version-badge.badge.badge--secondary {

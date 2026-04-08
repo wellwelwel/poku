@@ -1,8 +1,9 @@
 {
   "label": "☔️ Coverage",
-  "collapsed": true,
+  "collapsible": false,
   "link": {
-    "type": "generated-index"
+    "type": "doc",
+    "id": "documentation/helpers/coverage/index"
   },
   "position": 13
 }

@@ -12,6 +12,8 @@ const bullet = d('●');
 const summary: [string, string][] = [
   ['--concurrency', 'Limit the number of tests running concurrently.'],
   ['--config, -c', 'Specify a configuration file.'],
+  ['--coverage', 'Enable coverage collection using a coverage plugin.'],
+  ['--coverageConfig', 'Path to a coverage configuration file.'],
   ['--debug, -d', 'Show detailed logs.'],
   ['--denoAllow', 'Allow permissions for Deno.'],
   ['--denoDeny', 'Deny permissions for Deno.'],

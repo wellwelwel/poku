@@ -17,6 +17,8 @@ import { History } from '@site/src/components/History';
 
 # Hooks de Ciclo de Vida com Escopo por Teste
 
+O Poku oferece um contrato opcional e generico para que plugins executem callbacks de teste dentro de um escopo gerenciado pelo proprio plugin.
+
 <History
   records={[
     {
@@ -25,8 +27,6 @@ import { History } from '@site/src/components/History';
     },
   ]}
 />
-
-O Poku oferece um contrato opcional e generico para que plugins executem callbacks de teste dentro de um escopo gerenciado pelo proprio plugin.
 
 Esse recurso foi projetado para plugins que mantem estado mutavel em memoria e precisam de fronteiras estritas por teste, mesmo com concorrencia.
 

@@ -34,6 +34,8 @@ const checkFlags = (): void => {
   const allowedFlags = new Set([
     '--concurrency',
     '--config',
+    '--coverage',
+    '--coverageConfig',
     '--debug',
     '--denoAllow',
     '--denoDeny',

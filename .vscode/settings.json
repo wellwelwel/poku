@@ -14,5 +14,8 @@
   },
   "[dockerfile]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "files.associations": {
+    ".nycrc": "jsonc"
   }
 }

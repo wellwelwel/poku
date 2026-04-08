@@ -140,6 +140,59 @@ import { hr, log } from '../services/write.js';
     plugins: 'plugins' in configsFromFile ? configsFromFile.plugins : undefined,
   };
 
+  if (hasArg('coverage')) {
+    const customPkg = getArg('coverage');
+
+    if (customPkg && /^[./]/.test(customPkg)) {
+      log(
+        'Coverage plugin must be an npm package name. Local paths are not supported for security concerns.'
+      );
+      exit(1);
+    }
+
+    const coveragePackages = customPkg
+      ? [customPkg]
+      : [
+          '@pokujs/c8',
+          '@pokujs/monocart',
+          '@pokujs/istanbul',
+          '@pokujs/one-double-zero',
+        ];
+
+    const existingPlugins = GLOBAL.configs.plugins ?? [];
+    const alreadyHasCoverage = existingPlugins.some(
+      (plugin) =>
+        plugin.name !== undefined && coveragePackages.includes(plugin.name)
+    );
+
+    if (!alreadyHasCoverage) {
+      let loaded = false;
+
+      for (const pkg of coveragePackages) {
+        try {
+          const { coverage } = await import(pkg);
+
+          GLOBAL.configs.plugins = existingPlugins;
+          GLOBAL.configs.plugins.push(coverage());
+
+          loaded = true;
+          break;
+        } catch {}
+      }
+
+      if (!loaded) {
+        hr();
+        log(
+          customPkg
+            ? `Coverage plugin not found: ${format(customPkg).bold()}`
+            : `To use ${format('--coverage').bold()}, install a coverage plugin, for example:\n\n${coveragePackages.map((pkg) => `  ${format('npm i -D').dim()} ${format(pkg).underline()}`).join('\n')}`
+        );
+        hr();
+        exit(1);
+      }
+    }
+  }
+
   if (typeof testNamePattern === 'string')
     env.POKU_TEST_NAME_PATTERN = testNamePattern;
   if (typeof testSkipPattern === 'string')
