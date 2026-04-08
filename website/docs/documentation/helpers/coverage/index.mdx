@@ -1,0 +1,123 @@
+---
+tags:
+  [
+    coverage,
+    plugin,
+    plugins,
+    c8,
+    v8,
+    istanbul,
+    monocart,
+    plugin,
+    codecov,
+    one-double-zero,
+    odz,
+    mcr,
+  ]
+---
+
+import DocCardList from '@theme/DocCardList';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { Plugin } from '@site/src/components/Plugin';
+import { History } from '@site/src/components/History';
+
+# ☔️ Coverage
+
+When using `--coverage`, **Poku** tries to load one of the official plugins:
+
+<History
+  records={[
+    {
+      version: '4.3.0',
+      changes: [
+        <>
+          Introduce <code>--coverage</code> and <code>--coverageConfigs</code>{' '}
+          flags.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+Choose the one that best fits your needs and add it as a dev dependency. If multiple plugins are detected, **Poku** will prioritize them in the order listed above:
+
+<Tabs>
+  <TabItem value="c8" label="@pokujs/c8">
+    <Plugin repo='c8' name='pokujs/c8' />
+
+```bash
+npm i -D @pokujs/c8
+```
+
+⚙️ **Config files**
+
+`.c8rc`, `.c8rc.json`, `.c8rc.jsonc`, `.c8rc.toml`, `.c8rc.yaml`, `.c8rc.yml`, `.nycrc`, `.nycrc.json`, `.nycrc.jsonc`, `.nycrc.toml`, `.nycrc.yaml`, `.nycrc.yml`, `poku.config.js`
+
+  </TabItem>
+  <TabItem value="monocart" label="@pokujs/monocart">
+    <Plugin repo='monocart' name='pokujs/monocart' />
+
+```bash
+npm i -D @pokujs/monocart
+```
+
+⚙️ **Config files**
+
+`mcr.config.js`, `mcr.config.cjs`, `mcr.config.mjs`, `mcr.config.json`, `mcr.config.jsonc`, `mcr.config.toml`, `mcr.config.yaml`, `mcr.config.yml`, `poku.config.js`
+
+  </TabItem>
+  <TabItem value="istanbul" label="@pokujs/istanbul">
+    <Plugin repo='istanbul' name='pokujs/istanbul' />
+
+```bash
+npm i -D @pokujs/istanbul
+```
+
+⚙️ **Config files**
+
+`.nycrc`, `.nycrc.json`, `.nycrc.jsonc`, `.nycrc.toml`, `.nycrc.yaml`, `.nycrc.yml`, `poku.config.js`
+
+  </TabItem>
+  <TabItem value="one-double-zero" label="@pokujs/one-double-zero">
+    <Plugin repo='one-double-zero' name='pokujs/one-double-zero' />
+
+```bash
+npm i -D @pokujs/one-double-zero
+```
+
+⚙️ **Config files**
+
+`odz.config.json`, `odz.config.jsonc`, `odz.config.toml`, `odz.config.yaml`, `odz.config.yml`, `poku.config.js`
+
+  </TabItem>
+</Tabs>
+
+---
+
+Supporteed formats by official plugins:
+
+| ⚙️        | @pokujs/c8 | @pokujs/monocart | @pokujs/istanbul | @pokujs/one-double-zero |
+| --------- | ---------- | ---------------- | ---------------- | ----------------------- |
+| **JSON**  | ✅         | ✅               | ✅               | ✅                      |
+| **JS/TS** | ✅         | ✅               | ✅               | ✅                      |
+| **TOML**  | ✅         | ✅               | ✅               | ✅                      |
+| **JSONC** | ✅         | ✅               | ✅               | ✅                      |
+| **YAML**  | ✅         | ✅               | ✅               | ✅                      |
+
+---
+
+:::tip
+
+It's also possible to specify a coverage plugin, for example:
+
+- `poku --coverage=@pokujs/c8`
+- `poku --coverage=third-coverage-plugin`
+
+To specify a custom config file via **CLI**, use the `--coverageConfig` flag, for example:
+
+```sh
+npx poku --coverage --coverageConfig=".my-c8rc"
+```
+
+:::

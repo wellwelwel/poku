@@ -7,6 +7,8 @@ import { History } from '@site/src/components/History';
 
 # Scoped Test Lifecycle Hooks
 
+Poku provides an optional, generic hook contract that lets plugins execute test callbacks inside a plugin-managed scope.
+
 <History
   records={[
     {
@@ -15,8 +17,6 @@ import { History } from '@site/src/components/History';
     },
   ]}
 />
-
-Poku provides an optional, generic hook contract that lets plugins execute test callbacks inside a plugin-managed scope.
 
 This is designed for plugins that keep mutable state in memory and need strict per-test boundaries under concurrency.
 
