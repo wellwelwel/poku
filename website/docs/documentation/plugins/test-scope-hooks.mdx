@@ -1,0 +1,155 @@
+---
+sidebar_position: 5
+tags: [plugin, scope, isolation, concurrency, async, lifecycle, hooks, advanced]
+---
+
+import { History } from '@site/src/components/History';
+
+# Scoped Test Lifecycle Hooks
+
+<History
+  records={[
+    {
+      version: '4.3.0',
+      changes: ['Introduce scoped test lifecycle hooks for plugins.'],
+    },
+  ]}
+/>
+
+Poku provides an optional, generic hook contract that lets plugins execute test callbacks inside a plugin-managed scope.
+
+This is designed for plugins that keep mutable state in memory and need strict per-test boundaries under concurrency.
+
+## Why This Exists
+
+Inside a `describe` block, multiple `it` callbacks can run concurrently when they are registered synchronously.
+
+If a plugin stores resources in module-level state (`Set`, `Map`, registries), one test can accidentally mutate or clean up resources created by another test.
+
+Typical failure modes:
+
+- cross-test state leakage
+- flaky concurrency behavior
+- cleanup races
+- non-deterministic failures
+
+## Contract
+
+Poku checks for a global symbol key:
+
+```ts
+Symbol.for('@pokujs/poku.test-scope-hooks');
+```
+
+If a provider exists, the test callback runs through it. If not, Poku uses the default execution path.
+
+Shape of the provider:
+
+```ts
+type ScopeHooks = {
+  createHolder: () => { scope: unknown };
+  runScoped: (
+    holder: { scope: unknown },
+    fn: () => Promise<unknown> | unknown
+  ) => Promise<void>;
+};
+```
+
+## 🚧 Registration API
+
+Scope providers should be attached via `composeScopeHooks` from `poku/plugins`.
+
+```ts
+import { composeScopeHooks } from 'poku/plugins';
+
+composeScopeHooks({
+  name: '@acme/my-plugin.scope-hooks',
+  createHolder: () => ({ scope: undefined }),
+  runScoped: async (holder, fn) => {
+    const result = fn();
+    if (result instanceof Promise) await result;
+  },
+});
+```
+
+Composition rules:
+
+- providers compose in registration order
+- duplicate provider `name` values are ignored
+- existing legacy single-provider hooks are treated as the first provider in the chain
+
+## How Core Uses It
+
+Equivalent flow inside `it` execution:
+
+```ts
+const hooks = getScopeHooks();
+
+if (hooks) {
+  const holder = hooks.createHolder();
+  await hooks.runScoped(holder, () => cb());
+} else {
+  await cb();
+}
+```
+
+This keeps core plugin-agnostic while enabling plugin-managed async context and teardown strategies.
+
+## Plugin Example (AsyncLocalStorage)
+
+```ts
+import { AsyncLocalStorage } from 'node:async_hooks';
+import { composeScopeHooks } from 'poku/plugins';
+
+type ScopeHooks = {
+  createHolder: () => { scope: unknown };
+  runScoped: (
+    holder: { scope: unknown },
+    fn: () => Promise<unknown> | unknown
+  ) => Promise<void>;
+};
+
+const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
+const als = new AsyncLocalStorage<{ id: number }>();
+
+let idSeed = 0;
+
+composeScopeHooks({
+  name: '@acme/my-plugin.scope-hooks',
+  createHolder: () => ({ scope: undefined }),
+  runScoped: async (holder, fn) => {
+    const id = ++idSeed;
+    holder.scope = { id };
+
+    await als.run({ id }, async () => {
+      const result = fn();
+      if (result instanceof Promise) await result;
+    });
+  },
+});
+```
+
+## Recommendations For Plugin Authors
+
+1. Register providers once during plugin bootstrap with `composeScopeHooks`.
+2. Keep `createHolder` cheap and synchronous.
+3. Ensure `runScoped` always awaits `fn` before returning.
+4. Keep scope state test-local; never reuse mutable holders across tests.
+5. Run cleanup in `finally` semantics inside your scope runtime.
+
+## Important Notes
+
+- Backward compatible: no provider means old behavior.
+- Optional and additive: plugins can adopt incrementally.
+- This contract is advanced and intended for plugin/runtime authors, not regular test authors.
+- Scope provider hot-swapping during a test run is not supported and should be avoided.
+
+## Validation
+
+The scope lifecycle behavior is covered by unit tests:
+
+- fallback path works with no hooks
+- concurrent executions receive independent stores
+- store identity remains stable across async boundaries
+
+See the related test coverage in `test/unit/scope-hooks.test.ts` in the Poku package.

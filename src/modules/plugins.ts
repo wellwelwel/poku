@@ -17,6 +17,7 @@ export type {
   PokuPlugin,
   PluginContext,
   InspectCLIResult,
+  ScopeHook,
 } from '../@types/plugin.js';
 
 /** 🐷 Auxiliary function to define a Poku plugin */

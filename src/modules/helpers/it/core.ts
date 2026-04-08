@@ -1,3 +1,5 @@
+import type { ScopeHook } from '../../../@types/plugin.js';
+import type { TestCallback } from '../../../@types/poku.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { each } from '../../../configs/each.js';
@@ -6,19 +8,22 @@ import { errorHoist, GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
 import { onlyIt, skip, todo } from '../modifiers.js';
 
+const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
+
 export const getTitle = (input: unknown): string | undefined =>
   typeof input === 'string' ? input : undefined;
 
-export const getCallback = (
-  input: unknown
-): (() => unknown) | (() => Promise<unknown>) | undefined =>
-  typeof input === 'function'
-    ? (input as (() => unknown) | (() => Promise<unknown>))
-    : undefined;
+export const getCallback = (input: unknown): TestCallback | undefined =>
+  typeof input === 'function' ? (input as TestCallback) : undefined;
+
+const getScopeHook = (): ScopeHook | undefined =>
+  (globalThis as Record<symbol, unknown>)[SCOPE_HOOKS_KEY] as
+    | ScopeHook
+    | undefined;
 
 export const itBase = async (
-  titleOrCb: string | (() => unknown | Promise<unknown>),
-  callback?: () => unknown | Promise<unknown>
+  titleOrCb: string | TestCallback,
+  callback?: TestCallback
 ): Promise<void> => {
   try {
     const title = getTitle(titleOrCb);
@@ -57,8 +62,15 @@ export const itBase = async (
     start = process.hrtime();
 
     try {
-      const resultCb = cb!();
-      if (resultCb instanceof Promise) await resultCb;
+      const hooks = getScopeHook();
+
+      if (hooks) {
+        const holder = hooks.createHolder();
+        await hooks.runScoped(holder, (params) => cb!(params));
+      } else {
+        const resultCb = cb!();
+        if (resultCb instanceof Promise) await resultCb;
+      }
     } catch (error) {
       process.exitCode = 1;
       success = false;
@@ -100,13 +112,21 @@ export const itBase = async (
   }
 };
 
-async function itCore(title: string, cb: () => Promise<unknown>): Promise<void>;
-function itCore(title: string, cb: () => unknown): void;
-async function itCore(cb: () => Promise<unknown>): Promise<void>;
-function itCore(cb: () => unknown): void;
 async function itCore(
-  titleOrCb: string | (() => unknown) | (() => Promise<unknown>),
-  cb?: (() => unknown) | (() => Promise<unknown>)
+  title: string,
+  cb: (params?: Record<string, unknown>) => Promise<unknown>
+): Promise<void>;
+function itCore(
+  title: string,
+  cb: (params?: Record<string, unknown>) => unknown
+): void;
+async function itCore(
+  cb: (params?: Record<string, unknown>) => Promise<unknown>
+): Promise<void>;
+function itCore(cb: (params?: Record<string, unknown>) => unknown): void;
+async function itCore(
+  titleOrCb: string | TestCallback,
+  cb?: TestCallback
 ): Promise<void> {
   if (GLOBAL.configs.testNamePattern && typeof titleOrCb === 'string') {
     if (!GLOBAL.configs.testNamePattern.test(titleOrCb)) return;

@@ -179,3 +179,7 @@ export type ConfigJSONFile = {
   CliConfigs;
 
 export type ConfigFile = Omit<Configs, 'noExit'> & CliConfigs;
+
+export type TestCallback = (
+  params?: Record<string, unknown>
+) => unknown | Promise<unknown>;
