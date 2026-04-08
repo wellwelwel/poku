@@ -152,7 +152,12 @@ import { hr, log } from '../services/write.js';
 
     const coveragePackages = customPkg
       ? [customPkg]
-      : ['@pokujs/c8', '@pokujs/monocart', '@pokujs/istanbul'];
+      : [
+          '@pokujs/c8',
+          '@pokujs/monocart',
+          '@pokujs/istanbul',
+          '@pokujs/one-double-zero',
+        ];
 
     const existingPlugins = GLOBAL.configs.plugins ?? [];
     const alreadyHasCoverage = existingPlugins.some(
@@ -169,6 +174,7 @@ import { hr, log } from '../services/write.js';
 
           GLOBAL.configs.plugins = existingPlugins;
           GLOBAL.configs.plugins.push(coverage());
+
           loaded = true;
           break;
         } catch {}
