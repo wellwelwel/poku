@@ -155,8 +155,9 @@ import { hr, log } from '../services/write.js';
       : [
           '@pokujs/c8',
           '@pokujs/monocart',
-          '@pokujs/istanbul',
           '@pokujs/one-double-zero',
+          '@pokujs/istanbul',
+          '@pokujs/coverage',
         ];
 
     const existingPlugins = GLOBAL.configs.plugins ?? [];
