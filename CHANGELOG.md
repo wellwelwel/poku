@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.0](https://github.com/wellwelwel/poku/compare/v4.2.1...v4.3.0) (2026-04-19)
+
+
+### Features
+
+* **plugins:** generic per-test scope hooks in `it` and `test` ([#1082](https://github.com/wellwelwel/poku/issues/1082)) ([7b82ad1](https://github.com/wellwelwel/poku/commit/7b82ad1dba8c5fb768f55f3ee8159f88904c322f))
+* support `--coverage` flag ([#1081](https://github.com/wellwelwel/poku/issues/1081)) ([24d7783](https://github.com/wellwelwel/poku/commit/24d7783dd6b7d1433cc801fb4173e5b12635802d))
+
 ## [4.2.1](https://github.com/wellwelwel/poku/compare/v4.2.0...v4.2.1) (2026-04-07)
 
 
