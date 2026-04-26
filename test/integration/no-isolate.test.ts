@@ -98,10 +98,18 @@ describe('Service: runTestInProcess', async () => {
     };
 
     const skipped = await runTestInProcess(fixture('skip.test.ts'));
-    assert.strictEqual(skipped, true, 'Skipped file should not be treated as a failure');
+    assert.strictEqual(
+      skipped,
+      true,
+      'Skipped file should not be treated as a failure'
+    );
 
     const next = await runTestInProcess(fixture('pass.test.ts'));
-    assert.strictEqual(next, true, 'File after a skipped file should still run');
+    assert.strictEqual(
+      next,
+      true,
+      'File after a skipped file should still run'
+    );
   });
 
   resetState();
