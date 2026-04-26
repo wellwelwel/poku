@@ -1,6 +1,6 @@
 {
   "include": ["src/**"],
-  "reporter": ["text", "lcov", "v8"],
+  "reporter": ["text", "lcovonly"],
   "extension": [".ts"],
   // "checkCoverage": 95,
   "all": true,
