@@ -4,7 +4,6 @@ import { test } from '../../../../src/modules/helpers/test.js';
 
 skip('Skipping this file');
 
-// This line must never be reached
 test('should not run', () => {
   assert.strictEqual(true, false, 'This test must not execute');
 });
