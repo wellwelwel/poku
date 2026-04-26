@@ -35,8 +35,8 @@
   },
   "scripts": {
     "test": "tsx src/bin/index.ts test/unit test/integration test/e2e",
-    "test:bun": "bun --bun src/bin/index.ts test/unit test/integration test/e2e",
-    "test:deno": "deno run -A src/bin/index.ts --denoAllow=all test/unit test/integration test/e2e",
+    "test:bun": "bun --bun src/bin/index.ts --coverage test/unit test/integration test/e2e",
+    "test:deno": "deno run -A src/bin/index.ts --coverage --denoAllow=all test/unit test/integration test/e2e",
     "test:coverage": "npm test -- --coverage",
     "test:docker:node": "bun test/ci.test.ts",
     "build": "bash scripts/build.sh",
