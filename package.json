@@ -48,7 +48,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
-    "@pokujs/coverage": "^0.6.1",
+    "@pokujs/coverage": "^0.7.0",
     "@pokujs/docker": "^1.0.0",
     "@types/node": "^25.5.0",
     "concurrently": "^9.2.1",
