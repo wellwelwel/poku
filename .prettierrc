@@ -25,7 +25,7 @@
   ],
   "overrides": [
     {
-      "files": "*.jsonc",
+      "files": ["*.jsonc", ".*rc"],
       "options": {
         "trailingComma": "none"
       }

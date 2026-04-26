@@ -16,6 +16,7 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "files.associations": {
+    ".coveragerc": "jsonc",
     ".nycrc": "jsonc"
   }
 }

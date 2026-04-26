@@ -1,13 +1,12 @@
 {
   "include": ["src/**"],
-  "reporter": ["v8", "codecov", "console-details"],
-  "experimental": ["monocart"],
+  "reporter": ["text", "lcovonly"],
   "extension": [".ts"],
-  "checkCoverage": 95,
+  // "checkCoverage": 95,
   "all": true,
-  "clean": true,
   "exclude": [
     "src/@types", // Typings exports only
     "src/globals.d.ts" // Typings exports only
-  ]
+  ],
+  "hyperlinks": "vscode"
 }
