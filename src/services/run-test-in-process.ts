@@ -2,6 +2,7 @@ import { relative } from 'node:path';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { GLOBAL } from '../configs/poku.js';
+import { SkipFileSignal } from '../modules/helpers/skip.js';
 import { parserOutput } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
 import { format } from './format.js';
@@ -61,13 +62,17 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
 
       await Promise.race([testPromise, timeoutPromise]);
     } else await testPromise;
-  } catch {
-    if (timedOut)
-      outputChunks.push(
-        `${format(`● Timeout: test file exceeded ${configs.timeout}ms limit`).fail().bold()}`
-      );
+  } catch (err) {
+    if (err instanceof SkipFileSignal) {
+      // Intentionally skipped
+    } else {
+      if (timedOut)
+        outputChunks.push(
+          `${format(`● Timeout: test file exceeded ${configs.timeout}ms limit`).fail().bold()}`
+        );
 
-    result = false;
+      result = false;
+    }
   } finally {
     if (process.exitCode !== 0) result = false;
 

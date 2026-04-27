@@ -89,6 +89,29 @@ describe('Service: runTestInProcess', async () => {
     assert.strictEqual(result, false, 'afterEach failure should fail');
   });
 
+  await it('skip does not stop the process', async () => {
+    resetState();
+    GLOBAL.configs = {
+      ...savedConfigs,
+      isolation: 'none',
+      quiet: true,
+    };
+
+    const skipped = await runTestInProcess(fixture('skip.test.ts'));
+    assert.strictEqual(
+      skipped,
+      true,
+      'Skipped file should not be treated as a failure'
+    );
+
+    const next = await runTestInProcess(fixture('pass.test.ts'));
+    assert.strictEqual(
+      next,
+      true,
+      'File after a skipped file should still run'
+    );
+  });
+
   resetState();
   GLOBAL.configs = savedConfigs;
 });
