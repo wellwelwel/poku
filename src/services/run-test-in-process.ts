@@ -64,7 +64,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
     } else await testPromise;
   } catch (err) {
     if (err instanceof SkipFileSignal) {
-      // File was intentionally skipped — not a failure
+      // Intentionally skipped
     } else {
       if (timedOut)
         outputChunks.push(
