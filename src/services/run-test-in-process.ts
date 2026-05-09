@@ -7,14 +7,23 @@ import { afterEach, beforeEach } from './each.js';
 import { format } from './format.js';
 
 const stdoutWrite = process.stdout.write.bind(process.stdout);
+const stderrWrite = process.stderr.write.bind(process.stderr);
 
 const cleanup = () => {
   process.stdout.write = stdoutWrite;
+  process.stderr.write = stderrWrite;
   process.exitCode = 0;
 };
 
 const mockProcess = (outputChunks: string[]) => {
   process.stdout.write = (
+    chunk: string | Uint8Array,
+    ..._args: unknown[]
+  ): boolean => {
+    outputChunks.push(String(chunk));
+    return true;
+  };
+  process.stderr.write = (
     chunk: string | Uint8Array,
     ..._args: unknown[]
   ): boolean => {
