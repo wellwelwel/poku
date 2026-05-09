@@ -12,8 +12,7 @@ import { log } from '../../services/write.js';
 import { kill } from './kill.js';
 import { sanitizePath } from './list-files.js';
 
-const runningProcesses: Map<number, { end: End; port?: number | number[] }> =
-  new Map();
+const runningProcesses: Map<number, End> = new Map();
 
 const backgroundProcess = (
   runtime: string,
@@ -39,8 +38,6 @@ const backgroundProcess = (
 
       service.stdout.setEncoding('utf8');
       service.stderr.setEncoding('utf8');
-
-      let portBackup: number | undefined;
 
       const end: End = (port) =>
         new Promise((resolve) => {
@@ -75,7 +72,7 @@ const backgroundProcess = (
           }
         });
 
-      runningProcesses.set(PID, { end, port: portBackup });
+      runningProcesses.set(PID, end);
 
       service.stdout.on('data', (data: Buffer) => {
         if (!isResolved && typeof options?.startAfter !== 'number') {
@@ -116,7 +113,7 @@ const backgroundProcess = (
       });
 
       service.on('error', (err) => {
-        end(portBackup);
+        end();
         reject(`Service failed to start: ${err}`);
       });
 
@@ -126,7 +123,7 @@ const backgroundProcess = (
 
       const timeout = setTimeout(() => {
         if (!isResolved) {
-          end(portBackup);
+          end();
           reject(`createService: Timeout\nFile: ${file}`);
         }
       }, options?.timeout || 60000);
@@ -184,5 +181,5 @@ export const startScript = (
 };
 
 process.once('SIGINT', async () => {
-  for (const { end, port } of runningProcesses.values()) await end(port);
+  for (const end of runningProcesses.values()) await end();
 });
