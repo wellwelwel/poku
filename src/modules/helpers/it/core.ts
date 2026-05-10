@@ -1,7 +1,7 @@
-import { AssertionError } from 'node:assert';
-import process from 'node:process';
 import type { ScopeHook } from '../../../@types/plugin.js';
 import type { TestCallback } from '../../../@types/poku.js';
+import { AssertionError } from 'node:assert';
+import process from 'node:process';
 import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { errorHoist, GLOBAL } from '../../../configs/poku.js';
