@@ -138,11 +138,6 @@ async function itCore(
 
   if (hasOnly) {
     if (!GLOBAL.runAsOnly) return;
-
-    if (typeof titleOrCb === 'string' && typeof cb === 'function')
-      return itBase(titleOrCb, cb);
-
-    if (typeof titleOrCb === 'function') return itBase(titleOrCb);
   }
 
   if (typeof titleOrCb === 'string' && cb) return itBase(titleOrCb, cb);

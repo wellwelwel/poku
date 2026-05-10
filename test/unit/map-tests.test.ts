@@ -183,6 +183,21 @@ test(async () => {
         ]),
         'require'
       );
+
+      assert.deepStrictEqual(
+        getDeepImports(
+          `
+          import { some } from './a';
+          const { some } = require('./b');
+          import('./c');
+          const mod = await import(\`./d\`);
+          import { some } from \`./e\`;
+          require(\`./f.js\`);
+          `
+        ),
+        new Set(['a', 'b', 'c', 'd', 'e', 'f']),
+        'template literals'
+      );
     });
   });
 
