@@ -58,6 +58,7 @@ export const GLOBAL = {
     testSkipPattern: env.POKU_TEST_SKIP_PATTERN
       ? new RegExp(escapeRegExp(env.POKU_TEST_SKIP_PATTERN))
       : undefined,
+    retries: env.POKU_RETRIES ? Number(env.POKU_RETRIES) : undefined,
   } as Configs,
   configFile: undefined as string | undefined,
   configsFromFile: Object.create(null) as ConfigFile | ConfigJSONFile,

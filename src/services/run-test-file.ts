@@ -11,12 +11,16 @@ import { format } from './format.js';
 const STDIO_IPC: StdioOptions = ['inherit', 'pipe', 'pipe', 'ipc'];
 const STDIO_DEFAULT: StdioOptions = ['inherit', 'pipe', 'pipe'];
 
-export const runTestFile = async (path: string): Promise<boolean> => {
+export const runTestFile = async (
+  path: string,
+  attempt?: number,
+  isFinalAttempt?: boolean
+): Promise<boolean> => {
   const { configs } = GLOBAL;
 
   if (configs.isolation === 'none') {
     const { runTestInProcess } = await import('./run-test-in-process.js');
-    return runTestInProcess(path);
+    return runTestInProcess(path, attempt, isFinalAttempt);
   }
 
   const { cwd, reporter } = GLOBAL;
@@ -50,12 +54,14 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
   if (!(await beforeEach(file))) return false;
 
-  reporter.onFileStart({
-    path: {
-      relative: file,
-      absolute: path,
-    },
-  });
+  if (isFinalAttempt !== false) {
+    reporter.onFileStart({
+      path: {
+        relative: file,
+        absolute: path,
+      },
+    });
+  }
 
   return new Promise((resolve) => {
     const child = spawn(runtime, command, {
@@ -94,7 +100,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
       const result = timedOut ? false : code === 0;
 
-      if (showLogs) {
+      if (showLogs && isFinalAttempt !== false) {
         const output = outputChunks.join('');
         const parsedOutputs = parserOutput({
           output,
@@ -111,6 +117,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
           },
           duration: total,
           output: parsedOutputs,
+          retries: attempt && attempt > 0 ? attempt : undefined,
         });
       }
 
@@ -131,14 +138,17 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
       if (showLogs) console.error(`Failed to start test: ${path}`, err);
 
-      reporter.onFileResult({
-        status: false,
-        path: {
-          relative: file,
-          absolute: path,
-        },
-        duration: total,
-      });
+      if (isFinalAttempt !== false) {
+        reporter.onFileResult({
+          status: false,
+          path: {
+            relative: file,
+            absolute: path,
+          },
+          duration: total,
+          retries: attempt && attempt > 0 ? attempt : undefined,
+        });
+      }
 
       resolve(false);
     });

@@ -23,7 +23,11 @@ const mockProcess = (outputChunks: string[]) => {
   };
 };
 
-export const runTestInProcess = async (path: string): Promise<boolean> => {
+export const runTestInProcess = async (
+  path: string,
+  attempt?: number,
+  isFinalAttempt?: boolean
+): Promise<boolean> => {
   cleanup();
 
   const { cwd, configs, reporter } = GLOBAL;
@@ -35,12 +39,15 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
   if (!(await beforeEach(file))) return false;
 
   mockProcess(outputChunks);
-  reporter.onFileStart({
-    path: {
-      relative: file,
-      absolute: path,
-    },
-  });
+
+  if (isFinalAttempt !== false) {
+    reporter.onFileStart({
+      path: {
+        relative: file,
+        absolute: path,
+      },
+    });
+  }
 
   let timedOut = false;
   let killTimer: ReturnType<typeof setTimeout> | undefined;
@@ -77,7 +84,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
 
   const end = process.hrtime(start);
 
-  if (showLogs) {
+  if (showLogs && isFinalAttempt !== false) {
     const output = outputChunks.join('');
     const parsedOutputs = parserOutput({
       output,
@@ -94,6 +101,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
       },
       duration: total,
       output: parsedOutputs,
+      retries: attempt && attempt > 0 ? attempt : undefined,
     });
   }
 

@@ -64,6 +64,7 @@ export type ReporterPlugin = (configs?: Configs) => {
     duration: number;
     success?: boolean;
     title?: string;
+    retries?: number;
   }) => void;
   onAssertionSuccess: (options: { message: string }) => void;
   onAssertionFailure: (options: {
@@ -79,6 +80,7 @@ export type ReporterPlugin = (configs?: Configs) => {
     path: Path;
     duration: number;
     output?: string;
+    retries?: number;
   }) => void;
   onRunResult: (options: Results) => void;
   onExit: (options: Results) => void;

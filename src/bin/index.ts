@@ -59,6 +59,10 @@ import { hr, log } from '../services/write.js';
   })();
   const sequential = hasArg('sequential') || configsFromFile?.sequential;
   const isolation = getArg('isolation') || configsFromFile?.isolation;
+  const retries = (() => {
+    const value = Number(getArg('retries'));
+    return Number.isNaN(value) ? configsFromFile?.retries : value;
+  })();
   const testNamePattern =
     getArg('testNamePattern') ??
     getArg('t', '-') ??
@@ -119,6 +123,7 @@ import { hr, log } from '../services/write.js';
     quiet,
     debug,
     failFast,
+    retries,
     deno: {
       allow: denoAllow,
       deny: denoDeny,
@@ -198,6 +203,7 @@ import { hr, log } from '../services/write.js';
     env.POKU_TEST_NAME_PATTERN = testNamePattern;
   if (typeof testSkipPattern === 'string')
     env.POKU_TEST_SKIP_PATTERN = testSkipPattern;
+  if (typeof retries === 'number') env.POKU_RETRIES = String(retries);
 
   const tasks: Promise<unknown>[] = [];
 

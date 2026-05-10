@@ -1,3 +1,4 @@
+import type { ItOptions } from '../../@types/poku.js';
 import { exit } from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
 import { CheckNoOnly } from '../../parsers/callback.js';
@@ -5,7 +6,7 @@ import { hasOnly } from '../../parsers/get-arg.js';
 import { format } from '../../services/format.js';
 import { log } from '../../services/write.js';
 import { describeBase } from './describe.js';
-import { itBase } from './it/core.js';
+import { itBase, parseItArgs } from './it/core.js';
 
 export function todo(message: string): void;
 export async function todo(
@@ -66,15 +67,31 @@ export async function onlyDescribe(
 }
 
 export async function onlyIt(
-  message: string,
+  title: string,
+  options: ItOptions,
   cb: () => Promise<unknown>
 ): Promise<void>;
-export function onlyIt(message: string, cb: () => unknown): void;
+export function onlyIt(
+  title: string,
+  options: ItOptions,
+  cb: () => unknown
+): void;
+export async function onlyIt(
+  title: string,
+  cb: () => Promise<unknown>
+): Promise<void>;
+export function onlyIt(title: string, cb: () => unknown): void;
+export async function onlyIt(
+  options: ItOptions,
+  cb: () => Promise<unknown>
+): Promise<void>;
+export function onlyIt(options: ItOptions, cb: () => unknown): void;
 export async function onlyIt(cb: () => Promise<unknown>): Promise<void>;
 export function onlyIt(cb: () => unknown): void;
 export async function onlyIt(
-  messageOrCb: string | (() => unknown) | (() => Promise<unknown>),
-  cb?: (() => unknown) | (() => Promise<unknown>)
+  a: string | ItOptions | (() => unknown) | (() => Promise<unknown>),
+  b?: ItOptions | (() => unknown) | (() => Promise<unknown>),
+  c?: (() => unknown) | (() => Promise<unknown>)
 ): Promise<void> {
   if (!hasOnly) {
     log(
@@ -85,6 +102,7 @@ export async function onlyIt(
     exit(1);
   }
 
-  if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
-  if (typeof messageOrCb === 'function') return itBase(messageOrCb);
+  const { title, options, cb } = parseItArgs(a, b, c);
+
+  return itBase(title, options, cb);
 }

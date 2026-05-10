@@ -81,6 +81,12 @@ export type Configs = {
    */
   timeout?: number;
   /**
+   * Number of times to retry failed test files before marking them as failed.
+   *
+   * @default 0 (no retries)
+   */
+  retries?: number;
+  /**
    * @default "poku"
    */
   reporter?: Reporter;
@@ -183,3 +189,13 @@ export type ConfigFile = Omit<Configs, 'noExit'> & CliConfigs;
 export type TestCallback = (
   params?: Record<string, unknown>
 ) => unknown | Promise<unknown>;
+
+export type ItOptions = {
+  /**
+   * Number of times to retry a failed test before marking it as failed.
+   * Overrides the global `retries` setting for this specific test.
+   *
+   * @default undefined (uses global retries setting)
+   */
+  retries?: number;
+};

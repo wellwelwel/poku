@@ -51,6 +51,7 @@ const checkFlags = (): void => {
     '--only',
     '--quiet',
     '--reporter',
+    '--retries',
     '--sequential',
     '--testNamePattern',
     '--testSkipPattern',
@@ -99,6 +100,7 @@ const checkValues = async (): Promise<void> => {
     'killPid',
     'killPort',
     'reporter',
+    'retries',
     'testNamePattern',
     'testSkipPattern',
     'timeout',
@@ -120,6 +122,9 @@ const checkValues = async (): Promise<void> => {
 
   if (getArg('timeout') && typeof GLOBAL.configs.timeout === 'undefined')
     errors.push('--timeout: expects for a valid integer.');
+
+  if (getArg('retries') && typeof GLOBAL.configs.retries === 'undefined')
+    errors.push('--retries: expects for a valid integer.');
 
   const isolationValue = getArg('isolation');
   if (
@@ -158,6 +163,7 @@ const checkConfigFile = (): void => {
     'isolation',
     'platform',
     'deno',
+    'retries',
     'testNamePattern',
     'testSkipPattern',
   ]);

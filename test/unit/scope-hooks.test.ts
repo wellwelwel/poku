@@ -29,7 +29,7 @@ describe('itBase generic scope hooks', async () => {
     delete g[SCOPE_HOOKS_KEY];
 
     let executed = false;
-    await itBase(() => {
+    await itBase(undefined, undefined, () => {
       executed = true;
     });
 
@@ -59,7 +59,7 @@ describe('itBase generic scope hooks', async () => {
     let maxInFlight = 0;
 
     const runCase = async (label: string) => {
-      await itBase(async () => {
+      await itBase(undefined, undefined, async () => {
         const storeBefore = als.getStore();
         if (!storeBefore) {
           assert.fail(`${label}: store exists before await`);

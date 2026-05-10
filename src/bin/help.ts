@@ -32,6 +32,7 @@ const summary: [string, string][] = [
     '--reporter, -r',
     'Specify the reporter: poku, dot, compact, focus, classic.',
   ],
+  ['--retries', 'Retry failed test files up to N additional times.'],
   ['--only', 'Enable selective execution of tests.'],
   ['--quiet, -q', 'Run tests with no logs.'],
   ['--sequential', 'Run tests files sequentially.'],

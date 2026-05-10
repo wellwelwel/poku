@@ -21,6 +21,7 @@ export const runTests = (files: string[]): Promise<boolean> => {
   const showLogs = !configs.quiet;
   const failFastError = `  ${format('ℹ').fail()} ${format('failFast').bold()} is enabled`;
   const totalFiles = files.length;
+  const maxRetries = configs.retries ?? 0;
   const concurrency: number = (() => {
     if (configs.sequential || configs.isolation === 'none') return 1;
     const limit = configs.concurrency ?? availableParallelism();
@@ -45,7 +46,32 @@ export const runTests = (files: string[]): Promise<boolean> => {
 
     activeTests++;
 
-    const testPassed = await runTestFile(filePath);
+    let testPassed = false;
+    let retryCount = 0;
+    let isLastAttempt = false;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      isLastAttempt = attempt === maxRetries;
+      testPassed = await runTestFile(
+        filePath,
+        attempt > 0 ? attempt : undefined,
+        isLastAttempt
+      );
+
+      if (testPassed) break;
+
+      if (!isLastAttempt) {
+        retryCount++;
+        if (showLogs) {
+          const file = relative(cwd, filePath);
+          log(
+            format(
+              `  ↻ Retrying ${format(file).underline()} (${retryCount}/${maxRetries})…`
+            ).dim()
+          );
+        }
+      }
+    }
 
     if (testPassed) ++results.passed;
     else {

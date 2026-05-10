@@ -67,15 +67,25 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       log(`${indent}${format(`◌ ${title}`).dim()}`);
     },
-    onItEnd({ title, duration, success = true }) {
+    onItEnd({ title, duration, success = true, retries }) {
       const status = success ? 'success' : 'fail';
 
       const indent = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
 
+      let retrySuffix = '';
+      if (retries !== undefined && retries > 0) {
+        if (success) {
+          retrySuffix = ` ${format(`(${retries === 1 ? '1 retry' : `${retries} retries`})`).dim()}`;
+        } else {
+          const totalAttempts = retries + 1;
+          retrySuffix = ` ${format(`(${totalAttempts}/${totalAttempts} attempts failed)`).dim()}`;
+        }
+      }
+
       log(
-        `${indent}${format(`● ${title}`)[status]().bold()} ${format(
+        `${indent}${format(`● ${title}`)[status]().bold()}${retrySuffix} ${format(
           `› ${duration.toFixed(6)}ms`
         )
           [status]()
@@ -166,12 +176,17 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       log(`${indent}${format(`● ${message}`).cyan().bold()}`);
     },
-    onFileResult({ status, path, duration, output }) {
+    onFileResult({ status, path, duration, output, retries }) {
       stdout.write('\n');
+
+      const retrySuffix =
+        retries !== undefined && retries > 0
+          ? ` ${format(`(${retries === 1 ? '1 retry' : `${retries} retries`})`).dim()}`
+          : '';
 
       if (status) {
         log(
-          `${ARROW_PASS} ${format(path.relative).success().underline()} ${format(
+          `${ARROW_PASS} ${format(path.relative).success().underline()}${retrySuffix} ${format(
             `› ${duration.toFixed(6)}ms`
           )
             .success()
@@ -181,7 +196,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
         if (output) log(output);
       } else
         log(
-          `${ARROW_FAIL} ${format(path.relative).fail().underline()} ${format(
+          `${ARROW_FAIL} ${format(path.relative).fail().underline()}${retrySuffix} ${format(
             `› ${duration.toFixed(6)}ms`
           )
             .fail()
