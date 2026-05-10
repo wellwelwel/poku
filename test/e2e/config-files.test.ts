@@ -58,13 +58,38 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
     assert(/debug/.test(output.stdout), 'CLI needs to pass able "debug"');
   });
 
-  await it('Broken config file (silently ignored)', async () => {
+  await it('Broken JS config file logs warning and continues', async () => {
     const output = await inspectPoku('', {
       cwd: 'test/__fixtures__/e2e/config-files/broken',
     });
 
     assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
     assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
+    assert(
+      /Failed to load config file/.test(output.stdout),
+      'Should log config load failure warning'
+    );
+    assert(
+      /broken config/.test(output.stdout),
+      'Should log the error message'
+    );
+  });
+
+  await it('Broken JSON config file logs warning and continues', async () => {
+    const output = await inspectPoku('', {
+      cwd: 'test/__fixtures__/e2e/config-files/broken-json',
+    });
+
+    assert.strictEqual(output.exitCode, 0, 'Exit Code needs to be 0');
+    assert(/PASS › 1/.test(output.stdout), 'CLI needs to pass 1');
+    assert(
+      /Failed to load config file/.test(output.stdout),
+      'Should log config load failure warning'
+    );
+    assert(
+      /Expected property name/.test(output.stdout),
+      'Should log JSON parse error details'
+    );
   });
 
   if (GLOBAL.runtime === 'deno') return;
