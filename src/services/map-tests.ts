@@ -4,7 +4,7 @@ import { listFiles } from '../modules/helpers/list-files.js';
 
 const regex = {
   extFilter: /\.(js|cjs|mjs|ts|cts|mts)$/,
-  dependecy: /['"](\.{1,2}\/[^'"]+)['"]/,
+  dependency: /['"`](\.{1,2}\/[^'"`]+)['"`]/,
   dotBar: /(\.\/)/g,
   sep: /[/\\]+/g,
   dot: /^\.+/,
@@ -26,7 +26,7 @@ export const getDeepImports = (content: string): Set<string> => {
       line.indexOf('require') !== -1 ||
       line.indexOf(' from ') !== -1
     ) {
-      const path = line.match(regex.dependecy);
+      const path = line.match(regex.dependency);
 
       if (path) paths.add(normalizePath(path[1].replace(regex.extFilter, '')));
     }
