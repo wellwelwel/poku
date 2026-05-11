@@ -56,7 +56,7 @@ const backgroundProcess = (
               process.kill(PID);
             else process.kill(-PID, 'SIGKILL');
 
-            if (port && ['bun', 'deno'].includes(runtime)) {
+            if (port) {
               setTimeout(async () => {
                 await kill.port(port);
                 resolve(undefined);
