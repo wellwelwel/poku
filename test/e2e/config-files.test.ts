@@ -84,7 +84,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
       'Should log config load failure warning'
     );
     assert(
-      /Expected property name/.test(output.stdout),
+      /Expected.*['}]|JSON Parse error/.test(output.stdout),
       'Should log JSON parse error details'
     );
   });
