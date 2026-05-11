@@ -31,7 +31,9 @@ describe('Testing ', async () => {
   for (const { run, testCase } of output) {
     await it(testCase, async () => {
       const results = await run();
-      const actual = results.stdout.split('\n');
+      const actual = results.stdout
+        .split('\n')
+        .filter((line) => !/DeprecationWarning|--trace-deprecation/.test(line));
       const offset =
         actual.findIndex((line) => line.includes('◌ first test')) - 1;
 
