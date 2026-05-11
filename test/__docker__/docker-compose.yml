@@ -40,3 +40,11 @@ services:
       dockerfile: ./test/__docker__/node/24.Dockerfile
     environment:
       NODE_ENV: build
+
+  node-26:
+    container_name: 'node-26'
+    build:
+      context: ../../
+      dockerfile: ./test/__docker__/node/26.Dockerfile
+    environment:
+      NODE_ENV: build
