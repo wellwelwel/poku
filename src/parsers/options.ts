@@ -3,9 +3,9 @@ import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { GLOBAL } from '../configs/poku.js';
+import { JSONC } from '../polyfills/jsonc.js';
 import { format } from '../services/format.js';
 import { log } from '../services/write.js';
-import { JSONC } from '../polyfills/jsonc.js';
 import { isWindows } from './os.js';
 
 export const getConfigs = async (

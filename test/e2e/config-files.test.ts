@@ -69,10 +69,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
       /Failed to load config file/.test(output.stdout),
       'Should log config load failure warning'
     );
-    assert(
-      /broken config/.test(output.stdout),
-      'Should log the error message'
-    );
+    assert(/broken config/.test(output.stdout), 'Should log the error message');
   });
 
   await it('Broken JSON config file logs warning and continues', async () => {
