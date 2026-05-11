@@ -4,6 +4,8 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { GLOBAL } from '../configs/poku.js';
 import { JSONC } from '../polyfills/jsonc.js';
+import { format } from '../services/format.js';
+import { log } from '../services/write.js';
 import { isWindows } from './os.js';
 
 export const getConfigs = async (
@@ -29,7 +31,13 @@ export const getConfigs = async (
       const configsFile = await readFile(filePath, 'utf8');
 
       return JSONC.parse<ConfigJSONFile>(configsFile);
-    } catch {}
+    } catch (error) {
+      log(
+        `${format('⚠').bold()} Failed to load config file ${format(file).bold()}:`
+      );
+      const message = error instanceof Error ? error.message : String(error);
+      log(`${format(message).fail()}`);
+    }
   }
 
   return Object.create(null);
