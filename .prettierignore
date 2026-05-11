@@ -3,6 +3,7 @@
 /CHANGELOG.md
 /website
 /test/__fixtures__/e2e/sintax
+/test/__fixtures__/e2e/config-files/broken-json/.pokurc.json
 /.nycrc.json
 /benchmark/results
 /benchmark/output.md
