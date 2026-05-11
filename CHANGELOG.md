@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.3.1](https://github.com/wellwelwel/poku/compare/v4.3.0...v4.3.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* improve JSONC parser ([#1104](https://github.com/wellwelwel/poku/issues/1104)) ([cf096c2](https://github.com/wellwelwel/poku/commit/cf096c2b9e0d512fd236647bc23cbee0e5191355))
+* include template literal paths in watch mode dependency mapping ([#1098](https://github.com/wellwelwel/poku/issues/1098)) ([bb9d437](https://github.com/wellwelwel/poku/commit/bb9d437f88695c2a4c26d14e993bf8e75ab12a0c))
+* log warnings for malformed config files instead of silently swallowing errors ([#1099](https://github.com/wellwelwel/poku/issues/1099)) ([e84e648](https://github.com/wellwelwel/poku/commit/e84e648d22e11d161646663a326586b37dcf4210))
+* remove dead portBackup variable that prevented port cleanup on SIGINT ([#1091](https://github.com/wellwelwel/poku/issues/1091)) ([d3ede92](https://github.com/wellwelwel/poku/commit/d3ede9237c1b8c8763425984e622f00a8e70aea4))
+
 ## [4.3.0](https://github.com/wellwelwel/poku/compare/v4.2.1...v4.3.0) (2026-04-19)
 
 
