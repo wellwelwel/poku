@@ -4,6 +4,7 @@
 /website
 /test/__fixtures__/e2e/sintax
 /test/__fixtures__/e2e/config-files/broken-json/.pokurc.json
+/test/__fixtures__/e2e/config-files/jsonc-rc/.pokurc.jsonc
 /.nycrc.json
 /benchmark/results
 /benchmark/output.md
