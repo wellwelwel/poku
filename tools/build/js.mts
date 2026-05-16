@@ -66,7 +66,7 @@ const transpile = esbuild({
   platform: 'node',
   tsconfig: './tsconfig.json',
   treeShaking: true,
-  minify: true,
+  minifySyntax: true,
 });
 
 const esm = await rollup({
