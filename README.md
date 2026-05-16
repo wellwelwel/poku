@@ -312,6 +312,14 @@ Really thanks to everyone who has supported and keeps supporting my work.
 
 ---
 
+## AI & Open Source
+
+🤖 **LLM**s can help a lot with productivity, but please, use them as a tool, not as an autopilot.
+
+[**If you'd like to contribute to the project**](./CONTRIBUTING.md), please keep this in mind: we'd love to read what you, a human, have written 🤝
+
+---
+
 ## License
 
 **Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).<br />
