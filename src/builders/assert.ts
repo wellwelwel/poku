@@ -1,83 +1,54 @@
 import type assert from 'node:assert';
 import type { AssertPredicate } from 'node:assert';
-import type { ProcessAssertionOptions } from '../@types/assert.js';
+import type {
+  AssertEqual,
+  AssertionMessage,
+  AssertMatch,
+  AssertRejects,
+  AssertThrows,
+  AssertValue,
+  AsyncBlock,
+} from '../@types/assert.js';
 import { processAssert, processAsyncAssert } from '../services/assert.js';
 
 export const createAssert = (nodeAssert: typeof assert) => {
-  const ok = (
-    value: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void => processAssert(() => nodeAssert.ok(value), { message });
+  const ok: AssertValue = (value, message) =>
+    processAssert(() => nodeAssert.ok(value), { message });
 
-  const equal = (
-    actual: unknown,
-    expected: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void => {
+  const equal: AssertEqual = (actual, expected, message) => {
     processAssert(() => nodeAssert.equal(actual, expected), { message });
   };
 
-  const deepEqual = (
-    actual: unknown,
-    expected: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void =>
+  const deepEqual: AssertEqual = (actual, expected, message) =>
     processAssert(() => nodeAssert.deepEqual(actual, expected), { message });
 
-  const strictEqual = (
-    actual: unknown,
-    expected: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void =>
+  const strictEqual: AssertEqual = (actual, expected, message) =>
     processAssert(() => nodeAssert.strictEqual(actual, expected), { message });
 
-  const deepStrictEqual = (
-    actual: unknown,
-    expected: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void =>
+  const deepStrictEqual: AssertEqual = (actual, expected, message) =>
     processAssert(() => nodeAssert.deepStrictEqual(actual, expected), {
       message,
     });
 
-  const notEqual = (
-    actual: unknown,
-    expected: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void =>
+  const notEqual: AssertEqual = (actual, expected, message) =>
     processAssert(() => nodeAssert.notEqual(actual, expected), {
       message,
     });
 
-  const notDeepEqual = (
-    actual: unknown,
-    expected: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void =>
+  const notDeepEqual: AssertEqual = (actual, expected, message) =>
     processAssert(() => nodeAssert.notDeepEqual(actual, expected), { message });
 
-  const notStrictEqual = (
-    actual: unknown,
-    expected: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void =>
+  const notStrictEqual: AssertEqual = (actual, expected, message) =>
     processAssert(() => nodeAssert.notStrictEqual(actual, expected), {
       message,
     });
 
-  const notDeepStrictEqual = (
-    actual: unknown,
-    expected: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void =>
+  const notDeepStrictEqual: AssertEqual = (actual, expected, message) =>
     processAssert(() => nodeAssert.notDeepStrictEqual(actual, expected), {
       message,
     });
 
-  const ifError = (
-    value: unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void =>
+  const ifError: AssertValue = (value, message) =>
     processAssert(() => nodeAssert.ifError(value), {
       message,
       defaultMessage: 'Expected no error, but received an error',
@@ -85,7 +56,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
       throw: true,
     });
 
-  const fail = (message?: ProcessAssertionOptions['message']): never => {
+  const fail = (message?: AssertionMessage): never => {
     processAssert(() => nodeAssert.fail(message), {
       message,
       defaultMessage: 'Test failed intentionally',
@@ -95,20 +66,11 @@ export const createAssert = (nodeAssert: typeof assert) => {
     process.exit(1);
   };
 
-  function doesNotThrow(
+  const doesNotThrow: AssertThrows = ((
     block: () => unknown,
-    message?: string | ProcessAssertionOptions['message']
-  ): void;
-  function doesNotThrow(
-    block: () => unknown,
-    error: AssertPredicate,
-    message?: ProcessAssertionOptions['message']
-  ): void;
-  function doesNotThrow(
-    block: () => unknown,
-    errorOrMessage?: AssertPredicate | ProcessAssertionOptions['message'],
-    message?: ProcessAssertionOptions['message']
-  ): void {
+    errorOrMessage?: AssertPredicate | AssertionMessage,
+    message?: AssertionMessage
+  ): void => {
     processAssert(
       () => {
         if (
@@ -130,22 +92,13 @@ export const createAssert = (nodeAssert: typeof assert) => {
         throw: true,
       }
     );
-  }
+  }) as AssertThrows;
 
-  function throws(
+  const throws: AssertThrows = ((
     block: () => unknown,
-    message?: ProcessAssertionOptions['message']
-  ): void;
-  function throws(
-    block: () => unknown,
-    error: AssertPredicate,
-    message?: ProcessAssertionOptions['message']
-  ): void;
-  function throws(
-    block: () => unknown,
-    errorOrMessage?: AssertPredicate | ProcessAssertionOptions['message'],
-    message?: ProcessAssertionOptions['message']
-  ): void {
+    errorOrMessage?: AssertPredicate | AssertionMessage,
+    message?: AssertionMessage
+  ): void => {
     if (
       typeof errorOrMessage === 'function' ||
       errorOrMessage instanceof RegExp ||
@@ -166,22 +119,13 @@ export const createAssert = (nodeAssert: typeof assert) => {
         hideDiff: true,
       });
     }
-  }
+  }) as AssertThrows;
 
-  function rejects(
-    block: (() => Promise<unknown>) | Promise<unknown>,
-    message?: ProcessAssertionOptions['message']
-  ): Promise<void>;
-  function rejects(
-    block: (() => Promise<unknown>) | Promise<unknown>,
-    error: AssertPredicate,
-    message?: ProcessAssertionOptions['message']
-  ): Promise<void>;
-  async function rejects(
-    block: (() => Promise<unknown>) | Promise<unknown>,
-    errorOrMessage?: AssertPredicate | ProcessAssertionOptions['message'],
-    message?: ProcessAssertionOptions['message']
-  ): Promise<void> {
+  const rejects: AssertRejects = (async (
+    block: AsyncBlock,
+    errorOrMessage?: AssertPredicate | AssertionMessage,
+    message?: AssertionMessage
+  ): Promise<void> => {
     await processAsyncAssert(
       async () => {
         if (
@@ -203,22 +147,13 @@ export const createAssert = (nodeAssert: typeof assert) => {
         throw: true,
       }
     );
-  }
+  }) as AssertRejects;
 
-  function doesNotReject(
-    block: (() => Promise<unknown>) | Promise<unknown>,
-    message?: ProcessAssertionOptions['message']
-  ): Promise<void>;
-  function doesNotReject(
-    block: (() => Promise<unknown>) | Promise<unknown>,
-    error: AssertPredicate,
-    message?: ProcessAssertionOptions['message']
-  ): Promise<void>;
-  async function doesNotReject(
-    block: (() => Promise<unknown>) | Promise<unknown>,
-    errorOrMessage?: AssertPredicate | ProcessAssertionOptions['message'],
-    message?: ProcessAssertionOptions['message']
-  ): Promise<void> {
+  const doesNotReject: AssertRejects = (async (
+    block: AsyncBlock,
+    errorOrMessage?: AssertPredicate | AssertionMessage,
+    message?: AssertionMessage
+  ): Promise<void> => {
     await processAsyncAssert(
       async () => {
         if (
@@ -236,13 +171,9 @@ export const createAssert = (nodeAssert: typeof assert) => {
         throw: true,
       }
     );
-  }
+  }) as AssertRejects;
 
-  const match = (
-    value: string,
-    regExp: RegExp,
-    message?: ProcessAssertionOptions['message']
-  ): void => {
+  const match: AssertMatch = (value, regExp, message) => {
     processAssert(() => nodeAssert?.match(value, regExp), {
       message,
       actual: 'Value',
@@ -251,11 +182,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     });
   };
 
-  const doesNotMatch = (
-    value: string,
-    regExp: RegExp,
-    message?: ProcessAssertionOptions['message']
-  ): void => {
+  const doesNotMatch: AssertMatch = (value, regExp, message) => {
     processAssert(() => nodeAssert.doesNotMatch(value, regExp), {
       message,
       actual: 'Value',
@@ -265,8 +192,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
   };
 
   const assert = Object.assign(
-    (value: unknown, message?: ProcessAssertionOptions['message']) =>
-      ok(value, message),
+    ((value, message?) => ok(value, message)) satisfies AssertValue,
     {
       ok,
       equal,
