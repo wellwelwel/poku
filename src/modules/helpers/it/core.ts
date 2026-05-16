@@ -1,6 +1,6 @@
-import type { It, ItWithModifiers } from '../../../@types/it.js';
+import type { It } from '../../../@types/it.js';
 import type { ScopeHook } from '../../../@types/plugin.js';
-import type { TestCallback } from '../../../@types/poku.js';
+import type { TestCb } from '../../../@types/poku.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { each } from '../../../configs/each.js';
@@ -18,8 +18,8 @@ const getScopeHook = (): ScopeHook | undefined =>
     | undefined;
 
 export const itBase = async (
-  titleOrCb: string | TestCallback,
-  callback?: TestCallback
+  titleOrCb: string | TestCb,
+  callback?: TestCb
 ): Promise<void> => {
   try {
     const title = getTitle(titleOrCb);
@@ -109,8 +109,8 @@ export const itBase = async (
 };
 
 const itCore = (async (
-  titleOrCb: string | TestCallback,
-  cb?: TestCallback
+  titleOrCb: string | TestCb,
+  cb?: TestCb
 ): Promise<void> => {
   if (GLOBAL.configs.testNamePattern && typeof titleOrCb === 'string') {
     if (!GLOBAL.configs.testNamePattern.test(titleOrCb)) return;
@@ -132,4 +132,4 @@ export const it = Object.assign(itCore, {
   todo,
   skip,
   only: createOnlyIt(itBase),
-}) satisfies ItWithModifiers;
+});

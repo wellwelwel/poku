@@ -1,7 +1,7 @@
 import type { Describe } from '../../@types/describe.js';
 import type { It } from '../../@types/it.js';
 import type { Modifier, Todo } from '../../@types/modifiers.js';
-import type { AsyncTestCallback, TestCallback } from '../../@types/poku.js';
+import type { AsyncTestCb, TestCb } from '../../@types/poku.js';
 import { exit } from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
 import { CheckNoOnly } from '../../parsers/callback.js';
@@ -10,8 +10,8 @@ import { format } from '../../services/format.js';
 import { log } from '../../services/write.js';
 
 export const todo = (async (
-  messageOrCb: string | TestCallback | AsyncTestCallback,
-  _cb?: TestCallback | AsyncTestCallback
+  messageOrCb: string | TestCb | AsyncTestCb,
+  _cb?: TestCb | AsyncTestCb
 ): Promise<void> => {
   const message = typeof messageOrCb === 'string' ? messageOrCb : 'Planning';
 
@@ -19,8 +19,8 @@ export const todo = (async (
 }) as Todo;
 
 export const skip = (async (
-  messageOrCb: string | TestCallback | AsyncTestCallback,
-  _cb?: TestCallback | AsyncTestCallback
+  messageOrCb: string | TestCb | AsyncTestCb,
+  _cb?: TestCb | AsyncTestCb
 ): Promise<void> => {
   const message = typeof messageOrCb === 'string' ? messageOrCb : 'Skipping';
 
@@ -29,8 +29,8 @@ export const skip = (async (
 
 export const createOnlyDescribe = (describeBase: Describe): Modifier =>
   (async (
-    messageOrCb: string | TestCallback | AsyncTestCallback,
-    cb?: TestCallback | AsyncTestCallback
+    messageOrCb: string | TestCb | AsyncTestCb,
+    cb?: TestCb | AsyncTestCb
   ): Promise<void> => {
     if (!hasOnly) {
       log(
@@ -52,8 +52,8 @@ export const createOnlyDescribe = (describeBase: Describe): Modifier =>
 
 export const createOnlyIt = (itBase: It): Modifier =>
   (async (
-    messageOrCb: string | TestCallback | AsyncTestCallback,
-    cb?: TestCallback | AsyncTestCallback
+    messageOrCb: string | TestCb | AsyncTestCb,
+    cb?: TestCb | AsyncTestCb
   ): Promise<void> => {
     if (!hasOnly) {
       log(

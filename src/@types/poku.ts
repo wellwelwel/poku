@@ -189,10 +189,10 @@ export type Poku = {
   (targetPaths: string | string[], configs?: Configs): Promise<undefined>;
 };
 
-export type TestCallback = (
+export type TestCb = (
   params?: Record<string, unknown>
 ) => unknown | Promise<unknown>;
 
-export type AsyncTestCallback = (
+export type AsyncTestCb = (
   params?: Record<string, unknown>
 ) => Promise<unknown>;

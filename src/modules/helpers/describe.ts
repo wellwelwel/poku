@@ -1,8 +1,4 @@
-import type {
-  Describe,
-  DescribeOptions,
-  DescribeWithModifiers,
-} from '../../@types/describe.js';
+import type { Describe, DescribeOptions } from '../../@types/describe.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { indentation } from '../../configs/indentation.js';
@@ -109,4 +105,4 @@ export const describe = Object.assign(describeCore, {
   todo,
   skip,
   only: createOnlyDescribe(describeBase),
-}) satisfies DescribeWithModifiers;
+});
