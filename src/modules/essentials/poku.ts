@@ -1,6 +1,6 @@
 import type { Code } from '../../@types/code.js';
 import type { PokuPlugin } from '../../@types/plugin.js';
-import type { Configs, PluginContext } from '../../@types/poku.js';
+import type { Configs, PluginContext, Poku } from '../../@types/poku.js';
 import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
 import { GLOBAL, results, timespan } from '../../configs/poku.js';
@@ -15,18 +15,10 @@ export const onSigint = (): void => {
 
 process.once('SIGINT', onSigint);
 
-export async function poku(
-  targetPaths: string | string[],
-  configs: Configs & { noExit: true }
-): Promise<Code>;
-export async function poku(
+export const poku = (async (
   targetPaths: string | string[],
   configs?: Configs
-): Promise<undefined>;
-export async function poku(
-  targetPaths: string | string[],
-  configs?: Configs
-): Promise<Code | undefined> {
+): Promise<Code | undefined> => {
   if (configs) GLOBAL.configs = { ...GLOBAL.configs, ...configs };
 
   env.POKU_RUNTIME = GLOBAL.runtime;
@@ -104,4 +96,4 @@ export async function poku(
   }
 
   if (GLOBAL.configs.noExit) return code;
-}
+}) as Poku;
