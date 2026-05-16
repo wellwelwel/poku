@@ -39,4 +39,9 @@ jobs:
         run: npm ci
 
       - name: 🤹🏻‍♀️ Biome + Prettier Check
+        if: always()
         run: npm run lint
+
+      - name: 🚫 Type Declarations Check
+        if: always()
+        run: npm run lint:types

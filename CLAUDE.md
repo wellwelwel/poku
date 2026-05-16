@@ -101,6 +101,7 @@ On a fork, ALWAYS read `CONTRIBUTING.md` before committing.
 
 Run these scripts:
 
+- `npm run lint:types`
 - `npm run lint:fix`
 - `npm run build`
 - `npm test`: full suite on local Node.js version.
