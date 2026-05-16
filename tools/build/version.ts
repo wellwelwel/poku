@@ -1,17 +1,11 @@
-import fs from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { assert } from '../../src/modules/essentials/assert.js';
 
-const packageJsonPath = './package.json';
-const cliFilePath = './lib/configs/poku.js';
-const packageJson = fs.readFileSync(packageJsonPath, 'utf8');
-const packageData = JSON.parse(packageJson);
-const cliFileContent = fs.readFileSync(cliFilePath, 'utf8');
-const newContent = cliFileContent.replace(/''/gm, `'${packageData.version}'`);
+const { version } = JSON.parse(readFileSync('./package.json', 'utf8'));
 
-fs.writeFileSync(cliFilePath, newContent, 'utf8');
+const esm = await import('../../lib/modules/index.js');
+assert.strictEqual(esm.version, version, `ESM version: ${esm.version}`);
 
-(async () => {
-  const { VERSION } = await import('../../lib/configs/poku.js');
-
-  assert.strictEqual(VERSION, packageData.version, VERSION);
-})();
+const cjs = await import('../../lib/modules/index.cjs');
+const cjsVersion = cjs.version ?? cjs.default?.version;
+assert.strictEqual(cjsVersion, version, `CJS version: ${cjsVersion}`);

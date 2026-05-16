@@ -7,15 +7,19 @@ rm -rf lib ci coverage .temp test-tests
 echo '◉ prebuild'
 
 echo '◯ build'
-concurrently -n "src,test" "tsc" "cd test && tsc"
+concurrently \
+  -n "types,ci,js,dts" \
+  "tsc --noEmit" \
+  "cd test && tsc" \
+  "tsx tools/build/js.mts" \
+  "tsx tools/build/dts.mts"
 echo '◉ build'
 
 echo '◯ postbuild'
+printf '{\n  "type": "module"\n}\n' > ci/package.json
+(cd test && find __fixtures__ -name package.json -print0 | while IFS= read -r -d '' f; do mkdir -p "../ci/test/$(dirname "$f")" && cp "$f" "../ci/test/$f"; done)
 concurrently \
-  -n "version,dts,fixtures,cleanup,chmod" \
+  -n "version,chmod" \
   "tsx tools/build/version.ts" \
-  "tsx tools/build/dts.mts" \
-  "cp test/__fixtures__/e2e/server/package.json ci/test/__fixtures__/e2e/server/package.json" \
-  "rm -f ./lib/@types/*.js ./lib/bin/*.ts" \
   "chmod +x lib/bin/index.js"
 echo '◉ postbuild'

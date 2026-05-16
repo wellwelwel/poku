@@ -31,7 +31,7 @@ export const results = {
   todo: 0,
 };
 
-export const VERSION = '';
+export const VERSION: string = '0.0.0-placeholder';
 
 export const deepOptions: string[] = [];
 
