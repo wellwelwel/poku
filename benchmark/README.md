@@ -29,8 +29,8 @@ The testers to be compared are chosen based on the three most downloaded test ru
 > - **failure:** a suite of 5 tests that will fail.
 > - **balanced:** a suite of 10 tests where 5 tests will fail and 5 tests will pass.
 
-- ~**4.6x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.4.2)
-- ~**3.5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.1.6)
+- ~**5.3x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.4.2)
+- ~**4.5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.1.6)
 
 ---
 
