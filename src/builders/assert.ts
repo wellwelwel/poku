@@ -191,7 +191,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     });
   };
 
-  const assert = Object.assign(
+  return Object.assign(
     ((value, message?) => ok(value, message)) satisfies AssertValue,
     {
       ok,
@@ -213,6 +213,4 @@ export const createAssert = (nodeAssert: typeof assert) => {
       rejects,
     }
   );
-
-  return assert;
 };
