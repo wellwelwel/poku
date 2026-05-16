@@ -1,12 +1,12 @@
-import type { DescribeOptions } from '../../@types/describe.js';
+import type { Describe, DescribeOptions } from '../../@types/describe.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { indentation } from '../../configs/indentation.js';
 import { errorHoist, GLOBAL } from '../../configs/poku.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
-import { getCallback, getTitle } from './it/core.js';
-import { onlyDescribe, skip, todo } from './modifiers.js';
+import { getCallback, getTitle } from '../../parsers/get-test-args.js';
+import { createOnlyDescribe, skip, todo } from './modifiers.js';
 
 const getOptions = (input: unknown): DescribeOptions | undefined =>
   !input || typeof input !== 'object' ? undefined : input;
@@ -75,18 +75,10 @@ export const describeBase = async (
   GLOBAL.runAsOnly = false;
 };
 
-async function describeCore(
-  message: string,
-  cb: () => Promise<unknown>
-): Promise<void>;
-function describeCore(message: string, cb: () => unknown): void;
-async function describeCore(cb: () => Promise<unknown>): Promise<void>;
-function describeCore(cb: () => unknown): void;
-function describeCore(message: string, options?: DescribeOptions): void;
-async function describeCore(
+const describeCore = (async (
   messageOrCb: string | (() => unknown | Promise<unknown>),
   cbOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
-): Promise<void> {
+): Promise<void> => {
   if (typeof messageOrCb === 'string' && typeof cbOrOptions !== 'function')
     return describeBase(messageOrCb, cbOrOptions);
 
@@ -107,10 +99,10 @@ async function describeCore(
     return describeBase(messageOrCb, cbOrOptions);
 
   if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
-}
+}) as Describe;
 
 export const describe = Object.assign(describeCore, {
   todo,
   skip,
-  only: onlyDescribe,
+  only: createOnlyDescribe(describeBase),
 });

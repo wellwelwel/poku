@@ -3,9 +3,16 @@
   "version": "4.3.1",
   "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno, and you at the same time.",
   "main": "./lib/modules/index.js",
+  "types": "./lib/modules/index.d.ts",
   "exports": {
-    ".": "./lib/modules/index.js",
-    "./plugins": "./lib/modules/plugins.js"
+    ".": {
+      "types": "./lib/modules/index.d.ts",
+      "default": "./lib/modules/index.js"
+    },
+    "./plugins": {
+      "types": "./lib/modules/plugins.d.ts",
+      "default": "./lib/modules/plugins.js"
+    }
   },
   "license": "MIT",
   "bin": {
@@ -42,6 +49,7 @@
     "build": "bash scripts/build.sh",
     "lint": "bash scripts/lint.sh",
     "lint:fix": "bash scripts/lint-fix.sh",
+    "lint:types": "bash scripts/lint-types.sh",
     "update": "bash scripts/update.sh",
     "benchmark": "npm --prefix benchmark start"
   },
@@ -56,6 +64,8 @@
     "monocart-coverage-reports": "^2.12.11",
     "packages-update": "^2.0.0",
     "prettier": "^3.8.3",
+    "rollup": "^4.60.4",
+    "rollup-plugin-dts": "^6.4.1",
     "tsx": "^4.22.0",
     "typescript": "^6.0.3"
   },

@@ -17,16 +17,15 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": false,
+    "noUnusedParameters": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noImplicitAny": true,
-    "removeComments": false,
+    "removeComments": true,
     "sourceMap": false,
     "esModuleInterop": true,
     "noEmitOnError": true,
-    "declaration": true,
-    "declarationDir": "lib",
+    "declaration": false,
     "allowSyntheticDefaultImports": true
   }
 }

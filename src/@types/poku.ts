@@ -1,3 +1,4 @@
+import type { Code } from './code.js';
 import type { Configs as ListFilesConfigs } from './list-files.js';
 import type { PokuPlugin, ReporterPlugin } from './plugin.js';
 
@@ -180,6 +181,18 @@ export type ConfigJSONFile = {
 
 export type ConfigFile = Omit<Configs, 'noExit'> & CliConfigs;
 
-export type TestCallback = (
+export type Poku = {
+  (
+    targetPaths: string | string[],
+    configs: Configs & { noExit: true }
+  ): Promise<Code>;
+  (targetPaths: string | string[], configs?: Configs): Promise<undefined>;
+};
+
+export type TestCb = (
   params?: Record<string, unknown>
 ) => unknown | Promise<unknown>;
+
+export type AsyncTestCb = (
+  params?: Record<string, unknown>
+) => Promise<unknown>;
