@@ -1,3 +1,4 @@
+import type { It, ItWithModifiers } from '../../../@types/it.js';
 import type { ScopeHook } from '../../../@types/plugin.js';
 import type { TestCallback } from '../../../@types/poku.js';
 import { AssertionError } from 'node:assert';
@@ -6,15 +7,10 @@ import { each } from '../../../configs/each.js';
 import { indentation } from '../../../configs/indentation.js';
 import { errorHoist, GLOBAL } from '../../../configs/poku.js';
 import { hasOnly } from '../../../parsers/get-arg.js';
-import { onlyIt, skip, todo } from '../modifiers.js';
+import { getCallback, getTitle } from '../../../parsers/get-test-args.js';
+import { createOnlyIt, skip, todo } from '../modifiers.js';
 
 const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
-
-export const getTitle = (input: unknown): string | undefined =>
-  typeof input === 'string' ? input : undefined;
-
-export const getCallback = (input: unknown): TestCallback | undefined =>
-  typeof input === 'function' ? (input as TestCallback) : undefined;
 
 const getScopeHook = (): ScopeHook | undefined =>
   (globalThis as Record<symbol, unknown>)[SCOPE_HOOKS_KEY] as
@@ -112,22 +108,10 @@ export const itBase = async (
   }
 };
 
-async function itCore(
-  title: string,
-  cb: (params?: Record<string, unknown>) => Promise<unknown>
-): Promise<void>;
-function itCore(
-  title: string,
-  cb: (params?: Record<string, unknown>) => unknown
-): void;
-async function itCore(
-  cb: (params?: Record<string, unknown>) => Promise<unknown>
-): Promise<void>;
-function itCore(cb: (params?: Record<string, unknown>) => unknown): void;
-async function itCore(
+const itCore = (async (
   titleOrCb: string | TestCallback,
   cb?: TestCallback
-): Promise<void> {
+): Promise<void> => {
   if (GLOBAL.configs.testNamePattern && typeof titleOrCb === 'string') {
     if (!GLOBAL.configs.testNamePattern.test(titleOrCb)) return;
   }
@@ -142,10 +126,10 @@ async function itCore(
 
   if (typeof titleOrCb === 'string' && cb) return itBase(titleOrCb, cb);
   if (typeof titleOrCb === 'function') return itBase(titleOrCb);
-}
+}) as It;
 
 export const it = Object.assign(itCore, {
   todo,
   skip,
-  only: onlyIt,
-});
+  only: createOnlyIt(itBase),
+}) satisfies ItWithModifiers;
