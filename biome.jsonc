@@ -87,6 +87,16 @@
       }
     },
     {
+      "includes": ["test/build/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noTsIgnore": "off"
+          }
+        }
+      }
+    },
+    {
       "includes": ["src/modules/index.ts", "src/modules/plugins.ts"],
       "linter": {
         "rules": {
