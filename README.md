@@ -209,20 +209,20 @@ deno run npm:poku
 
 <table>
   <tr>
+    <td><a href="https://poku.io/docs/documentation/helpers/coverage">coverage</a></td>
+    <td>☔️ Enable coverage collection using a coverage plugin.</td>
+  </tr>
+  <tr>
+    <td><a href="https://poku.io/docs/documentation/poku/config-files">config</a></td>
+    <td>⚙️ Customize your <b>Poku</b> options in a config file.</td>
+  </tr>
+  <tr>
     <td width="280"><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
     <td width="770">🍿 Watch for changes and re-run related test files.</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/poku/options/debug">debug</a></td>
     <td>🕵🏻 Shows all logs.</td>
-  </tr>
-  <tr>
-    <td><a href="https://poku.io/docs/documentation/poku/config-files">config</a></td>
-    <td>⚙️ Customize your Poku options in a config file.</td>
-  </tr>
-  <tr>
-    <td><a href="https://poku.io/docs/documentation/helpers/coverage">coverage</a></td>
-    <td>☔️ Enable coverage collection using a coverage plugin.</td>
   </tr>
 </table>
 
@@ -248,9 +248,9 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
 - [Using **Poku** without installing it on **Deno**](https://github.com/wellwelwel/poku/discussions/565).
 - Migrating:
-  - [From version **3.x.x** to version **4.x.x**](https://github.com/wellwelwel/poku/issues/1006).
-  - [From version **2.x.x** to version **3.x.x**](https://github.com/wellwelwel/poku/issues/801).
-  - [From version **1.x.x** to version **2.x.x**](https://github.com/wellwelwel/poku/issues/533).
+  - [**3.x.x** → **4.x.x**](https://github.com/wellwelwel/poku/issues/1006)
+  - [**2.x.x** → **3.x.x**](https://github.com/wellwelwel/poku/issues/801)
+  - [**1.x.x** → **2.x.x**](https://github.com/wellwelwel/poku/issues/533)
 
 ---
 
@@ -263,8 +263,7 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 - ~**5.3x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.4.2)
 - ~**4.5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.1.6)
 
-> - You can see how the tests are run and compared in the [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
-> - [Comparing **Poku** and native test runners _(discussion)_](https://github.com/wellwelwel/poku/discussions/740).
+> - You can see how the tests are run and compared in the [**benchmark**](https://github.com/wellwelwel/poku/tree/main/benchmark) directory.
 
 ---
 
@@ -314,18 +313,10 @@ Really thanks to everyone who has supported and keeps supporting my work.
 
 ---
 
-## AI & Open Source
-
-🤖 **LLM**s can help a lot with productivity, but please, use them as a tool, not as an autopilot.
-
-[**If you'd like to contribute to the project**](./CONTRIBUTING.md), please keep this in mind: we'd love to read what you, a human, have written 🤝
-
----
-
 ## License
 
 **Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).<br />
-Copyright © 2024-present [Weslley Araújo](https://github.com/wellwelwel) and **Poku** [contributors](https://github.com/wellwelwel/poku/graphs/contributors).
+Copyright © 2024-present [**Weslley Araújo**](https://github.com/wellwelwel) and **Poku** [**contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
 
 [node-version-url]: https://github.com/nodejs/node
 [bun-version-url]: https://github.com/oven-sh/bun
