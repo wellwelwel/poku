@@ -1,7 +1,8 @@
 import type { DescribeOptions } from '../../@types/describe.js';
 import type { ReporterPlugin } from '../../@types/poku.js';
 import { relative, resolve } from 'node:path';
-import { cwd as processCwd, stdout } from 'node:process';
+import { stdout } from 'node:process';
+import { cwd } from '../../configs/cwd.js';
 import { indentation } from '../../configs/indentation.js';
 import { parseResultType } from '../../parsers/assert.js';
 import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
@@ -11,8 +12,6 @@ import { hr, log } from '../write.js';
 
 const ARROW_PASS = '\x1b[32m\x1b[1m›\x1b[0m';
 const ARROW_FAIL = '\x1b[91m\x1b[1m›\x1b[0m';
-
-const cwd = processCwd();
 
 export const errors: { file: string; output?: string }[] = [];
 
