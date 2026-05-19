@@ -51,6 +51,8 @@ const makeLibraryReachableCollector = () => {
         if (!moduleInfo) return;
 
         for (const dependency of moduleInfo.importedIds) visit(dependency);
+        for (const dependency of moduleInfo.dynamicallyImportedIds)
+          visit(dependency);
       };
 
       for (const moduleId of this.getModuleIds())
@@ -100,7 +102,10 @@ const buildBundle = async (config: BundleConfig) => {
     dir: './lib',
     format: config.format,
     entryFileNames: `[name].${config.extension}`,
-    chunkFileNames: `_chunks/[name].${config.extension}`,
+    chunkFileNames: (chunk) =>
+      chunk.name === '_shared'
+        ? `modules/_shared.${config.extension}`
+        : `bin/[name].${config.extension}`,
     manualChunks: (moduleId) => {
       if (
         config.isEntry(moduleId) ||
@@ -177,7 +182,7 @@ const buildTypeDeclarations = async () => {
     dir: './lib',
     format: 'es',
     entryFileNames: '[name].d.ts',
-    chunkFileNames: '_chunks/_shared.d.ts',
+    chunkFileNames: 'modules/_shared.d.ts',
     minifyInternalExports: false,
     compact: true,
     sourcemap: false,
