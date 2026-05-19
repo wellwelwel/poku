@@ -12,6 +12,8 @@ import { hr, log } from '../write.js';
 const ARROW_PASS = '\x1b[32m\x1b[1m›\x1b[0m';
 const ARROW_FAIL = '\x1b[91m\x1b[1m›\x1b[0m';
 
+const cwd = processCwd();
+
 export const errors: { file: string; output?: string }[] = [];
 
 export const poku: ReturnType<ReporterPlugin> = (() => {
@@ -91,8 +93,6 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(output);
     },
     onAssertionFailure({ assertOptions: options, error }) {
-      const cwd = processCwd();
-
       let preIdentation = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth
       );
