@@ -1,12 +1,10 @@
-import type { Plugin } from 'rollup';
+import type { OutputOptions, Plugin, RollupLog } from 'rollup';
 import { readFile, rm } from 'node:fs/promises';
 import { rollup } from 'rollup';
 import declarationsPlugin from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 
 const { version } = JSON.parse(await readFile('./package.json', 'utf8'));
-
-const libraryReachable = new Set<string>();
 
 const normalizePath = (moduleId: string) => moduleId.replace(/\\/g, '/');
 
@@ -39,110 +37,135 @@ const stripShebang: Plugin = {
   },
 };
 
-const collectLibraryReachable: Plugin = {
-  name: 'poku-collect-library-reachable',
-  buildEnd() {
-    const visit = (moduleId: string) => {
-      if (libraryReachable.has(moduleId)) return;
-      libraryReachable.add(moduleId);
+const makeLibraryReachableCollector = () => {
+  const libraryReachable = new Set<string>();
 
-      const moduleInfo = this.getModuleInfo(moduleId);
-      if (!moduleInfo) return;
+  const plugin: Plugin = {
+    name: 'poku-collect-library-reachable',
+    buildEnd() {
+      const visit = (moduleId: string) => {
+        if (libraryReachable.has(moduleId)) return;
+        libraryReachable.add(moduleId);
 
-      for (const dependency of moduleInfo.importedIds) visit(dependency);
-    };
+        const moduleInfo = this.getModuleInfo(moduleId);
+        if (!moduleInfo) return;
 
-    for (const moduleId of this.getModuleIds())
-      if (isLibraryEntry(moduleId)) visit(moduleId);
-  },
+        for (const dependency of moduleInfo.importedIds) visit(dependency);
+      };
+
+      for (const moduleId of this.getModuleIds())
+        if (isLibraryEntry(moduleId)) visit(moduleId);
+    },
+  };
+
+  return { plugin, libraryReachable };
 };
 
 const external = (moduleId: string) => moduleId.startsWith('node:');
 
-const onwarn = () => {
+const onwarn = (warning: RollupLog) => {
+  process.stderr.write(
+    `[rollup] ${warning.code ?? 'UNKNOWN'}: ${warning.message}\n`
+  );
   process.exitCode = 1;
 };
 
-const transpile = esbuild({
-  target: 'node16',
-  platform: 'node',
-  tsconfig: './tsconfig.json',
-  treeShaking: true,
-});
+const createTranspile = () =>
+  esbuild({
+    target: 'node16',
+    platform: 'node',
+    tsconfig: './tsconfig.json',
+    treeShaking: true,
+  });
 
-const buildJavaScript = async () => {
-  const esmBundle = await rollup({
-    input: {
-      'modules/index': './src/modules/index.ts',
-      'modules/plugins': './src/modules/plugins.ts',
-      'bin/index': './src/bin/index.ts',
-    },
-    plugins: [versionInject, stripShebang, transpile, collectLibraryReachable],
+type BundleConfig = {
+  format: 'es' | 'cjs';
+  extension: 'js' | 'cjs';
+  inputs: Record<string, string>;
+  plugins: Plugin[];
+  isEntry: (moduleId: string) => boolean;
+  libraryReachable: Set<string>;
+  writeOptions: OutputOptions;
+};
+
+const buildBundle = async (config: BundleConfig) => {
+  const bundle = await rollup({
+    input: config.inputs,
+    plugins: config.plugins,
     external,
     onwarn,
   });
 
-  await esmBundle.write({
+  await bundle.write({
     dir: './lib',
-    format: 'es',
-    entryFileNames: '[name].js',
-    chunkFileNames: (chunk) =>
-      chunk.name === 'modules/_shared'
-        ? 'modules/_shared.js'
-        : chunk.isDynamicEntry
-          ? 'modules/[name].js'
-          : 'bin/[name].js',
-    manualChunks: (moduleId) => {
-      if (isAnyEntry(moduleId) || !normalizePath(moduleId).includes('/src/'))
-        return;
-
-      return libraryReachable.has(moduleId) ? 'modules/_shared' : undefined;
-    },
-    compact: true,
-    sourcemap: false,
-    minifyInternalExports: false,
-    banner: (chunk) => {
-      if (chunk.name === 'bin/index') return '#!/usr/bin/env node';
-      if (chunk.name === 'modules/plugins')
-        return "import { createRequire } from 'node:module';\nconst require = createRequire(import.meta.url);\n";
-
-      return '';
-    },
-  });
-
-  await esmBundle.close();
-
-  const cjsBundle = await rollup({
-    input: {
-      'modules/index': './src/modules/index.ts',
-      'modules/plugins': './src/modules/plugins.ts',
-    },
-    plugins: [versionInject, transpile, collectLibraryReachable],
-    external,
-    onwarn,
-  });
-
-  await cjsBundle.write({
-    dir: './lib',
-    format: 'cjs',
-    entryFileNames: '[name].cjs',
-    chunkFileNames: '[name].cjs',
+    format: config.format,
+    entryFileNames: `[name].${config.extension}`,
     manualChunks: (moduleId) => {
       if (
-        isLibraryEntry(moduleId) ||
+        config.isEntry(moduleId) ||
         !normalizePath(moduleId).includes('/src/')
       )
         return;
 
-      return libraryReachable.has(moduleId) ? 'modules/_shared' : undefined;
+      return config.libraryReachable.has(moduleId)
+        ? 'modules/_shared'
+        : undefined;
     },
-    exports: 'named',
     compact: true,
     sourcemap: false,
     minifyInternalExports: false,
+    ...config.writeOptions,
   });
 
-  await cjsBundle.close();
+  await bundle.close();
+};
+
+const buildJavaScript = async () => {
+  const collector = makeLibraryReachableCollector();
+
+  await buildBundle({
+    format: 'es',
+    extension: 'js',
+    inputs: {
+      'modules/index': './src/modules/index.ts',
+      'modules/plugins': './src/modules/plugins.ts',
+      'bin/index': './src/bin/index.ts',
+    },
+    plugins: [versionInject, stripShebang, createTranspile(), collector.plugin],
+    isEntry: isAnyEntry,
+    libraryReachable: collector.libraryReachable,
+    writeOptions: {
+      chunkFileNames: (chunk) =>
+        chunk.name === 'modules/_shared'
+          ? 'modules/_shared.js'
+          : chunk.isDynamicEntry
+            ? 'modules/[name].js'
+            : 'bin/[name].js',
+      banner: (chunk) => {
+        if (chunk.name === 'bin/index') return '#!/usr/bin/env node';
+        if (chunk.name === 'modules/plugins')
+          return "import { createRequire } from 'node:module';\nconst require = createRequire(import.meta.url);\n";
+
+        return '';
+      },
+    },
+  });
+
+  await buildBundle({
+    format: 'cjs',
+    extension: 'cjs',
+    inputs: {
+      'modules/index': './src/modules/index.ts',
+      'modules/plugins': './src/modules/plugins.ts',
+    },
+    plugins: [versionInject, createTranspile()],
+    isEntry: isLibraryEntry,
+    libraryReachable: collector.libraryReachable,
+    writeOptions: {
+      chunkFileNames: '[name].cjs',
+      exports: 'named',
+    },
+  });
 };
 
 const buildTypeDeclarations = async () => {

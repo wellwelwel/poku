@@ -11,5 +11,5 @@ assert.strictEqual(esm.version, version, `ESM version: ${esm.version}`);
 
 // @ts-ignore <depends on build>
 const cjs = require('../../lib/modules/index.cjs');
-const cjsVersion = cjs.version ?? cjs.default?.version;
+const cjsVersion = cjs.version;
 assert.strictEqual(cjsVersion, version, `CJS version: ${cjsVersion}`);
