@@ -9,7 +9,7 @@ import type {
 import { env } from 'node:process';
 import { escapeRegExp } from '../parsers/escape-regexp.js';
 import { getRuntime } from '../parsers/get-runtime.js';
-import { reporter } from '../services/reporter.js';
+import { poku as defaultReporter } from '../services/reporters/poku.js';
 import { cwd } from './cwd.js';
 
 export const states: States = { isSinglePath: undefined };
@@ -55,12 +55,7 @@ export const GLOBAL = {
   } as Configs,
   configFile: undefined as string | undefined,
   configsFromFile: Object.create(null) as ConfigFile | ConfigJSONFile,
-  reporter:
-    reporter[
-      env.POKU_REPORTER && env.POKU_REPORTER in reporter
-        ? env.POKU_REPORTER
-        : 'poku'
-    ](),
+  reporter: defaultReporter,
   envFile: undefined as string | undefined,
   runtime: (env.POKU_RUNTIME || getRuntime()) as Runtime,
   runAsOnly: false,

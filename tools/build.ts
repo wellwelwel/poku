@@ -50,8 +50,6 @@ const collectLibraryReachable: Plugin = {
       if (!moduleInfo) return;
 
       for (const dependency of moduleInfo.importedIds) visit(dependency);
-      for (const dependency of moduleInfo.dynamicallyImportedIds)
-        visit(dependency);
     };
 
     for (const moduleId of this.getModuleIds())
@@ -89,7 +87,11 @@ const buildJavaScript = async () => {
     format: 'es',
     entryFileNames: '[name].js',
     chunkFileNames: (chunk) =>
-      chunk.name === 'modules/_shared' ? 'modules/_shared.js' : 'bin/[name].js',
+      chunk.name === 'modules/_shared'
+        ? 'modules/_shared.js'
+        : chunk.isDynamicEntry
+          ? 'modules/[name].js'
+          : 'bin/[name].js',
     manualChunks: (moduleId) => {
       if (isAnyEntry(moduleId) || !normalizePath(moduleId).includes('/src/'))
         return;
@@ -115,7 +117,7 @@ const buildJavaScript = async () => {
       'modules/index': './src/modules/index.ts',
       'modules/plugins': './src/modules/plugins.ts',
     },
-    plugins: [versionInject, transpile],
+    plugins: [versionInject, transpile, collectLibraryReachable],
     external,
     onwarn,
   });
@@ -126,13 +128,10 @@ const buildJavaScript = async () => {
     entryFileNames: '[name].cjs',
     chunkFileNames: '[name].cjs',
     manualChunks: (moduleId) => {
-      if (
-        isLibraryEntry(moduleId) ||
-        !normalizePath(moduleId).includes('/src/')
-      )
+      if (isLibraryEntry(moduleId) || !normalizePath(moduleId).includes('/src/'))
         return;
 
-      return 'modules/_shared';
+      return libraryReachable.has(moduleId) ? 'modules/_shared' : undefined;
     },
     exports: 'named',
     compact: true,
