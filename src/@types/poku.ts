@@ -29,36 +29,34 @@ export type Reporter =
 
 export type Configs = {
   /**
-   * By setting `true`, **Poku** won't exit the process and will return the exit code (`0` or `1`).
-   *
-   * You can combine this option with **Poku**'s `exit` method or just use the result, for example, in `process.exit(code)`.
+   * By setting `true`, **Poku** won't exit the process and will return the exit code (`0` or `1`)
    *
    * @default false
    */
   noExit?: boolean;
   /**
-   * This option overwrites all `log` settings.
+   * This option overwrites all `log` settings
    *
    * @default false
    */
   debug?: boolean;
   /**
-   * This option overwrites the `debug` settings.
+   * This option overwrites the `debug` settings
    *
    * @default false
    */
   quiet?: boolean;
   /**
-   * Determines the mode of test execution.
+   * Determines the mode of test execution
    *
    * @default false
    */
   sequential?: boolean;
   /**
-   * Controls process isolation for test files.
+   * Controls process isolation for test files
    *
-   * - `'process'` (default): each test file runs in a separate child process.
-   * - `'none'`: all test files run in the same process (useful for debugging with `--inspect`).
+   * - `'process'` (default): each test file runs in a separate child process
+   * - `'none'`: all test files run in the same process (useful for debugging with `--inspect`)
    *
    * @default 'process'
    */
@@ -70,13 +68,13 @@ export type Configs = {
    */
   failFast?: boolean;
   /**
-   * Limits the number of tests running concurrently.
+   * Limits the number of tests running concurrently
    *
-   * @default (availableParallelism() || cpus().lenght) - 1
+   * @default (availableParallelism() || cpus().lenght)
    */
   concurrency?: number;
   /**
-   * Sets the maximum time in milliseconds that each test file is allowed to run.
+   * Sets the maximum time in milliseconds that each test file is allowed to run
    *
    * @default undefined
    */
@@ -86,9 +84,7 @@ export type Configs = {
    */
   reporter?: Reporter;
   /**
-   * You can use this option to run a **callback** or a **file** before each test file on your suite.
-   *
-   * Ex.:
+   * You can use this option to run a **callback** or a **file** before each test file on your suite
    *
    * ```ts
    * beforeEach(() => myFunc())
@@ -100,9 +96,7 @@ export type Configs = {
    */
   beforeEach?: () => unknown | Promise<unknown>;
   /**
-   * You can use this option to run a **callback** or a **file** after each test file on your suite.
-   *
-   * Ex.:
+   * You can use this option to run a **callback** or a **file** after each test file on your suite
    *
    * ```ts
    * afterEach(() => myFunc())
@@ -115,19 +109,19 @@ export type Configs = {
   afterEach?: () => unknown | Promise<unknown>;
   deno?: DenoOptions;
   /**
-   * Plugins to extend Poku's behavior.
+   * Plugins to extend Poku's behavior
    *
    * @default undefined
    */
   plugins?: PokuPlugin[];
   /**
-   * Only run tests whose title matches the given regex pattern.
+   * Only run tests whose title matches the given regex pattern
    *
    * @default undefined
    */
   testNamePattern?: RegExp;
   /**
-   * Skip tests whose title matches the given regex pattern.
+   * Skip tests whose title matches the given regex pattern
    *
    * @default undefined
    */
@@ -137,7 +131,6 @@ export type Configs = {
 export type Timespan = {
   started: Date;
   finished: Date;
-  /** Calculation from `process.hrtime()`. */
   duration: number;
 };
 
@@ -146,17 +139,17 @@ export type States = {
 };
 
 type CliConfigs = {
-  /** By default, **Poku** searches for _`.test.`_ and `.spec.` files, but you can customize it. */
+  /** Default: searches for _`.test.`_ and `.spec.` files, but you can customize it */
   include?: string | string[];
-  /** Reads an environment file and sets the environment variables. */
+  /** Reads an environment file and sets the environment variables */
   envFile?: string;
-  /** Terminates the specified ports, port ranges and process IDs. */
+  /** Terminates the specified ports, port ranges and process IDs */
   kill?: {
-    /** Terminates the specified ports before running the test suite. */
+    /** Terminates the specified ports before running the test suite */
     port?: [number];
-    /** Terminates the specified port range before running the test suite. */
+    /** Terminates the specified port range before running the test suite */
     range?: [number, number][];
-    /** Terminates the specified processes before running the test suite. */
+    /** Terminates the specified processes before running the test suite */
     pid?: [number];
   };
 };

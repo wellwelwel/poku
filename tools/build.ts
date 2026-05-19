@@ -47,6 +47,16 @@ const stripShebang: Plugin = {
   },
 };
 
+const stripDocComments: Plugin = {
+  name: 'poku-strip-doc-comments',
+  renderChunk(code) {
+    return {
+      code: code.replace(/[ \t]*\/\*\*[\s\S]*?\*\/\n?/g, ''),
+      map: null,
+    };
+  },
+};
+
 const makeLibraryReachableCollector = () => {
   const libraryReachable = new Set<string>();
 
@@ -135,7 +145,13 @@ const buildJavaScript = async () => {
       'modules/plugins': './src/modules/plugins.ts',
       'bin/index': './src/bin/index.ts',
     },
-    plugins: [versionInject, stripShebang, createTranspile(), collector.plugin],
+    plugins: [
+      versionInject,
+      stripShebang,
+      createTranspile(),
+      collector.plugin,
+      stripDocComments,
+    ],
     isEntry: isAnyEntry,
     libraryReachable: collector.libraryReachable,
     writeOptions: {
@@ -156,7 +172,7 @@ const buildJavaScript = async () => {
       'modules/index': './src/modules/index.ts',
       'modules/plugins': './src/modules/plugins.ts',
     },
-    plugins: [versionInject, createTranspile()],
+    plugins: [versionInject, createTranspile(), stripDocComments],
     isEntry: isLibraryEntry,
     libraryReachable: collector.libraryReachable,
     writeOptions: {

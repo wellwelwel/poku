@@ -3,9 +3,7 @@ import type { AsyncTestCb, TestCb } from './poku.js';
 
 export type DescribeOptions = {
   background?: keyof typeof backgroundColor | boolean;
-  /**
-   * @default "☰"
-   */
+  /** @default "☰" */
   icon?: string;
 };
 
