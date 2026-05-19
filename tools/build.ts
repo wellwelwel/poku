@@ -128,7 +128,10 @@ const buildJavaScript = async () => {
     entryFileNames: '[name].cjs',
     chunkFileNames: '[name].cjs',
     manualChunks: (moduleId) => {
-      if (isLibraryEntry(moduleId) || !normalizePath(moduleId).includes('/src/'))
+      if (
+        isLibraryEntry(moduleId) ||
+        !normalizePath(moduleId).includes('/src/')
+      )
         return;
 
       return libraryReachable.has(moduleId) ? 'modules/_shared' : undefined;
