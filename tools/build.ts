@@ -100,6 +100,7 @@ const buildBundle = async (config: BundleConfig) => {
     dir: './lib',
     format: config.format,
     entryFileNames: `[name].${config.extension}`,
+    chunkFileNames: `_chunks/[name].${config.extension}`,
     manualChunks: (moduleId) => {
       if (
         config.isEntry(moduleId) ||
@@ -107,9 +108,7 @@ const buildBundle = async (config: BundleConfig) => {
       )
         return;
 
-      return config.libraryReachable.has(moduleId)
-        ? 'modules/_shared'
-        : undefined;
+      return config.libraryReachable.has(moduleId) ? '_shared' : undefined;
     },
     compact: true,
     sourcemap: false,
@@ -135,12 +134,6 @@ const buildJavaScript = async () => {
     isEntry: isAnyEntry,
     libraryReachable: collector.libraryReachable,
     writeOptions: {
-      chunkFileNames: (chunk) =>
-        chunk.name === 'modules/_shared'
-          ? 'modules/_shared.js'
-          : chunk.isDynamicEntry
-            ? 'modules/[name].js'
-            : 'bin/[name].js',
       banner: (chunk) => {
         if (chunk.name === 'bin/index') return '#!/usr/bin/env node';
         if (chunk.name === 'modules/plugins')
@@ -162,7 +155,6 @@ const buildJavaScript = async () => {
     isEntry: isLibraryEntry,
     libraryReachable: collector.libraryReachable,
     writeOptions: {
-      chunkFileNames: '[name].cjs',
       exports: 'named',
     },
   });
@@ -185,7 +177,7 @@ const buildTypeDeclarations = async () => {
     dir: './lib',
     format: 'es',
     entryFileNames: '[name].d.ts',
-    chunkFileNames: 'modules/_shared.d.ts',
+    chunkFileNames: '_chunks/_shared.d.ts',
     minifyInternalExports: false,
     compact: true,
     sourcemap: false,
