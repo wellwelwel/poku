@@ -4,7 +4,7 @@ import { GLOBAL, states, VERSION } from '../configs/poku.js';
 import { poku } from '../modules/essentials/poku.js';
 import { envFile } from '../modules/helpers/env.js';
 import { kill } from '../modules/helpers/kill.js';
-import { escapeRegExp } from '../modules/helpers/list-files.js';
+import { escapeRegExp } from '../parsers/escape-regexp.js';
 import { argToArray, getArg, getPaths, hasArg } from '../parsers/get-arg.js';
 import { getConfigs } from '../parsers/options.js';
 import { format } from '../services/format.js';

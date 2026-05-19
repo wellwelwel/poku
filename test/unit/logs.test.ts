@@ -36,8 +36,8 @@ describe('Helper functions in logs.js', () => {
     const options = {
       output: 'Line1\nLine2\nLine3',
       result: true,
+      debug: true,
     };
-    GLOBAL.configs.debug = true;
 
     const capturedOutput = parserOutput(options);
 
@@ -52,7 +52,7 @@ describe('Helper functions in logs.js', () => {
     const options = {
       output: 'Line1\n\x1b[0mLine2\x1b[0m\nExited with code',
       result: true,
-      configs: { debug: false },
+      debug: false,
     };
     const capturedOutput = parserOutput(options);
     assert.strictEqual(
@@ -66,7 +66,7 @@ describe('Helper functions in logs.js', () => {
     const options = {
       output: '',
       result: true,
-      configs: { debug: false },
+      debug: false,
     };
     const capturedOutput = parserOutput(options);
     assert.strictEqual(

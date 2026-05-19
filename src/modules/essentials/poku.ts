@@ -3,8 +3,8 @@ import type { PokuPlugin } from '../../@types/plugin.js';
 import type { Configs, PluginContext, Poku } from '../../@types/poku.js';
 import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
-import { GLOBAL, results, timespan } from '../../configs/poku.js';
-import { reporter } from '../../services/reporter.js';
+import { GLOBAL, timespan } from '../../configs/poku.js';
+import { results } from '../../configs/results.js';
 import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
@@ -36,12 +36,10 @@ export const poku = (async (
 
   if (typeof plugin === 'function') {
     GLOBAL.reporter = plugin(GLOBAL.configs);
-  } else if (
-    typeof plugin === 'string' &&
-    plugin !== 'poku' &&
-    plugin in reporter
-  ) {
-    GLOBAL.reporter = reporter[plugin]();
+  } else if (typeof plugin === 'string' && plugin !== 'poku') {
+    const { reporter } = await import('../../services/reporter.js');
+
+    if (plugin in reporter) GLOBAL.reporter = reporter[plugin]();
   }
 
   const plugins = GLOBAL.configs.plugins;

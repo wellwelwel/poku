@@ -82,6 +82,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
     const parsedOutputs = parserOutput({
       output,
       result,
+      debug: configs.debug,
     })?.join('\n');
 
     const total = end[0] * 1e3 + end[1] / 1e6;

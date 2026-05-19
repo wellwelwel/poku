@@ -1,6 +1,6 @@
 {
   "include": ["src/**"],
-  "reporter": ["v8", "codecov", "console-details"],
+  "reporter": ["lcovonly", "codecov", "console-details"],
   "experimental": ["monocart"],
   "extension": [".ts"],
   "checkCoverage": 95,

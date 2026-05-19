@@ -1,9 +1,6 @@
-import {
-  cpus,
-  availableParallelism as nodeAvailableParallelism,
-} from 'node:os';
+import * as os from 'node:os';
 
 export const availableParallelism = (): number =>
-  typeof nodeAvailableParallelism === 'function'
-    ? nodeAvailableParallelism()
-    : (cpus()?.length ?? 0);
+  typeof os.availableParallelism === 'function'
+    ? os.availableParallelism()
+    : (os.cpus()?.length ?? 0);

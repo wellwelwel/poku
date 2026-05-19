@@ -6,10 +6,11 @@ import type {
   States,
   Timespan,
 } from '../@types/poku.js';
-import { cwd, env } from 'node:process';
-import { escapeRegExp } from '../modules/helpers/list-files.js';
+import { env } from 'node:process';
+import { escapeRegExp } from '../parsers/escape-regexp.js';
 import { getRuntime } from '../parsers/get-runtime.js';
 import { reporter } from '../services/reporter.js';
+import { cwd } from './cwd.js';
 
 export const states: States = { isSinglePath: undefined };
 
@@ -24,19 +25,12 @@ export const errorHoist = {
   failed: false,
 };
 
-export const results = {
-  passed: 0,
-  failed: 0,
-  skipped: 0,
-  todo: 0,
-};
-
-export const VERSION = '';
+export const VERSION = '0.0.0-placeholder';
 
 export const deepOptions: string[] = [];
 
 export const GLOBAL = {
-  cwd: cwd(),
+  cwd,
   configs: {
     filter: undefined,
     exclude: undefined,

@@ -3,13 +3,13 @@ import { stat as fsStat, readdir } from 'node:fs/promises';
 import { join, sep } from 'node:path';
 import { env } from 'node:process';
 import { states } from '../../configs/poku.js';
+import { escapeRegExp } from '../../parsers/escape-regexp.js';
 
 const regex = {
   sep: /[/\\]+/g,
   pathLevel: /(\.\.(\/|\\|$))+/g,
   unusualChars: /[<>|^?*]+/g,
   absolutePath: /^[/\\]/,
-  safeRegExp: /[.*{}[\]\\]/g,
   defaultFilter: /\.(test|spec)\./i,
 } as const;
 
@@ -26,9 +26,6 @@ export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
 
 export const isFile = async (fullPath: string) =>
   (await fsStat(fullPath)).isFile();
-
-export const escapeRegExp = (string: string) =>
-  string.replace(regex.safeRegExp, '\\$&');
 
 const envFilter = env.FILTER?.trim()
   ? new RegExp(escapeRegExp(env.FILTER), 'i')

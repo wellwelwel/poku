@@ -3,7 +3,8 @@ import type {
   ChildProcess,
   ChildProcessWithoutNullStreams,
 } from 'node:child_process';
-import type { results, timespan } from '../configs/poku.js';
+import type { timespan } from '../configs/poku.js';
+import type { results } from '../configs/results.js';
 import type { ProcessAssertionOptions } from './assert.js';
 import type { DescribeOptions } from './describe.js';
 import type { Configs, Runtime, Timespan } from './poku.js';
@@ -32,7 +33,7 @@ export type PokuPlugin = {
   ipc?: boolean;
   /** Called after each test file process is spawned */
   onTestProcess?: (child: ChildProcess, file: string) => void;
-  /** Intercept file discovery. Return the file paths to use. */
+  /** Intercept file discovery. Return the file paths to use */
   discoverFiles?: (
     paths: string[],
     context: PluginContext

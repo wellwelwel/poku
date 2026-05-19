@@ -7,12 +7,14 @@ import TabItem from '@theme/TabItem';
 
 # Comparando executores de testes
 
-| Executor de Teste    | Isolamento | CJS          | ESM            | node_modules        | Tamanho                                                                                           | Bun | Deno |
-| -------------------- | ---------- | ------------ | -------------- | ------------------- | ------------------------------------------------------------------------------------------------- | --- | ---- |
-| 🐷 **Poku**          | ✅         | ✅           | ✅             | 1 pacote (**poku**) | [![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)              | ✅  | ✅   |
-| **Jest** _(30.2.0)_  | ✅         | ✅           | _experimental_ | 297 pacotes         | [![Install Size](https://pkg-size.dev/badge/install/28355770)](https://pkg-size.dev/jest@30.2.0)  | ❓  | ❓   |
-| **Mocha** _(11.7.5)_ | ❌         | ✅           | ✅             | 92 pacotes          | [![Install Size](https://pkg-size.dev/badge/install/8829246)](https://pkg-size.dev/mocha@11.7.5)  | ❓  | ❓   |
-| **Vitest** _(4.0.8)_ | ✅         | _depreciado_ | ✅             | 40 pacotes          | [![Install Size](https://pkg-size.dev/badge/install/32825574)](https://pkg-size.dev/vitest@4.0.8) | ❓  | ❓   |
+| Executor de Teste    | Isolamento | CJS | ESM            | node_modules        | Tamanho                                        | Bun | Deno |
+| -------------------- | ---------- | --- | -------------- | ------------------- | ---------------------------------------------- | --- | ---- |
+| **Jest** _(30.4.2)_  | ✅         | ✅  | _experimental_ | 293 pacotes         | [**~28MB**](https://pkg-size.dev/jest@30.4.2)  | ❓  | ❓   |
+| **Vitest** _(4.1.6)_ | ✅         | ❌  | ✅             | 42 pacotes          | [**~24MB**](https://pkg-size.dev/vitest@4.1.6) | ❓  | ❓   |
+| **AVA** _(8.0.0)_    | ✅         | ✅  | ✅             | 140 pacotes         | [**~16MB**](https://pkg-size.dev/ava@8.0.0)    | ❓  | ❓   |
+| **Mocha** _(11.7.5)_ | ❌         | ✅  | ✅             | 92 pacotes          | [**~9MB**](https://pkg-size.dev/mocha@11.7.5)  | ❓  | ❓   |
+| **uvu** _(0.5.6)_    | ❌         | ✅  | ✅             | 6 pacotes           | [**~558KB**](https://pkg-size.dev/uvu@0.5.6)   | ❓  | ❓   |
+| 🐷 **Poku**          | ✅         | ✅  | ✅             | 1 pacote (**poku**) | [**~190KB**](https://pkg-size.dev/poku)        | ✅  | ✅   |
 
 <hr />
 
@@ -22,9 +24,8 @@ import TabItem from '@theme/TabItem';
 
 O **Poku** é [continuamente testado](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) para garantir as seguintes expectativas médias para o uso básico:
 
-- ~**4.6x** mais rápido que o [**Jest**](https://github.com/jestjs/jest) (v30.4.2)
-- ~**3.5x** mais rápido que o [**Vitest**](https://github.com/vitest-dev/vitest) (v4.1.6)
-- ~**1.4x** _mais rápido_ que o [**Mocha**](https://github.com/mochajs/mocha) (v11.7.5) — _mesmo com isolamento por arquivos de teste_ 🚀
+- ~**5.3x** mais rápido que o [**Jest**](https://github.com/jestjs/jest) (v30.4.2)
+- ~**4.5x** mais rápido que o [**Vitest**](https://github.com/vitest-dev/vitest) (v4.1.6)
 
 > Você pode ver como os testes são executados e comparados no diretório [benchmark](https://github.com/wellwelwel/poku/tree/main/benchmark).
 >
@@ -36,9 +37,11 @@ O **Poku** é [continuamente testado](https://github.com/wellwelwel/poku/blob/ma
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)
 
-- [~**206x** mais leve que o **Vitest**](https://pkg-size.dev/vitest@3.2.4)
-- [~**165x** mais leve que o **Jest**](https://pkg-size.dev/jest@30.0.5)
-- [~**52x** mais leve que o **Mocha**](https://pkg-size.dev/mocha@11.7.1)
+- [~**150x** mais leve que o **Jest**](https://pkg-size.dev/jest@30.4.2)
+- [~**125x** mais leve que o **Vitest**](https://pkg-size.dev/vitest@4.1.6)
+- [~**85x** mais leve que o **AVA**](https://pkg-size.dev/ava@8.0.0)
+- [~**48x** mais leve que o **Mocha**](https://pkg-size.dev/mocha@11.7.5)
+- [~**2.9x** mais leve que o **uvu**](https://pkg-size.dev/uvu@0.5.6)
 
 <hr />
 
