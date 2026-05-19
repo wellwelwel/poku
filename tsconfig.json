@@ -21,7 +21,7 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noImplicitAny": true,
-    "removeComments": true,
+    "removeComments": false,
     "sourceMap": false,
     "esModuleInterop": true,
     "noEmitOnError": true,

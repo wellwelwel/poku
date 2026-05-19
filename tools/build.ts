@@ -4,6 +4,16 @@ import { rollup } from 'rollup';
 import declarationsPlugin from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 
+type BundleConfig = {
+  format: 'es' | 'cjs';
+  extension: 'js' | 'cjs';
+  inputs: Record<string, string>;
+  plugins: Plugin[];
+  isEntry: (moduleId: string) => boolean;
+  libraryReachable: Set<string>;
+  writeOptions: OutputOptions;
+};
+
 const { version } = JSON.parse(await readFile('./package.json', 'utf8'));
 
 const normalizePath = (moduleId: string) => moduleId.replace(/\\/g, '/');
@@ -79,16 +89,6 @@ const createTranspile = () =>
     tsconfig: './tsconfig.json',
     treeShaking: true,
   });
-
-type BundleConfig = {
-  format: 'es' | 'cjs';
-  extension: 'js' | 'cjs';
-  inputs: Record<string, string>;
-  plugins: Plugin[];
-  isEntry: (moduleId: string) => boolean;
-  libraryReachable: Set<string>;
-  writeOptions: OutputOptions;
-};
 
 const buildBundle = async (config: BundleConfig) => {
   const bundle = await rollup({
