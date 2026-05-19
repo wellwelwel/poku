@@ -1,4 +1,4 @@
-import { GLOBAL, results } from '../configs/poku.js';
+import { results } from '../configs/results.js';
 
 const SKIP_MARKER = '\x1b[94m\x1b[1m◯';
 const TODO_MARKER = '\x1b[96m\x1b[1m●';
@@ -24,11 +24,15 @@ export const serialize = (value: unknown): unknown => {
   return value;
 };
 
-export const parserOutput = (options: { output: string; result: boolean }) => {
-  const { output, result } = options;
+export const parserOutput = (options: {
+  output: string;
+  result: boolean;
+  debug?: boolean;
+}) => {
+  const { output, result, debug } = options;
 
   const pad = '  ';
-  const isDebugOrFailed = GLOBAL.configs.debug || !result;
+  const isDebugOrFailed = debug || !result;
   const outputs: string[] = [];
 
   let offset = 0;

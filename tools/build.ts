@@ -1,4 +1,4 @@
-import type { Plugin, RollupLog } from 'rollup';
+import type { Plugin } from 'rollup';
 import { readFile, rm } from 'node:fs/promises';
 import { rollup } from 'rollup';
 import declarationsPlugin from 'rollup-plugin-dts';
@@ -61,10 +61,8 @@ const collectLibraryReachable: Plugin = {
 
 const external = (moduleId: string) => moduleId.startsWith('node:');
 
-const onwarn = (warning: RollupLog, warn: (warning: RollupLog) => void) => {
-  // TODO: resolve all circular dependencies
-  if (warning.code === 'CIRCULAR_DEPENDENCY') return;
-  warn(warning);
+const onwarn = () => {
+  process.exitCode = 1;
 };
 
 const transpile = esbuild({

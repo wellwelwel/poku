@@ -1,7 +1,8 @@
 import type { Code } from '../../@types/code.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
-import { GLOBAL, results, timespan } from '../../configs/poku.js';
+import { GLOBAL, timespan } from '../../configs/poku.js';
+import { results } from '../../configs/results.js';
 
 export const exit = (code: Code, quiet?: boolean): void => {
   const isPoku = results.passed > 0 || results.failed > 0;

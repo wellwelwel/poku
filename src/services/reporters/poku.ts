@@ -1,9 +1,8 @@
 import type { DescribeOptions } from '../../@types/describe.js';
 import type { ReporterPlugin } from '../../@types/poku.js';
 import { relative, resolve } from 'node:path';
-import { stdout } from 'node:process';
+import { cwd as processCwd, stdout } from 'node:process';
 import { indentation } from '../../configs/indentation.js';
-import { GLOBAL } from '../../configs/poku.js';
 import { parseResultType } from '../../parsers/assert.js';
 import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
@@ -92,7 +91,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(output);
     },
     onAssertionFailure({ assertOptions: options, error }) {
-      const { cwd } = GLOBAL;
+      const cwd = processCwd();
 
       let preIdentation = indentation.test.repeat(
         indentation.describeDepth + indentation.itDepth

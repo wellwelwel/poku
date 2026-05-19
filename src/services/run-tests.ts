@@ -1,6 +1,7 @@
 import { relative } from 'node:path';
 import { exit } from 'node:process';
-import { deepOptions, GLOBAL, results } from '../configs/poku.js';
+import { deepOptions, GLOBAL } from '../configs/poku.js';
+import { results } from '../configs/results.js';
 import { hasOnly } from '../parsers/get-arg.js';
 import { availableParallelism } from '../polyfills/os.js';
 import { hr, log } from '../services/write.js';

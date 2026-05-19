@@ -7,7 +7,7 @@ import type {
   Timespan,
 } from '../@types/poku.js';
 import { cwd, env } from 'node:process';
-import { escapeRegExp } from '../modules/helpers/list-files.js';
+import { escapeRegExp } from '../parsers/escape-regexp.js';
 import { getRuntime } from '../parsers/get-runtime.js';
 import { reporter } from '../services/reporter.js';
 
@@ -22,13 +22,6 @@ export const timespan: Timespan = {
 export const errorHoist = {
   depth: 0,
   failed: false,
-};
-
-export const results = {
-  passed: 0,
-  failed: 0,
-  skipped: 0,
-  todo: 0,
 };
 
 export const VERSION = '0.0.0-placeholder';

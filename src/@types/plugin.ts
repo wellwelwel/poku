@@ -3,7 +3,8 @@ import type {
   ChildProcess,
   ChildProcessWithoutNullStreams,
 } from 'node:child_process';
-import type { results, timespan } from '../configs/poku.js';
+import type { timespan } from '../configs/poku.js';
+import type { results } from '../configs/results.js';
 import type { ProcessAssertionOptions } from './assert.js';
 import type { DescribeOptions } from './describe.js';
 import type { Configs, Runtime, Timespan } from './poku.js';
