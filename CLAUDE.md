@@ -123,8 +123,9 @@ To run a subset, filter by path instead: `npm test -- --filter=<path>`
 
 ## Tips
 
-- When a change touches more than one responsibility, tell the user to split distinct responsibilities into separate Pull Requests for proper version organization and a higher chance of approval
+- When a change touches more than one responsibility, suggest to the user splitting distinct responsibilities into separate Pull Requests for cleaner versioning and a better chance of approval. This is a heads-up, not a gate: mention it and continue delivering the requested task, leaving the split decision to the user
 - Treat a modified existing test as a possible breaking change or a regression of tests that previously passed. Prefer adding new tests. Modify an existing test ONLY when truly unavoidable (intentional breaking change, the test was actually wrong, updated snapshots, and similar cases)
+- When presenting alternatives or options to the user, ALWAYS include explicit pros and cons (trade-offs) for each. Never offer choices without them
 
 ## Deep-Dive Skills
 

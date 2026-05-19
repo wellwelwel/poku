@@ -40,6 +40,10 @@ Open a representative file in the relevant directory to learn the pattern:
 
 Comments are completely prohibited in tests. `describe`, `it`, `test`, `assert`, and `strict` all accept a message, so express intent through those instead.
 
+Prefer value-preserving asserts over a derived boolean. `assert(regex.test(x))` collapses failures to `Actual: false / Expected: true`. `assert.match` / `assert.doesNotMatch` print `Value` + `RegExp`, and `assert.strictEqual` / `assert.deepStrictEqual` print `Actual` + `Expected`. Split combined checks like `a && b` into independent assertions. A boolean assertion is acceptable only when no value-preserving form fits.
+
+A bug-reproduction test asserts the correct expected behavior, so without a fix it MUST fail and pass only once the bug is fixed. Never write it to pass against the buggy behavior.
+
 ### 4. Test Utils (`test/__utils__/`)
 
 Shared helpers for writing tests:
