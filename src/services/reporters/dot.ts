@@ -7,8 +7,10 @@ import { errors, poku } from './poku.js';
 const DOT_PASS = '.';
 const DOT_FAIL = '\x1b[1m\x1b[31mF\x1b[0m';
 
-export const dot: ReporterPlugin = (() => {
-  return createReporter({
+let plugin: ReporterPlugin;
+
+const build = (): ReporterPlugin =>
+  createReporter({
     onRunStart() {
       hr();
     },
@@ -30,4 +32,9 @@ export const dot: ReporterPlugin = (() => {
       poku.onRunResult(options);
     },
   });
-})();
+
+export const dot: ReporterPlugin = (configs) => {
+  if (!plugin) plugin = build();
+
+  return plugin(configs);
+};
