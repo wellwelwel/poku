@@ -5,9 +5,7 @@ import { format } from '../format.js';
 import { hr, log } from '../write.js';
 import { poku } from './poku.js';
 
-let plugin: ReporterPlugin;
-
-const build = (): ReporterPlugin => {
+export const classic: ReporterPlugin = (() => {
   const files = {
     passed: new Map<string, number>(),
     failed: new Map<string, number>(),
@@ -61,10 +59,4 @@ const build = (): ReporterPlugin => {
       );
     },
   });
-};
-
-export const classic: ReporterPlugin = (configs) => {
-  if (!plugin) plugin = build();
-
-  return plugin(configs);
-};
+})();

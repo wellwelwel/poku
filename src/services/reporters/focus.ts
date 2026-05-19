@@ -7,9 +7,7 @@ import { hr, log } from '../write.js';
 const LABEL_FILES_PASSED = '\x1b[2mtest file(s) passed\x1b[0m';
 const LABEL_FILES_FAILED = '\x1b[2mtest file(s) failed\x1b[0m';
 
-let plugin: ReporterPlugin;
-
-const build = (): ReporterPlugin => {
+export const focus: ReporterPlugin = (() => {
   let countFails = 0;
 
   return createReporter({
@@ -39,10 +37,4 @@ const build = (): ReporterPlugin => {
       );
     },
   });
-};
-
-export const focus: ReporterPlugin = (configs) => {
-  if (!plugin) plugin = build();
-
-  return plugin(configs);
-};
+})();
