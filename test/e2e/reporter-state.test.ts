@@ -1,13 +1,13 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import process from 'node:process';
-import { stripAnsi } from '../__utils__/capture-cli.test.js';
+import { ext, stripAnsi } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { poku } from '../../src/modules/essentials/poku.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 
 const DIR = 'test/__fixtures__/.temp/reporter-state';
-const FLIP_FILE = `${DIR}/flip.test.ts`;
+const FLIP_FILE = `${DIR}/flip.test.${ext}`;
 const FAILING_CONTENT =
   "import { assert } from '../../../../src/modules/index.js';\n\nassert(false, 'flip: should fail');\n";
 const PASSING_CONTENT =
@@ -55,8 +55,8 @@ describe('Reporters must not retain failure state between consecutive runs', asy
     );
     assert.doesNotMatch(
       secondRun,
-      /✘[^\n]*flip\.test\.ts/,
-      'classic: second run must not keep flip.test.ts in the failed list after it was fixed'
+      /✘[^\n]*flip\.test\.(js|ts)/,
+      'classic: second run must not keep the fixed file in the failed list'
     );
   });
 
@@ -65,7 +65,7 @@ describe('Reporters must not retain failure state between consecutive runs', asy
 
     assert.match(
       secondRun,
-      /PASS\s+\S*flip\.test\.ts/,
+      /PASS\s+\S*flip\.test\.(js|ts)/,
       'compact: second run must report the fixed file as passing'
     );
     assert.doesNotMatch(
