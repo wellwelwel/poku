@@ -16,7 +16,7 @@ const ARROW_FAIL = '\x1b[91m\x1b[1m›\x1b[0m';
 
 export const errors = getSharedState<{ file: string; output?: string }[]>(
   'errors',
-  []
+  () => []
 );
 
 export const poku: ReturnType<ReporterPlugin> = (() => {

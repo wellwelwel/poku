@@ -13,26 +13,26 @@ import { reporter } from '../services/reporter.js';
 import { cwd } from './cwd.js';
 import { getSharedState } from './shared-state.js';
 
-export const states = getSharedState<States>('states', {
+export const states = getSharedState<States>('states', () => ({
   isSinglePath: undefined,
-});
+}));
 
-export const timespan = getSharedState<Timespan>('timespan', {
+export const timespan = getSharedState<Timespan>('timespan', () => ({
   started: undefined!,
   finished: undefined!,
   duration: 0,
-});
+}));
 
-export const errorHoist = getSharedState('errorHoist', {
+export const errorHoist = getSharedState('errorHoist', () => ({
   depth: 0,
   failed: false,
-});
+}));
 
 export const VERSION = '0.0.0-placeholder';
 
-export const deepOptions = getSharedState<string[]>('deepOptions', []);
+export const deepOptions = getSharedState<string[]>('deepOptions', () => []);
 
-export const GLOBAL = getSharedState('GLOBAL', {
+export const GLOBAL = getSharedState('GLOBAL', () => ({
   cwd,
   configs: {
     filter: undefined,
@@ -67,4 +67,4 @@ export const GLOBAL = getSharedState('GLOBAL', {
   envFile: undefined as string | undefined,
   runtime: (env.POKU_RUNTIME || getRuntime()) as Runtime,
   runAsOnly: false,
-});
+}));
