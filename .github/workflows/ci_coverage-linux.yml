@@ -74,6 +74,9 @@ jobs:
       - name: 📦 Installing Dependencies
         run: npm ci
 
+      - name: 🚀 Building Poku
+        run: npm run build
+
       - name: 🧪 Checking for Coverage
         run: npm run test:coverage
 

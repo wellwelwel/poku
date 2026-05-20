@@ -1,10 +1,20 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import process from 'node:process';
 import { ext, stripAnsi } from '../__utils__/capture-cli.test.js';
+import { results } from '../../src/configs/results.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { poku } from '../../src/modules/essentials/poku.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
+import { errors } from '../../src/services/reporters/poku.js';
+
+const watchResultsClear = (): void => {
+  errors.length = 0;
+  results.passed = 0;
+  results.failed = 0;
+  results.skipped = 0;
+  results.todo = 0;
+};
 
 const DIR = 'test/__fixtures__/.temp/reporter-state';
 const FLIP_FILE = `${DIR}/flip.test.${ext}`;
@@ -35,6 +45,7 @@ const reproduce = async (reporter: string) => {
 
     buffer = '';
 
+    watchResultsClear();
     await poku(DIR, { noExit: true, reporter });
   } finally {
     process.stdout.write = original;

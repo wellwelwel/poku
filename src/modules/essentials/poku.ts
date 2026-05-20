@@ -5,7 +5,6 @@ import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
 import { GLOBAL, timespan } from '../../configs/poku.js';
 import { results } from '../../configs/results.js';
-import { errors } from '../../services/reporters/poku.js';
 import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
@@ -74,12 +73,6 @@ export const poku = (async (
           paths.map((dir) => listFiles(join(cwd, dir), GLOBAL.configs))
         )
       ).flat(1);
-
-  errors.length = 0;
-  results.passed = 0;
-  results.failed = 0;
-  results.skipped = 0;
-  results.todo = 0;
 
   if (showLogs) GLOBAL.reporter.onRunStart();
 

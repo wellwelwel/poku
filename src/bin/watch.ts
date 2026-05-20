@@ -1,6 +1,7 @@
 import type { Watcher } from '../services/watch.js';
 import process from 'node:process';
 import { GLOBAL } from '../configs/poku.js';
+import { results } from '../configs/results.js';
 import { onSigint, poku } from '../modules/essentials/poku.js';
 import { getArg } from '../parsers/get-arg.js';
 import { availableParallelism } from '../polyfills/os.js';
@@ -24,6 +25,10 @@ export const startWatch = async (dirs: string[]) => {
 
   const resultsClear = (): void => {
     errors.length = 0;
+    results.passed = 0;
+    results.failed = 0;
+    results.skipped = 0;
+    results.todo = 0;
   };
 
   const listenStdin = async (input: Buffer | string): Promise<void> => {
