@@ -125,11 +125,11 @@ import { test } from 'poku';
 const run = test.only;
 
 run('aliased', () => {
-  // ⏭️ Won't be recognized as `it.only`
+  // ❌ Won't be recognized
 });
 
 test.only('direct', () => {
-  // ✅ Will be executed
+  // ✅ Will be recognized
 });
 ```
 
