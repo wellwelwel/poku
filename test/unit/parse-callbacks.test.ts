@@ -64,6 +64,21 @@ const cbWithoutOnly = {
   },
 };
 
+const cbFalsePositives = {
+  stringDouble: () => {
+    const value = 'it.only';
+    return value;
+  },
+  stringSingle: () => {
+    const value = 'test.only';
+    return value;
+  },
+  stringTemplate: () => {
+    const value = `describe.only`;
+    return value;
+  },
+};
+
 describe('Parse Callbacks: checkOnly — true', () => {
   assert.strictEqual(checkOnly(undefined), false, 'No function');
 
@@ -289,5 +304,45 @@ describe('Parse Callbacks: CheckNoOnly — false', () => {
     CheckNoOnly(cbWithOnly.arrow3),
     false,
     'Arrow Function: test.only'
+  );
+});
+
+describe('Parse Callbacks: checkOnly (false positives)', () => {
+  assert.strictEqual(
+    checkOnly(cbFalsePositives.stringDouble),
+    false,
+    'String literal: "it.only"'
+  );
+
+  assert.strictEqual(
+    checkOnly(cbFalsePositives.stringSingle),
+    false,
+    "String literal: 'test.only'"
+  );
+
+  assert.strictEqual(
+    checkOnly(cbFalsePositives.stringTemplate),
+    false,
+    'Template literal: `describe.only`'
+  );
+});
+
+describe('Parse Callbacks: CheckNoOnly (false positives)', () => {
+  assert.strictEqual(
+    CheckNoOnly(cbFalsePositives.stringDouble),
+    true,
+    'String literal: "it.only"'
+  );
+
+  assert.strictEqual(
+    CheckNoOnly(cbFalsePositives.stringSingle),
+    true,
+    "String literal: 'test.only'"
+  );
+
+  assert.strictEqual(
+    CheckNoOnly(cbFalsePositives.stringTemplate),
+    true,
+    'Template literal: `describe.only`'
   );
 });
