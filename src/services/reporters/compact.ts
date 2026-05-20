@@ -10,7 +10,7 @@ const BADGE_FAIL = '\x1b[101m\x1b[1m FAIL \x1b[0m';
 const LABEL_FILES_PASSED = '\x1b[2mtest file(s) passed\x1b[0m';
 const LABEL_FILES_FAILED = '\x1b[2mtest file(s) failed\x1b[0m';
 
-export const compact: ReporterPlugin = (() => {
+export const compact: ReporterPlugin = () => {
   let countFails = 0;
 
   return createReporter({
@@ -45,5 +45,5 @@ export const compact: ReporterPlugin = (() => {
         `${format(`Finished in ±${parseTimeToSecs(timespan.duration)} seconds`).dim()}`
       );
     },
-  });
-})();
+  })();
+};

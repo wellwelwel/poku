@@ -5,7 +5,7 @@ import { format } from '../format.js';
 import { hr, log } from '../write.js';
 import { poku } from './poku.js';
 
-export const classic: ReporterPlugin = (() => {
+export const classic: ReporterPlugin = () => {
   const files = {
     passed: new Map<string, number>(),
     failed: new Map<string, number>(),
@@ -58,5 +58,5 @@ export const classic: ReporterPlugin = (() => {
         `${format('Exited with code').dim()} ${format(String(code)).bold()[code === 0 ? 'success' : 'fail']()}\n`
       );
     },
-  });
-})();
+  })();
+};
