@@ -59,8 +59,9 @@ Fixtures provide controlled scenarios and mirror the test structure (`unit/`, `i
 
 ### 6. Docker Testing
 
+- Filter the version: `FILTER=node-<version> npm run test:docker:node`
 - Compose file: `test/__docker__/docker-compose.yml`
-- Per-version Alpine Dockerfiles live under `test/__docker__/node/` (read that directory for the currently supported versions)
+- Runs against the built `ci/` (`NODE_ENV=build`, `.js`)
 
 ### 7. Coverage
 
