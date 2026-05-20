@@ -2,7 +2,7 @@ import process from 'node:process';
 import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it/core.js';
+import { it } from '../../src/modules/helpers/it.js';
 import { skip } from '../../src/modules/helpers/skip.js';
 import { isWindows } from '../../src/parsers/os.js';
 

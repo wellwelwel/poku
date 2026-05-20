@@ -8,7 +8,7 @@ import {
 } from '../../src/modules/helpers/create-service.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { getPIDs } from '../../src/modules/helpers/get-pids.js';
-import { it } from '../../src/modules/helpers/it/core.js';
+import { it } from '../../src/modules/helpers/it.js';
 import { kill } from '../../src/modules/helpers/kill.js';
 import { test } from '../../src/modules/helpers/test.js';
 import { sleep, waitForPort } from '../../src/modules/helpers/wait-for.js';

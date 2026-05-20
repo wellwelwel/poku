@@ -1,6 +1,6 @@
 import { exit } from 'node:process';
 import { describe } from '../../../../src/modules/helpers/describe.js';
-import { it } from '../../../../src/modules/helpers/it/core.js';
+import { it } from '../../../../src/modules/helpers/it.js';
 import { test } from '../../../../src/modules/helpers/test.js';
 
 describe.skip('1', () => {

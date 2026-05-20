@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { describe } from '../../../../../src/modules/helpers/describe.js';
-import { it } from '../../../../../src/modules/helpers/it/core.js';
+import { it } from '../../../../../src/modules/helpers/it.js';
 
 const server = createServer((_, res) => res.end('ok'));
 

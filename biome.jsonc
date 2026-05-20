@@ -100,7 +100,7 @@
       "includes": [
         "src/modules/helpers/modifiers.ts",
         "src/modules/helpers/describe.ts",
-        "src/modules/helpers/it/core.ts"
+        "src/modules/helpers/it.ts"
       ],
       "linter": {
         "rules": {

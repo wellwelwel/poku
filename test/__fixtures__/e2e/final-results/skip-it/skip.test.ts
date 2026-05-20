@@ -1,5 +1,5 @@
 import { exit } from 'node:process';
-import { it } from '../../../../../src/modules/helpers/it/core.js';
+import { it } from '../../../../../src/modules/helpers/it.js';
 
 it.skip('Some skip', () => {
   exit(1);
