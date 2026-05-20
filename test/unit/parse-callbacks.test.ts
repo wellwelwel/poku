@@ -2,7 +2,7 @@ import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it/core.js';
 import { test } from '../../src/modules/helpers/test.js';
-import { CheckNoOnly, checkOnly } from '../../src/parsers/callback.js';
+import { checkNoOnly, checkOnly } from '../../src/parsers/callback.js';
 
 const cbWithOnly = {
   function: function cb() {
@@ -193,115 +193,115 @@ describe('Parse Callbacks: checkOnly — false', () => {
   );
 });
 
-describe('Parse Callbacks: CheckNoOnly — true', () => {
-  assert.strictEqual(CheckNoOnly(undefined), false, 'No function');
+describe('Parse Callbacks: checkNoOnly — true', () => {
+  assert.strictEqual(checkNoOnly(undefined), false, 'No function');
 
   assert.strictEqual(
-    CheckNoOnly(cbWithoutOnly.function),
+    checkNoOnly(cbWithoutOnly.function),
     true,
     'Classic Function: describe.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithoutOnly.function2),
+    checkNoOnly(cbWithoutOnly.function2),
     true,
     'Classic Function: it.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithoutOnly.function3),
+    checkNoOnly(cbWithoutOnly.function3),
     true,
     'Classic Function: test.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithoutOnly.anon),
+    checkNoOnly(cbWithoutOnly.anon),
     true,
     'Anonymous Function: describe.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithoutOnly.anon2),
+    checkNoOnly(cbWithoutOnly.anon2),
     true,
     'Anonymous Function: it.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithoutOnly.anon3),
+    checkNoOnly(cbWithoutOnly.anon3),
     true,
     'Anonymous Function: test.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithoutOnly.arrow),
+    checkNoOnly(cbWithoutOnly.arrow),
     true,
     'Arrow Function: describe.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithoutOnly.arrow2),
+    checkNoOnly(cbWithoutOnly.arrow2),
     true,
     'Arrow Function: it.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithoutOnly.arrow3),
+    checkNoOnly(cbWithoutOnly.arrow3),
     true,
     'Arrow Function: test.only'
   );
 });
 
-describe('Parse Callbacks: CheckNoOnly — false', () => {
+describe('Parse Callbacks: checkNoOnly — false', () => {
   assert.strictEqual(
-    CheckNoOnly(cbWithOnly.function),
+    checkNoOnly(cbWithOnly.function),
     false,
     'Classic Function: describe.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithOnly.function2),
+    checkNoOnly(cbWithOnly.function2),
     false,
     'Classic Function: it.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithOnly.function3),
+    checkNoOnly(cbWithOnly.function3),
     false,
     'Classic Function: test.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithOnly.anon),
+    checkNoOnly(cbWithOnly.anon),
     false,
     'Anonymous Function: describe.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithOnly.anon2),
+    checkNoOnly(cbWithOnly.anon2),
     false,
     'Anonymous Function: it.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithOnly.anon3),
+    checkNoOnly(cbWithOnly.anon3),
     false,
     'Anonymous Function: test.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithOnly.arrow),
+    checkNoOnly(cbWithOnly.arrow),
     false,
     'Arrow Function: describe.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithOnly.arrow2),
+    checkNoOnly(cbWithOnly.arrow2),
     false,
     'Arrow Function: it.only'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbWithOnly.arrow3),
+    checkNoOnly(cbWithOnly.arrow3),
     false,
     'Arrow Function: test.only'
   );
@@ -327,21 +327,21 @@ describe('Parse Callbacks: checkOnly (false positives)', () => {
   );
 });
 
-describe('Parse Callbacks: CheckNoOnly (false positives)', () => {
+describe('Parse Callbacks: checkNoOnly (false positives)', () => {
   assert.strictEqual(
-    CheckNoOnly(cbFalsePositives.stringDouble),
+    checkNoOnly(cbFalsePositives.stringDouble),
     true,
     'String literal: "it.only"'
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbFalsePositives.stringSingle),
+    checkNoOnly(cbFalsePositives.stringSingle),
     true,
     "String literal: 'test.only'"
   );
 
   assert.strictEqual(
-    CheckNoOnly(cbFalsePositives.stringTemplate),
+    checkNoOnly(cbFalsePositives.stringTemplate),
     true,
     'Template literal: `describe.only`'
   );

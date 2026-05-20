@@ -6,7 +6,7 @@ export const checkOnly = (cb: unknown): boolean => {
   return onlyCall.test(cb.toString());
 };
 
-export const CheckNoOnly = (cb: unknown): boolean => {
+export const checkNoOnly = (cb: unknown): boolean => {
   if (typeof cb !== 'function') return false;
 
   return !onlyCall.test(cb.toString());
