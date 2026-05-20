@@ -19,18 +19,19 @@ export const populateRange = (startsAt: number, endsAt: number) => {
 export const killPID = {
   unix: (PID: number): Promise<void> =>
     new Promise((resolve) => {
-      const service = spawn('kill', ['-9', String(Number(PID))]);
+      const service = spawn('kill', ['-9', String(Number(PID))], {
+        shell: false,
+      });
 
       service.on('close', () => resolve(undefined));
     }),
   windows: (PID: number): Promise<void> =>
     new Promise((resolve) => {
-      const service = spawn('taskkill', [
-        '/F',
-        '/T',
-        '/PID',
-        String(Number(PID)),
-      ]);
+      const service = spawn(
+        'taskkill',
+        ['/F', '/T', '/PID', String(Number(PID))],
+        { shell: false }
+      );
 
       service.on('close', () => resolve(undefined));
     }),
@@ -40,13 +41,11 @@ export const getPIDs = {
   unix: (port: number): Promise<number[]> =>
     new Promise((resolve) => {
       const PIDs: Set<number> = new Set();
-      const service = spawn('lsof', [
-        '-t',
-        '-i',
-        `:${Number(port)}`,
-        '-s',
-        'TCP:LISTEN',
-      ]);
+      const service = spawn(
+        'lsof',
+        ['-t', '-i', `:${Number(port)}`, '-s', 'TCP:LISTEN'],
+        { shell: false }
+      );
 
       service.stdout.on('data', (data: Buffer) => {
         const output = data.toString().trim().split('\n');
