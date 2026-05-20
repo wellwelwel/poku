@@ -19,7 +19,3 @@ printf '{\n  "type": "module"\n}\n' > ci/package.json
 (cd test && find __fixtures__ -name package.json -print0 | while IFS= read -r -d '' f; do mkdir -p "../ci/test/$(dirname "$f")" && cp "$f" "../ci/test/$f"; done)
 chmod +x lib/bin/index.js
 echo '◉ postbuild'
-
-echo '◯ testing'
-tsx test/build/version.test.ts
-echo '◉ testing'

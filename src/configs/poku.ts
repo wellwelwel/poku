@@ -11,25 +11,28 @@ import { escapeRegExp } from '../parsers/escape-regexp.js';
 import { getRuntime } from '../parsers/get-runtime.js';
 import { reporter } from '../services/reporter.js';
 import { cwd } from './cwd.js';
+import { getSharedState } from './shared-state.js';
 
-export const states: States = { isSinglePath: undefined };
+export const states = getSharedState<States>('states', {
+  isSinglePath: undefined,
+});
 
-export const timespan: Timespan = {
+export const timespan = getSharedState<Timespan>('timespan', {
   started: undefined!,
   finished: undefined!,
   duration: 0,
-};
+});
 
-export const errorHoist = {
+export const errorHoist = getSharedState('errorHoist', {
   depth: 0,
   failed: false,
-};
+});
 
 export const VERSION = '0.0.0-placeholder';
 
-export const deepOptions: string[] = [];
+export const deepOptions = getSharedState<string[]>('deepOptions', []);
 
-export const GLOBAL = {
+export const GLOBAL = getSharedState('GLOBAL', {
   cwd,
   configs: {
     filter: undefined,
@@ -64,4 +67,4 @@ export const GLOBAL = {
   envFile: undefined as string | undefined,
   runtime: (env.POKU_RUNTIME || getRuntime()) as Runtime,
   runAsOnly: false,
-};
+});
