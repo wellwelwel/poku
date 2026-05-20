@@ -1,5 +1,5 @@
 import { describe } from '../../../src/modules/helpers/describe.js';
-import { it } from '../../../src/modules/helpers/it/core.js';
+import { it } from '../../../src/modules/helpers/it.js';
 
 describe('Strict Suite (No Message)', async () => {
   const { strict: assert } =

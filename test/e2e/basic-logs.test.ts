@@ -2,7 +2,7 @@ import process, { env } from 'node:process';
 import { ext, inspectCLI } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it/core.js';
+import { it } from '../../src/modules/helpers/it.js';
 import { runner } from '../../src/parsers/get-runner.js';
 
 describe('Basic logs with Runner', async () => {

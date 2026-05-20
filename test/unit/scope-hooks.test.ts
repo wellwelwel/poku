@@ -2,7 +2,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import { GLOBAL } from '../../src/configs/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
-import { it, itBase } from '../../src/modules/helpers/it/core.js';
+import { it, itBase } from '../../src/modules/helpers/it.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
 
 const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');

@@ -1,14 +1,14 @@
-import type { It } from '../../../@types/it.js';
-import type { ScopeHook } from '../../../@types/plugin.js';
-import type { TestCb } from '../../../@types/poku.js';
+import type { It } from '../../@types/it.js';
+import type { ScopeHook } from '../../@types/plugin.js';
+import type { TestCb } from '../../@types/poku.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
-import { each } from '../../../configs/each.js';
-import { indentation } from '../../../configs/indentation.js';
-import { errorHoist, GLOBAL } from '../../../configs/poku.js';
-import { hasOnly } from '../../../parsers/get-arg.js';
-import { getCallback, getTitle } from '../../../parsers/get-test-args.js';
-import { createOnlyIt, skip, todo } from '../modifiers.js';
+import { each } from '../../configs/each.js';
+import { indentation } from '../../configs/indentation.js';
+import { errorHoist, GLOBAL } from '../../configs/poku.js';
+import { hasOnly } from '../../parsers/get-arg.js';
+import { getCallback, getTitle } from '../../parsers/get-test-args.js';
+import { createOnlyIt, skip, todo } from './modifiers.js';
 
 const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
 

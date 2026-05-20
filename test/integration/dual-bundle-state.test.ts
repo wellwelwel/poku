@@ -7,7 +7,7 @@ import {
 } from '../__utils__/skip-unless-built.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it/core.js';
+import { it } from '../../src/modules/helpers/it.js';
 
 skipUnlessBuilt();
 
