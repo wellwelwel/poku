@@ -115,6 +115,26 @@ npx poku --only
 
 ---
 
+### Intentional Limitations
+
+The `.only` modifier must be written directly on `it`, `test`, or `describe`. Aliasing it to another name or accessing it indirectly won't work because Poku doesn't track tests internally, as other test runners do. For example:
+
+```ts
+import { test } from 'poku';
+
+const run = test.only;
+
+run('aliased', () => {
+  // ❌ Won't be recognized
+});
+
+test.only('direct', () => {
+  // ✅ Will be recognized
+});
+```
+
+---
+
 :::tip
 
 - The `.only` modifier works exactly as its respective `describe`, `it` and `test` methods (e.g., by running `beforeEach` and `afterEach` for the `test.only` or `it.only`).

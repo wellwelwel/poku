@@ -4,7 +4,7 @@ import type { Modifier, Todo } from '../../@types/modifiers.js';
 import type { AsyncTestCb, TestCb } from '../../@types/poku.js';
 import { exit } from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
-import { CheckNoOnly } from '../../parsers/callback.js';
+import { checkNoOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { format } from '../../services/format.js';
 import { log } from '../../services/write.js';
@@ -39,7 +39,7 @@ export const createOnlyDescribe = (describeBase: Describe): Modifier =>
       exit(1);
     }
 
-    const noItOnly = CheckNoOnly(
+    const noItOnly = checkNoOnly(
       typeof messageOrCb === 'function' ? messageOrCb : cb
     );
 

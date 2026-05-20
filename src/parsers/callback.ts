@@ -1,23 +1,13 @@
+const onlyCall = /(?:^|[^.\w$])(?:it|test|describe)\.only\s*\(/;
+
 export const checkOnly = (cb: unknown): boolean => {
   if (typeof cb !== 'function') return false;
 
-  const body = cb.toString();
-
-  return (
-    body.includes('it.only') ||
-    body.includes('test.only') ||
-    body.includes('describe.only')
-  );
+  return onlyCall.test(String(cb));
 };
 
-export const CheckNoOnly = (cb: unknown): boolean => {
+export const checkNoOnly = (cb: unknown): boolean => {
   if (typeof cb !== 'function') return false;
 
-  const body = cb.toString();
-
-  return !(
-    body.includes('it.only') ||
-    body.includes('test.only') ||
-    body.includes('describe.only')
-  );
+  return !onlyCall.test(String(cb));
 };
