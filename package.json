@@ -22,7 +22,7 @@
   },
   "license": "MIT",
   "bin": {
-    "poku": "./lib/bin/index.js"
+    "poku": "lib/bin/index.js"
   },
   "repository": {
     "type": "git",
