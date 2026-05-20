@@ -33,7 +33,7 @@ const pokuBin: string = (() => {
   }
 })();
 
-/** 🐽 Auxiliary function to inspect a Poku CLI execution */
+/** 🐽 Auxiliary function to inspect a Poku CLI execution during plugin development */
 export const inspectPoku = (options: {
   command: string;
   spawnOptions?: SpawnOptionsWithoutStdio;
