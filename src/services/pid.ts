@@ -61,16 +61,16 @@ export const getPIDs = {
   windows: (port: number): Promise<number[]> =>
     new Promise((resolve) => {
       const PIDs: Set<number> = new Set();
-      const service = spawn('cmd.exe', [
-        '/c',
-        `netstat -aon | findstr :${Number(port)}`,
-      ]);
+      const service = spawn('netstat', ['-aon'], { shell: false });
+      const portMatch = `:${Number(port)}`;
 
       service.stdout.on('data', (data: Buffer) => {
         const output = data.toString().trim();
         const lines = output.trim().split('\n');
 
         for (const line of lines) {
+          if (!line.includes(portMatch)) continue;
+
           const tokens = line.trim().split(regex.sequentialSpaces);
           const stateIndex = tokens.indexOf('LISTENING');
 
