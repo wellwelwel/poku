@@ -65,17 +65,29 @@ const cbWithoutOnly = {
 };
 
 const cbFalsePositives = {
-  stringDouble: () => {
+  stringIt: () => {
     const value = 'it.only';
     return value;
   },
-  stringSingle: () => {
+  stringTest: () => {
     const value = 'test.only';
     return value;
   },
-  stringTemplate: () => {
-    const value = `describe.only`;
+  stringDescribe: () => {
+    const value = 'describe.only';
     return value;
+  },
+  prefixedIt: () => {
+    const _it = { only: () => {} };
+    _it.only();
+  },
+  prefixedTest: () => {
+    const _test = { only: () => {} };
+    _test.only();
+  },
+  prefixedDescribe: () => {
+    const _describe = { only: () => {} };
+    _describe.only();
   },
 };
 
@@ -309,40 +321,76 @@ describe('Parse Callbacks: checkNoOnly — false', () => {
 
 describe('Parse Callbacks: checkOnly (false positives)', () => {
   assert.strictEqual(
-    checkOnly(cbFalsePositives.stringDouble),
+    checkOnly(cbFalsePositives.stringIt),
     false,
-    'String literal: "it.only"'
+    "String literal: 'it.only'"
   );
 
   assert.strictEqual(
-    checkOnly(cbFalsePositives.stringSingle),
+    checkOnly(cbFalsePositives.stringTest),
     false,
     "String literal: 'test.only'"
   );
 
   assert.strictEqual(
-    checkOnly(cbFalsePositives.stringTemplate),
+    checkOnly(cbFalsePositives.stringDescribe),
     false,
-    'Template literal: `describe.only`'
+    "String literal: 'describe.only'"
+  );
+
+  assert.strictEqual(
+    checkOnly(cbFalsePositives.prefixedIt),
+    false,
+    'Similar identifier: _it.only()'
+  );
+
+  assert.strictEqual(
+    checkOnly(cbFalsePositives.prefixedTest),
+    false,
+    'Similar identifier: _test.only()'
+  );
+
+  assert.strictEqual(
+    checkOnly(cbFalsePositives.prefixedDescribe),
+    false,
+    'Similar identifier: _describe.only()'
   );
 });
 
 describe('Parse Callbacks: checkNoOnly (false positives)', () => {
   assert.strictEqual(
-    checkNoOnly(cbFalsePositives.stringDouble),
+    checkNoOnly(cbFalsePositives.stringIt),
     true,
-    'String literal: "it.only"'
+    "String literal: 'it.only'"
   );
 
   assert.strictEqual(
-    checkNoOnly(cbFalsePositives.stringSingle),
+    checkNoOnly(cbFalsePositives.stringTest),
     true,
     "String literal: 'test.only'"
   );
 
   assert.strictEqual(
-    checkNoOnly(cbFalsePositives.stringTemplate),
+    checkNoOnly(cbFalsePositives.stringDescribe),
     true,
-    'Template literal: `describe.only`'
+    "String literal: 'describe.only'"
+  );
+
+  assert.strictEqual(
+    checkNoOnly(cbFalsePositives.prefixedIt),
+    true,
+    'Similar identifier: _it.only()'
+  );
+
+  assert.strictEqual(
+    checkNoOnly(cbFalsePositives.prefixedTest),
+    true,
+    'Similar identifier: _test.only()'
+  );
+
+  assert.strictEqual(
+    checkNoOnly(cbFalsePositives.prefixedDescribe),
+    true,
+    'Similar identifier: _describe.only()'
   );
 });
