@@ -43,7 +43,7 @@ const stripShebang: Plugin = {
   transform(code, moduleId) {
     if (!normalizePath(moduleId).endsWith('/src/bin/index.ts')) return null;
 
-    return { code: code.replace(/^#!.*\n/, ''), map: null };
+    return { code: code.replace(/^#!.*\r?\n/, ''), map: null };
   },
 };
 

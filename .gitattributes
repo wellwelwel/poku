@@ -1,3 +1,5 @@
+* text=auto eol=lf
+
 website/** linguist-documentation
 test/__docker__/** linguist-vendored
 test/__fixtures__/** linguist-vendored
