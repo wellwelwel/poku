@@ -30,5 +30,9 @@ export const envFile = async (filePath = '.env') => {
     }
   }
 
-  for (const [arg, value] of mapEnv) processEnv[arg] = value;
+  for (const [arg, value] of mapEnv) {
+    if (!Object.prototype.hasOwnProperty.call(processEnv, arg)) {
+      processEnv[arg] = value;
+    }
+  }
 };
