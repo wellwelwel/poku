@@ -64,7 +64,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@pokujs/c8": "^1.2.0",
     "@pokujs/docker": "^1.0.0",
-    "@types/node": "^25.8.0",
+    "@types/node": "^25.9.1",
     "concurrently": "^9.2.1",
     "jsonc.min": "^1.1.2",
     "monocart-coverage-reports": "^2.12.11",
@@ -73,7 +73,7 @@
     "rollup": "^4.60.4",
     "rollup-plugin-dts": "^6.4.1",
     "rollup-plugin-esbuild": "^6.2.1",
-    "tsx": "^4.22.0",
+    "tsx": "^4.22.3",
     "typescript": "^6.0.3"
   },
   "keywords": [
