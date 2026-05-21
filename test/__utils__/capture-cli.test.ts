@@ -9,13 +9,19 @@ import { kill as pokuKill } from '../../src/modules/helpers/kill.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
 import { inspectPoku as inspectPokuInner } from '../../src/modules/plugins.js';
 import { runner } from '../../src/parsers/get-runner.js';
+import { isWindows } from '../../src/parsers/os.js';
+
+const WINDOWS_BIN_ALIASES: Record<string, string> = {
+  npx: 'npx.cmd',
+};
 
 export const inspectCLI = (
   command: string,
   options?: SpawnOptionsWithoutStdio
 ): Promise<InspectCLIResult> =>
   new Promise((resolve, reject) => {
-    const [cmd, ...args] = command.split(' ');
+    const [rawCmd, ...args] = command.split(' ');
+    const cmd = isWindows ? (WINDOWS_BIN_ALIASES[rawCmd] ?? rawCmd) : rawCmd;
 
     const childProcess = spawn(cmd, args, {
       ...options,
