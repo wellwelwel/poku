@@ -4,7 +4,6 @@ import { spawn } from 'node:child_process';
 import { env } from 'node:process';
 import { kill as pokuKill } from '../modules/helpers/kill.js';
 import { runner } from '../parsers/get-runner.js';
-import { isWindows } from '../parsers/os.js';
 
 export { createReporter } from '../builders/reporter.js';
 export { findFileFromStack } from '../parsers/find-file-from-stack.js';
@@ -56,7 +55,7 @@ export const inspectPoku = (options: {
   return new Promise((resolve, reject) => {
     const childProcess = spawn(runtime, args, {
       ...spawnOptions,
-      shell: isWindows,
+      shell: false,
       env: {
         ...(spawnOptions?.env || env),
         POKU_RUNTIME: env.POKU_RUNTIME,
