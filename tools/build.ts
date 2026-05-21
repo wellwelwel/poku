@@ -104,6 +104,7 @@ const createTranspile = () =>
     platform: 'node',
     tsconfig: './tsconfig.json',
     treeShaking: true,
+    minifySyntax: true,
   });
 
 const buildBundle = async (config: BundleConfig) => {
