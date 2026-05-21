@@ -92,13 +92,13 @@ const onwarn = (warning: RollupLog) => {
   process.exitCode = 1;
 };
 
-const createTranspile = () =>
+const createTranspile = (_: { minify?: boolean } = Object.create(null)) =>
   esbuild({
     target: 'node16',
     platform: 'node',
     tsconfig: './tsconfig.json',
     treeShaking: true,
-    minifySyntax: true,
+    minify: true,
   });
 
 const buildBundle = async (config: BundleConfig) => {
@@ -173,7 +173,11 @@ const buildJavaScript = async () => {
       'modules/index': './src/modules/index.ts',
       'modules/plugins': './src/modules/plugins.ts',
     },
-    plugins: [versionInject, createTranspile(), stripDocComments],
+    plugins: [
+      versionInject,
+      createTranspile({ minify: true }),
+      stripDocComments,
+    ],
     isEntry: isLibraryEntry,
     libraryReachable: collector.libraryReachable,
     writeOptions: {
