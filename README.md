@@ -5,8 +5,8 @@
 
 Enjoying **Poku**? Give him a star to show your support 🌟
 
-[![NPM Version](https://img.shields.io/npm/v/poku.svg?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
-[![NPM Downloads](https://img.shields.io/npm/dm/poku.svg?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
+[![NPM Version](https://img.shields.io/npm/v/poku?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
+[![NPM Downloads](https://img.shields.io/npm/dm/poku?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
 [![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://github.com/wellwelwel/poku/tree/main/.nycrc)<br />
 [![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
 [![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
@@ -143,12 +143,8 @@ deno run npm:poku
     <td width="770">🧪 Test runner.</td>
   </tr>
   <tr>
-    <td><a href="https://poku.io/docs/documentation/assert">assert</a></td>
-    <td>🔍 Test assertion <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i>.</td>
-  </tr>
-  <tr>
-    <td><a href="https://poku.io/docs/documentation/assert">strict</a></td>
-    <td>🔬 Strict test assertion <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i>.</td>
+    <td><a href="https://poku.io/docs/documentation/assert">assert • strict</a></td>
+    <td>🔬 Test assertion <i>(<strong>Node.js</strong> familiar <strong>API</strong>)</i></td>
   </tr>
 </table>
 
@@ -157,51 +153,43 @@ deno run npm:poku
 <table>
   <tr>
     <td width="250"><a href="https://poku.io/docs/documentation/helpers/test">test</a> • <a href="https://poku.io/docs/documentation/helpers/describe">describe</a> • <a href="https://poku.io/docs/documentation/helpers/it">it</a></td>
-    <td width="800">🤹🏻‍♀️ Organize, group, and isolate tests.</td>
+    <td width="800">🤹🏻‍♀️ Organize, group, and isolate tests</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/env">envFile</a></td>
-    <td>⚙️ Process an environment file <i>(out-of-box)</i>.</td>
+    <td>⚙️ Process an environment file <i>(out-of-box)</i></td>
   </tr>
   <tr>
-    <td><a href="https://poku.io/docs/category/-before-and-after-each">beforeEach</a> • <a href="https://poku.io/docs/category/-before-and-after-each">afterEach</a></td>
-    <td>🃏 Hooks for test setup and teardown.</td>
+    <td><a href="https://poku.io/docs/category/-before-and-after-each">beforeEach • afterEach</a></td>
+    <td>🃏 Hooks for test setup and teardown</td>
   </tr>
   <tr>
-    <td><a href="https://poku.io/docs/documentation/helpers/startScript">startScript</a></td>
-    <td>🌐 Run package.json scripts in background.</td>
-  </tr>
-  <tr>
-    <td><a href="https://poku.io/docs/documentation/helpers/startService">startService</a></td>
-    <td>🌐 Run files in background.</td>
+    <td><a href="https://poku.io/docs/documentation/helpers/startScript">startScript</a> • <a href="https://poku.io/docs/documentation/helpers/startService">startService</a></td>
+    <td>🌐 Run package.json scripts and files in background</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/containers">docker</a></td>
-    <td>🐳 Build, start, compose, stop, remove, and test containers.</td>
+    <td>🐳 Build, start, compose, stop, remove, and test containers</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/processes/kill">kill</a></td>
-    <td>🔌 Terminate ports, port ranges, and PIDs.</td>
+    <td>🔌 Terminate ports, port ranges, and PIDs</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/processes/wait-for-port">waitForPort</a></td>
-    <td>😴 Wait for specified ports to become active.</td>
+    <td>😴 Wait for specified ports to become active</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/processes/wait-for-expected-result">waitForExpectedResult</a></td>
-    <td>🥱 Retry until an expected result or times out.</td>
+    <td>🥱 Retry until an expected result or times out</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/skip">skip</a></td>
-    <td>⏭️ Skip tests when necessary.</td>
+    <td>⏭️ Skip tests when necessary</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/only">only</a></td>
-    <td>🌌 Debug tests by enabling selective runs.</td>
-  </tr>
-  <tr>
-    <td><a href="https://poku.io/docs/documentation/helpers/processes/get-pids">getPIDs</a></td>
-    <td>🕵🏻 Debug processes IDs using ports and port ranges.</td>
+    <td>🌌 Debug tests by enabling selective runs</td>
   </tr>
 </table>
 
@@ -210,19 +198,19 @@ deno run npm:poku
 <table>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/coverage">coverage</a></td>
-    <td>☔️ Enable coverage collection using a coverage plugin.</td>
+    <td>☔️ Enable coverage collection using a coverage plugin</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/poku/config-files">config</a></td>
-    <td>⚙️ Customize your <b>Poku</b> options in a config file.</td>
+    <td>⚙️ Customize your <b>Poku</b> options in a config file</td>
   </tr>
   <tr>
     <td width="280"><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
-    <td width="770">🍿 Watch for changes and re-run related test files.</td>
+    <td width="770">🍿 Watch for changes and re-run related test files</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/poku/options/debug">debug</a></td>
-    <td>🕵🏻 Shows all logs.</td>
+    <td>🕵🏻 Shows all logs</td>
   </tr>
 </table>
 
@@ -316,7 +304,7 @@ Really thanks to everyone who has supported and keeps supporting my work.
 ## License
 
 **Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).<br />
-Copyright © 2024-present [**Weslley Araújo**](https://github.com/wellwelwel) and **Poku** [**contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
+Copyright © 2024-present [**Weslley Araújo**](https://github.com/wellwelwel) and [**contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
 
 [node-version-url]: https://github.com/nodejs/node
 [bun-version-url]: https://github.com/oven-sh/bun
