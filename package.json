@@ -49,11 +49,11 @@
     "test:deno": "deno run -A src/bin/index.ts --denoAllow=all test/unit test/integration test/e2e",
     "test:coverage": "npm test -- --coverage",
     "test:docker:node": "bun test/ci.test.ts",
-    "build": "sh scripts/build.sh",
-    "lint": "sh scripts/lint.sh",
-    "lint:fix": "sh scripts/lint-fix.sh",
-    "lint:types": "sh scripts/lint-types.sh",
-    "update": "sh scripts/update.sh",
+    "build": "bash scripts/build.sh",
+    "lint": "bash scripts/lint.sh",
+    "lint:fix": "bash scripts/lint-fix.sh",
+    "lint:types": "bash scripts/lint-types.sh",
+    "update": "bash scripts/update.sh",
     "benchmark": "npm --prefix benchmark start"
   },
   "devDependencies": {
