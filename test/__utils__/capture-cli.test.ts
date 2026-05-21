@@ -9,7 +9,6 @@ import { kill as pokuKill } from '../../src/modules/helpers/kill.js';
 import { sleep } from '../../src/modules/helpers/wait-for.js';
 import { inspectPoku as inspectPokuInner } from '../../src/modules/plugins.js';
 import { runner } from '../../src/parsers/get-runner.js';
-import { isWindows } from '../../src/parsers/os.js';
 
 export const inspectCLI = (
   command: string,
@@ -20,7 +19,7 @@ export const inspectCLI = (
 
     const childProcess = spawn(cmd, args, {
       ...options,
-      shell: isWindows,
+      shell: false,
     });
 
     childProcess.stdout.setEncoding('utf8');
@@ -108,7 +107,7 @@ export const watchCLI = (
 
   const childProcess = spawn(runtime, args, {
     ...options,
-    shell: isWindows,
+    shell: false,
     env: {
       ...(options?.env || env),
       POKU_RUNTIME: env.POKU_RUNTIME,

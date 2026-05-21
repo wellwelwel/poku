@@ -2,16 +2,12 @@ import { inspectPoku } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
-import { isWindows } from '../../src/parsers/os.js';
 
 describe('Ensure sequential runs', async () => {
   await it('via CLI flag', async () => {
-    const results = await inspectPoku(
-      `--debug --sequential --denoAllow=${isWindows ? '"all"' : 'all'}`,
-      {
-        cwd: 'test/__fixtures__/e2e/sequential',
-      }
-    );
+    const results = await inspectPoku('--debug --sequential --denoAllow=all', {
+      cwd: 'test/__fixtures__/e2e/sequential',
+    });
 
     if (results.exitCode !== 0) {
       console.log(results.stdout);
@@ -22,12 +18,9 @@ describe('Ensure sequential runs', async () => {
   });
 
   await it('via config file', async () => {
-    const results = await inspectPoku(
-      `--denoAllow=${isWindows ? '"all"' : 'all'}`,
-      {
-        cwd: 'test/__fixtures__/e2e/sequential-config',
-      }
-    );
+    const results = await inspectPoku('--denoAllow=all', {
+      cwd: 'test/__fixtures__/e2e/sequential-config',
+    });
 
     if (results.exitCode !== 0) {
       console.log(results.stdout);

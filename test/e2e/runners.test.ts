@@ -38,7 +38,7 @@ describe('Test Runtimes/Platforms + Extensions', async () => {
   hasNode &&
     (await it('Node.js', async () => {
       const output = await inspectCLI(
-        'npx tsx src/bin/index.ts test/__fixtures__/e2e/extensions -d'
+        'node --import=tsx src/bin/index.ts test/__fixtures__/e2e/extensions -d'
       );
 
       if (output.exitCode !== 0) {
