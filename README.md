@@ -253,11 +253,11 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)
 
-- [~**140x** lighter than **Jest**](https://pkg-size.dev/jest@30.4.2)
-- [~**115x** lighter than **Vitest**](https://pkg-size.dev/vitest@4.1.6)
-- [~**80x** lighter than **AVA**](https://pkg-size.dev/ava@8.0.0)
-- [~**45x** lighter than **Mocha**](https://pkg-size.dev/mocha@11.7.5)
-- [~**2.7x** lighter than **uvu**](https://pkg-size.dev/uvu@0.5.6)
+- [~**145x** lighter than **Jest**](https://pkg-size.dev/jest@30.4.2)
+- [~**124x** lighter than **Vitest**](https://pkg-size.dev/vitest@4.1.6)
+- [~**83x** lighter than **AVA**](https://pkg-size.dev/ava@8.0.0)
+- [~**47x** lighter than **Mocha**](https://pkg-size.dev/mocha@11.7.5)
+- [~**2.8x** lighter than **uvu**](https://pkg-size.dev/uvu@0.5.6)
 
 > **Poku** size ensures _cost-saving_ **CI** for services that charge for storage and usage.
 

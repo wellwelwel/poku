@@ -6,6 +6,7 @@ on:
       - '.github/workflows/ci_benchmark.yml'
       - 'benchmark/**'
       - 'src/**'
+      - 'tools/build.ts'
   workflow_dispatch:
 
 concurrency:
