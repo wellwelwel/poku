@@ -34,8 +34,15 @@ export class Watcher {
     }
   }
 
-  private watchFiles(filePaths: string[]): void {
-    this.unwatchFiles();
+  private syncFileWatchers(filePaths: string[]): void {
+    const next = new Set(filePaths);
+
+    for (const [filePath, watcher] of this.fileWatchers) {
+      if (next.has(filePath)) continue;
+
+      watcher.close();
+      this.fileWatchers.delete(filePath);
+    }
 
     for (const filePath of filePaths) this.watchFile(filePath);
   }
@@ -48,7 +55,7 @@ export class Watcher {
         const fullPath = join(dir, filename);
 
         this.files = await listFiles(this.rootDir);
-        this.watchFiles(this.files);
+        this.syncFileWatchers(this.files);
 
         try {
           const stats = await stat(fullPath);
@@ -75,7 +82,7 @@ export class Watcher {
     if (stats.isDirectory()) {
       this.files = await listFiles(this.rootDir);
 
-      this.watchFiles(this.files);
+      this.syncFileWatchers(this.files);
       await this.watchDirectory(this.rootDir);
 
       return;
