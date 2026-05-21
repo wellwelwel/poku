@@ -97,14 +97,13 @@ const onwarn = (warning: RollupLog) => {
   process.exitCode = 1;
 };
 
-const createTranspile = (options: { minify?: boolean } = Object.create(null)) =>
+const createTranspile = (_: { minify?: boolean } = Object.create(null)) =>
   esbuild({
     target: 'node2021',
     platform: 'node',
     tsconfig: './tsconfig.json',
     treeShaking: true,
-    minifySyntax: options.minify ?? false,
-    minifyWhitespace: options.minify ?? false,
+    minifySyntax: true,
   });
 
 const buildBundle = async (config: BundleConfig) => {
