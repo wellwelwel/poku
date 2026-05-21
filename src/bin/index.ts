@@ -142,12 +142,9 @@ import { hr, log } from '../services/write.js';
 
   if (hasArg('coverage')) {
     const customPkg = getArg('coverage');
-
     if (
       customPkg &&
-      !/^(?:npm:|jsr:)?(@[a-z0-9][a-z0-9-_.]*\/)?[a-z0-9][a-z0-9-_.]*$/i.test(
-        customPkg
-      )
+      !/^(@[a-z0-9][a-z0-9-_.]*\/)?[a-z0-9][a-z0-9-_.]*$/i.test(customPkg)
     ) {
       log('Coverage plugin must be a valid npm or JSR package name.');
       exit(1);
