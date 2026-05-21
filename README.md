@@ -298,4 +298,4 @@ Really thanks to everyone who has supported and keeps supporting my work.
 **Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).<br />
 Copyright © 2024-present [**Weslley Araújo**](https://github.com/wellwelwel) and [**contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
 
-[check]: ./.github/assets/readme/check.svg
+[check]: https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg
