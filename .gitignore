@@ -11,7 +11,7 @@
 
 node_modules/
 
-!/test/__fixtures__/e2e/env/.env
+!/test/__fixtures__/**/.env
 PLAN.md
 .temp
 /temp/
