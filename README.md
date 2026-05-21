@@ -24,17 +24,17 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 💡 **Poku** is a cross-platform test runner that brings the [**JavaScript** essence back to testing](https://poku.io/docs/philosophy#javascript-essence-for-tests-).
 
-</span>![check][check] High **isolation** level per file<br />
-</span>![check][check] **Performant** and **lightweight**<br />
-![check][check] Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
-![check][check] Run the **same test suite** for [**Node.js**][node-version-url], [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
-![check][check] Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
+![check][] High **isolation** level per file<br />
+![check][] **Performant** and **lightweight**<br />
+![check][] Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
+![check][] Run the **same test suite** for [**Node.js**](https://github.com/nodejs/node), [**Bun**](https://github.com/oven-sh/bun), and [**Deno**](https://github.com/denoland/deno)<br />
+![check][] Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
 
 ---
 
 ## Quickstart
 
-### ![check][check] Install
+### ![check][] Install
 
 <table>
 <tr>
@@ -75,7 +75,7 @@ deno add npm:poku
 
 ---
 
-### ![check][check] Test
+### ![check][] Test
 
 <table>
 <tr>
@@ -98,7 +98,7 @@ assert(true, 'Poku will describe it 🐷');
 
 ---
 
-### ![check][check] Run
+### ![check][] Run
 
 <table>
 <tr>
@@ -135,7 +135,7 @@ deno run npm:poku
 
 ## Features
 
-### ![check][check] Essentials
+### ![check][] Essentials
 
 <table>
   <tr>
@@ -148,7 +148,7 @@ deno run npm:poku
   </tr>
 </table>
 
-### ![check][check] Helpers
+### ![check][] Helpers
 
 <table>
   <tr>
@@ -193,7 +193,7 @@ deno run npm:poku
   </tr>
 </table>
 
-### ![check][check] Common Options
+### ![check][] Common Options
 
 <table>
   <tr>
@@ -218,7 +218,7 @@ deno run npm:poku
 
 ---
 
-## Documentation, and Examples
+## Documentation and Examples
 
 To see the detailed documentation, please visit the [**Documentation**](https://poku.io/docs/category/documentation) and [**Examples**](https://poku.io/docs/category/examples) sections in the [**Poku**'s website](https://poku.io). **Poku** also offers _mini-lessons_ for different users needs in the [**Quick Tutorials**](https://poku.io/docs/category/quick-tutorials) section.
 
@@ -298,7 +298,4 @@ Really thanks to everyone who has supported and keeps supporting my work.
 **Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).<br />
 Copyright © 2024-present [**Weslley Araújo**](https://github.com/wellwelwel) and [**contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
 
-[node-version-url]: https://github.com/nodejs/node
-[bun-version-url]: https://github.com/oven-sh/bun
-[deno-version-url]: https://github.com/denoland/deno
 [check]: ./.github/assets/readme/check.svg
