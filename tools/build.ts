@@ -12,9 +12,6 @@ type BundleConfig = {
   isEntry: (moduleId: string) => boolean;
   libraryReachable: Set<string>;
   writeOptions: OutputOptions;
-  external?: (moduleId: string) => boolean;
-  inlineDynamicImports?: boolean;
-  useManualChunks?: boolean;
 };
 
 const { version } = JSON.parse(await readFile('./package.json', 'utf8'));
@@ -60,14 +57,6 @@ const stripDocComments: Plugin = {
   },
 };
 
-const dropBinEntry: Plugin = {
-  name: 'poku-drop-bin-entry',
-  generateBundle(_options, bundle) {
-    for (const fileName of Object.keys(bundle))
-      if (fileName.startsWith('bin/')) delete bundle[fileName];
-  },
-};
-
 const makeLibraryReachableCollector = () => {
   const libraryReachable = new Set<string>();
 
@@ -103,24 +92,25 @@ const onwarn = (warning: RollupLog) => {
   process.exitCode = 1;
 };
 
-const createTranspile = (_: { minify?: boolean } = Object.create(null)) =>
+const createTranspile = (options: { minify?: boolean } = Object.create(null)) =>
   esbuild({
     target: 'node2021',
     platform: 'node',
     tsconfig: './tsconfig.json',
     treeShaking: true,
-    minify: false,
+    minifySyntax: options.minify ?? false,
+    minifyWhitespace: options.minify ?? false,
   });
 
 const buildBundle = async (config: BundleConfig) => {
   const bundle = await rollup({
     input: config.inputs,
     plugins: config.plugins,
-    external: config.external ?? external,
+    external,
     onwarn,
   });
 
-  const writeOptions: OutputOptions = {
+  await bundle.write({
     dir: './lib',
     format: config.format,
     entryFileNames: `[name].${config.extension}`,
@@ -128,15 +118,7 @@ const buildBundle = async (config: BundleConfig) => {
       chunk.name === '_shared'
         ? `modules/_shared.${config.extension}`
         : `bin/[name].${config.extension}`,
-    compact: true,
-    sourcemap: false,
-    minifyInternalExports: false,
-    ...config.writeOptions,
-  };
-
-  if (config.inlineDynamicImports) writeOptions.inlineDynamicImports = true;
-  if (config.useManualChunks !== false)
-    writeOptions.manualChunks = (moduleId) => {
+    manualChunks: (moduleId) => {
       if (
         config.isEntry(moduleId) ||
         !normalizePath(moduleId).includes('/src/')
@@ -144,9 +126,12 @@ const buildBundle = async (config: BundleConfig) => {
         return;
 
       return config.libraryReachable.has(moduleId) ? '_shared' : undefined;
-    };
-
-  await bundle.write(writeOptions);
+    },
+    compact: true,
+    sourcemap: false,
+    minifyInternalExports: false,
+    ...config.writeOptions,
+  });
 
   await bundle.close();
 };
@@ -168,53 +153,17 @@ const buildJavaScript = async () => {
       createTranspile(),
       collector.plugin,
       stripDocComments,
-      dropBinEntry,
     ],
     isEntry: isAnyEntry,
     libraryReachable: collector.libraryReachable,
     writeOptions: {
-      banner: (chunk) =>
-        chunk.name === 'modules/plugins'
-          ? "import { createRequire } from 'node:module';\nconst require = createRequire(import.meta.url);\n"
-          : '',
-    },
-  });
+      banner: (chunk) => {
+        if (chunk.name === 'bin/index') return '#!/usr/bin/env node';
+        if (chunk.name === 'modules/plugins')
+          return "import { createRequire } from 'node:module';\nconst require = createRequire(import.meta.url);\n";
 
-  const sharedAlias: Plugin = {
-    name: 'poku-shared-alias',
-    async resolveId(source, importer) {
-      if (!importer || source.startsWith('node:') || !source.startsWith('.'))
-        return null;
-
-      const resolved = await this.resolve(source, importer, {
-        skipSelf: true,
-      });
-
-      if (resolved && collector.libraryReachable.has(resolved.id))
-        return { id: '../modules/_shared.js', external: true };
-
-      return null;
-    },
-  };
-
-  await buildBundle({
-    format: 'es',
-    extension: 'js',
-    inputs: { 'bin/index': './src/bin/index.ts' },
-    plugins: [
-      versionInject,
-      stripShebang,
-      sharedAlias,
-      createTranspile(),
-      stripDocComments,
-    ],
-    isEntry: (moduleId) =>
-      normalizePath(moduleId).endsWith('/src/bin/index.ts'),
-    libraryReachable: collector.libraryReachable,
-    inlineDynamicImports: true,
-    useManualChunks: false,
-    writeOptions: {
-      banner: () => '#!/usr/bin/env node',
+        return '';
+      },
     },
   });
 
