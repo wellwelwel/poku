@@ -98,6 +98,7 @@ const createTranspile = () =>
     platform: 'node',
     tsconfig: './tsconfig.json',
     treeShaking: true,
+    minifySyntax: true,
   });
 
 const buildBundle = async (config: BundleConfig) => {
@@ -182,8 +183,6 @@ const buildJavaScript = async () => {
 };
 
 const buildTypeDeclarations = async () => {
-  const globalsDeclarationFile = './lib/modules/_globals.d.ts';
-
   const declarationsBundle = await rollup({
     input: {
       'modules/index': './src/modules/index.ts',
@@ -194,18 +193,21 @@ const buildTypeDeclarations = async () => {
     external,
   });
 
-  await declarationsBundle.write({
-    dir: './lib',
-    format: 'es',
-    entryFileNames: '[name].d.ts',
-    chunkFileNames: 'modules/_shared.d.ts',
-    minifyInternalExports: false,
-    compact: true,
-    sourcemap: false,
-  });
+  for (const extension of ['d.ts', 'd.cts'] as const) {
+    await declarationsBundle.write({
+      dir: './lib',
+      format: 'es',
+      entryFileNames: `[name].${extension}`,
+      chunkFileNames: `modules/_shared.${extension}`,
+      minifyInternalExports: false,
+      compact: true,
+      sourcemap: false,
+    });
+  }
 
   await declarationsBundle.close();
-  await rm(globalsDeclarationFile, { force: true });
+  await rm('./lib/modules/_globals.d.ts', { force: true });
+  await rm('./lib/modules/_globals.d.cts', { force: true });
 };
 
 await Promise.all([buildJavaScript(), buildTypeDeclarations()]);

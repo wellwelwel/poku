@@ -24,17 +24,17 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 💡 **Poku** is a cross-platform test runner that brings the [**JavaScript** essence back to testing](https://poku.io/docs/philosophy#javascript-essence-for-tests-).
 
-</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> High **isolation** level per file<br />
-</span><img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> **Performant** and **lightweight**<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run the **same test suite** for [**Node.js**][node-version-url], [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
-<img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
+</span>![check][check] High **isolation** level per file<br />
+</span>![check][check] **Performant** and **lightweight**<br />
+![check][check] Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
+![check][check] Run the **same test suite** for [**Node.js**][node-version-url], [**Bun**][bun-version-url], and [**Deno**][deno-version-url]<br />
+![check][check] Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
 
 ---
 
 ## Quickstart
 
-### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Install
+### ![check][check] Install
 
 <table>
 <tr>
@@ -75,7 +75,7 @@ deno add npm:poku
 
 ---
 
-### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Test
+### ![check][check] Test
 
 <table>
 <tr>
@@ -98,7 +98,7 @@ assert(true, 'Poku will describe it 🐷');
 
 ---
 
-### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Run
+### ![check][check] Run
 
 <table>
 <tr>
@@ -135,12 +135,12 @@ deno run npm:poku
 
 ## Features
 
-### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Essentials
+### ![check][check] Essentials
 
 <table>
   <tr>
     <td width="280"><a href="https://poku.io/docs/category/-poku">poku</a></td>
-    <td width="770">🧪 Test runner.</td>
+    <td width="770">🧪 Test runner</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/assert">assert • strict</a></td>
@@ -148,7 +148,7 @@ deno run npm:poku
   </tr>
 </table>
 
-### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Helpers
+### ![check][check] Helpers
 
 <table>
   <tr>
@@ -193,7 +193,7 @@ deno run npm:poku
   </tr>
 </table>
 
-### <img width="16" height="16" alt="check" src="https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg"> Common Options
+### ![check][check] Common Options
 
 <table>
   <tr>
@@ -218,23 +218,17 @@ deno run npm:poku
 
 ---
 
-## Documentation and Examples
+## Documentation, and Examples
 
-To see the detailed documentation, please visit the [**Documentation**](https://poku.io/docs/category/documentation) and [**Examples**](https://poku.io/docs/category/examples) sections in the [**Poku**'s website](https://poku.io).
-
----
-
-### Tutorials
-
-**Poku** offers _mini-lessons_ for different users needs in the [**Quick Tutorials**](https://poku.io/docs/category/quick-tutorials) section.
+To see the detailed documentation, please visit the [**Documentation**](https://poku.io/docs/category/documentation) and [**Examples**](https://poku.io/docs/category/examples) sections in the [**Poku**'s website](https://poku.io). **Poku** also offers _mini-lessons_ for different users needs in the [**Quick Tutorials**](https://poku.io/docs/category/quick-tutorials) section.
 
 ---
 
 ### Common Issues (FAQ)
 
-- [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations).
-- [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises).
-- [Using **Poku** without installing it on **Deno**](https://github.com/wellwelwel/poku/discussions/565).
+- [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations)
+- [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises)
+- [Using **Poku** without installing it on **Deno**](https://github.com/wellwelwel/poku/discussions/565)
 - Migrating:
   - [**3.x.x** → **4.x.x**](https://github.com/wellwelwel/poku/issues/1006)
   - [**2.x.x** → **3.x.x**](https://github.com/wellwelwel/poku/issues/801)
@@ -259,19 +253,17 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 [![Install Size](https://packagephobia.com/badge?p=poku)](https://pkg-size.dev/poku)
 
-- [~**150x** lighter than **Jest**](https://pkg-size.dev/jest@30.4.2)
-- [~**125x** lighter than **Vitest**](https://pkg-size.dev/vitest@4.1.6)
-- [~**85x** lighter than **AVA**](https://pkg-size.dev/ava@8.0.0)
-- [~**48x** lighter than **Mocha**](https://pkg-size.dev/mocha@11.7.5)
-- [~**2.9x** lighter than **uvu**](https://pkg-size.dev/uvu@0.5.6)
+- [~**140x** lighter than **Jest**](https://pkg-size.dev/jest@30.4.2)
+- [~**115x** lighter than **Vitest**](https://pkg-size.dev/vitest@4.1.6)
+- [~**80x** lighter than **AVA**](https://pkg-size.dev/ava@8.0.0)
+- [~**45x** lighter than **Mocha**](https://pkg-size.dev/mocha@11.7.5)
+- [~**2.7x** lighter than **uvu**](https://pkg-size.dev/uvu@0.5.6)
 
 > **Poku** size ensures _cost-saving_ **CI** for services that charge for storage and usage.
 
 ---
 
 ## Security Policy
-
-[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_codeql.yml?event=push&label=&branch=main&logo=github&logoColor=white&color=f368e0)](https://github.com/wellwelwel/poku/actions/workflows/ci_codeql.yml?query=branch%3Amain)
 
 Please check the [**SECURITY.md**](https://github.com/wellwelwel/poku/blob/main/SECURITY.md).
 
@@ -289,7 +281,7 @@ See the [**Contributing Guide**](https://github.com/wellwelwel/poku/blob/main/CO
 
 My thanks to everyone who has dedicated their time and effort to improving **Poku**.
 
-[![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)](https://opencollective.com/poku/contributors.svg?button=false)
+[![Contributors](https://opencollective.com/poku/contributors.svg?width=890&button=false)]()
 
 ### Sponsors
 
@@ -309,3 +301,4 @@ Copyright © 2024-present [**Weslley Araújo**](https://github.com/wellwelwel) a
 [node-version-url]: https://github.com/nodejs/node
 [bun-version-url]: https://github.com/oven-sh/bun
 [deno-version-url]: https://github.com/denoland/deno
+[check]: ./.github/assets/readme/check.svg
