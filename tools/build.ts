@@ -11,6 +11,7 @@ type BundleConfig = {
   plugins: Plugin[];
   isEntry: (moduleId: string) => boolean;
   libraryReachable: Set<string>;
+  libraryDynamicTargets: Set<string>;
   writeOptions: OutputOptions;
 };
 
@@ -59,6 +60,7 @@ const stripDocComments: Plugin = {
 
 const makeLibraryReachableCollector = () => {
   const libraryReachable = new Set<string>();
+  const libraryDynamicTargets = new Set<string>();
 
   const plugin: Plugin = {
     name: 'poku-collect-library-reachable',
@@ -72,15 +74,18 @@ const makeLibraryReachableCollector = () => {
 
         for (const dependency of moduleInfo.importedIds) visit(dependency);
         for (const dependency of moduleInfo.dynamicallyImportedIds)
-          visit(dependency);
+          libraryDynamicTargets.add(dependency);
       };
 
       for (const moduleId of this.getModuleIds())
         if (isLibraryEntry(moduleId)) visit(moduleId);
+
+      for (const target of Array.from(libraryDynamicTargets))
+        if (libraryReachable.has(target)) libraryDynamicTargets.delete(target);
     },
   };
 
-  return { plugin, libraryReachable };
+  return { plugin, libraryReachable, libraryDynamicTargets };
 };
 
 const external = (moduleId: string) => moduleId.startsWith('node:');
@@ -114,10 +119,14 @@ const buildBundle = async (config: BundleConfig) => {
     dir: './lib',
     format: config.format,
     entryFileNames: `[name].${config.extension}`,
-    chunkFileNames: (chunk) =>
-      chunk.name === '_shared'
-        ? `modules/_shared.${config.extension}`
-        : `bin/[name].${config.extension}`,
+    chunkFileNames: (chunk) => {
+      if (chunk.name === '_shared')
+        return `modules/_shared.${config.extension}`;
+      if (chunk.name.startsWith('modules/'))
+        return `${chunk.name}.${config.extension}`;
+
+      return `bin/[name].${config.extension}`;
+    },
     manualChunks: (moduleId) => {
       if (
         config.isEntry(moduleId) ||
@@ -125,7 +134,17 @@ const buildBundle = async (config: BundleConfig) => {
       )
         return;
 
-      return config.libraryReachable.has(moduleId) ? '_shared' : undefined;
+      if (config.libraryReachable.has(moduleId)) return '_shared';
+
+      if (config.libraryDynamicTargets.has(moduleId)) {
+        const path = normalizePath(moduleId);
+        const basename = path
+          .slice(path.lastIndexOf('/') + 1)
+          .replace(/\.tsx?$/, '');
+        return `modules/${basename}`;
+      }
+
+      return undefined;
     },
     compact: true,
     sourcemap: false,
@@ -156,6 +175,7 @@ const buildJavaScript = async () => {
     ],
     isEntry: isAnyEntry,
     libraryReachable: collector.libraryReachable,
+    libraryDynamicTargets: collector.libraryDynamicTargets,
     writeOptions: {
       banner: (chunk) => {
         if (chunk.name === 'bin/index') return '#!/usr/bin/env node';
@@ -181,6 +201,7 @@ const buildJavaScript = async () => {
     ],
     isEntry: isLibraryEntry,
     libraryReachable: collector.libraryReachable,
+    libraryDynamicTargets: collector.libraryDynamicTargets,
     writeOptions: {
       exports: 'named',
     },

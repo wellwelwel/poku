@@ -3,7 +3,6 @@ import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { GLOBAL } from '../configs/poku.js';
-import { JSONC } from '../polyfills/jsonc.js';
 import { format } from '../services/format.js';
 import { log } from '../services/write.js';
 import { isWindows } from './os.js';
@@ -28,7 +27,10 @@ export const getConfigs = async (
         return mod?.default ?? mod;
       }
 
-      const configsFile = await readFile(filePath, 'utf8');
+      const [{ JSONC }, configsFile] = await Promise.all([
+        import('../polyfills/jsonc.js'),
+        readFile(filePath, 'utf8'),
+      ]);
 
       return JSONC.parse<ConfigJSONFile>(configsFile);
     } catch (error) {
