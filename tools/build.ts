@@ -67,6 +67,7 @@ const makeLibraryReachableCollector = () => {
     buildEnd() {
       const visit = (moduleId: string) => {
         if (libraryReachable.has(moduleId)) return;
+
         libraryReachable.add(moduleId);
 
         const moduleInfo = this.getModuleInfo(moduleId);
@@ -97,7 +98,7 @@ const onwarn = (warning: RollupLog) => {
   process.exitCode = 1;
 };
 
-const createTranspile = (_: { minify?: boolean } = Object.create(null)) =>
+const createTranspile = () =>
   esbuild({
     target: 'node2021',
     platform: 'node',
@@ -193,11 +194,7 @@ const buildJavaScript = async () => {
       'modules/index': './src/modules/index.ts',
       'modules/plugins': './src/modules/plugins.ts',
     },
-    plugins: [
-      versionInject,
-      createTranspile({ minify: true }),
-      stripDocComments,
-    ],
+    plugins: [versionInject, createTranspile(), stripDocComments],
     isEntry: isLibraryEntry,
     libraryReachable: collector.libraryReachable,
     libraryDynamicTargets: collector.libraryDynamicTargets,
