@@ -14,6 +14,7 @@ type BundleConfig = {
   writeOptions: OutputOptions;
   external?: (moduleId: string) => boolean;
   inlineDynamicImports?: boolean;
+  useManualChunks?: boolean;
 };
 
 const { version } = JSON.parse(await readFile('./package.json', 'utf8'));
@@ -23,6 +24,10 @@ const normalizePath = (moduleId: string) => moduleId.replace(/\\/g, '/');
 const isLibraryEntry = (moduleId: string) =>
   normalizePath(moduleId).endsWith('/src/modules/index.ts') ||
   normalizePath(moduleId).endsWith('/src/modules/plugins.ts');
+
+const isAnyEntry = (moduleId: string) =>
+  isLibraryEntry(moduleId) ||
+  normalizePath(moduleId).endsWith('/src/bin/index.ts');
 
 const versionInject: Plugin = {
   name: 'poku-version-inject',
@@ -52,6 +57,14 @@ const stripDocComments: Plugin = {
       code: code.replace(/[ \t]*\/\*\*[\s\S]*?\*\/\n?/g, ''),
       map: null,
     };
+  },
+};
+
+const dropBinEntry: Plugin = {
+  name: 'poku-drop-bin-entry',
+  generateBundle(_options, bundle) {
+    for (const fileName of Object.keys(bundle))
+      if (fileName.startsWith('bin/')) delete bundle[fileName];
   },
 };
 
@@ -92,7 +105,7 @@ const onwarn = (warning: RollupLog) => {
 
 const createTranspile = (_: { minify?: boolean } = Object.create(null)) =>
   esbuild({
-    target: 'node16',
+    target: 'node2021',
     platform: 'node',
     tsconfig: './tsconfig.json',
     treeShaking: true,
@@ -122,7 +135,7 @@ const buildBundle = async (config: BundleConfig) => {
   };
 
   if (config.inlineDynamicImports) writeOptions.inlineDynamicImports = true;
-  else
+  if (config.useManualChunks !== false)
     writeOptions.manualChunks = (moduleId) => {
       if (
         config.isEntry(moduleId) ||
@@ -147,14 +160,17 @@ const buildJavaScript = async () => {
     inputs: {
       'modules/index': './src/modules/index.ts',
       'modules/plugins': './src/modules/plugins.ts',
+      'bin/index': './src/bin/index.ts',
     },
     plugins: [
       versionInject,
+      stripShebang,
       createTranspile(),
       collector.plugin,
       stripDocComments,
+      dropBinEntry,
     ],
-    isEntry: isLibraryEntry,
+    isEntry: isAnyEntry,
     libraryReachable: collector.libraryReachable,
     writeOptions: {
       banner: (chunk) =>
@@ -196,6 +212,7 @@ const buildJavaScript = async () => {
       normalizePath(moduleId).endsWith('/src/bin/index.ts'),
     libraryReachable: collector.libraryReachable,
     inlineDynamicImports: true,
+    useManualChunks: false,
     writeOptions: {
       banner: () => '#!/usr/bin/env node',
     },
