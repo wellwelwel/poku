@@ -146,7 +146,7 @@ import { hr, log } from '../services/write.js';
       customPkg &&
       !/^(@[a-z0-9][a-z0-9-_.]*\/)?[a-z0-9][a-z0-9-_.]*$/i.test(customPkg)
     ) {
-      log('Coverage plugin must be a valid npm or JSR package name.');
+      log('Coverage plugin must be a valid package name.');
       exit(1);
     }
 
