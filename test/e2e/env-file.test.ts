@@ -41,4 +41,21 @@ describe('.env File', async () => {
 
     assert.strictEqual(results.exitCode, 0, 'Passed');
   });
+
+  await it('CLI Env Variables do not overwrite existing env', async () => {
+    const results = await inspectPoku('--envFile', {
+      env: {
+        ...process.env,
+        PRESERVE_TARGET: 'from-shell',
+      },
+      cwd: 'test/__fixtures__/e2e/env-preserve',
+    });
+
+    if (results.exitCode) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 0, 'Passed');
+  });
 });
