@@ -1,5 +1,24 @@
 # Changelog
 
+## [4.3.2](https://github.com/wellwelwel/poku/compare/v4.3.1...v4.3.2) (2026-05-22)
+
+
+### Bug Fixes
+
+* clear reporter state between consecutive runs ([#1112](https://github.com/wellwelwel/poku/issues/1112)) ([1dfeb8f](https://github.com/wellwelwel/poku/commit/1dfeb8fcb283a3ee055dd8d54c706631b3857968))
+* **env:** preserve existing environment variables ([#1117](https://github.com/wellwelwel/poku/issues/1117)) ([3f54d96](https://github.com/wellwelwel/poku/commit/3f54d962f845f68faae9088dbc21abff7d71644c))
+* improve `.only` logic to detect false positives ([#1114](https://github.com/wellwelwel/poku/issues/1114)) ([200c689](https://github.com/wellwelwel/poku/commit/200c6899bd981438c96cd8c8af0ee60f5dc4e990))
+* resolve ESM masquerading conflict ([#1119](https://github.com/wellwelwel/poku/issues/1119)) ([8db5188](https://github.com/wellwelwel/poku/commit/8db51884ffa21a4ff072817579951db4a199eb09))
+* resolve TDZ circular dependencies ([#1109](https://github.com/wellwelwel/poku/issues/1109)) ([592a1ca](https://github.com/wellwelwel/poku/commit/592a1ca530c96af9cd9591306f750c774b2d4240))
+* share indentation state across dual bundle ([#1121](https://github.com/wellwelwel/poku/issues/1121)) ([6c8c178](https://github.com/wellwelwel/poku/commit/6c8c178c885dbf9c3c5f0e58af2d0993aee4bb15))
+* **watch:** avoid missing change events during directory rescans ([#1118](https://github.com/wellwelwel/poku/issues/1118)) ([a874712](https://github.com/wellwelwel/poku/commit/a874712578f7803d1f37a4acbd3557a70f9a218c))
+
+
+### Performance Improvements
+
+* export both CommonJS and ES Modules ([#1111](https://github.com/wellwelwel/poku/issues/1111)) ([d448b1f](https://github.com/wellwelwel/poku/commit/d448b1f75949fdacd18bf7fec33099199ea90bdf))
+* improve lazy imports ([#1120](https://github.com/wellwelwel/poku/issues/1120)) ([361e31e](https://github.com/wellwelwel/poku/commit/361e31e7d7fbc63bdd76e5b7ca520374ad46ea77))
+
 ## [4.3.1](https://github.com/wellwelwel/poku/compare/v4.3.0...v4.3.1) (2026-05-11)
 
 
