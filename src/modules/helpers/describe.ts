@@ -88,11 +88,6 @@ const describeCore = (async (
     );
 
     if (!hasItOnly) return;
-
-    if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
-      return describeBase(messageOrCb, cbOrOptions);
-
-    if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
   }
 
   if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
