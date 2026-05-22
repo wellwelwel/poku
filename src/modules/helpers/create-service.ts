@@ -74,14 +74,12 @@ const backgroundProcess = (
 
       runningProcesses.set(PID, end);
 
-      service.stdout.on('data', (data: Buffer) => {
+      const onData = (data: Buffer): void => {
         if (!isResolved && typeof options?.startAfter !== 'number') {
-          const stringData = JSON.stringify(String(data));
-
           if (
             typeof options?.startAfter === 'undefined' ||
             (typeof options?.startAfter === 'string' &&
-              stringData.includes(options?.startAfter))
+              String(data).includes(options.startAfter))
           ) {
             resolve({ end });
             clearTimeout(timeout);
@@ -91,26 +89,10 @@ const backgroundProcess = (
         }
 
         options?.verbose && log(data);
-      });
+      };
 
-      service.stderr.on('data', (data: Buffer) => {
-        if (!isResolved && typeof options?.startAfter !== 'number') {
-          const stringData = JSON.stringify(String(data));
-
-          if (
-            typeof options?.startAfter === 'undefined' ||
-            (typeof options?.startAfter === 'string' &&
-              stringData.includes(options?.startAfter))
-          ) {
-            resolve({ end });
-            clearTimeout(timeout);
-
-            isResolved = true;
-          }
-        }
-
-        options?.verbose && log(data);
-      });
+      service.stdout.on('data', onData);
+      service.stderr.on('data', onData);
 
       service.on('error', (err) => {
         end();

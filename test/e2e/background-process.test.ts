@@ -257,6 +257,27 @@ test(async () => {
     });
   });
 
+  await describe('Start Service (startAfter with quotes and backslash)', async () => {
+    await it(async () => {
+      const server = await startService(`server-c.${ext}`, {
+        startAfter: 'ready: "Poku" \\o/',
+        cwd: 'test/__fixtures__/e2e/server',
+      });
+
+      await waitForPort(4002, { timeout: 10000, delay: 100 });
+      const res = await legacyFetch('localhost', 4002);
+
+      assert.strictEqual(res?.statusCode, 200, 'Service is on');
+      assert.deepStrictEqual(
+        JSON.parse(res?.body),
+        { name: 'Poku' },
+        'Poku service is online'
+      );
+
+      await server.end(4002);
+    });
+  });
+
   if (runtime === 'node') {
     await describe('Start Service (No Ports)', async () => {
       await it(async () => {
