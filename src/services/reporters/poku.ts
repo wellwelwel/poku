@@ -14,6 +14,9 @@ import { hr, log } from '../write.js';
 const ARROW_PASS = '\x1b[32m\x1b[1m›\x1b[0m';
 const ARROW_FAIL = '\x1b[91m\x1b[1m›\x1b[0m';
 
+const getIndent = () =>
+  indentation.test.repeat(indentation.describeDepth + indentation.itDepth);
+
 export const errors = getSharedState<{ file: string; output?: string }[]>(
   'errors',
   []
@@ -41,18 +44,14 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onDescribeStart({ title }) {
       if (!title) return;
 
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      const indent = getIndent();
 
       log(`${indent}${format(`◌ ${title}`).bold().dim()}`);
     },
     onDescribeEnd({ title, duration, success = true }) {
       const status = success ? 'success' : 'fail';
 
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      const indent = getIndent();
 
       log(
         `${indent}${format(`● ${title}`)[status]().bold()} ${format(
@@ -65,18 +64,14 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
     onItStart({ title }) {
       if (!title) return;
 
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      const indent = getIndent();
 
       log(`${indent}${format(`◌ ${title}`).dim()}`);
     },
     onItEnd({ title, duration, success = true }) {
       const status = success ? 'success' : 'fail';
 
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      const indent = getIndent();
 
       log(
         `${indent}${format(`● ${title}`)[status]().bold()} ${format(
@@ -87,18 +82,14 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       );
     },
     onAssertionSuccess({ message }) {
-      const preIdentation = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      const preIdentation = getIndent();
 
       const output = `${preIdentation}${format(`✔ ${message}`).success().bold()}`;
 
       log(output);
     },
     onAssertionFailure({ assertOptions: options, error }) {
-      let preIdentation = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      let preIdentation = getIndent();
 
       const { code, actual, expected, operator } = error;
       const fileRef = findFileFromStack(error.stack, {
@@ -155,16 +146,12 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(format(`◯ ${message}`).info().bold());
     },
     onSkipModifier({ message }) {
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      const indent = getIndent();
 
       log(`${indent}${format(`◯ ${message}`).info().bold()}`);
     },
     onTodoModifier({ message }) {
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      const indent = getIndent();
 
       log(`${indent}${format(`● ${message}`).cyan().bold()}`);
     },

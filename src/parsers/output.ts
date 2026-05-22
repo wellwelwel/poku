@@ -1,8 +1,12 @@
 import { results } from '../configs/results.js';
+import { format } from '../services/format.js';
 
 const SKIP_MARKER = '\x1b[94m\x1b[1m◯';
 const TODO_MARKER = '\x1b[96m\x1b[1m●';
 const ANSI_RESET = '\x1b[0m';
+
+export const timeoutMessage = (ms: number): string =>
+  `${format(`● Timeout: test file exceeded ${ms}ms limit`).fail().bold()}`;
 
 export const serialize = (value: unknown): unknown => {
   if (
