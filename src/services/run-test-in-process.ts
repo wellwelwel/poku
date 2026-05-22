@@ -2,9 +2,8 @@ import { relative } from 'node:path';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { GLOBAL } from '../configs/poku.js';
-import { parserOutput } from '../parsers/output.js';
+import { parserOutput, timeoutMessage } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
-import { format } from './format.js';
 
 const stdoutWrite = process.stdout.write.bind(process.stdout);
 
@@ -62,10 +61,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
       await Promise.race([testPromise, timeoutPromise]);
     } else await testPromise;
   } catch {
-    if (timedOut)
-      outputChunks.push(
-        `${format(`● Timeout: test file exceeded ${configs.timeout}ms limit`).fail().bold()}`
-      );
+    if (timedOut) outputChunks.push(timeoutMessage(configs.timeout!));
 
     result = false;
   } finally {

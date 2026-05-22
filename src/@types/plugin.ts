@@ -40,7 +40,7 @@ export type PokuPlugin = {
   ) => string[] | Promise<string[]>;
 };
 
-type Results = {
+export type Results = {
   code: number;
   timespan: Timespan;
   results: typeof results;

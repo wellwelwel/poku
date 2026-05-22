@@ -11,6 +11,13 @@ import type {
 } from '../@types/assert.js';
 import { processAssert, processAsyncAssert } from '../services/assert.js';
 
+const isPredicate = (
+  value: unknown
+): value is AssertPredicate | RegExp | object =>
+  typeof value === 'function' ||
+  value instanceof RegExp ||
+  typeof value === 'object';
+
 export const createAssert = (nodeAssert: typeof assert) => {
   const ok: AssertValue = (value, message) =>
     processAssert(() => nodeAssert.ok(value), { message });
@@ -73,11 +80,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
   ): void => {
     processAssert(
       () => {
-        if (
-          typeof errorOrMessage === 'function' ||
-          errorOrMessage instanceof RegExp ||
-          typeof errorOrMessage === 'object'
-        )
+        if (isPredicate(errorOrMessage))
           nodeAssert.doesNotThrow(block, errorOrMessage, message);
         else {
           const msg =
@@ -99,11 +102,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     errorOrMessage?: AssertPredicate | AssertionMessage,
     message?: AssertionMessage
   ): void => {
-    if (
-      typeof errorOrMessage === 'function' ||
-      errorOrMessage instanceof RegExp ||
-      typeof errorOrMessage === 'object'
-    )
+    if (isPredicate(errorOrMessage))
       processAssert(() => nodeAssert.throws(block, errorOrMessage), {
         message,
         defaultMessage: 'Expected function to throw',
@@ -128,11 +127,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
   ): Promise<void> => {
     await processAsyncAssert(
       async () => {
-        if (
-          typeof errorOrMessage === 'function' ||
-          errorOrMessage instanceof RegExp ||
-          typeof errorOrMessage === 'object'
-        )
+        if (isPredicate(errorOrMessage))
           await nodeAssert.rejects(block, errorOrMessage, message);
         else {
           const msg =
@@ -156,11 +151,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
   ): Promise<void> => {
     await processAsyncAssert(
       async () => {
-        if (
-          typeof errorOrMessage === 'function' ||
-          errorOrMessage instanceof RegExp ||
-          typeof errorOrMessage === 'object'
-        )
+        if (isPredicate(errorOrMessage))
           await nodeAssert.doesNotReject(block, errorOrMessage, message);
         else await nodeAssert.doesNotReject(block, message);
       },

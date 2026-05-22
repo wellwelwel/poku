@@ -4,9 +4,8 @@ import { relative } from 'node:path';
 import { hrtime } from 'node:process';
 import { deepOptions, GLOBAL } from '../configs/poku.js';
 import { runner } from '../parsers/get-runner.js';
-import { parserOutput } from '../parsers/output.js';
+import { parserOutput, timeoutMessage } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
-import { format } from './format.js';
 
 const STDIO_IPC: StdioOptions = ['inherit', 'pipe', 'pipe', 'ipc'];
 const STDIO_DEFAULT: StdioOptions = ['inherit', 'pipe', 'pipe'];
@@ -79,9 +78,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
     if (configs.timeout) {
       killTimer = setTimeout(() => {
         timedOut = true;
-        outputChunks.push(
-          `${format(`● Timeout: test file exceeded ${configs.timeout}ms limit`).fail().bold()}`
-        );
+        outputChunks.push(timeoutMessage(configs.timeout!));
 
         setTimeout(() => child.kill('SIGTERM'), 250);
       }, configs.timeout);
