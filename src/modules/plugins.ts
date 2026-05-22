@@ -74,12 +74,12 @@ export const inspectPoku = (options: {
     let stdout = '';
     let stderr = '';
 
-    childProcess.stdout.on('data', (data: Buffer) => {
-      stdout += String(data);
+    childProcess.stdout.on('data', (data: string) => {
+      stdout += data;
     });
 
-    childProcess.stderr.on('data', (data: Buffer) => {
-      stderr += String(data);
+    childProcess.stderr.on('data', (data: string) => {
+      stderr += data;
     });
 
     childProcess.on('error', (error: Error) => {

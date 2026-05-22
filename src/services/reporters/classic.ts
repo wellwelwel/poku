@@ -55,7 +55,7 @@ export const classic: ReporterPlugin = () => {
 
       poku.onExit(options);
       log(
-        `${format('Exited with code').dim()} ${format(String(code)).bold()[code === 0 ? 'success' : 'fail']()}\n`
+        `${format('Exited with code').dim()} ${format(code.toString()).bold()[code === 0 ? 'success' : 'fail']()}\n`
       );
     },
   })();

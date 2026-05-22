@@ -191,7 +191,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       hr();
       log(
-        `${format(String(errors.length)).fail().bold()} ${format('test file(s) failed:').bold()}\n`
+        `${format(errors.length.toString()).fail().bold()} ${format('test file(s) failed:').bold()}\n`
       );
 
       for (const i in errors) {
@@ -247,7 +247,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
           .dim()} ${format(`(±${parseTimeToSecs(timespan.duration)} seconds)`).dim()}`
       );
       log(
-        `${format(`Files     ›  ${format(String(results.passed + results.failed)).bold()}`).dim()}`
+        `${format(`Files     ›  ${format((results.passed + results.failed).toString()).bold()}`).dim()}`
       );
       log(`\n${message}\n`);
     },

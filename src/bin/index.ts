@@ -96,7 +96,7 @@ import { hr, log } from '../services/write.js';
         .join('\n')
     );
     hr();
-    log(`Total test files: ${format(String(files.length)).bold()}`);
+    log(`Total test files: ${format(files.length.toString()).bold()}`);
     hr();
 
     return;

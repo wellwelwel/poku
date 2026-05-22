@@ -74,12 +74,12 @@ const backgroundProcess = (
 
       runningProcesses.set(PID, end);
 
-      const onData = (data: Buffer): void => {
+      const onData = (data: string): void => {
         if (!isResolved && typeof options?.startAfter !== 'number') {
           if (
             typeof options?.startAfter === 'undefined' ||
             (typeof options?.startAfter === 'string' &&
-              String(data).includes(options.startAfter))
+              data.includes(options.startAfter))
           ) {
             resolve({ end });
             clearTimeout(timeout);
