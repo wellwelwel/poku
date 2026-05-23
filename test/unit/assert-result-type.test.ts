@@ -32,7 +32,11 @@ test('Output: serialize (UX contract for assert mismatch)', async () => {
 
   assert.strictEqual(serialize(/123/), '/123/', 'RegExp');
 
-  assert.strictEqual(serialize(() => {}), '[Function]', 'Anonymous Function');
+  assert.strictEqual(
+    serialize(() => {}),
+    '[Function]',
+    'Anonymous Function'
+  );
   assert.strictEqual(
     serialize((a: number) => a),
     '[Function]',
@@ -67,9 +71,5 @@ test('Output: serialize (UX contract for assert mismatch)', async () => {
   );
 
   assert.strictEqual(serialize(Symbol()), 'Symbol()', 'Symbol (no key)');
-  assert.strictEqual(
-    serialize(Symbol.for('key')),
-    'Symbol(key)',
-    'Symbol.for'
-  );
+  assert.strictEqual(serialize(Symbol.for('key')), 'Symbol(key)', 'Symbol.for');
 });
