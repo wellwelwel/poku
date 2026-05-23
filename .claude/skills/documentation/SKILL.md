@@ -56,4 +56,4 @@ When reading or writing docs, follow these patterns:
 
 ### 7. Changelog
 
-- `CHANGELOG.md` is auto-generated. **NEVER** edit it.
+- `CHANGELOG.md` is auto-generated: **NEVER** edit it!

@@ -87,7 +87,7 @@ See `/documentation` for framework, feature-to-docs mapping, conventions, and co
 
 ## Before committing
 
-See `/pre-commit` for the pre-commit workflow contract (mandatory checks, runtime-sensitive checks, subset execution, and failure modes).
+See `/pre-commit` for the pre-commit workflow contract.
 
 ## Code Style
 
