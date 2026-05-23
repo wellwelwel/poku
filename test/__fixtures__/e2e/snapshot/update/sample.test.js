@@ -1,5 +1,4 @@
-import { describe } from '../../../../../src/modules/helpers/describe.js';
-import { it } from '../../../../../src/modules/helpers/it.js';
+import { describe, it } from '../../../../../lib/modules/index.js';
 
 describe('Snapshot update', () => {
   it('updates a stored snapshot under the --updateSnapshot flag', ({

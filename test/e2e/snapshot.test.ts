@@ -1,14 +1,28 @@
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { ext, inspectPoku } from '../__utils__/capture-cli.test.js';
-import { assert } from '../../src/modules/essentials/assert.js';
-import { describe } from '../../src/modules/helpers/describe.js';
-import { it } from '../../src/modules/helpers/it.js';
+import {
+  LIB_ESM,
+  skipUnlessBuilt,
+} from '../__utils__/skip-unless-built.test.js';
 import { formatSnapFile, parseSnapFile } from '../../src/parsers/snapshot.js';
 
+skipUnlessBuilt();
+
+const lib = (await import(
+  LIB_ESM
+)) as typeof import('../../src/modules/index.js');
+
+const plugins = (await import(
+  new URL('plugins.js', LIB_ESM).href
+)) as typeof import('../../src/modules/plugins.js');
+
+const { describe, it, assert } = lib;
+const { inspectPoku } = plugins;
+
+const BIN = 'lib/bin/index.js';
 const BASE = 'test/__fixtures__/e2e/snapshot';
 const SNAP_DIR = '__snapshots__';
-const SNAP_FILE = `sample.test.${ext}.snap`;
+const SNAP_FILE = `sample.test.js.snap`;
 
 const snapPath = (scenario: string) =>
   join(BASE, scenario, SNAP_DIR, SNAP_FILE);
@@ -17,10 +31,12 @@ const cleanSnap = (scenario: string) => {
   rmSync(join(BASE, scenario, SNAP_DIR), { recursive: true, force: true });
 };
 
-describe('Snapshot e2e', async () => {
+await describe('Snapshot e2e', async () => {
   await it('passes when the stored snapshot matches', async () => {
-    const result = await inspectPoku(`sample.test.${ext}`, {
-      cwd: `${BASE}/match`,
+    const result = await inspectPoku({
+      bin: BIN,
+      command: 'sample.test.js',
+      spawnOptions: { cwd: `${BASE}/match` },
     });
 
     if (result.exitCode !== 0) {
@@ -42,8 +58,10 @@ describe('Snapshot e2e', async () => {
   });
 
   await it('fails with a diff when the snapshot does not match', async () => {
-    const result = await inspectPoku(`sample.test.${ext}`, {
-      cwd: `${BASE}/fail`,
+    const result = await inspectPoku({
+      bin: BIN,
+      command: 'sample.test.js',
+      spawnOptions: { cwd: `${BASE}/fail` },
     });
 
     assert.strictEqual(result.exitCode, 1, 'Exit 1 on mismatch');
@@ -57,9 +75,13 @@ describe('Snapshot e2e', async () => {
     cleanSnap('create');
 
     const { CI: _ignored, ...envWithoutCI } = process.env;
-    const result = await inspectPoku(`--denoAllow=all sample.test.${ext}`, {
-      cwd: `${BASE}/create`,
-      env: envWithoutCI,
+    const result = await inspectPoku({
+      bin: BIN,
+      command: '--denoAllow=all sample.test.js',
+      spawnOptions: {
+        cwd: `${BASE}/create`,
+        env: envWithoutCI,
+      },
     });
 
     try {
@@ -96,12 +118,11 @@ describe('Snapshot e2e', async () => {
       'utf8'
     );
 
-    const result = await inspectPoku(
-      `--denoAllow=all --updateSnapshot sample.test.${ext}`,
-      {
-        cwd: `${BASE}/update`,
-      }
-    );
+    const result = await inspectPoku({
+      bin: BIN,
+      command: '--denoAllow=all --updateSnapshot sample.test.js',
+      spawnOptions: { cwd: `${BASE}/update` },
+    });
 
     try {
       assert.strictEqual(result.exitCode, 0, 'Exit 0 under --updateSnapshot');
@@ -120,11 +141,15 @@ describe('Snapshot e2e', async () => {
   await it('fails in CI when no snapshot exists', async () => {
     cleanSnap('create');
 
-    const result = await inspectPoku(`sample.test.${ext}`, {
-      cwd: `${BASE}/create`,
-      env: {
-        ...process.env,
-        CI: '1',
+    const result = await inspectPoku({
+      bin: BIN,
+      command: 'sample.test.js',
+      spawnOptions: {
+        cwd: `${BASE}/create`,
+        env: {
+          ...process.env,
+          CI: '1',
+        },
       },
     });
 
