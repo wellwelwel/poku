@@ -52,7 +52,7 @@
     "build": "bash scripts/build.sh",
     "lint": "bash scripts/lint.sh",
     "lint:fix": "bash scripts/lint-fix.sh",
-    "lint:types": "bash scripts/lint-types.sh",
+    "typecheck": "bash scripts/typecheck.sh",
     "update": "bash scripts/update.sh",
     "benchmark": "npm --prefix benchmark start"
   },

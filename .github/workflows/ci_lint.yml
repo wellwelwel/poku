@@ -44,4 +44,4 @@ jobs:
 
       - name: 🚫 Type Declarations Check
         if: always()
-        run: npm run lint:types
+        run: npm run typecheck

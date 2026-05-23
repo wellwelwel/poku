@@ -31,3 +31,6 @@ if [[ -n "$doubleCastHits" ]]; then
   printf '%s\n' "$doubleCastHits" >&2
   exit 1
 fi
+
+tsc --noEmit
+tsc -p test

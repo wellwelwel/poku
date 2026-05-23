@@ -9,18 +9,6 @@ Poku is an innovative zero-dependency, cross-platform test runner for Node.js, B
 - **Build**: TypeScript 6.x → ES2021, Node16 modules (`src/` → `lib/`)
 - **Lint**: Biome (strict, `biome.jsonc`) + Prettier
 
-## Architecture
-
-- **Public surface**: `package.json` `exports` defines the importable API and `bin` defines the CLI
-- **Isolation** (`--isolation`, default `process`):
-  - `process`: each test file runs in a **separate child process** (`spawn`, `shell: false`)
-  - `none`: test files run **in the same process** (`runTestInProcess`), forced sequential (concurrency 1)
-- **Concurrency**: `availableParallelism()` default
-- **Global state**: `GLOBAL` singleton holds runtime config and shared state
-- **Reporters**: poku (default), dot, compact, classic, focus
-- **Parent→Child comms**: Environment variables `POKU_*`
-- **Security**: NEVER pass user input (filters, name/skip patterns) into `new RegExp()` without `escapeRegExp()` first
-
 ## Basic Usage Patterns
 
 ### Synchronous tests (no `await` needed)
@@ -82,7 +70,7 @@ await describe('Server tests', async () => {
 
 ## Developer Experience (DX)
 
-ALWAYS preserve or improve the developer experience. See `/engineering` for the DX principles (zero-config, actionable errors, visual clarity, output filtering, fluent formatter).
+ALWAYS preserve or improve the developer experience. See `/engineering` for the DX principles (zero-config, actionable errors, visual clarity, output filtering, fluent formatter, etc.). See `/architecture` when separating responsibilities, deciding directories, file names, or where a new module should live.
 
 ## Testing
 
@@ -92,27 +80,14 @@ Suites live under `test/` (unit, integration, e2e, compatibility). See `/testing
 
 - **When to update**: Change docs only when user-facing behavior changes
 - **Language**: English is mandatory. Use i18n (`website/i18n/`) only on explicit user request
+- **Punctuation**: Use proper punctuation. Never use any kind of substitute as a crutch
+- **Consistency**: Match the writing style, tone, and structure of the related existing docs
 
 See `/documentation` for framework, feature-to-docs mapping, conventions, and components.
 
 ## Before committing
 
-On a fork, ALWAYS read `CONTRIBUTING.md` before committing.
-
-Run these scripts:
-
-- `npm run lint:types`
-- `npm run lint:fix`
-- `npm run build`
-- `npm test`: full suite on local Node.js version.
-  - Use `npm run test:bun` / `npm run test:deno` when the change is runtime-sensitive
-
-To run a single test file directly, execute it with the runtime:
-
-- `npx tsx <path>`
-- `bun --bun <path>` / `deno run -A <path>`
-
-To run a subset, filter by path instead: `npm test -- --filter=<path>`
+See `/pre-commit` for the pre-commit workflow contract (mandatory checks, runtime-sensitive checks, subset execution, and failure modes).
 
 ## Code Style
 
@@ -129,9 +104,12 @@ To run a subset, filter by path instead: `npm test -- --filter=<path>`
 
 ## Deep-Dive Skills
 
+> Skills path: `./.claude/skills/**/SKILL.md`.
+
 Detailed context lives in project skills, invoked automatically when relevant or on demand:
 
 - `/architecture`: project structure, execution flow, config system, competitive context
 - `/engineering`: performance patterns, security, build pipeline, CI/CD
 - `/testing`: test structure, fixtures, utils, Docker testing, coverage strategy
 - `/documentation`: Docusaurus framework, feature-to-docs mapping, conventions, changelog
+- `/pre-commit`: recommendations and useful instructions before committing
