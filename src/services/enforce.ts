@@ -55,6 +55,7 @@ const checkFlags = (): void => {
     '--testNamePattern',
     '--testSkipPattern',
     '--timeout',
+    '--updateSnapshot',
     '--watch',
     '--watchInterval',
     '-c',
@@ -62,6 +63,7 @@ const checkFlags = (): void => {
     '-q',
     '-r',
     '-t',
+    '-u',
     '-w',
     '-x',
   ]);
@@ -84,10 +86,12 @@ const checkValues = async (): Promise<void> => {
     'only',
     'quiet',
     'sequential',
+    'updateSnapshot',
     'watch',
     'd',
     'x',
     'q',
+    'u',
     'w',
   ])
     checkUselessValue(flag);

@@ -30,10 +30,11 @@ const isAnyEntry = (moduleId: string) =>
 const versionInject: Plugin = {
   name: 'poku-version-inject',
   transform(code, moduleId) {
-    if (!normalizePath(moduleId).endsWith('/src/configs/poku.ts')) return null;
+    if (!normalizePath(moduleId).endsWith('/src/configs/version.ts'))
+      return null;
 
     return {
-      code: code.replace("'0.0.0-placeholder'", JSON.stringify(version)),
+      code: code.replace("'placeholder'", JSON.stringify(version)),
       map: null,
     };
   },

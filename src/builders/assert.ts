@@ -9,6 +9,7 @@ import type {
   AssertValue,
   AsyncBlock,
 } from '../@types/assert.js';
+import { exit } from 'node:process';
 import { processAssert, processAsyncAssert } from '../services/assert.js';
 
 const isPredicate = (
@@ -70,7 +71,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
       hideDiff: true,
     });
 
-    process.exit(1);
+    exit(1);
   };
 
   const doesNotThrow: AssertThrows = ((

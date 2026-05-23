@@ -20,7 +20,7 @@ export { getPIDs } from './helpers/get-pids.js';
 export { exit } from './helpers/exit.js';
 export { log } from './helpers/log.js';
 export { listFiles } from './helpers/list-files.js';
-export { VERSION as version } from '../configs/poku.js';
+export { VERSION as version } from '../configs/version.js';
 export type { Code } from '../@types/code.js';
 export type { Configs, ConfigFile } from '../@types/poku.js';
 export type {

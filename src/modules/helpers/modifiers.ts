@@ -1,6 +1,14 @@
-import type { Describe } from '../../@types/describe.js';
+import type {
+  AsyncDescribeCb,
+  Describe,
+  DescribeCb,
+} from '../../@types/describe.js';
 import type { It } from '../../@types/it.js';
-import type { Modifier, Todo } from '../../@types/modifiers.js';
+import type {
+  DescribeModifier,
+  Modifier,
+  Todo,
+} from '../../@types/modifiers.js';
 import type { AsyncTestCb, TestCb } from '../../@types/poku.js';
 import { exit } from 'node:process';
 import { GLOBAL } from '../../configs/poku.js';
@@ -27,10 +35,10 @@ export const skip = (async (
   GLOBAL.reporter.onSkipModifier({ message });
 }) as Modifier;
 
-export const createOnlyDescribe = (describeBase: Describe): Modifier =>
+export const createOnlyDescribe = (describeBase: Describe): DescribeModifier =>
   (async (
-    messageOrCb: string | TestCb | AsyncTestCb,
-    cb?: TestCb | AsyncTestCb
+    messageOrCb: string | DescribeCb | AsyncDescribeCb,
+    cb?: DescribeCb | AsyncDescribeCb
   ): Promise<void> => {
     if (!hasOnly) {
       log(
@@ -48,7 +56,7 @@ export const createOnlyDescribe = (describeBase: Describe): Modifier =>
     if (typeof messageOrCb === 'string' && cb)
       return describeBase(messageOrCb, cb);
     if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
-  }) as Modifier;
+  }) as DescribeModifier;
 
 export const createOnlyIt = (itBase: It): Modifier =>
   (async (

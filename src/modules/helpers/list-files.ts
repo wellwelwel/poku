@@ -11,6 +11,7 @@ const regex = {
   unusualChars: /[<>|^?*]+/g,
   absolutePath: /^[/\\]/,
   defaultFilter: /\.(test|spec)\./i,
+  reserved: /\.snap$/,
 } as const;
 
 export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
@@ -49,6 +50,8 @@ const getAllFilesInner = async (
       )
         return files;
 
+      if (regex.reserved.test(fullPath)) return files;
+
       if (states?.isSinglePath) {
         files.add(fullPath);
         return files;
@@ -75,6 +78,7 @@ const getAllFilesInner = async (
       if (exclude?.some((pattern) => pattern.test(fullPath))) continue;
 
       if (entry.isFile()) {
+        if (regex.reserved.test(fullPath)) continue;
         if (filter.test(fullPath)) files.add(fullPath);
       } else if (entry.isDirectory()) {
         subdirs.push(getAllFilesInner(fullPath, files, filter, exclude));

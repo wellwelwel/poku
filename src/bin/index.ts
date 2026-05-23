@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 import { env, exit } from 'node:process';
-import { GLOBAL, states, VERSION } from '../configs/poku.js';
+import { GLOBAL, states } from '../configs/poku.js';
+import { VERSION } from '../configs/version.js';
 import { poku } from '../modules/essentials/poku.js';
 import { envFile } from '../modules/helpers/env.js';
 import { kill } from '../modules/helpers/kill.js';
@@ -65,6 +66,7 @@ import { hr, log } from '../services/write.js';
     configsFromFile?.testNamePattern;
   const testSkipPattern =
     getArg('testSkipPattern') ?? configsFromFile?.testSkipPattern;
+  const updateSnapshot = hasArg('updateSnapshot') || hasArg('u', '-');
 
   if (dirs.length === 1) states.isSinglePath = true;
 
@@ -198,6 +200,7 @@ import { hr, log } from '../services/write.js';
     env.POKU_TEST_NAME_PATTERN = testNamePattern;
   if (typeof testSkipPattern === 'string')
     env.POKU_TEST_SKIP_PATTERN = testSkipPattern;
+  if (updateSnapshot) env.POKU_UPDATE_SNAPSHOT = '1';
 
   const tasks: Promise<unknown>[] = [];
 

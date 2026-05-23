@@ -3,6 +3,7 @@ import type { ScopeHook } from '../../@types/plugin.js';
 import type { TestCb } from '../../@types/poku.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
+import { createTestContext } from '../../builders/test-context.js';
 import { each } from '../../configs/each.js';
 import { indentation } from '../../configs/indentation.js';
 import { errorHoist, GLOBAL } from '../../configs/poku.js';
@@ -24,7 +25,9 @@ export const itBase = async (
   try {
     const title = getTitle(titleOrCb);
     const hasTitle = typeof title === 'string';
-    const cb = hasTitle ? getCallback(callback) : getCallback(titleOrCb);
+    const cb = hasTitle
+      ? getCallback<TestCb>(callback)
+      : getCallback<TestCb>(titleOrCb);
 
     let success = true;
     let start: [number, number];
@@ -59,12 +62,13 @@ export const itBase = async (
 
     try {
       const hooks = getScopeHook();
+      const context = createTestContext(title);
 
       if (hooks) {
         const holder = hooks.createHolder();
-        await hooks.runScoped(holder, (params) => cb!(params));
+        await hooks.runScoped(holder, () => cb!(context));
       } else {
-        const resultCb = cb!();
+        const resultCb = cb!(context);
         if (resultCb instanceof Promise) await resultCb;
       }
     } catch (error) {

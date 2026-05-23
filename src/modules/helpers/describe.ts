@@ -1,4 +1,8 @@
-import type { Describe, DescribeOptions } from '../../@types/describe.js';
+import type {
+  Describe,
+  DescribeCb,
+  DescribeOptions,
+} from '../../@types/describe.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { indentation } from '../../configs/indentation.js';
@@ -18,7 +22,9 @@ export const describeBase = async (
   const { reporter } = GLOBAL;
   const title = getTitle(titleOrCb);
   const hasTitle = typeof title === 'string';
-  const cb = hasTitle ? getCallback(callbackOrOptions) : getCallback(titleOrCb);
+  const cb = hasTitle
+    ? getCallback<DescribeCb>(callbackOrOptions)
+    : getCallback<DescribeCb>(titleOrCb);
   const hasCB = typeof cb === 'function';
   const options = hasCB ? undefined : getOptions(callbackOrOptions);
 

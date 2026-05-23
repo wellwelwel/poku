@@ -182,10 +182,10 @@ export type Poku = {
   (targetPaths: string | string[], configs?: Configs): Promise<undefined>;
 };
 
-export type TestCb = (
-  params?: Record<string, unknown>
-) => unknown | Promise<unknown>;
+export type TestContext = {
+  snapshot: (value: unknown, hint?: string) => void;
+};
 
-export type AsyncTestCb = (
-  params?: Record<string, unknown>
-) => Promise<unknown>;
+export type TestCb = (context: TestContext) => unknown | Promise<unknown>;
+
+export type AsyncTestCb = (context: TestContext) => Promise<unknown>;

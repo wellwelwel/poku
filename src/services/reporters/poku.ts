@@ -5,8 +5,8 @@ import { stdout } from 'node:process';
 import { cwd } from '../../configs/cwd.js';
 import { indentation } from '../../configs/indentation.js';
 import { getSharedState } from '../../configs/shared-state.js';
-import { parseResultType } from '../../parsers/assert.js';
 import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
+import { serialize } from '../../parsers/output.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 import { format } from '../format.js';
 import { hr, log } from '../write.js';
@@ -104,6 +104,11 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       if (typeof options.message === 'string') message = options.message;
       else if (options.message instanceof Error)
         message = options.message.message;
+      else if (
+        typeof error.message === 'string' &&
+        error.generatedMessage === false
+      )
+        message = error.message;
       else if (typeof options.defaultMessage === 'string')
         message = options.defaultMessage;
 
@@ -119,8 +124,13 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(`${format(`${preIdentation}  Operator`).dim()} ${operator}\n`);
 
       if (!options?.hideDiff) {
-        const splitActual = parseResultType(actual).split('\n');
-        const splitExpected = parseResultType(expected).split('\n');
+        const isSnapshot = operator === 'snapshot';
+        const splitActual = (
+          isSnapshot ? String(actual) : serialize(actual)
+        ).split('\n');
+        const splitExpected = (
+          isSnapshot ? String(expected) : serialize(expected)
+        ).split('\n');
 
         log(format(`${preIdentation}  ${options?.actual ?? 'Actual'}:`).dim());
 

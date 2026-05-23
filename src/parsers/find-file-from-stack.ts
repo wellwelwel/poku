@@ -1,3 +1,5 @@
+import { VERSION } from '../configs/version.js';
+
 const charCode = {
   colon: 58,
   slash: 47,
@@ -14,7 +16,7 @@ const charCode = {
 
 const FILE_PROTOCOL = 'file://';
 const FILE_PROTOCOL_LENGTH = FILE_PROTOCOL.length;
-const INTERNAL_PATH = 'poku/lib/';
+const INTERNAL_PATH = VERSION === 'placeholder' ? 'poku/src/' : 'poku/lib/';
 
 const isAlpha = (code: number): boolean =>
   (code >= charCode.upperA && code <= charCode.upperZ) ||

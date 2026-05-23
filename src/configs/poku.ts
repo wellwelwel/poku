@@ -28,8 +28,6 @@ export const errorHoist = getSharedState('errorHoist', {
   failed: false,
 });
 
-export const VERSION = '0.0.0-placeholder';
-
 export const deepOptions = getSharedState<string[]>('deepOptions', []);
 
 export const GLOBAL = getSharedState('GLOBAL', {
