@@ -7,10 +7,10 @@ on:
   pull_request:
     paths:
       - '.github/workflows/ci_coverage-windows.yml'
-      - '.nycrc/**'
       - 'src/**'
       - 'test/**'
       - 'tools/**'
+      - '.nycrc'
       - 'codecov.yml'
       - 'package-lock.json'
       - 'package.json'

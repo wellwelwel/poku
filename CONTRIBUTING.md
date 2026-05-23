@@ -117,7 +117,7 @@ npm ci
 npm run lint:fix
 
 # Testing
-npm run test
+npm test
 ```
 
 </blockquote>
@@ -132,8 +132,8 @@ npm run test
 
 ```sh
 npm run test                  # Test with the locally installed Node.js version
-npm run test:bun              # Test with the locally installed Bun version
-npm run test:deno             # Test with the locally installed Deno version
+bun run test:bun              # Test with the locally installed Bun version
+deno task test:deno           # Test with the locally installed Deno version
 ```
 
 > Pass custom flags using `--`, for example:
@@ -146,7 +146,7 @@ npm run test:deno             # Test with the locally installed Deno version
 
 ### ☔️ Coverage
 
-The coverage target is **97%** for Unix-like systems and **95%** for Windows.
+The coverage target is **95%** and the goal is 100%.
 
 ```sh
 npm run test:coverage
@@ -158,6 +158,7 @@ npm run test:coverage
 
 ```sh
 npm run lint
+npm run typecheck
 ```
 
 > Also
