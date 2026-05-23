@@ -1,0 +1,5 @@
+// Poku Snapshot v1, https://poku.io/docs/documentation/api/snapshot
+
+exports[`mismatches the stored snapshot 1`] = `{
+  "message": "original"
+}`;

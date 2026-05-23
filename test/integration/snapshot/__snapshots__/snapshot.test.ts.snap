@@ -1,0 +1,66 @@
+// Poku Snapshot v1, https://poku.io/docs/documentation/api/snapshot
+
+exports[`matches a primitive snapshot 1`] = `"hello world"`;
+
+exports[`matches a numeric snapshot 1`] = `42`;
+
+exports[`matches an object snapshot 1`] = `{
+  "a": 1,
+  "b": "two",
+  "c": [
+    3,
+    4
+  ]
+}`;
+
+exports[`matches an array snapshot 1`] = `[
+  1,
+  2,
+  3
+]`;
+
+exports[`supports multiple snapshots per test via counter 1`] = `{
+  "id": 1
+}`;
+
+exports[`supports multiple snapshots per test via counter 2`] = `{
+  "id": 2
+}`;
+
+exports[`supports named hints > authorized user 1`] = `{
+  "role": "admin"
+}`;
+
+exports[`supports named hints > unauthorized user 1`] = `{
+  "role": "guest"
+}`;
+
+exports[`serializes nested structures deterministically 1`] = `{
+  "list": [
+    {
+      "name": "beta",
+      "value": 2
+    },
+    {
+      "name": "alpha",
+      "value": 1
+    }
+  ],
+  "meta": {
+    "count": 2
+  }
+}`;
+
+exports[`snapshots an Error with cause 1`] = `[Error: outer]`;
+
+exports[`snapshots a Uint8Array 1`] = `Uint8Array [
+  10,
+  20,
+  30
+]`;
+
+exports[`snapshots a URL 1`] = `URL "https://poku.io/docs?ref=test"`;
+
+exports[`snapshots a class instance 1`] = `Person {
+  "name": "Ada"
+}`;
