@@ -12,15 +12,14 @@ Guarantee that every commit lands with passing type checks, formatted code, a su
 
 - On a fork, read [CONTRIBUTING.md](../../../CONTRIBUTING.md) first.
 - Working tree reflects the change under review (no unrelated edits staged).
-- Supported runtimes installed for the work at hand: Node.js 16+, Bun 1+, Deno 2+.
 
-## Steps (ordered, mandatory)
+## Recommended steps
 
 Run in this exact order. Any non-zero exit blocks the commit.
 
 1. `npm run typecheck`: TypeScript type check across the project.
 2. `npm run lint:fix`: auto-fixes Biome and Prettier. May modify files, which must be restaged.
-3. `npm run build`: produces `lib/` from `src/`. Must succeed before tests, since the build surfaces type and import errors the test runner does not.
+3. `npm run build`: produces `lib/` from `src/`.
 4. `npm test`: full local Node.js suite.
 
 ## Runtime-sensitive checks (conditional)

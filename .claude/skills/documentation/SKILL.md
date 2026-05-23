@@ -45,6 +45,8 @@ When reading or writing docs, follow these patterns:
 - **Page structure**: function signature (`> fn(params)`) then Basic Usage then Advanced then FAQ
 - **Components**: reusable MDX components live in `website/src/components/` (for example `FAQ`, and `History` to document when a feature became available or had breaking changes across versions). Docusaurus components like `Tabs`/`TabItem` are also available
 - **Category organization**: `_category_.json` files
+- **Punctuation**: Use proper punctuation. Never use any kind of substitute as a crutch
+- **Consistency**: Match the writing style, tone, and structure of the related existing docs
 
 ### 6. Inline Documentation (JSDoc)
 
@@ -54,4 +56,4 @@ When reading or writing docs, follow these patterns:
 
 ### 7. Changelog
 
-- `CHANGELOG.md` is auto-generated. NEVER edit it.
+- `CHANGELOG.md` is auto-generated. **NEVER** edit it.

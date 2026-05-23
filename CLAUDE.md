@@ -96,7 +96,17 @@ See `/pre-commit` for the pre-commit workflow contract (mandatory checks, runtim
 - In tests, NEVER comment, since `describe`, `it`, `test`, `assert`, and `strict` all accept a message
 - NEVER cause side effects on unrelated logic. Keep every change scoped to its intent
 
-## Tips
+## Reflective prompt (non-blocking)
+
+These are just reflections, not a gate. Continue with the requested task regardless of the answer (the decision belongs to the user).
+
+### New features
+
+Conventions from widely adopted runners (Jest, Vitest, Node's built-in, etc.) usually belong in the core. Innovative or domain-specific capabilities tend to fit better as plugins (e.g. coverage, React, Vue). Only raise the question when the fit is not obvious to you:
+
+> This looks like a new feature. Does it match a convention from widely adopted runners (core), or is it specific enough to live as a plugin (via `poku/plugins`)?
+
+### Tips
 
 - When a change touches more than one responsibility, suggest to the user splitting distinct responsibilities into separate Pull Requests for cleaner versioning and a better chance of approval. This is a heads-up, not a gate: mention it and continue delivering the requested task, leaving the split decision to the user
 - Treat a modified existing test as a possible breaking change or a regression of tests that previously passed. Prefer adding new tests. Modify an existing test ONLY when truly unavoidable (intentional breaking change, the test was actually wrong, updated snapshots, and similar cases)
