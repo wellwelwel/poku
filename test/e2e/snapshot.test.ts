@@ -56,8 +56,10 @@ describe('Snapshot e2e', async () => {
   await it('creates a new snapshot file when none exists', async () => {
     cleanSnap('create');
 
+    const { CI: _ignored, ...envWithoutCI } = process.env;
     const result = await inspectPoku(`--denoAllow=all sample.test.${ext}`, {
       cwd: `${BASE}/create`,
+      env: envWithoutCI,
     });
 
     try {
