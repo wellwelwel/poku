@@ -10,7 +10,7 @@
   "rules": [
     "Install Poku as a dev dependency. On Node.js run `npm i -D poku`, and for TypeScript on Node.js run `npm i -D poku tsx`.",
     "On Bun run `bun add -d poku`. On Deno the install is optional with `deno add npm:poku`. Bun and Deno support TypeScript natively.",
-    "To organize related tests, prefer grouping them with `describe` plus `it` or `test`. A title is optional, so `describe('Sum', () => {})` and `describe(() => {})` are both valid, and the same applies to `it` and `test`.",
+    "To organize related tests, prefer grouping them with `describe` plus `it` or `test`. A title is optional, for example: `describe('Sum', () => {})` and `describe(() => {})` are both valid, and the same applies to `it` and `test`.",
     "Synchronous tests do not need `await`. For asynchronous tests use an `async` callback and `await` the `it` or `test` call so the group waits for it to finish.",
     "When top-level `await` is not available, for example in CommonJS, you can put the test groups inside an asynchronous `describe` without awaiting it, like `describe(async () => { await it(async () => {}) })`.",
     "You can nest `describe` inside `describe`, for example: `describe(() => { describe(() => {}) })`, `await describe(async () => { await describe(async () => {}) })` or `describe(async () => { await describe(() => {}) })`.",

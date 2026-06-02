@@ -70,6 +70,16 @@ const config: Config = {
     ],
   ],
 
+  scripts: [
+    {
+      src: 'https://context7.com/widget.js',
+      'data-library': '/wellwelwel/poku',
+      'data-color': '#337bff',
+      strategy: 'afterInteractive',
+      async: true,
+    },
+  ],
+
   themeConfig: {
     metadata: [
       {
