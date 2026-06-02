@@ -84,6 +84,8 @@ What the `poku` command adds is the orchestration around your files. By default 
 
 Skipping the internal test tree is one reason Poku is fast, since there is no structure to populate, no per-case scheduler, and assertions are a thin layer over Node's native `assert`. Most of the speed comes from running files in parallel across processes. The model and the performance reinforce each other, and the model is the point.
 
+Poku also does no project-wide bookkeeping before it runs. It looks only at the paths you pass it, never crawling the rest of the project, and builds no global module map or tree hash up front. With no map to build, hold, or serialize, Poku stays light and predictable even in large monorepos and symlink-heavy installs such as pnpm.
+
 ---
 
 ## Trade-offs and who it fits
