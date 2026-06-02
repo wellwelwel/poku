@@ -5,7 +5,7 @@
   "projectTitle": "Poku",
   "description": "Poku is a zero-dependency, cross-platform test runner that brings the JavaScript essence back to testing. It runs the same suite on Node.js, Bun, and Deno with ESM, CJS, and TypeScript support.",
   "branch": "main",
-  "folders": ["website/docs"],
+  "folders": ["website/docs", "website/llms"],
   "excludeFiles": ["comparing.mdx", "philosophy.mdx"],
   "rules": [
     "Install Poku as a dev dependency. On Node.js run `npm i -D poku`, and for TypeScript on Node.js run `npm i -D poku tsx`.",

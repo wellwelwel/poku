@@ -75,6 +75,7 @@ const config: Config = {
       src: 'https://context7.com/widget.js',
       'data-library': '/wellwelwel/poku',
       'data-color': '#337bff',
+      'data-placeholder': 'How can Poku make your tests easier?',
       strategy: 'afterInteractive',
       async: true,
     },
