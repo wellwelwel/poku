@@ -1,6 +1,6 @@
 # Poku
 
-> Zero-dependency, cross-platform test runner that brings the JavaScript essence back to testing. It runs the same suite on Node.js, Bun, and Deno with ESM, CJS, and TypeScript support.
+> Feature-rich, modular, zero-dependency, cross-platform test runner that brings the JavaScript essence back to testing. It runs the same suite on Node.js, Bun, and Deno with ESM, CJS, and TypeScript support.
 
 Poku v4. Install Poku, write a test file, and run it. No config is required for the common case.
 
