@@ -3,7 +3,7 @@
   "url": "https://context7.com/wellwelwel/poku",
   "public_key": "pk_2OxRfaPjMBFkNTh6utHxg",
   "projectTitle": "Poku",
-  "description": "Poku is a zero-dependency, cross-platform test runner that brings the JavaScript essence back to testing. It runs the same suite on Node.js, Bun, and Deno with ESM, CJS, and TypeScript support.",
+  "description": "Poku is a feature-rich, zero-dependency, cross-platform test runner that brings the JavaScript essence back to testing. It runs the same suite on Node.js, Bun, and Deno with ESM, CJS, and TypeScript.",
   "branch": "main",
   "folders": ["website/docs", "website/llms"],
   "excludeFiles": ["comparing.mdx", "philosophy.mdx"],
