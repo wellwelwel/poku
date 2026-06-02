@@ -1,6 +1,6 @@
-# Comparing Poku, Jest, Vitest, Mocha, and AVA
+# Comparing Poku, Jest, Vitest, Mocha, AVA, and Supertest
 
-> A transparent comparison of Poku against Jest, Vitest, Mocha, and AVA, including where each one is the better fit.
+> A transparent comparison of Poku against Jest, Vitest, Mocha, AVA, and Supertest, including where each one is the better fit.
 
 Poku is a zero-dependency, cross-platform test runner that runs the same suite on Node.js, Bun, and Deno and executes TypeScript without a separate compile step. It is feature-rich and modular at its core, so robust capabilities that do not need to live in the core stay out by default. It is not all-in-one by design, so mocks, spies, and stubs come from third-party tools and snapshots are coming. An official plugin system adds extras such as coverage and React testing, so you can assemble your own all-in-one or use only what you need.
 
@@ -122,6 +122,30 @@ Choose AVA when you want built-in snapshots paired with per-file process isolati
 
 ---
 
+## Supertest
+
+While Supertest is an HTTP assertion library that tests a server in process, Poku covers server testing with two built-in helpers, `startService` and `startScript`, that run the real server as a background process. Supertest is not a test runner, so it runs inside one, while Poku's helpers ship in its core.
+
+### Performance and size
+
+Adding Supertest and its type definitions pulls in 50 packages at about 5.9MB, on top of whatever runner you use. Poku's `startService` and `startScript` ship in its zero-dependency core, so they add nothing.
+
+- Benchmark: not applicable.
+
+### Approach
+
+While Supertest binds your app or server in process, starting it on an ephemeral port and asserting with a fluent chain of expectations on status, headers, and body, Poku starts the real server as a background process, with `startService` for a file and `startScript` for a package.json script or deno.json task. It resolves on the service's first output, or you can wait for a specific readiness signal through startAfter, then test the live server with any requester such as the native fetch or Axios plus plain assert, and call end to stop it. While Supertest manages its own lifecycle automatically, Poku keeps the lifecycle explicit in ordinary code.
+
+### Compatibility
+
+While Supertest is SuperAgent based and oriented to Node HTTP apps such as Express and Koa, which you pass to it as an app or a server URL, Poku runs the real process as it is, with no export or refactor, and works with any requester and any service or framework such as Next.js, Nuxt, or nodemon, across Node.js, Bun, and Deno. While Supertest brings purpose-built HTTP features such as header and cookie assertions, persistent session agents, and HTTP/2, Poku leaves the requests and assertions to the tools you already use.
+
+### When to choose
+
+Choose Supertest for fast in-process HTTP assertions that skip the real network, with a fluent, purpose-built API and an automatic ephemeral-port lifecycle, especially for Node apps like Express and Koa. Choose Poku's `startService` and `startScript` to test the real running server over the real network, with no changes to your app, any requester, and cross-runtime support, all built into the zero-dependency core.
+
+---
+
 ## Summary
 
-There is no universal best runner. While Jest is a strong all-in-one choice with a deep ecosystem, Vitest shines inside the Vite world, Mocha offers long-standing stability with a familiar API, and AVA pairs built-in snapshots with per-file process isolation, Poku is feature-rich and modular rather than all-in-one. Most of what sets it apart holds even if Node.js is your only target, from its zero-dependency footprint and zero-config setup to its performance, plain-JavaScript model, and per-file process isolation. Running natively on Bun and Deno is an added benefit, not the reason to choose it.
+There is no universal best runner. While Jest is a strong all-in-one choice with a deep ecosystem, Vitest shines inside the Vite world, Mocha offers long-standing stability with a familiar API, and AVA pairs built-in snapshots with per-file process isolation, Poku is feature-rich and modular rather than all-in-one. Most of what sets it apart holds even if Node.js is your only target, from its zero-dependency footprint and zero-config setup to its performance, plain-JavaScript model, and per-file process isolation. Running natively on Bun and Deno is an added benefit, not the reason to choose it. Supertest is a different kind of tool, an HTTP assertion library that runs inside a runner, and Poku reaches the same server-testing goal through its built-in `startService` and `startScript` helpers.
