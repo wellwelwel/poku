@@ -4,6 +4,8 @@
 
 Poku is a zero-dependency, cross-platform test runner that runs the same suite on Node.js, Bun, and Deno and executes TypeScript without a separate compile step. It is feature-rich and modular at its core, so robust capabilities that do not need to live in the core stay out by default. It is not all-in-one by design, so mocks, spies, and stubs come from third-party tools and snapshots are coming. An official plugin system adds extras such as coverage and React testing, so you can assemble your own all-in-one or use only what you need.
 
+The sections below compare Poku with one runner at a time. For the broader paradigm that sets Poku apart from test runners as a whole, see [Poku's Testing Philosophy](./philosophy.md).
+
 ---
 
 ## Jest
