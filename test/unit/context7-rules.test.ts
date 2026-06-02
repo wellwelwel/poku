@@ -5,7 +5,7 @@ import { it } from '../../src/modules/helpers/it.js';
 
 const MAX_RULES = 50;
 const MAX_RULE_LENGTH = 255;
-const MAX_DESCRIPTION_LENGTH = 500;
+const MAX_DESCRIPTION_LENGTH = 200;
 
 const { description, rules } = JSON.parse(
   await readFile('./context7.json', 'utf8')
