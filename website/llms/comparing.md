@@ -4,6 +4,8 @@
 
 Poku is a zero-dependency, cross-platform test runner that runs the same suite on Node.js, Bun, and Deno and executes TypeScript without a separate compile step. It is feature-rich and modular at its core, so robust capabilities that do not need to live in the core stay out by default. It is not all-in-one by design, so mocks, spies, and stubs come from third-party tools and snapshots are coming. An official plugin system adds extras such as coverage and React testing, so you can assemble your own all-in-one or use only what you need.
 
+Cross-runtime support is only one of Poku's benefits. Its zero-dependency footprint at about 198KB, zero-config setup, performance, and plain-JavaScript model apply even if Node.js is your only target, and running the same suite on Bun and Deno is an added benefit on top.
+
 The sections below compare Poku with one runner at a time. For the broader paradigm that sets Poku apart from test runners as a whole, see [Poku's Testing Philosophy](./philosophy.md).
 
 ---
@@ -32,7 +34,7 @@ While Jest ships mocking, spies, snapshots, and coverage out of the box, Poku ke
 
 ### When to choose
 
-Choose Jest for a mature, all-in-one toolkit with a deep ecosystem and built-in mocking and snapshots. Choose Poku for a lightweight, fast, zero-config, cross-runtime suite, a single package at about 198KB, when you are comfortable picking your own mocking tools.
+Choose Jest for a mature, all-in-one toolkit with a deep ecosystem and built-in mocking and snapshots. Choose Poku for a lightweight, fast, zero-config suite in a single package at about 198KB, even if Node.js is your only target and you are comfortable picking your own mocking tools. Running the same suite on Bun and Deno is an added benefit when you need it.
 
 ---
 
@@ -60,7 +62,7 @@ While Vitest offers a Jest-compatible API, Poku uses plain JavaScript syntax. Wh
 
 ### When to choose
 
-Choose Vitest when your project already uses Vite, or for its Jest-compatible API and frontend integration. Choose Poku for a lightweight, bundler-free, cross-runtime suite, a single package at about 198KB, with native CJS and ESM and no configuration.
+Choose Vitest when your project already uses Vite, or for its Jest-compatible API and frontend integration. Choose Poku for a lightweight, bundler-free suite, a single package at about 198KB, with native CJS and ESM and no configuration, even on Node.js alone. The same suite also runs on Bun and Deno when you want it.
 
 ---
 
@@ -88,7 +90,7 @@ While Mocha relies on separate packages for assertions, mocking, and coverage, P
 
 ### When to choose
 
-Choose Mocha for its long-standing stability, its familiar describe and it API on Node.js projects, and its broad plugin ecosystem. Choose Poku for a lightweight, zero-dependency, cross-runtime suite, a single package at about 198KB, with per-file process isolation and no configuration needed.
+Choose Mocha for its long-standing stability, its familiar describe and it API on Node.js projects, and its broad plugin ecosystem. Choose Poku for a lightweight, zero-dependency suite, a single package at about 198KB, with per-file process isolation and no configuration needed, even if you only target Node.js. Bun and Deno support comes at no extra cost when you need it.
 
 ---
 
@@ -116,10 +118,10 @@ While AVA includes built-in snapshots, Poku's snapshots are still coming. Both s
 
 ### When to choose
 
-Choose AVA when you want built-in snapshots paired with per-file process isolation, a combination Poku does not offer yet since its snapshots are still coming, on a Node.js project. Choose Poku for a lightweight, zero-dependency, cross-runtime suite, a single package at about 198KB, with native CJS and ESM and no configuration.
+Choose AVA when you want built-in snapshots paired with per-file process isolation, a combination Poku does not offer yet since its snapshots are still coming, on a Node.js project. Choose Poku for a lightweight, zero-dependency suite, a single package at about 198KB, with native CJS and ESM and no configuration, even when Node.js is all you target. Bun and Deno are there when you need them.
 
 ---
 
 ## Summary
 
-There is no universal best runner. While Jest is a strong all-in-one choice with a deep ecosystem, Vitest shines inside the Vite world, Mocha offers long-standing stability with a familiar API, and AVA pairs built-in snapshots with per-file process isolation, Poku is feature-rich and modular rather than all-in-one. What sets Poku apart is its zero-dependency footprint at about 198KB, native support for Node.js, Bun, and Deno, native ESM and CJS, and TypeScript without a compile step, all with no configuration. Mocks, spies, and stubs rely on third-party libraries, and snapshots are coming.
+There is no universal best runner. While Jest is a strong all-in-one choice with a deep ecosystem, Vitest shines inside the Vite world, Mocha offers long-standing stability with a familiar API, and AVA pairs built-in snapshots with per-file process isolation, Poku is feature-rich and modular rather than all-in-one. Most of what sets Poku apart holds even if Node.js is your only target: a zero-dependency footprint at about 198KB, zero-config setup, strong performance, the plain-JavaScript model, native ESM and CJS, TypeScript without a compile step, and per-file process isolation. Running the same suite natively on Bun and Deno is an added benefit on top, not the reason to choose it. Mocks, spies, and stubs rely on third-party libraries, and snapshots are coming.
