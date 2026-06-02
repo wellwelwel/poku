@@ -54,7 +54,7 @@ While Vitest is ESM-only and focused on Node.js, Poku supports both CJS and ESM 
 
 ### Features and setup
 
-While Vitest offers a Jest-compatible API and an instant watch mode, Poku uses plain JavaScript syntax and its own watch mode. While Vitest expects a Vitest config and the Vite toolchain, Poku needs no config for the common case and does not depend on a bundler.
+While Vitest offers a Jest-compatible API, Poku uses plain JavaScript syntax. While building on Vite gives Vitest an excellent developer experience, such as HMR and an instant watch mode, it also inherits Vite's downsides, including its security advisories and the cost of pulling the Vite bundle into projects that only want to test rather than adopt Vite. While Vitest expects a Vitest config and the Vite toolchain, Poku needs no config for the common case, brings its own watch mode, and depends on no bundler.
 
 ### When to choose
 
