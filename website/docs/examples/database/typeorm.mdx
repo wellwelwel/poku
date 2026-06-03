@@ -1,8 +1,13 @@
+---
+sidebar_label: TypeORM
+tags: [database, e2e, integration, typeorm, orm]
+---
+
 # Database Testing with Poku and TypeORM
 
 > End-to-end example of testing Poku and the TypeORM ORM, from installing the driver to spinning the database up with Docker Compose.
 
-Open the connection in an outer `describe`, put every assertion inside its own `it`, and destroy the data source at the end of that same `describe`, so cleanup always runs regardless of what an individual assertion does. `synchronize` creates a permanent schema shared across files, so the suite runs with `sequential` to keep the data deterministic. The container lifecycle lives in a [`poku.config.js`](https://poku.io/docs/documentation/poku/config-files) anonymous plugin that uses [`@pokujs/docker`](https://poku.io/docs/documentation/helpers/containers) to run `setup` before the suite and `teardown` after it, so the suite runs with a plain `npm test`.
+Open the connection in an outer `describe`, put every assertion inside its own `it`, and destroy the data source at the end of that same `describe`, so cleanup always runs regardless of what an individual assertion does. `synchronize` creates a permanent schema shared across files, so the suite runs with `sequential` to keep the data deterministic. The container lifecycle lives in a [`poku.config.js`](/docs/documentation/poku/config-files) anonymous plugin that uses [`@pokujs/docker`](/docs/documentation/helpers/containers) to run `setup` before the suite and `teardown` after it, so the suite runs with a plain `npm test`.
 
 ## Install
 
@@ -159,7 +164,9 @@ export default defineConfig({
 });
 ```
 
-- Configuring Poku is optional: you can orchestrate your containers however you prefer and run Poku as `poku --envFile='.env.test' --sequential`, for example. In that case, `@pokujs/docker` is not needed.
+:::tip
+Configuring Poku is optional: you can orchestrate your containers however you prefer and run Poku as `poku --envFile='.env.test' --sequential`, for example. In that case, `@pokujs/docker` is not needed.
+:::
 
 ## Run
 
