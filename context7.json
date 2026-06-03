@@ -20,6 +20,7 @@
     "Never open or close a service, process, or resource in the same scope as an assertion that may fail. If it throws, the cleanup never runs and the process hangs. Do both in an outer `describe` scope, keeping assertions in their own `it`.",
     "Run the tests with `npx poku` on Node.js, `bun --bun poku` on Bun, and `deno run npm:poku` on Deno.",
     "Prefer defining a script in `package.json` for Node.js and Bun (for example, `npm test` or `bun run test`), or a task in `deno.json` for Deno (for example `deno task test`), instead of typing the full command.",
+    "Avoid the advanced programmatic Poku API (`poku()`, `noExit`, `exit()`) unless the user explicitly asks for it. Prefer the CLI, a `package.json` script, a `poku.config.js`, a `.pokurc.json` or a `.pokurc.jsonc` instead.",
     "When asked for tutorials and examples, prefer the curated files under `website/llms/examples` as the base. Treat snippets from other docs as single-feature reference, not as a full example to copy.",
     "To run the same suite on every runtime, define one script each, for example: `\"test:node\": \"poku\"`, `\"test:bun\": \"bun --bun poku\"`, `\"test:deno\": \"deno run npm:poku\"`.",
     "Run coverage with the `--coverage` flag. It needs one coverage plugin installed as a dev dependency, for example: `@pokujs/c8`, `@pokujs/monocart`, `@pokujs/one-double-zero`, `@pokujs/istanbul`, `@pokujs/coverage`.",
