@@ -1,0 +1,157 @@
+# Database Testing with Poku and Prisma
+
+> End-to-end example of testing a PostgreSQL database with Poku and Prisma, from installing the client to spinning the database up with Docker Compose.
+
+Open the connection in an outer `describe`, put every assertion inside its own `it`, and disconnect at the end of that same `describe`, so cleanup always runs regardless of what an individual assertion does. The container lifecycle lives in a [`poku.config.js`](https://poku.io/docs/documentation/poku/config-files) anonymous plugin that uses [`@pokujs/docker`](https://poku.io/docs/documentation/helpers/containers) to run `setup` before the suite and `teardown` after it, so the suite runs with a plain `npm test`.
+
+## Install
+
+```bash
+npm i @prisma/client
+npm i -D poku tsx @pokujs/docker prisma
+```
+
+## Configure the credentials
+
+`.env.test`:
+
+```bash
+DB_USER=postgres
+DB_PASSWORD=secret
+DB_PORT=5432
+DB_NAME=app
+DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}"
+```
+
+`.gitignore`:
+
+```bash
+.env.test
+```
+
+## Start the database
+
+`docker-compose.yml` reads the same `.env.test` to configure the container:
+
+```yaml
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - '${DB_PORT}:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  db-ready:
+    image: busybox
+    command: ['tail', '-f', '/dev/null']
+    depends_on:
+      postgres:
+        condition: service_healthy
+```
+
+## Define the schema
+
+`prisma/schema.prisma` reads the connection string from the environment:
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id   Int    @id
+  name String
+}
+```
+
+## Connect
+
+`db.ts`:
+
+```ts
+import { PrismaClient } from '@prisma/client';
+
+export const prisma = new PrismaClient();
+```
+
+## Write the test
+
+`users.test.ts`:
+
+```ts
+import { describe, it, assert } from 'poku';
+import { prisma } from './db.js';
+
+await describe('User model', async () => {
+  await prisma.user.create({ data: { id: 1, name: 'Poku' } });
+
+  await it('reads the created user', async () => {
+    const user = await prisma.user.findUnique({ where: { id: 1 } });
+
+    assert.strictEqual(user?.name, 'Poku', 'The created user is returned');
+  });
+
+  await prisma.$disconnect();
+});
+```
+
+## Configure Poku (optional)
+
+> Configuring Poku is entirely optional. You can orchestrate your containers however you prefer and run Poku as `poku --envFile='.env.test' --sequential`, for example. In that case, `@pokujs/docker` is not needed.
+
+`poku.config.js`:
+
+```js
+import { execSync } from 'node:child_process';
+import { defineConfig } from 'poku';
+import { docker } from '@pokujs/docker';
+
+const compose = docker.compose({ envFile: '.env.test' });
+
+export default defineConfig({
+  envFile: '.env.test',
+  sequential: true,
+  plugins: [
+    {
+      setup: async () => {
+        await compose.up();
+        execSync('npx prisma db push --skip-generate', { stdio: 'inherit' });
+      },
+      teardown: () => compose.down(),
+    },
+  ],
+});
+```
+
+## Run
+
+Add the `test` script to `package.json`:
+
+```json
+{
+  "scripts": {
+    "test": "poku"
+  }
+}
+```
+
+Then generate the client and run it:
+
+```bash
+npx prisma generate
+npm test
+```
