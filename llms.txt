@@ -112,6 +112,7 @@ Run `poku -h` for the full list of CLI options.
 
 - [Coverage](https://poku.io/docs/documentation/plugins/official/coverage): Enable coverage with `--coverage` and a plugin such as `@pokujs/c8`, `@pokujs/monocart`, `@pokujs/istanbul`, or `@pokujs/one-double-zero`.
 - [@pokujs/react](https://poku.io/docs/documentation/plugins/official/react): Render and assert on React components inside Poku tests, with a real DOM environment and zero config.
+- [@pokujs/vue](https://poku.io/docs/documentation/plugins/official/vue): Render and assert on Vue components inside Poku tests, with a real DOM environment and automatic Single File Component handling.
 - [@pokujs/docker](https://poku.io/docs/documentation/plugins/official/containers): Mount and unmount containers around your tests, with a minimal API for Docker Compose and Dockerfiles.
 - [@pokujs/multi-suite](https://poku.io/docs/documentation/plugins/official/multi-suite): Run multiple independent test suites, each with its own configuration, as a single unified execution.
 - [@pokujs/shared-resources](https://poku.io/docs/documentation/plugins/official/shared-resources): Share state, servers, and database connections across parallel test files.
