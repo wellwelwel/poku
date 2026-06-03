@@ -1,0 +1,179 @@
+---
+sidebar_label: ScyllaDB
+tags: [database, e2e, integration, scylladb, cassandra]
+---
+
+# Database Testing with Poku and ScyllaDB
+
+> End-to-end example of testing a ScyllaDB database with Poku and the cassandra-driver, from installing the driver to spinning the database up with Docker Compose.
+
+Open the connection in an outer `describe`, put every assertion inside its own `it`, and shut down the client at the end of that same `describe`, so cleanup always runs regardless of what an individual assertion does. CQL has no temporary table, so the table and rows persist in a shared keyspace, and the suite runs with `sequential` to keep the data deterministic. The container lifecycle lives in a [`poku.config.js`](/docs/documentation/poku/config-files) anonymous plugin that uses [`@pokujs/docker`](/docs/documentation/helpers/containers) to run `setup` before the suite and `teardown` after it, so the suite runs with a plain `npm test`.
+
+## Install
+
+```bash
+npm i cassandra-driver
+```
+
+```bash
+npm i -D poku tsx @pokujs/docker
+```
+
+## Configure the credentials
+
+`.env.test`:
+
+```bash
+DB_HOST=localhost
+DB_PORT=9042
+DB_USER=cassandra
+DB_PASSWORD=cassandra
+DB_DATACENTER=datacenter1
+DB_KEYSPACE=app
+```
+
+`.gitignore`:
+
+```bash
+.env.test
+```
+
+## Start the database
+
+`docker-compose.yml` reads the same `.env.test` to configure the container:
+
+```yaml
+services:
+  scylladb:
+    image: scylladb/scylla:2026.1
+    command: ['--smp', '1', '--authenticator', 'PasswordAuthenticator']
+    ports:
+      - '${DB_PORT}:9042'
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'nodetool -u cassandra -pw cassandra status | grep -q "^UN"',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+
+  db-ready:
+    image: busybox
+    command: ['tail', '-f', '/dev/null']
+    depends_on:
+      scylladb:
+        condition: service_healthy
+```
+
+## Connect
+
+`db.ts` reads every access from `process.env`:
+
+```ts
+import { auth, Client } from 'cassandra-driver';
+
+export const connect = () => {
+  const client = new Client({
+    contactPoints: [`${process.env.DB_HOST}:${process.env.DB_PORT}`],
+    localDataCenter: process.env.DB_DATACENTER,
+    authProvider: new auth.PlainTextAuthProvider(
+      process.env.DB_USER!,
+      process.env.DB_PASSWORD!
+    ),
+  });
+
+  return client.connect().then(() => client);
+};
+```
+
+## Write the test
+
+`users.test.ts`:
+
+```ts
+import { describe, it, assert } from 'poku';
+import { connect } from './db.js';
+
+const keyspace = process.env.DB_KEYSPACE;
+
+await describe('Users table', async () => {
+  const client = await connect();
+
+  await describe('Seed', async () => {
+    await client.execute(
+      `CREATE KEYSPACE IF NOT EXISTS ${keyspace} WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1}`
+    );
+    await client.execute(
+      `CREATE TABLE IF NOT EXISTS ${keyspace}.users (id INT PRIMARY KEY, name TEXT)`
+    );
+    await client.execute(
+      `INSERT INTO ${keyspace}.users (id, name) VALUES (?, ?)`,
+      [1, 'Poku'],
+      { prepare: true }
+    );
+  });
+
+  await it('reads the inserted user', async () => {
+    const result = await client.execute(
+      `SELECT name FROM ${keyspace}.users WHERE id = ?`,
+      [1],
+      { prepare: true }
+    );
+
+    assert.strictEqual(
+      result.first().name,
+      'Poku',
+      'The inserted user is returned'
+    );
+  });
+
+  await client.shutdown();
+});
+```
+
+## Configure Poku
+
+`poku.config.js`:
+
+```js
+import { defineConfig } from 'poku';
+import { docker } from '@pokujs/docker';
+
+const compose = docker.compose({ envFile: '.env.test' });
+
+export default defineConfig({
+  envFile: '.env.test',
+  sequential: true,
+  plugins: [
+    {
+      setup: () => compose.up(),
+      teardown: () => compose.down(),
+    },
+  ],
+});
+```
+
+:::tip
+Configuring Poku is optional: you can orchestrate your containers however you prefer and run Poku as `poku --envFile='.env.test' --sequential`, for example. In that case, `@pokujs/docker` is not needed.
+:::
+
+## Run
+
+Add the `test` script to `package.json`:
+
+```json
+{
+  "scripts": {
+    "test": "poku"
+  }
+}
+```
+
+Then run it:
+
+```bash
+npm test
+```

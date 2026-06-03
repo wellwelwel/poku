@@ -119,6 +119,7 @@ Run `poku -h` for the full list of CLI options.
 - [Database with mysql2](https://poku.io/docs/examples/database/mysql2): End-to-end testing with the mysql2 driver and Docker Compose.
 - [Database with pg](https://poku.io/docs/examples/database/pg): End-to-end testing with the pg driver and Docker Compose.
 - [Database with Prisma](https://poku.io/docs/examples/database/prisma): End-to-end testing with Prisma and Docker Compose.
+- [Database with ScyllaDB](https://poku.io/docs/examples/database/scylladb): End-to-end testing with the cassandra-driver and Docker Compose.
 - [Database with Sequelize](https://poku.io/docs/examples/database/sequelize): End-to-end testing with Sequelize and Docker Compose.
 - [Database with TypeORM](https://poku.io/docs/examples/database/typeorm): End-to-end testing with TypeORM and Docker Compose.
 
