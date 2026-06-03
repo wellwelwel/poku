@@ -118,9 +118,7 @@ await describe('Users table', async () => {
 });
 ```
 
-## Configure Poku (optional)
-
-> Configuring Poku is entirely optional. You can orchestrate your containers however you prefer and run Poku as `poku --envFile='.env.test'`, for example. In that case, `@pokujs/docker` is not needed.
+## Configure Poku
 
 `poku.config.js`:
 
@@ -140,6 +138,8 @@ export default defineConfig({
   ],
 });
 ```
+
+- Configuring Poku is optional: you can orchestrate your containers however you prefer and run Poku as `poku --envFile='.env.test'`, for example. In that case, `@pokujs/docker` is not needed.
 
 ## Run
 
