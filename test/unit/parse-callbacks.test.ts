@@ -91,7 +91,7 @@ const cbFalsePositives = {
   },
 };
 
-describe('Parse Callbacks: checkOnly — true', () => {
+describe('Parse Callbacks: checkOnly (true)', () => {
   assert.strictEqual(checkOnly(undefined), false, 'No function');
 
   assert.strictEqual(
@@ -149,7 +149,7 @@ describe('Parse Callbacks: checkOnly — true', () => {
   );
 });
 
-describe('Parse Callbacks: checkOnly — false', () => {
+describe('Parse Callbacks: checkOnly (false)', () => {
   assert.strictEqual(
     checkOnly(cbWithoutOnly.function),
     false,
@@ -205,7 +205,7 @@ describe('Parse Callbacks: checkOnly — false', () => {
   );
 });
 
-describe('Parse Callbacks: checkNoOnly — true', () => {
+describe('Parse Callbacks: checkNoOnly (true)', () => {
   assert.strictEqual(checkNoOnly(undefined), false, 'No function');
 
   assert.strictEqual(
@@ -263,7 +263,7 @@ describe('Parse Callbacks: checkNoOnly — true', () => {
   );
 });
 
-describe('Parse Callbacks: checkNoOnly — false', () => {
+describe('Parse Callbacks: checkNoOnly (false)', () => {
   assert.strictEqual(
     checkNoOnly(cbWithOnly.function),
     false,

@@ -20,7 +20,7 @@ Controls process isolation for test files.
   ]}
 />
 
-By default, **Poku** runs each test file in a separate child process. This ensures full isolation between tests — each file gets its own `process.exitCode`, module cache, and global state.
+By default, **Poku** runs each test file in a separate child process. This ensures full isolation between tests: each file gets its own `process.exitCode`, module cache, and global state.
 
 Setting `isolation` to `none` runs all test files in the same process instead of spawning a new one for each file. This is useful for debugging with `node --inspect` or `node --inspect-brk`.
 

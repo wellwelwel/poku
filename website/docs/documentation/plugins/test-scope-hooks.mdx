@@ -134,7 +134,7 @@ composeScopeHooks({
 1. Register providers once during plugin bootstrap with `composeScopeHooks`.
 2. Keep `createHolder` cheap and synchronous.
 3. Ensure `runScoped` always awaits `fn` before returning.
-4. Keep scope state test-local; never reuse mutable holders across tests.
+4. Keep scope state test-local. Never reuse mutable holders across tests.
 5. Run cleanup in `finally` semantics inside your scope runtime.
 
 ## Important Notes

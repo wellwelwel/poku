@@ -9,7 +9,7 @@ import { Stability } from '@site/src/components/Stability';
 
 # 🪢 Shared Resources
 
-Share state, servers, database connections, and more between parallel test files — no duplicated setup, no conflicts.
+Share state, servers, database connections, and more between parallel test files, with no duplicated setup and no conflicts.
 
 :::note Advanced
 **Shared Resources** is an advanced plugin for sharing the same instance across parallel test files.
@@ -79,7 +79,7 @@ Share state, servers, database connections, and more between parallel test files
 - Coordinate state and assertions between parallel or sequential tests.
 - Manage setup and teardown logic in one place.
 
-The resource system automatically handles inter-process communication, serialization, and cleanup — so you can focus on writing tests.
+The resource system automatically handles inter-process communication, serialization, and cleanup, so you can focus on writing tests.
 
 ## Install
 
@@ -141,7 +141,7 @@ export const CounterContext = resource.create(() => ({
 }));
 ```
 
-`resource.create()` automatically detects the file path of your resource module. It takes a factory function as its first argument — a function that returns the resource object with methods.
+`resource.create()` automatically detects the file path of your resource module. It takes a factory function as its first argument, a function that returns the resource object with methods.
 
 > **Troubleshooting:** If `resource.create()` fails to detect the module path automatically, you can set `module` explicitly as a fallback:
 >

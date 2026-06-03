@@ -74,7 +74,7 @@ Compartilhe estado, servidores, conexões de banco de dados e mais entre arquivo
 - Coordene estado e asserções entre testes paralelos ou sequenciais.
 - Gerencie a lógica de setup e teardown em um único lugar.
 
-O sistema de recursos lida automaticamente com comunicação entre processos, serialização e limpeza — para que você possa focar em escrever testes.
+O sistema de recursos lida automaticamente com comunicação entre processos, serialização e limpeza, para que você possa focar em escrever testes.
 
 ## Instalação
 
@@ -136,7 +136,7 @@ export const CounterContext = resource.create(() => ({
 }));
 ```
 
-`resource.create()` detecta automaticamente o caminho do arquivo do seu módulo de recurso. Ele recebe uma função factory como primeiro argumento — uma função que retorna o objeto de recurso com métodos.
+`resource.create()` detecta automaticamente o caminho do arquivo do seu módulo de recurso. Ele recebe uma função factory como primeiro argumento, ou seja, uma função que retorna o objeto de recurso com métodos.
 
 > **Solução de problemas:** Se o `resource.create()` não conseguir detectar o caminho do módulo automaticamente, você pode definir `module` explicitamente como fallback:
 >

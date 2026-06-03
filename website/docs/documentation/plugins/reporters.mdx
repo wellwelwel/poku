@@ -7,11 +7,11 @@ import { FAQ } from '@site/src/components/FAQ';
 
 # 📊 Custom Reporters
 
-**Poku** ships with built-in reporters (`poku`, `dot`, `compact`, `focus`, `classic`) — see the [reporter option](/docs/documentation/poku/options/reporter) for details. You can also create your own reporter to fully control test output.
+**Poku** ships with built-in reporters (`poku`, `dot`, `compact`, `focus`, `classic`). See the [reporter option](/docs/documentation/poku/options/reporter) for details. You can also create your own reporter to fully control test output.
 
 > `createReporter(events: ReporterEvents): ReporterPlugin`
 
-`createReporter` merges your event handlers with the default `poku` reporter. You only need to override the events you care about — the rest fall back to defaults.
+`createReporter` merges your event handlers with the default `poku` reporter. You only need to override the events you care about, and the rest fall back to defaults.
 
 ```ts
 import { createReporter } from 'poku/plugins';
@@ -84,7 +84,7 @@ type ReporterPlugin = (configs?: Configs) => {
 };
 ```
 
-`ReporterEvents` is `Partial<ReturnType<ReporterPlugin>>` — you can provide any subset of the event handlers.
+`ReporterEvents` is `Partial<ReturnType<ReporterPlugin>>`. You can provide any subset of the event handlers.
 
 ## Event Reference
 

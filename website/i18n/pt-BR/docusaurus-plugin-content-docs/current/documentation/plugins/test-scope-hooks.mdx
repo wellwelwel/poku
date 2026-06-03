@@ -144,7 +144,7 @@ composeScopeHooks({
 1. Registre providers uma unica vez no bootstrap do plugin com `composeScopeHooks`.
 2. Mantenha `createHolder` simples e sincronico.
 3. Garanta que `runScoped` sempre aguarde `fn` antes de retornar.
-4. Mantenha estado local ao teste; nao reutilize holders mutaveis entre testes.
+4. Mantenha estado local ao teste. Nao reutilize holders mutaveis entre testes.
 5. Rode cleanup com semantica de `finally` dentro do runtime de escopo.
 
 ## Observacoes Importantes

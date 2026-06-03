@@ -19,7 +19,7 @@ import { Stability } from '@site/src/components/Stability';
 
 <Stability level={2} />
 
-Extend **Poku**'s behavior with plugins — hook into the test lifecycle, customize how test files are spawned, enable inter-process communication, and more.
+Extend **Poku**'s behavior with plugins: hook into the test lifecycle, customize how test files are spawned, enable inter-process communication, and more.
 
 ## What Can Plugins Do?
 
@@ -53,7 +53,7 @@ Plugins are executed in the following order:
 2. **`discoverFiles()`** from the first plugin that defines it determines the test files _(if no plugin defines it, **Poku** scans the configured directories)_.
 3. For each test file:
    - **`runner()`** modifies the spawn command _(only the first plugin with a `runner` hook is used)_.
-   - The process is spawned — with an IPC channel if any plugin sets `ipc: true`.
+   - The process is spawned with an IPC channel if any plugin sets `ipc: true`.
    - **`onTestProcess()`** is called for every plugin that defines it.
 4. After all tests complete: **`teardown()`** is called for each plugin, sequentially in array order.
 

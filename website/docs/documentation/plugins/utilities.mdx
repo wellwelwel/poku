@@ -33,7 +33,7 @@ import {
 
 > `definePlugin(plugin: PokuPlugin): PokuPlugin`
 
-An identity function that provides type checking and IDE autocompletion when creating plugins. Returns the plugin object as-is — no runtime transformation.
+An identity function that provides type checking and IDE autocompletion when creating plugins. Returns the plugin object as-is, with no runtime transformation.
 
 ```ts
 import { definePlugin } from 'poku/plugins';
@@ -150,7 +150,7 @@ await result.kill();
 
 Parses a stack trace string and extracts the first file path found. Supports `file://` URLs, Unix absolute paths, and Windows absolute paths.
 
-When `skipInternal` is `true`, lines containing `poku/lib/` are skipped — useful for finding the caller's file instead of **Poku** internals.
+When `skipInternal` is `true`, lines containing `poku/lib/` are skipped, which is useful for finding the caller's file instead of **Poku** internals.
 
 Returns the file path string, or an empty string if no path is found.
 
