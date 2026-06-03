@@ -1,6 +1,6 @@
 # Database Testing with Poku and Prisma
 
-> End-to-end example of testing a PostgreSQL database with Poku and Prisma, from installing the client to spinning the database up with Docker Compose.
+> End-to-end example of testing Poku and Prisma, from installing the client to spinning the database up with Docker Compose.
 
 Open the connection in an outer `describe`, put every assertion inside its own `it`, and disconnect at the end of that same `describe`, so cleanup always runs regardless of what an individual assertion does. The container lifecycle lives in a [`poku.config.js`](https://poku.io/docs/documentation/poku/config-files) anonymous plugin that uses [`@pokujs/docker`](https://poku.io/docs/documentation/helpers/containers) to run `setup` before the suite and `teardown` after it, so the suite runs with a plain `npm test`.
 

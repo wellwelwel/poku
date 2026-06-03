@@ -1,13 +1,13 @@
-# Database Testing with Poku and Drizzle
+# Database Testing with Poku and Knex
 
-> End-to-end example of testing Poku and Drizzle ORM, from installing the driver to spinning the database up with Docker Compose.
+> End-to-end example of testing Poku and the Knex query builder, from installing the driver to spinning the database up with Docker Compose.
 
-Open the connection in an outer `describe`, put every assertion inside its own `it`, and close the connection at the end of that same `describe`, so cleanup always runs regardless of what an individual assertion does. The container lifecycle lives in a [`poku.config.js`](https://poku.io/docs/documentation/poku/config-files) anonymous plugin that uses [`@pokujs/docker`](https://poku.io/docs/documentation/helpers/containers) to run `setup` before the suite and `teardown` after it, so the suite runs with a plain `npm test`.
+Open the connection in an outer `describe`, put every assertion inside its own `it`, and destroy the pool at the end of that same `describe`, so cleanup always runs regardless of what an individual assertion does. A single-connection pool keeps every statement on the same connection, which a temporary table requires. The container lifecycle lives in a [`poku.config.js`](https://poku.io/docs/documentation/poku/config-files) anonymous plugin that uses [`@pokujs/docker`](https://poku.io/docs/documentation/helpers/containers) to run `setup` before the suite and `teardown` after it, so the suite runs with a plain `npm test`.
 
 ## Install
 
 ```bash
-npm i drizzle-orm pg
+npm i knex pg
 npm i -D poku tsx @pokujs/docker @types/pg
 ```
 
@@ -16,11 +16,11 @@ npm i -D poku tsx @pokujs/docker @types/pg
 `.env.test`:
 
 ```bash
+DB_HOST=localhost
+DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=secret
-DB_PORT=5432
 DB_NAME=app
-DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}"
 ```
 
 `.gitignore`:
@@ -58,32 +58,25 @@ services:
         condition: service_healthy
 ```
 
-## Define the schema and connection
+## Connect
 
-`schema.ts`:
-
-```ts
-import { integer, pgTable, text } from 'drizzle-orm/pg-core';
-
-export const users = pgTable('users', {
-  id: integer('id').primaryKey(),
-  name: text('name').notNull(),
-});
-```
-
-`db.ts` reads the connection string from `process.env`. A single `Client`, not a pool, keeps every statement on the same connection, which a temporary table requires:
+`db.ts` reads every access from `process.env`:
 
 ```ts
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Client } from 'pg';
+import knex from 'knex';
 
-export const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-});
-
-await client.connect();
-
-export const db = drizzle({ client });
+export const connect = () =>
+  knex({
+    client: 'pg',
+    connection: {
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+    },
+    pool: { min: 1, max: 1 },
+  });
 ```
 
 ## Write the test
@@ -91,26 +84,24 @@ export const db = drizzle({ client });
 `users.test.ts`:
 
 ```ts
-import { eq, sql } from 'drizzle-orm';
 import { describe, it, assert } from 'poku';
-import { client, db } from './db.js';
-import { users } from './schema.js';
+import { connect } from './db.js';
 
 await describe('Users table', async () => {
+  const db = connect();
+
   await describe('Seed', async () => {
-    await db.execute(
-      sql`CREATE TEMP TABLE users (id INT PRIMARY KEY, name TEXT NOT NULL)`
-    );
-    await db.insert(users).values({ id: 1, name: 'Poku' });
+    await db.raw('CREATE TEMP TABLE users (id INT PRIMARY KEY, name TEXT)');
+    await db('users').insert({ id: 1, name: 'Poku' });
   });
 
   await it('reads the inserted user', async () => {
-    const [user] = await db.select().from(users).where(eq(users.id, 1));
+    const user = await db('users').select('name').where({ id: 1 }).first();
 
     assert.strictEqual(user.name, 'Poku', 'The inserted user is returned');
   });
 
-  await client.end();
+  await db.destroy();
 });
 ```
 
