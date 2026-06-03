@@ -1,4 +1,4 @@
-# Database Testing with Poku and mysql2
+# Database Testing with Poku and mysql2 (MySQL)
 
 > End-to-end example of testing a MySQL database with Poku and the mysql2 driver, from installing the driver to spinning the database up with Docker Compose.
 
@@ -86,12 +86,14 @@ import { connect } from './db.js';
 await describe('Users table', async () => {
   const connection = await connect();
 
-  await connection.execute(
-    'CREATE TEMPORARY TABLE users (id INT PRIMARY KEY, name VARCHAR(100))'
-  );
-  await connection.execute('INSERT INTO users (id, name) VALUES (1, ?)', [
-    'Poku',
-  ]);
+  await describe('Seed', async () => {
+    await connection.execute(
+      'CREATE TEMPORARY TABLE users (id INT PRIMARY KEY, name VARCHAR(100))'
+    );
+    await connection.execute('INSERT INTO users (id, name) VALUES (1, ?)', [
+      'Poku',
+    ]);
+  });
 
   await it('reads the inserted user', async () => {
     const [rows] = await connection.execute<RowDataPacket[]>(

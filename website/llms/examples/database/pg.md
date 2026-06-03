@@ -1,4 +1,4 @@
-# Database Testing with Poku and pg
+# Database Testing with Poku and pg (PostgreSQL)
 
 > End-to-end example of testing a PostgreSQL database with Poku and the pg driver, from installing the driver to spinning the database up with Docker Compose.
 
@@ -91,8 +91,12 @@ import { connect } from './db.js';
 await describe('Users table', async () => {
   const client = await connect();
 
-  await client.query('CREATE TEMP TABLE users (id INT PRIMARY KEY, name TEXT)');
-  await client.query('INSERT INTO users (id, name) VALUES (1, $1)', ['Poku']);
+  await describe('Seed', async () => {
+    await client.query(
+      'CREATE TEMP TABLE users (id INT PRIMARY KEY, name TEXT)'
+    );
+    await client.query('INSERT INTO users (id, name) VALUES (1, $1)', ['Poku']);
+  });
 
   await it('reads the inserted user', async () => {
     const result = await client.query<{ name: string }>(

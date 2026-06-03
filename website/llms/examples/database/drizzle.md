@@ -97,10 +97,12 @@ import { client, db } from './db.js';
 import { users } from './schema.js';
 
 await describe('Users table', async () => {
-  await db.execute(
-    sql`CREATE TEMP TABLE users (id INT PRIMARY KEY, name TEXT NOT NULL)`
-  );
-  await db.insert(users).values({ id: 1, name: 'Poku' });
+  await describe('Seed', async () => {
+    await db.execute(
+      sql`CREATE TEMP TABLE users (id INT PRIMARY KEY, name TEXT NOT NULL)`
+    );
+    await db.insert(users).values({ id: 1, name: 'Poku' });
+  });
 
   await it('reads the inserted user', async () => {
     const [user] = await db.select().from(users).where(eq(users.id, 1));

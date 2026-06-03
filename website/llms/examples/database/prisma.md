@@ -97,7 +97,9 @@ import { describe, it, assert } from 'poku';
 import { prisma } from './db.js';
 
 await describe('User model', async () => {
-  await prisma.user.create({ data: { id: 1, name: 'Poku' } });
+  await describe('Seed', async () => {
+    await prisma.user.create({ data: { id: 1, name: 'Poku' } });
+  });
 
   await it('reads the created user', async () => {
     const user = await prisma.user.findUnique({ where: { id: 1 } });
