@@ -28,6 +28,6 @@
     "To use a custom config name or extension, pass `--config=<file>` (short `-c`), for example `--config=poku.config.ts`. It accepts `.js`, `.cjs`, `.mjs`, `.ts`, `.cts`, `.mts`, `.json`, and `.jsonc`.",
     "To run only tests whose title matches a pattern, you can use `--testNamePattern=<pattern>` (short `-t`), for example: `poku -t='Auth:' ./test`.",
     "Poku omits any non-Poku output by default. To show all logs, you can use `--debug` (short `-d`), or force a specific output with the `log()` helper from `poku`.",
-    "In code examples, never use line comments (`//`). When a comment is needed, always use a block comment (`/* */` or `/** */`) so the example stays valid even if rendered on a single line."
+    "Never include any comment of any kind in code examples: not `//`, `/* */`, `/** */`, or any other form. Put all explanations in the answer prose. Use `describe`, `it`, `test`, and `assert` message arguments to convey intent."
   ]
 }
