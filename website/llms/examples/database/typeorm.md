@@ -8,6 +8,9 @@ Open the connection in an outer `describe`, put every assertion inside its own `
 
 ```bash
 npm i typeorm pg reflect-metadata
+```
+
+```bash
 npm i -D poku tsx @pokujs/docker
 ```
 
