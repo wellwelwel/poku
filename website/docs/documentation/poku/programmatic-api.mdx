@@ -8,7 +8,7 @@ tags: [poku, noExit, exit, runner, advanced]
 Run **Poku** as a function instead of from the CLI or a configuration file.
 
 :::note Advanced
-This is a low-level API. Prefer the [**CLI**](/docs/documentation/poku/include-files#cli) or a [**`poku.config.js`**](/docs/documentation/poku/config-files) for almost everything. To orchestrate containers or services, use a [plugin](/docs/documentation/plugins/creating-plugins) with `setup`/`teardown`. To run multiple suites, use [`@pokujs/multi-suite`](/docs/documentation/helpers/multi-suite). Reach for the programmatic API only when you need imperative control over the run, such as conditional multi-phase flows.
+This is a low-level API. Prefer the [**CLI**](/docs/documentation/poku/include-files#cli) or a [**`poku.config.js`**](/docs/documentation/poku/config-files) for almost everything. To orchestrate containers or services, use a [plugin](/docs/documentation/plugins/creating-plugins) with `setup`/`teardown`. To run multiple suites, use [`@pokujs/multi-suite`](/docs/documentation/plugins/official/multi-suite). Reach for the programmatic API only when you need imperative control over the run, such as conditional multi-phase flows.
 :::
 
 ## `poku(targetPaths, options)`
@@ -60,5 +60,5 @@ exit(code);
 - `exit(code)` shows the final results and ends the process with the given code.
 
 :::tip
-For most multi-suite needs, prefer the config-based approach with [`@pokujs/multi-suite`](/docs/documentation/helpers/multi-suite), which runs independent suites sequentially from a single and simple `poku.config.js`.
+For most multi-suite needs, prefer the config-based approach with [`@pokujs/multi-suite`](/docs/documentation/plugins/official/multi-suite), which runs independent suites sequentially from a single and simple `poku.config.js`.
 :::

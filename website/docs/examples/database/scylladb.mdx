@@ -7,7 +7,7 @@ tags: [database, e2e, integration, scylladb, cassandra]
 
 > End-to-end example of testing a ScyllaDB database with Poku and the cassandra-driver, from installing the driver to spinning the database up with Docker Compose.
 
-Open the connection in an outer `describe`, put every assertion inside its own `it`, and shut down the client at the end of that same `describe`, so cleanup always runs regardless of what an individual assertion does. CQL has no temporary table, so the table and rows persist in a shared keyspace, and the suite runs with `sequential` to keep the data deterministic. The container lifecycle lives in a [`poku.config.js`](/docs/documentation/poku/config-files) anonymous plugin that uses [`@pokujs/docker`](/docs/documentation/helpers/containers) to run `setup` before the suite and `teardown` after it, so the suite runs with a plain `npm test`.
+Open the connection in an outer `describe`, put every assertion inside its own `it`, and shut down the client at the end of that same `describe`, so cleanup always runs regardless of what an individual assertion does. CQL has no temporary table, so the table and rows persist in a shared keyspace, and the suite runs with `sequential` to keep the data deterministic. The container lifecycle lives in a [`poku.config.js`](/docs/documentation/poku/config-files) anonymous plugin that uses [`@pokujs/docker`](/docs/documentation/plugins/official/containers) to run `setup` before the suite and `teardown` after it, so the suite runs with a plain `npm test`.
 
 ## Install
 

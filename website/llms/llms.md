@@ -98,7 +98,6 @@ Run `poku -h` for the full list of CLI options.
 - [describe](https://poku.io/docs/documentation/helpers/describe): Group and title test suites, with support for nesting.
 - [it](https://poku.io/docs/documentation/helpers/it): Label individual test cases inside a describe block.
 - [test](https://poku.io/docs/documentation/helpers/test): Standalone test helper, an alternative to it for flat structures.
-- [Coverage](https://poku.io/docs/documentation/helpers/coverage): Enable coverage with `--coverage` and a plugin such as `@pokujs/c8`.
 - [startService](https://poku.io/docs/documentation/helpers/startService): Start a service or long-running process before your tests and stop it afterward.
 
 ## Configuration and CLI
@@ -108,6 +107,14 @@ Run `poku -h` for the full list of CLI options.
 - [Reporters](https://poku.io/docs/documentation/poku/options/reporter): Choose an output style, `poku` (default), `compact`, `dot`, `focus`, or `classic`.
 - [testNamePattern](https://poku.io/docs/documentation/poku/options/testNamePattern): Run only tests whose title matches a pattern (`-t`).
 - [debug](https://poku.io/docs/documentation/poku/options/debug): Show all output from test files, including suppressed logs (`-d`).
+
+## Official Plugins
+
+- [Coverage](https://poku.io/docs/documentation/plugins/official/coverage): Enable coverage with `--coverage` and a plugin such as `@pokujs/c8`, `@pokujs/monocart`, `@pokujs/istanbul`, or `@pokujs/one-double-zero`.
+- [@pokujs/react](https://poku.io/docs/documentation/plugins/official/react): Render and assert on React components inside Poku tests, with a real DOM environment and zero config.
+- [@pokujs/docker](https://poku.io/docs/documentation/plugins/official/containers): Mount and unmount containers around your tests, with a minimal API for Docker Compose and Dockerfiles.
+- [@pokujs/multi-suite](https://poku.io/docs/documentation/plugins/official/multi-suite): Run multiple independent test suites, each with its own configuration, as a single unified execution.
+- [@pokujs/shared-resources](https://poku.io/docs/documentation/plugins/official/shared-resources): Share state, servers, and database connections across parallel test files.
 
 ## Examples
 

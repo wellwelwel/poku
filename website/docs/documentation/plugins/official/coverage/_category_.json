@@ -3,7 +3,7 @@
   "collapsible": false,
   "link": {
     "type": "doc",
-    "id": "documentation/helpers/coverage/index"
+    "id": "documentation/plugins/official/coverage/index"
   },
-  "position": 13
+  "position": 1
 }
