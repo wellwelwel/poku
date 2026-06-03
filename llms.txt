@@ -113,6 +113,13 @@ Run `poku -h` for the full list of CLI options.
 
 - [Promises](https://poku.io/docs/examples/promises): Sequential and parallel asynchronous tests in the same file, plus post-test steps.
 - [Parameterized tests](https://poku.io/docs/examples/parameterized-tests): Drive the same assertion with multiple input and output pairs.
+- [Database with Drizzle](https://poku.io/docs/examples/database/drizzle): End-to-end testing with Drizzle ORM and Docker Compose.
+- [Database with Knex](https://poku.io/docs/examples/database/knex): End-to-end testing with Knex and Docker Compose.
+- [Database with mysql2](https://poku.io/docs/examples/database/mysql2): End-to-end testing with the mysql2 driver and Docker Compose.
+- [Database with pg](https://poku.io/docs/examples/database/pg): End-to-end testing with the pg driver and Docker Compose.
+- [Database with Prisma](https://poku.io/docs/examples/database/prisma): End-to-end testing with Prisma and Docker Compose.
+- [Database with Sequelize](https://poku.io/docs/examples/database/sequelize): End-to-end testing with Sequelize and Docker Compose.
+- [Database with TypeORM](https://poku.io/docs/examples/database/typeorm): End-to-end testing with TypeORM and Docker Compose.
 
 ## Tutorials
 
