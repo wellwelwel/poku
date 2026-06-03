@@ -101,13 +101,6 @@ npx poku --reporter=classic
   <TabItem default value='poku'>
 
 ```ts
-{
-  // "$schema": "https://poku.io/schemas/configs.json",
-  "reporter": "poku" // default
-}
-```
-
-```ts
 const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
@@ -115,15 +108,15 @@ module.exports = defineConfig({
 });
 ```
 
-  </TabItem>
-  <TabItem default value='dot'>
-
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
-  "reporter": "dot"
+  "reporter": "poku" // default
 }
 ```
+
+  </TabItem>
+  <TabItem default value='dot'>
 
 ```ts
 const { defineConfig } = require('poku');
@@ -133,15 +126,15 @@ module.exports = defineConfig({
 });
 ```
 
-  </TabItem>
-  <TabItem default value='compact'>
-
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
-  "reporter": "compact"
+  "reporter": "dot"
 }
 ```
+
+  </TabItem>
+  <TabItem default value='compact'>
 
 ```ts
 const { defineConfig } = require('poku');
@@ -151,15 +144,15 @@ module.exports = defineConfig({
 });
 ```
 
-  </TabItem>
-  <TabItem default value='focus'>
-
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
-  "reporter": "focus"
+  "reporter": "compact"
 }
 ```
+
+  </TabItem>
+  <TabItem default value='focus'>
 
 ```ts
 const { defineConfig } = require('poku');
@@ -169,15 +162,15 @@ module.exports = defineConfig({
 });
 ```
 
-  </TabItem>
-  <TabItem default value='classic'>
-
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
-  "reporter": "classic"
+  "reporter": "focus"
 }
 ```
+
+  </TabItem>
+  <TabItem default value='classic'>
 
 ```ts
 const { defineConfig } = require('poku');
@@ -185,6 +178,13 @@ const { defineConfig } = require('poku');
 module.exports = defineConfig({
   reporter: 'classic',
 });
+```
+
+```ts
+{
+  // "$schema": "https://poku.io/schemas/configs.json",
+  "reporter": "classic"
+}
 ```
 
   </TabItem>

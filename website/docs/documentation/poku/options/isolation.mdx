@@ -49,13 +49,6 @@ npx poku --isolation=none ./test
   <TabItem default value='process'>
 
 ```ts
-{
-  // "$schema": "https://poku.io/schemas/configs.json",
-  "isolation": "process" // default
-}
-```
-
-```ts
 const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
@@ -63,15 +56,15 @@ module.exports = defineConfig({
 });
 ```
 
-  </TabItem>
-  <TabItem value='none'>
-
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
-  "isolation": "none"
+  "isolation": "process" // default
 }
 ```
+
+  </TabItem>
+  <TabItem value='none'>
 
 ```ts
 const { defineConfig } = require('poku');
@@ -79,6 +72,13 @@ const { defineConfig } = require('poku');
 module.exports = defineConfig({
   isolation: 'none',
 });
+```
+
+```ts
+{
+  // "$schema": "https://poku.io/schemas/configs.json",
+  "isolation": "none"
+}
 ```
 
   </TabItem>
