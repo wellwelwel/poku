@@ -251,35 +251,27 @@ Tests performed inside a container (**Dockerfile**), returning the output, stopp
 
 <hr />
 
-Starts a container before the entire test suite and stops it on finishing:
+Start a container before the entire test suite and stop it on finishing, using a `poku.config.js` with an anonymous plugin:
 
-> **Poku** _API_ example.
-
-```ts
-import { poku, exit } from 'poku';
+```js
+import { defineConfig } from 'poku';
 import { docker } from '@pokujs/docker';
 
 const compose = docker.compose({ cwd: './test/docker' });
 
-// Removes the container if it already exists before to start
-await compose.down();
-
-// Starts the container
-await compose.up();
-
-const result = await poku('./test/integration', {
-  noExit: true,
+export default defineConfig({
+  include: './test/integration',
+  plugins: [
+    {
+      setup: () => compose.up(),
+      teardown: () => compose.down(),
+    },
+  ],
 });
-
-// Stops the container
-await compose.down();
-
-// Shows the test results and ends the process with the test exit code.
-exit(result);
 ```
 
-```sh
-node run.test.mjs
+```bash
+npx poku
 ```
 
 <hr />

@@ -4,6 +4,8 @@ tags: [processes, ports]
 ---
 
 import { History } from '@site/src/components/History';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Killing Processes
 
@@ -53,7 +55,37 @@ Also, terminating multiple ports:
 npx poku --killPort="4000,4001" targetPath
 ```
 
-### API
+### Config File
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  kill: {
+    port: [4000],
+  },
+});
+```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "kill": {
+    "port": [4000]
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Helper
 
 ```ts
 import { kill } from 'poku';
@@ -91,7 +123,37 @@ Also, terminating multiple port ranges:
 npx poku --killRange="4000-4100,5000-5100" targetPath
 ```
 
-### API
+### Config File
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  kill: {
+    range: [[4000, 4100]],
+  },
+});
+```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "kill": {
+    "range": [[4000, 4100]]
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Helper
 
 ```ts
 import { kill } from 'poku';
@@ -121,7 +183,37 @@ Also, terminating multiple processes:
 npx poku --killPid="100,200" targetPath
 ```
 
-### API
+### Config File
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  kill: {
+    pid: [100],
+  },
+});
+```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "kill": {
+    "pid": [100]
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Helper
 
 ```ts
 import { kill } from 'poku';

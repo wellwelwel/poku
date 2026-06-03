@@ -1,0 +1,61 @@
+# A Complex Case
+
+**Imagine these steps to perform a test:**
+
+1. Perform **Unit Tests** suite in parallel
+2. Clear and Populate the Database
+3. Check for **Expected Successes Integration** suite sequentially
+4. Don't Clear or Populate the Database again
+5. Check for **Expected Failures Integration** suite sequentially
+
+**Requirements:**
+
+Each suite runs after the previous one, and the database is recreated only once, right before the integration suites.
+
+**Directory Structure:**
+
+```bash
+├── poku.config.js
+├── test
+│ ├── unit
+│ ├── integration
+│ │ ├── successes
+│ │ │ └── **/*.spec.js
+│ │ └── failures
+│ │   └── **/*.spec.js
+│ └── tools.js
+```
+
+> Do we really need to complicate things even more by creating advanced test runners to run our already complex tests? 😅
+
+### Poku's Solution ✨
+
+Use [`@pokujs/multi-suite`](/docs/documentation/helpers/multi-suite) to run the suites sequentially from a single `poku.config.js`, with a scoped plugin that recreates the database only before the integration suites:
+
+```js
+import { defineConfig } from 'poku';
+import { multiSuite } from '@pokujs/multi-suite';
+import { recreateDatabase } from './test/tools.js';
+
+export default defineConfig({
+  plugins: [
+    multiSuite([
+      { include: 'test/unit' },
+      {
+        include: 'test/integration/successes',
+        sequential: true,
+        plugins: [{ setup: () => recreateDatabase() }],
+      },
+      { include: 'test/integration/failures', sequential: true },
+    ]),
+  ],
+});
+```
+
+```bash
+npx poku
+```
+
+:::tip
+If you need strict imperative control, for example aborting as soon as a phase fails, see the [Programmatic API](/docs/documentation/poku/programmatic-api).
+:::
