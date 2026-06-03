@@ -40,16 +40,6 @@ export default defineConfig({
 });
 ```
 
-```ts
-// Or via the API
-import { poku } from 'poku';
-import { myReporter } from './reporters/my-reporter';
-
-await poku('./test', {
-  reporter: myReporter,
-});
-```
-
 :::note
 Reporter plugins are set via the `reporter` config option, **not** the `plugins` array. The `plugins` array is for `PokuPlugin` instances.
 :::

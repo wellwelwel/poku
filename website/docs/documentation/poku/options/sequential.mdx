@@ -3,6 +3,9 @@ sidebar_position: 1.1
 tags: [runInBand, sequence, test-sequential, no-parallel, jobs]
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `sequential`
 
 Run the tests files sequentially.
@@ -15,13 +18,31 @@ Run the tests files sequentially.
 npx poku --sequential ./test
 ```
 
-## API
+## Config File
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-await poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   sequential: true,
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "sequential": true
+}
+```
+
+  </TabItem>
+</Tabs>
 
 <hr />
 

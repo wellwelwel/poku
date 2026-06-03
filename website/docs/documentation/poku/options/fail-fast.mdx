@@ -4,6 +4,8 @@ tags: [bail]
 ---
 
 import { History } from '@site/src/components/History';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # `failFast`
 
@@ -29,10 +31,28 @@ By using `failFast`, **Poku** will stop the tests at the first failure.
 npx poku --failFast ./test
 ```
 
-## API
+## Config File
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-await poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   failFast: true,
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "failFast": true
+}
+```
+
+  </TabItem>
+</Tabs>

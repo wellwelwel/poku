@@ -3,6 +3,8 @@ sidebar_position: 6
 ---
 
 import { History } from '@site/src/components/History';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # `debug`
 
@@ -29,10 +31,28 @@ npx poku --debug ./test
 
 - Short flag: `-d`.
 
-## API
+## Config File
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-await poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   debug: true,
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "debug": true
+}
+```
+
+  </TabItem>
+</Tabs>
