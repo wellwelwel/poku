@@ -6,6 +6,7 @@ import process from 'node:process';
 import { each } from '../../configs/each.js';
 import { indentation } from '../../configs/indentation.js';
 import { errorHoist, GLOBAL } from '../../configs/poku.js';
+import { retryContext } from '../../configs/retry.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { getCallback, getTitle } from '../../parsers/get-test-args.js';
 import { createOnlyIt, skip, todo } from './modifiers.js';
@@ -46,9 +47,14 @@ export const itBase = async (
 
     if (!insideDescribe) {
       onError = (error: unknown): void => {
-        process.exitCode = 1;
-        success = false;
-        if (!(error instanceof AssertionError)) console.error(error);
+        const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+        if (ctx) {
+          ctx.failed = true;
+        } else {
+          process.exitCode = 1;
+          success = false;
+          if (!(error instanceof AssertionError)) console.error(error);
+        }
       };
 
       process.once('uncaughtException', onError);
@@ -68,9 +74,14 @@ export const itBase = async (
         if (resultCb instanceof Promise) await resultCb;
       }
     } catch (error) {
-      process.exitCode = 1;
-      success = false;
-      if (!(error instanceof AssertionError)) console.error(error);
+      const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+      if (ctx) {
+        ctx.failed = true;
+      } else {
+        process.exitCode = 1;
+        success = false;
+        if (!(error instanceof AssertionError)) console.error(error);
+      }
     } finally {
       end = process.hrtime(start);
 
@@ -78,7 +89,12 @@ export const itBase = async (
         process.removeListener('uncaughtException', onError);
         process.removeListener('unhandledRejection', onError);
       } else if (errorHoist.failed) {
-        success = false;
+        const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+        if (ctx) {
+          ctx.failed = true;
+        } else {
+          success = false;
+        }
         errorHoist.failed = false;
       }
     }

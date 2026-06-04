@@ -17,6 +17,8 @@ export const compact: ReporterPlugin = () => {
     onSkipFile() {},
     onSkipModifier() {},
     onTodoModifier() {},
+    onRetryStart() {},
+    onRetryEnd() {},
     onFileResult({ status, path, output }) {
       log(`${status ? BADGE_PASS : BADGE_FAIL} ${path.relative}`);
 
