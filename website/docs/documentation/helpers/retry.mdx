@@ -1,0 +1,197 @@
+---
+sidebar_position: 12
+tags: [flakiness, debugging, testing]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# 🔄 retry
+
+> `retry(attempts: number, cb: () => void)` | `retry(config: RetryConfig, cb: () => void)`
+
+`retry` is a helper designed to **detect flaky tests** by re-running failed tests a specified number of times.
+
+:::warning
+**`retry` is a diagnostic tool, not a solution.**
+
+Use `retry` to identify unstable tests that need fixing. A test that requires retries is a test that should be investigated and corrected. Relying on retries to pass tests masks underlying issues and leads to unreliable test suites.
+:::
+
+## Basic Usage
+
+### Simple retry
+
+Retry a test up to 3 times:
+
+```ts
+import { retry, it, assert } from 'poku';
+
+retry(3, () => {
+  it('flaky test', () => {
+    // This test may fail occasionally
+    assert.strictEqual(Math.random() > 0.5, true);
+  });
+});
+```
+
+### With configuration object
+
+Specify attempts and delay between retries:
+
+```ts
+import { retry, it, assert } from 'poku';
+
+retry({ attempts: 3, delay: 1000 }, () => {
+  it('flaky test', () => {
+    // Retry up to 3 times with 1 second delay between attempts
+    assert.strictEqual(Math.random() > 0.5, true);
+  });
+});
+```
+
+### Nested retries
+
+You can nest `retry` blocks for complex scenarios:
+
+```ts
+import { retry, it, assert } from 'poku';
+
+retry(2, () => {
+  retry(3, () => {
+    it('nested flaky test', () => {
+      // Outer: 2 attempts, Inner: 3 attempts per outer attempt
+      assert.strictEqual(Math.random() > 0.5, true);
+    });
+  });
+});
+```
+
+### Retry around describe
+
+Wrap entire `describe` blocks:
+
+```ts
+import { retry, describe, it, assert } from 'poku';
+
+retry(2, () => {
+  describe('flaky suite', () => {
+    it('test 1', () => {
+      assert.strictEqual(1, 1);
+    });
+
+    it('test 2', () => {
+      // This test may fail occasionally
+      assert.strictEqual(Math.random() > 0.5, true);
+    });
+  });
+});
+```
+
+---
+
+## Configuration
+
+### RetryConfig
+
+```ts
+type RetryConfig = {
+  attempts: number;  // Maximum number of attempts (including the first run)
+  delay?: number;    // Delay in milliseconds between retries (default: 0)
+};
+```
+
+---
+
+## When to Use `retry`
+
+### ✅ Appropriate use cases
+
+- **Identifying flaky tests**: Temporarily add `retry` to confirm a test is unstable
+- **Investigating failures**: Use `retry` while debugging to gather more information
+- **External dependencies**: Tests that depend on external services with known instability (use sparingly)
+
+### ❌ Inappropriate use cases
+
+- **Hiding broken tests**: Don't use `retry` to make failing tests pass
+- **Permanent solution**: If a test needs retries, it needs fixing
+- **Masking race conditions**: Fix the underlying timing issue instead
+
+---
+
+## Best Practices
+
+1. **Use temporarily**: Add `retry` to identify flakiness, then remove it after fixing the root cause
+2. **Investigate failures**: When a test passes with `retry` but fails without it, investigate why
+3. **Fix the test**: Address the underlying issue (timing, state, external dependencies)
+4. **Remove `retry`**: Once fixed, remove the `retry` wrapper to ensure the test is stable
+
+:::tip
+A healthy test suite should have **zero** `retry` usage. If you find yourself adding `retry` frequently, it's a sign that your tests need architectural improvements.
+:::
+
+---
+
+## How It Works
+
+`retry` uses a **stack-based context** to support nested retries:
+
+- When a test fails inside a `retry` block, it marks the current context as failed
+- The `retry` function re-executes the entire block up to `attempts` times
+- Nested `retry` blocks work independently, each with their own attempt counter
+- `describe` blocks propagate their failure status to the outermost `retry` context
+
+<FAQ title='Memory Efficiency'>
+
+`retry` uses **lazy allocation**: the stack is only created when `retry` is first called and reset to `null` when empty. If you never use `retry`, there's zero overhead.
+
+</FAQ>
+
+---
+
+## Examples
+
+### Detecting a race condition
+
+```ts
+import { retry, it, assert } from 'poku';
+
+// This test fails intermittently due to a race condition
+retry(5, () => {
+  it('async operation completes', async () => {
+    const result = await someAsyncOperation();
+    assert.strictEqual(result, 'expected');
+  });
+});
+
+// After identifying the flakiness, fix the race condition:
+// - Add proper synchronization
+// - Use deterministic timing
+// - Mock external dependencies
+// Then remove the retry wrapper
+```
+
+### Testing external API with known instability
+
+```ts
+import { retry, it, assert } from 'poku';
+
+// External API occasionally returns 503
+retry({ attempts: 3, delay: 2000 }, () => {
+  it('external API responds', async () => {
+    const response = await fetch('https://unstable-api.example.com/data');
+    assert.strictEqual(response.status, 200);
+  });
+});
+
+// Better approach: mock the external API in tests
+// Use retry only during development to identify the instability
+```
+
+---
+
+## Related
+
+- [`describe`](/docs/documentation/helpers/describe) - Group tests
+- [`it`](/docs/documentation/helpers/it) - Define individual tests
+- [`skip`](/docs/documentation/helpers/skip) - Skip tests
+- [`beforeEach` / `afterEach`](/docs/documentation/helpers/before-after-each/in-code) - Setup and teardown

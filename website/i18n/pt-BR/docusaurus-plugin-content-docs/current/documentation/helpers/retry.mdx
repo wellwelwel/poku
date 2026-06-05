@@ -1,0 +1,197 @@
+---
+sidebar_position: 12
+tags: [flakiness, debugging, testing]
+---
+
+import { FAQ } from '@site/src/components/FAQ';
+
+# 🔄 retry
+
+> `retry(attempts: number, cb: () => void)` | `retry(config: RetryConfig, cb: () => void)`
+
+`retry` é um auxiliar projetado para **detectar testes instáveis** (flaky tests) reexecutando testes que falharam um número especificado de vezes.
+
+:::warning
+**`retry` é uma ferramenta de diagnóstico, não uma solução.**
+
+Use `retry` para identificar testes instáveis que precisam ser corrigidos. Um teste que requer retentativas é um teste que deve ser investigado e corrigido. Depender de retentativas para aprovar testes mascara problemas subjacentes e leva a suítes de teste não confiáveis.
+:::
+
+## Uso Básico
+
+### Retentativa simples
+
+Retentar um teste até 3 vezes:
+
+```ts
+import { retry, it, assert } from 'poku';
+
+retry(3, () => {
+  it('teste instável', () => {
+    // Este teste pode falhar ocasionalmente
+    assert.strictEqual(Math.random() > 0.5, true);
+  });
+});
+```
+
+### Com objeto de configuração
+
+Especifique tentativas e atraso entre retentativas:
+
+```ts
+import { retry, it, assert } from 'poku';
+
+retry({ attempts: 3, delay: 1000 }, () => {
+  it('teste instável', () => {
+    // Retentar até 3 vezes com 1 segundo de atraso entre tentativas
+    assert.strictEqual(Math.random() > 0.5, true);
+  });
+});
+```
+
+### Retentativas aninhadas
+
+Você pode aninhar blocos `retry` para cenários complexos:
+
+```ts
+import { retry, it, assert } from 'poku';
+
+retry(2, () => {
+  retry(3, () => {
+    it('teste instável aninhado', () => {
+      // Externo: 2 tentativas, Interno: 3 tentativas por tentativa externa
+      assert.strictEqual(Math.random() > 0.5, true);
+    });
+  });
+});
+```
+
+### Retentativa ao redor de describe
+
+Envolva blocos `describe` inteiros:
+
+```ts
+import { retry, describe, it, assert } from 'poku';
+
+retry(2, () => {
+  describe('suíte instável', () => {
+    it('teste 1', () => {
+      assert.strictEqual(1, 1);
+    });
+
+    it('teste 2', () => {
+      // Este teste pode falhar ocasionalmente
+      assert.strictEqual(Math.random() > 0.5, true);
+    });
+  });
+});
+```
+
+---
+
+## Configuração
+
+### RetryConfig
+
+```ts
+type RetryConfig = {
+  attempts: number;  // Número máximo de tentativas (incluindo a primeira execução)
+  delay?: number;    // Atraso em milissegundos entre retentativas (padrão: 0)
+};
+```
+
+---
+
+## Quando Usar `retry`
+
+### ✅ Casos de uso apropriados
+
+- **Identificar testes instáveis**: Adicione `retry` temporariamente para confirmar que um teste é instável
+- **Investigar falhas**: Use `retry` durante a depuração para coletar mais informações
+- **Dependências externas**: Testes que dependem de serviços externos com instabilidade conhecida (use com moderação)
+
+### ❌ Casos de uso inapropriados
+
+- **Esconder testes quebrados**: Não use `retry` para fazer testes com falha passarem
+- **Solução permanente**: Se um teste precisa de retentativas, ele precisa ser corrigido
+- **Mascarar condições de corrida**: Corrija o problema de timing subjacente em vez disso
+
+---
+
+## Boas Práticas
+
+1. **Use temporariamente**: Adicione `retry` para identificar instabilidade, depois remova após corrigir a causa raiz
+2. **Investigue falhas**: Quando um teste passa com `retry` mas falha sem ele, investigue o porquê
+3. **Corrija o teste**: Resolva o problema subjacente (timing, estado, dependências externas)
+4. **Remova o `retry`**: Uma vez corrigido, remova o wrapper `retry` para garantir que o teste é estável
+
+:::tip
+Uma suíte de testes saudável deve ter **zero** uso de `retry`. Se você se pegar adicionando `retry` frequentemente, é um sinal de que seus testes precisam de melhorias arquiteturais.
+:::
+
+---
+
+## Como Funciona
+
+`retry` usa um **contexto baseado em pilha** (stack) para suportar retentativas aninhadas:
+
+- Quando um teste falha dentro de um bloco `retry`, ele marca o contexto atual como falho
+- A função `retry` reexecuta o bloco inteiro até `attempts` vezes
+- Blocos `retry` aninhados funcionam independentemente, cada um com seu próprio contador de tentativas
+- Blocos `describe` propagam seu status de falha para o contexto `retry` mais externo
+
+<FAQ title='Eficiência de Memória'>
+
+`retry` usa **alocação preguiçosa** (lazy allocation): a pilha só é criada quando `retry` é chamado pela primeira vez e resetada para `null` quando vazia. Se você nunca usar `retry`, não há overhead nenhum.
+
+</FAQ>
+
+---
+
+## Exemplos
+
+### Detectando uma condição de corrida
+
+```ts
+import { retry, it, assert } from 'poku';
+
+// Este teste falha intermitentemente devido a uma condição de corrida
+retry(5, () => {
+  it('operação assíncrona completa', async () => {
+    const result = await algumaOperacaoAssincrona();
+    assert.strictEqual(result, 'esperado');
+  });
+});
+
+// Após identificar a instabilidade, corrija a condição de corrida:
+// - Adicione sincronização adequada
+// - Use timing determinístico
+// - Mock dependências externas
+// Depois remova o wrapper retry
+```
+
+### Testando API externa com instabilidade conhecida
+
+```ts
+import { retry, it, assert } from 'poku';
+
+// API externa ocasionalmente retorna 503
+retry({ attempts: 3, delay: 2000 }, () => {
+  it('API externa responde', async () => {
+    const response = await fetch('https://api-instavel.exemplo.com/dados');
+    assert.strictEqual(response.status, 200);
+  });
+});
+
+// Abordagem melhor: mock a API externa nos testes
+// Use retry apenas durante o desenvolvimento para identificar a instabilidade
+```
+
+---
+
+## Relacionados
+
+- [`describe`](/docs/documentation/helpers/describe) - Agrupar testes
+- [`it`](/docs/documentation/helpers/it) - Definir testes individuais
+- [`skip`](/docs/documentation/helpers/skip) - Pular testes
+- [`beforeEach` / `afterEach`](/docs/documentation/helpers/before-after-each/in-code) - Setup e teardown
