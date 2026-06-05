@@ -168,7 +168,7 @@ deno run npm:poku
     <td>🌐 Run package.json scripts and files in background</td>
   </tr>
   <tr>
-    <td><a href="https://poku.io/docs/documentation/helpers/containers">docker</a></td>
+    <td><a href="https://poku.io/docs/documentation/plugins/official/containers">docker</a></td>
     <td>🐳 Build, start, compose, stop, remove, and test containers</td>
   </tr>
   <tr>
@@ -197,7 +197,7 @@ deno run npm:poku
 
 <table>
   <tr>
-    <td><a href="https://poku.io/docs/documentation/helpers/coverage">coverage</a></td>
+    <td><a href="https://poku.io/docs/documentation/plugins/official/coverage">coverage</a></td>
     <td>☔️ Enable coverage collection using a coverage plugin</td>
   </tr>
   <tr>

@@ -1,0 +1,64 @@
+---
+sidebar_position: 3
+tags: [poku, noExit, exit, runner, advanced]
+---
+
+# 🧰 Programmatic API
+
+Run **Poku** as a function instead of from the CLI or a configuration file.
+
+:::note Advanced
+This is a low-level API. Prefer the [**CLI**](/docs/documentation/poku/include-files#cli) or a [**`poku.config.js`**](/docs/documentation/poku/config-files) for almost everything. To orchestrate containers or services, use a [plugin](/docs/documentation/plugins/creating-plugins) with `setup`/`teardown`. To run multiple suites, use [`@pokujs/multi-suite`](/docs/documentation/plugins/official/multi-suite). Reach for the programmatic API only when you need imperative control over the run, such as conditional multi-phase flows.
+:::
+
+## `poku(targetPaths, options)`
+
+> `poku(targetPaths: string | string[], options?: Configs): Promise<undefined>`
+
+By default, **Poku** runs the suite and exits the process with the result.
+
+```ts
+import { poku } from 'poku';
+
+await poku('./test');
+```
+
+Then run the file directly with the preferred platform, for example:
+
+```bash
+node test/run.test.js
+```
+
+```bash
+npx tsx test/run.test.ts
+```
+
+## `noExit`
+
+> `poku(targetPaths, { noExit: true }): Promise<Code>`
+
+By setting `noExit` to `true`, **Poku** won't exit the process and will return the exit code (`0` or `1`), so you can keep working before ending the process yourself. Combine it with the `exit` method or use the result with `process.exit(code)`.
+
+```ts
+import { poku, exit } from 'poku';
+
+const unit = await poku('test/unit', {
+  noExit: true,
+  quiet: true,
+});
+
+const integration = await poku('test/integration', {
+  noExit: true,
+  quiet: true,
+});
+
+const code = Number(unit === 0 && integration === 0);
+
+exit(code);
+```
+
+- `exit(code)` shows the final results and ends the process with the given code.
+
+:::tip
+For most multi-suite needs, prefer the config-based approach with [`@pokujs/multi-suite`](/docs/documentation/plugins/official/multi-suite), which runs independent suites sequentially from a single and simple `poku.config.js`.
+:::

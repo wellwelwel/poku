@@ -96,21 +96,15 @@ If you're encountering issues using this feature with **Bun**, please see [**ove
 
 <FAQ title='Oh No! I broke it, and now? 🤡'>
 
-Releasing a leaking port:
+Release a leaking port with **Poku**'s [`kill`](/docs/documentation/helpers/processes/kill) helper:
 
-```bash
-lsof -i :PORT
+```ts
+import { kill } from 'poku';
+
+await kill.port(3000);
 ```
 
-- Replace `PORT` with the port number you're investigating.
-
-Then, use the `PID` returned with the `kill` command:
-
-```bash
-kill -9 PID
-```
-
-- Replace `PID` with the actual process ID you found using the `lsof` command.
+- Replace `3000` with the port you need to release.
 
 </FAQ>
 

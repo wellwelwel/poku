@@ -3,6 +3,9 @@ sidebar_position: 2
 tags: [grep]
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `filter`
 
 Filter by path using **Regex** to match only the files that should be performed. <br />
@@ -68,27 +71,56 @@ FILTER='unit' npx poku ./test
 FILTER='unit' npm run tests
 ```
 
-## API
+## Config File
+
+Matching `.test.` files:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-/**
- * @default
- *
- * Testing all `*.test.*` files.
- */
+import { defineConfig } from 'poku';
 
-await poku('./test', {
+export default defineConfig({
   filter: /\.test\./,
 });
 ```
 
-```ts
-/**
- * Testing all `ts`, `js`, `mts` and `mjs` files
- */
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
 
-await poku('./test', {
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "filter": ".test."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Matching all `js`, `ts`, `mjs` and `mts` files:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   filter: /\.(m)?(j|t)s$/,
-  // filter: /\.(js|ts|mjs|mts)$/,
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "filter": ".(m)?(j|t)s$"
+}
+```
+
+  </TabItem>
+</Tabs>

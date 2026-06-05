@@ -101,13 +101,6 @@ npx poku --reporter=classic
   <TabItem default value='poku'>
 
 ```ts
-{
-  // "$schema": "https://poku.io/schemas/configs.json",
-  "reporter": "poku" // default
-}
-```
-
-```ts
 const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
@@ -115,8 +108,23 @@ module.exports = defineConfig({
 });
 ```
 
+```ts
+{
+  // "$schema": "https://poku.io/schemas/configs.json",
+  "reporter": "poku" // default
+}
+```
+
   </TabItem>
   <TabItem default value='dot'>
+
+```ts
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  reporter: 'dot',
+});
+```
 
 ```ts
 {
@@ -125,16 +133,16 @@ module.exports = defineConfig({
 }
 ```
 
+  </TabItem>
+  <TabItem default value='compact'>
+
 ```ts
 const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
-  reporter: 'dot',
+  reporter: 'compact',
 });
 ```
-
-  </TabItem>
-  <TabItem default value='compact'>
 
 ```ts
 {
@@ -143,16 +151,16 @@ module.exports = defineConfig({
 }
 ```
 
+  </TabItem>
+  <TabItem default value='focus'>
+
 ```ts
 const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
-  reporter: 'compact',
+  reporter: 'focus',
 });
 ```
-
-  </TabItem>
-  <TabItem default value='focus'>
 
 ```ts
 {
@@ -161,80 +169,22 @@ module.exports = defineConfig({
 }
 ```
 
+  </TabItem>
+  <TabItem default value='classic'>
+
 ```ts
 const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
-  reporter: 'focus',
+  reporter: 'classic',
 });
 ```
-
-  </TabItem>
-  <TabItem default value='classic'>
 
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
   "reporter": "classic"
 }
-```
-
-```ts
-const { defineConfig } = require('poku');
-
-module.exports = defineConfig({
-  reporter: 'classic',
-});
-```
-
-  </TabItem>
-</Tabs>
-
-### API
-
-<Tabs groupId="reporters">
-  <TabItem default value='poku'>
-
-```ts
-await poku('./test', {
-  reporter: 'poku', // default
-});
-```
-
-  </TabItem>
-  <TabItem default value='dot'>
-
-```ts
-await poku('./test', {
-  reporter: 'dot',
-});
-```
-
-  </TabItem>
-  <TabItem default value='compact'>
-
-```ts
-await poku('./test', {
-  reporter: 'compact',
-});
-```
-
-  </TabItem>
-  <TabItem default value='focus'>
-
-```ts
-await poku('./test', {
-  reporter: 'focus',
-});
-```
-
-  </TabItem>
-  <TabItem default value='classic'>
-
-```ts
-await poku('./test', {
-  reporter: 'classic',
-});
 ```
 
   </TabItem>

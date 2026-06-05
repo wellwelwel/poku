@@ -3,6 +3,8 @@ sidebar_position: 98
 ---
 
 import { History } from '@site/src/components/History';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # `deno`
 
@@ -55,33 +57,97 @@ Clear all permissions:
 deno run npm:poku --denoAllow=''
 ```
 
-### API
+### Config File
+
+Allowed permissions:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   deno: {
-    allow: ['read', 'run' /* ... */],
+    allow: ['read', 'run'],
   },
 });
 ```
 
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "deno": {
+    "allow": ["read", "run"]
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Scoped permissions:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
 ```ts
-poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   deno: {
-    allow: ['read=file.js', 'run' /* ... */],
+    allow: ['read=file.js', 'run'],
   },
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "deno": {
+    "allow": ["read=file.js", "run"]
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
 
 Clear all permissions:
 
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
 ```ts
-poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   deno: {
     allow: [],
   },
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "deno": {
+    "allow": []
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
 
 <hr />
 
@@ -99,20 +165,64 @@ deno run npm:poku --denoDeny='write,sys'
 deno run npm:poku --denoDeny='env=HOME,write'
 ```
 
-### API
+### Config File
+
+Denied permissions:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   deno: {
-    deny: ['write', 'sys' /* ... */],
+    deny: ['write', 'sys'],
   },
 });
 ```
 
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "deno": {
+    "deny": ["write", "sys"]
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Scoped permissions:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
 ```ts
-poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   deno: {
-    deny: ['env=HOME', 'write' /* ... */],
+    deny: ['env=HOME', 'write'],
   },
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "deno": {
+    "deny": ["env=HOME", "write"]
+  }
+}
+```
+
+  </TabItem>
+</Tabs>

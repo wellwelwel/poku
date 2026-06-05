@@ -3,6 +3,9 @@ sidebar_position: 4
 tags: [invert]
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `exclude`
 
 Exclude by path using Regex to match only the files that should be performed.
@@ -21,64 +24,160 @@ npx poku --exclude='some-file-or-dir' ./test
 npx poku --exclude='some-file-or-dir|other-file-or-dir' ./test
 ```
 
-## API
+## Config File
+
+Excluding directories:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-/**
- * Excluding  directories from tests
- */
+import { defineConfig } from 'poku';
 
-await poku('./test', {
+export default defineConfig({
   exclude: /\/(helpers|tools)\//,
 });
 ```
 
-```ts
-/**
- * Excluding  directories from tests
- */
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
 
-await poku('./test', {
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "exclude": "/(helpers|tools)/"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Excluding directories using an array:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   exclude: [/\/helpers\//, /\/tools\//],
 });
 ```
 
-```ts
-/**
- * Excluding specific files from tests
- */
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
 
-await poku('./test', {
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "exclude": ["/helpers/", "/tools/"]
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Excluding specific files:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   exclude: /(index|common).test.ts/,
 });
 ```
 
-```ts
-/**
- * Excluding specific files from tests
- */
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
 
-await poku('./test', {
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "exclude": "(index|common).test.ts"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Excluding specific files using an array:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   exclude: [/index.test.ts/, /common.test.ts/],
 });
 ```
 
-```ts
-/**
- * Excluding directories and files from tests
- */
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
 
-await poku('./test', {
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "exclude": ["index.test.ts", "common.test.ts"]
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Excluding directories and files:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   exclude: /\/(helpers|tools)\/|(index|common).test.ts/,
 });
 ```
 
-```ts
-/**
- * Excluding directories and files from tests
- */
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
 
-await poku('./test', {
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "exclude": "/(helpers|tools)/|(index|common).test.ts"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Excluding directories and files using an array:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   exclude: [/\/helpers\//, /\/tools\//, /index.test.ts/, /common.test.ts/],
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "exclude": ["/helpers/", "/tools/", "index.test.ts", "common.test.ts"]
+}
+```
+
+  </TabItem>
+</Tabs>

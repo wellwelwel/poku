@@ -13,28 +13,30 @@ import Failure from '@site/static/img/each-fail.png';
 
 ## Running a callback before and after each test file
 
-- [x] `poku` **API**
+- [x] `poku.config.js`
+- [ ] `.pokurc.jsonc`
 - [ ] `poku` **CLI**
 
 **Poku** brings a simple way to perform a callback before and/or after every test file.
 
 <Tabs>
-  <TabItem default value='test/run.test.js'>
+  <TabItem default value='poku.config.js'>
 
     ```ts
-    import { poku } from 'poku';
+    import { defineConfig } from 'poku';
 
     const prepareService = () => new Promise((resolve) => resolve(undefined));
     const resetService = () => new Promise((_, reject) => reject('Let\'s crash it'));
 
-    await poku('test/unit', {
+    export default defineConfig({
+      include: 'test/unit',
       beforeEach: prepareService,
       afterEach: resetService,
     });
     ```
 
     ```bash
-    npx poku test/run.test.js
+    npx poku
     ```
 
   </TabItem>

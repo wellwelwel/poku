@@ -2,6 +2,9 @@
 sidebar_position: 8
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `concurrency`
 
 Use `concurrency` to limit the number of tests running concurrently.
@@ -14,13 +17,31 @@ The default value is the number of available cores (or `os.availableParallelism(
 npx poku --concurrency=4 ./test
 ```
 
-## API
+## Config File
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-await poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   concurrency: 4,
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "concurrency": 4
+}
+```
+
+  </TabItem>
+</Tabs>
 
 <hr />
 

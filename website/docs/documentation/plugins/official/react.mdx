@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 tags: [react, testing, dom, plugin, happy-dom, jsdom, metrics]
 ---
 
@@ -9,7 +9,7 @@ import { Stability } from '@site/src/components/Stability';
 
 # ⚛️ React
 
-Run React component tests with a real DOM environment — zero config, automatic TSX handling, and optional render metrics.
+Run React component tests with a real DOM environment: zero config, automatic TSX handling, and optional render metrics.
 
 <Plugin repo='react' />
 
@@ -109,7 +109,7 @@ test('renders a heading', () => {
 });
 ```
 
-No extra tsconfig flags, no manual loader setup — the plugin injects everything at test-process start.
+No extra tsconfig flags, no manual loader setup. The plugin injects everything at test-process start.
 
 ---
 
@@ -171,9 +171,9 @@ The module is imported before each test process runs.
 reactTestingPlugin({
   /**
    * DOM adapter to use.
-   * - 'happy-dom'     — fast, recommended for most tests (default)
-   * - 'jsdom'         — broader browser API coverage
-   * - { setupModule } — path to a custom DOM setup module
+   * - 'happy-dom': fast, recommended for most tests (default)
+   * - 'jsdom': broader browser API coverage
+   * - { setupModule }: path to a custom DOM setup module
    */
   dom: 'happy-dom',
 
@@ -308,7 +308,7 @@ reactTestingPlugin({
     topN: 10, // show top 10 slowest renders
     minDurationMs: 5, // ignore anything faster than 5 ms
     reporter(summary) {
-      // custom reporting — e.g. write to a file, send to CI metrics
+      // custom reporting, e.g. write to a file, send to CI metrics
       console.table(summary.topSlowest);
     },
   },
@@ -351,7 +351,7 @@ export default defineConfig({
 
 ## Custom DOM Setup
 
-If you need full control over DOM setup — for example, to configure custom globals or mock browser APIs — provide a module path:
+If you need full control over DOM setup (for example, to configure custom globals or mock browser APIs), provide a module path:
 
 ```ts
 // tests/setup/custom.ts

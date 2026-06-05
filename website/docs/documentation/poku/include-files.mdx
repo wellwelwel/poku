@@ -4,6 +4,8 @@ sidebar_position: 1
 
 import { History } from '@site/src/components/History';
 import { Stability } from '@site/src/components/Stability';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # 📦 Include Directories and Files
 
@@ -93,32 +95,82 @@ npx poku --filter='' ./packages/**/test/unit/*.js
 
 <hr />
 
-## API
+## Config File
 
-> `poku(targetPaths: string | string[])`
+Multiple paths:
 
-```ts
-await poku('targetPath');
-```
-
-```ts
-await poku(['targetPathA', 'targetPathB']);
-```
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-await poku('./');
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  include: ['targetPathA', 'targetPathB'],
+});
 ```
 
-<blockquote>
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
 
-Then, run the file directly with the preferred platform, for example:
-
-```bash
-node test/run.test.js
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "include": ["targetPathA", "targetPathB"]
+}
 ```
 
-```bash
-npx tsx test/run.test.ts
+  </TabItem>
+</Tabs>
+
+A single path:
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  include: 'targetPath',
+});
 ```
 
-</blockquote>
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "include": "targetPath"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+The current directory (default):
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
+
+```ts
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  include: '.',
+});
+```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "include": "."
+}
+```
+
+  </TabItem>
+</Tabs>

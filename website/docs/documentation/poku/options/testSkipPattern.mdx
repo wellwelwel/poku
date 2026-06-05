@@ -37,17 +37,7 @@ npx poku --testSkipPattern='legacy' ./test
 ## Config File
 
 <Tabs>
-  <TabItem default value='json'>
-
-```json
-{
-  "$schema": "https://poku.io/schemas/configs.json",
-  "testSkipPattern": "legacy"
-}
-```
-
-  </TabItem>
-  <TabItem value='js'>
+  <TabItem default value='js'>
 
 ```ts
 import { defineConfig } from 'poku';
@@ -58,15 +48,17 @@ export default defineConfig({
 ```
 
   </TabItem>
-</Tabs>
+  <TabItem value='json'>
 
-## API
-
-```ts
-await poku('./test', {
-  testSkipPattern: /legacy/,
-});
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "testSkipPattern": "legacy"
+}
 ```
+
+  </TabItem>
+</Tabs>
 
 <hr />
 

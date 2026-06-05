@@ -19,7 +19,7 @@ import { Stability } from '@site/src/components/Stability';
 
 <Stability level={2} />
 
-Extend **Poku**'s behavior with plugins — hook into the test lifecycle, customize how test files are spawned, enable inter-process communication, and more.
+Extend **Poku**'s behavior with plugins: hook into the test lifecycle, customize how test files are spawned, enable inter-process communication, and more.
 
 ## What Can Plugins Do?
 
@@ -53,13 +53,18 @@ Plugins are executed in the following order:
 2. **`discoverFiles()`** from the first plugin that defines it determines the test files _(if no plugin defines it, **Poku** scans the configured directories)_.
 3. For each test file:
    - **`runner()`** modifies the spawn command _(only the first plugin with a `runner` hook is used)_.
-   - The process is spawned — with an IPC channel if any plugin sets `ipc: true`.
+   - The process is spawned with an IPC channel if any plugin sets `ipc: true`.
    - **`onTestProcess()`** is called for every plugin that defines it.
 4. After all tests complete: **`teardown()`** is called for each plugin, sequentially in array order.
 
-## Existing Plugins
+## Official Plugins
 
-- [**@pokujs/shared-resources**](https://github.com/pokujs/plugin-shared) — Share state, servers, database connections, and more between parallel test files. See the [documentation](/docs/documentation/helpers/shared-resources).
+- **Coverage** (`@pokujs/c8`, `@pokujs/monocart`, `@pokujs/istanbul`, `@pokujs/one-double-zero`): Collect code coverage with `--coverage`, choosing the reporter that best fits your project. See the [documentation](/docs/documentation/plugins/official/coverage).
+- [**@pokujs/react**](https://github.com/pokujs/react): Render and assert on React components inside Poku tests, with a real DOM environment and zero config. See the [documentation](/docs/documentation/plugins/official/react).
+- [**@pokujs/vue**](https://github.com/pokujs/vue): Render and assert on Vue components inside Poku tests, with a real DOM environment and automatic Single File Component handling. See the [documentation](/docs/documentation/plugins/official/vue).
+- [**@pokujs/docker**](https://github.com/pokujs/docker): Mount and unmount containers around your tests, with a minimal API for Docker Compose and Dockerfiles. See the [documentation](/docs/documentation/plugins/official/containers).
+- [**@pokujs/multi-suite**](https://github.com/pokujs/multi-suite): Run multiple independent test suites, each with its own configuration, as a single unified execution. See the [documentation](/docs/documentation/plugins/official/multi-suite).
+- [**@pokujs/shared-resources**](https://github.com/pokujs/plugin-shared): Share state, servers, database connections, and more between parallel test files. See the [documentation](/docs/documentation/plugins/official/shared-resources).
 
 ## Advanced Lifecycle: Test Scope Hooks
 

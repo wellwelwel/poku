@@ -43,17 +43,7 @@ npx poku -t='auth' ./test
 ## Config File
 
 <Tabs>
-  <TabItem default value='json'>
-
-```json
-{
-  "$schema": "https://poku.io/schemas/configs.json",
-  "testNamePattern": "auth"
-}
-```
-
-  </TabItem>
-  <TabItem value='js'>
+  <TabItem default value='js'>
 
 ```ts
 import { defineConfig } from 'poku';
@@ -64,15 +54,17 @@ export default defineConfig({
 ```
 
   </TabItem>
-</Tabs>
+  <TabItem value='json'>
 
-## API
-
-```ts
-await poku('./test', {
-  testNamePattern: /auth/,
-});
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "testNamePattern": "auth"
+}
 ```
+
+  </TabItem>
+</Tabs>
 
 <hr />
 

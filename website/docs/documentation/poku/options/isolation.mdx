@@ -20,7 +20,7 @@ Controls process isolation for test files.
   ]}
 />
 
-By default, **Poku** runs each test file in a separate child process. This ensures full isolation between tests — each file gets its own `process.exitCode`, module cache, and global state.
+By default, **Poku** runs each test file in a separate child process. This ensures full isolation between tests: each file gets its own `process.exitCode`, module cache, and global state.
 
 Setting `isolation` to `none` runs all test files in the same process instead of spawning a new one for each file. This is useful for debugging with `node --inspect` or `node --inspect-brk`.
 
@@ -49,59 +49,36 @@ npx poku --isolation=none ./test
   <TabItem default value='process'>
 
 ```ts
+const { defineConfig } = require('poku');
+
+module.exports = defineConfig({
+  isolation: 'process', // default
+});
+```
+
+```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
   "isolation": "process" // default
 }
 ```
 
+  </TabItem>
+  <TabItem value='none'>
+
 ```ts
 const { defineConfig } = require('poku');
 
 module.exports = defineConfig({
-  isolation: 'process', // default
+  isolation: 'none',
 });
 ```
-
-  </TabItem>
-  <TabItem value='none'>
 
 ```ts
 {
   // "$schema": "https://poku.io/schemas/configs.json",
   "isolation": "none"
 }
-```
-
-```ts
-const { defineConfig } = require('poku');
-
-module.exports = defineConfig({
-  isolation: 'none',
-});
-```
-
-  </TabItem>
-</Tabs>
-
-## API
-
-<Tabs>
-  <TabItem default value='process'>
-
-```ts
-await poku('./test', {
-  isolation: 'process', // default
-});
-```
-
-  </TabItem>
-  <TabItem value='none'>
-
-```ts
-await poku('./test', {
-  isolation: 'none',
-});
 ```
 
   </TabItem>

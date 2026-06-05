@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 tags: [react, testing, dom, plugin, happy-dom, jsdom, metrics]
 ---
 
@@ -9,7 +9,7 @@ import { Stability } from '@site/src/components/Stability';
 
 # ⚛️ React
 
-Execute testes de componentes React com um ambiente DOM real — zero configuração, suporte automático a TSX e métricas de renderização opcionais.
+Execute testes de componentes React com um ambiente DOM real: zero configuração, suporte automático a TSX e métricas de renderização opcionais.
 
 <Plugin repo='react' />
 
@@ -109,7 +109,7 @@ test('renderiza um título', () => {
 });
 ```
 
-Sem flags extras de tsconfig, sem configuração manual de loader — o plugin injeta tudo no início de cada processo de teste.
+Sem flags extras de tsconfig, sem configuração manual de loader. O plugin injeta tudo no início de cada processo de teste.
 
 ---
 
@@ -171,9 +171,9 @@ O `jsdom` no Deno pode ser instável dependendo da camada de compatibilidade npm
 reactTestingPlugin({
   /**
    * Adaptador DOM a ser utilizado.
-   * - 'happy-dom'     — rápido, recomendado para a maioria dos testes (padrão)
-   * - 'jsdom'         — maior cobertura de APIs do navegador
-   * - { setupModule } — caminho para um módulo de setup DOM personalizado
+   * - 'happy-dom': rápido, recomendado para a maioria dos testes (padrão)
+   * - 'jsdom': maior cobertura de APIs do navegador
+   * - { setupModule }: caminho para um módulo de setup DOM personalizado
    */
   dom: 'happy-dom',
 
@@ -308,7 +308,7 @@ reactTestingPlugin({
     topN: 10, // exibe os 10 renders mais lentos
     minDurationMs: 5, // ignora renders mais rápidos que 5 ms
     reporter(summary) {
-      // relatório personalizado — ex.: salvar em arquivo, enviar para métricas de CI
+      // relatório personalizado, ex.: salvar em arquivo, enviar para métricas de CI
       console.table(summary.topSlowest);
     },
   },
@@ -351,7 +351,7 @@ export default defineConfig({
 
 ## Setup DOM Personalizado
 
-Se você precisar de controle total sobre o setup do DOM — por exemplo, configurar globais personalizados ou mockar APIs do navegador — forneça um caminho de módulo:
+Se você precisar de controle total sobre o setup do DOM (por exemplo, configurar globais personalizados ou mockar APIs do navegador), forneça um caminho de módulo:
 
 ```ts
 // tests/setup/custom.ts

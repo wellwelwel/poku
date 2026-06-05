@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 tags: [plugin, custom, create, hook, lifecycle, setup, teardown, runner, ipc]
 ---
 
@@ -79,7 +79,7 @@ An optional string identifier for the plugin.
 
 ### `setup(context)`
 
-Runs once before the test suite begins. Use it for initialization — starting services, creating temp directories, preparing resources.
+Runs once before the test suite begins. Use it for initialization: starting services, creating temp directories, preparing resources.
 
 ```ts
 export const myPlugin = definePlugin({
@@ -93,7 +93,7 @@ export const myPlugin = definePlugin({
 
 ### `teardown(context)`
 
-Runs once after all tests complete. Use it for cleanup — stopping services, removing temp files, releasing connections.
+Runs once after all tests complete. Use it for cleanup: stopping services, removing temp files, releasing connections.
 
 ```ts
 export const myPlugin = definePlugin({

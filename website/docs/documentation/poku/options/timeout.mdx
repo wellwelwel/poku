@@ -2,6 +2,9 @@
 sidebar_position: 8.1
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `timeout`
 
 Sets the maximum time in milliseconds that each test file is allowed to run.
@@ -12,13 +15,31 @@ Sets the maximum time in milliseconds that each test file is allowed to run.
 npx poku --timeout=5000 ./test
 ```
 
-## API
+## Config File
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-await poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   timeout: 5000,
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "timeout": 5000
+}
+```
+
+  </TabItem>
+</Tabs>
 
 <hr />
 

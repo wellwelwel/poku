@@ -1,0 +1,415 @@
+---
+sidebar_position: 3
+tags: [vue, testing, dom, plugin, happy-dom, jsdom, sfc, metrics]
+---
+
+import { History } from '@site/src/components/History';
+import { Plugin } from '@site/src/components/Plugin';
+import { Stability } from '@site/src/components/Stability';
+
+# 🖖 Vue
+
+Run Vue component tests with a real DOM environment: zero config, automatic Single File Component handling, and optional render metrics.
+
+<Plugin repo='vue' />
+
+<History
+  records={[
+    {
+      version: '1.1.0',
+      changes: [<>Added render metrics and Prettier integration.</>],
+    },
+    {
+      version: '1.0.0',
+      changes: [<>Initial release.</>],
+    },
+  ]}
+/>
+
+## What is `@pokujs/vue`?
+
+**`@pokujs/vue`** is a [Poku](https://github.com/wellwelwel/poku) plugin that lets you render and assert on Vue components directly inside Poku tests. It automatically:
+
+- Sets up a DOM environment (happy-dom or jsdom) per test process.
+- Injects the Single File Component loader so `.vue` files just work.
+- Exposes familiar Testing Library helpers (`render`, `screen`, `fireEvent`, `cleanup`, `renderHook`).
+- Optionally collects render duration metrics across your entire test suite.
+
+## Install
+
+```sh
+npm i -D @pokujs/vue
+```
+
+Install at least one DOM adapter:
+
+<table>
+<tr>
+<td width="280">
+
+```bash
+# happy-dom (recommended)
+npm i -D happy-dom \
+  @happy-dom/global-registrator
+```
+
+</td>
+<td width="240">
+
+```bash
+# jsdom
+npm i -D jsdom
+```
+
+</td>
+</tr>
+</table>
+
+## Enabling the Plugin
+
+Add `vueTestingPlugin` to your **Poku** configuration file:
+
+```js
+// poku.config.js
+import { vueTestingPlugin } from '@pokujs/vue/plugin';
+import { defineConfig } from 'poku';
+
+export default defineConfig({
+  plugins: [
+    vueTestingPlugin({
+      dom: 'happy-dom',
+    }),
+  ],
+});
+```
+
+## Writing Tests
+
+```ts
+// tests/counter-button.test.ts
+import { afterEach, assert, test } from 'poku';
+import { cleanup, fireEvent, render, screen } from '@pokujs/vue';
+import CounterButton from './CounterButton.vue';
+
+afterEach(cleanup);
+
+test('renders and updates an SFC component', async () => {
+  render(CounterButton, {
+    props: { initialCount: 1 },
+  });
+
+  assert.strictEqual(
+    screen.getByRole('heading', { name: 'Count: 1' }).textContent,
+    'Count: 1'
+  );
+
+  await fireEvent.click(screen.getByRole('button', { name: 'Increment' }));
+
+  assert.strictEqual(
+    screen.getByRole('heading', { name: 'Count: 2' }).textContent,
+    'Count: 2'
+  );
+});
+```
+
+```vue
+<!-- tests/CounterButton.vue -->
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const props = withDefaults(
+  defineProps<{
+    initialCount?: number;
+  }>(),
+  { initialCount: 0 }
+);
+
+const count = ref(props.initialCount);
+const increment = () => {
+  count.value += 1;
+};
+</script>
+
+<template>
+  <section>
+    <h1>Count: {{ count }}</h1>
+    <button type="button" @click="increment">Increment</button>
+  </section>
+</template>
+```
+
+No extra tsconfig flags, no manual loader setup. The plugin injects everything at test-process start.
+
+---
+
+## DOM Adapters
+
+### `happy-dom` (default)
+
+Fast, lightweight DOM implementation. Recommended for most component tests.
+
+```js
+vueTestingPlugin({ dom: 'happy-dom' });
+```
+
+Requires `happy-dom` and `@happy-dom/global-registrator` as dev dependencies.
+
+### `jsdom`
+
+Broader browser API compatibility. Use it when you depend on APIs that happy-dom does not yet implement.
+
+```js
+vueTestingPlugin({ dom: 'jsdom' });
+```
+
+Requires `jsdom` as a dev dependency.
+
+### Custom DOM setup
+
+Point to your own module that sets up `window`, `document`, and any other globals:
+
+```js
+vueTestingPlugin({
+  dom: { setupModule: './tests/setup/custom.ts' },
+});
+```
+
+The module is imported before each test process runs.
+
+---
+
+## Compatibility
+
+### Runtime × DOM Adapter
+
+|                  | Node.js ≥ 20 | Bun ≥ 1 | Deno ≥ 2 |
+| ---------------- | :----------: | :-----: | :------: |
+| **happy-dom**    |      ✅      |   ✅    |    ✅    |
+| **jsdom**        |      ✅      |   ✅    |    ⚠️    |
+| **custom setup** |      ✅      |   ✅    |    ✅    |
+
+:::note
+`jsdom` under Deno may be unstable depending on Deno's npm compatibility layer for the current `jsdom` version. For Deno projects, prefer `happy-dom`.
+:::
+
+### Peer Versions
+
+| Package  | Required |
+| -------- | -------- |
+| **Vue**  | ≥ 3.4    |
+| **Poku** | ≥ 4.1.0  |
+
+---
+
+## Plugin Options
+
+```ts
+vueTestingPlugin({
+  /**
+   * DOM adapter to use.
+   * - 'happy-dom': fast, recommended for most tests (default)
+   * - 'jsdom': broader browser API coverage
+   * - { setupModule }: path to a custom DOM setup module
+   */
+  dom: 'happy-dom',
+
+  /** Base URL assigned to the DOM environment. Defaults to 'http://localhost:3000/' */
+  domUrl: 'http://localhost:3000/',
+
+  /**
+   * Render metrics. Disabled by default.
+   * Pass `true` for defaults, or an object for fine-grained control.
+   */
+  metrics: {
+    enabled: true,
+    topN: 5,
+    minDurationMs: 0,
+    reporter(summary) {
+      console.log(summary.topSlowest);
+    },
+  },
+});
+```
+
+---
+
+## Testing Helpers
+
+All helpers are exported from `@pokujs/vue`:
+
+```ts
+import { cleanup, fireEvent, render, renderHook, screen } from '@pokujs/vue';
+```
+
+### `render(component, options?)`
+
+Renders a Vue component (a Single File Component or a render function) into a managed container appended to `document.body`. Returns DOM queries bound to the container plus `rerender` and `unmount` helpers.
+
+```ts
+const { getByText, rerender, unmount } = render(CounterButton, {
+  props: { initialCount: 0 },
+});
+```
+
+**Options:**
+
+| Option        | Type               | Description                                                 |
+| ------------- | ------------------ | ----------------------------------------------------------- |
+| `props`       | `ComponentProps`   | Props passed to the rendered component.                     |
+| `container`   | `HTMLElement`      | Custom container element. Created automatically if omitted. |
+| `baseElement` | `HTMLElement`      | Element queries are bound to. Defaults to `document.body`.  |
+| `wrapper`     | `WrapperComponent` | Wrap the rendered component (e.g. context providers).       |
+
+### `screen`
+
+Queries bound to `document.body`. All Testing Library queries are available.
+
+```ts
+screen.getByRole('button', { name: /submit/i });
+screen.queryAllByText('Error');
+```
+
+### `fireEvent`
+
+All Testing Library `fireEvent` methods, wrapped so Vue's reactivity flushes before the promise resolves. Each call is asynchronous (`await` it so the DOM reflects the update).
+
+```ts
+await fireEvent.click(screen.getByRole('button'));
+await fireEvent.update(screen.getByRole('textbox'), 'hello');
+```
+
+### `cleanup()`
+
+Unmounts all rendered components and removes owned containers. Call it in `afterEach` to keep tests isolated:
+
+```ts
+import { cleanup } from '@pokujs/vue';
+import { afterEach } from 'poku';
+
+afterEach(cleanup);
+```
+
+### `renderHook(composable, options?)`
+
+Renders a Vue composable in an isolated harness and exposes `result.current`.
+
+```ts
+const { result, rerender } = renderHook(
+  ({ initial }: { initial: boolean }) => useToggle(initial),
+  { initialProps: { initial: true } }
+);
+
+assert.strictEqual(result.current.enabled.value, true);
+
+await rerender({ initial: false });
+```
+
+`result.current` stays live after destructuring, so you keep reading the latest value across `rerender` calls.
+
+---
+
+## Render Metrics
+
+The plugin can record how long each `render()` call takes and report the slowest components at the end of the suite.
+
+### Quick enable
+
+```js
+vueTestingPlugin({
+  dom: 'happy-dom',
+  metrics: true,
+});
+```
+
+Default output at suite end:
+
+```
+[poku-vue-testing] Slowest component renders
+  - MyHeavyComponent in tests/heavy.test.ts: 24.31ms
+  - AnotherComponent in tests/list.test.ts: 11.07ms
+```
+
+### Fine-grained control
+
+```js
+vueTestingPlugin({
+  dom: 'happy-dom',
+  metrics: {
+    enabled: true,
+    topN: 10, // show top 10 slowest renders
+    minDurationMs: 5, // ignore anything faster than 5 ms
+    reporter(summary) {
+      // custom reporting, e.g. write to a file, send to CI metrics
+      console.table(summary.topSlowest);
+    },
+  },
+});
+```
+
+**`VueMetricsSummary` shape:**
+
+```ts
+type VueMetricsSummary = {
+  totalCaptured: number; // total renders recorded
+  totalReported: number; // renders that passed the filters
+  topSlowest: {
+    file: string;
+    componentName: string;
+    durationMs: number;
+  }[];
+};
+```
+
+---
+
+## Using with `isolation: 'none'`
+
+When Poku runs tests in-process (`isolation: 'none'`), the plugin:
+
+1. Registers the Single File Component loader in-process (Node.js only).
+2. Imports the DOM setup module directly into the current process.
+3. Skips IPC wiring since all tests share the same process.
+
+```js
+// poku.config.js
+export default defineConfig({
+  isolation: 'none',
+  plugins: [vueTestingPlugin({ dom: 'happy-dom' })],
+});
+```
+
+---
+
+## Custom DOM Setup
+
+If you need full control over DOM setup (for example, to configure custom globals or mock browser APIs), provide a module path:
+
+```ts
+// tests/setup/custom.ts
+import { GlobalRegistrator } from '@happy-dom/global-registrator';
+
+GlobalRegistrator.register({ url: 'http://localhost:3000/' });
+```
+
+```js
+// poku.config.js
+vueTestingPlugin({
+  dom: { setupModule: './tests/setup/custom.ts' },
+});
+```
+
+---
+
+## Context Providers (Wrapper)
+
+Wrap rendered components in a provider using the `wrapper` option. This is useful for components that depend on `provide`/`inject`, themes, or global state:
+
+```ts
+import { render, screen } from '@pokujs/vue';
+import ThemeLabel from './ThemeLabel.vue';
+import ThemeWrapper from './ThemeWrapper.vue';
+
+render(ThemeLabel, { wrapper: ThemeWrapper });
+
+assert.strictEqual(screen.getByText('Theme: dark').textContent, 'Theme: dark');
+```

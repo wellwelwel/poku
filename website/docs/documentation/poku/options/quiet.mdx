@@ -3,6 +3,8 @@ sidebar_position: 5
 ---
 
 import { History } from '@site/src/components/History';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # `quiet`
 
@@ -30,13 +32,31 @@ npx poku --quiet ./test
 
 - Short flag: `-q`.
 
-## API
+## Config File
+
+<Tabs groupId="poku-config">
+  <TabItem default value='js' label='poku.config.js'>
 
 ```ts
-await poku('./test', {
+import { defineConfig } from 'poku';
+
+export default defineConfig({
   quiet: true,
 });
 ```
+
+  </TabItem>
+  <TabItem value='json' label='.pokurc.jsonc'>
+
+```json
+{
+  "$schema": "https://poku.io/schemas/configs.json",
+  "quiet": true
+}
+```
+
+  </TabItem>
+</Tabs>
 
 <hr />
 

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 12
+sidebar_position: 5
 tags: [multi-suite, suites, runner, orchestration, plugin]
 ---
 
@@ -10,7 +10,7 @@ import { Plugin } from '@site/src/components/Plugin';
 
 # 🧬 Multi Suite
 
-Run multiple independent test suites — each with its own configuration — as a single, unified execution.
+Run multiple independent test suites (each with its own configuration) as a single, unified execution.
 
 <Plugin repo='multi-suite' />
 
@@ -38,7 +38,7 @@ Run multiple independent test suites — each with its own configuration — as 
 - Kill ports or processes before specific suites.
 - Get a single consolidated report at the end.
 
-Suites run **sequentially**, one after the other. Each suite is a fully independent `poku` execution — if one suite fails, the next still runs.
+Suites run **sequentially**, one after the other. Each suite is a fully independent `poku` execution. If one suite fails, the next still runs.
 
 ## Install
 
@@ -67,7 +67,7 @@ export default defineConfig({
 
 ## Suite Options
 
-Each suite accepts all [**poku config file options**](/docs/documentation/poku/config-files), applied independently. This means you can configure `include`, `filter`, `exclude`, `concurrency`, `sequential`, `reporter`, `plugins`, `envFile`, `kill`, `quiet`, and more — per suite.
+Each suite accepts all [**poku config file options**](/docs/documentation/poku/config-files), applied independently. This means you can configure `include`, `filter`, `exclude`, `concurrency`, `sequential`, `reporter`, `plugins`, `envFile`, `kill`, `quiet`, and more, per suite.
 
 ## Examples
 
@@ -134,7 +134,7 @@ multiSuite([
 - Each suite is a fully independent `poku` execution with its own configuration.
 - Live file results are shown as they happen, using each suite's configured reporter.
 - A single consolidated failure report and summary badge are shown at the end.
-- If any suite fails, the final exit code reflects the failure — but all suites still run.
+- If any suite fails, the final exit code reflects the failure, but all suites still run.
 - `Ctrl+C` stops everything immediately.
 
 ## Important Notes
@@ -153,4 +153,4 @@ If `include` is omitted from a suite, it defaults to `"."` (current directory). 
 
 ### Reporter Behavior
 
-Each suite can have its own reporter. Individual file results are displayed live using each suite's reporter, but `onRunResult` and `onExit` are suppressed per suite — only the final consolidated report calls them.
+Each suite can have its own reporter. Individual file results are displayed live using each suite's reporter, but `onRunResult` and `onExit` are suppressed per suite. Only the final consolidated report calls them.

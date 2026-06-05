@@ -5,7 +5,7 @@
 > **Poku** doesn't intend to be "the best", but to offer a balance between high performance, isolation, compatibility, lightness and ease of use.
 >
 > - All results are based on the **Ubuntu** (`ubuntu-latest`) matrix from **GitHub Actions**.
-> - Please take into consideration that benchmarks do not indicate the competitiveness of one over the other; rather, they serve as a metric to monitor and objectively assess the current performance state of the project.
+> - Please take into consideration that benchmarks do not indicate the competitiveness of one over the other. Rather, they serve as a metric to monitor and objectively assess the current performance state of the project.
 > - To see the latest benchmarks, just check the `github-bot` comment in recent Pull Requests.
 
 ---

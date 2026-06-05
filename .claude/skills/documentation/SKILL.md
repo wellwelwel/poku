@@ -54,6 +54,13 @@ When reading or writing docs, follow these patterns:
 - Pattern: description plus an `@default` tag
 - These inform the documentation content
 
-### 7. Changelog
+### 7. LLM Docs (Context7)
+
+- `website/llms/` holds docs written for LLMs and indexed by Context7, separate from the human-facing pages in `website/docs/`
+- Current files: `llms.md` (the llms.txt entry point, symlinked to `website/static/llms.txt`), `comparing.md`, and `philosophy.md`
+- `context7.json` at the repo root controls what Context7 indexes and how it guides the agent through the `folders` allowlist (which includes `website/llms`), the `description`, and the `rules`
+- The `description` and `rules` have Context7 length limits, validated by `test/unit/context7-rules.test.ts`
+
+### 8. Changelog
 
 - `CHANGELOG.md` is auto-generated: **NEVER** edit it!
