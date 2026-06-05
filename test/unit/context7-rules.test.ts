@@ -1,7 +1,11 @@
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
+import { skip } from '../../src/modules/helpers/skip.js';
+
+if (!existsSync('./context7.json')) skip('Skipping: context7.json not found');
 
 const MAX_RULES = 50;
 const MAX_RULE_LENGTH = 255;
