@@ -1,11 +1,11 @@
-import { inspectPoku } from '../__utils__/capture-cli.test.js';
+import { ext, inspectPoku } from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
 
 describe('Retry', async () => {
   await it('Basic retry succeeds on third attempt', async () => {
-    const results = await inspectPoku('basic.test.ts', {
+    const results = await inspectPoku(`basic.test.${ext}`, {
       cwd: 'test/__fixtures__/e2e/retry',
     });
 
@@ -28,7 +28,7 @@ describe('Retry', async () => {
   });
 
   await it('Config object retry succeeds on second attempt', async () => {
-    const results = await inspectPoku('config-object.test.ts', {
+    const results = await inspectPoku(`config-object.test.${ext}`, {
       cwd: 'test/__fixtures__/e2e/retry',
     });
 
@@ -51,7 +51,7 @@ describe('Retry', async () => {
   });
 
   await it('Immediate success on first attempt', async () => {
-    const results = await inspectPoku('immediate-success.test.ts', {
+    const results = await inspectPoku(`immediate-success.test.${ext}`, {
       cwd: 'test/__fixtures__/e2e/retry',
     });
 
@@ -69,7 +69,7 @@ describe('Retry', async () => {
   });
 
   await it('Nested retries succeed', async () => {
-    const results = await inspectPoku('nested.test.ts', {
+    const results = await inspectPoku(`nested.test.${ext}`, {
       cwd: 'test/__fixtures__/e2e/retry',
     });
 
@@ -87,7 +87,7 @@ describe('Retry', async () => {
   });
 
   await it('Retry around describe succeeds', async () => {
-    const results = await inspectPoku('around-describe.test.ts', {
+    const results = await inspectPoku(`around-describe.test.${ext}`, {
       cwd: 'test/__fixtures__/e2e/retry',
     });
 
@@ -105,7 +105,7 @@ describe('Retry', async () => {
   });
 
   await it('Retry exhaustion fails', async () => {
-    const results = await inspectPoku('exhaustion.test.ts', {
+    const results = await inspectPoku(`exhaustion.test.${ext}`, {
       cwd: 'test/__fixtures__/e2e/retry',
     });
 
