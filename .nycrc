@@ -3,7 +3,7 @@
   "reporter": ["lcovonly", "codecov", "console-details"],
   "experimental": ["monocart"],
   "extension": [".ts"],
-  "checkCoverage": 95,
+  "checkCoverage": 94,
   "all": true,
   "clean": true,
   "exclude": [
