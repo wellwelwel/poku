@@ -16,6 +16,8 @@ export const dot: ReporterPlugin = () => {
     onTodoModifier() {},
     onSkipModifier() {},
     onSkipFile() {},
+    onRetryStart() {},
+    onRetryEnd() {},
     onFileResult({ path, status, output }) {
       stdout.write(status ? DOT_PASS : DOT_FAIL);
 

@@ -2,6 +2,7 @@ import type { ProcessAssertionOptions } from '../@types/assert.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { GLOBAL } from '../configs/poku.js';
+import { retryContext } from '../configs/retry.js';
 
 const assertProcessor = () => {
   const { reporter } = GLOBAL;
@@ -14,7 +15,12 @@ const assertProcessor = () => {
     error: unknown,
     options: ProcessAssertionOptions
   ): never => {
-    process.exitCode = 1;
+    const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+    if (ctx) {
+      ctx.failed = true;
+    } else {
+      process.exitCode = 1;
+    }
 
     if (error instanceof AssertionError)
       reporter.onAssertionFailure({ assertOptions: options, error });

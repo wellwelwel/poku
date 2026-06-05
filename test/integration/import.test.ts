@@ -18,6 +18,7 @@ test(async () => {
     index.assert.ok(index.it, 'Importing it helper');
     index.assert.ok(index.beforeEach, 'Importing beforeEach helper');
     index.assert.ok(index.afterEach, 'Importing afterEach helper');
+    index.assert.ok(index.retry, 'Importing retry helper');
     index.assert.ok(index.log, 'Importing log helper');
     index.assert.ok(index.test, 'Importing test helper');
     index.assert.ok(index.skip, 'Importing skip helper');

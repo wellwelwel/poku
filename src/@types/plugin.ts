@@ -74,6 +74,12 @@ export type ReporterPlugin = (configs?: Configs) => {
   onSkipFile: (options: { message: string }) => void;
   onSkipModifier: (options: { message: string }) => void;
   onTodoModifier: (options: { message: string }) => void;
+  onRetryStart: (options: { attempt: number; total: number }) => void;
+  onRetryEnd: (options: {
+    attempt: number;
+    total: number;
+    success: boolean;
+  }) => void;
   onFileStart: (options: { path: Path }) => void;
   onFileResult: (options: {
     status: boolean;
