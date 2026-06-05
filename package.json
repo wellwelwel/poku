@@ -67,7 +67,7 @@
     "monocart-coverage-reports": "^2.12.11",
     "packages-update": "^2.0.0",
     "prettier": "^3.8.3",
-    "rollup": "^4.61.1",
+    "rollup": "^4.60.4",
     "rollup-plugin-dts": "^6.4.1",
     "rollup-plugin-esbuild": "^6.2.1",
     "tsx": "^4.22.3",
