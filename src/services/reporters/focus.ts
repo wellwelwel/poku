@@ -12,6 +12,8 @@ export const focus: ReporterPlugin = () => {
     onTodoModifier() {},
     onSkipModifier() {},
     onSkipFile() {},
+    onRetryStart() {},
+    onRetryEnd() {},
     onFileResult({ status, output }) {
       if (!status) {
         countFails++;

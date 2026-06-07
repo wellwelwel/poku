@@ -165,6 +165,22 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       log(`${indent}${format(`● ${message}`).cyan().bold()}`);
     },
+    onRetryStart({ attempt, total }) {
+      const indent = indentation.test.repeat(
+        indentation.describeDepth + indentation.itDepth
+      );
+
+      log(`${indent}${format(`↻ Retry ${attempt}/${total}`).dim()}`);
+    },
+    onRetryEnd({ attempt, success }) {
+      if (success && attempt > 1) {
+        const indent = indentation.test.repeat(
+          indentation.describeDepth + indentation.itDepth
+        );
+
+        log(`${indent}${format(`✔ Retry succeeded`).success().dim()}`);
+      }
+    },
     onFileResult({ status, path, duration, output }) {
       stdout.write('\n');
 
@@ -205,20 +221,18 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       );
 
       for (const i in errors) {
-        if (Object.prototype.hasOwnProperty.call(errors, i)) {
-          const { file, output } = errors[i];
-          const index = +i;
+        const { file, output } = errors[i];
+        const index = +i;
 
-          index > 0 && stdout.write('\n');
+        index > 0 && stdout.write('\n');
 
-          log(
-            `${format(`${index + 1})`)
-              .dim()
-              .bold()} ${format(file).underline()}`
-          );
+        log(
+          `${format(`${index + 1})`)
+            .dim()
+            .bold()} ${format(file).underline()}`
+        );
 
-          output && log(`\n${output}`);
-        }
+        output && log(`\n${output}`);
       }
     },
     onExit({ results, timespan }) {

@@ -9,6 +9,7 @@ export { it } from './helpers/it.js';
 export { envFile } from './helpers/env.js';
 export { skip } from './helpers/skip.js';
 export { beforeEach, afterEach } from './helpers/each.js';
+export { retry } from './helpers/retry.js';
 export { startScript, startService } from './helpers/create-service.js';
 export {
   waitForExpectedResult,
@@ -23,6 +24,7 @@ export { listFiles } from './helpers/list-files.js';
 export { VERSION as version } from '../configs/version.js';
 export type { Code } from '../@types/code.js';
 export type { Configs, ConfigFile } from '../@types/poku.js';
+export type { RetryConfig } from '../@types/retry.js';
 export type {
   StartServiceOptions,
   StartScriptOptions,
