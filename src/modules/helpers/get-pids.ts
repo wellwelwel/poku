@@ -31,8 +31,6 @@ const getPIDsByRange = (
   return getPIDs(ports);
 };
 
-/** Returns an array containing the ID of all processes listening to the specified port */
 export const getPIDs = Object.assign(getPIDsByPorts, {
-  /** Returns an array containing the ID of all processes listening to the specified port range */
   range: getPIDsByRange,
 });

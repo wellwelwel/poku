@@ -20,7 +20,7 @@ import { log } from '../../services/write.js';
 export const todo = (async (
   messageOrCb: string | TestCb | AsyncTestCb,
   _cb?: TestCb | AsyncTestCb
-): Promise<void> => {
+) => {
   const message = typeof messageOrCb === 'string' ? messageOrCb : 'Planning';
 
   GLOBAL.reporter.onTodoModifier({ message });
@@ -29,13 +29,13 @@ export const todo = (async (
 export const skip = (async (
   messageOrCb: string | TestCb | AsyncTestCb,
   _cb?: TestCb | AsyncTestCb
-): Promise<void> => {
+) => {
   const message = typeof messageOrCb === 'string' ? messageOrCb : 'Skipping';
 
   GLOBAL.reporter.onSkipModifier({ message });
 }) as Modifier;
 
-const assertOnlyEnabled = (message: string): void => {
+const assertOnlyEnabled = (message: string) => {
   if (hasOnly) return;
 
   log(format(message).fail());
@@ -46,7 +46,7 @@ export const createOnlyDescribe = (describeBase: Describe): DescribeModifier =>
   (async (
     messageOrCb: string | DescribeCb | AsyncDescribeCb,
     cb?: DescribeCb | AsyncDescribeCb
-  ): Promise<void> => {
+  ) => {
     assertOnlyEnabled("Can't run `describe.only` tests without `--only` flag");
 
     const noItOnly = checkNoOnly(
@@ -64,7 +64,7 @@ export const createOnlyIt = (itBase: It): Modifier =>
   (async (
     messageOrCb: string | TestCb | AsyncTestCb,
     cb?: TestCb | AsyncTestCb
-  ): Promise<void> => {
+  ) => {
     assertOnlyEnabled(
       "Can't run `it.only` and `test.only` tests without `--only` flag"
     );

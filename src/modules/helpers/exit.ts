@@ -4,7 +4,7 @@ import process from 'node:process';
 import { GLOBAL, timespan } from '../../configs/poku.js';
 import { results } from '../../configs/results.js';
 
-export const exit = (code: Code, quiet?: boolean): void => {
+export const exit = (code: Code, quiet?: boolean) => {
   const isPoku = results.passed > 0 || results.failed > 0;
 
   if (!quiet && isPoku)

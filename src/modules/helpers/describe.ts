@@ -20,7 +20,7 @@ const getOptions = (input: unknown): DescribeOptions | undefined =>
 export const describeBase = async (
   titleOrCb: string | (() => unknown | Promise<unknown>),
   callbackOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
-): Promise<void> => {
+) => {
   const { reporter } = GLOBAL;
   const title = getTitle(titleOrCb);
   const hasTitle = typeof title === 'string';
@@ -43,10 +43,11 @@ export const describeBase = async (
 
   if (!hasCB) return;
 
-  const onError = (error: unknown): void => {
+  const onError = (error: unknown) => {
     process.exitCode = 1;
     success = false;
     errorHoist.failed = true;
+
     if (!(error instanceof AssertionError)) console.error(error);
   };
 
@@ -91,7 +92,7 @@ export const describeBase = async (
 const describeCore = (async (
   messageOrCb: string | (() => unknown | Promise<unknown>),
   cbOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
-): Promise<void> => {
+) => {
   if (typeof messageOrCb === 'string' && typeof cbOrOptions !== 'function')
     return describeBase(messageOrCb, cbOrOptions);
 

@@ -21,9 +21,8 @@ export type PluginContext = {
 };
 
 export type PokuPlugin = {
-  /** Plugin name */
   name?: string;
-  /** Modify the command array before spawning a test file process */
+  /** Modify the command before spawning a test file process */
   runner?: (command: string[], file: string) => string[];
   /** Run before the test suite begins */
   setup?: (context: PluginContext) => void | Promise<void>;

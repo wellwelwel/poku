@@ -17,20 +17,18 @@ const checkPort = (port: number, host: string): Promise<boolean> =>
     client.on('error', () => resolve(false));
   });
 
-/** Wait until the defined milliseconds. */
-export const sleep = (milliseconds: number): Promise<void> => {
+export const sleep = (milliseconds: number) => {
   if (!Number.isInteger(milliseconds))
     throw new Error('Milliseconds must be an integer.');
 
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-/** Wait until a result is equal the expected value. */
 export const waitForExpectedResult = async (
   callback: () => unknown | Promise<unknown>,
   expectedResult: unknown,
   options?: WaitForExpectedResultOptions
-): Promise<void> => {
+) => {
   const delay = options?.delay || 0;
   const interval = options?.interval || 100;
   const timeout = options?.timeout || 60000;
@@ -76,11 +74,10 @@ export const waitForExpectedResult = async (
   await sleep(delay);
 };
 
-/** Wait until the defined port is active. */
 export const waitForPort = async (
   port: number,
   options?: WaitForPortOptions
-): Promise<void> => {
+) => {
   const host = options?.host || 'localhost';
 
   if (!Number.isInteger(port)) throw new Error('Port must be an integer.');
