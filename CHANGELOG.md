@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.4.0](https://github.com/wellwelwel/poku/compare/v4.3.2...v4.4.0) (2026-06-08)
+
+
+### Features
+
+* retry block ([#1127](https://github.com/wellwelwel/poku/issues/1127)) ([2648bb0](https://github.com/wellwelwel/poku/commit/2648bb0341ebfed597cd845826c258b32ddfffdd))
+
+
+### Bug Fixes
+
+* **retry:** ensure all errors are reported ([#1131](https://github.com/wellwelwel/poku/issues/1131)) ([4677bff](https://github.com/wellwelwel/poku/commit/4677bff7cd237280156269efea02983ef13e090f))
+
 ## [4.3.2](https://github.com/wellwelwel/poku/compare/v4.3.1...v4.3.2) (2026-05-22)
 
 
