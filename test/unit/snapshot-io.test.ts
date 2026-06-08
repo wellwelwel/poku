@@ -27,6 +27,16 @@ describe('Snapshot: IO Utilities', () => {
       'plain path'
     );
     assert.strictEqual(normalizeStackPath(''), '', 'empty input');
+    assert.strictEqual(
+      normalizeStackPath('file:///D:/a/poku/poku/test/foo.test.js:5:5'),
+      'D:/a/poku/poku/test/foo.test.js',
+      'Windows file:// with drive letter D'
+    );
+    assert.strictEqual(
+      normalizeStackPath('file:///C:/Users/me/foo.test.ts:10:25'),
+      'C:/Users/me/foo.test.ts',
+      'Windows file:// with drive letter C'
+    );
   });
 
   it('getSnapFilePath places snap files in __snapshots__ adjacent to source', () => {

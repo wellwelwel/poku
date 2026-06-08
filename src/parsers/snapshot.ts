@@ -8,6 +8,7 @@ import { serialize } from './output.js';
 
 const FILE_PROTOCOL = 'file://';
 const LINE_COL_SUFFIX = /:\d+:\d+$/;
+const WINDOWS_DRIVE_PREFIX = /^\/([A-Za-z]:)/;
 const SNAPSHOT_DIR = '__snapshots__';
 const SNAPSHOT_EXT = '.snap';
 const SNAPSHOT_HEADER =
@@ -26,7 +27,9 @@ export const normalizeStackPath = (raw: string): string => {
     ? raw.slice(FILE_PROTOCOL.length)
     : raw;
 
-  return withoutProtocol.replace(LINE_COL_SUFFIX, '');
+  const withoutLineCol = withoutProtocol.replace(LINE_COL_SUFFIX, '');
+
+  return withoutLineCol.replace(WINDOWS_DRIVE_PREFIX, '$1');
 };
 
 export const getSnapFilePath = (testFilePath: string): string =>

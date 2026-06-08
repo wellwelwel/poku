@@ -7,6 +7,7 @@ import { indentation } from '../../configs/indentation.js';
 import { getSharedState } from '../../configs/shared-state.js';
 import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
 import { serialize } from '../../parsers/output.js';
+import { normalizeStackPath } from '../../parsers/snapshot.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 import { format } from '../format.js';
 import { hr, log } from '../write.js';
@@ -95,9 +96,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       const fileRef = findFileFromStack(error.stack, {
         skipInternal: true,
       });
-      const absolutePath =
-        fileRef.indexOf('file://') === 0 ? fileRef.slice(7) : fileRef;
-      const file = relative(resolve(cwd), absolutePath);
+      const file = relative(resolve(cwd), normalizeStackPath(fileRef));
 
       let message = '';
 
