@@ -24,7 +24,7 @@ export async function retry(
 
     stack.push(context);
 
-    GLOBAL.reporter.onRetryStart?.({ attempt, total: attempts });
+    GLOBAL.reporter.onRetryStart({ attempt, total: attempts });
 
     try {
       const result = callback();
@@ -32,7 +32,7 @@ export async function retry(
 
       if (!context.failed) {
         stack.pop();
-        GLOBAL.reporter.onRetryEnd?.({
+        GLOBAL.reporter.onRetryEnd({
           attempt,
           total: attempts,
           success: true,
@@ -45,7 +45,7 @@ export async function retry(
     }
 
     stack.pop();
-    GLOBAL.reporter.onRetryEnd?.({ attempt, total: attempts, success: false });
+    GLOBAL.reporter.onRetryEnd({ attempt, total: attempts, success: false });
 
     if (attempt < attempts && delay > 0) {
       await new Promise((resolve) => setTimeout(resolve, delay));
