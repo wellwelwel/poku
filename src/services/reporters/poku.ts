@@ -25,7 +25,7 @@ const logEndResult = ({
   title?: string;
   duration: number;
   success?: boolean;
-}): void => {
+}) => {
   const status = success ? 'success' : 'fail';
   const indent = getIndent();
 

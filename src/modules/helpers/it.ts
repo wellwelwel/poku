@@ -19,18 +19,17 @@ const getScopeHook = (): ScopeHook | undefined =>
     | ScopeHook
     | undefined;
 
-export const itBase = async (
-  titleOrCb: string | TestCb,
-  callback?: TestCb
-): Promise<void> => {
+export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
   try {
     const title = getTitle(titleOrCb);
     const hasTitle = typeof title === 'string';
     const cb = hasTitle ? getCallback(callback) : getCallback(titleOrCb);
+    const insideDescribe = errorHoist.depth > 0;
 
     let success = true;
     let start: [number, number];
     let end: [number, number];
+    let onError: ((error: unknown) => void) | undefined;
 
     GLOBAL.reporter.onItStart({ title });
 
@@ -42,18 +41,14 @@ export const itBase = async (
       if (beforeResult instanceof Promise) await beforeResult;
     }
 
-    const insideDescribe = errorHoist.depth > 0;
-
-    let onError: ((error: unknown) => void) | undefined;
-
     if (!insideDescribe) {
-      onError = (error: unknown): void => {
+      onError = (error: unknown) => {
         const ctx = retryContext.stack?.[retryContext.stack.length - 1];
-        if (ctx) {
-          ctx.failed = true;
-        } else {
+        if (ctx) ctx.failed = true;
+        else {
           process.exitCode = 1;
           success = false;
+
           if (!(error instanceof AssertionError)) console.error(error);
         }
       };
@@ -69,18 +64,20 @@ export const itBase = async (
 
       if (hooks) {
         const holder = hooks.createHolder();
+
         await hooks.runScoped(holder, (params) => cb!(params));
       } else {
         const resultCb = cb!();
+
         if (resultCb instanceof Promise) await resultCb;
       }
     } catch (error) {
       const ctx = retryContext.stack?.[retryContext.stack.length - 1];
-      if (ctx) {
-        ctx.failed = true;
-      } else {
+      if (ctx) ctx.failed = true;
+      else {
         process.exitCode = 1;
         success = false;
+
         if (!(error instanceof AssertionError)) console.error(error);
       }
     } finally {
@@ -91,11 +88,9 @@ export const itBase = async (
         process.removeListener('unhandledRejection', onError);
       } else if (errorHoist.failed) {
         const ctx = retryContext.stack?.[retryContext.stack.length - 1];
-        if (ctx) {
-          ctx.failed = true;
-        } else {
-          success = false;
-        }
+
+        if (ctx) ctx.failed = true;
+        else success = false;
         errorHoist.failed = false;
       }
     }
@@ -125,10 +120,7 @@ export const itBase = async (
   }
 };
 
-const itCore = (async (
-  titleOrCb: string | TestCb,
-  cb?: TestCb
-): Promise<void> => {
+const itCore = (async (titleOrCb: string | TestCb, cb?: TestCb) => {
   if (typeof titleOrCb === 'string') {
     if (
       GLOBAL.configs.testNamePattern &&
@@ -139,9 +131,7 @@ const itCore = (async (
     if (GLOBAL.configs.testSkipPattern?.test(titleOrCb)) return;
   }
 
-  if (hasOnly) {
-    if (!GLOBAL.runAsOnly) return;
-  }
+  if (hasOnly && !GLOBAL.runAsOnly) return;
 
   if (typeof titleOrCb === 'string' && cb) return itBase(titleOrCb, cb);
   if (typeof titleOrCb === 'function') return itBase(titleOrCb);
