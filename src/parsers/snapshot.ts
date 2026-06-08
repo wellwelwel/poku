@@ -110,12 +110,8 @@ const buildSnapshotName = (
   hint: string | undefined,
   counters: Map<string, number>
 ): string => {
-  const parts: string[] = [];
-
-  if (itTitle) parts.push(itTitle);
-  if (hint) parts.push(hint);
-
-  const prefix = parts.length > 0 ? parts.join(' > ') : 'snapshot';
+  const prefix =
+    itTitle && hint ? `${itTitle} > ${hint}` : itTitle || hint || 'snapshot';
   const previous = counters.get(prefix) ?? 0;
   const next = previous + 1;
 
@@ -137,6 +133,7 @@ export const assertSnapshot = (
   );
   const snapPath = getSnapFilePath(testFile);
   const entries = loadSnapFile(snapPath);
+  const registryEntry = snapshotRegistry.get(snapPath)!;
   const name = buildSnapshotName(context.itTitle, hint, context.counters);
   const serialized = serialize(value);
   const stored = entries.get(name);
@@ -154,7 +151,7 @@ export const assertSnapshot = (
       });
 
     entries.set(name, serialized);
-    snapshotRegistry.get(snapPath)!.dirty = true;
+    registryEntry.dirty = true;
 
     return;
   }
@@ -162,7 +159,7 @@ export const assertSnapshot = (
   if (updateSnapshot) {
     if (stored !== serialized) {
       entries.set(name, serialized);
-      snapshotRegistry.get(snapPath)!.dirty = true;
+      registryEntry.dirty = true;
     }
 
     return;

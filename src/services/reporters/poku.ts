@@ -125,12 +125,10 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       if (!options?.hideDiff) {
         const isSnapshot = operator === 'snapshot';
-        const splitActual = (
-          isSnapshot ? String(actual) : serialize(actual)
-        ).split('\n');
-        const splitExpected = (
-          isSnapshot ? String(expected) : serialize(expected)
-        ).split('\n');
+        const toDisplay = (value: unknown): string =>
+          isSnapshot ? String(value) : serialize(value);
+        const splitActual = toDisplay(actual).split('\n');
+        const splitExpected = toDisplay(expected).split('\n');
 
         log(format(`${preIdentation}  ${options?.actual ?? 'Actual'}:`).dim());
 
