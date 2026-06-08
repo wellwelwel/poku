@@ -1,5 +1,28 @@
-import type { Control, EachOptions } from '../../@types/each.js';
+import type { Control, EachConfigs, EachOptions } from '../../@types/each.js';
 import { each } from '../../configs/each.js';
+
+const createEachControl = (
+  slot: EachConfigs,
+  callback: () => unknown
+): Control => {
+  slot.cb = () => {
+    if (slot.status) return callback();
+  };
+
+  const pause = (): void => {
+    slot.status = false;
+  };
+
+  const continueFunc = (): void => {
+    slot.status = true;
+  };
+
+  const reset = (): void => {
+    slot.cb = undefined;
+  };
+
+  return { pause, continue: continueFunc, reset };
+};
 
 /**
  * Handle **global states** and **external** services before each `test` or `it`.
@@ -24,23 +47,7 @@ export const beforeEach = (
 ): Control => {
   options?.immediate && callback();
 
-  each.before.cb = () => {
-    if (each.before.status) return callback();
-  };
-
-  const pause = (): void => {
-    each.before.status = false;
-  };
-
-  const continueFunc = (): void => {
-    each.before.status = true;
-  };
-
-  const reset = (): void => {
-    each.before.cb = undefined;
-  };
-
-  return { pause, continue: continueFunc, reset };
+  return createEachControl(each.before, callback);
 };
 
 /**
@@ -60,22 +67,5 @@ export const beforeEach = (
  * after.reset();
  * ```
  */
-export const afterEach = (callback: () => unknown): Control => {
-  each.after.cb = () => {
-    if (each.after.status) return callback();
-  };
-
-  const pause = (): void => {
-    each.after.status = false;
-  };
-
-  const continueFunc = (): void => {
-    each.after.status = true;
-  };
-
-  const reset = (): void => {
-    each.after.cb = undefined;
-  };
-
-  return { pause, continue: continueFunc, reset };
-};
+export const afterEach = (callback: () => unknown): Control =>
+  createEachControl(each.after, callback);

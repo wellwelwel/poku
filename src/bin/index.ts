@@ -5,8 +5,14 @@ import { VERSION } from '../configs/version.js';
 import { poku } from '../modules/essentials/poku.js';
 import { envFile } from '../modules/helpers/env.js';
 import { kill } from '../modules/helpers/kill.js';
-import { escapeRegExp } from '../parsers/escape-regexp.js';
-import { argToArray, getArg, getPaths, hasArg } from '../parsers/get-arg.js';
+import { toRegExp } from '../parsers/escape-regexp.js';
+import {
+  argToArray,
+  getArg,
+  getPaths,
+  hasArg,
+  numericArg,
+} from '../parsers/get-arg.js';
 import { getConfigs } from '../parsers/options.js';
 import { format } from '../services/format.js';
 import { hr, log } from '../services/write.js';
@@ -50,14 +56,8 @@ import { hr, log } from '../services/write.js';
   const failFast = hasArg('failFast') || configsFromFile?.failFast;
   const watchMode = hasArg('watch') || hasArg('w', '-');
   const hasEnvFile = hasArg('envFile');
-  const concurrency = (() => {
-    const value = Number(getArg('concurrency'));
-    return Number.isNaN(value) ? configsFromFile?.concurrency : value;
-  })();
-  const timeout = (() => {
-    const value = Number(getArg('timeout'));
-    return Number.isNaN(value) ? configsFromFile?.timeout : value;
-  })();
+  const concurrency = numericArg('concurrency', configsFromFile?.concurrency);
+  const timeout = numericArg('timeout', configsFromFile?.timeout);
   const sequential = hasArg('sequential') || configsFromFile?.sequential;
   const isolation = getArg('isolation') || configsFromFile?.isolation;
   const testNamePattern =
@@ -80,14 +80,8 @@ import { hr, log } from '../services/write.js';
     for (const dir of dirs)
       files.push(
         ...(await listFiles(dir, {
-          filter:
-            typeof filter === 'string'
-              ? new RegExp(escapeRegExp(filter))
-              : filter,
-          exclude:
-            typeof exclude === 'string'
-              ? new RegExp(escapeRegExp(exclude))
-              : exclude,
+          filter: toRegExp(filter),
+          exclude: toRegExp(exclude),
         }))
       );
 
@@ -110,10 +104,8 @@ import { hr, log } from '../services/write.js';
   env.POKU_REPORTER = typeof reporter === 'string' ? reporter : 'poku';
 
   GLOBAL.configs = {
-    filter:
-      typeof filter === 'string' ? new RegExp(escapeRegExp(filter)) : filter,
-    exclude:
-      typeof exclude === 'string' ? new RegExp(escapeRegExp(exclude)) : exclude,
+    filter: toRegExp(filter),
+    exclude: toRegExp(exclude),
     concurrency,
     timeout,
     sequential,
@@ -127,14 +119,8 @@ import { hr, log } from '../services/write.js';
     },
     noExit: watchMode,
     reporter,
-    testNamePattern:
-      typeof testNamePattern === 'string'
-        ? new RegExp(escapeRegExp(testNamePattern))
-        : testNamePattern,
-    testSkipPattern:
-      typeof testSkipPattern === 'string'
-        ? new RegExp(escapeRegExp(testSkipPattern))
-        : testSkipPattern,
+    testNamePattern: toRegExp(testNamePattern),
+    testSkipPattern: toRegExp(testSkipPattern),
     beforeEach:
       'beforeEach' in configsFromFile ? configsFromFile.beforeEach : undefined,
     afterEach:

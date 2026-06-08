@@ -5,6 +5,7 @@ import { hrtime } from 'node:process';
 import { deepOptions, GLOBAL } from '../configs/poku.js';
 import { runner } from '../parsers/get-runner.js';
 import { parserOutput, timeoutMessage } from '../parsers/output.js';
+import { hrtimeToMs } from '../parsers/time.js';
 import { afterEach, beforeEach } from './each.js';
 
 const STDIO_IPC: StdioOptions = ['inherit', 'pipe', 'pipe', 'ipc'];
@@ -99,7 +100,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
           debug: GLOBAL.configs.debug,
         })?.join('\n');
 
-        const total = end[0] * 1e3 + end[1] / 1e6;
+        const total = hrtimeToMs(end);
 
         reporter.onFileResult({
           status: result,
@@ -125,7 +126,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
       end = hrtime(start);
 
-      const total = end[0] * 1e3 + end[1] / 1e6;
+      const total = hrtimeToMs(end);
 
       if (showLogs) console.error(`Failed to start test: ${path}`, err);
 

@@ -18,6 +18,27 @@ const ARROW_FAIL = '\x1b[91m\x1b[1m›\x1b[0m';
 const getIndent = () =>
   indentation.test.repeat(indentation.describeDepth + indentation.itDepth);
 
+const logEndResult = ({
+  title,
+  duration,
+  success = true,
+}: {
+  title?: string;
+  duration: number;
+  success?: boolean;
+}): void => {
+  const status = success ? 'success' : 'fail';
+  const indent = getIndent();
+
+  log(
+    `${indent}${format(`● ${title}`)[status]().bold()} ${format(
+      `› ${duration.toFixed(6)}ms`
+    )
+      [status]()
+      .dim()}`
+  );
+};
+
 export const errors = getSharedState<{ file: string; output?: string }[]>(
   'errors',
   []
@@ -49,18 +70,8 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       log(`${indent}${format(`◌ ${title}`).bold().dim()}`);
     },
-    onDescribeEnd({ title, duration, success = true }) {
-      const status = success ? 'success' : 'fail';
-
-      const indent = getIndent();
-
-      log(
-        `${indent}${format(`● ${title}`)[status]().bold()} ${format(
-          `› ${duration.toFixed(6)}ms`
-        )
-          [status]()
-          .dim()}`
-      );
+    onDescribeEnd(options) {
+      logEndResult(options);
     },
     onItStart({ title }) {
       if (!title) return;
@@ -69,18 +80,8 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
 
       log(`${indent}${format(`◌ ${title}`).dim()}`);
     },
-    onItEnd({ title, duration, success = true }) {
-      const status = success ? 'success' : 'fail';
-
-      const indent = getIndent();
-
-      log(
-        `${indent}${format(`● ${title}`)[status]().bold()} ${format(
-          `› ${duration.toFixed(6)}ms`
-        )
-          [status]()
-          .dim()}`
-      );
+    onItEnd(options) {
+      logEndResult(options);
     },
     onAssertionSuccess({ message }) {
       const preIdentation = getIndent();
@@ -165,17 +166,13 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(`${indent}${format(`● ${message}`).cyan().bold()}`);
     },
     onRetryStart({ attempt, total }) {
-      const indent = indentation.test.repeat(
-        indentation.describeDepth + indentation.itDepth
-      );
+      const indent = getIndent();
 
       log(`${indent}${format(`↻ Retry ${attempt}/${total}`).dim()}`);
     },
     onRetryEnd({ attempt, success }) {
       if (success && attempt > 1) {
-        const indent = indentation.test.repeat(
-          indentation.describeDepth + indentation.itDepth
-        );
+        const indent = getIndent();
 
         log(`${indent}${format(`✔ Retry succeeded`).success().dim()}`);
       }
@@ -219,10 +216,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
         `${format(String(errors.length)).fail().bold()} ${format('test file(s) failed:').bold()}\n`
       );
 
-      for (const i in errors) {
-        const { file, output } = errors[i];
-        const index = +i;
-
+      for (const [index, { file, output }] of errors.entries()) {
         index > 0 && stdout.write('\n');
 
         log(

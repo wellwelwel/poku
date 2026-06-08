@@ -3,6 +3,7 @@ import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { GLOBAL } from '../configs/poku.js';
 import { parserOutput, timeoutMessage } from '../parsers/output.js';
+import { hrtimeToMs } from '../parsers/time.js';
 import { afterEach, beforeEach } from './each.js';
 
 const stdoutWrite = process.stdout.write.bind(process.stdout);
@@ -81,7 +82,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
       debug: configs.debug,
     })?.join('\n');
 
-    const total = end[0] * 1e3 + end[1] / 1e6;
+    const total = hrtimeToMs(end);
 
     reporter.onFileResult({
       status: result,

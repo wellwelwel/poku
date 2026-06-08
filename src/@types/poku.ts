@@ -60,7 +60,7 @@ export type Configs = {
    *
    * @default 'process'
    */
-  isolation?: 'none' | 'process' | (string & NonNullable<unknown>);
+  isolation?: 'none' | 'process' | CustomString;
   /**
    * Stops the tests at the first failure.
    *

@@ -11,6 +11,7 @@ import { retryContext } from '../../configs/retry.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { getCallback, getTitle } from '../../parsers/get-test-args.js';
+import { hrtimeToMs } from '../../parsers/time.js';
 import { createOnlyDescribe, skip, todo } from './modifiers.js';
 
 const getOptions = (input: unknown): DescribeOptions | undefined =>
@@ -79,7 +80,7 @@ export const describeBase = async (
 
   if (!title) return;
 
-  const duration = end[0] * 1e3 + end[1] / 1e6;
+  const duration = hrtimeToMs(end);
 
   indentation.describeDepth--;
   reporter.onDescribeEnd({ title, duration, success });
