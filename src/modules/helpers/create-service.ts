@@ -139,7 +139,7 @@ export const startService = (
   );
 };
 
-/** Starts a script (package.json or deno.json) in a background process */
+/** Starts a script in a background process */
 export const startScript = (
   script: string,
   options?: StartScriptOptions

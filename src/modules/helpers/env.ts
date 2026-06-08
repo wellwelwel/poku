@@ -11,7 +11,6 @@ const regex = {
   comment: /^\s*#/,
 };
 
-/** Reads an environment file and sets the environment variables */
 export const envFile = async (filePath = '.env') => {
   const mapEnv = new Map<string, string>();
   const env = await readFile(sanitizePath(filePath), 'utf8');

@@ -29,7 +29,6 @@ const killPort = async (port: number | number[]) =>
 const killRange = async (startsAt: number, endsAt: number) =>
   killPIDs(await getPIDs.range(startsAt, endsAt));
 
-/** Kill processes by PIDs, ports, and port ranges */
 export const kill = {
   pid: killPID,
   port: killPort,

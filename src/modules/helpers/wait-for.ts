@@ -24,7 +24,6 @@ export const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-/** Wait until a result is equal the expected value */
 export const waitForExpectedResult = async (
   callback: () => unknown | Promise<unknown>,
   expectedResult: unknown,
