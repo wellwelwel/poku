@@ -50,6 +50,24 @@ describe('Retry', async () => {
     );
   });
 
+  await it('Delay between attempts is respected', async () => {
+    const results = await inspectPoku(`delay.test.${ext}`, {
+      cwd: 'test/__fixtures__/e2e/retry',
+    });
+
+    if (results.exitCode !== 0) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 0, 'Should pass');
+    assert.match(
+      results.stdout,
+      /should wait the configured delay between attempts/,
+      'Should show final assertion'
+    );
+  });
+
   await it('Immediate success on first attempt', async () => {
     const results = await inspectPoku(`immediate-success.test.${ext}`, {
       cwd: 'test/__fixtures__/e2e/retry',
@@ -119,6 +137,24 @@ describe('Retry', async () => {
       results.stdout,
       /Should always fail/,
       'Should show assertion message'
+    );
+  });
+
+  await it('Rethrows the last error when the callback throws', async () => {
+    const results = await inspectPoku(`throws.test.${ext}`, {
+      cwd: 'test/__fixtures__/e2e/retry',
+    });
+
+    if (results.exitCode !== 1) {
+      console.log(results.stdout);
+      console.log(results.stderr);
+    }
+
+    assert.strictEqual(results.exitCode, 1, 'Should fail');
+    assert.match(
+      results.stdout,
+      /callback threw outside an assertion/,
+      'Should surface the thrown error'
     );
   });
 });

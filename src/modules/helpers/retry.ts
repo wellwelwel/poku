@@ -9,10 +9,12 @@ export async function retry(
   const attempts = typeof config === 'number' ? config : config.attempts;
   const delay = typeof config === 'number' ? 0 : (config.delay ?? 0);
 
-  if (!retryContext.stack) {
-    retryContext.stack = [];
-  }
+  if (!retryContext.stack) retryContext.stack = [];
+
   const stack = retryContext.stack;
+
+  let lastError: unknown;
+  let hasError = false;
 
   for (let attempt = 1; attempt <= attempts; attempt++) {
     const context: RetryContext = {
@@ -40,8 +42,9 @@ export async function retry(
         if (stack.length === 0) retryContext.stack = null;
         return;
       }
-    } catch {
-      // Inner retry exhausted and threw
+    } catch (error) {
+      lastError = error;
+      hasError = true;
     }
 
     stack.pop();
@@ -54,4 +57,6 @@ export async function retry(
 
   if (stack.length === 0) retryContext.stack = null;
   process.exitCode = 1;
+
+  if (hasError) throw lastError;
 }
