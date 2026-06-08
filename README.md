@@ -5,12 +5,10 @@
 
 Enjoying **Poku**? Give him a star to show your support 🌟
 
-[![NPM Version](https://img.shields.io/npm/v/poku?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
-[![NPM Downloads](https://img.shields.io/npm/dm/poku?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
-[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://github.com/wellwelwel/poku/tree/main/.nycrc)<br />
-[![GitHub Workflow Status (Linux)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=ubuntu&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
-[![GitHub Workflow Status (OSX)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-osx.yml?event=push&label=&branch=main&logo=apple&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-osx.yml?query=branch%3Amain)
-[![GitHub Workflow Status (Windows)](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-windows.yml?event=push&label=&branch=main&logo=data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5XaW5kb3dzIDExPC90aXRsZT48cGF0aCBmaWxsPSIjODg5N2E5IiBkPSJNMTI2IDEuNjM3bC02NyA5LjgzNHY0OS44MzFsNjctLjUzNHpNMS42NDcgNjYuNzA5bC4wMDMgNDIuNDA0IDUwLjc5MSA2Ljk4My0uMDQtNDkuMDU3em01Ni44Mi42OGwuMDk0IDQ5LjQ2NSA2Ny4zNzYgOS41MDkuMDE2LTU4Ljg2M3pNMS42MSAxOS4yOTdsLjA0NyA0Mi4zODMgNTAuNzkxLS4yODktLjAyMy00OS4wMTZ6Ij48L3BhdGg+PC9zdmc+&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-windows.yml?query=branch%3Amain)
+[![Version](https://img.shields.io/npm/v/poku?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
+[![Downloads](https://img.shields.io/npm/dm/poku?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
+[![CI](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=testcafe&logoColor=white&color=9c88ff)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
+[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://github.com/wellwelwel/poku/tree/main/.nycrc)
 
 ---
 
@@ -24,17 +22,17 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 💡 **Poku** is a cross-platform test runner that brings the [**JavaScript** essence back to testing](https://poku.io/docs/philosophy#javascript-essence-for-tests-).
 
-![check][] High **isolation** level per file<br />
-![check][] **Performant** and **lightweight**<br />
-![check][] Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
-![check][] Run the **same test suite** for [**Node.js**](https://github.com/nodejs/node), [**Bun**](https://github.com/oven-sh/bun), and [**Deno**](https://github.com/denoland/deno)<br />
-![check][] Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
+![v][] High **isolation** level per file<br />
+![v][] **Performant** and **lightweight**<br />
+![v][] Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
+![v][] Run the **same test suite** for [**Node.js**](https://github.com/nodejs/node), [**Bun**](https://github.com/oven-sh/bun), and [**Deno**](https://github.com/denoland/deno)<br />
+![v][] Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
 
 ---
 
 ## Quickstart
 
-### ![check][] Install
+### ![v][] Install
 
 <table>
 <tr>
@@ -75,7 +73,7 @@ deno add npm:poku
 
 ---
 
-### ![check][] Test
+### ![v][] Test
 
 <table>
 <tr>
@@ -98,7 +96,7 @@ assert(true, 'Poku will describe it 🐷');
 
 ---
 
-### ![check][] Run
+### ![v][] Run
 
 <table>
 <tr>
@@ -135,7 +133,7 @@ deno run npm:poku
 
 ## Features
 
-### ![check][] Essentials
+### ![v][] Essentials
 
 <table>
   <tr>
@@ -148,7 +146,7 @@ deno run npm:poku
   </tr>
 </table>
 
-### ![check][] Helpers
+### ![v][] Helpers
 
 <table>
   <tr>
@@ -157,7 +155,7 @@ deno run npm:poku
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/env">envFile</a></td>
-    <td>⚙️ Process an environment file <i>(out-of-box)</i></td>
+    <td>⚙️ Process an environment file</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/category/-before-and-after-each">beforeEach • afterEach</a></td>
@@ -165,7 +163,7 @@ deno run npm:poku
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/startScript">startScript</a> • <a href="https://poku.io/docs/documentation/helpers/startService">startService</a></td>
-    <td>🌐 Run package.json scripts and files in background</td>
+    <td>🌐 Run scripts and files in background</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/plugins/official/containers">docker</a></td>
@@ -193,7 +191,7 @@ deno run npm:poku
   </tr>
 </table>
 
-### ![check][] Common Options
+### ![v][] Common Options
 
 <table>
   <tr>
@@ -224,15 +222,11 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 ---
 
-### Common Issues (FAQ)
+### FAQ
 
-- [Avoiding conflicts in environments with multiple platforms installed](https://poku.io/docs/tutorials/cross-platform#recommendations)
 - [Properly running asynchronous tests on the same file](https://poku.io/docs/examples/promises)
-- [Using **Poku** without installing it on **Deno**](https://github.com/wellwelwel/poku/discussions/565)
 - Migrating:
   - [**3.x.x** → **4.x.x**](https://github.com/wellwelwel/poku/issues/1006)
-  - [**2.x.x** → **3.x.x**](https://github.com/wellwelwel/poku/issues/801)
-  - [**1.x.x** → **2.x.x**](https://github.com/wellwelwel/poku/issues/533)
 
 ---
 
@@ -255,8 +249,6 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 
 - [~**145x** lighter than **Jest**](https://pkg-size.dev/jest@30.4.2)
 - [~**124x** lighter than **Vitest**](https://pkg-size.dev/vitest@4.1.6)
-- [~**83x** lighter than **AVA**](https://pkg-size.dev/ava@8.0.0)
-- [~**47x** lighter than **Mocha**](https://pkg-size.dev/mocha@11.7.5)
 - [~**2.8x** lighter than **uvu**](https://pkg-size.dev/uvu@0.5.6)
 
 > **Poku** size ensures _cost-saving_ **CI** for services that charge for storage and usage.
@@ -298,4 +290,4 @@ Really thanks to everyone who has supported and keeps supporting my work.
 **Poku** is under the [**MIT License**](https://github.com/wellwelwel/poku/blob/main/LICENSE).<br />
 Copyright © 2024-present [**Weslley Araújo**](https://github.com/wellwelwel) and [**contributors**](https://github.com/wellwelwel/poku/graphs/contributors).
 
-[check]: https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg
+[v]: https://raw.githubusercontent.com/wellwelwel/poku/main/.github/assets/readme/check.svg
