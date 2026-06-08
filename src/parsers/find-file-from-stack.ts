@@ -25,6 +25,9 @@ const isAlpha = (code: number): boolean =>
 const isDigit = (code: number): boolean =>
   code >= charCode.zero && code <= charCode.nine;
 
+const isInternalFrame = (line: string): boolean =>
+  line.replace(/\\/g, '/').indexOf(INTERNAL_PATH) !== -1;
+
 const findPathStart = (line: string): number => {
   // "file://"
   const protoIndex = line.indexOf(FILE_PROTOCOL);
@@ -79,7 +82,7 @@ export const findFileFromStack = (
   const skipInternal = options?.skipInternal;
 
   for (const line of lines) {
-    if (skipInternal && line.indexOf(INTERNAL_PATH) !== -1) continue;
+    if (skipInternal && isInternalFrame(line)) continue;
 
     const pathStart = findPathStart(line);
     if (pathStart === -1) continue;

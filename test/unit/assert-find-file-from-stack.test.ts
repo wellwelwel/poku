@@ -87,6 +87,27 @@ const testCases = [
     expected: '/workdir/test/some.test.js:3:8',
   },
   {
+    description: 'Windows (backslash internal frame)',
+    stack: `
+    Error
+        at assertSnapshot (D:\\a\\poku\\poku\\src\\parsers\\snapshot.ts:146:13)
+        at Object.snapshot (D:\\a\\poku\\poku\\src\\modules\\helpers\\it.ts:80:20)
+        at D:\\a\\poku\\poku\\test\\some.test.ts:3:8
+        at ModuleJob.run (node:internal/modules/esm/module_job:262:25)
+    `,
+    expected: 'D:\\a\\poku\\poku\\test\\some.test.ts:3:8',
+  },
+  {
+    description: 'Windows (file:// internal frame)',
+    stack: `
+    Error
+        at assertSnapshot (file:///D:/a/poku/poku/src/parsers/snapshot.ts:146:13)
+        at file:///D:/a/poku/poku/test/some.test.ts:3:8
+        at ModuleJob.run (node:internal/modules/esm/module_job:262:25)
+    `,
+    expected: 'file:///D:/a/poku/poku/test/some.test.ts:3:8',
+  },
+  {
     description: 'Invalid Stack',
     stack: undefined,
     expected: '',
