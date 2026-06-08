@@ -26,7 +26,7 @@ Retentar um teste até 3 vezes:
 ```ts
 import { retry, it, assert } from 'poku';
 
-retry(3, () => {
+await retry(3, () => {
   it('teste instável', () => {
     // Este teste pode falhar ocasionalmente
     assert.strictEqual(Math.random() > 0.5, true);
@@ -41,7 +41,7 @@ Especifique tentativas e atraso entre retentativas:
 ```ts
 import { retry, it, assert } from 'poku';
 
-retry({ attempts: 3, delay: 1000 }, () => {
+await retry({ attempts: 3, delay: 1000 }, () => {
   it('teste instável', () => {
     // Retentar até 3 vezes com 1 segundo de atraso entre tentativas
     assert.strictEqual(Math.random() > 0.5, true);
@@ -56,8 +56,8 @@ Você pode aninhar blocos `retry` para cenários complexos:
 ```ts
 import { retry, it, assert } from 'poku';
 
-retry(2, () => {
-  retry(3, () => {
+await retry(2, async () => {
+  await retry(3, () => {
     it('teste instável aninhado', () => {
       // Externo: 2 tentativas, Interno: 3 tentativas por tentativa externa
       assert.strictEqual(Math.random() > 0.5, true);
@@ -73,7 +73,7 @@ Envolva blocos `describe` inteiros:
 ```ts
 import { retry, describe, it, assert } from 'poku';
 
-retry(2, () => {
+await retry(2, () => {
   describe('suíte instável', () => {
     it('teste 1', () => {
       assert.strictEqual(1, 1);
@@ -95,8 +95,8 @@ retry(2, () => {
 
 ```ts
 type RetryConfig = {
-  attempts: number;  // Número máximo de tentativas (incluindo a primeira execução)
-  delay?: number;    // Atraso em milissegundos entre retentativas (padrão: 0)
+  attempts: number; // Número máximo de tentativas (incluindo a primeira execução)
+  delay?: number; // Atraso em milissegundos entre retentativas (padrão: 0)
 };
 ```
 
@@ -156,8 +156,8 @@ Uma suíte de testes saudável deve ter **zero** uso de `retry`. Se você se peg
 import { retry, it, assert } from 'poku';
 
 // Este teste falha intermitentemente devido a uma condição de corrida
-retry(5, () => {
-  it('operação assíncrona completa', async () => {
+await retry(5, async () => {
+  await it('operação assíncrona completa', async () => {
     const result = await algumaOperacaoAssincrona();
     assert.strictEqual(result, 'esperado');
   });
@@ -176,8 +176,8 @@ retry(5, () => {
 import { retry, it, assert } from 'poku';
 
 // API externa ocasionalmente retorna 503
-retry({ attempts: 3, delay: 2000 }, () => {
-  it('API externa responde', async () => {
+await retry({ attempts: 3, delay: 2000 }, async () => {
+  await it('API externa responde', async () => {
     const response = await fetch('https://api-instavel.exemplo.com/dados');
     assert.strictEqual(response.status, 200);
   });
