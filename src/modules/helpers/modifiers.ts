@@ -27,17 +27,19 @@ export const skip = (async (
   GLOBAL.reporter.onSkipModifier({ message });
 }) as Modifier;
 
+const assertOnlyEnabled = (message: string): void => {
+  if (hasOnly) return;
+
+  log(format(message).fail());
+  exit(1);
+};
+
 export const createOnlyDescribe = (describeBase: Describe): Modifier =>
   (async (
     messageOrCb: string | TestCb | AsyncTestCb,
     cb?: TestCb | AsyncTestCb
   ): Promise<void> => {
-    if (!hasOnly) {
-      log(
-        format("Can't run `describe.only` tests without `--only` flag").fail()
-      );
-      exit(1);
-    }
+    assertOnlyEnabled("Can't run `describe.only` tests without `--only` flag");
 
     const noItOnly = checkNoOnly(
       typeof messageOrCb === 'function' ? messageOrCb : cb
@@ -55,14 +57,9 @@ export const createOnlyIt = (itBase: It): Modifier =>
     messageOrCb: string | TestCb | AsyncTestCb,
     cb?: TestCb | AsyncTestCb
   ): Promise<void> => {
-    if (!hasOnly) {
-      log(
-        format(
-          "Can't run `it.only` and `test.only` tests without `--only` flag"
-        ).fail()
-      );
-      exit(1);
-    }
+    assertOnlyEnabled(
+      "Can't run `it.only` and `test.only` tests without `--only` flag"
+    );
 
     if (typeof messageOrCb === 'string' && cb) return itBase(messageOrCb, cb);
     if (typeof messageOrCb === 'function') return itBase(messageOrCb);

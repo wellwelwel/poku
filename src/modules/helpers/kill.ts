@@ -17,9 +17,7 @@ const killPID = async (PID: number | number[]): Promise<void> => {
   );
 };
 
-const killPort = async (port: number | number[]): Promise<void> => {
-  const PIDs = await getPIDs(port);
-
+const killPIDs = async (PIDs: number[]): Promise<void> => {
   for (const PID of PIDs) {
     if (!PID) continue;
 
@@ -27,14 +25,12 @@ const killPort = async (port: number | number[]): Promise<void> => {
   }
 };
 
+const killPort = async (port: number | number[]): Promise<void> => {
+  await killPIDs(await getPIDs(port));
+};
+
 const killRange = async (startsAt: number, endsAt: number): Promise<void> => {
-  const PIDs = await getPIDs.range(startsAt, endsAt);
-
-  for (const PID of PIDs) {
-    if (!PID) continue;
-
-    await killPID(PID);
-  }
+  await killPIDs(await getPIDs.range(startsAt, endsAt));
 };
 
 /** Kill processes by PIDs, ports and port ranges. */

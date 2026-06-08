@@ -3,6 +3,9 @@ import { argv } from 'node:process';
 const [, , ...processArgs] = argv;
 const regexQuotes = /''|""/;
 
+export const getPrefix = (arg: string): string =>
+  arg.length === 1 ? '-' : '--';
+
 export const getArg = (
   arg: string,
   prefix = '--',
@@ -26,17 +29,15 @@ export const getPaths = (
   prefix = '--',
   baseArgs = processArgs
 ): string[] | undefined => {
-  let hasPaths = false;
   const paths: string[] = [];
 
   for (const arg of baseArgs) {
     if (arg.startsWith(prefix)) continue;
-    if (!hasPaths) hasPaths = true;
 
     paths.push(arg);
   }
 
-  return hasPaths ? paths : undefined;
+  return paths.length > 0 ? paths : undefined;
 };
 
 export const argToArray = (
@@ -54,3 +55,11 @@ export const argToArray = (
 };
 
 export const hasOnly = hasArg('only');
+
+export const numericArg = (
+  arg: string,
+  fallback: number | undefined
+): number | undefined => {
+  const value = Number(getArg(arg));
+  return Number.isNaN(value) ? fallback : value;
+};
