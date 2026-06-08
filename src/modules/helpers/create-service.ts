@@ -122,7 +122,6 @@ const backgroundProcess = (
     } catch {}
   });
 
-/** Starts a file in a background process */
 export const startService = (
   file: string,
   options?: StartServiceOptions
@@ -139,7 +138,6 @@ export const startService = (
   );
 };
 
-/** Starts a script in a background process */
 export const startScript = (
   script: string,
   options?: StartScriptOptions

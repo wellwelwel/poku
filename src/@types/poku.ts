@@ -28,21 +28,20 @@ export type Reporter =
   | CustomString;
 
 export type Configs = {
-  noExit?: boolean;
-  debug?: boolean;
-  quiet?: boolean;
+  /** Run tests sequentially */
   sequential?: boolean;
   isolation?: 'none' | 'process' | CustomString;
+  /** Stop execution at the first error */
   failFast?: boolean;
   /** @default (availableParallelism() || cpus().lenght) */
   concurrency?: number;
-  /** Sets the maximum time in milliseconds that each test file is allowed to run */
+  /** Set a timeout for each test file */
   timeout?: number;
   /** @default "poku" */
   reporter?: Reporter;
-  /** Runs a callback or a file before each test file on your suite */
+  /** Run a callback or a file before each test file */
   beforeEach?: () => unknown | Promise<unknown>;
-  /** Runs a callback or a file after each test file on your suite */
+  /** Run a callback or a file after each test file */
   afterEach?: () => unknown | Promise<unknown>;
   deno?: DenoOptions;
   plugins?: PokuPlugin[];
@@ -50,6 +49,9 @@ export type Configs = {
   testNamePattern?: RegExp;
   /** Skip tests whose title matches the given regex pattern */
   testSkipPattern?: RegExp;
+  debug?: boolean;
+  quiet?: boolean;
+  noExit?: boolean;
 } & ListFilesConfigs;
 
 export type Timespan = {
@@ -65,7 +67,6 @@ export type States = {
 type CliConfigs = {
   include?: string | string[];
   envFile?: string;
-  /** Kills the specified ports, port ranges and process IDs */
   kill?: {
     port?: [number];
     range?: [number, number][];
