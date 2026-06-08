@@ -7,7 +7,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 [![Version](https://img.shields.io/npm/v/poku?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
 [![Downloads](https://img.shields.io/npm/dm/poku?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
-[![CI](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=testcafe&logoColor=8897a9&color=dfe4ea)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
+[![CI](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=testcafe&logoColor=white&color=9c88ff)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
 [![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://github.com/wellwelwel/poku/tree/main/.nycrc)
 
 ---
