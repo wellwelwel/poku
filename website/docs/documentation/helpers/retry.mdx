@@ -1,9 +1,10 @@
 ---
 sidebar_position: 12
-tags: [flakiness, debugging, testing]
+tags: [retry, retries, flaky, intermittent, stability, ci, detection, failure]
 ---
 
 import { FAQ } from '@site/src/components/FAQ';
+import { History } from '@site/src/components/History';
 
 # 🔄 retry
 
@@ -11,7 +12,20 @@ import { FAQ } from '@site/src/components/FAQ';
 
 `retry` is a helper designed to **detect flaky tests** by re-running failed tests a specified number of times.
 
-:::warning
+<History
+  records={[
+    {
+      version: '4.4.0',
+      changes: [
+        <>
+          Add <code>retry</code> helper.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+:::note
 **`retry` is a diagnostic tool, not a solution.**
 
 Use `retry` to identify unstable tests that need fixing. A test that requires retries is a test that should be investigated and corrected. Relying on retries to pass tests masks underlying issues and leads to unreliable test suites.
@@ -191,7 +205,7 @@ await retry({ attempts: 3, delay: 2000 }, async () => {
 
 ## Related
 
-- [`describe`](/docs/documentation/helpers/describe) - Group tests
-- [`it`](/docs/documentation/helpers/it) - Define individual tests
-- [`skip`](/docs/documentation/helpers/skip) - Skip tests
-- [`beforeEach` / `afterEach`](/docs/documentation/helpers/before-after-each/in-code) - Setup and teardown
+- [`describe`](/docs/documentation/helpers/describe): Group tests
+- [`it`](/docs/documentation/helpers/it): Define individual tests
+- [`skip`](/docs/documentation/helpers/skip): Skip tests
+- [`beforeEach` / `afterEach`](/docs/documentation/helpers/before-after-each/in-code): Setup and teardown

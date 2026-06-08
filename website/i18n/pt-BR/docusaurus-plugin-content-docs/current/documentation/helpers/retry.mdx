@@ -1,9 +1,10 @@
 ---
 sidebar_position: 12
-tags: [flakiness, debugging, testing]
+tags: [retry, retries, flaky, intermittent, stability, ci, detection, failure]
 ---
 
 import { FAQ } from '@site/src/components/FAQ';
+import { History } from '@site/src/components/History';
 
 # 🔄 retry
 
@@ -11,7 +12,20 @@ import { FAQ } from '@site/src/components/FAQ';
 
 `retry` é um auxiliar projetado para **detectar testes instáveis** (flaky tests) reexecutando testes que falharam um número especificado de vezes.
 
-:::warning
+<History
+  records={[
+    {
+      version: '4.4.0',
+      changes: [
+        <>
+          Adiciona o auxiliar <code>retry</code>.
+        </>,
+      ],
+    },
+  ]}
+/>
+
+:::note
 **`retry` é uma ferramenta de diagnóstico, não uma solução.**
 
 Use `retry` para identificar testes instáveis que precisam ser corrigidos. Um teste que requer retentativas é um teste que deve ser investigado e corrigido. Depender de retentativas para aprovar testes mascara problemas subjacentes e leva a suítes de teste não confiáveis.
@@ -191,7 +205,7 @@ await retry({ attempts: 3, delay: 2000 }, async () => {
 
 ## Relacionados
 
-- [`describe`](/docs/documentation/helpers/describe) - Agrupar testes
-- [`it`](/docs/documentation/helpers/it) - Definir testes individuais
-- [`skip`](/docs/documentation/helpers/skip) - Pular testes
-- [`beforeEach` / `afterEach`](/docs/documentation/helpers/before-after-each/in-code) - Setup e teardown
+- [`describe`](/docs/documentation/helpers/describe): Agrupar testes
+- [`it`](/docs/documentation/helpers/it): Definir testes individuais
+- [`skip`](/docs/documentation/helpers/skip): Pular testes
+- [`beforeEach` / `afterEach`](/docs/documentation/helpers/before-after-each/in-code): Setup e teardown
