@@ -5,6 +5,14 @@ import { format } from '../format.js';
 import { hr, log } from '../write.js';
 import { poku } from './poku.js';
 
+const formatFile = (
+  icon: string,
+  status: 'success' | 'fail',
+  file: string,
+  time: number
+): string =>
+  `${indentation.test}${format(icon)[status]()} ${format(`${file} ${format(`› ${time.toFixed(6)}ms`)[status]()}`).dim()}`;
+
 export const classic: ReporterPlugin = () => {
   const files = {
     passed: new Map<string, number>(),
@@ -29,10 +37,7 @@ export const classic: ReporterPlugin = () => {
       if (files.passed.size > 0 && files.failed.size === 0) {
         log(
           Array.from(files.passed)
-            .map(
-              ([file, time]) =>
-                `${indentation.test}${format('✔').success()} ${format(`${file} ${format(`› ${time.toFixed(6)}ms`).success()}`).dim()}`
-            )
+            .map(([file, time]) => formatFile('✔', 'success', file, time))
             .join('\n')
         );
 
@@ -42,10 +47,7 @@ export const classic: ReporterPlugin = () => {
       if (files.failed.size > 0) {
         log(
           Array.from(files.failed)
-            .map(
-              ([file, time]) =>
-                `${indentation.test}${format('✘').fail()} ${format(`${file} ${format(`› ${time.toFixed(6)}ms`).fail()}`).dim()}`
-            )
+            .map(([file, time]) => formatFile('✘', 'fail', file, time))
             .join('\n')
         );
       }

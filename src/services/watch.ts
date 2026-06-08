@@ -27,10 +27,10 @@ export class Watcher {
     this.fileWatchers.set(filePath, watcher);
   }
 
-  private unwatchFiles(): void {
-    for (const [filePath, watcher] of this.fileWatchers) {
+  private unwatchMap(watchers: Map<string, FSWatcher>): void {
+    for (const [path, watcher] of watchers) {
       watcher.close();
-      this.fileWatchers.delete(filePath);
+      watchers.delete(path);
     }
   }
 
@@ -92,15 +92,8 @@ export class Watcher {
   }
 
   stop(): void {
-    this.unwatchFiles();
-    this.unwatchDirectories();
-  }
-
-  private unwatchDirectories(): void {
-    for (const [dirPath, watcher] of this.dirWatchers) {
-      watcher.close();
-      this.dirWatchers.delete(dirPath);
-    }
+    this.unwatchMap(this.fileWatchers);
+    this.unwatchMap(this.dirWatchers);
   }
 }
 

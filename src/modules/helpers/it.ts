@@ -9,6 +9,7 @@ import { errorHoist, GLOBAL } from '../../configs/poku.js';
 import { retryContext } from '../../configs/retry.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { getCallback, getTitle } from '../../parsers/get-test-args.js';
+import { hrtimeToMs } from '../../parsers/time.js';
 import { createOnlyIt, skip, todo } from './modifiers.js';
 
 const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
@@ -107,7 +108,7 @@ export const itBase = async (
 
     if (!title) return;
 
-    const duration = end[0] * 1e3 + end[1] / 1e6;
+    const duration = hrtimeToMs(end);
 
     indentation.itDepth--;
     GLOBAL.reporter.onItEnd({ title, duration, success });
@@ -128,12 +129,14 @@ const itCore = (async (
   titleOrCb: string | TestCb,
   cb?: TestCb
 ): Promise<void> => {
-  if (GLOBAL.configs.testNamePattern && typeof titleOrCb === 'string') {
-    if (!GLOBAL.configs.testNamePattern.test(titleOrCb)) return;
-  }
+  if (typeof titleOrCb === 'string') {
+    if (
+      GLOBAL.configs.testNamePattern &&
+      !GLOBAL.configs.testNamePattern.test(titleOrCb)
+    )
+      return;
 
-  if (GLOBAL.configs.testSkipPattern && typeof titleOrCb === 'string') {
-    if (GLOBAL.configs.testSkipPattern.test(titleOrCb)) return;
+    if (GLOBAL.configs.testSkipPattern?.test(titleOrCb)) return;
   }
 
   if (hasOnly) {

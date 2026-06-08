@@ -12,13 +12,13 @@ export const runner = (filename: string): string[] => {
     const denoAllow = configs.deno?.allow
       ? configs.deno.allow
           .map((allow) => (allow ? `--allow-${allow}` : ''))
-          .filter((allow) => allow)
+          .filter(Boolean)
       : ['--allow-read', '--allow-env', '--allow-run', '--allow-net'];
 
     const denoDeny = configs.deno?.deny
       ? configs.deno.deny
           .map((deny) => (deny ? `--deny-${deny}` : ''))
-          .filter((deny) => deny)
+          .filter(Boolean)
       : [];
 
     return ['deno', 'run', ...denoAllow, ...denoDeny];

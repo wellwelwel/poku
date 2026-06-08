@@ -10,3 +10,6 @@ export const parseTime = (date: Date): string => {
 
 export const parseTimeToSecs = (milliseconds: number): string =>
   (milliseconds / 1000).toFixed(2);
+
+export const hrtimeToMs = (end: [number, number]): number =>
+  end[0] * 1e3 + end[1] / 1e6;

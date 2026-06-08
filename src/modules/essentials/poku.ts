@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
 import { GLOBAL, timespan } from '../../configs/poku.js';
 import { results } from '../../configs/results.js';
+import { hrtimeToMs } from '../../parsers/time.js';
 import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
@@ -79,7 +80,7 @@ export const poku = (async (
   const result = await runTests(testFiles);
   const code: Code = result ? 0 : 1;
   const end = hrtime(start);
-  const total = end[0] * 1e3 + end[1] / 1e6;
+  const total = hrtimeToMs(end);
 
   timespan.duration = total;
   timespan.finished = new Date();
