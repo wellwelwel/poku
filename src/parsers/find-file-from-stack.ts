@@ -17,6 +17,7 @@ const charCode = {
 const FILE_PROTOCOL = 'file://';
 const FILE_PROTOCOL_LENGTH = FILE_PROTOCOL.length;
 const INTERNAL_PATH = VERSION === 'placeholder' ? 'poku/src/' : 'poku/lib/';
+const INTERNAL_PATH_WIN = INTERNAL_PATH.replace(/\//g, '\\');
 
 const isAlpha = (code: number): boolean =>
   (code >= charCode.upperA && code <= charCode.upperZ) ||
@@ -26,7 +27,7 @@ const isDigit = (code: number): boolean =>
   code >= charCode.zero && code <= charCode.nine;
 
 const isInternalFrame = (line: string): boolean =>
-  line.replace(/\\/g, '/').indexOf(INTERNAL_PATH) !== -1;
+  line.indexOf(INTERNAL_PATH) !== -1 || line.indexOf(INTERNAL_PATH_WIN) !== -1;
 
 const findPathStart = (line: string): number => {
   // "file://"
