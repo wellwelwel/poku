@@ -10,7 +10,7 @@ import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
 
-export const onSigint = (): void => {
+export const onSigint = () => {
   stdout.write('\u001B[?25h');
 };
 

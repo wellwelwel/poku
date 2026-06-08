@@ -93,7 +93,7 @@ export const processDeepImports = async (
   intersectedSrcFiles: Set<string>,
   importMap: Map<string, Set<string>>,
   processedFiles: Set<string>
-): Promise<void> => {
+) => {
   if (processedFiles.has(srcFile)) return;
 
   processedFiles.add(srcFile);
@@ -121,7 +121,7 @@ export const createImportMap = async (
   allSrcFiles: Set<string>,
   importMap: Map<string, Set<string>>,
   processedFiles: Set<string>
-): Promise<void> => {
+) => {
   const intersectedSrcFiles = new Set(
     Array.from(allSrcFiles).filter((srcFile) => !allTestFiles.has(srcFile))
   );

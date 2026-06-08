@@ -74,7 +74,7 @@ const backgroundProcess = (
 
       runningProcesses.set(PID, end);
 
-      const onData = (data: Buffer): void => {
+      const onData = (data: Buffer) => {
         if (!isResolved && typeof options?.startAfter !== 'number') {
           if (
             typeof options?.startAfter === 'undefined' ||
@@ -122,7 +122,7 @@ const backgroundProcess = (
     } catch {}
   });
 
-/** Starts a file in a background process (useful for servers, APIs, etc.) */
+/** Starts a file in a background process */
 export const startService = (
   file: string,
   options?: StartServiceOptions
@@ -139,14 +139,7 @@ export const startService = (
   );
 };
 
-/**
- *
- * Starts a script (package.json) or task (deno.json) in a background process (useful for servers, APIs, etc.).
- *
- * ---
- *
- * By default it uses **npm**, but you can costumize it using the `runner` option.
- */
+/** Starts a script in a background process */
 export const startScript = (
   script: string,
   options?: StartScriptOptions

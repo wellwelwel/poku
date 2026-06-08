@@ -8,7 +8,7 @@ import { hr, log } from './write.js';
 
 const errors: string[] = [];
 
-const pathExists = async (arg: string, path: string): Promise<void> => {
+const pathExists = async (arg: string, path: string) => {
   try {
     await stat(path);
   } catch {
@@ -16,21 +16,21 @@ const pathExists = async (arg: string, path: string): Promise<void> => {
   }
 };
 
-const checkUselessValue = (arg: string): void => {
+const checkUselessValue = (arg: string) => {
   const prefix = getPrefix(arg);
 
   if (typeof getArg(arg, prefix) !== 'undefined')
     errors.push(`${prefix}${arg}: this flag shouldn't receive a value.`);
 };
 
-const checkRequiredValue = (arg: string): void => {
+const checkRequiredValue = (arg: string) => {
   const prefix = getPrefix(arg);
 
   if (hasArg(arg, prefix) && typeof getArg(arg, prefix) === 'undefined')
     errors.push(`${prefix}${arg}: this flag require a value.`);
 };
 
-const checkFlags = (): void => {
+const checkFlags = () => {
   const allowedFlags = new Set([
     '--concurrency',
     '--config',
@@ -76,7 +76,7 @@ const checkFlags = (): void => {
   }
 };
 
-const checkValues = async (): Promise<void> => {
+const checkValues = async () => {
   for (const flag of [
     'debug',
     'enforce',
@@ -138,7 +138,7 @@ const checkValues = async (): Promise<void> => {
     );
 };
 
-const checkConfigFile = (): void => {
+const checkConfigFile = () => {
   const allowedProps = new Set([
     '$schema',
     'include',
@@ -165,7 +165,7 @@ const checkConfigFile = (): void => {
   }
 };
 
-export const enforce = async (): Promise<void> => {
+export const enforce = async () => {
   checkFlags();
   checkConfigFile();
   await checkValues();

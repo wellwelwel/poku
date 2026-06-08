@@ -83,7 +83,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     block: () => unknown,
     errorOrMessage?: AssertPredicate | AssertionMessage,
     message?: AssertionMessage
-  ): void => {
+  ) => {
     processAssert(
       () => {
         if (isPredicate(errorOrMessage))
@@ -107,7 +107,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     block: () => unknown,
     errorOrMessage?: AssertPredicate | AssertionMessage,
     message?: AssertionMessage
-  ): void => {
+  ) => {
     if (isPredicate(errorOrMessage))
       processAssert(() => nodeAssert.throws(block, errorOrMessage), {
         message,
@@ -130,7 +130,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     block: AsyncBlock,
     errorOrMessage?: AssertPredicate | AssertionMessage,
     message?: AssertionMessage
-  ): Promise<void> => {
+  ) => {
     await processAsyncAssert(
       async () => {
         if (isPredicate(errorOrMessage))
@@ -154,7 +154,7 @@ export const createAssert = (nodeAssert: typeof assert) => {
     block: AsyncBlock,
     errorOrMessage?: AssertPredicate | AssertionMessage,
     message?: AssertionMessage
-  ): Promise<void> => {
+  ) => {
     await processAsyncAssert(
       async () => {
         if (isPredicate(errorOrMessage))

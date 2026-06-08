@@ -34,7 +34,7 @@ export const runTests = (files: string[]): Promise<boolean> => {
     };
   });
 
-  const runNext = async (): Promise<void> => {
+  const runNext = async () => {
     if (nextIndex >= totalFiles && activeTests === 0) {
       resolveDone(allPassed);
       return;

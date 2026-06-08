@@ -6,7 +6,7 @@ import { sleep } from './wait-for.js';
 export async function retry(
   config: number | RetryConfig,
   callback: () => unknown | Promise<unknown>
-): Promise<void> {
+) {
   const attempts = typeof config === 'number' ? config : config.attempts;
   const delay = typeof config === 'number' ? 0 : (config.delay ?? 0);
 

@@ -21,7 +21,6 @@ export type PluginContext = {
 };
 
 export type PokuPlugin = {
-  /** Plugin name */
   name?: string;
   /** Modify the command array before spawning a test file process */
   runner?: (command: string[], file: string) => string[];

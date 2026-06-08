@@ -19,13 +19,13 @@ export const startWatch = async (dirs: string[]) => {
   const executing = new Set<string>();
   const interval = Number(getArg('watchInterval')) || 1500;
 
-  const addWatcher = (pending: Promise<Watcher>): void => {
+  const addWatcher = (pending: Promise<Watcher>) => {
     pending.then((watcher) => {
       watchers.add(watcher);
     });
   };
 
-  const resultsClear = (): void => {
+  const resultsClear = () => {
     errors.length = 0;
     results.passed = 0;
     results.failed = 0;
@@ -33,7 +33,7 @@ export const startWatch = async (dirs: string[]) => {
     results.todo = 0;
   };
 
-  const listenStdin = async (input: Buffer | string): Promise<void> => {
+  const listenStdin = async (input: Buffer | string) => {
     if (isRunning || executing.size > 0) return;
 
     if (String(input).trim() === 'rs') {

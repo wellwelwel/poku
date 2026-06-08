@@ -38,7 +38,7 @@ export const runTestFile = async (path: string): Promise<boolean> => {
   const outputChunks: string[] = [];
   let outputSize = 0;
 
-  const stdOut = (data: string): void => {
+  const stdOut = (data: string) => {
     if (outputSize < 10_485_760) {
       outputChunks.push(data);
       outputSize += data.length;

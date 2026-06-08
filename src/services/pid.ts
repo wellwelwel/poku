@@ -17,7 +17,7 @@ export const populateRange = (startsAt: number, endsAt: number) => {
 };
 
 export const killPID = {
-  unix: (PID: number): Promise<void> =>
+  unix: (PID: number) =>
     new Promise((resolve) => {
       const service = spawn('kill', ['-9', String(Number(PID))], {
         shell: false,
@@ -25,7 +25,7 @@ export const killPID = {
 
       service.on('close', () => resolve(undefined));
     }),
-  windows: (PID: number): Promise<void> =>
+  windows: (PID: number) =>
     new Promise((resolve) => {
       const service = spawn(
         'taskkill',

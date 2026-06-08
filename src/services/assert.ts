@@ -7,7 +7,7 @@ import { retryContext } from '../configs/retry.js';
 const assertProcessor = () => {
   const { reporter } = GLOBAL;
 
-  const handleSuccess = ({ message }: ProcessAssertionOptions): void => {
+  const handleSuccess = ({ message }: ProcessAssertionOptions) => {
     if (typeof message === 'string') reporter.onAssertionSuccess({ message });
   };
 
@@ -16,11 +16,8 @@ const assertProcessor = () => {
     options: ProcessAssertionOptions
   ): never => {
     const ctx = retryContext.stack?.[retryContext.stack.length - 1];
-    if (ctx) {
-      ctx.failed = true;
-    } else {
-      process.exitCode = 1;
-    }
+    if (ctx) ctx.failed = true;
+    else process.exitCode = 1;
 
     if (error instanceof AssertionError)
       reporter.onAssertionFailure({ assertOptions: options, error });
@@ -28,10 +25,7 @@ const assertProcessor = () => {
     throw error;
   };
 
-  const processAssert = (
-    cb: () => void,
-    options: ProcessAssertionOptions
-  ): void => {
+  const processAssert = (cb: () => void, options: ProcessAssertionOptions) => {
     try {
       cb();
       handleSuccess(options);
@@ -43,7 +37,7 @@ const assertProcessor = () => {
   const processAsyncAssert = async (
     cb: () => Promise<void>,
     options: ProcessAssertionOptions
-  ): Promise<void> => {
+  ) => {
     try {
       await cb();
       handleSuccess(options);

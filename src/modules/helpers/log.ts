@@ -1,8 +1,7 @@
 import { parseResultType } from '../../parsers/assert.js';
 import { log as writeLog } from '../../services/write.js';
 
-/** By default **Poku** only shows outputs generated from itself. This helper allows you to use an alternative to `console.log` with **Poku**. */
-export const log = (...args: unknown[]): void => {
+export const log = (...args: unknown[]) => {
   const parsedMessages = args
     .map((arg) => parseResultType(arg))
     .join(' ')

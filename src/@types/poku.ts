@@ -28,103 +28,27 @@ export type Reporter =
   | CustomString;
 
 export type Configs = {
-  /**
-   * By setting `true`, **Poku** won't exit the process and will return the exit code (`0` or `1`)
-   *
-   * @default false
-   */
   noExit?: boolean;
-  /**
-   * This option overwrites all `log` settings
-   *
-   * @default false
-   */
   debug?: boolean;
-  /**
-   * This option overwrites the `debug` settings
-   *
-   * @default false
-   */
   quiet?: boolean;
-  /**
-   * Determines the mode of test execution
-   *
-   * @default false
-   */
   sequential?: boolean;
-  /**
-   * Controls process isolation for test files
-   *
-   * - `'process'` (default): each test file runs in a separate child process
-   * - `'none'`: all test files run in the same process (useful for debugging with `--inspect`)
-   *
-   * @default 'process'
-   */
   isolation?: 'none' | 'process' | CustomString;
-  /**
-   * Stops the tests at the first failure.
-   *
-   * @default false
-   */
   failFast?: boolean;
-  /**
-   * Limits the number of tests running concurrently
-   *
-   * @default (availableParallelism() || cpus().lenght)
-   */
+  /** @default (availableParallelism() || cpus().lenght) */
   concurrency?: number;
-  /**
-   * Sets the maximum time in milliseconds that each test file is allowed to run
-   *
-   * @default undefined
-   */
+  /** Sets the maximum time in milliseconds that each test file is allowed to run */
   timeout?: number;
-  /**
-   * @default "poku"
-   */
+  /** @default "poku" */
   reporter?: Reporter;
-  /**
-   * You can use this option to run a **callback** or a **file** before each test file on your suite
-   *
-   * ```ts
-   * beforeEach(() => myFunc())
-   * ```
-   *
-   * ```ts
-   * beforeEach(async () => await myAsyncFunc())
-   * ```
-   */
+  /** Runs a callback or a file before each test file on your suite */
   beforeEach?: () => unknown | Promise<unknown>;
-  /**
-   * You can use this option to run a **callback** or a **file** after each test file on your suite
-   *
-   * ```ts
-   * afterEach(() => myFunc())
-   * ```
-   *
-   * ```ts
-   * afterEach(async () => await myAsyncFunc())
-   * ```
-   */
+  /** Runs a callback or a file after each test file on your suite */
   afterEach?: () => unknown | Promise<unknown>;
   deno?: DenoOptions;
-  /**
-   * Plugins to extend Poku's behavior
-   *
-   * @default undefined
-   */
   plugins?: PokuPlugin[];
-  /**
-   * Only run tests whose title matches the given regex pattern
-   *
-   * @default undefined
-   */
+  /** Only run tests whose title matches the given regex pattern */
   testNamePattern?: RegExp;
-  /**
-   * Skip tests whose title matches the given regex pattern
-   *
-   * @default undefined
-   */
+  /** Skip tests whose title matches the given regex pattern */
   testSkipPattern?: RegExp;
 } & ListFilesConfigs;
 
@@ -139,17 +63,12 @@ export type States = {
 };
 
 type CliConfigs = {
-  /** Default: searches for _`.test.`_ and `.spec.` files, but you can customize it */
   include?: string | string[];
-  /** Reads an environment file and sets the environment variables */
   envFile?: string;
-  /** Terminates the specified ports, port ranges and process IDs */
+  /** Kills the specified ports, port ranges and process IDs */
   kill?: {
-    /** Terminates the specified ports before running the test suite */
     port?: [number];
-    /** Terminates the specified port range before running the test suite */
     range?: [number, number][];
-    /** Terminates the specified processes before running the test suite */
     pid?: [number];
   };
 };

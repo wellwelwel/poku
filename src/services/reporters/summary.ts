@@ -9,7 +9,7 @@ const LABEL_FILES_FAILED = '\x1b[2mtest file(s) failed\x1b[0m';
 export const summaryFooter = (
   countFails: number,
   { timespan, results }: Pick<Results, 'timespan' | 'results'>
-): void => {
+) => {
   if (countFails > 0) hr();
 
   log(`${format(String(results.passed)).bold().dim()} ${LABEL_FILES_PASSED}`);
