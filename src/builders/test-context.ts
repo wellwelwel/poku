@@ -6,19 +6,21 @@ export const createTestContext = (itTitle: string | undefined): TestContext => {
   let counters: Map<string, number> | undefined;
 
   return {
-    snapshot: (value, hint) =>
+    snapshot: (value, hint) => {
+      if (!counters) counters = new Map();
+
+      const activeCounters = counters;
+
       processAssert(
         () =>
-          assertSnapshot(value, hint, {
-            itTitle,
-            counters: (counters ??= new Map()),
-          }),
+          assertSnapshot(value, hint, { itTitle, counters: activeCounters }),
         {
           message: hint,
           defaultMessage: 'Snapshot does not match',
           actual: 'Received',
           expected: 'Snapshot',
         }
-      ),
+      );
+    },
   };
 };
