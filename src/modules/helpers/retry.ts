@@ -1,6 +1,7 @@
 import type { RetryConfig, RetryContext } from '../../@types/retry.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { retryContext } from '../../configs/retry.js';
+import { sleep } from './wait-for.js';
 
 export async function retry(
   config: number | RetryConfig,
@@ -25,13 +26,12 @@ export async function retry(
     };
 
     stack.push(context);
-
     GLOBAL.reporter.onRetryStart({ attempt, total: attempts });
 
     try {
       const result = callback();
-      if (result instanceof Promise) await result;
 
+      if (result instanceof Promise) await result;
       if (!context.failed) {
         stack.pop();
         GLOBAL.reporter.onRetryEnd({
@@ -39,6 +39,7 @@ export async function retry(
           total: attempts,
           success: true,
         });
+
         if (stack.length === 0) retryContext.stack = null;
         return;
       }
@@ -50,9 +51,7 @@ export async function retry(
     stack.pop();
     GLOBAL.reporter.onRetryEnd({ attempt, total: attempts, success: false });
 
-    if (attempt < attempts && delay > 0) {
-      await new Promise((resolve) => setTimeout(resolve, delay));
-    }
+    if (attempt < attempts && delay > 0) await sleep(delay);
   }
 
   if (stack.length === 0) retryContext.stack = null;
