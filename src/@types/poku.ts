@@ -40,9 +40,9 @@ export type Configs = {
   timeout?: number;
   /** @default "poku" */
   reporter?: Reporter;
-  /** Runs a **callback** or a **file** before each test file on your suite */
+  /** Runs a callback or a file before each test file on your suite */
   beforeEach?: () => unknown | Promise<unknown>;
-  /** Runs a **callback** or a **file** after each test file on your suite */
+  /** Runs a callback or a file after each test file on your suite */
   afterEach?: () => unknown | Promise<unknown>;
   deno?: DenoOptions;
   plugins?: PokuPlugin[];
@@ -65,7 +65,7 @@ export type States = {
 type CliConfigs = {
   include?: string | string[];
   envFile?: string;
-  /** Terminates the specified ports, port ranges and process IDs */
+  /** Kills the specified ports, port ranges and process IDs */
   kill?: {
     port?: [number];
     range?: [number, number][];

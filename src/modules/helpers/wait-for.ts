@@ -17,7 +17,6 @@ const checkPort = (port: number, host: string): Promise<boolean> =>
     client.on('error', () => resolve(false));
   });
 
-/** Wait until the defined milliseconds */
 export const sleep = (milliseconds: number) => {
   if (!Number.isInteger(milliseconds))
     throw new Error('Milliseconds must be an integer.');
@@ -76,7 +75,6 @@ export const waitForExpectedResult = async (
   await sleep(delay);
 };
 
-/** Wait until the defined port is active */
 export const waitForPort = async (
   port: number,
   options?: WaitForPortOptions

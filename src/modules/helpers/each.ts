@@ -24,7 +24,7 @@ const createEachControl = (
   return { pause, continue: continueFunc, reset };
 };
 
-/** Handle global states and external services before each `test` or `it`*/
+/** Runs a callback before each `test` or `it`*/
 export const beforeEach = (
   callback: () => unknown,
   options?: EachOptions
@@ -34,6 +34,6 @@ export const beforeEach = (
   return createEachControl(each.before, callback);
 };
 
-/** Handle global states and external services after each `test` or `it` */
+/** Runs a callback after each `test` or `it` */
 export const afterEach = (callback: () => unknown): Control =>
   createEachControl(each.after, callback);

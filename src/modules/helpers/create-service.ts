@@ -122,7 +122,7 @@ const backgroundProcess = (
     } catch {}
   });
 
-/** Starts a file in a background process (useful for servers, APIs, etc.) */
+/** Starts a file in a background process */
 export const startService = (
   file: string,
   options?: StartServiceOptions
@@ -139,7 +139,7 @@ export const startService = (
   );
 };
 
-/** Starts a script (package.json) or task (deno.json) in a background process (useful for servers, APIs, etc.) */
+/** Starts a script (package.json or deno.json) in a background process */
 export const startScript = (
   script: string,
   options?: StartScriptOptions
