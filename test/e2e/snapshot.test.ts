@@ -124,10 +124,11 @@ await describe('Snapshot e2e', async () => {
       'utf8'
     );
 
+    const { CI: _ignored, ...envWithoutCI } = process.env;
     const result = await inspectPoku({
       bin: BIN,
       command: '--denoAllow=all --updateSnapshot sample.test.js',
-      spawnOptions: { cwd: `${BASE}/update` },
+      spawnOptions: { cwd: `${BASE}/update`, env: envWithoutCI },
     });
 
     try {
