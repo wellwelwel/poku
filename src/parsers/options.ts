@@ -2,10 +2,10 @@ import type { ConfigFile, ConfigJSONFile } from '../@types/poku.js';
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { GLOBAL } from '../configs/poku.js';
 import { format } from '../services/format.js';
 import { log } from '../services/write.js';
-import { isWindows } from './os.js';
 
 export const getConfigs = async (
   customPath?: string
@@ -16,7 +16,7 @@ export const getConfigs = async (
 
   for (const file of expectedFiles) {
     const filePath = join(GLOBAL.cwd, file);
-    const path = isWindows ? `file://${filePath}` : filePath;
+    const path = pathToFileURL(filePath).href;
 
     try {
       if (!existsSync(filePath)) continue;
