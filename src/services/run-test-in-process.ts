@@ -2,9 +2,9 @@ import { relative } from 'node:path';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { GLOBAL } from '../configs/poku.js';
-import { parserOutput, timeoutMessage } from '../parsers/output.js';
-import { hrtimeToMs } from '../parsers/time.js';
+import { timeoutMessage } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
+import { reportFileResult } from './run-test-common.js';
 
 const stdoutWrite = process.stdout.write.bind(process.stdout);
 
@@ -74,26 +74,16 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
 
   const end = process.hrtime(start);
 
-  if (showLogs) {
-    const output = outputChunks.join('');
-    const parsedOutputs = parserOutput({
-      output,
+  if (showLogs)
+    reportFileResult({
+      reporter,
+      file,
+      path,
+      outputChunks,
       result,
+      end,
       debug: configs.debug,
-    })?.join('\n');
-
-    const total = hrtimeToMs(end);
-
-    reporter.onFileResult({
-      status: result,
-      path: {
-        relative: file,
-        absolute: path,
-      },
-      duration: total,
-      output: parsedOutputs,
     });
-  }
 
   if (!(await afterEach(file))) return false;
 

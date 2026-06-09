@@ -7,3 +7,9 @@ export const toRegExp = <T>(value: string | T): RegExp | Exclude<T, string> =>
   typeof value === 'string'
     ? new RegExp(escapeRegExp(value))
     : (value as Exclude<T, string>);
+
+export const envToRegExp = (
+  value: string | undefined,
+  flags?: string
+): RegExp | undefined =>
+  value ? new RegExp(escapeRegExp(value), flags) : undefined;

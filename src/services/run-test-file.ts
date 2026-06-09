@@ -4,9 +4,10 @@ import { relative } from 'node:path';
 import { hrtime } from 'node:process';
 import { deepOptions, GLOBAL } from '../configs/poku.js';
 import { runner } from '../parsers/get-runner.js';
-import { parserOutput, timeoutMessage } from '../parsers/output.js';
+import { timeoutMessage } from '../parsers/output.js';
 import { hrtimeToMs } from '../parsers/time.js';
 import { afterEach, beforeEach } from './each.js';
+import { reportFileResult } from './run-test-common.js';
 
 const STDIO_IPC: StdioOptions = ['inherit', 'pipe', 'pipe', 'ipc'];
 const STDIO_DEFAULT: StdioOptions = ['inherit', 'pipe', 'pipe'];
@@ -92,26 +93,16 @@ export const runTestFile = async (path: string): Promise<boolean> => {
 
       const result = timedOut ? false : code === 0;
 
-      if (showLogs) {
-        const output = outputChunks.join('');
-        const parsedOutputs = parserOutput({
-          output,
+      if (showLogs)
+        reportFileResult({
+          reporter,
+          file,
+          path,
+          outputChunks,
           result,
-          debug: GLOBAL.configs.debug,
-        })?.join('\n');
-
-        const total = hrtimeToMs(end);
-
-        reporter.onFileResult({
-          status: result,
-          path: {
-            relative: file,
-            absolute: path,
-          },
-          duration: total,
-          output: parsedOutputs,
+          end,
+          debug: configs.debug,
         });
-      }
 
       if (!(await afterEach(file))) {
         resolve(false);

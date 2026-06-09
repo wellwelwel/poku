@@ -3,7 +3,7 @@ import { stat as fsStat, readdir } from 'node:fs/promises';
 import { join, sep } from 'node:path';
 import { env } from 'node:process';
 import { states } from '../../configs/poku.js';
-import { escapeRegExp } from '../../parsers/escape-regexp.js';
+import { envToRegExp } from '../../parsers/escape-regexp.js';
 
 const regex = {
   sep: /[/\\]+/g,
@@ -27,9 +27,7 @@ export const sanitizePath = (input: string, ensureTarget?: boolean): string => {
 export const isFile = async (fullPath: string) =>
   (await fsStat(fullPath)).isFile();
 
-const envFilter = env.FILTER?.trim()
-  ? new RegExp(escapeRegExp(env.FILTER), 'i')
-  : undefined;
+const envFilter = envToRegExp(env.FILTER, 'i');
 
 const getAllFilesInner = async (
   dirPath: string,

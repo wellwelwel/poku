@@ -6,7 +6,7 @@ import process from 'node:process';
 import { each } from '../../configs/each.js';
 import { indentation } from '../../configs/indentation.js';
 import { errorHoist, GLOBAL } from '../../configs/poku.js';
-import { retryContext } from '../../configs/retry.js';
+import { peekRetryContext } from '../../configs/retry.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { getCallback, getTitle } from '../../parsers/get-test-args.js';
 import { hrtimeToMs } from '../../parsers/time.js';
@@ -18,6 +18,9 @@ const getScopeHook = (): ScopeHook | undefined =>
   (globalThis as Record<symbol, unknown>)[SCOPE_HOOKS_KEY] as
     | ScopeHook
     | undefined;
+
+const runEachCb = (cb: (() => unknown) | undefined): unknown =>
+  typeof cb === 'function' ? cb() : undefined;
 
 export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
   try {
@@ -35,15 +38,12 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
 
     if (hasTitle) indentation.itDepth++;
 
-    if (typeof each.before.cb === 'function') {
-      const beforeResult = each.before.cb();
-
-      if (beforeResult instanceof Promise) await beforeResult;
-    }
+    const beforeResult = runEachCb(each.before.cb);
+    if (beforeResult instanceof Promise) await beforeResult;
 
     if (!insideDescribe) {
       onError = (error: unknown) => {
-        const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+        const ctx = peekRetryContext();
         if (ctx) ctx.failed = true;
         else {
           process.exitCode = 1;
@@ -72,7 +72,7 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
         if (resultCb instanceof Promise) await resultCb;
       }
     } catch (error) {
-      const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+      const ctx = peekRetryContext();
       if (ctx) ctx.failed = true;
       else {
         process.exitCode = 1;
@@ -87,7 +87,7 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
         process.removeListener('uncaughtException', onError);
         process.removeListener('unhandledRejection', onError);
       } else if (errorHoist.failed) {
-        const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+        const ctx = peekRetryContext();
 
         if (ctx) ctx.failed = true;
         else success = false;
@@ -95,11 +95,8 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
       }
     }
 
-    if (typeof each.after.cb === 'function') {
-      const afterResult = each.after.cb();
-
-      if (afterResult instanceof Promise) await afterResult;
-    }
+    const afterResult = runEachCb(each.after.cb);
+    if (afterResult instanceof Promise) await afterResult;
 
     if (!title) return;
 
@@ -110,11 +107,8 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
   } catch (error) {
     if (indentation.itDepth > 0) indentation.itDepth--;
 
-    if (typeof each.after.cb === 'function') {
-      const afterResult = each.after.cb();
-
-      if (afterResult instanceof Promise) await afterResult;
-    }
+    const afterResult = runEachCb(each.after.cb);
+    if (afterResult instanceof Promise) await afterResult;
 
     throw error;
   }

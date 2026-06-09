@@ -7,7 +7,7 @@ import type {
   Timespan,
 } from '../@types/poku.js';
 import { env } from 'node:process';
-import { escapeRegExp } from '../parsers/escape-regexp.js';
+import { envToRegExp } from '../parsers/escape-regexp.js';
 import { getRuntime } from '../parsers/get-runtime.js';
 import { reporter } from '../services/reporter.js';
 import { cwd } from './cwd.js';
@@ -49,12 +49,8 @@ export const GLOBAL = getSharedState('GLOBAL', {
     reporter: undefined,
     beforeEach: undefined,
     afterEach: undefined,
-    testNamePattern: env.POKU_TEST_NAME_PATTERN
-      ? new RegExp(escapeRegExp(env.POKU_TEST_NAME_PATTERN))
-      : undefined,
-    testSkipPattern: env.POKU_TEST_SKIP_PATTERN
-      ? new RegExp(escapeRegExp(env.POKU_TEST_SKIP_PATTERN))
-      : undefined,
+    testNamePattern: envToRegExp(env.POKU_TEST_NAME_PATTERN),
+    testSkipPattern: envToRegExp(env.POKU_TEST_SKIP_PATTERN),
   } as Configs,
   configFile: undefined as string | undefined,
   configsFromFile: Object.create(null) as ConfigFile | ConfigJSONFile,
