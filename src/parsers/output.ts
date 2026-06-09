@@ -79,14 +79,14 @@ export const serialize = (
 
     seen.add(value);
 
-    const parts: string[] = [];
+    const lines: string[] = [];
     const child = indent(depth + 1);
 
     for (const element of value)
-      parts.push(`${child}${serialize(element, seen, depth + 1)}`);
+      lines.push(`${child}${serialize(element, seen, depth + 1)}`);
 
     seen.delete(value);
-    return `Set {\n${parts.join(',\n')}\n${indent(depth)}}`;
+    return `Set {\n${lines.join(',\n')}\n${indent(depth)}}`;
   }
 
   if (value instanceof Map) {
@@ -94,16 +94,16 @@ export const serialize = (
 
     seen.add(value);
 
-    const parts: string[] = [];
+    const lines: string[] = [];
     const child = indent(depth + 1);
 
     for (const [mapKey, mapValue] of value)
-      parts.push(
+      lines.push(
         `${child}${serialize(mapKey, seen, depth + 1)} => ${serialize(mapValue, seen, depth + 1)}`
       );
 
     seen.delete(value);
-    return `Map {\n${parts.join(',\n')}\n${indent(depth)}}`;
+    return `Map {\n${lines.join(',\n')}\n${indent(depth)}}`;
   }
 
   if (value instanceof Promise) return 'Promise {}';
@@ -204,25 +204,25 @@ export const serialize = (
   stringKeys.sort(compareStrings);
   symbolKeys.sort(compareSymbols);
 
-  const parts: string[] = [];
+  const lines: string[] = [];
   const child = indent(depth + 1);
 
   seen.add(value as object);
 
   for (const key of stringKeys)
-    parts.push(
+    lines.push(
       `${child}${JSON.stringify(key)}: ${serialize((value as Record<string, unknown>)[key], seen, depth + 1)}`
     );
 
   for (const symbolKey of symbolKeys)
-    parts.push(
+    lines.push(
       `${child}${String(symbolKey)}: ${serialize((value as Record<symbol, unknown>)[symbolKey], seen, depth + 1)}`
     );
 
   seen.delete(value as object);
 
   const prefix = isClassInstance ? `${constructorName} ` : '';
-  return `${prefix}{\n${parts.join(',\n')}\n${indent(depth)}}`;
+  return `${prefix}{\n${lines.join(',\n')}\n${indent(depth)}}`;
 };
 
 export const parserOutput = (options: {
