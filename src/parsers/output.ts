@@ -12,6 +12,8 @@ const TODO_MARKER = String(format('●').cyan().bold()).slice(
   -ANSI_RESET.length
 );
 
+const ObjProto = Object.prototype;
+
 const indent = (depth: number): string => INDENTS[depth] ?? '  '.repeat(depth);
 
 const compareStrings = (a: string, b: string): number => a.localeCompare(b);
@@ -35,9 +37,10 @@ export const serialize = (
 
   const kind = typeof value;
 
-  if (kind === 'boolean' || kind === 'number') return String(value);
-  if (kind === 'bigint') return `${String(value)}n`;
+  if (kind === 'number') return String(value);
   if (kind === 'string') return JSON.stringify(value);
+  if (kind === 'boolean') return String(value);
+  if (kind === 'bigint') return `${String(value)}n`;
   if (kind === 'symbol') return String(value);
   if (kind === 'function') {
     const name = (value as { name?: string }).name;
@@ -55,117 +58,137 @@ export const serialize = (
     return `[${value.name || 'Error'}: ${value.message ?? ''}]`;
 
   if (Array.isArray(value)) {
-    if (value.length === 0) return '[]';
+    const length = value.length;
+
+    if (length === 0) return '[]';
 
     seen.add(value);
 
-    const parts: string[] = [];
     const child = indent(depth + 1);
+    const separator = `,\n${child}`;
+    const first = value[0];
+    let acc = `[\n${child}${first === undefined && !(0 in value) ? '<empty>' : serialize(first, seen, depth + 1)}`;
 
-    for (let index = 0; index < value.length; index++) {
-      const rendered = Object.prototype.hasOwnProperty.call(value, index)
-        ? serialize(value[index], seen, depth + 1)
-        : '<empty>';
+    for (let index = 1; index < length; index++) {
+      const element = value[index];
 
-      parts.push(`${child}${rendered}`);
+      acc += `${separator}${element === undefined && !(index in value) ? '<empty>' : serialize(element, seen, depth + 1)}`;
     }
 
     seen.delete(value);
-    return `[\n${parts.join(',\n')}\n${indent(depth)}]`;
+    return `${acc}\n${indent(depth)}]`;
   }
 
-  if (value instanceof Set) {
-    if (value.size === 0) return 'Set {}';
+  const prototype = Object.getPrototypeOf(value);
+  const isPlainObject = prototype === ObjProto || prototype === null;
 
-    seen.add(value);
+  if (!isPlainObject) {
+    if (value instanceof Set) {
+      if (value.size === 0) return 'Set {}';
 
-    const lines: string[] = [];
-    const child = indent(depth + 1);
+      seen.add(value);
 
-    for (const element of value)
-      lines.push(`${child}${serialize(element, seen, depth + 1)}`);
+      const child = indent(depth + 1);
+      const separator = `,\n${child}`;
+      let acc = `Set {`;
+      let isFirst = true;
 
-    seen.delete(value);
-    return `Set {\n${lines.join(',\n')}\n${indent(depth)}}`;
-  }
+      for (const element of value) {
+        acc += `${isFirst ? `\n${child}` : separator}${serialize(element, seen, depth + 1)}`;
+        isFirst = false;
+      }
 
-  if (value instanceof Map) {
-    if (value.size === 0) return 'Map {}';
-
-    seen.add(value);
-
-    const lines: string[] = [];
-    const child = indent(depth + 1);
-
-    for (const [mapKey, mapValue] of value)
-      lines.push(
-        `${child}${serialize(mapKey, seen, depth + 1)} => ${serialize(mapValue, seen, depth + 1)}`
-      );
-
-    seen.delete(value);
-    return `Map {\n${lines.join(',\n')}\n${indent(depth)}}`;
-  }
-
-  if (value instanceof Promise) return 'Promise {}';
-  if (value instanceof WeakMap) return 'WeakMap {}';
-  if (value instanceof WeakSet) return 'WeakSet {}';
-  if (value instanceof URL) return `URL "${value.href}"`;
-
-  if (value instanceof URLSearchParams) {
-    const parts: string[] = [];
-
-    for (const [key, val] of value)
-      parts.push(`${JSON.stringify(key)} => ${JSON.stringify(val)}`);
-
-    if (parts.length === 0) return 'URLSearchParams {}';
-    return `URLSearchParams { ${parts.join(', ')} }`;
-  }
-
-  if (Buffer.isBuffer(value)) {
-    if (value.length === 0) return 'Buffer []';
-
-    seen.add(value);
-
-    const parts: string[] = [];
-    const child = indent(depth + 1);
-
-    for (const byte of value) parts.push(`${child}${formatByte(byte)}`);
-
-    seen.delete(value);
-
-    return `Buffer [\n${parts.join(',\n')}\n${indent(depth)}]`;
-  }
-
-  if (value instanceof DataView)
-    return `DataView { "byteLength": ${value.byteLength}, "byteOffset": ${value.byteOffset} }`;
-
-  if (ArrayBuffer.isView(value as ArrayBufferView)) {
-    const typed = value as ArrayLike<number | bigint> & object;
-    const typeName =
-      (typed as { constructor?: { name?: string } }).constructor?.name ??
-      'TypedArray';
-
-    if (typed.length === 0) return `${typeName} []`;
-
-    seen.add(typed);
-
-    const parts: string[] = [];
-    const child = indent(depth + 1);
-
-    for (let index = 0; index < typed.length; index++) {
-      const element = typed[index];
-
-      parts.push(
-        `${child}${typeof element === 'bigint' ? `${String(element)}n` : String(element)}`
-      );
+      seen.delete(value);
+      return `${acc}\n${indent(depth)}}`;
     }
 
-    seen.delete(typed);
-    return `${typeName} [\n${parts.join(',\n')}\n${indent(depth)}]`;
-  }
+    if (value instanceof Map) {
+      if (value.size === 0) return 'Map {}';
 
-  if (value instanceof ArrayBuffer)
-    return `ArrayBuffer { "byteLength": ${value.byteLength} }`;
+      seen.add(value);
+
+      const child = indent(depth + 1);
+      const separator = `,\n${child}`;
+      let acc = `Map {`;
+      let isFirst = true;
+
+      for (const [mapKey, mapValue] of value) {
+        acc += `${isFirst ? `\n${child}` : separator}${serialize(mapKey, seen, depth + 1)} => ${serialize(mapValue, seen, depth + 1)}`;
+        isFirst = false;
+      }
+
+      seen.delete(value);
+      return `${acc}\n${indent(depth)}}`;
+    }
+
+    if (value instanceof Promise) return 'Promise {}';
+    if (value instanceof WeakMap) return 'WeakMap {}';
+    if (value instanceof WeakSet) return 'WeakSet {}';
+    if (value instanceof URL) return `URL "${value.href}"`;
+
+    if (value instanceof URLSearchParams) {
+      let acc = '';
+      let isFirst = true;
+
+      for (const [key, val] of value) {
+        acc += `${isFirst ? '' : ', '}${JSON.stringify(key)} => ${JSON.stringify(val)}`;
+        isFirst = false;
+      }
+
+      if (acc === '') return 'URLSearchParams {}';
+      return `URLSearchParams { ${acc} }`;
+    }
+
+    if (Buffer.isBuffer(value)) {
+      const length = value.length;
+
+      if (length === 0) return 'Buffer []';
+
+      seen.add(value);
+
+      const child = indent(depth + 1);
+      const separator = `,\n${child}`;
+      let acc = `Buffer [\n${child}${formatByte(value[0])}`;
+
+      for (let index = 1; index < length; index++)
+        acc += `${separator}${formatByte(value[index])}`;
+
+      seen.delete(value);
+      return `${acc}\n${indent(depth)}]`;
+    }
+
+    if (value instanceof DataView)
+      return `DataView { "byteLength": ${value.byteLength}, "byteOffset": ${value.byteOffset} }`;
+
+    if (ArrayBuffer.isView(value as ArrayBufferView)) {
+      const typed = value as ArrayLike<number | bigint> & object;
+      const typeName =
+        (typed as { constructor?: { name?: string } }).constructor?.name ??
+        'TypedArray';
+      const length = typed.length;
+
+      if (length === 0) return `${typeName} []`;
+
+      seen.add(typed);
+
+      const child = indent(depth + 1);
+      const separator = `,\n${child}`;
+      const first = typed[0];
+      let acc = `${typeName} [\n${child}${typeof first === 'bigint' ? `${String(first)}n` : String(first)}`;
+
+      for (let index = 1; index < length; index++) {
+        const element = typed[index];
+
+        acc += `${separator}${typeof element === 'bigint' ? `${String(element)}n` : String(element)}`;
+      }
+
+      seen.delete(typed);
+      return `${acc}\n${indent(depth)}]`;
+    }
+
+    if (value instanceof ArrayBuffer)
+      return `ArrayBuffer { "byteLength": ${value.byteLength} }`;
+  }
 
   if (
     (value as { [Symbol.toStringTag]?: string })[Symbol.toStringTag] ===
@@ -187,42 +210,51 @@ export const serialize = (
     }
   }
 
-  const prototype = Object.getPrototypeOf(value);
   const constructorName = (value as { constructor?: { name?: string } })
     .constructor?.name;
   const isClassInstance =
     prototype !== null &&
-    prototype !== Object.prototype &&
+    prototype !== ObjProto &&
     typeof constructorName === 'string' &&
     constructorName !== 'Object';
   const stringKeys = Object.keys(value as object);
   const symbolKeys = Object.getOwnPropertySymbols(value as object);
+  const stringKeysLength = stringKeys.length;
+  const symbolKeysLength = symbolKeys.length;
 
-  if (stringKeys.length === 0 && symbolKeys.length === 0)
+  if (stringKeysLength === 0 && symbolKeysLength === 0)
     return isClassInstance ? `${constructorName} {}` : '{}';
 
   stringKeys.sort(compareStrings);
-  symbolKeys.sort(compareSymbols);
+  if (symbolKeysLength > 0) symbolKeys.sort(compareSymbols);
 
-  const lines: string[] = [];
   const child = indent(depth + 1);
+  const separator = `,\n${child}`;
+  const record = value as Record<string | symbol, unknown>;
 
   seen.add(value as object);
 
-  for (const key of stringKeys)
-    lines.push(
-      `${child}${JSON.stringify(key)}: ${serialize((value as Record<string, unknown>)[key], seen, depth + 1)}`
-    );
+  let acc = '';
+  let isFirst = true;
 
-  for (const symbolKey of symbolKeys)
-    lines.push(
-      `${child}${String(symbolKey)}: ${serialize((value as Record<symbol, unknown>)[symbolKey], seen, depth + 1)}`
-    );
+  for (let index = 0; index < stringKeysLength; index++) {
+    const key = stringKeys[index];
+
+    acc += `${isFirst ? '' : separator}${JSON.stringify(key)}: ${serialize(record[key], seen, depth + 1)}`;
+    isFirst = false;
+  }
+
+  for (let index = 0; index < symbolKeysLength; index++) {
+    const symbolKey = symbolKeys[index];
+
+    acc += `${isFirst ? '' : separator}${String(symbolKey)}: ${serialize(record[symbolKey], seen, depth + 1)}`;
+    isFirst = false;
+  }
 
   seen.delete(value as object);
 
   const prefix = isClassInstance ? `${constructorName} ` : '';
-  return `${prefix}{\n${lines.join(',\n')}\n${indent(depth)}}`;
+  return `${prefix}{\n${child}${acc}\n${indent(depth)}}`;
 };
 
 export const parserOutput = (options: {
