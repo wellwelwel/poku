@@ -307,3 +307,22 @@ test('Serializer (sparse arrays and symbol keys)', () => {
     'object with string and symbol keys (string-first ordering)'
   );
 });
+
+test('Serializer (multiple symbol keys are sorted deterministically)', () => {
+  const unordered = {
+    [Symbol.for('c')]: 3,
+    [Symbol.for('a')]: 1,
+    [Symbol.for('b')]: 2,
+  };
+  assert.strictEqual(
+    serialize(unordered),
+    '{\n  Symbol(a): 1,\n  Symbol(b): 2,\n  Symbol(c): 3\n}',
+    'multiple symbol keys are sorted alphabetically'
+  );
+
+  assert.strictEqual(
+    serialize({ [Symbol.for('b')]: 2, [Symbol.for('a')]: 1 }),
+    serialize({ [Symbol.for('a')]: 1, [Symbol.for('b')]: 2 }),
+    'symbol key order is deterministic regardless of insertion order'
+  );
+});
