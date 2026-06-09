@@ -2,7 +2,7 @@ import type { ProcessAssertionOptions } from '../@types/assert.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { GLOBAL } from '../configs/poku.js';
-import { retryContext } from '../configs/retry.js';
+import { peekRetryContext } from '../configs/retry.js';
 
 const assertProcessor = () => {
   const { reporter } = GLOBAL;
@@ -15,7 +15,7 @@ const assertProcessor = () => {
     error: unknown,
     options: ProcessAssertionOptions
   ): never => {
-    const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+    const ctx = peekRetryContext();
     if (ctx) ctx.failed = true;
     else process.exitCode = 1;
 

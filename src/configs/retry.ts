@@ -6,3 +6,6 @@ export const retryContext = getSharedState<{
 }>('retryContext', {
   stack: null,
 });
+
+export const peekRetryContext = (): RetryContext | undefined =>
+  retryContext.stack?.[retryContext.stack.length - 1];

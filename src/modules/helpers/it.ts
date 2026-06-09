@@ -6,7 +6,7 @@ import process from 'node:process';
 import { each } from '../../configs/each.js';
 import { indentation } from '../../configs/indentation.js';
 import { errorHoist, GLOBAL } from '../../configs/poku.js';
-import { retryContext } from '../../configs/retry.js';
+import { peekRetryContext } from '../../configs/retry.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { getCallback, getTitle } from '../../parsers/get-test-args.js';
 import { hrtimeToMs } from '../../parsers/time.js';
@@ -43,7 +43,7 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
 
     if (!insideDescribe) {
       onError = (error: unknown) => {
-        const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+        const ctx = peekRetryContext();
         if (ctx) ctx.failed = true;
         else {
           process.exitCode = 1;
@@ -72,7 +72,7 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
         if (resultCb instanceof Promise) await resultCb;
       }
     } catch (error) {
-      const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+      const ctx = peekRetryContext();
       if (ctx) ctx.failed = true;
       else {
         process.exitCode = 1;
@@ -87,7 +87,7 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
         process.removeListener('uncaughtException', onError);
         process.removeListener('unhandledRejection', onError);
       } else if (errorHoist.failed) {
-        const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+        const ctx = peekRetryContext();
 
         if (ctx) ctx.failed = true;
         else success = false;
