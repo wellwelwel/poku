@@ -98,9 +98,6 @@ import { hr, log } from '../services/write.js';
 
   GLOBAL.configFile = configFile;
 
-  env.POKU_RUNTIME = GLOBAL.runtime;
-  env.POKU_REPORTER = typeof reporter === 'string' ? reporter : 'poku';
-
   GLOBAL.configs = {
     filter: toRegExp(filter),
     exclude: toRegExp(exclude),
