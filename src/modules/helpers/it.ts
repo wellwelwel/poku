@@ -19,6 +19,9 @@ const getScopeHook = (): ScopeHook | undefined =>
     | ScopeHook
     | undefined;
 
+const runEachCb = (cb: (() => unknown) | undefined): unknown =>
+  typeof cb === 'function' ? cb() : undefined;
+
 export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
   try {
     const title = getTitle(titleOrCb);
@@ -35,11 +38,8 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
 
     if (hasTitle) indentation.itDepth++;
 
-    if (typeof each.before.cb === 'function') {
-      const beforeResult = each.before.cb();
-
-      if (beforeResult instanceof Promise) await beforeResult;
-    }
+    const beforeResult = runEachCb(each.before.cb);
+    if (beforeResult instanceof Promise) await beforeResult;
 
     if (!insideDescribe) {
       onError = (error: unknown) => {
@@ -95,11 +95,8 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
       }
     }
 
-    if (typeof each.after.cb === 'function') {
-      const afterResult = each.after.cb();
-
-      if (afterResult instanceof Promise) await afterResult;
-    }
+    const afterResult = runEachCb(each.after.cb);
+    if (afterResult instanceof Promise) await afterResult;
 
     if (!title) return;
 
@@ -110,11 +107,8 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
   } catch (error) {
     if (indentation.itDepth > 0) indentation.itDepth--;
 
-    if (typeof each.after.cb === 'function') {
-      const afterResult = each.after.cb();
-
-      if (afterResult instanceof Promise) await afterResult;
-    }
+    const afterResult = runEachCb(each.after.cb);
+    if (afterResult instanceof Promise) await afterResult;
 
     throw error;
   }
