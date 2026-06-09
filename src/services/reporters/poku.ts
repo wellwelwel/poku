@@ -4,7 +4,7 @@ import { relative, resolve } from 'node:path';
 import { stdout } from 'node:process';
 import { cwd } from '../../configs/cwd.js';
 import { indentation } from '../../configs/indentation.js';
-import { getSharedState } from '../../configs/shared-state.js';
+import { addError, errors } from '../../configs/results.js';
 import { parseResultType } from '../../parsers/assert.js';
 import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
@@ -37,11 +37,6 @@ const logEndResult = ({
       .dim()}`
   );
 };
-
-export const errors = getSharedState<{ file: string; output?: string }[]>(
-  'errors',
-  []
-);
 
 export const poku: ReturnType<ReporterPlugin> = (() => {
   return {
@@ -191,10 +186,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
         );
 
       if (!status) {
-        errors.push({
-          file: path.relative,
-          output,
-        });
+        addError(path.relative, output);
 
         if (output) log(output);
       }
