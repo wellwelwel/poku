@@ -5,9 +5,12 @@ import { stdout } from 'node:process';
 import { cwd } from '../../configs/cwd.js';
 import { indentation } from '../../configs/indentation.js';
 import { addError, errors } from '../../configs/results.js';
-import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
+import {
+  findFileFromStack,
+  normalizeStackPath,
+} from '../../parsers/find-file-from-stack.js';
 import { serialize } from '../../parsers/output.js';
-import { normalizeStackPath } from '../../parsers/snapshot.js';
+import { SNAPSHOT_OPERATOR } from '../../parsers/snapshot.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 import { format } from '../format.js';
 import { hr, log } from '../write.js';
@@ -119,7 +122,7 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(`${format(`${preIdentation}  Operator`).dim()} ${operator}\n`);
 
       if (!options?.hideDiff) {
-        const isSnapshot = operator === 'snapshot';
+        const isSnapshot = operator === SNAPSHOT_OPERATOR;
         const toDisplay = (value: unknown): string =>
           isSnapshot ? String(value) : serialize(value);
         const splitActual = toDisplay(actual).split('\n');

@@ -2,10 +2,10 @@ import { sep } from 'node:path';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
+import { normalizeStackPath } from '../../src/parsers/find-file-from-stack.js';
 import {
   formatSnapFile,
   getSnapFilePath,
-  normalizeStackPath,
   parseSnapFile,
 } from '../../src/parsers/snapshot.js';
 

@@ -3,14 +3,15 @@ import { AssertionError } from 'node:assert';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import process from 'node:process';
-import { findFileFromStack } from './find-file-from-stack.js';
+import {
+  findFileFromStack,
+  normalizeStackPath,
+} from './find-file-from-stack.js';
 import { serialize } from './output.js';
 
-const FILE_PROTOCOL = 'file://';
-const LINE_COL_SUFFIX = /:\d+:\d+$/;
-const WINDOWS_DRIVE_PREFIX = /^\/([A-Za-z]:)/;
 const SNAPSHOT_DIR = '__snapshots__';
 const SNAPSHOT_EXT = '.snap';
+export const SNAPSHOT_OPERATOR = 'snapshot';
 const SNAPSHOT_HEADER =
   '// Poku Snapshot v1, https://poku.io/docs/documentation/api/snapshot';
 const ENTRY_PATTERN =
@@ -19,18 +20,6 @@ const ENTRY_PATTERN =
 let flushRegistered = false;
 
 export const snapshotRegistry = new Map<string, SnapshotEntry>();
-
-export const normalizeStackPath = (raw: string): string => {
-  if (!raw) return '';
-
-  const withoutProtocol = raw.startsWith(FILE_PROTOCOL)
-    ? raw.slice(FILE_PROTOCOL.length)
-    : raw;
-
-  const withoutLineCol = withoutProtocol.replace(LINE_COL_SUFFIX, '');
-
-  return withoutLineCol.replace(WINDOWS_DRIVE_PREFIX, '$1');
-};
 
 export const getSnapFilePath = (testFilePath: string): string =>
   join(
@@ -147,7 +136,7 @@ export const assertSnapshot = (
         actual: serialized,
         expected: '(no snapshot)',
         message: `Missing snapshot "${name}" in CI. Run with --updateSnapshot to create.`,
-        operator: 'snapshot',
+        operator: SNAPSHOT_OPERATOR,
       });
 
     entries.set(name, serialized);
@@ -171,6 +160,6 @@ export const assertSnapshot = (
     actual: serialized,
     expected: stored,
     message: hint ?? `Snapshot "${name}" does not match`,
-    operator: 'snapshot',
+    operator: SNAPSHOT_OPERATOR,
   });
 };

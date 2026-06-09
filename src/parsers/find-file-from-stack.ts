@@ -18,6 +18,8 @@ const FILE_PROTOCOL = 'file://';
 const FILE_PROTOCOL_LENGTH = FILE_PROTOCOL.length;
 const INTERNAL_PATH = VERSION === 'placeholder' ? 'poku/src/' : 'poku/lib/';
 const INTERNAL_PATH_WIN = INTERNAL_PATH.replace(/\//g, '\\');
+const LINE_COL_SUFFIX = /:\d+:\d+$/;
+const WINDOWS_DRIVE_PREFIX = /^\/([A-Za-z]:)/;
 
 const isAlpha = (code: number): boolean =>
   (code >= charCode.upperA && code <= charCode.upperZ) ||
@@ -71,6 +73,18 @@ const findLineColStart = (line: string, after: number): number => {
   }
 
   return position;
+};
+
+export const normalizeStackPath = (raw: string): string => {
+  if (!raw) return '';
+
+  const withoutProtocol = raw.startsWith(FILE_PROTOCOL)
+    ? raw.slice(FILE_PROTOCOL_LENGTH)
+    : raw;
+
+  const withoutLineCol = withoutProtocol.replace(LINE_COL_SUFFIX, '');
+
+  return withoutLineCol.replace(WINDOWS_DRIVE_PREFIX, '$1');
 };
 
 export const findFileFromStack = (
