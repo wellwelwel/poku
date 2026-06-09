@@ -6,7 +6,7 @@
 Enjoying **Poku**? Give him a star to show your support 🌟
 
 [![Version](https://img.shields.io/npm/v/poku?label=&color=70a1ff&logo=npm&logoColor=white)]()
-[![Downloads](https://img.shields.io/npm/dm/poku?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
+[![Downloads](https://img.shields.io/npm/dm/poku?label=&logo=npm&logoColor=white&color=45aaf2)]()
 [![CI](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=testcafe&logoColor=white&color=9c88ff)]()
 [![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)]()
 
@@ -108,7 +108,7 @@ deno run npm:poku
   </tr>
 </table>
 
-### ![v][] Common Helpers
+### ![v][] Common Helpers and Options
 
 <table>
   <tr>
@@ -151,11 +151,6 @@ deno run npm:poku
     <td><a href="https://poku.io/docs/documentation/helpers/only">only</a></td>
     <td>🌌 Debug tests by enabling selective runs</td>
   </tr>
-</table>
-
-### ![v][] Common Options
-
-<table>
   <tr>
     <td><a href="https://poku.io/docs/documentation/plugins/official/coverage">coverage</a></td>
     <td>☔️ Enable coverage collection</td>
@@ -174,7 +169,7 @@ deno run npm:poku
   </tr>
 </table>
 
-> _and much more_ 👇🏻
+- _and much more_ 🔥
 
 ---
 
