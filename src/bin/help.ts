@@ -35,7 +35,7 @@ const summary: [string, string][] = [
   ['--testNamePattern, -t', 'Run only tests matching the given regex'],
   ['--testSkipPattern', 'Skip tests matching the given regex'],
   ['--timeout', 'Set the maximum time for each test file'],
-  ['--updateSnapshot, -u', 'Update existing snapshots instead of failing'],
+  ['--updateSnapshot, -u', 'Update existing snapshots'],
   ['--version, -v', "Show Poku's installed version."],
   ['--watch, -w', 'Watch for test events'],
   ['--watchInterval', 'Set an interval for watch events'],
