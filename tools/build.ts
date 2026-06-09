@@ -149,7 +149,7 @@ const buildBundle = async (config: BundleConfig) => {
     compact: true,
     sourcemap: false,
     minifyInternalExports: false,
-    hoistTransitiveImports: false,
+    // hoistTransitiveImports: false,
     ...config.writeOptions,
   });
 
@@ -223,7 +223,7 @@ const buildTypeDeclarations = async () => {
       entryFileNames: `[name].${extension}`,
       chunkFileNames: `modules/_shared.${extension}`,
       minifyInternalExports: false,
-      hoistTransitiveImports: false,
+      // hoistTransitiveImports: false,
       compact: true,
       sourcemap: false,
     });
