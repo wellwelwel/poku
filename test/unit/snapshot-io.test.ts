@@ -49,9 +49,7 @@ describe('Snapshot: IO Utilities', () => {
   });
 
   it('parseSnapFile reads CommonJS exports declarations', () => {
-    const content = `// Poku Snapshot v1, https://poku.io/docs/documentation/api/snapshot
-
-exports[\`name 1\`] = \`"value"\`;
+    const content = `exports[\`name 1\`] = \`"value"\`;
 `;
     const parsed = parseSnapFile(content);
     assert.strictEqual(parsed.get('name 1'), '"value"', 'parsed entry');
@@ -76,15 +74,23 @@ exports[\`name 1\`] = \`"value"\`;
     const out = formatSnapFile(entries);
     const indexOfA = out.indexOf('exports[`a`]');
     const indexOfB = out.indexOf('exports[`b`]');
-    assert.ok(indexOfB > 0 && indexOfA > 0, 'both entries present');
+    assert.ok(indexOfB !== -1 && indexOfA !== -1, 'both entries present');
     assert.ok(indexOfB < indexOfA, 'insertion order preserved (b before a)');
   });
 
-  it('formatSnapFile output starts with the Poku header', () => {
+  it('formatSnapFile output starts directly with the first entry', () => {
     const out = formatSnapFile(new Map([['name 1', '"value"']]));
     assert.ok(
-      out.startsWith('// Poku Snapshot v1, '),
-      'header present on the first line'
+      out.startsWith('exports[`name 1`] = '),
+      'no header, the first entry opens the file'
+    );
+  });
+
+  it('formatSnapFile returns an empty string for no entries', () => {
+    assert.strictEqual(
+      formatSnapFile(new Map()),
+      '',
+      'empty registry produces an empty file'
     );
   });
 

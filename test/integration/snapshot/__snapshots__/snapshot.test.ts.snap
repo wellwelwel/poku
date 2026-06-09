@@ -1,5 +1,3 @@
-// Poku Snapshot v1, https://poku.io/docs/documentation/api/snapshot
-
 exports[`matches a primitive snapshot 1`] = `"hello world"`;
 
 exports[`matches a numeric snapshot 1`] = `42`;
@@ -23,16 +21,8 @@ exports[`supports multiple snapshots per test via counter 1`] = `{
   "id": 1
 }`;
 
-exports[`supports multiple snapshots per test via counter 2`] = `{
-  "id": 2
-}`;
-
 exports[`supports named hints > authorized user 1`] = `{
   "role": "admin"
-}`;
-
-exports[`supports named hints > unauthorized user 1`] = `{
-  "role": "guest"
 }`;
 
 exports[`serializes nested structures deterministically 1`] = `{
@@ -63,4 +53,12 @@ exports[`snapshots a URL 1`] = `URL "https://poku.io/docs?ref=test"`;
 
 exports[`snapshots a class instance 1`] = `Person {
   "name": "Ada"
+}`;
+
+exports[`supports multiple snapshots per test via counter 2`] = `{
+  "id": 2
+}`;
+
+exports[`supports named hints > unauthorized user 1`] = `{
+  "role": "guest"
 }`;

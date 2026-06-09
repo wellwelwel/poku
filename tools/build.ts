@@ -150,6 +150,7 @@ const buildBundle = async (config: BundleConfig) => {
     compact: true,
     sourcemap: false,
     minifyInternalExports: false,
+    hoistTransitiveImports: false,
     ...config.writeOptions,
   });
 

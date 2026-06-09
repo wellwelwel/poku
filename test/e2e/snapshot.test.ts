@@ -1,4 +1,10 @@
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { dirname, join } from 'node:path';
 import {
   LIB_ESM,
@@ -89,8 +95,8 @@ await describe('Snapshot e2e', async () => {
 
       const written = readFileSync(snapPath('create'), 'utf8');
       assert.ok(
-        written.startsWith('// Poku Snapshot v1, '),
-        'Snap header present'
+        written.startsWith('exports[`'),
+        'Snap file opens with the first entry'
       );
       const entries = parseSnapFile(written);
       assert.deepStrictEqual(
@@ -138,6 +144,39 @@ await describe('Snapshot e2e', async () => {
     }
   });
 
+  await it('does not rewrite a mismatching snapshot in CI', async () => {
+    cleanSnap('update');
+
+    const initialPath = snapPath('update');
+    const entryName =
+      'updates a stored snapshot under the --updateSnapshot flag 1';
+    const original = formatSnapFile(
+      new Map([[entryName, '{\n  "updated": "old value"\n}']])
+    );
+
+    mkdirSync(dirname(initialPath), { recursive: true });
+    writeFileSync(initialPath, original, 'utf8');
+
+    const result = await inspectPoku({
+      bin: BIN,
+      command: '--updateSnapshot sample.test.js',
+      spawnOptions: {
+        cwd: `${BASE}/update`,
+        env: {
+          ...process.env,
+          CI: '1',
+        },
+      },
+    });
+
+    const afterRun = readFileSync(initialPath, 'utf8');
+
+    cleanSnap('update');
+
+    assert.strictEqual(result.exitCode, 1, 'Exit 1 in CI on mismatch');
+    assert.strictEqual(afterRun, original, 'Snapshot file is left untouched');
+  });
+
   await it('fails in CI when no snapshot exists', async () => {
     cleanSnap('create');
 
@@ -161,5 +200,37 @@ await describe('Snapshot e2e', async () => {
       /Missing snapshot/,
       'Mentions missing snapshot'
     );
+  });
+
+  await it('fails in CI even with --updateSnapshot when no snapshot exists', async () => {
+    cleanSnap('create');
+
+    const result = await inspectPoku({
+      bin: BIN,
+      command: '--updateSnapshot sample.test.js',
+      spawnOptions: {
+        cwd: `${BASE}/create`,
+        env: {
+          ...process.env,
+          CI: '1',
+        },
+      },
+    });
+
+    const writtenInCI = existsSync(snapPath('create'));
+
+    cleanSnap('create');
+
+    assert.strictEqual(
+      result.exitCode,
+      1,
+      'Exit 1 in CI even with --updateSnapshot'
+    );
+    assert.match(
+      result.stdout,
+      /Missing snapshot/,
+      'Mentions missing snapshot'
+    );
+    assert.strictEqual(writtenInCI, false, 'No snapshot file is written in CI');
   });
 });

@@ -10,7 +10,7 @@ import {
   normalizeStackPath,
 } from '../../parsers/find-file-from-stack.js';
 import { serialize } from '../../parsers/output.js';
-import { SNAPSHOT_OPERATOR } from '../../parsers/snapshot.js';
+import { SNAPSHOT_OPERATOR } from '../../parsers/snapshot-operator.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 import { format } from '../format.js';
 import { hr, log } from '../write.js';

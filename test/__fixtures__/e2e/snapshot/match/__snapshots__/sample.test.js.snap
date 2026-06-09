@@ -1,5 +1,3 @@
-// Poku Snapshot v1, https://poku.io/docs/documentation/api/snapshot
-
 exports[`matches an existing snapshot 1`] = `{
   "message": "hello"
 }`;

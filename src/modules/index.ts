@@ -23,7 +23,13 @@ export { log } from './helpers/log.js';
 export { listFiles } from './helpers/list-files.js';
 export { VERSION as version } from '../configs/version.js';
 export type { Code } from '../@types/code.js';
-export type { Configs, ConfigFile } from '../@types/poku.js';
+export type {
+  Configs,
+  ConfigFile,
+  TestContext,
+  TestCb,
+  AsyncTestCb,
+} from '../@types/poku.js';
 export type { RetryConfig } from '../@types/retry.js';
 export type {
   StartServiceOptions,

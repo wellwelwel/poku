@@ -8,16 +8,17 @@ import {
   normalizeStackPath,
 } from './find-file-from-stack.js';
 import { serialize } from './output.js';
+import { SNAPSHOT_OPERATOR } from './snapshot-operator.js';
 
 const SNAPSHOT_DIR = '__snapshots__';
 const SNAPSHOT_EXT = '.snap';
-export const SNAPSHOT_OPERATOR = 'snapshot';
-const SNAPSHOT_HEADER =
-  '// Poku Snapshot v1, https://poku.io/docs/documentation/api/snapshot';
-const ENTRY_PATTERN =
-  /^exports\[`((?:\\.|[^`\\])*)`\]\s*=\s*`((?:\\.|[^`\\])*)`;\s*$/gm;
+
+const UPDATE_SNAPSHOT = process.env.POKU_UPDATE_SNAPSHOT === '1';
+const IS_CI = Boolean(process.env.CI);
 
 let flushRegistered = false;
+let cachedTestFile: string | undefined;
+let cachedSnapPath: string | undefined;
 
 export const snapshotRegistry = new Map<string, SnapshotEntry>();
 
@@ -38,12 +39,13 @@ export const parseSnapFile = (content: string): Map<string, string> => {
   const entries = new Map<string, string>();
   if (!content) return entries;
 
-  ENTRY_PATTERN.lastIndex = 0;
+  const entryPattern =
+    /^exports\[`((?:\\.|[^`\\])*)`\]\s*=\s*`((?:\\.|[^`\\])*)`;\s*$/gm;
 
   for (
-    let match = ENTRY_PATTERN.exec(content);
+    let match = entryPattern.exec(content);
     match !== null;
-    match = ENTRY_PATTERN.exec(content)
+    match = entryPattern.exec(content)
   )
     entries.set(
       unescapeBacktickString(match[1]),
@@ -54,12 +56,14 @@ export const parseSnapFile = (content: string): Map<string, string> => {
 };
 
 export const formatSnapFile = (entries: Map<string, string>): string => {
-  let output = `${SNAPSHOT_HEADER}\n`;
+  const lines: string[] = [];
 
   for (const [key, value] of entries)
-    output += `\nexports[\`${escapeBacktickString(key)}\`] = \`${escapeBacktickString(value)}\`;\n`;
+    lines.push(
+      `exports[\`${escapeBacktickString(key)}\`] = \`${escapeBacktickString(value)}\`;`
+    );
 
-  return output;
+  return lines.length === 0 ? '' : `${lines.join('\n\n')}\n`;
 };
 
 export const loadSnapFile = (snapPath: string): Map<string, string> => {
@@ -94,58 +98,67 @@ export const registerFlush = (): void => {
   process.on('exit', flushAllSnapFiles);
 };
 
-const buildSnapshotName = (
-  itTitle: string | undefined,
-  hint: string | undefined,
-  counters: Map<string, number>
-): string => {
-  const prefix =
-    itTitle && hint ? `${itTitle} > ${hint}` : itTitle || hint || 'snapshot';
-  const previous = counters.get(prefix) ?? 0;
-  const next = previous + 1;
-
-  counters.set(prefix, next);
-
-  return `${prefix} ${next}`;
-};
-
 export const assertSnapshot = (
   value: unknown,
   hint: string | undefined,
   context: {
     itTitle: string | undefined;
     counters: Map<string, number>;
+    stack: string | undefined;
   }
 ): void => {
-  const testFile = normalizeStackPath(
-    findFileFromStack(new Error().stack, { skipInternal: true })
-  );
-  const snapPath = getSnapFilePath(testFile);
+  const { itTitle, counters, stack } = context;
+
+  if (!itTitle && !hint)
+    throw new Error(
+      'snapshot() requires either a titled it() block or a hint to avoid name collisions'
+    );
+
+  if (!cachedTestFile) {
+    cachedTestFile = normalizeStackPath(
+      findFileFromStack(stack, { skipInternal: true })
+    );
+
+    if (!cachedTestFile)
+      throw new Error(
+        'snapshot() could not resolve the test file from the stack trace'
+      );
+
+    cachedSnapPath = getSnapFilePath(cachedTestFile);
+  }
+
+  const snapPath = cachedSnapPath!;
   const entries = loadSnapFile(snapPath);
   const registryEntry = snapshotRegistry.get(snapPath)!;
-  const name = buildSnapshotName(context.itTitle, hint, context.counters);
+
+  const prefix =
+    itTitle && hint ? `${itTitle} > ${hint}` : itTitle || hint || 'snapshot';
+  const previous = counters.get(prefix) ?? 0;
+  const name = `${prefix} ${previous + 1}`;
   const serialized = serialize(value);
   const stored = entries.get(name);
-  const updateSnapshot = process.env.POKU_UPDATE_SNAPSHOT === '1';
 
   registerFlush();
 
   if (stored === undefined) {
-    if (process.env.CI && !updateSnapshot)
+    if (IS_CI)
       throw new AssertionError({
         actual: serialized,
         expected: '(no snapshot)',
-        message: `Missing snapshot "${name}" in CI. Run with --updateSnapshot to create.`,
+        message: `Missing snapshot "${name}" in CI. Commit the snapshot file generated locally.`,
         operator: SNAPSHOT_OPERATOR,
       });
 
+    counters.set(prefix, previous + 1);
     entries.set(name, serialized);
     registryEntry.dirty = true;
 
     return;
   }
 
-  if (updateSnapshot) {
+  if (UPDATE_SNAPSHOT && !IS_CI) {
+    counters.set(prefix, previous + 1);
+
     if (stored !== serialized) {
       entries.set(name, serialized);
       registryEntry.dirty = true;
@@ -154,7 +167,11 @@ export const assertSnapshot = (
     return;
   }
 
-  if (stored === serialized) return;
+  if (stored === serialized) {
+    counters.set(prefix, previous + 1);
+
+    return;
+  }
 
   throw new AssertionError({
     actual: serialized,

@@ -1,6 +1,7 @@
 import type { It } from '../../@types/it.js';
 import type { ScopeHook } from '../../@types/plugin.js';
 import type { TestCb } from '../../@types/poku.js';
+import type { assertSnapshot } from '../../parsers/snapshot.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { createTestContext } from '../../builders/test-context.js';
@@ -13,6 +14,8 @@ import { getCallback, getTitle } from '../../parsers/get-test-args.js';
 import { hrtimeToMs } from '../../parsers/time.js';
 import { createOnlyIt, skip, todo } from './modifiers.js';
 
+let snapshotLoad: Promise<typeof assertSnapshot> | undefined;
+
 const SCOPE_HOOKS_KEY = Symbol.for('@pokujs/poku.test-scope-hooks');
 
 const getScopeHook = (): ScopeHook | undefined =>
@@ -22,6 +25,15 @@ const getScopeHook = (): ScopeHook | undefined =>
 
 const runEachCb = (cb: (() => unknown) | undefined): unknown =>
   typeof cb === 'function' ? cb() : undefined;
+
+const requestAssertSnapshot = (): Promise<typeof assertSnapshot> => {
+  if (!snapshotLoad)
+    snapshotLoad = import('../../parsers/snapshot.js').then(
+      (module) => module.assertSnapshot
+    );
+
+  return snapshotLoad;
+};
 
 export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
   try {
@@ -64,7 +76,10 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
 
     try {
       const hooks = getScopeHook();
-      const context = createTestContext(title);
+      const { context, flush } = createTestContext(
+        title,
+        requestAssertSnapshot
+      );
 
       if (hooks) {
         const holder = hooks.createHolder();
@@ -75,6 +90,9 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
 
         if (resultCb instanceof Promise) await resultCb;
       }
+
+      const pending = flush();
+      if (pending) await pending;
     } catch (error) {
       const ctx = peekRetryContext();
       if (ctx) ctx.failed = true;

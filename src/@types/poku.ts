@@ -97,6 +97,11 @@ export type TestContext = {
   snapshot: (value: unknown, hint?: string) => void;
 };
 
+export type ScopedTestContext = {
+  context: TestContext;
+  flush: () => Promise<void> | undefined;
+};
+
 export type TestCb = (context: TestContext) => unknown | Promise<unknown>;
 
 export type AsyncTestCb = (context: TestContext) => Promise<unknown>;

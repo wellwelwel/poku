@@ -1,6 +1,7 @@
 import { results } from '../configs/results.js';
 import { format } from '../services/format.js';
 
+const INDENTS = Array.from({ length: 16 }, (_, depth) => '  '.repeat(depth));
 const ANSI_RESET = '\x1b[0m';
 const SKIP_MARKER = String(format('◯').info().bold()).slice(
   0,
@@ -10,18 +11,22 @@ const TODO_MARKER = String(format('●').cyan().bold()).slice(
   0,
   -ANSI_RESET.length
 );
+const indent = (depth: number): string => INDENTS[depth] ?? '  '.repeat(depth);
 
-export const timeoutMessage = (ms: number): string =>
-  `${format(`● Timeout: test file exceeded ${ms}ms limit`).fail().bold()}`;
+const compareStrings = (a: string, b: string): number => a.localeCompare(b);
 
-const indent = (depth: number): string => '  '.repeat(depth);
+const compareSymbols = (a: symbol, b: symbol): number =>
+  String(a).localeCompare(String(b));
 
 const formatByte = (byte: number): string =>
   `0x${byte.toString(16).padStart(2, '0').toUpperCase()}`;
 
+export const timeoutMessage = (ms: number): string =>
+  `${format(`● Timeout: test file exceeded ${ms}ms limit`).fail().bold()}`;
+
 export const serialize = (
   value: unknown,
-  visited: Set<object> = new Set(),
+  visited?: Set<object>,
   depth = 0
 ): string => {
   if (value === undefined) return 'undefined';
@@ -41,7 +46,9 @@ export const serialize = (
   if (value instanceof RegExp) return String(value);
   if (value instanceof Date) return value.toISOString();
 
-  if (visited.has(value as object)) return '[Circular]';
+  const seen = visited ?? new Set<object>();
+
+  if (seen.has(value as object)) return '[Circular]';
 
   if (value instanceof Error)
     return `[${value.name || 'Error'}: ${value.message ?? ''}]`;
@@ -49,52 +56,52 @@ export const serialize = (
   if (Array.isArray(value)) {
     if (value.length === 0) return '[]';
 
-    visited.add(value);
+    seen.add(value);
 
     const parts: string[] = [];
     const child = indent(depth + 1);
 
     for (let index = 0; index < value.length; index++) {
       const rendered = Object.prototype.hasOwnProperty.call(value, index)
-        ? serialize(value[index], visited, depth + 1)
+        ? serialize(value[index], seen, depth + 1)
         : '<empty>';
 
       parts.push(`${child}${rendered}`);
     }
 
-    visited.delete(value);
+    seen.delete(value);
     return `[\n${parts.join(',\n')}\n${indent(depth)}]`;
   }
 
   if (value instanceof Set) {
     if (value.size === 0) return 'Set {}';
 
-    visited.add(value);
+    seen.add(value);
 
     const lines: string[] = [];
     const child = indent(depth + 1);
 
     for (const element of value)
-      lines.push(`${child}${serialize(element, visited, depth + 1)}`);
+      lines.push(`${child}${serialize(element, seen, depth + 1)}`);
 
-    visited.delete(value);
+    seen.delete(value);
     return `Set {\n${lines.join(',\n')}\n${indent(depth)}}`;
   }
 
   if (value instanceof Map) {
     if (value.size === 0) return 'Map {}';
 
-    visited.add(value);
+    seen.add(value);
 
     const lines: string[] = [];
     const child = indent(depth + 1);
 
     for (const [mapKey, mapValue] of value)
       lines.push(
-        `${child}${serialize(mapKey, visited, depth + 1)} => ${serialize(mapValue, visited, depth + 1)}`
+        `${child}${serialize(mapKey, seen, depth + 1)} => ${serialize(mapValue, seen, depth + 1)}`
       );
 
-    visited.delete(value);
+    seen.delete(value);
     return `Map {\n${lines.join(',\n')}\n${indent(depth)}}`;
   }
 
@@ -110,22 +117,17 @@ export const serialize = (
     return `URLSearchParams { ${params.map(([key, val]) => `${JSON.stringify(key)} => ${JSON.stringify(val)}`).join(', ')} }`;
   }
 
-  if (
-    value instanceof Uint8Array &&
-    typeof Buffer !== 'undefined' &&
-    (value as { constructor?: { name?: string } }).constructor?.name ===
-      'Buffer'
-  ) {
+  if (Buffer.isBuffer(value)) {
     if (value.length === 0) return 'Buffer []';
 
-    visited.add(value);
+    seen.add(value);
 
     const parts: string[] = [];
     const child = indent(depth + 1);
 
     for (const byte of value) parts.push(`${child}${formatByte(byte)}`);
 
-    visited.delete(value);
+    seen.delete(value);
 
     return `Buffer [\n${parts.join(',\n')}\n${indent(depth)}]`;
   }
@@ -141,7 +143,7 @@ export const serialize = (
 
     if (typed.length === 0) return `${typeName} []`;
 
-    visited.add(typed);
+    seen.add(typed);
 
     const parts: string[] = [];
     const child = indent(depth + 1);
@@ -154,7 +156,7 @@ export const serialize = (
       );
     }
 
-    visited.delete(typed);
+    seen.delete(typed);
     return `${typeName} [\n${parts.join(',\n')}\n${indent(depth)}]`;
   }
 
@@ -170,10 +172,19 @@ export const serialize = (
   const toJSON = (value as { toJSON?: unknown }).toJSON;
 
   if (typeof toJSON === 'function') {
+    seen.add(value as object);
+
     try {
       const replaced = (toJSON as (key?: string) => unknown).call(value, '');
-      if (replaced !== value) return serialize(replaced, visited, depth);
+      if (replaced !== value) {
+        const rendered = serialize(replaced, seen, depth);
+
+        seen.delete(value as object);
+        return rendered;
+      }
     } catch {}
+
+    seen.delete(value as object);
   }
 
   const prototype = Object.getPrototypeOf(value);
@@ -184,31 +195,31 @@ export const serialize = (
     prototype !== Object.prototype &&
     typeof constructorName === 'string' &&
     constructorName !== 'Object';
-  const stringKeys = Object.keys(value as object).sort((a, b) =>
-    a.localeCompare(b)
-  );
-  const symbolKeys = Object.getOwnPropertySymbols(value as object).sort(
-    (a, b) => String(a).localeCompare(String(b))
-  );
-  const lines: string[] = [];
-  const child = indent(depth + 1);
+  const stringKeys = Object.keys(value as object);
+  const symbolKeys = Object.getOwnPropertySymbols(value as object);
 
   if (stringKeys.length === 0 && symbolKeys.length === 0)
     return isClassInstance ? `${constructorName} {}` : '{}';
 
-  visited.add(value as object);
+  stringKeys.sort(compareStrings);
+  symbolKeys.sort(compareSymbols);
+
+  const lines: string[] = [];
+  const child = indent(depth + 1);
+
+  seen.add(value as object);
 
   for (const key of stringKeys)
     lines.push(
-      `${child}${JSON.stringify(key)}: ${serialize((value as Record<string, unknown>)[key], visited, depth + 1)}`
+      `${child}${JSON.stringify(key)}: ${serialize((value as Record<string, unknown>)[key], seen, depth + 1)}`
     );
 
   for (const symbolKey of symbolKeys)
     lines.push(
-      `${child}${String(symbolKey)}: ${serialize((value as Record<symbol, unknown>)[symbolKey], visited, depth + 1)}`
+      `${child}${String(symbolKey)}: ${serialize((value as Record<symbol, unknown>)[symbolKey], seen, depth + 1)}`
     );
 
-  visited.delete(value as object);
+  seen.delete(value as object);
 
   const prefix = isClassInstance ? `${constructorName} ` : '';
   return `${prefix}{\n${lines.join(',\n')}\n${indent(depth)}}`;

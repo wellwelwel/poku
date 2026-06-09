@@ -1,26 +1,46 @@
-import type { TestContext } from '../@types/poku.js';
-import { assertSnapshot } from '../parsers/snapshot.js';
+import type { ScopedTestContext, TestContext } from '../@types/poku.js';
+import type { assertSnapshot } from '../parsers/snapshot.js';
 import { processAssert } from '../services/assert.js';
 
-export const createTestContext = (itTitle: string | undefined): TestContext => {
-  let counters: Map<string, number> | undefined;
+let testFileResolved = false;
 
-  return {
+export const createTestContext = (
+  itTitle: string | undefined,
+  requestAssertSnapshot: () => Promise<typeof assertSnapshot>
+): ScopedTestContext => {
+  let counters: Map<string, number> | undefined;
+  let pending: Promise<void> | undefined;
+
+  const context: TestContext = {
     snapshot: (value, hint) => {
       if (!counters) counters = new Map();
 
+      const stack = testFileResolved ? undefined : new Error().stack;
       const activeCounters = counters;
 
-      processAssert(
-        () =>
-          assertSnapshot(value, hint, { itTitle, counters: activeCounters }),
-        {
-          message: hint,
-          defaultMessage: 'Snapshot does not match',
-          actual: 'Received',
-          expected: 'Snapshot',
-        }
-      );
+      const run = async () => {
+        const assert = await requestAssertSnapshot();
+
+        processAssert(
+          () =>
+            assert(value, hint, { itTitle, counters: activeCounters, stack }),
+          {
+            message: hint,
+            defaultMessage: 'Snapshot does not match',
+            actual: 'Received',
+            expected: 'Snapshot',
+          }
+        );
+
+        testFileResolved = true;
+      };
+
+      pending = pending ? pending.then(run) : run();
     },
+  };
+
+  return {
+    context,
+    flush: () => pending,
   };
 };
