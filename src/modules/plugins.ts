@@ -39,7 +39,7 @@ export const inspectPoku = (options: {
 }): Promise<InspectCLIResult> => {
   const { command, spawnOptions, bin = pokuBin } = options;
   const ext = bin.endsWith('.ts') ? 'ts' : 'js';
-  const cmd = runner(`_.${ext}`).join(' ');
+  const [runtime, ...runnerArgs] = runner(`_.${ext}`);
   const basePath =
     typeof spawnOptions?.cwd === 'string'
       ? spawnOptions.cwd
@@ -48,8 +48,7 @@ export const inspectPoku = (options: {
           .join('')
       : './';
 
-  const fullCommand = `${cmd} ${basePath}${bin} ${command}`;
-  const [runtime, ...args] = fullCommand.split(' ');
+  const args = [...runnerArgs, `${basePath}${bin}`, ...command.split(' ')];
 
   return new Promise((resolve, reject) => {
     const childProcess = spawn(runtime, args, {

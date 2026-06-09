@@ -61,12 +61,12 @@ export const startWatch = async (dirs: string[]) => {
         const filePath = normalizePath(file);
         if (executing.has(filePath) || isRunning || executing.size > 0) return;
 
+        const tests = mappedTests.get(filePath);
+        if (!tests) return;
+
         isRunning = true;
         executing.add(filePath);
         resultsClear();
-
-        const tests = mappedTests.get(filePath);
-        if (!tests) return;
 
         await poku(Array.from(tests), {
           ...configs,
