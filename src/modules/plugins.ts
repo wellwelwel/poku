@@ -19,7 +19,7 @@ export type {
   ScopeHook,
 } from '../@types/plugin.js';
 
-/** 🐷 Auxiliary function to define a Poku plugin */
+/** Auxiliary function to define a Poku plugin */
 export const definePlugin = (plugin: PokuPlugin): PokuPlugin => plugin;
 
 declare const require: ReturnType<typeof import('node:module').createRequire>;

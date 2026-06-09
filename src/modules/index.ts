@@ -35,5 +35,5 @@ export type {
 } from '../@types/wait-for.js';
 export type { Configs as ListFilesConfigs } from '../@types/list-files.js';
 
-/** 🐷 Auxiliary function to define the `poku` configurations */
+/** Auxiliary function to define the `poku` configurations */
 export const defineConfig = (options: ConfigFile) => options;

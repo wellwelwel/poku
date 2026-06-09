@@ -28,27 +28,18 @@ export type Reporter =
   | CustomString;
 
 export type Configs = {
-  /** Run tests sequentially */
   sequential?: boolean;
-  isolation?: 'none' | 'process' | CustomString;
-  /** Stop execution at the first error */
   failFast?: boolean;
-  /** @default (availableParallelism() || cpus().lenght) */
   concurrency?: number;
-  /** Set a timeout for each test file */
   timeout?: number;
-  /** @default "poku" */
   reporter?: Reporter;
-  /** Run a callback or a file before each test file */
   beforeEach?: () => unknown | Promise<unknown>;
-  /** Run a callback or a file after each test file */
   afterEach?: () => unknown | Promise<unknown>;
   deno?: DenoOptions;
   plugins?: PokuPlugin[];
-  /** Only run tests whose title matches the given regex pattern */
   testNamePattern?: RegExp;
-  /** Skip tests whose title matches the given regex pattern */
   testSkipPattern?: RegExp;
+  isolation?: 'none' | 'process' | CustomString;
   debug?: boolean;
   quiet?: boolean;
   noExit?: boolean;

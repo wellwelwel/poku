@@ -5,14 +5,14 @@
 
 Enjoying **Poku**? Give him a star to show your support 🌟
 
-[![Version](https://img.shields.io/npm/v/poku?label=&color=70a1ff&logo=npm&logoColor=white)](https://www.npmjs.com/package/poku)
-[![Downloads](https://img.shields.io/npm/dm/poku?label=&logo=npm&logoColor=white&color=45aaf2)](https://www.npmjs.com/package/poku)
-[![CI](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=testcafe&logoColor=white&color=9c88ff)](https://github.com/wellwelwel/poku/actions/workflows/ci_coverage-linux.yml?query=branch%3Amain)
-[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)](https://github.com/wellwelwel/poku/tree/main/.nycrc)
+[![Version](https://img.shields.io/npm/v/poku?label=&color=70a1ff&logo=npm&logoColor=white)]()
+[![Downloads](https://img.shields.io/npm/dm/poku?label=&logo=npm&logoColor=white&color=45aaf2)]()
+[![CI](https://img.shields.io/github/actions/workflow/status/wellwelwel/poku/ci_coverage-linux.yml?event=push&label=&branch=main&logo=testcafe&logoColor=white&color=9c88ff)]()
+[![Coverage](https://img.shields.io/codecov/c/github/wellwelwel/poku?label=&logo=codecov&logoColor=white&color=98cc00)]()
 
 ---
 
-🐷 [Website](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📘 [Documentation](https://poku.io/docs)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [Examples](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [Tutorials](https://poku.io/docs/category/quick-tutorials)
+🐷 [**Website**](https://poku.io/)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>📘 [**Documentation**](https://poku.io/docs)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧪 [**Examples**](https://poku.io/docs/category/examples)<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>🧑🏻‍🎓 [**Tutorials**](https://poku.io/docs/category/quick-tutorials)
 
 </div>
 
@@ -25,6 +25,7 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 ![v][] High **isolation** level per file<br />
 ![v][] **Performant** and **lightweight**<br />
 ![v][] Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
+![v][] Plugin ecosystem for **custom** and **official** plugins<br />
 ![v][] Run the **same test suite** for [**Node.js**](https://github.com/nodejs/node), [**Bun**](https://github.com/oven-sh/bun), and [**Deno**](https://github.com/denoland/deno)<br />
 ![v][] Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
 
@@ -34,55 +35,33 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ### ![v][] Install
 
-<table>
-<tr>
-<td width="225">
+#### 🐢 Node.js
 
-```bash
-# Node.js
+```sh
 npm i -D poku
 ```
 
-</td>
-<td width="225">
+#### 📘 TypeScript (Node.js)
 
-```bash
-# TypeScript (Node.js)
+```sh
 npm i -D poku tsx
 ```
 
-</td>
-<td width="225">
+#### 🍞 Bun
 
-```bash
-# Bun
+```sh
 bun add -d poku
 ```
 
-</td>
-<td width="225">
+#### 🦕 Deno (optional)
 
-```bash
-# Deno (optional)
+```sh
 deno add npm:poku
 ```
-
-</td>
-</tr>
-</table>
 
 ---
 
 ### ![v][] Test
-
-<table>
-<tr>
-<td>
-<blockquote>test/file.test.mjs</blockquote>
-</td>
-</tr>
-<tr>
-<td width="1200">
 
 ```ts
 import { assert } from 'poku';
@@ -90,44 +69,27 @@ import { assert } from 'poku';
 assert(true, 'Poku will describe it 🐷');
 ```
 
-</td>
-</tr>
-</table>
-
 ---
 
 ### ![v][] Run
 
-<table>
-<tr>
-<td><blockquote><i>Node.js (and TypeScript)</i></blockquote></td>
-<td><blockquote><i>Bun</i></blockquote></td>
-<td><blockquote><i>Deno</i></blockquote></td>
-</tr>
-<tr>
-<td width="400">
+#### Node.js (and TypeScript)
 
-```bash
+```sh
 npx poku
 ```
 
-</td>
-<td width="400">
+#### Bun
 
-```bash
-bun poku
+```sh
+bun --bun poku
 ```
 
-</td>
-<td width="400">
+#### Deno
 
-```bash
+```sh
 deno run npm:poku
 ```
-
-</td>
-</tr>
-</table>
 
 ---
 
@@ -146,7 +108,7 @@ deno run npm:poku
   </tr>
 </table>
 
-### ![v][] Helpers
+### ![v][] Common Helpers and Options
 
 <table>
   <tr>
@@ -167,7 +129,7 @@ deno run npm:poku
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/plugins/official/containers">docker</a></td>
-    <td>🐳 Build, start, compose, stop, remove, and test containers</td>
+    <td>🐳 Build, start, compose, stop, and remove containers</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/helpers/processes/kill">kill</a></td>
@@ -189,18 +151,13 @@ deno run npm:poku
     <td><a href="https://poku.io/docs/documentation/helpers/only">only</a></td>
     <td>🌌 Debug tests by enabling selective runs</td>
   </tr>
-</table>
-
-### ![v][] Common Options
-
-<table>
   <tr>
     <td><a href="https://poku.io/docs/documentation/plugins/official/coverage">coverage</a></td>
-    <td>☔️ Enable coverage collection using a coverage plugin</td>
+    <td>☔️ Enable coverage collection</td>
   </tr>
   <tr>
     <td><a href="https://poku.io/docs/documentation/poku/config-files">config</a></td>
-    <td>⚙️ Customize your <b>Poku</b> options in a config file</td>
+    <td>⚙️ Customize your <b>Poku</b></td>
   </tr>
   <tr>
     <td width="280"><a href="https://poku.io/docs/documentation/poku/options/watch">watch</a></td>
@@ -212,13 +169,7 @@ deno run npm:poku
   </tr>
 </table>
 
-> _and much more_ 👇🏻
-
----
-
-## Documentation and Examples
-
-To see the detailed documentation, please visit the [**Documentation**](https://poku.io/docs/category/documentation) and [**Examples**](https://poku.io/docs/category/examples) sections in the [**Poku**'s website](https://poku.io). **Poku** also offers _mini-lessons_ for different users needs in the [**Quick Tutorials**](https://poku.io/docs/category/quick-tutorials) section.
+- _and much more_ 🔥
 
 ---
 
@@ -233,8 +184,6 @@ To see the detailed documentation, please visit the [**Documentation**](https://
 ## Quick Comparisons
 
 ### Performance
-
-**Poku** is [continuously tested](https://github.com/wellwelwel/poku/blob/main/.github/workflows/ci_benchmark.yml) to ensure the following average expectations for basic usage:
 
 - ~**5.3x** faster than [**Jest**](https://github.com/jestjs/jest) (v30.4.2)
 - ~**4.5x** faster than [**Vitest**](https://github.com/vitest-dev/vitest) (v4.1.6)
@@ -278,8 +227,6 @@ My thanks to everyone who has dedicated their time and effort to improving **Pok
 ### Sponsors
 
 Really thanks to everyone who has supported and keeps supporting my work.
-
-> _Also for the private ones, who don't appear here_ 🕵
 
 [![Sponsors](https://wellwelwel.github.io/wellwelwel/sponsors.svg?v=1)](https://github.com/sponsors/wellwelwel)
 

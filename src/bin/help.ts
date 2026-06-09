@@ -10,38 +10,35 @@ const options = i('[--options]');
 const paths = i('[paths]');
 const bullet = d('●');
 const summary: [string, string][] = [
-  ['--concurrency', 'Limit the number of tests running concurrently.'],
-  ['--config, -c', 'Specify a configuration file.'],
-  ['--coverage', 'Enable coverage collection using a coverage plugin.'],
-  ['--coverageConfig', 'Path to a coverage configuration file.'],
-  ['--debug, -d', 'Show detailed logs.'],
-  ['--denoAllow', 'Allow permissions for Deno.'],
-  ['--denoDeny', 'Deny permissions for Deno.'],
-  ['--enforce, -x', 'Validate options before running tests.'],
-  ['--envFile', 'Read and set an environment file.'],
-  ['--exclude', 'Exclude by path using Regex to match files.'],
-  ['--failFast', 'Stop tests at the first failure.'],
-  ['--filter', 'Filter by path using Regex to match files.'],
+  ['--concurrency', 'Set the number of tests running concurrently'],
+  ['--config, -c', 'Specify a configuration file'],
+  ['--coverage', 'Enable coverage collection'],
+  ['--coverageConfig', 'Path to a coverage configuration file'],
+  ['--debug, -d', 'Show detailed logs'],
+  ['--denoAllow', 'Allow Deno permissions '],
+  ['--denoDeny', 'Deny Deno permissions'],
+  ['--enforce, -x', 'Validate options before running tests'],
+  ['--envFile', 'Read and set an environment file'],
+  ['--exclude', 'Exclude by path'],
+  ['--failFast', 'Stop tests at the first failure'],
+  ['--filter', 'Filter by path'],
   ['--help, -h', "Show Poku's CLI basic usage."],
-  ['--killPid', 'Terminate the specified processes.'],
-  ['--killPort', 'Terminate the specified ports.'],
-  ['--killRange', 'Terminate the specified port ranges.'],
-  ['--listFiles', 'Display all the files returned in the terminal.'],
-  ['--isolation', 'Set test isolation mode (none, process). Default: process.'],
-  [
-    '--reporter, -r',
-    'Specify the reporter: poku, dot, compact, focus, classic.',
-  ],
-  ['--only', 'Enable selective execution of tests.'],
-  ['--quiet, -q', 'Run tests with no logs.'],
-  ['--sequential', 'Run tests files sequentially.'],
-  ['--testNamePattern, -t', 'Run only tests matching the given regex.'],
-  ['--testSkipPattern', 'Skip tests matching the given regex.'],
-  ['--timeout', 'Set the maximum time (ms) for each test file.'],
-  ['--updateSnapshot, -u', 'Update existing snapshots instead of failing.'],
+  ['--killPid', 'Terminate the specified process'],
+  ['--killPort', 'Terminate the specified port'],
+  ['--killRange', 'Terminate the specified port ranges'],
+  ['--listFiles', 'Display all matching files'],
+  ['--isolation', 'Set test isolation mode'],
+  ['--reporter, -r', 'Specify the reporter: poku, dot, compact, etc.'],
+  ['--only', 'Enable selective execution of tests'],
+  ['--quiet, -q', 'Run tests with no logs'],
+  ['--sequential', 'Run tests files sequentially'],
+  ['--testNamePattern, -t', 'Run only tests matching the given regex'],
+  ['--testSkipPattern', 'Skip tests matching the given regex'],
+  ['--timeout', 'Set the maximum time for each test file'],
+  ['--updateSnapshot, -u', 'Update existing snapshots instead of failing'],
   ['--version, -v', "Show Poku's installed version."],
-  ['--watch, -w', 'Watch for test events.'],
-  ['--watchInterval', 'Set an interval for watch events.'],
+  ['--watch, -w', 'Watch for test events'],
+  ['--watchInterval', 'Set an interval for watch events'],
 ];
 const sortedSummary = summary.sort(([a], [b]) => a.localeCompare(b));
 const largeEndPad = Math.max(...summary.map(([start]) => start.length));
@@ -77,9 +74,6 @@ ${sortedSummary
 
   ${bullet} For Glob support, see:
     ${u('https://poku.io/docs/documentation/poku/include-files#by-extending-glob-patterns-from-shell')}
-
-  ${bullet} Avoid conflicts for environments with multiple platforms:
-    ${u('https://poku.io/docs/tutorials/cross-platform')}
 `;
 
 const footer = `
