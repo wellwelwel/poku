@@ -5,8 +5,8 @@ import { stdout } from 'node:process';
 import { cwd } from '../../configs/cwd.js';
 import { indentation } from '../../configs/indentation.js';
 import { addError, errors } from '../../configs/results.js';
-import { parseResultType } from '../../parsers/assert.js';
 import { findFileFromStack } from '../../parsers/find-file-from-stack.js';
+import { serialize } from '../../parsers/output.js';
 import { parseTime, parseTimeToSecs } from '../../parsers/time.js';
 import { format } from '../format.js';
 import { hr, log } from '../write.js';
@@ -115,8 +115,8 @@ export const poku: ReturnType<ReporterPlugin> = (() => {
       log(`${format(`${preIdentation}  Operator`).dim()} ${operator}\n`);
 
       if (!options?.hideDiff) {
-        const splitActual = parseResultType(actual).split('\n');
-        const splitExpected = parseResultType(expected).split('\n');
+        const splitActual = serialize(actual).split('\n');
+        const splitExpected = serialize(expected).split('\n');
 
         log(format(`${preIdentation}  ${options?.actual ?? 'Actual'}:`).dim());
 

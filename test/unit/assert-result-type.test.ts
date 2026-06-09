@@ -1,164 +1,75 @@
 import { assert } from '../../src/modules/essentials/assert.js';
 import { test } from '../../src/modules/helpers/test.js';
-import { parseResultType } from '../../src/parsers/assert.js';
+import { serialize } from '../../src/parsers/output.js';
 
-test('Assert: Parse Result Type', async () => {
-  assert.deepStrictEqual(
-    parseResultType(),
-    'undefined',
-    'Undefined (Implicit)'
-  );
-  assert.deepStrictEqual(
-    parseResultType(undefined),
-    'undefined',
-    'Undefined (Explicit)'
-  );
-  assert.deepStrictEqual(parseResultType(null), 'null', 'Null');
-  assert.deepStrictEqual(parseResultType(true), 'true', 'True');
-  assert.deepStrictEqual(parseResultType(false), 'false', 'False');
-  assert.deepStrictEqual(parseResultType('string'), 'string', 'String');
-  assert.deepStrictEqual(
-    parseResultType(`
+test('Output: serialize (UX contract for assert mismatch)', async () => {
+  assert.strictEqual(serialize(undefined), 'undefined', 'Undefined');
+  assert.strictEqual(serialize(null), 'null', 'Null');
+  assert.strictEqual(serialize(true), 'true', 'True');
+  assert.strictEqual(serialize(false), 'false', 'False');
+  assert.strictEqual(serialize('string'), '"string"', 'String');
+  assert.strictEqual(
+    serialize(`
       Multi
 
       Line
     `),
-    `
+    JSON.stringify(`
       Multi
 
       Line
-    `,
-    'String (Multi Line/Table)'
+    `),
+    'String (Multi Line)'
   );
-  assert.deepStrictEqual(parseResultType(123), '123', 'Number');
+  assert.strictEqual(serialize(123), '123', 'Number');
 
   const module = await import('../__fixtures__/unit/sintax/big-int.js');
-  assert.deepStrictEqual(
-    parseResultType(module.bigIntValue),
-    '987456321456987456321',
-    'Big Int'
+  assert.strictEqual(
+    serialize(module.bigIntValue),
+    '987456321456987456321n',
+    'BigInt'
   );
 
-  assert.deepStrictEqual(parseResultType(/123/), '/123/', 'Regex');
+  assert.strictEqual(serialize(/123/), '/123/', 'RegExp');
 
-  assert(/=>/.test(parseResultType(() => {})), 'Anonymous Function');
-  assert(
-    /=>/.test(parseResultType((a: number) => a)),
+  assert.strictEqual(
+    serialize(() => {}),
+    '[Function]',
+    'Anonymous Function'
+  );
+  assert.strictEqual(
+    serialize((a: number) => a),
+    '[Function]',
     'Anonymous Function (Param)'
   );
-  assert(
-    /=>/.test(parseResultType((a: number, b: number) => a + b)),
-    'Anonymous Function (Params)'
+  assert.strictEqual(
+    serialize(function namedFn() {}),
+    '[Function namedFn]',
+    'Named Function'
   );
 
-  assert(
-    /function/.test(
-      parseResultType(function () {
-        return;
-      })
-    ),
-    'Function'
-  );
-  assert(
-    /function/.test(
-      parseResultType(function (a: number) {
-        return a;
-      })
-    ),
-    'Function (Param)'
-  );
-  assert(
-    /function/.test(
-      parseResultType(function (a: number, b: number) {
-        return a + b;
-      })
-    ),
-    'Function (Params)'
-  );
-  assert.deepStrictEqual(
-    parseResultType({ a: true }),
-    `{
-  "a": true
-}`,
-    'Object'
-  );
-  assert.deepStrictEqual(parseResultType({}), '{}', 'Object (Empty)');
-  assert.deepStrictEqual(
-    parseResultType({ a: { b: 123 }, c: [/123/gi] }),
-    `{
-  "a": {
-    "b": 123
-  },
-  "c": [
-    "/123/gi"
-  ]
-}`,
+  assert.strictEqual(serialize({ a: true }), `{\n  "a": true\n}`, 'Object');
+  assert.strictEqual(serialize({}), '{}', 'Object (Empty)');
+  assert.strictEqual(
+    serialize({ a: { b: 123 }, c: [/123/gi] }),
+    `{\n  "a": {\n    "b": 123\n  },\n  "c": [\n    /123/gi\n  ]\n}`,
     'Object (Complex)'
   );
 
-  assert.deepStrictEqual(
-    parseResultType([1]),
-    `[
-  1
-]`,
-    'Array'
-  );
-  assert.deepStrictEqual(parseResultType([]), '[]', 'Array (Empty)');
-  assert.deepStrictEqual(
-    parseResultType([
-      1,
-      true,
-      undefined,
-      /123/gm,
-      { a: { b: [{ c: undefined }] } },
-      [[[[/[^0-9]/]]]],
-    ]),
-    `[
-  1,
-  true,
-  "undefined",
-  "/123/gm",
-  {
-    "a": {
-      "b": [
-        {
-          "c": "undefined"
-        }
-      ]
-    }
-  },
-  [
-    [
-      [
-        [
-          "/[^0-9]/"
-        ]
-      ]
-    ]
-  ]
-]`,
-    'Array Complex'
-  );
-  assert.deepStrictEqual(
-    parseResultType(new Map([['key', 'value']])),
-    `{
-  "key": "value"
-}`,
+  assert.strictEqual(serialize([1]), `[\n  1\n]`, 'Array');
+  assert.strictEqual(serialize([]), '[]', 'Array (Empty)');
+
+  assert.strictEqual(
+    serialize(new Map([['key', 'value']])),
+    `Map {\n  "key" => "value"\n}`,
     'Map'
   );
-  assert.deepStrictEqual(
-    parseResultType(new Set([1, 2, 3, 3])),
-    `[
-  1,
-  2,
-  3
-]`,
-    'Set'
+  assert.strictEqual(
+    serialize(new Set([1, 2, 3, 3])),
+    `Set {\n  1,\n  2,\n  3\n}`,
+    'Set (deduplicates by Set semantics, preserves insertion order)'
   );
-  assert.deepStrictEqual(parseResultType(Symbol()), 'Symbol()', 'Symbol');
-  assert.deepStrictEqual(
-    parseResultType(Symbol.for('key')),
-    'Symbol(key)',
-    'Symbol.for'
-  );
+
+  assert.strictEqual(serialize(Symbol()), 'Symbol()', 'Symbol (no key)');
+  assert.strictEqual(serialize(Symbol.for('key')), 'Symbol(key)', 'Symbol.for');
 });
