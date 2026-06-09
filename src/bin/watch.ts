@@ -1,13 +1,12 @@
 import type { Watcher } from '../services/watch.js';
 import process from 'node:process';
 import { GLOBAL } from '../configs/poku.js';
-import { results } from '../configs/results.js';
+import { errors, results } from '../configs/results.js';
 import { onSigint, poku } from '../modules/essentials/poku.js';
 import { getArg } from '../parsers/get-arg.js';
 import { availableParallelism } from '../polyfills/os.js';
 import { format } from '../services/format.js';
 import { mapTests, normalizePath } from '../services/map-tests.js';
-import { errors } from '../services/reporters/poku.js';
 import { watch } from '../services/watch.js';
 import { hr, log } from '../services/write.js';
 

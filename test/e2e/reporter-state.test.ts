@@ -1,12 +1,11 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import process from 'node:process';
 import { ext, stripAnsi } from '../__utils__/capture-cli.test.js';
-import { results } from '../../src/configs/results.js';
+import { errors, results } from '../../src/configs/results.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { poku } from '../../src/modules/essentials/poku.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
-import { errors } from '../../src/services/reporters/poku.js';
 
 const watchResultsClear = (): void => {
   errors.length = 0;

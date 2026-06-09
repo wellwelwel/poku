@@ -7,7 +7,7 @@ import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { indentation } from '../../configs/indentation.js';
 import { errorHoist, GLOBAL } from '../../configs/poku.js';
-import { retryContext } from '../../configs/retry.js';
+import { peekRetryContext } from '../../configs/retry.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { getCallback, getTitle } from '../../parsers/get-test-args.js';
@@ -74,7 +74,7 @@ export const describeBase = async (
     if (process.exitCode !== initialExitCode) success = false;
 
     if (!success) {
-      const ctx = retryContext.stack?.[retryContext.stack.length - 1];
+      const ctx = peekRetryContext();
       if (ctx) ctx.failed = true;
     }
   }
