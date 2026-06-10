@@ -1,7 +1,5 @@
 .DS_Store
 .env
-.nycrc.json
-.npmrc
 
 /lib/
 /ci/

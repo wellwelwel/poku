@@ -54,20 +54,20 @@
     "update": "bash scripts/update.sh"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.15",
+    "@biomejs/biome": "^2.4.16",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
-    "@pokujs/c8": "^1.2.0",
+    "@pokujs/c8": "^2.0.0",
     "@pokujs/docker": "^1.0.0",
-    "@types/node": "^25.9.1",
-    "concurrently": "^9.2.1",
+    "@types/node": "^25.9.2",
+    "concurrently": "^10.0.3",
     "jsonc.min": "^1.1.2",
-    "monocart-coverage-reports": "^2.12.11",
+    "monocart-coverage-reports": "^2.12.12",
     "packages-update": "^2.0.0",
-    "prettier": "^3.8.3",
-    "rollup": "^4.60.4",
+    "prettier": "^3.8.4",
+    "rollup": "^4.61.1",
     "rollup-plugin-dts": "^6.4.1",
     "rollup-plugin-esbuild": "^6.2.1",
-    "tsx": "^4.22.3",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   },
   "keywords": [
