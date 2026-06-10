@@ -51,8 +51,7 @@
     "lint": "bash scripts/lint.sh",
     "lint:fix": "bash scripts/lint-fix.sh",
     "typecheck": "bash scripts/typecheck.sh",
-    "update": "bash scripts/update.sh",
-    "benchmark": "npm --prefix benchmark start"
+    "update": "bash scripts/update.sh"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.15",
