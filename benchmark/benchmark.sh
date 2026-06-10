@@ -14,6 +14,14 @@ BIN_POKU_BUN="bun --bun ./node_modules/poku/lib/bin/index.js"
 BIN_DENO="deno test"
 BIN_POKU_DENO="deno run --allow-all ./node_modules/poku/lib/bin/index.js"
 
+BIN_POKU_NOISO="$BIN_POKU --isolation=none"
+BIN_JEST_NOISO="$BIN_JEST --runInBand"
+BIN_VITEST_NOISO="$BIN_VITEST --no-isolate"
+BIN_NODE_NOISO="$BIN_NODE --test-isolation=none"
+BIN_BUN_NOISO="bun test"
+BIN_POKU_BUN_NOISO="$BIN_POKU_BUN --isolation=none"
+BIN_POKU_DENO_NOISO="$BIN_POKU_DENO --isolation=none"
+
 if [ "$MODE" = "all" ]; then
   rm -rf results
 elif [ "$MODE" = "execution" ]; then
@@ -22,6 +30,8 @@ elif [ "$MODE" = "assertions" ]; then
   rm -rf results/assertions
 elif [ "$MODE" = "nesting" ]; then
   rm -rf results/nesting
+elif [ "$MODE" = "no-isolation" ]; then
+  rm -rf results/no-isolation
 fi
 
 mkdir -p results/assertions/success
@@ -33,6 +43,9 @@ mkdir -p results/execution/failure
 mkdir -p results/nesting/success
 mkdir -p results/nesting/failure
 mkdir -p results/nesting/balanced
+mkdir -p results/no-isolation/success
+mkdir -p results/no-isolation/failure
+mkdir -p results/no-isolation/balanced
 
 h4() {
   echo "$HR"
@@ -87,6 +100,7 @@ execution() {
   local dir=$3
   local path=$4
   local poku_bin=${5:-$BIN_POKU}
+  local out=${6:-execution}
   local cmd_src="$bin \"./test/execution/${dir}/${path}\""
   local cmd_poku="$poku_bin \"./test/execution/${dir}/poku\""
 
@@ -94,7 +108,7 @@ execution() {
   li "${dir}"
   echo ""
   echo "\`\`\`"
-  hyperfine -i --warmup 3 --runs 10 --export-json "results/execution/${dir}/${name}.json" \
+  hyperfine -i --warmup 3 --runs 10 --export-json "results/${out}/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$poku_bin ./test/execution/${dir}/poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
@@ -181,6 +195,43 @@ h4 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
 execution "deno" "$BIN_DENO" "success" "deno" "$BIN_POKU_DENO"
 execution "deno" "$BIN_DENO" "failure" "deno" "$BIN_POKU_DENO"
 execution "deno" "$BIN_DENO" "balanced" "deno" "$BIN_POKU_DENO"
+
+fi
+
+if [ "$MODE" = "all" ] || [ "$MODE" = "no-isolation" ]; then
+
+echo "### 🚀 No Isolation"
+echo ""
+echo "Same fixtures as **Test Runner**, but with test isolation disabled where supported (Poku \`--isolation=none\`, Jest \`--runInBand\`, Vitest \`--no-isolate\`, Node.js \`--test-isolation=none\`, Bun plain \`bun test\`). **Deno** has no per-file isolation flag, so it stays on \`deno test\`."
+echo ""
+echo "- **success:** a suite of 5 tests that will pass."
+echo "- **failure:** a suite of 5 tests that will fail."
+echo "- **balanced:** a suite of 10 tests where 5 tests will fail and 5 tests will pass."
+
+h4 "🃏 [Jest](https://github.com/jestjs/jest)"
+execution "jest" "$BIN_JEST_NOISO" "success" "jest" "$BIN_POKU_NOISO" "no-isolation"
+execution "jest" "$BIN_JEST_NOISO" "failure" "jest" "$BIN_POKU_NOISO" "no-isolation"
+execution "jest" "$BIN_JEST_NOISO" "balanced" "jest" "$BIN_POKU_NOISO" "no-isolation"
+
+h4 "⚡️ [Vitest](https://github.com/vitest-dev/vitest)"
+execution "vitest" "$BIN_VITEST_NOISO" "success" "vitest" "$BIN_POKU_NOISO" "no-isolation"
+execution "vitest" "$BIN_VITEST_NOISO" "failure" "vitest" "$BIN_POKU_NOISO" "no-isolation"
+execution "vitest" "$BIN_VITEST_NOISO" "balanced" "vitest" "$BIN_POKU_NOISO" "no-isolation"
+
+h4 "🐢 [Node.js (built-in)](https://github.com/nodejs/node)"
+execution "node" "$BIN_NODE_NOISO" "success" "node/**/**.spec.js" "$BIN_POKU_NOISO" "no-isolation"
+execution "node" "$BIN_NODE_NOISO" "failure" "node/**/**.spec.js" "$BIN_POKU_NOISO" "no-isolation"
+execution "node" "$BIN_NODE_NOISO" "balanced" "node/**/**.spec.js" "$BIN_POKU_NOISO" "no-isolation"
+
+h4 "🍞 [Bun (built-in)](https://github.com/oven-sh/bun)"
+execution "bun" "$BIN_BUN_NOISO" "success" "bun" "$BIN_POKU_BUN_NOISO" "no-isolation"
+execution "bun" "$BIN_BUN_NOISO" "failure" "bun" "$BIN_POKU_BUN_NOISO" "no-isolation"
+execution "bun" "$BIN_BUN_NOISO" "balanced" "bun" "$BIN_POKU_BUN_NOISO" "no-isolation"
+
+h4 "🦕 [Deno (built-in)](https://github.com/denoland/deno)"
+execution "deno" "$BIN_DENO" "success" "deno" "$BIN_POKU_DENO_NOISO" "no-isolation"
+execution "deno" "$BIN_DENO" "failure" "deno" "$BIN_POKU_DENO_NOISO" "no-isolation"
+execution "deno" "$BIN_DENO" "balanced" "deno" "$BIN_POKU_DENO_NOISO" "no-isolation"
 
 fi
 

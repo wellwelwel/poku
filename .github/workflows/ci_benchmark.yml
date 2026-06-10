@@ -77,6 +77,65 @@ jobs:
             benchmark/partial-execution.md
             benchmark/results/execution
 
+  bench-no-isolation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    name: No Isolation
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: ➕ Actions - Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          check-latest: true
+          node-version: lts/*
+
+      - name: ➕ Actions - Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: ➕ Actions - Setup Deno
+        uses: denoland/setup-deno@v2
+
+      - name: ➕ Actions — Setup Hyperfine
+        run: cargo install --locked hyperfine
+
+      - name: ➕ Cache dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.npm
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
+
+      - name: ➕ Cache dependencies (Benchmark)
+        uses: actions/cache@v5
+        with:
+          path: ~/.npm
+          key: npm-benchmark-${{ hashFiles('benchmark/package-lock.json') }}
+          restore-keys: npm-benchmark-
+
+      - name: 📦 Installing Dependencies
+        run: npm ci
+
+      - name: 🚀 Building Poku
+        run: |
+          npm run build
+          npm --prefix benchmark ci
+
+      - name: 🎖️ Rock it
+        run: cd benchmark && sh benchmark.sh no-isolation | tee partial-no-isolation.md
+
+      - name: ➕ Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: bench-no-isolation
+          retention-days: 1
+          path: |
+            benchmark/partial-no-isolation.md
+            benchmark/results/no-isolation
+
   bench-assertions:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -197,7 +256,8 @@ jobs:
             benchmark/results/nesting
 
   compare:
-    needs: [bench-execution, bench-assertions, bench-nesting]
+    needs:
+      [bench-execution, bench-no-isolation, bench-assertions, bench-nesting]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     name: Compare
@@ -220,7 +280,7 @@ jobs:
 
       - name: 📝 Assemble output
         run: |
-          { cat benchmark/partial-execution.md; cat benchmark/partial-assertions.md; cat benchmark/partial-nesting.md; } > benchmark/output.md
+          { cat benchmark/partial-execution.md; cat benchmark/partial-no-isolation.md; cat benchmark/partial-assertions.md; cat benchmark/partial-nesting.md; } > benchmark/output.md
 
       - name: 📊 Compare
         run: cd benchmark && node comparison.js
