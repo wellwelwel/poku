@@ -24,10 +24,10 @@ Enjoying **Poku**? Give him a star to show your support 🌟
 
 ![v][] High **isolation** level per file<br />
 ![v][] **Performant** and **lightweight**<br />
-![v][] Auto detect **ESM**, **CJS**, and **TypeScript** files<br />
+![v][] Support for **ESM**, **CJS**, and **TypeScript**<br />
 ![v][] Plugin ecosystem for **custom** and **official** plugins<br />
-![v][] Run the **same test suite** for [**Node.js**](https://github.com/nodejs/node), [**Bun**](https://github.com/oven-sh/bun), and [**Deno**](https://github.com/denoland/deno)<br />
-![v][] Easily handle **servers**, **processes**, **ports**, and even **containers** ✨
+![v][] Run the **same test suite** for **Node.js**, **Bun**, and **Deno**<br />
+![v][] Easily handle **servers**, **processes**, **ports**, and **containers** ✨
 
 ---
 

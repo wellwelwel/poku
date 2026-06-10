@@ -10,7 +10,7 @@ const options = i('[--options]');
 const paths = i('[paths]');
 const bullet = d('●');
 const summary: [string, string][] = [
-  ['--concurrency', 'Set the number of tests running concurrently'],
+  ['--concurrency', 'Set the number of concurrent tests '],
   ['--config, -c', 'Specify a configuration file'],
   ['--coverage', 'Enable coverage collection'],
   ['--coverageConfig', 'Path to a coverage configuration file'],
@@ -22,13 +22,13 @@ const summary: [string, string][] = [
   ['--exclude', 'Exclude by path'],
   ['--failFast', 'Stop tests at the first failure'],
   ['--filter', 'Filter by path'],
-  ['--help, -h', "Show Poku's CLI basic usage."],
+  ['--help, -h', "Show Poku's CLI basic usage"],
   ['--killPid', 'Terminate the specified process'],
   ['--killPort', 'Terminate the specified port'],
   ['--killRange', 'Terminate the specified port ranges'],
   ['--listFiles', 'Display all matching files'],
   ['--isolation', 'Set test isolation mode'],
-  ['--reporter, -r', 'Specify the reporter: poku, dot, compact, etc.'],
+  ['--reporter, -r', 'Specify the reporter: poku, compact, etc.'],
   ['--only', 'Enable selective execution of tests'],
   ['--quiet, -q', 'Run tests with no logs'],
   ['--sequential', 'Run tests files sequentially'],
@@ -68,11 +68,6 @@ ${sortedSummary
       `${command.padEnd(largeEndPad)}  ${d(description)}`
   )
   .join('\n')}
-
-› ${u(b('Notes:'))}
-
-  ${bullet} For Glob support, see:
-    ${u('https://poku.io/docs/documentation/poku/include-files#by-extending-glob-patterns-from-shell')}
 `;
 
 const footer = `
