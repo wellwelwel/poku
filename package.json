@@ -1,6 +1,6 @@
 {
   "name": "poku",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "description": "🐷 Poku makes testing easy for Node.js, Bun, Deno, and you at the same time.",
   "license": "MIT",
   "type": "module",

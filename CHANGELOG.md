@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.5.0](https://github.com/wellwelwel/poku/compare/v4.4.0...v4.5.0) (2026-06-10)
+
+
+### Features
+
+* **serializer:** support for advanced assertion types output ([#1136](https://github.com/wellwelwel/poku/issues/1136)) ([ad8bc5d](https://github.com/wellwelwel/poku/commit/ad8bc5d47ddc50669c13fa6901a4aae60e143bf6))
+
+
+### Bug Fixes
+
+* remove redundant path sanitize ([#1141](https://github.com/wellwelwel/poku/issues/1141)) ([b5c42e4](https://github.com/wellwelwel/poku/commit/b5c42e4fe8451337ba5985480677fae8e4cf8aab))
+* remove redundant sanitize ([b5c42e4](https://github.com/wellwelwel/poku/commit/b5c42e4fe8451337ba5985480677fae8e4cf8aab))
+
 ## [4.4.0](https://github.com/wellwelwel/poku/compare/v4.3.2...v4.4.0) (2026-06-08)
 
 
