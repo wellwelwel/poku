@@ -33,12 +33,11 @@ const getAllFilesInner = async (
   dirPath: string,
   files: Set<string>,
   filter: RegExp,
-  exclude: RegExp[] | undefined
+  exclude: RegExp[] | undefined,
+  knownDirectory?: boolean
 ): Promise<Set<string>> => {
   try {
-    const stat = await fsStat(dirPath);
-
-    if (stat.isFile()) {
+    if (!knownDirectory && (await fsStat(dirPath)).isFile()) {
       const fullPath = sanitizePath(dirPath);
 
       if (
@@ -60,7 +59,7 @@ const getAllFilesInner = async (
       return files;
     }
 
-    const entries = await readdir(sanitizePath(dirPath), {
+    const entries = await readdir(dirPath, {
       withFileTypes: true,
     });
     const subdirs: Promise<Set<string>>[] = [];
@@ -75,7 +74,7 @@ const getAllFilesInner = async (
       if (entry.isFile()) {
         if (filter.test(fullPath)) files.add(fullPath);
       } else if (entry.isDirectory()) {
-        subdirs.push(getAllFilesInner(fullPath, files, filter, exclude));
+        subdirs.push(getAllFilesInner(fullPath, files, filter, exclude, true));
       }
     }
 
