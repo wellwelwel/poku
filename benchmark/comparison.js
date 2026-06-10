@@ -107,7 +107,7 @@ if (mode === 'all' || mode === 'execution') {
 
 if (mode === 'all' || mode === 'no-isolation') {
   categories.push({
-    label: '🚀 No Isolation',
+    label: '🧬 No Isolation',
     resultsDir: 'no-isolation',
     runners: runnersWithoutThresholds,
   });
