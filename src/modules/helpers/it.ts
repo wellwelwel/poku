@@ -5,7 +5,7 @@ import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { each } from '../../configs/each.js';
 import { indentation } from '../../configs/indentation.js';
-import { errorHoist, GLOBAL } from '../../configs/poku.js';
+import { errorHoist, GLOBAL, RESOLVED_PROMISE } from '../../configs/poku.js';
 import { peekRetryContext } from '../../configs/retry.js';
 import { hasOnly } from '../../parsers/get-arg.js';
 import { getCallback, getTitle } from '../../parsers/get-test-args.js';
@@ -113,8 +113,6 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
     throw error;
   }
 };
-
-const RESOLVED_PROMISE = Promise.resolve();
 
 const itCore = ((titleOrCb: string | TestCb, cb?: TestCb) => {
   if (typeof titleOrCb === 'string') {

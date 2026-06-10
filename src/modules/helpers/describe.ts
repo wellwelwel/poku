@@ -2,7 +2,7 @@ import type { Describe, DescribeOptions } from '../../@types/describe.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { indentation } from '../../configs/indentation.js';
-import { errorHoist, GLOBAL } from '../../configs/poku.js';
+import { errorHoist, GLOBAL, RESOLVED_PROMISE } from '../../configs/poku.js';
 import { peekRetryContext } from '../../configs/retry.js';
 import { checkOnly } from '../../parsers/callback.js';
 import { hasOnly } from '../../parsers/get-arg.js';
@@ -82,8 +82,6 @@ export const describeBase = async (
 
   GLOBAL.runAsOnly = false;
 };
-
-const RESOLVED_PROMISE = Promise.resolve();
 
 const describeCore = ((
   messageOrCb: string | (() => unknown | Promise<unknown>),

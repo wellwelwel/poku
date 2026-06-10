@@ -30,6 +30,8 @@ export const errorHoist = getSharedState('errorHoist', {
 
 export const VERSION = '0.0.0-placeholder';
 
+export const RESOLVED_PROMISE = Promise.resolve();
+
 export const deepOptions = getSharedState<string[]>('deepOptions', []);
 
 export const GLOBAL = getSharedState('GLOBAL', {
