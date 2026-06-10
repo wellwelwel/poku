@@ -12,11 +12,11 @@ const TODO_MARKER = String(format('●').cyan().bold()).slice(
   -ANSI_RESET.length
 );
 
-const ObjProto = Object.prototype;
-const typedArrayJoin = Object.getPrototypeOf(Uint8Array.prototype).join as (
+const proto = Object.prototype;
+const arrayJoin: (
   this: ArrayLike<number | bigint>,
   separator: string
-) => string;
+) => string = Object.getPrototypeOf(Uint8Array.prototype).join;
 
 const BYTE_HEX = Array.from(
   { length: 256 },
@@ -39,14 +39,14 @@ export const serialize = (
   depth = 0
 ): string => {
   if (value === null) return 'null';
+  if (value === undefined) return 'undefined';
 
   const kind = typeof value;
 
-  if (kind === 'object')
-    return serializeObject(value as object, visited, depth);
   if (kind === 'string') return JSON.stringify(value);
   if (kind === 'number' || kind === 'boolean') return String(value);
-  if (value === undefined) return 'undefined';
+  if (kind === 'object')
+    return serializeObject(value as object, visited, depth);
   if (kind === 'bigint') return `${String(value)}n`;
   if (kind === 'symbol') return String(value);
 
@@ -86,7 +86,7 @@ const serializeObject = (
   }
 
   const prototype = Object.getPrototypeOf(value);
-  const isPlainObject = prototype === ObjProto || prototype === null;
+  const isPlainObject = prototype === proto || prototype === null;
 
   if (!isPlainObject) {
     if (value instanceof RegExp) return String(value);
@@ -187,8 +187,8 @@ const serializeObject = (
       const separator = `,\n${child}`;
       const body =
         typeof typed[0] === 'bigint'
-          ? `${typedArrayJoin.call(typed, `n${separator}`)}n`
-          : typedArrayJoin.call(typed, separator);
+          ? `${arrayJoin.call(typed, `n${separator}`)}n`
+          : arrayJoin.call(typed, separator);
 
       seen.delete(typed);
       return `${typeName} [\n${child}${body}\n${indent(depth)}]`;
