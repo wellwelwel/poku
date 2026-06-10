@@ -122,4 +122,5 @@ Detailed context lives in project skills, invoked automatically when relevant or
 - `/engineering`: performance patterns, security, build pipeline, CI/CD
 - `/testing`: test structure, fixtures, utils, Docker testing, coverage strategy
 - `/documentation`: Docusaurus framework, feature-to-docs mapping, conventions, changelog
+- `/benchmarking`: empirical performance comparison playbook, benchmark harness, hyperfine protocol, validated findings. NEVER invoke automatically: ONLY on explicit developer invocation
 - `/pre-commit`: recommendations and useful instructions before committing

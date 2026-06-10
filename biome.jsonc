@@ -16,7 +16,9 @@
       "!!lib",
       "!!node_modules",
       "!!test/__fixtures__",
-      "!!website"
+      "!!website",
+      "!!.claude",
+      "!!temp"
     ],
     "ignoreUnknown": true
   },
