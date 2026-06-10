@@ -14,7 +14,7 @@ export const reportFileResult = (options: {
   const { reporter, file, path, outputChunks, result, end, debug } = options;
 
   const output = outputChunks.join('');
-  const parsedOutputs = parserOutput({ output, result, debug })?.join('\n');
+  const parsedOutputs = parserOutput({ output, result, debug });
   const total = hrtimeToMs(end);
 
   reporter.onFileResult({

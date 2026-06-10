@@ -13,6 +13,15 @@ const TODO_MARKER = String(format('●').cyan().bold()).slice(
 );
 
 const ObjProto = Object.prototype;
+const typedArrayJoin = Object.getPrototypeOf(Uint8Array.prototype).join as (
+  this: ArrayLike<number | bigint>,
+  separator: string
+) => string;
+
+const BYTE_HEX = Array.from(
+  { length: 256 },
+  (_, byte) => `0x${byte.toString(16).padStart(2, '0').toUpperCase()}`
+);
 
 const indent = (depth: number): string => INDENTS[depth] ?? '  '.repeat(depth);
 
@@ -20,9 +29,6 @@ const compareStrings = (a: string, b: string): number => a.localeCompare(b);
 
 const compareSymbols = (a: symbol, b: symbol): number =>
   String(a).localeCompare(String(b));
-
-const formatByte = (byte: number): string =>
-  `0x${byte.toString(16).padStart(2, '0').toUpperCase()}`;
 
 export const timeoutMessage = (ms: number): string =>
   `${format(`● Timeout: test file exceeded ${ms}ms limit`).fail().bold()}`;
@@ -32,30 +38,30 @@ export const serialize = (
   visited?: Set<object>,
   depth = 0
 ): string => {
-  if (value === undefined) return 'undefined';
   if (value === null) return 'null';
 
   const kind = typeof value;
 
-  if (kind === 'number') return String(value);
+  if (kind === 'object')
+    return serializeObject(value as object, visited, depth);
   if (kind === 'string') return JSON.stringify(value);
-  if (kind === 'boolean') return String(value);
+  if (kind === 'number' || kind === 'boolean') return String(value);
+  if (value === undefined) return 'undefined';
   if (kind === 'bigint') return `${String(value)}n`;
   if (kind === 'symbol') return String(value);
-  if (kind === 'function') {
-    const name = (value as { name?: string }).name;
-    return name ? `[Function ${name}]` : '[Function]';
-  }
 
-  if (value instanceof RegExp) return String(value);
-  if (value instanceof Date) return value.toISOString();
+  const name = (value as { name?: string }).name;
+  return name ? `[Function ${name}]` : '[Function]';
+};
 
+const serializeObject = (
+  value: object,
+  visited: Set<object> | undefined,
+  depth: number
+): string => {
   const seen = visited ?? new Set<object>();
 
-  if (seen.has(value as object)) return '[Circular]';
-
-  if (value instanceof Error)
-    return `[${value.name || 'Error'}: ${value.message ?? ''}]`;
+  if (seen.has(value)) return '[Circular]';
 
   if (Array.isArray(value)) {
     const length = value.length;
@@ -83,6 +89,12 @@ export const serialize = (
   const isPlainObject = prototype === ObjProto || prototype === null;
 
   if (!isPlainObject) {
+    if (value instanceof RegExp) return String(value);
+    if (value instanceof Date) return value.toISOString();
+
+    if (value instanceof Error)
+      return `[${value.name || 'Error'}: ${value.message ?? ''}]`;
+
     if (value instanceof Set) {
       if (value.size === 0) return 'Set {}';
 
@@ -148,10 +160,10 @@ export const serialize = (
 
       const child = indent(depth + 1);
       const separator = `,\n${child}`;
-      let acc = `Buffer [\n${child}${formatByte(value[0])}`;
+      let acc = `Buffer [\n${child}${BYTE_HEX[value[0]]}`;
 
       for (let index = 1; index < length; index++)
-        acc += `${separator}${formatByte(value[index])}`;
+        acc += `${separator}${BYTE_HEX[value[index]]}`;
 
       seen.delete(value);
       return `${acc}\n${indent(depth)}]`;
@@ -173,52 +185,51 @@ export const serialize = (
 
       const child = indent(depth + 1);
       const separator = `,\n${child}`;
-      const first = typed[0];
-      let acc = `${typeName} [\n${child}${typeof first === 'bigint' ? `${String(first)}n` : String(first)}`;
-
-      for (let index = 1; index < length; index++) {
-        const element = typed[index];
-
-        acc += `${separator}${typeof element === 'bigint' ? `${String(element)}n` : String(element)}`;
-      }
+      const body =
+        typeof typed[0] === 'bigint'
+          ? `${typedArrayJoin.call(typed, `n${separator}`)}n`
+          : typedArrayJoin.call(typed, separator);
 
       seen.delete(typed);
-      return `${acc}\n${indent(depth)}]`;
+      return `${typeName} [\n${child}${body}\n${indent(depth)}]`;
     }
 
     if (value instanceof ArrayBuffer)
       return `ArrayBuffer { "byteLength": ${value.byteLength} }`;
-  }
 
-  if (
-    (value as { [Symbol.toStringTag]?: string })[Symbol.toStringTag] ===
-    'Generator'
-  )
-    return 'Generator {}';
+    if (
+      (value as { [Symbol.toStringTag]?: string })[Symbol.toStringTag] ===
+      'Generator'
+    )
+      return 'Generator {}';
+  }
 
   const toJSON = (value as { toJSON?: unknown }).toJSON;
 
   if (typeof toJSON === 'function') {
-    seen.add(value as object);
+    seen.add(value);
 
     try {
       const replaced = (toJSON as (key?: string) => unknown).call(value, '');
       if (replaced !== value) return serialize(replaced, seen, depth);
     } catch {
     } finally {
-      seen.delete(value as object);
+      seen.delete(value);
     }
   }
 
-  const constructorName = (value as { constructor?: { name?: string } })
-    .constructor?.name;
-  const isClassInstance =
-    prototype !== null &&
-    prototype !== ObjProto &&
-    typeof constructorName === 'string' &&
-    constructorName !== 'Object';
-  const stringKeys = Object.keys(value as object);
-  const symbolKeys = Object.getOwnPropertySymbols(value as object);
+  let constructorName: string | undefined;
+  let isClassInstance = false;
+
+  if (!isPlainObject) {
+    constructorName = (value as { constructor?: { name?: string } }).constructor
+      ?.name;
+    isClassInstance =
+      typeof constructorName === 'string' && constructorName !== 'Object';
+  }
+
+  const stringKeys = Object.keys(value);
+  const symbolKeys = Object.getOwnPropertySymbols(value);
   const stringKeysLength = stringKeys.length;
   const symbolKeysLength = symbolKeys.length;
 
@@ -232,7 +243,7 @@ export const serialize = (
   const separator = `,\n${child}`;
   const record = value as Record<string | symbol, unknown>;
 
-  seen.add(value as object);
+  seen.add(value);
 
   let acc = '';
   let isFirst = true;
@@ -251,7 +262,7 @@ export const serialize = (
     isFirst = false;
   }
 
-  seen.delete(value as object);
+  seen.delete(value);
 
   const prefix = isClassInstance ? `${constructorName} ` : '';
   return `${prefix}{\n${child}${acc}\n${indent(depth)}}`;
@@ -266,8 +277,8 @@ export const parserOutput = (options: {
 
   const pad = '  ';
   const isDebugOrFailed = debug || !result;
-  const outputs: string[] = [];
 
+  let acc = '';
   let offset = 0;
 
   while (offset < output.length) {
@@ -277,23 +288,24 @@ export const parserOutput = (options: {
     if (lineEnd > offset) {
       const line = output.substring(offset, lineEnd);
 
-      if (line.includes(SKIP_MARKER)) results.skipped++;
-      if (line.includes(TODO_MARKER)) results.todo++;
+      if (line.includes('◯') && line.includes(SKIP_MARKER)) results.skipped++;
+      if (line.includes('●') && line.includes(TODO_MARKER)) results.todo++;
 
-      if (line.trim().length > 0) {
-        if (
-          isDebugOrFailed ||
-          (line.indexOf('Exited with code') === -1 && line.includes(ANSI_RESET))
-        ) {
-          outputs.push(`${pad}${line}`);
-        }
+      if (isDebugOrFailed) {
+        if (line.trim().length > 0)
+          acc += acc.length === 0 ? `${pad}${line}` : `\n${pad}${line}`;
+      } else if (
+        line.includes(ANSI_RESET) &&
+        line.indexOf('Exited with code') === -1
+      ) {
+        acc += acc.length === 0 ? `${pad}${line}` : `\n${pad}${line}`;
       }
     }
 
     offset = lineEnd + 1;
   }
 
-  if (outputs.length === 0) return;
+  if (acc.length === 0) return;
 
-  return outputs;
+  return acc;
 };
