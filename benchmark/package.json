@@ -4,7 +4,8 @@
     "start": "sh benchmark.sh | tee output.md && node comparison.js",
     "bench:execution": "sh benchmark.sh execution | tee output.md && node comparison.js execution",
     "bench:assertions": "sh benchmark.sh assertions | tee output.md && node comparison.js assertions",
-    "bench:nesting": "sh benchmark.sh nesting | tee output.md && node comparison.js nesting"
+    "bench:nesting": "sh benchmark.sh nesting | tee output.md && node comparison.js nesting",
+    "bench:no-isolation": "sh benchmark.sh no-isolation | tee output.md && node comparison.js no-isolation"
   },
   "devDependencies": {
     "jest": "30.4.2",

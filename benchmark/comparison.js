@@ -105,6 +105,14 @@ if (mode === 'all' || mode === 'execution') {
   });
 }
 
+if (mode === 'all' || mode === 'no-isolation') {
+  categories.push({
+    label: '🧬 No Isolation',
+    resultsDir: 'no-isolation',
+    runners: runnersWithoutThresholds,
+  });
+}
+
 if (mode === 'all' || mode === 'assertions') {
   categories.push({
     label: '🧪 Assertion',
