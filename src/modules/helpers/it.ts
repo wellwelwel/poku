@@ -114,21 +114,26 @@ export const itBase = async (titleOrCb: string | TestCb, callback?: TestCb) => {
   }
 };
 
-const itCore = (async (titleOrCb: string | TestCb, cb?: TestCb) => {
+const RESOLVED_PROMISE = Promise.resolve();
+
+const itCore = ((titleOrCb: string | TestCb, cb?: TestCb) => {
   if (typeof titleOrCb === 'string') {
     if (
       GLOBAL.configs.testNamePattern &&
       !GLOBAL.configs.testNamePattern.test(titleOrCb)
     )
-      return;
+      return RESOLVED_PROMISE;
 
-    if (GLOBAL.configs.testSkipPattern?.test(titleOrCb)) return;
+    if (GLOBAL.configs.testSkipPattern?.test(titleOrCb))
+      return RESOLVED_PROMISE;
   }
 
-  if (hasOnly && !GLOBAL.runAsOnly) return;
+  if (hasOnly && !GLOBAL.runAsOnly) return RESOLVED_PROMISE;
 
   if (typeof titleOrCb === 'string' && cb) return itBase(titleOrCb, cb);
   if (typeof titleOrCb === 'function') return itBase(titleOrCb);
+
+  return RESOLVED_PROMISE;
 }) as It;
 
 export const it = Object.assign(itCore, {

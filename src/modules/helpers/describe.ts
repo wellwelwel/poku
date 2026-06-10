@@ -83,7 +83,9 @@ export const describeBase = async (
   GLOBAL.runAsOnly = false;
 };
 
-const describeCore = (async (
+const RESOLVED_PROMISE = Promise.resolve();
+
+const describeCore = ((
   messageOrCb: string | (() => unknown | Promise<unknown>),
   cbOrOptions?: (() => unknown | Promise<unknown>) | DescribeOptions
 ) => {
@@ -95,13 +97,15 @@ const describeCore = (async (
       typeof messageOrCb === 'function' ? messageOrCb : cbOrOptions
     );
 
-    if (!hasItOnly) return;
+    if (!hasItOnly) return RESOLVED_PROMISE;
   }
 
   if (typeof messageOrCb === 'string' && typeof cbOrOptions === 'function')
     return describeBase(messageOrCb, cbOrOptions);
 
   if (typeof messageOrCb === 'function') return describeBase(messageOrCb);
+
+  return RESOLVED_PROMISE;
 }) as Describe;
 
 export const describe = Object.assign(describeCore, {
