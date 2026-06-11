@@ -1,4 +1,7 @@
-import type { ProcessAssertionOptions } from '../@types/assert.js';
+import type {
+  AssertionMessage,
+  ProcessAssertionOptions,
+} from '../@types/assert.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
 import { GLOBAL } from '../configs/poku.js';
@@ -6,10 +9,6 @@ import { peekRetryContext } from '../configs/retry.js';
 
 const assertProcessor = () => {
   const { reporter } = GLOBAL;
-
-  const handleSuccess = ({ message }: ProcessAssertionOptions) => {
-    if (typeof message === 'string') reporter.onAssertionSuccess({ message });
-  };
 
   const handleError = (
     error: unknown,
@@ -28,7 +27,10 @@ const assertProcessor = () => {
   const processAssert = (cb: () => void, options: ProcessAssertionOptions) => {
     try {
       cb();
-      handleSuccess(options);
+
+      const { message } = options;
+
+      if (typeof message === 'string') reporter.onAssertionSuccess({ message });
     } catch (error) {
       handleError(error, options);
     }
@@ -40,13 +42,32 @@ const assertProcessor = () => {
   ) => {
     try {
       await cb();
-      handleSuccess(options);
+
+      const { message } = options;
+
+      if (typeof message === 'string') reporter.onAssertionSuccess({ message });
     } catch (error) {
       handleError(error, options);
     }
   };
 
-  return { processAssert, processAsyncAssert };
+  const processAssertDirect = (
+    method: (actual: unknown, expected: unknown) => void,
+    actual: unknown,
+    expected: unknown,
+    message: AssertionMessage
+  ) => {
+    try {
+      method(actual, expected);
+
+      if (typeof message === 'string') reporter.onAssertionSuccess({ message });
+    } catch (error) {
+      handleError(error, { message });
+    }
+  };
+
+  return { processAssert, processAsyncAssert, processAssertDirect };
 };
 
-export const { processAssert, processAsyncAssert } = assertProcessor();
+export const { processAssert, processAsyncAssert, processAssertDirect } =
+  assertProcessor();
