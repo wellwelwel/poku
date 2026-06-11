@@ -34,7 +34,7 @@ describe('Helper functions in logs.js', () => {
 describe('Helper functions in logs.js', () => {
   it('should print output correctly with debug on', () => {
     const options = {
-      output: 'Line1\nLine2\nLine3',
+      chunks: ['Line1\nLine2\nLine3'],
       result: true,
       debug: true,
     };
@@ -50,7 +50,7 @@ describe('Helper functions in logs.js', () => {
 
   it('should filter and print output correctly with debug off', () => {
     const options = {
-      output: 'Line1\n\x1b[0mLine2\x1b[0m\nExited with code',
+      chunks: ['Line1\n\x1b[0mLine2\x1b[0m\nExited with code'],
       result: true,
       debug: false,
     };
@@ -64,7 +64,7 @@ describe('Helper functions in logs.js', () => {
 
   it('should return early if outputs length is 0', () => {
     const options = {
-      output: '',
+      chunks: [],
       result: true,
       debug: false,
     };

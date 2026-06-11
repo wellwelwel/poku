@@ -269,41 +269,67 @@ const serializeObject = (
 };
 
 export const parserOutput = (options: {
-  output: string;
+  chunks: string[];
   result: boolean;
   debug?: boolean;
 }) => {
-  const { output, result, debug } = options;
+  const { chunks, result, debug } = options;
 
   const pad = '  ';
   const isDebugOrFailed = debug || !result;
 
   let acc = '';
-  let offset = 0;
+  let pending = '';
 
-  while (offset < output.length) {
-    const nextNewline = output.indexOf('\n', offset);
-    const lineEnd = nextNewline === -1 ? output.length : nextNewline;
+  const consumeLine = (line: string) => {
+    if (line.length === 0) return;
 
-    if (lineEnd > offset) {
-      const line = output.substring(offset, lineEnd);
+    if (line.includes('◯') && line.includes(SKIP_MARKER)) results.skipped++;
+    if (line.includes('●') && line.includes(TODO_MARKER)) results.todo++;
 
-      if (line.includes('◯') && line.includes(SKIP_MARKER)) results.skipped++;
-      if (line.includes('●') && line.includes(TODO_MARKER)) results.todo++;
-
-      if (isDebugOrFailed) {
-        if (line.trim().length > 0)
-          acc += acc.length === 0 ? `${pad}${line}` : `\n${pad}${line}`;
-      } else if (
-        line.includes(ANSI_RESET) &&
-        line.indexOf('Exited with code') === -1
-      ) {
+    if (isDebugOrFailed) {
+      if (line.trim().length > 0)
         acc += acc.length === 0 ? `${pad}${line}` : `\n${pad}${line}`;
-      }
+    } else if (
+      line.includes(ANSI_RESET) &&
+      line.indexOf('Exited with code') === -1
+    ) {
+      acc += acc.length === 0 ? `${pad}${line}` : `\n${pad}${line}`;
+    }
+  };
+
+  for (let index = 0; index < chunks.length; index++) {
+    const chunk = chunks[index];
+    let newlineAt = chunk.indexOf('\n');
+
+    if (newlineAt === -1) {
+      pending += chunk;
+      continue;
     }
 
-    offset = lineEnd + 1;
+    consumeLine(
+      pending.length === 0
+        ? chunk.substring(0, newlineAt)
+        : pending + chunk.substring(0, newlineAt)
+    );
+    pending = '';
+
+    let offset = newlineAt + 1;
+
+    while (offset < chunk.length) {
+      newlineAt = chunk.indexOf('\n', offset);
+
+      if (newlineAt === -1) {
+        pending = chunk.substring(offset);
+        break;
+      }
+
+      consumeLine(chunk.substring(offset, newlineAt));
+      offset = newlineAt + 1;
+    }
   }
+
+  consumeLine(pending);
 
   if (acc.length === 0) return;
 
