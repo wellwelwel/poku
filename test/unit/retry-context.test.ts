@@ -1,4 +1,8 @@
 import { strict as nodeAssert } from 'node:assert';
+import { spawnSync } from 'node:child_process';
+import { resolve } from 'node:path';
+import { isBuild } from '../__utils__/capture-cli.test.js';
+import { GLOBAL } from '../../src/configs/poku.js';
 import { retryContext } from '../../src/configs/retry.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
@@ -8,6 +12,18 @@ import { retry } from '../../src/modules/helpers/retry.js';
 const deferredAssertionKey = Symbol.for('@poku/deferred-assertion');
 
 describe('Retry context isolation', async () => {
+  if (!isBuild && GLOBAL.runtime === 'node') {
+    await it('supports retry providers loaded by CommonJS TypeScript consumers', () => {
+      const result = spawnSync(
+        process.execPath,
+        ['--import=tsx', resolve('test/__fixtures__/unit/retry-context.cjs')],
+        { encoding: 'utf8' }
+      );
+      nodeAssert.strictEqual(result.status, 0, result.stderr);
+      nodeAssert.match(result.stdout, /CommonJS retry provider verified/);
+    });
+  }
+
   await it('does not suppress a sibling test while a retry callback awaits', async () => {
     const previousExitCode = process.exitCode;
     let release!: () => void;
