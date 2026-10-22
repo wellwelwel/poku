@@ -5,7 +5,8 @@
     "**/**/*.ts",
     "**/**/*.js",
     "**/**/*.cjs",
-    "**/**/*.mjs"
+    "**/**/*.mjs",
+    "__fixtures__/e2e/no-isolate/*.mts"
   ],
   "exclude": [
     "__fixtures__/e2e/module-types",

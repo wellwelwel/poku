@@ -108,7 +108,7 @@ execution() {
   li "${dir}"
   echo ""
   echo "\`\`\`"
-  hyperfine -i --warmup 3 --runs 10 --export-json "results/${out}/${dir}/${name}.json" \
+  hyperfine --shell=default -i --warmup 3 --runs 10 --export-json "results/${out}/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$poku_bin ./test/execution/${dir}/poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
@@ -130,7 +130,7 @@ assertion() {
   li "${dir}"
   echo ""
   echo "\`\`\`"
-  hyperfine -i --warmup 3 --runs 10 --export-json "results/assertions/${dir}/${name}.json" \
+  hyperfine --shell=default -i --warmup 3 --runs 10 --export-json "results/assertions/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'
@@ -152,7 +152,7 @@ nesting() {
   li "${dir}"
   echo ""
   echo "\`\`\`"
-  hyperfine -i --warmup 3 --runs 10 --export-json "results/nesting/${dir}/${name}.json" \
+  hyperfine --shell=default -i --warmup 3 --runs 10 --export-json "results/nesting/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
     --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" 2>/dev/null |
     awk '/ ran/ {flag=1} flag'

@@ -5,6 +5,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { arch, cpus, platform, totalmem } from 'node:os';
 import { env, exit } from 'node:process';
+import { parseBenchmarkResults } from './results.js';
 
 const isCI = !!env.GITHUB_ACTIONS;
 const mode = process.argv[2] ?? 'all';
@@ -44,13 +45,9 @@ const getCategoryData = async (resultsDir, runners) => {
     let ratioSum = 0;
 
     for (const scenario of scenarios) {
-      const raw = await readFile(
-        `./results/${resultsDir}/${scenario}/${runner.name}.json`,
-        'utf-8'
-      );
-      const { results } = JSON.parse(raw);
-      const poku = results.find(({ command }) => command.includes('Poku'));
-      const other = results.find(({ command }) => !command.includes('Poku'));
+      const source = `./results/${resultsDir}/${scenario}/${runner.name}.json`;
+      const raw = await readFile(source, 'utf-8');
+      const { poku, other } = parseBenchmarkResults(JSON.parse(raw), source);
 
       if (!pokuCollected) {
         pokuMeanSum += poku.mean;
