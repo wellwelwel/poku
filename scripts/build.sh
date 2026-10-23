@@ -16,8 +16,9 @@ echo '◉ build'
 
 echo '◯ postbuild'
 printf '{\n  "type": "module"\n}\n' > ci/package.json
-mkdir -p ci/lib/modules
+mkdir -p ci/lib/modules ci/node_modules
 cp lib/modules/*.cjs ci/lib/modules/
+cp -R node_modules/poku-legacy-4-4 node_modules/poku-legacy-4-5 ci/node_modules/
 (cd test && find __fixtures__ -name package.json -print0 | while IFS= read -r -d '' f; do mkdir -p "../ci/test/$(dirname "$f")" && cp "$f" "../ci/test/$f"; done)
 chmod +x lib/bin/index.js
 echo '◉ postbuild'

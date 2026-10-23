@@ -63,6 +63,8 @@
     "jsonc.min": "^1.1.2",
     "monocart-coverage-reports": "^2.12.12",
     "packages-update": "^2.0.0",
+    "poku-legacy-4-4": "npm:poku@4.4.0",
+    "poku-legacy-4-5": "npm:poku@4.5.0",
     "prettier": "^3.8.4",
     "rollup": "^4.61.1",
     "rollup-plugin-dts": "^6.4.1",
