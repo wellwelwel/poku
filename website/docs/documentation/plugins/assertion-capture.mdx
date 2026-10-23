@@ -31,7 +31,7 @@ if (result.status === 'passed') {
 
 Each call returns either `{ status: 'passed', value, report }` or `{ status: 'failed', error, report }`. The original thrown value is preserved, including `undefined`. Poku assertion errors are not decorated with private symbols or callbacks.
 
-Discard intermediate failed outcomes when another polling attempt will follow. Call `report()` for the winning attempt or final exhausted attempt. It replays buffered assertion events once. A failed outcome also marks the enclosing capture or public retry as failed, or sets the process exit code when neither exists. Calling `report()` again has no effect.
+Discard intermediate failed outcomes when another polling attempt will follow. Call `report()` for the winning attempt or final exhausted attempt. It replays buffered Poku assertion events once. Replayed assertion failures mark the enclosing capture or public retry as failed, or set the process exit code when neither exists. Calling `report()` again has no effect. Native callback errors are preserved in the outcome but do not become Poku assertion events; the caller decides how to propagate them.
 
 Captured failures remain failures even if the callback catches the assertion error and returns normally. Nested captures remain independent until their outcomes are reported. Success messages are buffered as well, so unsuccessful polling attempts do not print misleading success events.
 
