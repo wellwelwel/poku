@@ -6,6 +6,11 @@ import { kill as pokuKill } from '../modules/helpers/kill.js';
 import { runner } from '../parsers/get-runner.js';
 
 export { createReporter } from '../builders/reporter.js';
+export { captureAssertions } from '../services/assertion-capture.js';
+export type {
+  AssertionCaptureContext,
+  AssertionCaptureResult,
+} from '../@types/assertion-capture.js';
 export { findFileFromStack } from '../parsers/find-file-from-stack.js';
 export { onSigint } from './essentials/poku.js';
 export { reporter as reporterRegistry } from '../services/reporter.js';
