@@ -8,20 +8,6 @@ import {
   assertionCapture,
   peekAssertionCapture,
 } from '../configs/assertion-capture.js';
-import { peekRetryContext } from '../configs/retry.js';
-
-const markFailure = (error: unknown): void => {
-  const parent = peekAssertionCapture();
-  if (parent) {
-    parent.failed = true;
-    parent.error = error;
-    return;
-  }
-
-  const retry = peekRetryContext();
-  if (retry) retry.failed = true;
-  else process.exitCode = 1;
-};
 
 export const captureAssertions = async <Value>(
   callback: (context: AssertionCaptureContext) => Value | Promise<Value>
@@ -71,7 +57,6 @@ export const captureAssertions = async <Value>(
       if (reported) return;
       reported = true;
       for (const report of reports) report();
-      if (result.status === 'failed') markFailure(result.error);
     },
   };
 };

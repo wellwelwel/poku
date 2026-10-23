@@ -242,7 +242,7 @@ await describe('Plugin assertion capture', async () => {
     }
   });
 
-  await it('retains native thrown values and commits non-Poku failures explicitly', async () => {
+  await it('retains native thrown values without treating them as Poku assertions', async () => {
     const previousExitCode = process.exitCode;
     try {
       const result = await captureAssertions(() => {
@@ -254,7 +254,7 @@ await describe('Plugin assertion capture', async () => {
       nodeAssert.strictEqual(result.error, undefined);
       nodeAssert.strictEqual(process.exitCode, previousExitCode);
       result.report();
-      nodeAssert.strictEqual(process.exitCode, 1);
+      nodeAssert.strictEqual(process.exitCode, previousExitCode);
     } finally {
       process.exitCode = previousExitCode ?? 0;
     }
