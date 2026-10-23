@@ -6,6 +6,8 @@ import { kill as pokuKill } from '../modules/helpers/kill.js';
 import { runner } from '../parsers/get-runner.js';
 
 export { createReporter } from '../builders/reporter.js';
+export { registerSerializer } from '../services/serializers.js';
+export type { ValueSerializer } from '../@types/serializer.js';
 export { findFileFromStack } from '../parsers/find-file-from-stack.js';
 export { onSigint } from './essentials/poku.js';
 export { reporter as reporterRegistry } from '../services/reporter.js';
