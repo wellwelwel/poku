@@ -11,7 +11,7 @@ concurrently \
   -n "types,ci,lib" \
   "tsc --noEmit" \
   "cd test && tsc" \
-  "tsx tools/build.ts"
+  "node --import=tsx tools/build.ts"
 echo '◉ build'
 
 echo '◯ postbuild'
