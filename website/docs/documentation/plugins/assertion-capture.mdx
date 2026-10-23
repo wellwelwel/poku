@@ -1,0 +1,69 @@
+---
+sidebar_position: 8
+tags: [plugin, assertions, retry, polling, async]
+---
+
+# Assertion Capture
+
+> captureAssertions(callback): Promise&lt;AssertionCaptureResult&gt;
+
+Plugins that implement polling can evaluate an assertion attempt without immediately reporting its assertions or failing the process. Import `captureAssertions` from `poku/plugins`.
+
+```ts
+import { assert } from 'poku';
+import { captureAssertions } from 'poku/plugins';
+
+const result = await captureAssertions(() => {
+  assert.strictEqual(readStatus(), 'ready', 'status is ready');
+  return readStatus();
+});
+
+if (result.status === 'passed') {
+  result.report();
+  console.log(result.value);
+} else {
+  result.report();
+  throw result.error;
+}
+```
+
+## Polling Contract
+
+Each call returns either `{ status: 'passed', value, report }` or `{ status: 'failed', error, report }`. The original thrown value is preserved, including `undefined`. Poku assertion errors are not decorated with private symbols or callbacks.
+
+Discard intermediate failed outcomes when another polling attempt will follow. Call `report()` for the winning attempt or final exhausted attempt. It replays buffered Poku assertion events once. Replayed assertion failures mark the enclosing capture or public retry as failed, or set the process exit code when neither exists. Calling `report()` again has no effect. Native callback errors are preserved in the outcome but do not become Poku assertion events; the caller decides how to propagate them.
+
+Captured failures remain failures even if the callback catches the assertion error and returns normally. Nested captures remain independent until their outcomes are reported. Success messages are buffered as well, so unsuccessful polling attempts do not print misleading success events.
+
+## Async Resources
+
+The capture closes when the callback settles. Assertions from unawaited work that outlives it are handled normally; they cannot silently mark an already completed attempt.
+
+Callbacks from a socket, timer, or emitter created before the capture need explicit binding:
+
+```ts
+const result = await captureAssertions(
+  ({ bind }) =>
+    new Promise<void>((resolve, reject) => {
+      emitter.once(
+        'data',
+        bind(function (value) {
+          try {
+            assert.strictEqual(value.status, 'ready');
+            resolve();
+          } catch (error) {
+            reject(error);
+          }
+        })
+      );
+    })
+);
+```
+
+`bind` preserves the callback's receiver and arguments. It does not extend the capture's lifetime, so the callback must still be awaited through its promise.
+
+## Compatibility and Cost
+
+This API captures Poku assertions from a version that implements it. Older package instances continue to use their existing behavior. The versioned capture registry is independent of the shared state used by Poku 4.4 and 4.5, and supports ESM and CommonJS consumers in the same process.
+
+Public `retry()` behavior is unchanged. Ordinary assertions and retries do not create capture storage. AsyncLocalStorage is constructed on the first explicit capture; using it can add async-hook overhead on older Node versions. Keep capture opt-in and load it only where a plugin needs polling semantics.
