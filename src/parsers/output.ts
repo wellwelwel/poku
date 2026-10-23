@@ -1,4 +1,5 @@
 import { results } from '../configs/results.js';
+import { serializerRegistry } from '../configs/serializers.js';
 import { format } from '../services/format.js';
 
 const INDENTS = Array.from({ length: 16 }, (_, depth) => '  '.repeat(depth));
@@ -62,6 +63,21 @@ const serializeObject = (
   const seen = visited ?? new Set<object>();
 
   if (seen.has(value)) return '[Circular]';
+
+  if (serializerRegistry.size > 0) {
+    for (const serializer of serializerRegistry.values()) {
+      if (!serializer.test(value)) continue;
+
+      seen.add(value);
+      try {
+        return serializer.serialize(value, (child) =>
+          serialize(child, seen, depth + 1)
+        );
+      } finally {
+        seen.delete(value);
+      }
+    }
+  }
 
   if (Array.isArray(value)) {
     const length = value.length;
