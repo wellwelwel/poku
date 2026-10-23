@@ -63,15 +63,6 @@ const serializeObject = (
 
   if (seen.has(value)) return '[Circular]';
 
-  if (
-    typeof (value as { nodeType?: unknown }).nodeType === 'number' &&
-    typeof (value as { nodeName?: unknown }).nodeName === 'string'
-  ) {
-    const outerHTML = (value as { outerHTML?: unknown }).outerHTML;
-    if (typeof outerHTML === 'string') return outerHTML;
-    return `[DOMNode ${(value as { nodeName: string }).nodeName}]`;
-  }
-
   if (Array.isArray(value)) {
     const length = value.length;
 

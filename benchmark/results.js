@@ -22,3 +22,17 @@ export const parseBenchmarkResults = (input, source) => {
 
   return { poku, other };
 };
+
+export const formatBenchmarkDetails = (input, source) => {
+  const { poku, other } = parseBenchmarkResults(input, source);
+  const [faster, slower] =
+    poku.mean <= other.mean ? [poku, other] : [other, poku];
+  const timing = (result) =>
+    `${result.command}: ${(result.mean * 1000).toFixed(3)} ms`;
+  const comparison =
+    faster.mean === slower.mean
+      ? 'Both commands had the same mean wall-clock time.'
+      : `${faster.command} ran ${(slower.mean / faster.mean).toFixed(2)} times faster than ${slower.command}`;
+
+  return [timing(other), timing(poku), comparison].join('\n');
+};

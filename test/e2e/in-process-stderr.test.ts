@@ -12,14 +12,14 @@ describe('In-process asynchronous error diagnostics', async () => {
       'non-assertion rejected promise',
     ],
   ]) {
-    await it(`preserves ${event} on stderr`, async () => {
+    await it(`captures ${event} with the failing file`, async () => {
       const path = isBuild ? fixture.replace(/\.mts$/, '.mjs') : fixture;
       const result = await inspectPoku(`${path} --isolation=none`, {
         cwd: 'test/__fixtures__/e2e/no-isolate',
       });
       nodeAssert.strictEqual(result.exitCode, 1);
-      nodeAssert.match(result.stderr, new RegExp(event));
-      nodeAssert.match(result.stderr, new RegExp(message));
+      nodeAssert.match(result.stdout + result.stderr, new RegExp(event));
+      nodeAssert.match(result.stdout + result.stderr, new RegExp(message));
     });
   }
 });

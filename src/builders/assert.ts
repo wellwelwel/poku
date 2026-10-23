@@ -18,11 +18,6 @@ const isPredicate = (
   value instanceof RegExp ||
   typeof value === 'object';
 
-const resolveInternalMessage = (message?: AssertionMessage): string =>
-  typeof message === 'string' && message.length > 0
-    ? message
-    : 'Assertion Error';
-
 const resolveMessage = (
   errorOrMessage: AssertPredicate | AssertionMessage | undefined,
   message: AssertionMessage | undefined
@@ -31,93 +26,40 @@ const resolveMessage = (
 
 export const createAssert = (nodeAssert: typeof assert) => {
   const ok: AssertValue = (value, message) =>
-    processAssert(() => nodeAssert.ok(value, resolveInternalMessage(message)), {
-      message,
-    });
+    processAssert(() => nodeAssert.ok(value), { message });
 
   const equal: AssertEqual = (actual, expected, message) => {
-    processAssert(
-      () => nodeAssert.equal(actual, expected, resolveInternalMessage(message)),
-      { message }
-    );
+    processAssert(() => nodeAssert.equal(actual, expected), { message });
   };
 
   const deepEqual: AssertEqual = (actual, expected, message) =>
-    processAssert(
-      () =>
-        nodeAssert.deepEqual(actual, expected, resolveInternalMessage(message)),
-      { message }
-    );
+    processAssert(() => nodeAssert.deepEqual(actual, expected), { message });
 
   const strictEqual: AssertEqual = (actual, expected, message) =>
-    processAssert(
-      () =>
-        nodeAssert.strictEqual(
-          actual,
-          expected,
-          resolveInternalMessage(message)
-        ),
-      { message }
-    );
+    processAssert(() => nodeAssert.strictEqual(actual, expected), { message });
 
   const deepStrictEqual: AssertEqual = (actual, expected, message) =>
-    processAssert(
-      () =>
-        nodeAssert.deepStrictEqual(
-          actual,
-          expected,
-          resolveInternalMessage(message)
-        ),
-      {
-        message,
-      }
-    );
+    processAssert(() => nodeAssert.deepStrictEqual(actual, expected), {
+      message,
+    });
 
   const notEqual: AssertEqual = (actual, expected, message) =>
-    processAssert(
-      () =>
-        nodeAssert.notEqual(actual, expected, resolveInternalMessage(message)),
-      {
-        message,
-      }
-    );
+    processAssert(() => nodeAssert.notEqual(actual, expected), {
+      message,
+    });
 
   const notDeepEqual: AssertEqual = (actual, expected, message) =>
-    processAssert(
-      () =>
-        nodeAssert.notDeepEqual(
-          actual,
-          expected,
-          resolveInternalMessage(message)
-        ),
-      { message }
-    );
+    processAssert(() => nodeAssert.notDeepEqual(actual, expected), { message });
 
   const notStrictEqual: AssertEqual = (actual, expected, message) =>
-    processAssert(
-      () =>
-        nodeAssert.notStrictEqual(
-          actual,
-          expected,
-          resolveInternalMessage(message)
-        ),
-      {
-        message,
-      }
-    );
+    processAssert(() => nodeAssert.notStrictEqual(actual, expected), {
+      message,
+    });
 
   const notDeepStrictEqual: AssertEqual = (actual, expected, message) =>
-    processAssert(
-      () =>
-        nodeAssert.notDeepStrictEqual(
-          actual,
-          expected,
-          resolveInternalMessage(message)
-        ),
-      {
-        message,
-      }
-    );
+    processAssert(() => nodeAssert.notDeepStrictEqual(actual, expected), {
+      message,
+    });
 
   const ifError: AssertValue = (value, message) =>
     processAssert(() => nodeAssert.ifError(value), {

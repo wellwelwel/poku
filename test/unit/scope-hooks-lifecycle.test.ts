@@ -8,6 +8,8 @@ import { it, itBase } from '../../src/modules/helpers/it.js';
 const scopeHooksKey = Symbol.for('@pokujs/poku.test-scope-hooks');
 const scopeGlobals = globalThis as Record<symbol, unknown>;
 
+process.exitCode ??= 0;
+
 describe('Scope hook lifecycle regressions', async () => {
   await it('finishes synchronous reporting before the next test starts', async () => {
     const originalHooks = scopeGlobals[scopeHooksKey];
@@ -56,6 +58,10 @@ describe('Scope hook lifecycle regressions', async () => {
     const storage = new AsyncLocalStorage<boolean>();
     const calls: Array<boolean | undefined> = [];
     const cleanupError = new Error('scope disposal failed');
+    const previousExitCode = process.exitCode;
+    const originalConsoleError = console.error;
+    const errors: unknown[] = [];
+    console.error = (error: unknown) => errors.push(error);
     scopeGlobals[scopeHooksKey] = {
       createHolder: () => ({ scope: undefined }),
       runScoped: async (_holder: unknown, callback: () => Promise<void>) => {
@@ -67,14 +73,15 @@ describe('Scope hook lifecycle regressions', async () => {
       calls.push(storage.getStore());
     };
     try {
-      await nodeAssert.rejects(
-        itBase(() => {}),
-        cleanupError
-      );
+      await nodeAssert.doesNotReject(itBase(() => {}));
+      nodeAssert.strictEqual(process.exitCode, 1);
     } finally {
       each.after.cb = originalAfter;
       scopeGlobals[scopeHooksKey] = originalHooks;
+      process.exitCode = previousExitCode ?? 0;
+      console.error = originalConsoleError;
     }
+    nodeAssert.deepStrictEqual(errors, [cleanupError]);
     nodeAssert.deepStrictEqual(calls, [true]);
   });
 

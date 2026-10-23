@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 SHORT_SHA=$(git rev-parse --short HEAD)
 MODE=${1:-all}
 
@@ -110,8 +112,8 @@ execution() {
   echo "\`\`\`"
   hyperfine --shell=default -i --warmup 3 --runs 10 --export-json "results/${out}/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
-    --command-name "🐷 Poku ($SHORT_SHA)" "$poku_bin ./test/execution/${dir}/poku" 2>/dev/null |
-    awk '/ ran/ {flag=1} flag'
+    --command-name "🐷 Poku ($SHORT_SHA)" "$poku_bin ./test/execution/${dir}/poku" >/dev/null
+  node details.js "results/${out}/${dir}/${name}.json"
   echo "\`\`\`"
   echo ""
   grid "$cmd_src" "$cmd_poku"
@@ -132,8 +134,8 @@ assertion() {
   echo "\`\`\`"
   hyperfine --shell=default -i --warmup 3 --runs 10 --export-json "results/assertions/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
-    --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" 2>/dev/null |
-    awk '/ ran/ {flag=1} flag'
+    --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" >/dev/null
+  node details.js "results/assertions/${dir}/${name}.json"
   echo "\`\`\`"
   echo ""
   grid "$cmd_src" "$cmd_poku"
@@ -154,8 +156,8 @@ nesting() {
   echo "\`\`\`"
   hyperfine --shell=default -i --warmup 3 --runs 10 --export-json "results/nesting/${dir}/${name}.json" \
     --command-name "$name" "$cmd_src" \
-    --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" 2>/dev/null |
-    awk '/ ran/ {flag=1} flag'
+    --command-name "🐷 Poku ($SHORT_SHA)" "$cmd_poku" >/dev/null
+  node details.js "results/nesting/${dir}/${name}.json"
   echo "\`\`\`"
   echo ""
   grid "$cmd_src" "$cmd_poku"

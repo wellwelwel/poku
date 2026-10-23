@@ -30,6 +30,7 @@ export const itBase = async (
     const cb = hasTitle ? getCallback(callback) : getCallback(titleOrCb);
 
     let success = true;
+    let hookFailed = false;
     let start: [number, number] = [0, 0];
     let end: [number, number] = [0, 0];
 
@@ -39,6 +40,32 @@ export const itBase = async (
       indentation.itDepth++;
       increasedDepth = true;
     }
+
+    const recordFailure = (error: unknown): void => {
+      const context = peekRetryContext();
+      if (context) {
+        context.failed = true;
+        return;
+      }
+
+      process.exitCode = 1;
+      success = false;
+      if (!(error instanceof AssertionError)) console.error(error);
+    };
+
+    const runHook = (callback: () => unknown): unknown => {
+      const fail = (error: unknown): never => {
+        hookFailed = true;
+        throw error;
+      };
+
+      try {
+        const result = callback();
+        return result instanceof Promise ? result.catch(fail) : result;
+      } catch (error) {
+        return fail(error);
+      }
+    };
 
     const hooks = getScopeHook();
     const reportResult = (): void => {
@@ -62,74 +89,61 @@ export const itBase = async (
       }
     };
 
-    await runWithOptionalScope(async (params) => {
-      try {
-        if (typeof each.before.cb === 'function') {
-          const beforeResult = each.before.cb();
-
-          if (beforeResult instanceof Promise) await beforeResult;
-        }
-
-        const insideDescribe = errorHoist.depth > 0;
-
-        let onError: ((error: unknown) => void) | undefined;
-
-        if (!insideDescribe) {
-          onError = (error: unknown): void => {
-            const ctx = peekRetryContext();
-            if (ctx) {
-              ctx.failed = true;
-            } else {
-              process.exitCode = 1;
-              success = false;
-              if (!(error instanceof AssertionError)) console.error(error);
-            }
-          };
-
-          process.once('uncaughtException', onError);
-          process.once('unhandledRejection', onError);
-        } else errorHoist.failed = false;
-
-        start = process.hrtime();
-
+    try {
+      await runWithOptionalScope(async (params) => {
         try {
-          const resultCb = cb!(params);
-          if (resultCb instanceof Promise) await resultCb;
-        } catch (error) {
-          const ctx = peekRetryContext();
-          if (ctx) {
-            ctx.failed = true;
-          } else {
-            process.exitCode = 1;
-            success = false;
-            if (!(error instanceof AssertionError)) console.error(error);
+          if (typeof each.before.cb === 'function') {
+            const beforeResult = runHook(each.before.cb);
+            if (beforeResult instanceof Promise) await beforeResult;
+          }
+
+          const insideDescribe = errorHoist.depth > 0;
+
+          let onError: ((error: unknown) => void) | undefined;
+
+          if (!insideDescribe) {
+            onError = recordFailure;
+
+            process.once('uncaughtException', onError);
+            process.once('unhandledRejection', onError);
+          } else errorHoist.failed = false;
+
+          start = process.hrtime();
+
+          try {
+            const resultCb = cb!(params);
+            if (resultCb instanceof Promise) await resultCb;
+          } catch (error) {
+            recordFailure(error);
+          } finally {
+            end = process.hrtime(start);
+
+            if (onError) {
+              process.removeListener('uncaughtException', onError);
+              process.removeListener('unhandledRejection', onError);
+            } else if (errorHoist.failed) {
+              const ctx = peekRetryContext();
+              if (ctx) {
+                ctx.failed = true;
+              } else {
+                success = false;
+              }
+              errorHoist.failed = false;
+            }
           }
         } finally {
-          end = process.hrtime(start);
-
-          if (onError) {
-            process.removeListener('uncaughtException', onError);
-            process.removeListener('unhandledRejection', onError);
-          } else if (errorHoist.failed) {
-            const ctx = peekRetryContext();
-            if (ctx) {
-              ctx.failed = true;
-            } else {
-              success = false;
-            }
-            errorHoist.failed = false;
+          if (typeof each.after.cb === 'function') {
+            const afterResult = runHook(each.after.cb);
+            if (afterResult instanceof Promise) await afterResult;
           }
         }
-      } finally {
-        if (typeof each.after.cb === 'function') {
-          const afterResult = each.after.cb();
 
-          if (afterResult instanceof Promise) await afterResult;
-        }
-      }
-
-      if (!hooks) reportResult();
-    });
+        if (!hooks) reportResult();
+      });
+    } catch (error) {
+      if (hookFailed) throw error;
+      recordFailure(error);
+    }
 
     if (hooks) reportResult();
   } catch (error) {
