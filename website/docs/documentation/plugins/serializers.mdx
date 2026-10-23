@@ -1,0 +1,39 @@
+---
+sidebar_position: 7
+tags: [plugin, serializer, assertions, output]
+---
+
+# Value Serializers
+
+> registerSerializer(serializer): () => void
+
+Plugins can customize assertion output for objects through `registerSerializer` from `poku/plugins`. The registry is empty by default. Core does not recognize DOM nodes or inspect DOM-specific properties.
+
+```ts
+import { registerSerializer } from 'poku/plugins';
+
+class Box {
+  constructor(readonly value: unknown) {}
+}
+
+const dispose = registerSerializer({
+  name: '@acme/box',
+  test: (value) => value instanceof Box,
+  serialize: (value, serializeValue) =>
+    `Box(${serializeValue((value as Box).value)})`,
+});
+
+dispose();
+```
+
+## Matching and Cleanup
+
+Matchers run in registration order. The first matching serializer handles the object. Unmatched values use Poku's existing formatter. Matchers are never called for primitive values.
+
+Registering an existing name replaces its implementation without changing its position. A disposer removes only the implementation it registered, so an older disposer cannot remove a replacement. Disposal is idempotent.
+
+Register in each process that formats assertions. For process-isolated tests, load the registration from the plugin's child setup module. Dispose when that environment is torn down. A registration in the parent process is not inherited by child processes.
+
+Use the supplied `serializeValue` function to format nested values. It preserves indentation and circular-reference tracking, including references back to the object being formatted. Matcher and formatter exceptions propagate to the caller. Plugins should handle only values they understand and bound the size of their output.
+
+The versioned registry is shared by ESM and CommonJS instances of the package. The public registration API is the supported contract; plugins should not read its global storage directly.
