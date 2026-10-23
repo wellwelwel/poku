@@ -16,6 +16,8 @@ echo '◉ build'
 
 echo '◯ postbuild'
 printf '{\n  "type": "module"\n}\n' > ci/package.json
+mkdir -p ci/benchmark
+cp benchmark/benchmark.sh benchmark/details.js benchmark/results.js ci/benchmark/
 (cd test && find __fixtures__ -name package.json -print0 | while IFS= read -r -d '' f; do mkdir -p "../ci/test/$(dirname "$f")" && cp "$f" "../ci/test/$f"; done)
 chmod +x lib/bin/index.js
 echo '◉ postbuild'
