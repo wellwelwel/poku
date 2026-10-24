@@ -41,7 +41,7 @@ jobs:
         uses: denoland/setup-deno@v2
 
       - name: ➕ Actions — Setup Hyperfine
-        run: cargo install --locked hyperfine
+        run: cargo install --locked hyperfine --version '^2'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v5
@@ -100,7 +100,7 @@ jobs:
         uses: denoland/setup-deno@v2
 
       - name: ➕ Actions — Setup Hyperfine
-        run: cargo install --locked hyperfine
+        run: cargo install --locked hyperfine --version '^2'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v5
@@ -159,7 +159,7 @@ jobs:
         uses: denoland/setup-deno@v2
 
       - name: ➕ Actions — Setup Hyperfine
-        run: cargo install --locked hyperfine
+        run: cargo install --locked hyperfine --version '^2'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v5
@@ -219,7 +219,7 @@ jobs:
         uses: denoland/setup-deno@v2
 
       - name: ➕ Actions — Setup Hyperfine
-        run: cargo install --locked hyperfine
+        run: cargo install --locked hyperfine --version '^2'
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v5
