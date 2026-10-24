@@ -18,6 +18,8 @@ jobs:
     timeout-minutes: 15
     if: github.event.repository.fork == false
     name: Release Please
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
     steps:
       - name: 🤝 Release Please
         uses: googleapis/release-please-action@v4
@@ -27,37 +29,116 @@ jobs:
           config-file: .github/release/config.json
           manifest-file: .github/release/manifest.json
 
+  stable:
+    needs: release-please
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: needs.release-please.outputs.release_created == 'true'
+    name: Stable
+    steps:
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v6
-        if: ${{ steps.release.outputs.release_created }}
 
       - name: ➕ Actions - Setup Node.js
         uses: actions/setup-node@v6
-        if: ${{ steps.release.outputs.release_created }}
         with:
           check-latest: true
           node-version: lts/*
           registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
 
       - name: ➕ Cache dependencies
         uses: actions/cache@v5
-        if: ${{ steps.release.outputs.release_created }}
         with:
           path: ~/.npm
           key: npm-linux-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-linux-
 
       - name: 📦 Installing Dependencies
-        if: ${{ steps.release.outputs.release_created }}
         run: npm ci
 
       - name: 🚀 Building Poku
-        if: ${{ steps.release.outputs.release_created }}
-
         run: npm run build
 
       - name: 📥 Publishing Package
-        if: ${{ steps.release.outputs.release_created }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --provenance
+
+  canary:
+    needs: release-please
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: needs.release-please.outputs.release_created != 'true'
+    name: Canary
+    steps:
+      - name: ➕ Actions - Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Check Commit Message
+        id: check_commit
+        run: |
+          MESSAGE=$(git log -1 --pretty=%s --no-merges)
+          echo "Commit message: $MESSAGE"
+
+          if [[ "$MESSAGE" =~ build\(deps-dev\) ]] ||
+             [[ "$MESSAGE" =~ build\(deps\) ]] ||
+             [[ "$MESSAGE" =~ chore\(main\) ]] ||
+             [[ "$MESSAGE" =~ chore\(deps\) ]] ||
+             [[ "$MESSAGE" =~ chore\(deps-dev\) ]] ||
+             [[ "$MESSAGE" =~ chore\(benchmark\) ]] ||
+             [[ "$MESSAGE" =~ chore:\ update\ dependencies ]] ||
+             [[ "$MESSAGE" =~ docs: ]] ||
+             [[ "$MESSAGE" =~ test: ]] ||
+             [[ "$MESSAGE" =~ ci: ]] ||
+             [[ "$MESSAGE" =~ cd: ]] ||
+             [[ "$MESSAGE" =~ docs\(.*\): ]] ||
+             [[ "$MESSAGE" =~ ci\(.*\): ]] ||
+             [[ "$MESSAGE" =~ cd\(.*\): ]] ||
+             [[ "$MESSAGE" =~ chore\(website\) ]]; then
+            echo "publish=false" >> $GITHUB_OUTPUT
+            echo "Skip publish"
+          else
+            echo "publish=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ➕ Actions - Setup Node.js
+        if: steps.check_commit.outputs.publish == 'true'
+        uses: actions/setup-node@v6
+        with:
+          check-latest: true
+          node-version: lts/*
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      - name: ➕ Cache dependencies
+        if: steps.check_commit.outputs.publish == 'true'
+        uses: actions/cache@v5
+        with:
+          path: ~/.npm
+          key: npm-linux-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-linux-
+
+      - name: 📦 Installing Dependencies
+        if: steps.check_commit.outputs.publish == 'true'
+        run: npm ci
+
+      - name: ⚙️ Git Hash
+        if: steps.check_commit.outputs.publish == 'true'
+        run: |
+          npm version patch --no-git-tag-version
+          VERSION=$(node -p "require('./package.json').version")
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "VERSION=${VERSION}-canary.${SHORT_SHA}" >> $GITHUB_ENV
+
+      - name: ⬆️ Increment Canary Version
+        if: steps.check_commit.outputs.publish == 'true'
+        run: npm version $VERSION --no-git-tag-version
+
+      - name: 🚀 Building Poku
+        if: steps.check_commit.outputs.publish == 'true'
+        run: npm run build
+
+      - name: 📥 Publishing Package
+        if: steps.check_commit.outputs.publish == 'true'
+        run: npm publish --tag canary --provenance
