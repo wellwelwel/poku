@@ -41,7 +41,7 @@ Poku checks for a global symbol key:
 Symbol.for('@pokujs/poku.test-scope-hooks');
 ```
 
-If a provider exists, the test callback runs through it. If not, Poku uses the default execution path.
+If a provider exists, `beforeEach`, the test callback, and `afterEach` run through it in the same scope. If not, Poku uses the default execution path.
 
 Shape of the provider:
 
@@ -50,17 +50,17 @@ type ScopeHooks = {
   createHolder: () => { scope: unknown };
   runScoped: (
     holder: { scope: unknown },
-    fn: () => Promise<unknown> | unknown
+    fn: (params?: Record<string, unknown>) => Promise<unknown> | unknown
   ) => Promise<void>;
 };
 ```
 
 ## 🚧 Registration API
 
-Scope providers should be attached via `composeScopeHooks` from `poku/plugins`.
+Scope providers should be attached via `composeScopeHooks` from `@pokujs/scope-hooks`.
 
 ```ts
-import { composeScopeHooks } from 'poku/plugins';
+import { composeScopeHooks } from '@pokujs/scope-hooks';
 
 composeScopeHooks({
   name: '@acme/my-plugin.scope-hooks',
@@ -85,13 +85,26 @@ Equivalent flow inside `it` execution:
 ```ts
 const hooks = getScopeHooks();
 
+const execute = async (params?: Record<string, unknown>) => {
+  try {
+    await beforeEachCallback?.();
+    await testCallback(params);
+  } finally {
+    await afterEachCallback?.();
+  }
+};
+
 if (hooks) {
   const holder = hooks.createHolder();
-  await hooks.runScoped(holder, () => cb());
+  await hooks.runScoped(holder, execute);
 } else {
-  await cb();
+  await execute();
 }
 ```
+
+The provider receives one holder for the complete test lifecycle. `afterEach` runs once, including when setup or the test body fails. The provider should dispose its resources after the callback settles.
+
+An error from the scope provider marks the test as failed and still produces its end event, so the following test can run. Errors from `beforeEach` and `afterEach` retain their existing propagation behavior. The test callback receives any parameters forwarded by the provider.
 
 This keeps core plugin-agnostic while enabling plugin-managed async context and teardown strategies.
 
@@ -99,13 +112,13 @@ This keeps core plugin-agnostic while enabling plugin-managed async context and 
 
 ```ts
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { composeScopeHooks } from 'poku/plugins';
+import { composeScopeHooks } from '@pokujs/scope-hooks';
 
 type ScopeHooks = {
   createHolder: () => { scope: unknown };
   runScoped: (
     holder: { scope: unknown },
-    fn: () => Promise<unknown> | unknown
+    fn: (params?: Record<string, unknown>) => Promise<unknown> | unknown
   ) => Promise<void>;
 };
 
@@ -151,5 +164,8 @@ The scope lifecycle behavior is covered by unit tests:
 - fallback path works with no hooks
 - concurrent executions receive independent stores
 - store identity remains stable across async boundaries
+- setup, test body, and teardown share one scope
+- teardown runs once after setup or body failures
+- provider disposal errors fail the test, report its end once, and allow subsequent tests to run
 
 See the related test coverage in `test/unit/scope-hooks.test.ts` in the Poku package.
