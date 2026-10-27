@@ -1,3 +1,5 @@
+import { AssertionError } from 'node:assert';
+import { Buffer } from 'node:buffer';
 import { relative } from 'node:path';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
@@ -27,9 +29,15 @@ const restoreStdio = (previousExitCode: typeof process.exitCode) => {
 const mockProcess = (outputChunks: string[]) => {
   const captureChunk = (
     chunk: string | Uint8Array,
-    ..._args: unknown[]
+    encodingOrCallback?: BufferEncoding | ((error?: Error | null) => void),
+    callback?: (error?: Error | null) => void
   ): boolean => {
-    outputChunks.push(String(chunk));
+    outputChunks.push(
+      typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString()
+    );
+    const onFlushed =
+      typeof encodingOrCallback === 'function' ? encodingOrCallback : callback;
+    if (onFlushed) process.nextTick(onFlushed);
     return true;
   };
   process.stdout.write = captureChunk;
@@ -81,7 +89,7 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
     } else await testPromise;
   } catch (error) {
     if (timedOut) outputChunks.push(timeoutMessage(configs.timeout!));
-    else {
+    else if (!(error instanceof AssertionError)) {
       const formatted =
         error instanceof Error ? (error.stack ?? error.message) : String(error);
       outputChunks.push(`${formatted}\n`);
