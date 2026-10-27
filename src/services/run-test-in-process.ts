@@ -1,30 +1,53 @@
+import { AssertionError } from 'node:assert';
+import { Buffer } from 'node:buffer';
 import { relative } from 'node:path';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
+import { each } from '../configs/each.js';
 import { GLOBAL } from '../configs/poku.js';
 import { timeoutMessage } from '../parsers/output.js';
 import { afterEach, beforeEach } from './each.js';
 import { reportFileResult } from './run-test-common.js';
 
 const stdoutWrite = process.stdout.write.bind(process.stdout);
+const stderrWrite = process.stderr.write.bind(process.stderr);
 
-const cleanup = () => {
+const resetFileEachHooks = () => {
+  each.before.cb = undefined;
+  each.before.status = true;
+  each.after.cb = undefined;
+  each.after.status = true;
+};
+
+const restoreStdio = (previousExitCode: typeof process.exitCode) => {
   process.stdout.write = stdoutWrite;
-  process.exitCode = 0;
+  process.stderr.write = stderrWrite;
+  process.exitCode = previousExitCode;
+  resetFileEachHooks();
 };
 
 const mockProcess = (outputChunks: string[]) => {
-  process.stdout.write = (
+  const captureChunk = (
     chunk: string | Uint8Array,
-    ..._args: unknown[]
+    encodingOrCallback?: BufferEncoding | ((error?: Error | null) => void),
+    callback?: (error?: Error | null) => void
   ): boolean => {
-    outputChunks.push(String(chunk));
+    outputChunks.push(
+      typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString()
+    );
+    const onFlushed =
+      typeof encodingOrCallback === 'function' ? encodingOrCallback : callback;
+    if (onFlushed) process.nextTick(onFlushed);
     return true;
   };
+  process.stdout.write = captureChunk;
+  process.stderr.write = captureChunk;
 };
 
 export const runTestInProcess = async (path: string): Promise<boolean> => {
-  cleanup();
+  const previousExitCode = process.exitCode;
+  process.exitCode = 0;
+  resetFileEachHooks();
 
   const { cwd, configs, reporter } = GLOBAL;
   const file = relative(cwd, path);
@@ -32,7 +55,10 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
   const outputChunks: string[] = [];
   const start = process.hrtime();
 
-  if (!(await beforeEach(file))) return false;
+  if (!(await beforeEach(file))) {
+    restoreStdio(previousExitCode);
+    return false;
+  }
 
   mockProcess(outputChunks);
   reporter.onFileStart({
@@ -61,15 +87,20 @@ export const runTestInProcess = async (path: string): Promise<boolean> => {
 
       await Promise.race([testPromise, timeoutPromise]);
     } else await testPromise;
-  } catch {
+  } catch (error) {
     if (timedOut) outputChunks.push(timeoutMessage(configs.timeout!));
+    else if (!(error instanceof AssertionError)) {
+      const formatted =
+        error instanceof Error ? (error.stack ?? error.message) : String(error);
+      outputChunks.push(`${formatted}\n`);
+    }
 
     result = false;
   } finally {
-    if (process.exitCode !== 0) result = false;
+    if (process.exitCode && process.exitCode !== 0) result = false;
 
     if (killTimer) clearTimeout(killTimer);
-    cleanup();
+    restoreStdio(previousExitCode);
   }
 
   const end = process.hrtime(start);

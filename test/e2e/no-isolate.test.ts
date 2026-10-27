@@ -95,7 +95,7 @@ describe('--isolation=none', async () => {
 
     assert.strictEqual(results.exitCode, 1, 'Exit code needs to be 1');
     assert(
-      results.stderr.includes('uncaughtException'),
+      (results.stdout + results.stderr).includes('uncaughtException'),
       'Needs to show uncaughtException message'
     );
   });
