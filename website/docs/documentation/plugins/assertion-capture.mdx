@@ -62,8 +62,8 @@ const result = await captureAssertions(
 
 `bind` preserves the callback's receiver and arguments. It does not extend the capture's lifetime, so the callback must still be awaited through its promise.
 
-## Compatibility and Cost
+## Module Formats and Cost
 
-This API captures Poku assertions from a version that implements it. Older package instances continue to use their existing behavior. The versioned capture registry is independent of the shared state used by Poku 4.4 and 4.5, and supports ESM and CommonJS consumers in the same process.
+The capture registry is shared by ESM and CommonJS consumers in the same process.
 
 Public `retry()` behavior is unchanged. Ordinary assertions and retries do not create capture storage. AsyncLocalStorage is constructed on the first explicit capture; using it can add async-hook overhead on older Node versions. Keep capture opt-in and load it only where a plugin needs polling semantics.
