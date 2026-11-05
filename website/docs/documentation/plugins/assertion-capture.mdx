@@ -37,7 +37,7 @@ Captured failures remain failures even if the callback catches the assertion err
 
 ## Test and Retry Scopes
 
-An awaited `it()` inside a capture defers its failure to that capture. Discarding the outcome does not fail the process. Calling `report()` replays the buffered failure. Native errors caught by `it()` are also deferred and reported with the test failure.
+An awaited `it()` inside a capture defers its failure and its output to that capture. Discarding the outcome neither fails the process nor prints the test. Calling `report()` replays the whole test, including the buffered failure. Native errors caught by `it()` are also deferred and reported with the test failure.
 
 A public `retry()` inside a capture keeps its attempts independent. Recovered attempts are discarded; only the successful attempt or the final exhausted attempt contributes assertions to the enclosing capture. A capture inside a public retry remains independent until its outcome is reported.
 

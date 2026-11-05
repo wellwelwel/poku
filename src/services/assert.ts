@@ -1,7 +1,10 @@
 import type { ProcessAssertionOptions } from '../@types/assert.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
-import { peekAssertionCapture } from '../configs/assertion-capture.js';
+import {
+  deferToCapture,
+  peekAssertionCapture,
+} from '../configs/assertion-capture.js';
 import { GLOBAL } from '../configs/poku.js';
 import { peekRetryContext } from '../configs/retry.js';
 
@@ -9,13 +12,7 @@ const assertProcessor = () => {
   const { reporter } = GLOBAL;
 
   const handleSuccess = ({ message }: ProcessAssertionOptions) => {
-    if (typeof message !== 'string') return;
-    const capture = peekAssertionCapture();
-    if (capture) {
-      capture.reports.push(() => handleSuccess({ message }));
-      return;
-    }
-    reporter.onAssertionSuccess({ message });
+    if (typeof message === 'string') reporter.onAssertionSuccess({ message });
   };
 
   const recordError = (
@@ -26,7 +23,7 @@ const assertProcessor = () => {
     if (capture) {
       capture.failed = true;
       capture.error = error;
-      capture.reports.push(() => recordError(error, options));
+      deferToCapture(capture, () => recordError(error, options));
       return;
     }
 
