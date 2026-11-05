@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.6.0](https://github.com/wellwelwel/poku/compare/v4.5.0...v4.6.0) (2026-11-05)
+
+
+### Features
+
+* expose isolated assertion capture for plugins ([#1148](https://github.com/wellwelwel/poku/issues/1148)) ([d8992b5](https://github.com/wellwelwel/poku/commit/d8992b542ad83be530811baabbce195fa0ecc29b))
+* expose opt-in value serializers for plugins ([#1147](https://github.com/wellwelwel/poku/issues/1147)) ([1572aa5](https://github.com/wellwelwel/poku/commit/1572aa523800ddb637a91bd0b2e51f141a3829a2))
+
+
+### Bug Fixes
+
+* preserve scoped test lifecycles and in-process failures ([#1145](https://github.com/wellwelwel/poku/issues/1145)) ([8b129df](https://github.com/wellwelwel/poku/commit/8b129df3697045d5e49faa65507e72b9d9244d8d))
+
 ## [4.5.0](https://github.com/wellwelwel/poku/compare/v4.4.0...v4.5.0) (2026-06-10)
 
 
