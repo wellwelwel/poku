@@ -3,6 +3,7 @@ import type { ScopeHook } from '../../@types/plugin.js';
 import type { TestCb } from '../../@types/poku.js';
 import { AssertionError } from 'node:assert';
 import process from 'node:process';
+import { peekAssertionCapture } from '../../configs/assertion-capture.js';
 import { each } from '../../configs/each.js';
 import { indentation } from '../../configs/indentation.js';
 import { errorHoist, GLOBAL } from '../../configs/poku.js';
@@ -42,6 +43,16 @@ export const itBase = async (
     }
 
     const recordFailure = (error: unknown): void => {
+      const capture = peekAssertionCapture();
+      if (capture) {
+        success = false;
+        capture.failed = true;
+        capture.error = error;
+        if (!(error instanceof AssertionError))
+          capture.reports.push(() => recordFailure(error));
+        return;
+      }
+
       const context = peekRetryContext();
       if (context) {
         context.failed = true;

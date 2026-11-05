@@ -35,6 +35,12 @@ Discard intermediate failed outcomes when another polling attempt will follow. C
 
 Captured failures remain failures even if the callback catches the assertion error and returns normally. Nested captures remain independent until their outcomes are reported. Success messages are buffered as well, so unsuccessful polling attempts do not print misleading success events.
 
+## Test and Retry Scopes
+
+An awaited `it()` inside a capture defers its failure to that capture. Discarding the outcome does not fail the process. Calling `report()` replays the buffered failure. Native errors caught by `it()` are also deferred and reported with the test failure.
+
+A public `retry()` inside a capture keeps its attempts independent. Recovered attempts are discarded; only the successful attempt or the final exhausted attempt contributes assertions to the enclosing capture. A capture inside a public retry remains independent until its outcome is reported.
+
 ## Async Resources
 
 The capture closes when the callback settles. Assertions from unawaited work that outlives it are handled normally; they cannot silently mark an already completed attempt.
@@ -66,4 +72,4 @@ const result = await captureAssertions(
 
 The capture registry is shared by ESM and CommonJS consumers in the same process.
 
-Public `retry()` behavior is unchanged. Ordinary assertions and retries do not create capture storage. AsyncLocalStorage is constructed on the first explicit capture; using it can add async-hook overhead on older Node versions. Keep capture opt-in and load it only where a plugin needs polling semantics.
+Public `retry()` behavior is unchanged. Ordinary assertions and retries do not create capture storage. Importing `poku/plugins` does not activate AsyncLocalStorage. It is constructed on the first call to `captureAssertions()`, whether called directly or by a plugin. On Node versions before 24, the resulting async-hook overhead continues for subsequent asynchronous work until the process exits, including work outside captures. With default process isolation, this is confined to the test file’s process. With `--isolation=none`, it also affects later files in the same process. Code that never calls `captureAssertions()` does not activate this overhead.
