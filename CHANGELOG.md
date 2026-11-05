@@ -12,7 +12,6 @@
 ### Bug Fixes
 
 * preserve scoped test lifecycles and in-process failures ([#1145](https://github.com/wellwelwel/poku/issues/1145)) ([8b129df](https://github.com/wellwelwel/poku/commit/8b129df3697045d5e49faa65507e72b9d9244d8d))
-* render benchmark reports from Hyperfine 1 and 2 exports ([be00398](https://github.com/wellwelwel/poku/commit/be00398a971f3cc425ec68e9a90ca001a7f2d873))
 
 ## [4.5.0](https://github.com/wellwelwel/poku/compare/v4.4.0...v4.5.0) (2026-06-10)
 
