@@ -2,6 +2,7 @@ import { AssertionError, strict as nodeAssert } from 'node:assert';
 import { EventEmitter } from 'node:events';
 import { createRequire } from 'node:module';
 import { assertionCapture } from '../../src/configs/assertion-capture.js';
+import { indentation } from '../../src/configs/indentation.js';
 import { GLOBAL } from '../../src/configs/poku.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
@@ -256,6 +257,42 @@ await describe('Plugin assertion capture', async () => {
       result.report();
       nodeAssert.strictEqual(process.exitCode, previousExitCode);
     } finally {
+      process.exitCode = previousExitCode ?? 0;
+    }
+  });
+
+  await it('defers the output of a test until its capture is reported', async () => {
+    const originalStart = GLOBAL.reporter.onItStart;
+    const originalEnd = GLOBAL.reporter.onItEnd;
+    const originalFailure = GLOBAL.reporter.onAssertionFailure;
+    const previousExitCode = process.exitCode;
+    const previousDepth = indentation.itDepth;
+    const events: string[] = [];
+    GLOBAL.reporter.onItStart = ({ title }) => {
+      if (title === 'captured test') events.push('start');
+    };
+    GLOBAL.reporter.onItEnd = ({ title, success }) => {
+      if (title === 'captured test') events.push(`end:${success}`);
+    };
+    GLOBAL.reporter.onAssertionFailure = () => {
+      events.push('failure');
+    };
+    try {
+      const result = await captureAssertions(() =>
+        it('captured test', () => {
+          assert.strictEqual(1, 2);
+        })
+      );
+      nodeAssert.deepStrictEqual(events, []);
+      nodeAssert.strictEqual(process.exitCode, previousExitCode);
+      result.report();
+      nodeAssert.deepStrictEqual(events, ['start', 'failure', 'end:false']);
+      nodeAssert.strictEqual(indentation.itDepth, previousDepth);
+      nodeAssert.strictEqual(process.exitCode, 1);
+    } finally {
+      GLOBAL.reporter.onItStart = originalStart;
+      GLOBAL.reporter.onItEnd = originalEnd;
+      GLOBAL.reporter.onAssertionFailure = originalFailure;
       process.exitCode = previousExitCode ?? 0;
     }
   });
