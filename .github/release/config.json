@@ -2,6 +2,16 @@
   "packages": {
     ".": {
       "changelog-path": "CHANGELOG.md",
+      "exclude-paths": [
+        ".claude",
+        ".github",
+        ".vscode",
+        "benchmark",
+        "scripts",
+        "test",
+        "tools",
+        "website"
+      ],
       "include-component-in-tag": false,
       "package-name": "poku",
       "release-type": "node"
