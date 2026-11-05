@@ -3,7 +3,6 @@ import type {
   AssertionCaptureResult,
   AssertionCaptureState,
 } from '../@types/assertion-capture.js';
-import type { ReporterPlugin } from '../@types/poku.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import {
   assertionCapture,
@@ -11,12 +10,40 @@ import {
   peekAssertionCapture,
 } from '../configs/assertion-capture.js';
 import { GLOBAL } from '../configs/poku.js';
+import { poku as defaultReporter } from './reporters/poku.js';
 
-const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
-  for (const event of Object.keys(reporter)) {
+const dispatchEvent = (event: string, eventArguments: unknown[]): void => {
+  const capture = peekAssertionCapture();
+
+  if (capture) {
+    deferToCapture(capture, () => dispatchEvent(event, eventArguments));
+    return;
+  }
+
+  const activeReporter = GLOBAL.reporter;
+
+  Reflect.apply(
+    Reflect.get(activeReporter, event),
+    activeReporter,
+    eventArguments
+  );
+};
+
+const deferEventsInsideCaptures = () => {
+  assertionCapture.deferringReporters ??= new WeakSet();
+  if (assertionCapture.deferringReporters.has(GLOBAL.reporter)) return;
+
+  if (!Object.isExtensible(GLOBAL.reporter))
+    GLOBAL.reporter = Object.create(GLOBAL.reporter);
+
+  const reporter = GLOBAL.reporter;
+
+  assertionCapture.deferringReporters.add(reporter);
+
+  for (const event of Object.keys(defaultReporter)) {
     let report: unknown = Reflect.get(reporter, event);
 
-    Object.defineProperty(reporter, event, {
+    Reflect.defineProperty(reporter, event, {
       configurable: true,
       enumerable: true,
       get: () => {
@@ -24,13 +51,7 @@ const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
         if (!capture) return report;
 
         return (...eventArguments: unknown[]) =>
-          deferToCapture(capture, () =>
-            Reflect.apply(
-              Reflect.get(reporter, event),
-              reporter,
-              eventArguments
-            )
-          );
+          deferToCapture(capture, () => dispatchEvent(event, eventArguments));
       },
       set: (value: unknown) => {
         report = value;
@@ -42,10 +63,8 @@ const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
 export const captureAssertions = async <Value>(
   callback: (context: AssertionCaptureContext) => Value | Promise<Value>
 ): Promise<AssertionCaptureResult<Value>> => {
-  if (!assertionCapture.storage) {
-    assertionCapture.storage = new AsyncLocalStorage();
-    deferEventsInsideCaptures(GLOBAL.reporter);
-  }
+  assertionCapture.storage ??= new AsyncLocalStorage();
+  deferEventsInsideCaptures();
 
   const storage = assertionCapture.storage;
   const context: AssertionCaptureState = {

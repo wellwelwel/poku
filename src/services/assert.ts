@@ -9,10 +9,9 @@ import { GLOBAL } from '../configs/poku.js';
 import { peekRetryContext } from '../configs/retry.js';
 
 const assertProcessor = () => {
-  const { reporter } = GLOBAL;
-
   const handleSuccess = ({ message }: ProcessAssertionOptions) => {
-    if (typeof message === 'string') reporter.onAssertionSuccess({ message });
+    if (typeof message === 'string')
+      GLOBAL.reporter.onAssertionSuccess({ message });
   };
 
   const recordError = (
@@ -32,7 +31,7 @@ const assertProcessor = () => {
     else process.exitCode = 1;
 
     if (error instanceof AssertionError)
-      reporter.onAssertionFailure({ assertOptions: options, error });
+      GLOBAL.reporter.onAssertionFailure({ assertOptions: options, error });
   };
 
   const handleError = (

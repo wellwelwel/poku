@@ -6,6 +6,7 @@ import { env, hrtime, stdout } from 'node:process';
 import { GLOBAL, timespan } from '../../configs/poku.js';
 import { results } from '../../configs/results.js';
 import { hrtimeToMs } from '../../parsers/time.js';
+import { poku as defaultReporter } from '../../services/reporters/poku.js';
 import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
@@ -41,7 +42,8 @@ export const poku = (async (
     const { reporter } = await import('../../services/reporter.js');
 
     if (plugin in reporter) GLOBAL.reporter = reporter[plugin]();
-  }
+  } else if (plugin === 'poku' && GLOBAL.reporter !== defaultReporter)
+    GLOBAL.reporter = defaultReporter;
 
   const plugins = GLOBAL.configs.plugins;
   let pluginContext: PluginContext | undefined;

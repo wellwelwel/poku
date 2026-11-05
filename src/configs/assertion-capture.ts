@@ -1,5 +1,6 @@
 import type { AsyncLocalStorage } from 'node:async_hooks';
 import type { AssertionCaptureState } from '../@types/assertion-capture.js';
+import type { ReporterPlugin } from '../@types/poku.js';
 import { indentation } from './indentation.js';
 
 const registryKey = Symbol.for('@pokujs/poku.assertion-capture.v1');
@@ -8,6 +9,7 @@ globals[registryKey] ??= {};
 
 export const assertionCapture = globals[registryKey] as {
   storage?: AsyncLocalStorage<AssertionCaptureState>;
+  deferringReporters?: WeakSet<ReturnType<ReporterPlugin>>;
 };
 
 export const peekAssertionCapture = (): AssertionCaptureState | undefined => {
