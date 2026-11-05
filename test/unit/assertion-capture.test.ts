@@ -359,16 +359,61 @@ await describe('Plugin assertion capture', async () => {
     nodeAssert.deepStrictEqual(received, ['inherited hook']);
   });
 
-  await it('produces a capture result with a frozen reporter', async () => {
+  await it('holds back the events of a frozen reporter', async () => {
     const original = GLOBAL.reporter;
+    const received: string[] = [];
+    let heldBack: string[] = [];
+    const frozenReporter = Object.freeze({
+      ...original,
+      onAssertionSuccess: ({ message }: { message: string }) => {
+        received.push(message);
+      },
+    });
 
     try {
-      GLOBAL.reporter = Object.freeze({ ...original });
-      const result = await captureAssertions(() => 'frozen reporter');
+      GLOBAL.reporter = frozenReporter;
+      const result = await captureAssertions(() => {
+        assert.ok(true, 'frozen hook');
+      });
 
-      nodeAssert.strictEqual(result.status, 'passed');
+      heldBack = [...received];
+      result.report();
     } finally {
       GLOBAL.reporter = original;
     }
+
+    nodeAssert.deepStrictEqual(heldBack, []);
+    nodeAssert.deepStrictEqual(received, ['frozen hook']);
+  });
+
+  await it('holds back a replay inside an open capture after a fresh reporter is set', async () => {
+    const original = GLOBAL.reporter;
+    const received: string[] = [];
+    let heldBack: string[] = [];
+    const freshReporter: ReturnType<ReporterPlugin> = {
+      ...original,
+      onAssertionSuccess: ({ message }) => {
+        received.push(message);
+      },
+    };
+
+    try {
+      const outer = await captureAssertions(async () => {
+        const inner = await captureAssertions(() => {
+          assert.ok(true, 'replayed inside the outer capture');
+        });
+
+        GLOBAL.reporter = freshReporter;
+        inner.report();
+      });
+
+      heldBack = [...received];
+      outer.report();
+    } finally {
+      GLOBAL.reporter = original;
+    }
+
+    nodeAssert.deepStrictEqual(heldBack, []);
+    nodeAssert.deepStrictEqual(received, ['replayed inside the outer capture']);
   });
 });

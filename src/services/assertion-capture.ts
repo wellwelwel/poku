@@ -3,7 +3,6 @@ import type {
   AssertionCaptureResult,
   AssertionCaptureState,
 } from '../@types/assertion-capture.js';
-import type { ReporterPlugin } from '../@types/poku.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import {
   assertionCapture,
@@ -13,9 +12,31 @@ import {
 import { GLOBAL } from '../configs/poku.js';
 import { poku as defaultReporter } from './reporters/poku.js';
 
-const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
+const dispatchEvent = (event: string, eventArguments: unknown[]): void => {
+  const capture = peekAssertionCapture();
+
+  if (capture) {
+    deferToCapture(capture, () => dispatchEvent(event, eventArguments));
+    return;
+  }
+
+  const activeReporter = GLOBAL.reporter;
+
+  Reflect.apply(
+    Reflect.get(activeReporter, event),
+    activeReporter,
+    eventArguments
+  );
+};
+
+const deferEventsInsideCaptures = () => {
   assertionCapture.deferringReporters ??= new WeakSet();
-  if (assertionCapture.deferringReporters.has(reporter)) return;
+  if (assertionCapture.deferringReporters.has(GLOBAL.reporter)) return;
+
+  if (!Object.isExtensible(GLOBAL.reporter))
+    GLOBAL.reporter = Object.create(GLOBAL.reporter);
+
+  const reporter = GLOBAL.reporter;
 
   assertionCapture.deferringReporters.add(reporter);
 
@@ -30,15 +51,7 @@ const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
         if (!capture) return report;
 
         return (...eventArguments: unknown[]) =>
-          deferToCapture(capture, () => {
-            const activeReporter = GLOBAL.reporter;
-
-            Reflect.apply(
-              Reflect.get(activeReporter, event),
-              activeReporter,
-              eventArguments
-            );
-          });
+          deferToCapture(capture, () => dispatchEvent(event, eventArguments));
       },
       set: (value: unknown) => {
         report = value;
@@ -51,7 +64,7 @@ export const captureAssertions = async <Value>(
   callback: (context: AssertionCaptureContext) => Value | Promise<Value>
 ): Promise<AssertionCaptureResult<Value>> => {
   assertionCapture.storage ??= new AsyncLocalStorage();
-  deferEventsInsideCaptures(GLOBAL.reporter);
+  deferEventsInsideCaptures();
 
   const storage = assertionCapture.storage;
   const context: AssertionCaptureState = {
