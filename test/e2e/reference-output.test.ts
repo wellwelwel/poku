@@ -1,4 +1,5 @@
 import { strict as nodeAssert } from 'node:assert';
+import { normalize } from 'node:path';
 import { ext, inspectPoku } from '../__utils__/capture-cli.test.js';
 import { reportLines } from '../__utils__/report-lines.test.js';
 import { describe, it } from '../../src/modules/index.js';
@@ -15,7 +16,7 @@ const assertionDetails = [
 ];
 
 const expectedLines = [
-  `› ${fixture} [fail]`,
+  `› ${normalize(fixture)} [fail]`,
   '  ◌ sync suite',
   '    ◌ first',
   '      ✔ first passes [success]',
