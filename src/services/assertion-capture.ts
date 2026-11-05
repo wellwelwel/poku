@@ -13,6 +13,11 @@ import {
 import { GLOBAL } from '../configs/poku.js';
 
 const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
+  assertionCapture.deferringReporters ??= new WeakSet();
+  if (assertionCapture.deferringReporters.has(reporter)) return;
+
+  assertionCapture.deferringReporters.add(reporter);
+
   for (const event of Object.keys(reporter)) {
     let report: unknown = Reflect.get(reporter, event);
 
@@ -42,10 +47,8 @@ const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
 export const captureAssertions = async <Value>(
   callback: (context: AssertionCaptureContext) => Value | Promise<Value>
 ): Promise<AssertionCaptureResult<Value>> => {
-  if (!assertionCapture.storage) {
-    assertionCapture.storage = new AsyncLocalStorage();
-    deferEventsInsideCaptures(GLOBAL.reporter);
-  }
+  assertionCapture.storage ??= new AsyncLocalStorage();
+  deferEventsInsideCaptures(GLOBAL.reporter);
 
   const storage = assertionCapture.storage;
   const context: AssertionCaptureState = {

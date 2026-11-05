@@ -21,6 +21,11 @@ const runFixture = (filter: string) =>
     { cwd: fixtureDirectory }
   );
 
+const runScript = (script: string) =>
+  inspectCLI(`${runner(`_.${ext}`).join(' ')} ${script}`, {
+    cwd: fixtureDirectory,
+  });
+
 await describe('Configured reporter with --isolation=none', async () => {
   await it('receives assertion events as it receives test events', async () => {
     const { stdout } = await runFixture('assertion-events');
@@ -54,15 +59,28 @@ await describe('Configured reporter with --isolation=none', async () => {
   });
 
   await it('returns to the default reporter in a later run', async () => {
-    const command = runner(`_.${ext}`).join(' ');
-    const { stdout } = await inspectCLI(`${command} consecutive-runs.ts`, {
-      cwd: fixtureDirectory,
-    });
+    const { stdout } = await runScript('consecutive-runs.ts');
 
     assert.deepStrictEqual(
       receivedEvents(stdout),
       ['test: custom run test', 'success: custom run assertion'],
       'The run with the default reporter must not reach the previous reporter'
+    );
+  });
+
+  await it('keeps discarded captures out of a later run with another reporter', async () => {
+    const { stdout } = await runScript('consecutive-captures.ts');
+
+    assert.match(
+      stdout,
+      /reported in the second run/,
+      'The second run needs to report its own assertion'
+    );
+
+    assert.doesNotMatch(
+      stdout,
+      /discarded/,
+      'Discarded captures must not be printed in any run'
     );
   });
 });
