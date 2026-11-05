@@ -11,6 +11,7 @@ import {
   peekAssertionCapture,
 } from '../configs/assertion-capture.js';
 import { GLOBAL } from '../configs/poku.js';
+import { poku as defaultReporter } from './reporters/poku.js';
 
 const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
   assertionCapture.deferringReporters ??= new WeakSet();
@@ -18,10 +19,10 @@ const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
 
   assertionCapture.deferringReporters.add(reporter);
 
-  for (const event of Object.keys(reporter)) {
+  for (const event of Object.keys(defaultReporter)) {
     let report: unknown = Reflect.get(reporter, event);
 
-    Object.defineProperty(reporter, event, {
+    Reflect.defineProperty(reporter, event, {
       configurable: true,
       enumerable: true,
       get: () => {
@@ -29,13 +30,15 @@ const deferEventsInsideCaptures = (reporter: ReturnType<ReporterPlugin>) => {
         if (!capture) return report;
 
         return (...eventArguments: unknown[]) =>
-          deferToCapture(capture, () =>
+          deferToCapture(capture, () => {
+            const activeReporter = GLOBAL.reporter;
+
             Reflect.apply(
-              Reflect.get(reporter, event),
-              reporter,
+              Reflect.get(activeReporter, event),
+              activeReporter,
               eventArguments
-            )
-          );
+            );
+          });
       },
       set: (value: unknown) => {
         report = value;

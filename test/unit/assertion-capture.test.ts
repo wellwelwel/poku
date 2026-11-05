@@ -1,3 +1,4 @@
+import type { ReporterPlugin } from '../../src/@types/poku.js';
 import { AssertionError, strict as nodeAssert } from 'node:assert';
 import { EventEmitter } from 'node:events';
 import { createRequire } from 'node:module';
@@ -294,6 +295,80 @@ await describe('Plugin assertion capture', async () => {
       GLOBAL.reporter.onItEnd = originalEnd;
       GLOBAL.reporter.onAssertionFailure = originalFailure;
       process.exitCode = previousExitCode ?? 0;
+    }
+  });
+
+  await it('replays a capture through the reporter active when it is reported', async () => {
+    const original = GLOBAL.reporter;
+    const previousExitCode = process.exitCode;
+    const received: string[] = [];
+    const recordingReporter = (name: string): ReturnType<ReporterPlugin> => ({
+      ...original,
+      onAssertionSuccess: ({ message }) => {
+        received.push(`${name} success: ${message}`);
+      },
+      onAssertionFailure: ({ assertOptions }) => {
+        received.push(`${name} failure: ${assertOptions.message}`);
+      },
+    });
+
+    try {
+      GLOBAL.reporter = recordingReporter('recording');
+      const result = await captureAssertions(() => {
+        assert.ok(true, 'replayed success');
+        assert.strictEqual(1, 2, 'replayed failure');
+      });
+
+      GLOBAL.reporter = recordingReporter('active');
+      result.report();
+    } finally {
+      GLOBAL.reporter = original;
+      process.exitCode = previousExitCode ?? 0;
+    }
+
+    nodeAssert.deepStrictEqual(received, [
+      'active success: replayed success',
+      'active failure: replayed failure',
+    ]);
+  });
+
+  await it('holds back the events of a reporter that inherits its hooks', async () => {
+    const original = GLOBAL.reporter;
+    const received: string[] = [];
+    let heldBack: string[] = [];
+
+    try {
+      GLOBAL.reporter = Object.create({
+        ...original,
+        onAssertionSuccess: ({ message }: { message: string }) => {
+          received.push(message);
+        },
+      });
+
+      const result = await captureAssertions(() => {
+        assert.ok(true, 'inherited hook');
+      });
+
+      heldBack = [...received];
+      result.report();
+    } finally {
+      GLOBAL.reporter = original;
+    }
+
+    nodeAssert.deepStrictEqual(heldBack, []);
+    nodeAssert.deepStrictEqual(received, ['inherited hook']);
+  });
+
+  await it('produces a capture result with a frozen reporter', async () => {
+    const original = GLOBAL.reporter;
+
+    try {
+      GLOBAL.reporter = Object.freeze({ ...original });
+      const result = await captureAssertions(() => 'frozen reporter');
+
+      nodeAssert.strictEqual(result.status, 'passed');
+    } finally {
+      GLOBAL.reporter = original;
     }
   });
 });
