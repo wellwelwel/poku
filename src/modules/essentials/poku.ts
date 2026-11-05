@@ -1,6 +1,11 @@
 import type { Code } from '../../@types/code.js';
 import type { PokuPlugin } from '../../@types/plugin.js';
-import type { Configs, PluginContext, Poku } from '../../@types/poku.js';
+import type {
+  Configs,
+  PluginContext,
+  Poku,
+  ReporterPlugin,
+} from '../../@types/poku.js';
 import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
 import { GLOBAL, timespan } from '../../configs/poku.js';
@@ -9,6 +14,18 @@ import { hrtimeToMs } from '../../parsers/time.js';
 import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
+
+const bindReporterEvents = (reporter: ReturnType<ReporterPlugin>) => {
+  for (const event of Object.keys(GLOBAL.reporter)) {
+    const handler: unknown = Reflect.get(reporter, event);
+
+    Reflect.set(
+      GLOBAL.reporter,
+      event,
+      typeof handler === 'function' ? handler.bind(reporter) : handler
+    );
+  }
+};
 
 export const onSigint = () => {
   stdout.write('\u001B[?25h');
@@ -36,11 +53,11 @@ export const poku = (async (
   const { cwd } = GLOBAL;
 
   if (typeof plugin === 'function') {
-    GLOBAL.reporter = plugin(GLOBAL.configs);
+    bindReporterEvents(plugin(GLOBAL.configs));
   } else if (typeof plugin === 'string' && plugin !== 'poku') {
     const { reporter } = await import('../../services/reporter.js');
 
-    if (plugin in reporter) GLOBAL.reporter = reporter[plugin]();
+    if (plugin in reporter) bindReporterEvents(reporter[plugin]());
   }
 
   const plugins = GLOBAL.configs.plugins;
