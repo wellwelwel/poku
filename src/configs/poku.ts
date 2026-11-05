@@ -61,6 +61,7 @@ export const GLOBAL = getSharedState('GLOBAL', {
         : 'poku'
     ](),
   },
+  reporterReplaced: false,
   envFile: undefined as string | undefined,
   runtime: (env.POKU_RUNTIME || getRuntime()) as Runtime,
   runAsOnly: false,

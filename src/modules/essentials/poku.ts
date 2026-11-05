@@ -11,6 +11,7 @@ import { env, hrtime, stdout } from 'node:process';
 import { GLOBAL, timespan } from '../../configs/poku.js';
 import { results } from '../../configs/results.js';
 import { hrtimeToMs } from '../../parsers/time.js';
+import { poku as defaultReporter } from '../../services/reporters/poku.js';
 import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
@@ -25,6 +26,8 @@ const bindReporterEvents = (reporter: ReturnType<ReporterPlugin>) => {
       typeof handler === 'function' ? handler.bind(reporter) : handler
     );
   }
+
+  GLOBAL.reporterReplaced = reporter !== defaultReporter;
 };
 
 export const onSigint = () => {
@@ -58,7 +61,7 @@ export const poku = (async (
     const { reporter } = await import('../../services/reporter.js');
 
     if (plugin in reporter) bindReporterEvents(reporter[plugin]());
-  }
+  } else if (GLOBAL.reporterReplaced) bindReporterEvents(defaultReporter);
 
   const plugins = GLOBAL.configs.plugins;
   let pluginContext: PluginContext | undefined;

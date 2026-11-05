@@ -1,17 +1,24 @@
-import { inspectPoku, isBuild } from '../__utils__/capture-cli.test.js';
+import {
+  ext,
+  inspectCLI,
+  inspectPoku,
+  isBuild,
+} from '../__utils__/capture-cli.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
 import { skip } from '../../src/modules/helpers/skip.js';
+import { runner } from '../../src/parsers/get-runner.js';
 
 if (isBuild) skip();
 
 const receivedPrefix = 'reporter received ';
+const fixtureDirectory = 'test/__fixtures__/e2e/no-isolate-reporter';
 
 const runFixture = (filter: string) =>
   inspectPoku(
     `--config=reporter.config.ts --isolation=none --filter=${filter}`,
-    { cwd: 'test/__fixtures__/e2e/no-isolate-reporter' }
+    { cwd: fixtureDirectory }
   );
 
 const receivedEvents = (stdout: string) =>
@@ -49,6 +56,19 @@ await describe('Configured reporter with --isolation=none', async () => {
       stdout,
       /discarded attempt/,
       'The discarded attempt must not be printed'
+    );
+  });
+
+  await it('returns to the default reporter in a later run', async () => {
+    const command = runner(`_.${ext}`).join(' ');
+    const { stdout } = await inspectCLI(`${command} consecutive-runs.ts`, {
+      cwd: fixtureDirectory,
+    });
+
+    assert.deepStrictEqual(
+      receivedEvents(stdout),
+      ['test: custom run test', 'success: custom run assertion'],
+      'The run with the default reporter must not reach the previous reporter'
     );
   });
 });
