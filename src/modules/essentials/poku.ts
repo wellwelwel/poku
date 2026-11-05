@@ -76,7 +76,7 @@ export const poku = (async (
       runAsOnly: GLOBAL.runAsOnly,
       results,
       timespan,
-      reporter: GLOBAL.reporter,
+      reporter: { ...GLOBAL.reporter },
     };
 
     for (const plugin of plugins) {

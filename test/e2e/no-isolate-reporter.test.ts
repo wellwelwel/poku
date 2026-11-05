@@ -4,6 +4,7 @@ import {
   inspectPoku,
   isBuild,
 } from '../__utils__/capture-cli.test.js';
+import { receivedEvents } from '../__utils__/received-events.test.js';
 import { assert } from '../../src/modules/essentials/assert.js';
 import { describe } from '../../src/modules/helpers/describe.js';
 import { it } from '../../src/modules/helpers/it.js';
@@ -12,7 +13,6 @@ import { runner } from '../../src/parsers/get-runner.js';
 
 if (isBuild) skip();
 
-const receivedPrefix = 'reporter received ';
 const fixtureDirectory = 'test/__fixtures__/e2e/no-isolate-reporter';
 
 const runFixture = (filter: string) =>
@@ -20,12 +20,6 @@ const runFixture = (filter: string) =>
     `--config=reporter.config.ts --isolation=none --filter=${filter}`,
     { cwd: fixtureDirectory }
   );
-
-const receivedEvents = (stdout: string) =>
-  stdout
-    .split(/\r?\n/)
-    .filter((line) => line.startsWith(receivedPrefix))
-    .map((line) => line.slice(receivedPrefix.length));
 
 await describe('Configured reporter with --isolation=none', async () => {
   await it('receives assertion events as it receives test events', async () => {
