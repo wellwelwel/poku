@@ -1,0 +1,75 @@
+---
+sidebar_position: 8
+tags: [plugin, assertions, retry, polling, async]
+---
+
+# Assertion Capture
+
+> `captureAssertions(callback): Promise<AssertionCaptureResult>`
+
+Plugins that implement polling can evaluate an assertion attempt without immediately reporting its assertions or failing the process. Import `captureAssertions` from `poku/plugins`.
+
+```ts
+import { assert } from 'poku';
+import { captureAssertions } from 'poku/plugins';
+
+const result = await captureAssertions(() => {
+  assert.strictEqual(readStatus(), 'ready', 'status is ready');
+  return readStatus();
+});
+
+if (result.status === 'passed') {
+  result.report();
+  console.log(result.value);
+} else {
+  result.report();
+  throw result.error;
+}
+```
+
+## Polling Contract
+
+Each call returns either `{ status: 'passed', value, report }` or `{ status: 'failed', error, report }`. The original thrown value is preserved, including `undefined`. Poku assertion errors are not decorated with private symbols or callbacks.
+
+Discard intermediate failed outcomes when another polling attempt will follow. Call `report()` for the winning attempt or final exhausted attempt. It replays buffered Poku assertion events once. Replayed assertion failures mark the enclosing capture or public retry as failed, or set the process exit code when neither exists. Calling `report()` again has no effect. Native callback errors are preserved in the outcome but do not become Poku assertion events; the caller decides how to propagate them.
+
+Captured failures remain failures even if the callback catches the assertion error and returns normally. Nested captures remain independent until their outcomes are reported. Success messages are buffered as well, so unsuccessful polling attempts do not print misleading success events.
+
+## Test and Retry Scopes
+
+An awaited `it()` inside a capture defers its failure and its output to that capture. Discarding the outcome neither fails the process nor prints the test. Calling `report()` replays the whole test, including the buffered failure. Native errors caught by `it()` are also deferred and reported with the test failure.
+
+A public `retry()` inside a capture keeps its attempts independent. Recovered attempts are discarded; only the successful attempt or the final exhausted attempt contributes assertions to the enclosing capture. A capture inside a public retry remains independent until its outcome is reported.
+
+## Async Resources
+
+The capture closes when the callback settles. Assertions from unawaited work that outlives it are handled normally; they cannot silently mark an already completed attempt.
+
+Callbacks from a socket, timer, or emitter created before the capture need explicit binding:
+
+```ts
+const result = await captureAssertions(
+  ({ bind }) =>
+    new Promise<void>((resolve, reject) => {
+      emitter.once(
+        'data',
+        bind(function (value) {
+          try {
+            assert.strictEqual(value.status, 'ready');
+            resolve();
+          } catch (error) {
+            reject(error);
+          }
+        })
+      );
+    })
+);
+```
+
+`bind` preserves the callback's receiver and arguments. It does not extend the capture's lifetime, so the callback must still be awaited through its promise.
+
+## Module Formats and Cost
+
+The capture registry is shared by ESM and CommonJS consumers in the same process.
+
+Public `retry()` behavior is unchanged. Ordinary assertions and retries do not create capture storage. Importing `poku/plugins` does not activate AsyncLocalStorage. It is constructed on the first call to `captureAssertions()`, whether called directly or by a plugin. On Node versions before 24, the resulting async-hook overhead continues for subsequent asynchronous work until the process exits, including work outside captures. With default process isolation, this is confined to the test file’s process. With `--isolation=none`, it also affects later files in the same process. Code that never calls `captureAssertions()` does not activate this overhead.

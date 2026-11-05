@@ -1,6 +1,9 @@
+import type { AssertionCaptureResult } from '../../@types/assertion-capture.js';
 import type { RetryConfig, RetryContext } from '../../@types/retry.js';
+import { peekAssertionCapture } from '../../configs/assertion-capture.js';
 import { GLOBAL } from '../../configs/poku.js';
 import { retryContext } from '../../configs/retry.js';
+import { captureAssertions } from '../../services/assertion-capture.js';
 import { sleep } from './wait-for.js';
 
 export async function retry(
@@ -28,12 +31,22 @@ export async function retry(
     stack.push(context);
     GLOBAL.reporter.onRetryStart({ attempt, total: attempts });
 
+    let captured: AssertionCaptureResult<unknown> | undefined;
     try {
-      const result = callback();
-
-      if (result instanceof Promise) await result;
+      if (peekAssertionCapture()) {
+        captured = await captureAssertions(callback);
+        if (captured.status === 'failed') {
+          context.failed = true;
+          lastError = captured.error;
+          hasError = true;
+        }
+      } else {
+        const result = callback();
+        if (result instanceof Promise) await result;
+      }
       if (!context.failed) {
         stack.pop();
+        captured?.report();
         GLOBAL.reporter.onRetryEnd({
           attempt,
           total: attempts,
@@ -49,13 +62,18 @@ export async function retry(
     }
 
     stack.pop();
+    if (attempt === attempts) captured?.report();
     GLOBAL.reporter.onRetryEnd({ attempt, total: attempts, success: false });
 
     if (attempt < attempts && delay > 0) await sleep(delay);
   }
 
   if (stack.length === 0) retryContext.stack = null;
-  process.exitCode = 1;
+  const capture = peekAssertionCapture();
+  if (capture) {
+    capture.failed = true;
+    capture.error = lastError;
+  } else process.exitCode = 1;
 
   if (hasError) throw lastError;
 }
