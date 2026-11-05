@@ -1,11 +1,6 @@
 import type { Code } from '../../@types/code.js';
 import type { PokuPlugin } from '../../@types/plugin.js';
-import type {
-  Configs,
-  PluginContext,
-  Poku,
-  ReporterPlugin,
-} from '../../@types/poku.js';
+import type { Configs, PluginContext, Poku } from '../../@types/poku.js';
 import { join } from 'node:path';
 import { env, hrtime, stdout } from 'node:process';
 import { GLOBAL, timespan } from '../../configs/poku.js';
@@ -15,20 +10,6 @@ import { poku as defaultReporter } from '../../services/reporters/poku.js';
 import { runTests } from '../../services/run-tests.js';
 import { exit } from '../helpers/exit.js';
 import { listFiles } from '../helpers/list-files.js';
-
-const bindReporterEvents = (reporter: ReturnType<ReporterPlugin>) => {
-  for (const event of Object.keys(GLOBAL.reporter)) {
-    const handler: unknown = Reflect.get(reporter, event);
-
-    Reflect.set(
-      GLOBAL.reporter,
-      event,
-      typeof handler === 'function' ? handler.bind(reporter) : handler
-    );
-  }
-
-  GLOBAL.reporterReplaced = reporter !== defaultReporter;
-};
 
 export const onSigint = () => {
   stdout.write('\u001B[?25h');
@@ -56,12 +37,13 @@ export const poku = (async (
   const { cwd } = GLOBAL;
 
   if (typeof plugin === 'function') {
-    bindReporterEvents(plugin(GLOBAL.configs));
+    GLOBAL.reporter = plugin(GLOBAL.configs);
   } else if (typeof plugin === 'string' && plugin !== 'poku') {
     const { reporter } = await import('../../services/reporter.js');
 
-    if (plugin in reporter) bindReporterEvents(reporter[plugin]());
-  } else if (GLOBAL.reporterReplaced) bindReporterEvents(defaultReporter);
+    if (plugin in reporter) GLOBAL.reporter = reporter[plugin]();
+  } else if (plugin === 'poku' && GLOBAL.reporter !== defaultReporter)
+    GLOBAL.reporter = defaultReporter;
 
   const plugins = GLOBAL.configs.plugins;
   let pluginContext: PluginContext | undefined;
@@ -76,7 +58,7 @@ export const poku = (async (
       runAsOnly: GLOBAL.runAsOnly,
       results,
       timespan,
-      reporter: { ...GLOBAL.reporter },
+      reporter: GLOBAL.reporter,
     };
 
     for (const plugin of plugins) {

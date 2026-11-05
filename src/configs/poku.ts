@@ -54,14 +54,12 @@ export const GLOBAL = getSharedState('GLOBAL', {
   } as Configs,
   configFile: undefined as string | undefined,
   configsFromFile: Object.create(null) as ConfigFile | ConfigJSONFile,
-  reporter: {
-    ...reporter[
+  reporter:
+    reporter[
       env.POKU_REPORTER && env.POKU_REPORTER in reporter
         ? env.POKU_REPORTER
         : 'poku'
     ](),
-  },
-  reporterReplaced: false,
   envFile: undefined as string | undefined,
   runtime: (env.POKU_RUNTIME || getRuntime()) as Runtime,
   runAsOnly: false,
